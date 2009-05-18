@@ -1,0 +1,90 @@
+/*
+ * This file is part of rockframework.
+ * 
+ * rockframework is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * rockframework is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
+ */
+package net.woodstock.rockframework.utils;
+
+import java.awt.Color;
+
+public abstract class ColorUtils {
+
+	private ColorUtils() {
+		//
+	}
+
+	public static Color createColor(String s) {
+		if (s.startsWith("#")) {
+			return ColorUtils.createColorHTML(s);
+		} else if (s.startsWith("rgb")) {
+
+			return ColorUtils.createColorRGB(s);
+		}
+		return null;
+	}
+
+	public static Color createColorHTML(String s) {
+		int red = 0;
+		int green = 0;
+		int blue = 0;
+		if ((s.startsWith("#")) && (s.length() == 7)) {
+			red = Integer.decode("0x" + s.substring(1, 3)).intValue();
+			green = Integer.decode("0x" + s.substring(3, 5)).intValue();
+			blue = Integer.decode("0x" + s.substring(5)).intValue();
+		}
+
+		return new Color(red, green, blue);
+	}
+
+	public static Color createColorRGB(String s) {
+		int red = 0;
+		int green = 0;
+		int blue = 0;
+		if ((s.startsWith("rgb(")) && (s.endsWith(")"))) {
+			String colors[] = s.replaceAll("rgb\\(", "").replaceAll("\\)", "").split(",");
+			if (colors.length == 3) {
+				red = Integer.parseInt(colors[0].trim());
+				green = Integer.parseInt(colors[1].trim());
+				blue = Integer.parseInt(colors[2].trim());
+			}
+		}
+		return new Color(red, green, blue);
+	}
+
+	public static Color createColorRGB(int red, int green, int blue) {
+		return new Color(red, green, blue);
+	}
+
+	public static String colorToStringHTML(Color c) {
+		StringBuilder b = new StringBuilder();
+		b.append("#");
+		b.append(StringUtils.lpad(Integer.toHexString(c.getRed()).toUpperCase(), 2, '0'));
+		b.append(StringUtils.lpad(Integer.toHexString(c.getGreen()).toUpperCase(), 2, '0'));
+		b.append(StringUtils.lpad(Integer.toHexString(c.getBlue()).toUpperCase(), 2, '0'));
+		return b.toString();
+	}
+
+	public static String colorToStringRGB(Color c) {
+		StringBuilder b = new StringBuilder();
+		b.append("rgb(");
+		b.append(c.getRed());
+		b.append(",");
+		b.append(c.getGreen());
+		b.append(",");
+		b.append(c.getBlue());
+		b.append(")");
+		return b.toString();
+	}
+
+}

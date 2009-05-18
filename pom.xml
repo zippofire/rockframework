@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.woodstock.rockframework</groupId>
+	<artifactId>rockframework-parent</artifactId>
+	<packaging>pom</packaging>
+	<name>Rock Framework</name>
+	<version>1.0.0-SNAPSHOT</version>
+	<url>http://code.google.com/p/rockframework/</url>
+	<properties>
+		<!-- Maven -->
+		<gpg.passphrase>rockframework</gpg.passphrase>
+		<!-- Libs -->
+		<commons.logging.version>1.1.1</commons.logging.version>
+		<junit.version>3.8.2</junit.version>
+		<test />
+	</properties>
+	<mailingLists>
+		<mailingList>
+			<name>rockframework User List</name>
+			<subscribe>rockframework.subscribe@wooodstock.net</subscribe>
+			<unsubscribe>rockframework.unsubscribe@wooodstock.net</unsubscribe>
+			<post>do not post to rockframework.users@woodstock.net unless subscribed</post>
+			<archive>http://mail.woodstock.net/rockframework-users</archive>
+			<otherArchives>
+				<otherArchive>http://mail.woodstock.net/users</otherArchive>
+			</otherArchives>
+		</mailingList>
+	</mailingLists>
+	<developers>
+		<developer>
+			<id>junior</id>
+			<name>Lourival Sabino</name>
+			<email>lourival.sabino.junior@gmail.com</email>
+			<organization>Woodstock</organization>
+			<roles>
+				<role>PMC</role>
+			</roles>
+		</developer>
+	</developers>
+	<licenses>
+		<license>
+			<name>GNU General Public License</name>
+			<url>http://www.gnu.org/licenses/gpl.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<scm>
+		<connection>scm:svn:http://rockframework.googlecode.com/svn/trunk</connection>
+		<developerConnection>scm:svn:https://rockframework.googlecode.com/svn/trunk</developerConnection>
+		<url>http://code.google.com/p/rockframework/</url>
+	</scm>
+	<organization>
+		<name>Woodstock</name>
+		<url>http://www.woodstock.net</url>
+	</organization>
+	<modules>
+		<module>rockframework-core</module>
+		<module>rockframework-web</module>
+	</modules>
+    <!--	
+	<repositories>
+		<repository>
+			<id>jboss.org</id>
+			<name>JBoss Repository</name>
+			<url>http://repository.jboss.org/maven2</url>
+		</repository>
+	</repositories>
+	-->
+	<build>
+		<defaultGoal>install</defaultGoal>
+		<filters>
+			<filter>src/main/filters/filter.properties</filter>
+		</filters>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<encoding>ISO-8859-1</encoding>
+				</configuration>
+			</plugin>
+			<!--
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<encoding>ISO-8859-1</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<configuration>
+					<outputEncoding>ISO-8859-1</outputEncoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<failIfNoTests>false</failIfNoTests> 
+				</configuration>
+			</plugin>			
+		</plugins>
+	</build>
+</project>
+
