@@ -14,23 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.test;
+package net.woodstock.rockframework.itext.types;
 
-import junit.framework.TestCase;
-import net.woodstock.rockframework.util.Calendar;
-import net.woodstock.rockframework.utils.DateUtils;
-
-public class CalendarTest extends TestCase {
-
-	public void test1() throws Exception {
-		Calendar calendar = Calendar.getInstance();
-		System.out.println(DateUtils.format(calendar.getTime(), "dd/MM/yyy hh:mm:ss"));
-
-		calendar.addMinutes(90);
-		System.out.println(DateUtils.format(calendar.getTime(), "dd/MM/yyy hh:mm:ss"));
-
-		calendar.removeMinutes(115);
-		System.out.println(DateUtils.format(calendar.getTime(), "dd/MM/yyy hh:mm:ss"));
-	}
-
+public enum OutputType {
+	HTML, PDF, RTF, XML;
 }

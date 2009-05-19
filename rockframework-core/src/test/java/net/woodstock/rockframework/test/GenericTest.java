@@ -3,9 +3,10 @@ package net.woodstock.rockframework.test;
 import java.util.Collection;
 import java.util.HashMap;
 
+import junit.framework.TestCase;
 import net.woodstock.rockframework.utils.ClassUtils;
 
-public class GenericTest {
+public class GenericTest extends TestCase {
 
 	private static void print(Object o) throws Exception {
 		Class<?> clazz = o.getClass();
@@ -17,15 +18,10 @@ public class GenericTest {
 		}
 	}
 
-	public static void main(String[] args) {
-		try {
-			GenericTest.print(new Teste<String>("Teste"));
-			GenericTest.print(new HashMap<String, String>());
-			// print(new Teste<Object>());
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+	public void test1() throws Exception {
+		GenericTest.print(new Teste<String>("Teste"));
+		GenericTest.print(new HashMap<String, String>());
+		// print(new Teste<Object>());
 	}
 
 	static class Teste<T> {

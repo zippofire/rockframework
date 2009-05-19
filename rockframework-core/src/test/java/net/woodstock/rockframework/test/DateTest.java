@@ -18,9 +18,11 @@ package net.woodstock.rockframework.test;
 
 import java.util.Locale;
 
+import junit.framework.TestCase;
+
 import net.woodstock.rockframework.util.Calendar;
 
-public class DateTest {
+public class DateTest extends TestCase {
 
 	public static void add() {
 		Calendar d = Calendar.getInstance();
@@ -74,7 +76,7 @@ public class DateTest {
 		System.out.println(d2.getFormated("Hoje e " + Calendar.DAY_NAME_FORMAT));
 	}
 
-	public static void main(String[] args) {
+	public void test1() throws Exception {
 		DateTest.format();
 	}
 }

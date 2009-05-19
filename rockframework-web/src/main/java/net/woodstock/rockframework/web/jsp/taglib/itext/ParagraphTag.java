@@ -21,7 +21,7 @@ import java.io.StringWriter;
 
 import javax.servlet.jsp.JspException;
 
-import net.woodstock.rockframework.itext.beans.impl.ItextParagraph;
+import net.woodstock.rockframework.itext.impl.Paragraph;
 import net.woodstock.rockframework.itext.types.Alignment;
 import net.woodstock.rockframework.itext.types.Font;
 import net.woodstock.rockframework.itext.types.FontStyle;
@@ -70,7 +70,7 @@ public class ParagraphTag extends ITextTag {
 	@TLDAttribute(required = false, rtexprvalue = true)
 	private String			spacingBefore;
 
-	private ItextParagraph	paragraph;
+	private Paragraph	paragraph;
 
 	@Override
 	protected void doTagInternal() throws JspException, IOException {
@@ -78,7 +78,7 @@ public class ParagraphTag extends ITextTag {
 			throw new JspException("Paragraph must appers inside a page");
 		}
 
-		this.paragraph = new ItextParagraph();
+		this.paragraph = new Paragraph();
 
 		if (!StringUtils.isEmpty(this.alignment)) {
 			this.paragraph.setAlignment(Alignment.valueOf(this.alignment));

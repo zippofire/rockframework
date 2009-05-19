@@ -1,19 +1,12 @@
-/**
- * 
- */
 package net.woodstock.rockframework.test;
 
+import junit.framework.TestCase;
 import net.woodstock.rockframework.utils.NetUtils;
 
-public class NetTest {
+public class NetTest extends TestCase {
 
-	public static void main(String[] args) {
-		try {
-			System.out.println(NetUtils.isFromNet("172.25.101.40", "172.25.101.0/24"));
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+	public void test1() throws Exception {
+		System.out.println(NetUtils.isFromNet("172.25.101.40", "172.25.101.0/24"));
 	}
 
 }

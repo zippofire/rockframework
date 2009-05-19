@@ -31,7 +31,7 @@ public abstract class SysLogger {
 	private static boolean		wrapper;
 
 	static {
-		String s = CoreConfig.getInstance().getValue(SysLogger.KEY_LOG_WRAPPER);
+		String s = CoreConfig.getInstance().getValue(SysLogger.KEY_LOG_WRAPPER, "false");
 		if (!StringUtils.isEmpty(s)) {
 			SysLogger.wrapper = Boolean.parseBoolean(s);
 		} else {

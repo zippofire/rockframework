@@ -2,22 +2,18 @@ package net.woodstock.rockframework.test;
 
 import java.io.Serializable;
 
+import junit.framework.TestCase;
 import net.woodstock.rockframework.util.BeanInfo;
 
-public class TestBeanInfo {
+public class TestBeanInfo extends TestCase {
 
-	public static void main(String[] args) {
-		try {
-			Pessoa pessoa = new Pessoa();
-			BeanInfo beanInfo = BeanInfo.getBeanInfo(pessoa.getClass());
-			beanInfo.getFieldInfo("id").setFieldValue(pessoa, new Integer(1));
-			beanInfo.getFieldInfo("nome").setFieldValue(pessoa, "Teste");
+	public void test1() throws Exception {
+		Pessoa pessoa = new Pessoa();
+		BeanInfo beanInfo = BeanInfo.getBeanInfo(pessoa.getClass());
+		beanInfo.getFieldInfo("id").setFieldValue(pessoa, new Integer(1));
+		beanInfo.getFieldInfo("nome").setFieldValue(pessoa, "Teste");
 
-			System.out.println(pessoa);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+		System.out.println(pessoa);
 	}
 
 	public static class Pessoa implements Serializable {

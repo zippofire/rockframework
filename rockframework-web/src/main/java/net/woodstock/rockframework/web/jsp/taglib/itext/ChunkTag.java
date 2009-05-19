@@ -21,7 +21,7 @@ import java.io.StringWriter;
 
 import javax.servlet.jsp.JspException;
 
-import net.woodstock.rockframework.itext.beans.impl.ItextChunk;
+import net.woodstock.rockframework.itext.impl.Chunk;
 import net.woodstock.rockframework.itext.types.Font;
 import net.woodstock.rockframework.itext.types.FontStyle;
 import net.woodstock.rockframework.utils.ColorUtils;
@@ -59,7 +59,7 @@ public class ChunkTag extends ITextTag {
 	@TLDAttribute(required = false, rtexprvalue = true)
 	private String				textRise;
 
-	private ItextChunk			chunk;
+	private Chunk			chunk;
 
 	@Override
 	protected void doTagInternal() throws JspException, IOException {
@@ -67,7 +67,7 @@ public class ChunkTag extends ITextTag {
 			throw new JspException("Chunk must appers inside a page");
 		}
 
-		this.chunk = new ItextChunk();
+		this.chunk = new Chunk();
 
 		if (!StringUtils.isEmpty(this.anchor)) {
 			this.chunk.setAnchor(this.anchor);

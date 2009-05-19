@@ -20,14 +20,14 @@ import java.io.IOException;
 
 import javax.servlet.jsp.JspException;
 
-import net.woodstock.rockframework.itext.beans.impl.ItextParagraph;
+import net.woodstock.rockframework.itext.impl.Paragraph;
 import net.woodstock.rockframework.web.jsp.taglib.common.TLD;
 import net.woodstock.rockframework.web.jsp.taglib.common.TLD.BodyContent;
 
 @TLD(name = "newLine", type = BodyContent.EMPTY)
 public class NewLineTag extends ITextTag {
 
-	private ItextParagraph	newLine;
+	private Paragraph	newLine;
 
 	@Override
 	protected void doTagInternal() throws JspException, IOException {
@@ -35,7 +35,7 @@ public class NewLineTag extends ITextTag {
 			throw new JspException("NewLine must appers inside a page");
 		}
 
-		this.newLine = new ItextParagraph();
+		this.newLine = new Paragraph();
 		this.newLine.setText("\n");
 		this.getContainer().add(this.newLine);
 	}

@@ -17,29 +17,18 @@
 package net.woodstock.rockframework.test;
 
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.Collection;
 
+import junit.framework.TestCase;
 import net.woodstock.rockframework.utils.NetUtils;
 
-public class PortTest {
+public class PortTest extends TestCase {
 
-	public PortTest() throws UnknownHostException {
-		super();
-
+	public void test1() throws Exception {
 		Collection<Integer> ports = NetUtils.scan(InetAddress.getByName("rock.woodstock.net"), 1, 1024);
 
 		for (Integer port : ports) {
 			System.out.println(port);
-		}
-	}
-
-	public static void main(String[] args) {
-		try {
-			new PortTest();
-		}
-		catch (UnknownHostException e) {
-			e.printStackTrace();
 		}
 	}
 

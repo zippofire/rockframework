@@ -21,14 +21,14 @@ import java.io.StringWriter;
 
 import javax.servlet.jsp.JspException;
 
-import net.woodstock.rockframework.itext.beans.impl.ItextPhrase;
+import net.woodstock.rockframework.itext.impl.Phrase;
 import net.woodstock.rockframework.web.jsp.taglib.common.TLD;
 import net.woodstock.rockframework.web.jsp.taglib.common.TLD.BodyContent;
 
 @TLD(name = "phrase", type = BodyContent.SCRIPTLESS)
 public class PhraseTag extends ITextTag {
 
-	private ItextPhrase	phrase;
+	private Phrase	phrase;
 
 	@Override
 	protected void doTagInternal() throws JspException, IOException {
@@ -36,7 +36,7 @@ public class PhraseTag extends ITextTag {
 			throw new JspException("Phrase must appers inside a page");
 		}
 
-		this.phrase = new ItextPhrase();
+		this.phrase = new Phrase();
 
 		StringWriter writer = new StringWriter();
 

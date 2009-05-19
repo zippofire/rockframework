@@ -18,7 +18,6 @@ package net.woodstock.rockframework.net.http;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Collection;
 
 import net.woodstock.rockframework.util.Entry;
@@ -45,36 +44,15 @@ public class HttpClient implements Serializable {
 		this.client = new org.apache.commons.httpclient.HttpClient();
 	}
 
-	public String openText(String url, Collection<Entry<String, String>> params) throws HttpException,
+	public String openText(String url, Collection<Entry<String, Object>> params) throws HttpException,
 			IOException {
-		GetMethod method = new GetMethod(url);
-		if (params != null) {
-			HttpMethodParams hps = new HttpMethodParams();
-			for (Entry<String, String> p : params) {
-				hps.setParameter(p.getKey(), p.getValue());
-			}
-			method.setParams(hps);
-		}
+		GetMethod method = this.createGetMethod(url, params);
 		return method.getResponseBodyAsString();
 	}
 
-	public String openText(String url, Entry<String, String>... params) throws HttpException, IOException {
-		if (params == null) {
-			return this.openText(url, (Collection<Entry<String, String>>) null);
-		}
-		return this.openText(url, Arrays.asList(params));
-	}
-
-	public XmlDocument openXml(String url, Collection<Entry<String, String>> params) throws HttpException,
+	public XmlDocument openXml(String url, Collection<Entry<String, Object>> params) throws HttpException,
 			IOException {
-		GetMethod method = new GetMethod(url);
-		if (params != null) {
-			HttpMethodParams hps = new HttpMethodParams();
-			for (Entry<String, String> p : params) {
-				hps.setParameter(p.getKey(), p.getValue());
-			}
-			method.setParams(hps);
-		}
+		GetMethod method = this.createGetMethod(url, params);
 		int status = this.client.executeMethod(method);
 		if (status == HttpStatus.SC_OK) {
 			try {
@@ -90,11 +68,19 @@ public class HttpClient implements Serializable {
 		return doc;
 	}
 
-	public XmlDocument openXml(String url, Entry<String, String>... params) throws HttpException, IOException {
-		if (params == null) {
-			return this.openXml(url, (Collection<Entry<String, String>>) null);
+	private GetMethod createGetMethod(String url, Collection<Entry<String, Object>> params) {
+		GetMethod method = new GetMethod(url);
+		if ((params != null) && (params.size() > 0)) {
+			HttpMethodParams hps = new HttpMethodParams();
+			for (Entry<String, ? extends Object> p : params) {
+				String key = p.getKey();
+				Object value = p.getValue();
+				String valueStr = value == null ? "" : value.toString();
+				hps.setParameter(key, valueStr);
+			}
+			method.setParams(hps);
 		}
-		return this.openXml(url, Arrays.asList(params));
+		return method;
 	}
 
 }

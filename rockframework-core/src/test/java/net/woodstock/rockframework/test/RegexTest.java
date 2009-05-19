@@ -2,7 +2,9 @@ package net.woodstock.rockframework.test;
 
 import java.util.regex.Pattern;
 
-public class RegexTest {
+import junit.framework.TestCase;
+
+public class RegexTest extends TestCase {
 
 	public static String[]	excluidos	= { "/", "/faces", "/css/*", "/scripts/*", "/theme/*" };
 
@@ -22,7 +24,7 @@ public class RegexTest {
 		return false;
 	}
 
-	public static void main(String[] args) {
+	public void test1() throws Exception {
 		System.out.println(RegexTest.verificaAcesso("/faces"));
 		System.out.println(RegexTest.verificaAcesso("/index.jsp"));
 		System.out.println(RegexTest.verificaAcesso("/css/default.css"));

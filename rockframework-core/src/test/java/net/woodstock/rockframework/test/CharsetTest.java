@@ -18,25 +18,22 @@ package net.woodstock.rockframework.test;
 
 import java.io.FileWriter;
 
-public class CharsetTest {
+import junit.framework.TestCase;
 
-	public static void main(String[] args) {
-		try {
-			String nomeUtf = new String("Júnior".getBytes(), "utf-8");
-			String nomeIso = new String("Júnior".getBytes(), "iso-8859-1");
+public class CharsetTest extends TestCase {
 
-			FileWriter writerUtf = new FileWriter("c:/temp/writerUtf.txt");
-			FileWriter writerIso = new FileWriter("c:/temp/writerIso.txt");
+	public void test1() throws Exception {
+		String nomeUtf = new String("Júnior".getBytes(), "utf-8");
+		String nomeIso = new String("Júnior".getBytes(), "iso-8859-1");
 
-			writerUtf.write(nomeUtf);
-			writerIso.write(nomeIso);
+		FileWriter writerUtf = new FileWriter("c:/temp/writerUtf.txt");
+		FileWriter writerIso = new FileWriter("c:/temp/writerIso.txt");
 
-			writerUtf.close();
-			writerIso.close();
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+		writerUtf.write(nomeUtf);
+		writerIso.write(nomeIso);
+
+		writerUtf.close();
+		writerIso.close();
 	}
 
 }

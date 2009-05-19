@@ -20,9 +20,9 @@ import java.io.IOException;
 
 import javax.servlet.jsp.JspException;
 
-import net.woodstock.rockframework.itext.beans.ItextObject;
-import net.woodstock.rockframework.itext.beans.impl.ItextCell;
-import net.woodstock.rockframework.itext.beans.impl.ItextTable;
+import net.woodstock.rockframework.itext.Object;
+import net.woodstock.rockframework.itext.impl.Cell;
+import net.woodstock.rockframework.itext.impl.Table;
 import net.woodstock.rockframework.itext.types.Alignment;
 import net.woodstock.rockframework.sys.SysLogger;
 import net.woodstock.rockframework.utils.StringUtils;
@@ -48,7 +48,7 @@ public class TableTag extends ContainerTag {
 	@TLDAttribute(required = false, rtexprvalue = true)
 	private String		width;
 
-	private ItextTable	table;
+	private Table	table;
 
 	@Override
 	protected void doTagInternal() throws JspException, IOException {
@@ -56,7 +56,7 @@ public class TableTag extends ContainerTag {
 			throw new JspException("Table must appers inside a page");
 		}
 
-		this.table = new ItextTable();
+		this.table = new Table();
 
 		if (!StringUtils.isEmpty(this.alignment)) {
 			this.table.setAlignment(Alignment.valueOf(this.alignment));
@@ -84,12 +84,12 @@ public class TableTag extends ContainerTag {
 	}
 
 	@Override
-	public void add(ItextObject item) {
-		if (!(item instanceof ItextCell)) {
+	public void add(Object item) {
+		if (!(item instanceof Cell)) {
 			throw new RuntimeException("Cold not insert a " + item.getClass() + " into table");
 		}
-		SysLogger.getLogger().debug("Inserting a cell with content '" + ((ItextCell) item).getText() + "'");
-		this.table.addCell((ItextCell) item);
+		SysLogger.getLogger().debug("Inserting a cell with content '" + ((Cell) item).getText() + "'");
+		this.table.addCell((Cell) item);
 	}
 
 	// Setters and getters

@@ -16,11 +16,12 @@
  */
 package net.woodstock.rockframework.test;
 
+import junit.framework.TestCase;
 import net.woodstock.rockframework.utils.MathUtils;
 
-public class MathTest {
+public class MathTest extends TestCase {
 
-	public static void main(String[] args) {
+	public void test1() throws Exception {
 		/*
 		 * float angle = 180; System.out.println(angle); System.out.println(Math.cos(angle));
 		 * System.out.println(Math.sin(angle)); System.out.println(Math.toRadians(angle));

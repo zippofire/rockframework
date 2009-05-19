@@ -21,32 +21,27 @@ import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-public class PackageTest {
+import junit.framework.TestCase;
 
-	public static void main(String[] args) {
-		try {
-			String packageName = "javax.servlet";
-			File file = new File(Thread.currentThread().getContextClassLoader().getResource(
-					packageName.replaceAll("\\.", "/")).getFile());
+public class PackageTest extends TestCase {
 
-			System.out.println(file.getAbsolutePath());
-			if ((file.isFile()) || (file.getAbsolutePath().indexOf(".jar!") != -1)) {
-				JarFile jar = new JarFile(file);
-				Enumeration<JarEntry> entries = jar.entries();
-				while (entries.hasMoreElements()) {
-					System.out.println(entries.nextElement().getName());
-				}
+	public void test1() throws Exception {
+		String packageName = "javax.servlet";
+		File file = new File(Thread.currentThread().getContextClassLoader().getResource(
+				packageName.replaceAll("\\.", "/")).getFile());
+
+		System.out.println(file.getAbsolutePath());
+		if ((file.isFile()) || (file.getAbsolutePath().indexOf(".jar!") != -1)) {
+			JarFile jar = new JarFile(file);
+			Enumeration<JarEntry> entries = jar.entries();
+			while (entries.hasMoreElements()) {
+				System.out.println(entries.nextElement().getName());
 			}
-			else {
-				for (String s : file.list()) {
-					System.out.println(s);
-				}
+		} else {
+			for (String s : file.list()) {
+				System.out.println(s);
 			}
 		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-
 	}
 
 }

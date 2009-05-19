@@ -16,29 +16,18 @@
  */
 package net.woodstock.rockframework.test;
 
-import java.io.IOException;
+import java.util.Collection;
 
+import junit.framework.TestCase;
 import net.woodstock.rockframework.net.http.HttpClient;
 import net.woodstock.rockframework.util.Entry;
 
-import org.apache.commons.httpclient.HttpException;
+public class HttpTest extends TestCase {
 
-public class HttpTest {
-
-	public HttpTest() throws HttpException, IOException {
-		super();
+	public void test1() throws Exception {
 		HttpClient http = new HttpClient();
-		System.out
-				.println(http.openXml("http://svn.woodstock.net/index.php", (Entry<String, String>[]) null));
-	}
-
-	public static void main(String[] args) {
-		try {
-			new HttpTest();
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+		System.out.println(http.openXml("http://svn.woodstock.net/index.php",
+				(Collection<Entry<String, Object>>) null));
 	}
 
 }

@@ -16,10 +16,10 @@
  */
 package net.woodstock.rockframework.web.jsp.taglib.itext;
 
-import net.woodstock.rockframework.itext.beans.ItextObject;
+import net.woodstock.rockframework.itext.Object;
 
 public abstract class ContainerTag extends ITextTag {
 
-	public abstract void add(ItextObject item);
+	public abstract void add(Object item);
 
 }

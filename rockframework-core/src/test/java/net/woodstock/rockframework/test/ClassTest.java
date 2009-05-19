@@ -18,31 +18,22 @@ package net.woodstock.rockframework.test;
 
 import java.lang.reflect.Method;
 
+import junit.framework.TestCase;
 import net.woodstock.rockframework.utils.ClassUtils;
 
-public class ClassTest {
+public class ClassTest extends TestCase {
 
 	public void print(CharSequence s) {
 		System.out.println("CharSequence: " + s);
 	}
 
-	/*
-	 * public void print(String s) { System.out.println("String: " + s); }
-	 */
+	public void test1() throws Exception {
+		ClassTest test = new ClassTest();
+		Method m = ClassUtils.getMethod(ClassTest.class, "print", new Class[] { String.class });
+		m.invoke(test, "Test");
 
-	public static void main(String[] args) {
-		try {
-			ClassTest test = new ClassTest();
-			Method m = ClassUtils.getMethod(ClassTest.class, "print", new Class[] { String.class });
-			m.invoke(test, "Test");
-
-			m = ClassUtils.getMethod(ClassTest.class, "toString", new Class[] {});
-			System.out.println(m.invoke(test, new Object[] {}));
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-
+		m = ClassUtils.getMethod(ClassTest.class, "toString", new Class[] {});
+		System.out.println(m.invoke(test, new Object[] {}));
 	}
 
 }

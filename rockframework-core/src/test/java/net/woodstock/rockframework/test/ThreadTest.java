@@ -1,10 +1,11 @@
 package net.woodstock.rockframework.test;
 
+import junit.framework.TestCase;
 import net.woodstock.rockframework.utils.NumberUtils;
 
-public class ThreadTest {
+public class ThreadTest extends TestCase {
 
-	public static void main(String[] args) {
+	public void test1() throws Exception {
 		for (int i = 0; i < 3; i++) {
 			new Thread() {
 

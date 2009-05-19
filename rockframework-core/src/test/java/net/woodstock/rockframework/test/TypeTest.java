@@ -16,7 +16,9 @@
  */
 package net.woodstock.rockframework.test;
 
-public class TypeTest {
+import junit.framework.TestCase;
+
+public class TypeTest extends TestCase {
 
 	static void print(Integer i) {
 		System.out.println("Integer " + i);
@@ -30,7 +32,7 @@ public class TypeTest {
 		System.out.println("Object " + o);
 	}
 
-	public static void main(String[] args) {
+	public void test1() throws Exception {
 		Object o1 = new Integer(5);
 		Object o2 = new String("Teste");
 

@@ -20,14 +20,9 @@ import java.text.DecimalFormat;
 
 public class NumberTest {
 
-	public NumberTest() {
-		super();
+	public void test1() throws Exception {
 		DecimalFormat format = new DecimalFormat("###,##0.00");
 		System.out.println(format.format(123.45));
-	}
-
-	public static void main(String[] args) {
-		new NumberTest();
 	}
 
 }

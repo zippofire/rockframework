@@ -21,8 +21,8 @@ import java.io.StringWriter;
 
 import javax.servlet.jsp.JspException;
 
-import net.woodstock.rockframework.itext.beans.ItextObject;
-import net.woodstock.rockframework.itext.beans.impl.ItextCell;
+import net.woodstock.rockframework.itext.Object;
+import net.woodstock.rockframework.itext.impl.Cell;
 import net.woodstock.rockframework.itext.types.Alignment;
 import net.woodstock.rockframework.itext.types.Font;
 import net.woodstock.rockframework.itext.types.FontStyle;
@@ -74,7 +74,7 @@ public class CellTag extends ContainerTag {
 	@TLDAttribute(required = false, rtexprvalue = true)
 	private String		width;
 
-	private ItextCell	cell;
+	private Cell	cell;
 
 	@Override
 	public void doTagInternal() throws JspException, IOException {
@@ -82,7 +82,7 @@ public class CellTag extends ContainerTag {
 			throw new JspException("Cell must appers inside a table");
 		}
 
-		this.cell = new ItextCell();
+		this.cell = new Cell();
 
 		if (!StringUtils.isEmpty(this.alignment)) {
 			this.cell.setAlignment(Alignment.valueOf(this.alignment));
@@ -150,7 +150,7 @@ public class CellTag extends ContainerTag {
 	}
 
 	@Override
-	public void add(ItextObject item) {
+	public void add(Object item) {
 		this.cell.addItem(item);
 	}
 

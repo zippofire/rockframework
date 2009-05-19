@@ -22,7 +22,7 @@ import java.io.IOException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 
-import net.woodstock.rockframework.itext.beans.impl.ItextImage;
+import net.woodstock.rockframework.itext.impl.Image;
 import net.woodstock.rockframework.itext.types.Alignment;
 import net.woodstock.rockframework.utils.ColorUtils;
 import net.woodstock.rockframework.utils.StringUtils;
@@ -72,7 +72,7 @@ public class ImageTag extends ITextTag {
 	@TLDAttribute(required = true, rtexprvalue = true)
 	private String		src;
 
-	private ItextImage	image;
+	private Image	image;
 
 	@Override
 	protected void doTagInternal() throws JspException, IOException {
@@ -80,7 +80,7 @@ public class ImageTag extends ITextTag {
 			throw new JspException("Image must appers inside a page");
 		}
 
-		this.image = new ItextImage();
+		this.image = new Image();
 
 		if (!StringUtils.isEmpty(this.absoluteX)) {
 			this.image.setAbsoluteX(Float.parseFloat(this.absoluteX));

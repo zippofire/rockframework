@@ -14,28 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.test;
+package net.woodstock.rockframework.itext;
 
-import junit.framework.TestCase;
-import net.woodstock.rockframework.util.Calendar;
+import java.io.Serializable;
 
-public class LocaleTest extends TestCase {
+import com.lowagie.text.Element;
 
-	public LocaleTest() {
-		super();
+public interface Object extends Serializable {
 
-		Calendar c = Calendar.getInstance();
-
-		System.out.println(c.getFormated("Brasilia %D/%M/%Y, agora sao %h:%m:%s"));
-
-		c.addHours(48);
-
-		System.out.println(c.getFormated("Brasilia %D/%M/%Y, agora sao %h:%m:%s"));
-
-	}
-
-	public void test1() throws Exception {
-		new LocaleTest();
-	}
+	Element getObject();
 
 }

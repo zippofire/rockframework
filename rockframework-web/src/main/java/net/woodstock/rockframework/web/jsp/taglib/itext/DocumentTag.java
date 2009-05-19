@@ -21,8 +21,9 @@ import java.io.IOException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 
-import net.woodstock.rockframework.itext.beans.ItextDocument;
-import net.woodstock.rockframework.itext.beans.ItextPage;
+import net.woodstock.rockframework.itext.Document;
+import net.woodstock.rockframework.itext.Page;
+import net.woodstock.rockframework.itext.types.OutputType;
 import net.woodstock.rockframework.itext.types.PageSize;
 import net.woodstock.rockframework.itext.types.PrintPages;
 import net.woodstock.rockframework.utils.StringUtils;
@@ -73,11 +74,11 @@ public class DocumentTag extends ITextTag {
 	@TLDAttribute(required = false, rtexprvalue = true)
 	private String				pageSize;
 
-	private ItextDocument		document;
+	private Document			document;
 
 	@Override
 	protected void doTagInternal() throws JspException, IOException {
-		this.document = new ItextDocument();
+		this.document = new Document();
 
 		if (!StringUtils.isEmpty(this.autoPrint)) {
 			this.document.setAutoPrint(Boolean.parseBoolean(this.autoPrint));
@@ -128,13 +129,13 @@ public class DocumentTag extends ITextTag {
 		try {
 			PageContext context = this.getPageContext();
 			context.getResponse().setContentType(DocumentTag.MIME_TYPE);
-			this.document.write(context.getResponse().getOutputStream());
+			this.document.write(context.getResponse().getOutputStream(), OutputType.PDF);
 		} catch (DocumentException e) {
 			throw new JspException(e);
 		}
 	}
 
-	public void addPage(ItextPage page) {
+	public void addPage(Page page) {
 		this.document.addPage(page);
 	}
 
@@ -235,11 +236,11 @@ public class DocumentTag extends ITextTag {
 		this.pageSize = pageSize;
 	}
 
-	public ItextDocument getDocument() {
+	public Document getDocument() {
 		return this.document;
 	}
 
-	public void setDocument(ItextDocument document) {
+	public void setDocument(Document document) {
 		this.document = document;
 	}
 

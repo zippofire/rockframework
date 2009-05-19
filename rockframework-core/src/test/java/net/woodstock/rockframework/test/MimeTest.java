@@ -6,7 +6,7 @@ import net.woodstock.rockframework.utils.MimeUtils;
 
 public class MimeTest extends TestCase {
 
-	public void testMime() throws Exception {
+	public void test1() throws Exception {
 		System.out.println(MimeUtils.getExtension("text/plain"));
 		System.out.println(MimeUtils.getExtension("application/rtf"));
 

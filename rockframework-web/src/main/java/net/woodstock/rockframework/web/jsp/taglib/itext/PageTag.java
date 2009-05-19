@@ -21,8 +21,8 @@ import java.io.IOException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.SimpleTag;
 
-import net.woodstock.rockframework.itext.beans.ItextObject;
-import net.woodstock.rockframework.itext.beans.ItextPage;
+import net.woodstock.rockframework.itext.Object;
+import net.woodstock.rockframework.itext.Page;
 import net.woodstock.rockframework.sys.SysLogger;
 import net.woodstock.rockframework.web.jsp.taglib.common.TLD;
 import net.woodstock.rockframework.web.jsp.taglib.common.TLD.BodyContent;
@@ -30,7 +30,7 @@ import net.woodstock.rockframework.web.jsp.taglib.common.TLD.BodyContent;
 @TLD(name = "page", type = BodyContent.SCRIPTLESS)
 public class PageTag extends ContainerTag {
 
-	private ItextPage	page;
+	private Page	page;
 
 	@Override
 	protected void doTagInternal() throws JspException, IOException {
@@ -39,7 +39,7 @@ public class PageTag extends ContainerTag {
 			throw new JspException("Page must appers inside a document");
 		}
 
-		this.page = new ItextPage();
+		this.page = new Page();
 
 		this.getJspBody().invoke(null);
 
@@ -47,7 +47,7 @@ public class PageTag extends ContainerTag {
 	}
 
 	@Override
-	public void add(ItextObject item) {
+	public void add(Object item) {
 		SysLogger.getLogger().debug("Adding a '" + item.getClass() + "' into page");
 		this.page.addItem(item);
 	}
