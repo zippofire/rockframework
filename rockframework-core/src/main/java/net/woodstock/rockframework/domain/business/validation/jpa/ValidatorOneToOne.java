@@ -22,15 +22,15 @@ import javax.persistence.OneToOne;
 
 import net.woodstock.rockframework.domain.Pojo;
 import net.woodstock.rockframework.domain.business.ValidationException;
-import net.woodstock.rockframework.domain.business.validation.local.ObjectValidator;
-import net.woodstock.rockframework.domain.business.validation.local.Operation;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationContext;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationResult;
-import net.woodstock.rockframework.domain.business.validation.local.validator.AbstractObjectValidator;
+import net.woodstock.rockframework.domain.business.validation.Operation;
+import net.woodstock.rockframework.domain.business.validation.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
+import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
+import net.woodstock.rockframework.domain.business.validation.local.validator.AbstractValidator;
 
-public class ValidatorOneToOne extends AbstractObjectValidator {
+public class ValidatorOneToOne extends AbstractValidator {
 
-	public ValidationResult validate(ValidationContext context) throws ValidationException {
+	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
 		try {
 			Object value = context.getValue();
 			OneToOne annotation = (OneToOne) context.getAnnotation();
@@ -49,8 +49,8 @@ public class ValidatorOneToOne extends AbstractObjectValidator {
 
 			if ((operation == Operation.CREATE) || (operation == Operation.UPDATE)) {
 				Pojo p = (Pojo) value;
-				Collection<ValidationResult> results = JPAObjectValidator.validate(context, p,
-						Operation.RETRIEVE, true);
+				Collection<ValidationResult> results = JPAEntityValidator.getInstance().validate(context, p,
+						Operation.RETRIEVE);
 				for (ValidationResult result : results) {
 					if (result.isError()) {
 						return context.getErrorResult(result.getMessage());
@@ -65,12 +65,14 @@ public class ValidatorOneToOne extends AbstractObjectValidator {
 		}
 	}
 
-	private String getEmptyErrorMessage(ValidationContext context) throws ValidationException {
-		return this.getMessage(ObjectValidator.MESSAGE_FIELD_ERROR_NOT_EMPTY, context.getCanonicalName());
+	private String getEmptyErrorMessage(LocalValidationContext context) throws ValidationException {
+		return this
+				.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_NOT_EMPTY, context.getCanonicalName());
 	}
 
-	private String getInvalidTypeErrorMessage(ValidationContext context) throws ValidationException {
-		return this.getMessage(ObjectValidator.MESSAGE_FIELD_ERROR_INVALID_TYPE, context.getCanonicalName());
+	private String getInvalidTypeErrorMessage(LocalValidationContext context) throws ValidationException {
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_INVALID_TYPE, context
+				.getCanonicalName());
 	}
 
 }

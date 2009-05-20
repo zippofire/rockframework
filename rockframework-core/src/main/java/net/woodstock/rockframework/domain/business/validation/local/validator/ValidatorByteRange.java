@@ -17,14 +17,14 @@
 package net.woodstock.rockframework.domain.business.validation.local.validator;
 
 import net.woodstock.rockframework.domain.business.ValidationException;
-import net.woodstock.rockframework.domain.business.validation.local.ObjectValidator;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationContext;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
+import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
 import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateByteRange;
 
-public class ValidatorByteRange extends AbstractObjectValidator {
+public class ValidatorByteRange extends AbstractValidator {
 
-	public ValidationResult validate(ValidationContext context) throws ValidationException {
+	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
 		try {
 			Byte value = (Byte) context.getValue();
 			ValidateByteRange annotation = (ValidateByteRange) context.getAnnotation();
@@ -44,8 +44,8 @@ public class ValidatorByteRange extends AbstractObjectValidator {
 	}
 
 	private String getErrorMessage(ValidateByteRange annotation, String name) {
-		return this.getMessage(ObjectValidator.MESSAGE_FIELD_ERROR_RANGE, name, new Byte(annotation.min()),
-				new Byte(annotation.max()));
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_RANGE, name, new Byte(annotation
+				.min()), new Byte(annotation.max()));
 	}
 
 }

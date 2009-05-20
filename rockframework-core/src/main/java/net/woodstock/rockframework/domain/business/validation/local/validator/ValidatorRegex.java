@@ -19,14 +19,14 @@ package net.woodstock.rockframework.domain.business.validation.local.validator;
 import java.util.regex.Pattern;
 
 import net.woodstock.rockframework.domain.business.ValidationException;
-import net.woodstock.rockframework.domain.business.validation.local.ObjectValidator;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationContext;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
+import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
 import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateRegex;
 
-public class ValidatorRegex extends AbstractObjectValidator {
+public class ValidatorRegex extends AbstractValidator {
 
-	public ValidationResult validate(ValidationContext context) throws ValidationException {
+	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
 		try {
 			String value = (String) context.getValue();
 			ValidateRegex annotation = (ValidateRegex) context.getAnnotation();
@@ -48,7 +48,7 @@ public class ValidatorRegex extends AbstractObjectValidator {
 	}
 
 	private String getErrorMessage(String name) {
-		return this.getMessage(ObjectValidator.MESSAGE_FIELD_ERROR_REGEX, name);
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_REGEX, name);
 	}
 
 }

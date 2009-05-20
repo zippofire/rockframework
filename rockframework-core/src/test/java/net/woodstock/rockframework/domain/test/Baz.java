@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.domain.business.validation.local.Operation;
+import net.woodstock.rockframework.domain.business.validation.Operation;
 import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateExpression;
 import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateIntRange;
 import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateLength;

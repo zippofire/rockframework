@@ -17,14 +17,14 @@
 package net.woodstock.rockframework.domain.business.validation.local.validator;
 
 import net.woodstock.rockframework.domain.business.ValidationException;
-import net.woodstock.rockframework.domain.business.validation.local.ObjectValidator;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationContext;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
+import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
 import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateShortRange;
 
-public class ValidatorShortRange extends AbstractObjectValidator {
+public class ValidatorShortRange extends AbstractValidator {
 
-	public ValidationResult validate(ValidationContext context) throws ValidationException {
+	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
 		try {
 			Short value = (Short) context.getValue();
 			ValidateShortRange annotation = (ValidateShortRange) context.getAnnotation();
@@ -44,8 +44,8 @@ public class ValidatorShortRange extends AbstractObjectValidator {
 	}
 
 	private String getErrorMessage(ValidateShortRange annotation, String name) {
-		return this.getMessage(ObjectValidator.MESSAGE_FIELD_ERROR_RANGE, name, new Short(annotation.min()),
-				new Short(annotation.max()));
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_RANGE, name, new Short(annotation
+				.min()), new Short(annotation.max()));
 	}
 
 }

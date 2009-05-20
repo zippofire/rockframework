@@ -23,11 +23,10 @@ import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.Pojo;
 import net.woodstock.rockframework.domain.business.BusinessException;
-import net.woodstock.rockframework.domain.business.InvalidFieldValueException;
-import net.woodstock.rockframework.domain.business.InvalidValueException;
-import net.woodstock.rockframework.domain.business.validation.local.ObjectValidator;
-import net.woodstock.rockframework.domain.business.validation.local.Operation;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationResult;
+import net.woodstock.rockframework.domain.business.ValidationException;
+import net.woodstock.rockframework.domain.business.validation.Operation;
+import net.woodstock.rockframework.domain.business.validation.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
 
 public abstract class AbstractBusiness extends DelegateGenericBusiness {
 
@@ -36,11 +35,10 @@ public abstract class AbstractBusiness extends DelegateGenericBusiness {
 	}
 
 	private void validate(Pojo pojo, Operation operation) throws BusinessException {
-		Collection<ValidationResult> results = ObjectValidator.validate(pojo, operation, true);
+		Collection<ValidationResult> results = LocalEntityValidator.getInstance().validate(pojo, operation);
 		for (ValidationResult result : results) {
 			if (result.isError()) {
-				throw new InvalidFieldValueException(result.getContext().getName(), result.getContext()
-						.getValue(), result.getMessage());
+				throw new ValidationException(result.getMessage());
 			}
 		}
 	}
@@ -57,11 +55,10 @@ public abstract class AbstractBusiness extends DelegateGenericBusiness {
 	public <ID extends Serializable, E extends Entity<ID>> void validateRetrieveWithError(Class<E> clazz,
 			ID id) throws BusinessException {
 		if (clazz == null) {
-			throw new InvalidValueException(CoreMessage.getInstance()
-					.getMessage(MESSAGE_INVALID_CLASS, clazz));
+			throw new ValidationException(CoreMessage.getInstance().getMessage(MESSAGE_INVALID_CLASS, clazz));
 		}
 		if (id == null) {
-			throw new InvalidValueException(CoreMessage.getInstance().getMessage(MESSAGE_INVALID_ID, id));
+			throw new ValidationException(CoreMessage.getInstance().getMessage(MESSAGE_INVALID_ID, id));
 		}
 	}
 

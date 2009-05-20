@@ -19,14 +19,14 @@ package net.woodstock.rockframework.domain.business.validation.jpa;
 import javax.persistence.Column;
 
 import net.woodstock.rockframework.domain.business.ValidationException;
-import net.woodstock.rockframework.domain.business.validation.local.ObjectValidator;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationContext;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationResult;
-import net.woodstock.rockframework.domain.business.validation.local.validator.AbstractObjectValidator;
+import net.woodstock.rockframework.domain.business.validation.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
+import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
+import net.woodstock.rockframework.domain.business.validation.local.validator.AbstractValidator;
 
-public class ValidatorColumn extends AbstractObjectValidator {
+public class ValidatorColumn extends AbstractValidator {
 
-	public ValidationResult validate(ValidationContext context) throws ValidationException {
+	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
 		try {
 			Object value = context.getValue();
 			Column annotation = (Column) context.getAnnotation();
@@ -52,12 +52,13 @@ public class ValidatorColumn extends AbstractObjectValidator {
 		}
 	}
 
-	private String getEmptyErrorMessage(ValidationContext context) throws ValidationException {
-		return this.getMessage(ObjectValidator.MESSAGE_FIELD_ERROR_NOT_EMPTY, context.getCanonicalName());
+	private String getEmptyErrorMessage(LocalValidationContext context) throws ValidationException {
+		return this
+				.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_NOT_EMPTY, context.getCanonicalName());
 	}
 
-	private String getLengthErrorMessage(ValidationContext context, int length) {
-		return this.getMessage(ObjectValidator.MESSAGE_FIELD_ERROR_LENGTH, context.getCanonicalName(),
+	private String getLengthErrorMessage(LocalValidationContext context, int length) {
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_LENGTH, context.getCanonicalName(),
 				new Integer(0), new Integer(length));
 	}
 

@@ -17,13 +17,13 @@
 package net.woodstock.rockframework.domain.business.validation.local.validator;
 
 import net.woodstock.rockframework.domain.business.ValidationException;
-import net.woodstock.rockframework.domain.business.validation.local.ObjectValidator;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationContext;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
+import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
 
-public class ValidatorNotNull extends AbstractObjectValidator {
+public class ValidatorNotNull extends AbstractValidator {
 
-	public ValidationResult validate(ValidationContext context) throws ValidationException {
+	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
 		try {
 			Object value = context.getValue();
 			if (value == null) {
@@ -36,8 +36,8 @@ public class ValidatorNotNull extends AbstractObjectValidator {
 		}
 	}
 
-	private String getErrorMessage(ValidationContext context) {
-		return this.getMessage(ObjectValidator.MESSAGE_FIELD_ERROR_NOT_NULL, context.getCanonicalName());
+	private String getErrorMessage(LocalValidationContext context) {
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_NOT_NULL, context.getCanonicalName());
 	}
 
 }

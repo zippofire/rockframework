@@ -20,17 +20,17 @@ import javax.persistence.GeneratedValue;
 
 import net.woodstock.rockframework.domain.Pojo;
 import net.woodstock.rockframework.domain.business.ValidationException;
-import net.woodstock.rockframework.domain.business.validation.local.ObjectValidator;
-import net.woodstock.rockframework.domain.business.validation.local.Operation;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationContext;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationResult;
-import net.woodstock.rockframework.domain.business.validation.local.validator.AbstractObjectValidator;
+import net.woodstock.rockframework.domain.business.validation.Operation;
+import net.woodstock.rockframework.domain.business.validation.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
+import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
+import net.woodstock.rockframework.domain.business.validation.local.validator.AbstractValidator;
 import net.woodstock.rockframework.util.BeanInfo;
 import net.woodstock.rockframework.util.FieldInfo;
 
-public class ValidatorId extends AbstractObjectValidator {
+public class ValidatorId extends AbstractValidator {
 
-	public ValidationResult validate(ValidationContext context) throws ValidationException {
+	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
 		try {
 			Object value = context.getValue();
 			Object parent = context.getParentContext().getValue();
@@ -73,16 +73,18 @@ public class ValidatorId extends AbstractObjectValidator {
 		}
 	}
 
-	private String getEmptyErrorMessage(ValidationContext context) throws ValidationException {
-		return this.getMessage(ObjectValidator.MESSAGE_FIELD_ERROR_NOT_EMPTY, context.getCanonicalName());
+	private String getEmptyErrorMessage(LocalValidationContext context) throws ValidationException {
+		return this
+				.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_NOT_EMPTY, context.getCanonicalName());
 	}
 
-	private String getInvalidTypeErrorMessage(ValidationContext context) throws ValidationException {
-		return this.getMessage(ObjectValidator.MESSAGE_FIELD_ERROR_INVALID_TYPE, context.getCanonicalName());
+	private String getInvalidTypeErrorMessage(LocalValidationContext context) throws ValidationException {
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_INVALID_TYPE, context
+				.getCanonicalName());
 	}
 
-	private String getNotEmptyErrorMessage(ValidationContext context) {
-		return this.getMessage(ObjectValidator.MESSAGE_FIELD_ERROR_NULL, context.getCanonicalName());
+	private String getNotEmptyErrorMessage(LocalValidationContext context) {
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_NULL, context.getCanonicalName());
 	}
 
 }

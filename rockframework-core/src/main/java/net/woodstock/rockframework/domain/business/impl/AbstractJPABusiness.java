@@ -22,11 +22,10 @@ import java.util.Collection;
 import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.BusinessException;
-import net.woodstock.rockframework.domain.business.InvalidFieldValueException;
-import net.woodstock.rockframework.domain.business.InvalidValueException;
-import net.woodstock.rockframework.domain.business.validation.jpa.JPAObjectValidator;
-import net.woodstock.rockframework.domain.business.validation.local.Operation;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationResult;
+import net.woodstock.rockframework.domain.business.ValidationException;
+import net.woodstock.rockframework.domain.business.validation.Operation;
+import net.woodstock.rockframework.domain.business.validation.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.jpa.JPAEntityValidator;
 
 public abstract class AbstractJPABusiness extends DelegateGenericBusiness {
 
@@ -35,11 +34,10 @@ public abstract class AbstractJPABusiness extends DelegateGenericBusiness {
 	}
 
 	private void validate(Entity<?> entity, Operation operation) throws BusinessException {
-		Collection<ValidationResult> results = JPAObjectValidator.validate(entity, operation, true);
+		Collection<ValidationResult> results = JPAEntityValidator.getInstance().validate(entity, operation);
 		for (ValidationResult result : results) {
 			if (result.isError()) {
-				throw new InvalidFieldValueException(result.getContext().getName(), result.getContext()
-						.getValue(), result.getMessage());
+				throw new ValidationException(result.getMessage());
 			}
 		}
 	}
@@ -51,23 +49,22 @@ public abstract class AbstractJPABusiness extends DelegateGenericBusiness {
 
 	public void validateRetrieveWithError(Entity<?> entity) throws BusinessException {
 		if (entity == null) {
-			throw new InvalidValueException(CoreMessage.getInstance().getMessage(MESSAGE_INVALID_OBJECT,
-					entity));
+			throw new ValidationException(CoreMessage.getInstance()
+					.getMessage(MESSAGE_INVALID_OBJECT, entity));
 		}
 		Object id = entity.getId();
 		if (id == null) {
-			throw new InvalidValueException(CoreMessage.getInstance().getMessage(MESSAGE_INVALID_ID, id));
+			throw new ValidationException(CoreMessage.getInstance().getMessage(MESSAGE_INVALID_ID, id));
 		}
 	}
 
 	public <ID extends Serializable, E extends Entity<ID>> void validateRetrieveWithError(Class<E> clazz,
 			ID id) throws BusinessException {
 		if (clazz == null) {
-			throw new InvalidValueException(CoreMessage.getInstance()
-					.getMessage(MESSAGE_INVALID_CLASS, clazz));
+			throw new ValidationException(CoreMessage.getInstance().getMessage(MESSAGE_INVALID_CLASS, clazz));
 		}
 		if (id == null) {
-			throw new InvalidValueException(CoreMessage.getInstance().getMessage(MESSAGE_INVALID_ID, id));
+			throw new ValidationException(CoreMessage.getInstance().getMessage(MESSAGE_INVALID_ID, id));
 		}
 	}
 
@@ -77,19 +74,19 @@ public abstract class AbstractJPABusiness extends DelegateGenericBusiness {
 
 	public void validateDeleteWithError(Entity<?> entity) throws BusinessException {
 		if (entity == null) {
-			throw new InvalidValueException(CoreMessage.getInstance().getMessage(MESSAGE_INVALID_OBJECT,
-					entity));
+			throw new ValidationException(CoreMessage.getInstance()
+					.getMessage(MESSAGE_INVALID_OBJECT, entity));
 		}
 		Object id = entity.getId();
 		if (id == null) {
-			throw new InvalidValueException(CoreMessage.getInstance().getMessage(MESSAGE_INVALID_ID, id));
+			throw new ValidationException(CoreMessage.getInstance().getMessage(MESSAGE_INVALID_ID, id));
 		}
 	}
 
 	public void validateQueryWithError(Entity<?> entity) throws BusinessException {
 		if (entity == null) {
-			throw new InvalidValueException(CoreMessage.getInstance().getMessage(MESSAGE_INVALID_OBJECT,
-					entity));
+			throw new ValidationException(CoreMessage.getInstance()
+					.getMessage(MESSAGE_INVALID_OBJECT, entity));
 		}
 	}
 

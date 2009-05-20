@@ -20,14 +20,14 @@ import java.util.Collection;
 
 import net.woodstock.rockframework.domain.Pojo;
 import net.woodstock.rockframework.domain.business.ValidationException;
-import net.woodstock.rockframework.domain.business.validation.local.ObjectValidator;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationContext;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
+import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
 import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateReference;
 
-public class ValidatorReference extends AbstractObjectValidator {
+public class ValidatorReference extends AbstractValidator {
 
-	public ValidationResult validate(ValidationContext context) throws ValidationException {
+	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
 		try {
 			ValidateReference annotation = (ValidateReference) context.getAnnotation();
 			Object value = context.getValue();
@@ -45,8 +45,9 @@ public class ValidatorReference extends AbstractObjectValidator {
 
 			Pojo p = (Pojo) value;
 
-			Collection<ValidationResult> results = ObjectValidator.validate(context, p, annotation
-					.referenceOperaton(), true);
+			Collection<ValidationResult> results = LocalEntityValidator.getInstance().validate(context, p,
+					annotation.referenceOperaton());
+			
 			for (ValidationResult result : results) {
 				if (result.isError()) {
 					return context.getErrorResult(result.getMessage());
@@ -59,12 +60,13 @@ public class ValidatorReference extends AbstractObjectValidator {
 		}
 	}
 
-	private String getNotNullErrorMessage(ValidationContext context) {
-		return this.getMessage(ObjectValidator.MESSAGE_FIELD_ERROR_NOT_NULL, context.getCanonicalName());
+	private String getNotNullErrorMessage(LocalValidationContext context) {
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_NOT_NULL, context.getCanonicalName());
 	}
 
-	private String getInvalidTypeErrorMessage(ValidationContext context) {
-		return this.getMessage(ObjectValidator.MESSAGE_FIELD_ERROR_INVALID_TYPE, context.getCanonicalName());
+	private String getInvalidTypeErrorMessage(LocalValidationContext context) {
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_INVALID_TYPE, context
+				.getCanonicalName());
 	}
 
 }

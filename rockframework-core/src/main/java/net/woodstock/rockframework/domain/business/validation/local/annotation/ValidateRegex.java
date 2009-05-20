@@ -21,7 +21,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import net.woodstock.rockframework.domain.business.validation.local.Operation;
+import net.woodstock.rockframework.domain.business.validation.Operation;
 import net.woodstock.rockframework.domain.business.validation.local.Validate;
 import net.woodstock.rockframework.domain.business.validation.local.validator.ValidatorRegex;
 

@@ -14,22 +14,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.business.validation.local.aop;
+package net.woodstock.rockframework.domain.business.validation;
 
-import java.lang.reflect.Method;
+import java.io.Serializable;
 
-import net.woodstock.rockframework.domain.Pojo;
-import net.woodstock.rockframework.domain.business.ValidationException;
-import net.woodstock.rockframework.domain.business.validation.local.ObjectValidator;
-import net.woodstock.rockframework.domain.business.validation.local.Operation;
+public interface ValidationResult extends Serializable {
 
-import org.springframework.aop.MethodBeforeAdvice;
+	boolean isError();
 
-public class QueryAdvice implements MethodBeforeAdvice {
+	void setError(boolean error);
 
-	public void before(Method method, Object[] args, Object target) throws ValidationException {
-		Pojo pojo = (Pojo) args[0];
-		ObjectValidator.validate(pojo, Operation.QUERY);
-	}
+	String getMessage();
+
+	void setMessage(String message);
 
 }

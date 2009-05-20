@@ -17,14 +17,14 @@
 package net.woodstock.rockframework.domain.business.validation.local.validator;
 
 import net.woodstock.rockframework.domain.business.ValidationException;
-import net.woodstock.rockframework.domain.business.validation.local.ObjectValidator;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationContext;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
+import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
 import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateNumberLength;
 
-public class ValidatorNumberLength extends AbstractObjectValidator {
+public class ValidatorNumberLength extends AbstractValidator {
 
-	public ValidationResult validate(ValidationContext context) throws ValidationException {
+	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
 		try {
 			ValidateNumberLength annotation = (ValidateNumberLength) context.getAnnotation();
 			Number value = (Number) context.getValue();
@@ -46,8 +46,8 @@ public class ValidatorNumberLength extends AbstractObjectValidator {
 	}
 
 	private String getErrorMessage(ValidateNumberLength annotation, String name) {
-		return this.getMessage(ObjectValidator.MESSAGE_FIELD_ERROR_LENGTH, name,
-				new Integer(annotation.min()), new Integer(annotation.max()));
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_LENGTH, name, new Integer(annotation
+				.min()), new Integer(annotation.max()));
 	}
 
 }

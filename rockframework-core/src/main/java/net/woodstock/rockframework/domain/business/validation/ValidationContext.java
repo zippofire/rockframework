@@ -14,9 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.business.validation.local;
-
-import java.lang.annotation.Annotation;
+package net.woodstock.rockframework.domain.business.validation;
 
 import net.woodstock.rockframework.utils.StringUtils;
 
@@ -28,22 +26,19 @@ public class ValidationContext {
 
 	private String				name;
 
-	private Annotation			annotation;
-
 	private Operation			operation;
 
 	private ValidationContext	parentContext;
 
-	protected ValidationContext(Object value, String name, Annotation annotation, Operation operation) {
-		this(value, name, annotation, operation, null);
+	protected ValidationContext(Object value, String name, Operation operation) {
+		this(value, name, operation, null);
 	}
 
-	protected ValidationContext(Object value, String name, Annotation annotation, Operation operation,
+	protected ValidationContext(Object value, String name, Operation operation,
 			ValidationContext parentContext) {
 		super();
 		this.value = value;
 		this.name = name;
-		this.annotation = annotation;
 		this.operation = operation;
 		this.parentContext = parentContext;
 	}
@@ -58,10 +53,6 @@ public class ValidationContext {
 			return StringUtils.BLANK;
 		}
 		return this.name;
-	}
-
-	public Annotation getAnnotation() {
-		return this.annotation;
 	}
 
 	public Operation getOperation() {
@@ -86,14 +77,6 @@ public class ValidationContext {
 			builder.append(this.name);
 		}
 		return builder.toString();
-	}
-
-	public ValidationResult getSuccessResult() {
-		return ValidationResult.getSuccessResult(this);
-	}
-
-	public ValidationResult getErrorResult(String message) {
-		return ValidationResult.getErrorResult(this, message);
 	}
 
 }

@@ -20,13 +20,13 @@ import java.text.DateFormat;
 import java.util.Date;
 
 import net.woodstock.rockframework.domain.business.ValidationException;
-import net.woodstock.rockframework.domain.business.validation.local.ObjectValidator;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationContext;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
+import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
 import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateDateInterval;
 import net.woodstock.rockframework.util.Calendar;
 
-public class ValidatorDateInterval extends AbstractObjectValidator {
+public class ValidatorDateInterval extends AbstractValidator {
 
 	private DateFormat	dateFormat;
 
@@ -35,7 +35,7 @@ public class ValidatorDateInterval extends AbstractObjectValidator {
 		this.dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM);
 	}
 
-	public ValidationResult validate(ValidationContext context) throws ValidationException {
+	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
 		try {
 			ValidateDateInterval annotation = (ValidateDateInterval) context.getAnnotation();
 			Date value = (Date) context.getValue();
@@ -110,7 +110,7 @@ public class ValidatorDateInterval extends AbstractObjectValidator {
 		String pastDate = this.dateFormat.format(pastCalendar.getTime());
 		String futureDate = this.dateFormat.format(futureCalendar.getTime());
 
-		return this.getMessage(ObjectValidator.MESSAGE_FIELD_ERROR_DATE_INTERVAL, name, pastDate, futureDate,
-				annotation.type().name());
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_DATE_INTERVAL, name, pastDate,
+				futureDate, annotation.type().name());
 	}
 }

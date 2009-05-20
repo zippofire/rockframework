@@ -21,8 +21,7 @@ import java.io.Serializable;
 import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.BusinessException;
-import net.woodstock.rockframework.domain.business.InvalidFieldValueException;
-import net.woodstock.rockframework.domain.business.InvalidValueException;
+import net.woodstock.rockframework.domain.business.ValidationException;
 
 import org.hibernate.validator.ClassValidator;
 import org.hibernate.validator.InvalidValue;
@@ -39,8 +38,7 @@ public class AbstractHibernateBusiness extends DelegateGenericBusiness {
 		if (validator.hasValidationRules()) {
 			InvalidValue values[] = validator.getInvalidValues(entity);
 			if ((values != null) && (values.length > 0)) {
-				throw new InvalidFieldValueException(values[0].getPropertyName(), values[0].getValue(),
-						values[0].toString());
+				throw new ValidationException(values[0].toString());
 			}
 		}
 	}
@@ -57,11 +55,10 @@ public class AbstractHibernateBusiness extends DelegateGenericBusiness {
 	public <ID extends Serializable, E extends Entity<ID>> void validateRetrieveWithError(Class<E> clazz,
 			ID id) throws BusinessException {
 		if (clazz == null) {
-			throw new InvalidValueException(CoreMessage.getInstance()
-					.getMessage(MESSAGE_INVALID_CLASS, clazz));
+			throw new ValidationException(CoreMessage.getInstance().getMessage(MESSAGE_INVALID_CLASS, clazz));
 		}
 		if (id == null) {
-			throw new InvalidValueException(CoreMessage.getInstance().getMessage(MESSAGE_INVALID_ID, id));
+			throw new ValidationException(CoreMessage.getInstance().getMessage(MESSAGE_INVALID_ID, id));
 		}
 	}
 

@@ -17,9 +17,9 @@
 package net.woodstock.rockframework.domain.business.validation.local.validator;
 
 import net.woodstock.rockframework.domain.business.ValidationException;
-import net.woodstock.rockframework.domain.business.validation.local.ObjectValidator;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationContext;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
+import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
 import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateExpression;
 
 import org.apache.commons.jexl.Expression;
@@ -27,12 +27,12 @@ import org.apache.commons.jexl.ExpressionFactory;
 import org.apache.commons.jexl.JexlContext;
 import org.apache.commons.jexl.JexlHelper;
 
-public class ValidatorExpression extends AbstractObjectValidator {
+public class ValidatorExpression extends AbstractValidator {
 
 	private static final String	EXPECTED_RESULT_TYPE	= Boolean.class.getCanonicalName();
 
 	@SuppressWarnings("unchecked")
-	public ValidationResult validate(ValidationContext context) throws ValidationException {
+	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
 		try {
 			String value = (String) context.getValue();
 			ValidateExpression annotation = (ValidateExpression) context.getAnnotation();
@@ -87,11 +87,12 @@ public class ValidatorExpression extends AbstractObjectValidator {
 	}
 
 	private String getErrorMessage(String name) {
-		return this.getMessage(ObjectValidator.MESSAGE_FIELD_ERROR_INVALID, name);
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_INVALID, name);
 	}
 
 	private String getExpressionResultErrorMessage(String name, String expected, String found) {
-		return this.getMessage(ObjectValidator.MESSAGE_FIELD_ERROR_EXPRESSION_RESULT, name, expected, found);
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_EXPRESSION_RESULT, name, expected,
+				found);
 	}
 
 }

@@ -16,30 +16,35 @@
  */
 package net.woodstock.rockframework.domain.business.validation.local;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ValidationResult implements Serializable {
+import net.woodstock.rockframework.domain.business.validation.ValidationResult;
 
-	private static final long	serialVersionUID	= -5491787053707784242L;
+public class LocalValidationResult implements ValidationResult {
 
-	private ValidationContext	context;
+	private static final long		serialVersionUID	= 6766952296126588148L;
 
-	private boolean				error;
+	private LocalValidationContext	context;
 
-	private String				message;
+	private boolean					error;
 
-	private ValidationResult(ValidationContext context, boolean error, String message) {
+	private String					message;
+
+	private LocalValidationResult(LocalValidationContext context, boolean error, String message) {
 		super();
 		this.context = context;
 		this.error = error;
 		this.message = message;
 	}
 
-	public ValidationContext getContext() {
+	public LocalValidationContext getContext() {
 		return this.context;
+	}
+
+	public void setError(boolean error) {
+		this.error = error;
 	}
 
 	public boolean isError() {
@@ -76,12 +81,12 @@ public class ValidationResult implements Serializable {
 	}
 
 	// Static
-	protected static ValidationResult getSuccessResult(ValidationContext context) {
-		return new ValidationResult(context, false, null);
+	protected static LocalValidationResult getSuccessResult(LocalValidationContext context) {
+		return new LocalValidationResult(context, false, null);
 	}
 
-	protected static ValidationResult getErrorResult(ValidationContext context, String message) {
-		return new ValidationResult(context, true, message);
+	protected static LocalValidationResult getErrorResult(LocalValidationContext context, String message) {
+		return new LocalValidationResult(context, true, message);
 	}
 
 	public static Collection<ValidationResult> getErrors(Collection<ValidationResult> collection) {

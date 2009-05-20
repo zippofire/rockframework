@@ -14,22 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.business.validation.local.aop;
+package net.woodstock.rockframework.domain.business.validation;
+
+import java.util.Collection;
 
 import net.woodstock.rockframework.domain.Pojo;
 import net.woodstock.rockframework.domain.business.ValidationException;
-import net.woodstock.rockframework.domain.business.validation.local.ObjectValidator;
-import net.woodstock.rockframework.domain.business.validation.local.Operation;
 
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
+public interface EntityValidator {
 
-@Aspect
-public class AnnotedQueryAdvice {
-
-	@Before(value = "target(net.woodstock.rockframework.persistence.DAO) && execution(* query(..)) && args(pojo)")
-	public void validate(Pojo pojo) throws ValidationException {
-		ObjectValidator.validate(pojo, Operation.QUERY);
-	}
+	Collection<ValidationResult> validate(Pojo pojo, Operation operation) throws ValidationException;
 
 }

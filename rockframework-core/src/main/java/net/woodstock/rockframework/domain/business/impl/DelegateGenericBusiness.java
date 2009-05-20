@@ -20,7 +20,7 @@ import java.io.Serializable;
 
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.GenericBusiness;
-import net.woodstock.rockframework.domain.business.InvalidValueException;
+import net.woodstock.rockframework.domain.business.ValidationException;
 import net.woodstock.rockframework.sys.SysLogger;
 
 import org.apache.commons.logging.Log;
@@ -42,7 +42,7 @@ abstract class DelegateGenericBusiness implements GenericBusiness {
 		try {
 			this.validateCreateWithError(entity);
 			return true;
-		} catch (InvalidValueException e) {
+		} catch (ValidationException e) {
 			return false;
 		}
 	}
@@ -51,7 +51,7 @@ abstract class DelegateGenericBusiness implements GenericBusiness {
 		try {
 			this.validateRetrieveWithError(entity);
 			return true;
-		} catch (InvalidValueException e) {
+		} catch (ValidationException e) {
 			return false;
 		}
 	}
@@ -60,7 +60,7 @@ abstract class DelegateGenericBusiness implements GenericBusiness {
 		try {
 			this.validateRetrieveWithError(clazz, id);
 			return true;
-		} catch (InvalidValueException e) {
+		} catch (ValidationException e) {
 			return false;
 		}
 	}
@@ -69,7 +69,7 @@ abstract class DelegateGenericBusiness implements GenericBusiness {
 		try {
 			this.validateUpdateWithError(entity);
 			return true;
-		} catch (InvalidValueException e) {
+		} catch (ValidationException e) {
 			return false;
 		}
 	}
@@ -78,7 +78,7 @@ abstract class DelegateGenericBusiness implements GenericBusiness {
 		try {
 			this.validateDeleteWithError(entity);
 			return true;
-		} catch (InvalidValueException e) {
+		} catch (ValidationException e) {
 			return false;
 		}
 	}
@@ -87,7 +87,7 @@ abstract class DelegateGenericBusiness implements GenericBusiness {
 		try {
 			this.validateQueryWithError(entity);
 			return true;
-		} catch (InvalidValueException e) {
+		} catch (ValidationException e) {
 			return false;
 		}
 	}

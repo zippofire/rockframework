@@ -32,17 +32,17 @@ import javax.persistence.OneToOne;
 import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Pojo;
 import net.woodstock.rockframework.domain.business.ValidationException;
-import net.woodstock.rockframework.domain.business.validation.local.ObjectValidator;
-import net.woodstock.rockframework.domain.business.validation.local.Operation;
-import net.woodstock.rockframework.domain.business.validation.local.ValidateParent;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationContext;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.EntityValidator;
+import net.woodstock.rockframework.domain.business.validation.Operation;
+import net.woodstock.rockframework.domain.business.validation.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
+import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
 import net.woodstock.rockframework.domain.business.validation.local.Validator;
 import net.woodstock.rockframework.util.BeanInfo;
 import net.woodstock.rockframework.util.FieldInfo;
 import net.woodstock.rockframework.utils.StringUtils;
 
-public abstract class JPAObjectValidator {
+public class JPAEntityValidator implements EntityValidator {
 
 	private static ValidatorColumn		validatorColumn;
 
@@ -56,49 +56,31 @@ public abstract class JPAObjectValidator {
 
 	private static ValidatorOneToOne	validatorOneToOne;
 
-	private JPAObjectValidator() {
-		//
+	private static JPAEntityValidator	entityValidator;
+
+	private JPAEntityValidator() {
+		super();
 	}
 
-	public static Collection<ValidationResult> validate(Pojo pojo, Operation operation)
-			throws ValidationException {
-		return JPAObjectValidator.validate(pojo, operation, false);
+	public Collection<ValidationResult> validate(Pojo pojo, Operation operation) throws ValidationException {
+		String pojoName = this.getPojoName(pojo);
+		LocalValidationContext rootContext = new JPAValidationContext(pojo, pojoName, null, operation);
+		return this.validate(rootContext, pojo, operation);
 	}
 
-	@SuppressWarnings("unchecked")
-	public static Collection<ValidationResult> validate(Pojo pojo, Operation operation,
-			boolean stopOnFirstError) throws ValidationException {
-		String pojoName = JPAObjectValidator.getPojoName(pojo);
-		ValidationContext rootContext = new JPAValidationContext(pojo, pojoName, null, operation);
-		return JPAObjectValidator.validate(rootContext, pojo, (Class<Pojo>) pojo.getClass(), operation,
-				stopOnFirstError);
+	public Collection<ValidationResult> validate(LocalValidationContext rootContext, Pojo pojo,
+			Operation operation) throws ValidationException {
+		Collection<ValidationResult> results = new LinkedList<ValidationResult>();
+		this.validate(rootContext, pojo, operation, results);
+		return results;
 	}
 
-	@SuppressWarnings("unchecked")
-	public static Collection<ValidationResult> validate(ValidationContext parentContext, Pojo pojo,
-			Operation operation, boolean stopOnFirstError) throws ValidationException {
-		return JPAObjectValidator.validate(parentContext, pojo, (Class<Pojo>) pojo.getClass(), operation,
-				stopOnFirstError);
-	}
-
-	private static Collection<ValidationResult> validate(ValidationContext parentContext, Pojo pojo,
-			Class<Pojo> pojoClass, Operation operation, boolean stopOnFirstError) {
-		try {
-			Collection<ValidationResult> results = new LinkedList<ValidationResult>();
-			JPAObjectValidator.validate(parentContext, pojo, pojoClass, operation, stopOnFirstError, results);
-			return results;
-		} catch (Exception e) {
-			throw new ValidationException(e);
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	private static void validate(ValidationContext parentContext, Pojo pojo, Class<Pojo> pojoClass,
-			Operation operation, boolean stopOnFirstError, Collection<ValidationResult> results) {
+	private void validate(LocalValidationContext parentContext, Pojo pojo, Operation operation,
+			Collection<ValidationResult> results) {
 		try {
 			if (pojo == null) {
 				throw new ValidationException(CoreMessage.getInstance().getMessage(
-						ObjectValidator.MESSAGE_ERROR_NULL));
+						LocalEntityValidator.MESSAGE_ERROR_NULL));
 			}
 
 			if (operation == Operation.QUERY) {
@@ -107,7 +89,7 @@ public abstract class JPAObjectValidator {
 
 			if (operation == Operation.ALL) {
 				throw new ValidationException(CoreMessage.getInstance().getMessage(
-						ObjectValidator.MESSAGE_ERROR_NULL));
+						LocalEntityValidator.MESSAGE_ERROR_NULL));
 			}
 
 			BeanInfo pojoInfo = BeanInfo.getBeanInfo(pojo.getClass());
@@ -174,34 +156,20 @@ public abstract class JPAObjectValidator {
 						Object value = fieldInfo.getFieldValue(pojo);
 						String name = fieldInfo.getFieldName();
 
-						ValidationContext context = new JPAValidationContext(value, name, annotation,
+						LocalValidationContext context = new JPAValidationContext(value, name, annotation,
 								operation, parentContext);
 						ValidationResult result = validator.validate(context);
 
 						results.add(result);
 
 						if (result.isError()) {
-							String msg = JPAObjectValidator.getMessage(annotation);
+							String msg = this.getMessage(annotation);
 
 							if (!StringUtils.isEmpty(msg)) {
 								result.setMessage(msg);
 							}
-
-							if (stopOnFirstError) {
-								return;
-							}
 						}
 					}
-				}
-			}
-			if (Pojo.class.isAssignableFrom(pojoClass.getSuperclass())) {
-				boolean validate = true;
-				if (pojoClass.isAnnotationPresent(ValidateParent.class)) {
-					validate = pojoClass.getAnnotation(ValidateParent.class).validate();
-				}
-				if (validate) {
-					JPAObjectValidator.validate(null, pojo, (Class<Pojo>) pojoClass.getSuperclass(),
-							operation, stopOnFirstError, results);
 				}
 			}
 		} catch (Exception e) {
@@ -209,7 +177,8 @@ public abstract class JPAObjectValidator {
 		}
 	}
 
-	private static String getPojoName(Pojo pojo) {
+	// Utils
+	private String getPojoName(Pojo pojo) {
 		if (pojo == null) {
 			return null;
 		}
@@ -217,15 +186,27 @@ public abstract class JPAObjectValidator {
 		return className;
 	}
 
-	private static String getMessage(Annotation annotation) throws SecurityException,
-			IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+	private String getMessage(Annotation annotation) throws SecurityException, IllegalArgumentException,
+			IllegalAccessException, InvocationTargetException {
 		try {
-			Method m = annotation.getClass().getMethod(ObjectValidator.MESSAGE_PARAM, new Class[] {});
+			Method m = annotation.getClass().getMethod(LocalEntityValidator.MESSAGE_PARAM, new Class[] {});
 			String message = (String) m.invoke(annotation, new Object[] {});
 			return message;
 		} catch (NoSuchMethodException ee) {
 			//
 		}
 		return null;
+	}
+
+	// Instance
+	public static JPAEntityValidator getInstance() {
+		if (JPAEntityValidator.entityValidator == null) {
+			synchronized (JPAEntityValidator.class) {
+				if (JPAEntityValidator.entityValidator == null) {
+					JPAEntityValidator.entityValidator = new JPAEntityValidator();
+				}
+			}
+		}
+		return JPAEntityValidator.entityValidator;
 	}
 }

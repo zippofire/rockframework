@@ -6,13 +6,14 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.domain.business.validation.local.Operation;
+import net.woodstock.rockframework.domain.business.validation.Operation;
 import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateIntRange;
 import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateLength;
 import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateNotEmpty;
 import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateNotNull;
 import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateNull;
 
+import org.hibernate.validator.Length;
 import org.hibernate.validator.Max;
 import org.hibernate.validator.Min;
 import org.hibernate.validator.NotNull;
@@ -37,8 +38,7 @@ public class Bar implements Entity<Integer> {
 
 	// Hibernate
 	@NotNull
-	@Min(value = 5)
-	@Max(value = 50)
+	@Length(min = 5, max = 50)
 	// Rockapi
 	@ValidateNotEmpty(operation = { Operation.CREATE, Operation.UPDATE })
 	@ValidateLength(min = 5, max = 50)

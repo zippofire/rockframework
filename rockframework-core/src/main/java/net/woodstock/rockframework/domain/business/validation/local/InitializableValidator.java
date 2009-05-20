@@ -18,6 +18,6 @@ package net.woodstock.rockframework.domain.business.validation.local;
 
 public interface InitializableValidator extends Validator {
 
-	void init() throws RuntimeException;
+	void init();
 
 }

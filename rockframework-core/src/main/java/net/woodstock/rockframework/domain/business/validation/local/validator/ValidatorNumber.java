@@ -19,14 +19,14 @@ package net.woodstock.rockframework.domain.business.validation.local.validator;
 import java.math.BigDecimal;
 
 import net.woodstock.rockframework.domain.business.ValidationException;
-import net.woodstock.rockframework.domain.business.validation.local.ObjectValidator;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationContext;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
+import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
 import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateNumber;
 
-public class ValidatorNumber extends AbstractObjectValidator {
+public class ValidatorNumber extends AbstractValidator {
 
-	public ValidationResult validate(ValidationContext context) throws ValidationException {
+	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
 		try {
 			ValidateNumber annotation = (ValidateNumber) context.getAnnotation();
 			Number value = (Number) context.getValue();
@@ -53,7 +53,7 @@ public class ValidatorNumber extends AbstractObjectValidator {
 	}
 
 	private String getErrorMessage(String name) {
-		return this.getMessage(ObjectValidator.MESSAGE_FIELD_ERROR_INVALID, name);
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_INVALID, name);
 	}
 
 }

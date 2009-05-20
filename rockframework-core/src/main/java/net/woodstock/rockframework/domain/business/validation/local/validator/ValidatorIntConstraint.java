@@ -17,15 +17,15 @@
 package net.woodstock.rockframework.domain.business.validation.local.validator;
 
 import net.woodstock.rockframework.domain.business.ValidationException;
-import net.woodstock.rockframework.domain.business.validation.local.ObjectValidator;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationContext;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
+import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
 import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateIntConstraint;
 import net.woodstock.rockframework.utils.ArrayUtils;
 
-public class ValidatorIntConstraint extends AbstractObjectValidator {
+public class ValidatorIntConstraint extends AbstractValidator {
 
-	public ValidationResult validate(ValidationContext context) throws ValidationException {
+	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
 		try {
 			Integer value = (Integer) context.getValue();
 			ValidateIntConstraint annotation = (ValidateIntConstraint) context.getAnnotation();
@@ -47,7 +47,7 @@ public class ValidatorIntConstraint extends AbstractObjectValidator {
 	}
 
 	private String getErrorMessage(ValidateIntConstraint annotation, String name) {
-		return this.getMessage(ObjectValidator.MESSAGE_FIELD_ERROR_CONSTRAINT, name, ArrayUtils
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_CONSTRAINT, name, ArrayUtils
 				.toString(annotation.values()));
 	}
 

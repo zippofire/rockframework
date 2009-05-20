@@ -18,13 +18,13 @@ package net.woodstock.rockframework.domain.business.validation.jpa;
 
 import java.lang.annotation.Annotation;
 
-import net.woodstock.rockframework.domain.business.validation.local.Operation;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationContext;
+import net.woodstock.rockframework.domain.business.validation.Operation;
+import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
 
-public class JPAValidationContext extends ValidationContext {
+public class JPAValidationContext extends LocalValidationContext {
 
 	public JPAValidationContext(Object value, String name, Annotation annotation, Operation operation,
-			ValidationContext parentContext) {
+			LocalValidationContext parentContext) {
 		super(value, name, annotation, operation, parentContext);
 	}
 

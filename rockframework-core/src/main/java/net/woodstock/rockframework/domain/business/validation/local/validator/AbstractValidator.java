@@ -14,22 +14,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.business.validation.local.aop;
+package net.woodstock.rockframework.domain.business.validation.local.validator;
 
-import net.woodstock.rockframework.domain.Pojo;
-import net.woodstock.rockframework.domain.business.ValidationException;
-import net.woodstock.rockframework.domain.business.validation.local.ObjectValidator;
-import net.woodstock.rockframework.domain.business.validation.local.Operation;
+import net.woodstock.rockframework.config.CoreMessage;
+import net.woodstock.rockframework.domain.business.validation.local.InitializableValidator;
+import net.woodstock.rockframework.sys.SysLogger;
 
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
+import org.apache.commons.logging.Log;
 
-@Aspect
-public class AnnotedCreateAdvice {
+public abstract class AbstractValidator implements InitializableValidator {
 
-	@Before(value = "target(net.woodstock.rockframework.persistence.DAO) && execution(* create(..)) && args(pojo)")
-	public void validate(Pojo pojo) throws ValidationException {
-		ObjectValidator.validate(pojo, Operation.CREATE);
+	public void init() {
+		this.getLogger().info("Initializing validator " + this.getClass().getCanonicalName());
+	}
+
+	// Utils
+	protected Log getLogger() {
+		return SysLogger.getLogger();
+	}
+
+	protected String getMessage(String message, Object... args) {
+		return CoreMessage.getInstance().getMessage(message, args);
 	}
 
 }

@@ -19,13 +19,13 @@ package net.woodstock.rockframework.domain.business.validation.local.validator;
 import java.util.Date;
 
 import net.woodstock.rockframework.domain.business.ValidationException;
-import net.woodstock.rockframework.domain.business.validation.local.ObjectValidator;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationContext;
-import net.woodstock.rockframework.domain.business.validation.local.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
+import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
 
-public class ValidatorDateFuture extends AbstractObjectValidator {
+public class ValidatorDateFuture extends AbstractValidator {
 
-	public ValidationResult validate(ValidationContext context) throws ValidationException {
+	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
 		try {
 			Date value = (Date) context.getValue();
 			if (value == null) {
@@ -45,7 +45,7 @@ public class ValidatorDateFuture extends AbstractObjectValidator {
 	}
 
 	private String getErrorMessage(String name) {
-		return this.getMessage(ObjectValidator.MESSAGE_FIELD_ERROR_DATE_FUTURE, name);
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_DATE_FUTURE, name);
 	}
 
 }
