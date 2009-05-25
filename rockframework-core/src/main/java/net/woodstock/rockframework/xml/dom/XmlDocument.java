@@ -246,8 +246,7 @@ public class XmlDocument extends DocumentWrapper {
 			this.write(writer);
 			return writer.toString();
 		} catch (IOException e) {
-			this.getLogger().warn(e.getMessage(), e);
-			return super.toString();
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -260,7 +259,6 @@ public class XmlDocument extends DocumentWrapper {
 			XmlDocument.factory = DocumentBuilderFactory.newInstance();
 			XmlDocument.builder = XmlDocument.factory.newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
-			SysLogger.getLogger().warn(e.getMessage(), e);
 			throw new RuntimeException(e);
 		}
 	}

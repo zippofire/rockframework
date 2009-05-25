@@ -19,7 +19,7 @@ package net.woodstock.rockframework.domain.business.validation.local.validator;
 import java.util.Collection;
 
 import net.woodstock.rockframework.domain.Pojo;
-import net.woodstock.rockframework.domain.business.ValidationException;
+import net.woodstock.rockframework.domain.business.validation.ValidationException;
 import net.woodstock.rockframework.domain.business.validation.ValidationResult;
 import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
 import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
@@ -45,9 +45,12 @@ public class ValidatorReference extends AbstractValidator {
 
 			Pojo p = (Pojo) value;
 
-			Collection<ValidationResult> results = LocalEntityValidator.getInstance().validate(context, p,
-					annotation.referenceOperaton());
-			
+			LocalEntityValidator localEntityValidator = (LocalEntityValidator) LocalEntityValidator
+					.getInstance();
+
+			Collection<ValidationResult> results = localEntityValidator.validate(context, p, annotation
+					.referenceOperaton());
+
 			for (ValidationResult result : results) {
 				if (result.isError()) {
 					return context.getErrorResult(result.getMessage());

@@ -86,8 +86,7 @@ public abstract class FileUtils {
 		if (!f.exists()) {
 			f.mkdir();
 		} else if ((f.exists()) && (!f.isDirectory())) {
-			// TODO
-			throw new IOException("utils.FileUtils.file-exists");
+			throw new IOException("A file with name " + dir + " already exists");
 		}
 		return f;
 	}
@@ -98,8 +97,7 @@ public abstract class FileUtils {
 
 	public static File mv(File src, File dst) throws IOException {
 		if (!src.renameTo(dst)) {
-			// TODO
-			throw new IOException("utils.FileUtils.rename-error");
+			throw new IOException("File cannot be moved");
 		}
 		return dst;
 	}
@@ -117,13 +115,11 @@ public abstract class FileUtils {
 		File f = new File(file);
 		if ((f.exists()) && (f.isFile())) {
 			if (!f.delete()) {
-				// TODO
-				throw new IOException("utils.FileUtils.delete-error");
+				throw new IOException("File cannot be deleted");
 			}
 			return true;
 		} else if (f.exists()) {
-			// TODO
-			throw new IOException("utils.FileUtils.invalid-file");
+			throw new IOException("Cannot delete directory");
 		}
 		return false;
 	}
@@ -132,13 +128,11 @@ public abstract class FileUtils {
 		File f = new File(dir);
 		if ((f.exists()) && (f.isDirectory())) {
 			if (!f.delete()) {
-				// TODO
-				throw new IOException("utils.FileUtils.rmdir-error");
+				throw new IOException("Directory cannot be deleted");
 			}
 			return true;
 		} else if (f.exists()) {
-			// TODO
-			throw new IOException("utils.FileUtils.invalid-dir");
+			throw new IOException("Cannot delete directory");
 		}
 		return false;
 	}

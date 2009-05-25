@@ -14,22 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.security.crypt;
+package net.woodstock.rockframework.domain.business.validation;
 
-public enum Algorithm {
+public class ValidationException extends RuntimeException {
 
-	AES("AES"), ARCFOUR("ARCFOUR"), Blowfish("Blowfish"), DEFAULT_ASYNC("RSA"), DEFAULT_SYNC("DESede"), DESAES(
-			"DESAES"), DES("DES"), DESede("DESede"), DiffieHellman("DiffieHellman"), RC2("RC2"), RC4("RC4"), RSA(
-			"RSA");
+	private static final long	serialVersionUID	= 1L;
 
-	private String	algorithm;
-
-	private Algorithm(String algorithm) {
-		this.algorithm = algorithm;
+	public ValidationException() {
+		super();
 	}
 
-	public String algorithm() {
-		return this.algorithm;
+	public ValidationException(String message) {
+		super(message);
+	}
+
+	public ValidationException(Throwable cause) {
+		super(cause);
+	}
+
+	public ValidationException(String message, Throwable cause) {
+		super(message, cause);
 	}
 
 }

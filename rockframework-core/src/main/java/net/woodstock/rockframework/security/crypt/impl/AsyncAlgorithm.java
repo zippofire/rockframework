@@ -14,12 +14,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.security.crypt;
+package net.woodstock.rockframework.security.crypt.impl;
 
-public interface Crypter {
+public enum AsyncAlgorithm {
 
-	String encrypt(String str) throws CrypterException;
+	DEFAULT_ASYNC("RSA"),
+	DSA("DSA"),
+	DIFFIE_HELLMAN("DiffieHellman"),
+	RSA("RSA");
 
-	String decrypt(String str) throws CrypterException;
+	private String	algorithm;
+
+	private AsyncAlgorithm(String algorithm) {
+		this.algorithm = algorithm;
+	}
+
+	public String algorithm() {
+		return this.algorithm;
+	}
 
 }

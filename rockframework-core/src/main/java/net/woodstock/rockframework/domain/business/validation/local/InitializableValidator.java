@@ -16,8 +16,8 @@
  */
 package net.woodstock.rockframework.domain.business.validation.local;
 
-public interface InitializableValidator extends Validator {
+import net.woodstock.rockframework.domain.pojo.Initializable;
 
-	void init();
-
+public interface InitializableValidator extends Validator, Initializable {
+	//
 }

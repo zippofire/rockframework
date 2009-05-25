@@ -16,7 +16,7 @@
  */
 package net.woodstock.rockframework.domain.business.validation.local;
 
-import net.woodstock.rockframework.domain.business.ValidationException;
+import net.woodstock.rockframework.domain.business.validation.ValidationException;
 import net.woodstock.rockframework.domain.business.validation.ValidationResult;
 
 public interface Validator {

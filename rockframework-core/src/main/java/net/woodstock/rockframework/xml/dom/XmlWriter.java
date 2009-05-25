@@ -54,7 +54,7 @@ abstract class XmlWriter {
 							XmlWriter.xmlWriter = new SunXmlWriter();
 							XmlWriter.getLogger().info("Using Sun XML serializer");
 						} catch (ClassNotFoundException ee) {
-							throw new UnsupportedOperationException("No serializer found");
+							throw new UnsupportedOperationException("No XML serializer found");
 						}
 					}
 				}

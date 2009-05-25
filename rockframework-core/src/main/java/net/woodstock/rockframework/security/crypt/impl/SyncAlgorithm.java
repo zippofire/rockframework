@@ -16,20 +16,25 @@
  */
 package net.woodstock.rockframework.security.crypt.impl;
 
-import net.woodstock.rockframework.security.crypt.Crypter;
+public enum SyncAlgorithm {
 
-public enum CrypterType {
+	AES("AES"),
+	BLOWFISH("Blowfish"),
+	DEFAULT_SYNC("DESede"),
+	DESAES("DESAES"),
+	DES("DES"),
+	DESEDE("DESede"),
+	MD5("HmacMD5"),
+	SHA1("HmacSHA1");
 
-	SYNC(SyncCrypter.class), ASYNC(AsyncCrypter.class);
+	private String	algorithm;
 
-	private Class<? extends Crypter>	crypterClass;
-
-	private CrypterType(Class<? extends Crypter> c) {
-		this.crypterClass = c;
+	private SyncAlgorithm(String algorithm) {
+		this.algorithm = algorithm;
 	}
 
-	public Class<? extends Crypter> crypterClass() {
-		return this.crypterClass;
+	public String algorithm() {
+		return this.algorithm;
 	}
 
 }

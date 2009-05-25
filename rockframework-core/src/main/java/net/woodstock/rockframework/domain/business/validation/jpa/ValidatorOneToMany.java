@@ -16,7 +16,7 @@
  */
 package net.woodstock.rockframework.domain.business.validation.jpa;
 
-import net.woodstock.rockframework.domain.business.ValidationException;
+import net.woodstock.rockframework.domain.business.validation.ValidationException;
 import net.woodstock.rockframework.domain.business.validation.ValidationResult;
 import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
 import net.woodstock.rockframework.domain.business.validation.local.validator.AbstractValidator;
@@ -25,7 +25,6 @@ public class ValidatorOneToMany extends AbstractValidator {
 
 	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
 		try {
-			// TODO
 			return context.getSuccessResult();
 		} catch (Exception e) {
 			this.getLogger().info(e.getMessage(), e);

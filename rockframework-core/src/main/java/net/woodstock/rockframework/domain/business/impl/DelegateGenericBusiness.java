@@ -20,7 +20,7 @@ import java.io.Serializable;
 
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.GenericBusiness;
-import net.woodstock.rockframework.domain.business.ValidationException;
+import net.woodstock.rockframework.domain.business.validation.ValidationException;
 import net.woodstock.rockframework.sys.SysLogger;
 
 import org.apache.commons.logging.Log;

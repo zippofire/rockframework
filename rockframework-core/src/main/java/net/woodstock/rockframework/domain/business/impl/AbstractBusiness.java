@@ -23,12 +23,18 @@ import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.Pojo;
 import net.woodstock.rockframework.domain.business.BusinessException;
-import net.woodstock.rockframework.domain.business.ValidationException;
 import net.woodstock.rockframework.domain.business.validation.Operation;
+import net.woodstock.rockframework.domain.business.validation.ValidationException;
 import net.woodstock.rockframework.domain.business.validation.ValidationResult;
 import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
 
 public abstract class AbstractBusiness extends DelegateGenericBusiness {
+
+	public static final String	MESSAGE_INVALID_CLASS	= "business.invalid.class";
+
+	public static final String	MESSAGE_INVALID_ID		= "business.invalid.id";
+
+	public static final String	MESSAGE_INVALID_OBJECT	= "business.invalid.object";
 
 	public AbstractBusiness() {
 		super();

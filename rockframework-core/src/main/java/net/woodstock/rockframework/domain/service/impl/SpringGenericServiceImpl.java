@@ -24,7 +24,8 @@ import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.BusinessException;
 import net.woodstock.rockframework.domain.business.GenericBusiness;
-import net.woodstock.rockframework.domain.business.ValidationException;
+import net.woodstock.rockframework.domain.business.impl.AbstractBusiness;
+import net.woodstock.rockframework.domain.business.validation.ValidationException;
 import net.woodstock.rockframework.domain.persistence.GenericRepository;
 import net.woodstock.rockframework.domain.persistence.PersistenceException;
 import net.woodstock.rockframework.domain.service.GenericService;
@@ -101,7 +102,7 @@ public class SpringGenericServiceImpl extends AbstractService implements Generic
 		try {
 			if (clazz == null) {
 				throw new ValidationException(CoreMessage.getInstance().getMessage(
-						GenericBusiness.MESSAGE_INVALID_CLASS, clazz));
+						AbstractBusiness.MESSAGE_INVALID_CLASS, clazz));
 			}
 			return this.repository.listAll(clazz, order);
 		} catch (PersistenceException e) {

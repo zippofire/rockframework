@@ -14,20 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.business;
+package net.woodstock.rockframework.security.crypt;
 
-import net.woodstock.rockframework.domain.Entity;
+public class CrypterException extends RuntimeException {
 
-public interface SimpleBusiness extends Business {
+	private static final long	serialVersionUID	= 1L;
 
-	boolean validateCreate(Entity<?> entity);
+	public CrypterException() {
+		super();
+	}
 
-	boolean validateRetrieve(Entity<?> pojo);
+	public CrypterException(String message) {
+		super(message);
+	}
 
-	boolean validateUpdate(Entity<?> pojo);
+	public CrypterException(Throwable cause) {
+		super(cause);
+	}
 
-	boolean validateDelete(Entity<?> pojo);
-
-	boolean validateQuery(Entity<?> pojo);
+	public CrypterException(String message, Throwable cause) {
+		super(message, cause);
+	}
 
 }

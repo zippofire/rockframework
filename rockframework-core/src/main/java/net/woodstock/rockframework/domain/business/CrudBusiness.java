@@ -16,24 +16,18 @@
  */
 package net.woodstock.rockframework.domain.business;
 
-public class ValidationException extends RuntimeException {
+import net.woodstock.rockframework.domain.Entity;
 
-	private static final long	serialVersionUID	= 1L;
+public interface CrudBusiness extends Business {
 
-	public ValidationException() {
-		super();
-	}
+	boolean validateCreate(Entity<?> entity);
 
-	public ValidationException(String message) {
-		super(message);
-	}
+	boolean validateRetrieve(Entity<?> pojo);
 
-	public ValidationException(Throwable cause) {
-		super(cause);
-	}
+	boolean validateUpdate(Entity<?> pojo);
 
-	public ValidationException(String message, Throwable cause) {
-		super(message, cause);
-	}
+	boolean validateDelete(Entity<?> pojo);
+
+	boolean validateQuery(Entity<?> pojo);
 
 }

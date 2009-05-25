@@ -23,7 +23,11 @@ import java.util.Date;
 
 public abstract class DateUtils {
 
-	private static DateFormat	dateFormat;
+	private static DateFormat	dateFormat	= new SimpleDateFormat();
+
+	private DateUtils() {
+		//
+	}
 
 	public static String format(Date date) {
 		if (DateUtils.dateFormat == null) {
@@ -61,10 +65,6 @@ public abstract class DateUtils {
 
 	public static void setDateFormat(String format) {
 		DateUtils.dateFormat = new SimpleDateFormat(format);
-	}
-
-	private DateUtils() {
-		//
 	}
 
 }

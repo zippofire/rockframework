@@ -16,137 +16,100 @@
  */
 package net.woodstock.rockframework.security.crypt.impl;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.GeneralSecurityException;
+import java.io.OutputStream;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
 import net.woodstock.rockframework.security.common.Charset;
-import net.woodstock.rockframework.security.crypt.Algorithm;
+import net.woodstock.rockframework.security.crypt.CrypterException;
 import net.woodstock.rockframework.utils.Base64Utils;
 
-public class SyncCrypter extends CrypterBase {
+public class SyncCrypter extends CrypterBase<SyncAlgorithm> {
 
 	private SecretKey	key;
 
-	protected SyncCrypter(InputStream key, Algorithm algorithm, Charset charset) throws IOException,
-			InstantiationException, ClassNotFoundException {
+	private SyncCrypter(SecretKey key, SyncAlgorithm algorithm, Charset charset) {
 		super(algorithm, charset);
 		if (key == null) {
-			// TODO
-			throw new InstantiationException("security.crypt.no-key");
+			throw new IllegalArgumentException("Key must be not null");
 		}
-		this.key = (SecretKey) Base64Utils.unserializeFrom(key);
+		this.key = key;
 	}
 
 	public SecretKey getKey() {
 		return this.key;
 	}
 
-	@Override
-	public String encrypt(String str) throws IOException, GeneralSecurityException {
-		if (this.getEcipher() == null) {
-			this.setEcipher(Cipher.getInstance(this.getAlgorithm().algorithm()));
-			this.getEcipher().init(Cipher.ENCRYPT_MODE, this.key);
+	public String encrypt(String str) {
+		try {
+			if (this.getEncryptCipher() == null) {
+				this.setEncryptCipher(Cipher.getInstance(this.getAlgorithm().algorithm()));
+				this.getEncryptCipher().init(Cipher.ENCRYPT_MODE, this.key);
+			}
+			byte[] bytes = str.getBytes(this.getCharset().charset());
+			byte[] enc = this.getEncryptCipher().doFinal(bytes);
+			return Base64Utils.toBase64String(enc);
+		} catch (Exception e) {
+			throw new CrypterException(e);
 		}
-		byte[] bytes = str.getBytes(this.getCharset().charset());
-		byte[] enc = this.getEcipher().doFinal(bytes);
-		return Base64Utils.toBase64String(enc);
 	}
 
-	@Override
-	public String decrypt(String str) throws IOException, GeneralSecurityException {
-		if (this.getDcipher() == null) {
-			this.setDcipher(Cipher.getInstance(this.getAlgorithm().algorithm()));
-			this.getDcipher().init(Cipher.DECRYPT_MODE, this.key);
+	public String decrypt(String str) {
+		try {
+			if (this.getDecryptCipher() == null) {
+				this.setDecryptCipher(Cipher.getInstance(this.getAlgorithm().algorithm()));
+				this.getDecryptCipher().init(Cipher.DECRYPT_MODE, this.key);
+			}
+			byte[] dec = Base64Utils.fromBase64(str);
+			byte[] bytes = this.getDecryptCipher().doFinal(dec);
+			return new String(bytes, this.getCharset().charset());
+		} catch (Exception e) {
+			throw new CrypterException(e);
 		}
-		byte[] dec = Base64Utils.fromBase64(str);
-		byte[] bytes = this.getDcipher().doFinal(dec);
-		return new String(bytes, this.getCharset().charset());
 	}
 
-	public static SyncCrypter newInstance(String keyFile) throws IOException, InstantiationException,
-			ClassNotFoundException {
-		return SyncCrypter.newInstance(new File(keyFile), Algorithm.DEFAULT_SYNC, Charset.DEFAULT);
+	public void saveKey(OutputStream outputStream) {
+		try {
+			Base64Utils.serializeTo(this.key, outputStream);
+		} catch (IOException e) {
+			throw new CrypterException(e);
+		}
 	}
 
-	public static SyncCrypter newInstance(File keyFile) throws IOException, InstantiationException,
-			ClassNotFoundException {
-		return SyncCrypter.newInstance(keyFile, Algorithm.DEFAULT_SYNC, Charset.DEFAULT);
+	public static SyncCrypter getInstance(InputStream inputStream, SyncAlgorithm algorithm, Charset charset) {
+		try {
+			if (inputStream == null) {
+				throw new IllegalArgumentException("InputStream must be not null");
+			}
+			if (algorithm == null) {
+				algorithm = SyncAlgorithm.DEFAULT_SYNC;
+			}
+			if (charset == null) {
+				charset = Charset.DEFAULT;
+			}
+			SecretKey key = (SecretKey) Base64Utils.unserializeFrom(inputStream);
+			return new SyncCrypter(key, algorithm, charset);
+		} catch (Exception e) {
+			throw new CrypterException(e);
+		}
 	}
 
-	public static SyncCrypter newInstance(InputStream key) throws IOException, InstantiationException,
-			ClassNotFoundException {
-		return SyncCrypter.newInstance(key, Algorithm.DEFAULT_SYNC, Charset.DEFAULT);
-	}
-
-	public static SyncCrypter newInstance(String keyFile, Algorithm algorithm) throws IOException,
-			InstantiationException, ClassNotFoundException {
-		return SyncCrypter.newInstance(new File(keyFile), algorithm, Charset.DEFAULT);
-	}
-
-	public static SyncCrypter newInstance(File keyFile, Algorithm algorithm) throws IOException,
-			InstantiationException, ClassNotFoundException {
-		return SyncCrypter.newInstance(keyFile, algorithm, Charset.DEFAULT);
-	}
-
-	public static SyncCrypter newInstance(InputStream key, Algorithm algorithm) throws IOException,
-			InstantiationException, ClassNotFoundException {
-		return SyncCrypter.newInstance(key, algorithm, Charset.DEFAULT);
-	}
-
-	public static SyncCrypter newInstance(String keyFile, Charset charset) throws IOException,
-			InstantiationException, ClassNotFoundException {
-		return SyncCrypter.newInstance(new File(keyFile), Algorithm.DEFAULT_SYNC, charset);
-	}
-
-	public static SyncCrypter newInstance(File keyFile, Charset charset) throws IOException,
-			InstantiationException, ClassNotFoundException {
-		return SyncCrypter.newInstance(keyFile, Algorithm.DEFAULT_SYNC, charset);
-	}
-
-	public static SyncCrypter newInstance(InputStream key, Charset charset) throws IOException,
-			InstantiationException, ClassNotFoundException {
-		return SyncCrypter.newInstance(key, Algorithm.DEFAULT_SYNC, charset);
-	}
-
-	public static SyncCrypter newInstance(String keyFile, Algorithm algorithm, Charset charset)
-			throws IOException, InstantiationException, ClassNotFoundException {
-		return SyncCrypter.newInstance(new File(keyFile), algorithm, charset);
-	}
-
-	public static SyncCrypter newInstance(File keyFile, Algorithm algorithm, Charset charset)
-			throws IOException, InstantiationException, ClassNotFoundException {
-		return SyncCrypter.newInstance(new FileInputStream(keyFile), algorithm, charset);
-	}
-
-	public static SyncCrypter newInstance(InputStream key, Algorithm algorithm, Charset charset)
-			throws IOException, InstantiationException, ClassNotFoundException {
-		return new SyncCrypter(key, algorithm, charset);
-
-	}
-
-	public static void generateKey(String file) throws IOException, GeneralSecurityException {
-		SyncCrypter.generateKey(new File(file), Algorithm.DEFAULT_SYNC);
-	}
-
-	public static void generateKey(File file) throws IOException, GeneralSecurityException {
-		SyncCrypter.generateKey(file, Algorithm.DEFAULT_SYNC);
-	}
-
-	public static void generateKey(String file, Algorithm algorithm) throws IOException,
-			GeneralSecurityException {
-		SyncCrypter.generateKey(new File(file), algorithm);
-	}
-
-	public static void generateKey(File file, Algorithm algorithm) throws IOException,
-			GeneralSecurityException {
-		SecretKey key = KeyGenerator.getInstance(algorithm.algorithm()).generateKey();
-		Base64Utils.serializeTo(key, file);
+	public static SyncCrypter newInstance(SyncAlgorithm algorithm, Charset charset) {
+		try {
+			if (algorithm == null) {
+				algorithm = SyncAlgorithm.DEFAULT_SYNC;
+			}
+			if (charset == null) {
+				charset = Charset.DEFAULT;
+			}
+			SecretKey key = KeyGenerator.getInstance(algorithm.algorithm()).generateKey();
+			return new SyncCrypter(key, algorithm, charset);
+		} catch (Exception e) {
+			throw new CrypterException(e);
+		}
 	}
 }

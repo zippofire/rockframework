@@ -16,35 +16,31 @@
  */
 package net.woodstock.rockframework.security.crypt.impl;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-
 import javax.crypto.Cipher;
 
 import net.woodstock.rockframework.security.common.Charset;
-import net.woodstock.rockframework.security.crypt.Algorithm;
 import net.woodstock.rockframework.security.crypt.Crypter;
 
-abstract class CrypterBase implements Crypter {
+abstract class CrypterBase<A> implements Crypter {
 
-	private Algorithm	algorithm;
+	private A		algorithm;
 
-	private Charset		charset;
+	private Charset	charset;
 
-	private Cipher		ecipher;
+	private Cipher	encryptCipher;
 
-	private Cipher		dcipher;
+	private Cipher	decryptCipher;
 
-	protected CrypterBase(Algorithm algorithm, Charset charset) {
+	protected CrypterBase(A algorithm, Charset charset) {
 		this.algorithm = algorithm;
 		this.charset = charset;
 	}
 
-	public Algorithm getAlgorithm() {
+	public A getAlgorithm() {
 		return this.algorithm;
 	}
 
-	protected void setAlgorithm(Algorithm algorithm) {
+	protected void setAlgorithm(A algorithm) {
 		this.algorithm = algorithm;
 	}
 
@@ -56,24 +52,20 @@ abstract class CrypterBase implements Crypter {
 		this.charset = charset;
 	}
 
-	protected Cipher getDcipher() {
-		return this.dcipher;
+	public Cipher getEncryptCipher() {
+		return this.encryptCipher;
 	}
 
-	protected void setDcipher(Cipher dcipher) {
-		this.dcipher = dcipher;
+	public void setEncryptCipher(Cipher encryptCipher) {
+		this.encryptCipher = encryptCipher;
 	}
 
-	protected Cipher getEcipher() {
-		return this.ecipher;
+	public Cipher getDecryptCipher() {
+		return this.decryptCipher;
 	}
 
-	protected void setEcipher(Cipher ecipher) {
-		this.ecipher = ecipher;
+	public void setDecryptCipher(Cipher decryptCipher) {
+		this.decryptCipher = decryptCipher;
 	}
-
-	public abstract String encrypt(String str) throws IOException, GeneralSecurityException;
-
-	public abstract String decrypt(String str) throws IOException, GeneralSecurityException;
 
 }

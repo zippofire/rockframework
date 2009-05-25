@@ -27,9 +27,9 @@ import java.util.Map;
 
 import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Pojo;
-import net.woodstock.rockframework.domain.business.ValidationException;
 import net.woodstock.rockframework.domain.business.validation.EntityValidator;
 import net.woodstock.rockframework.domain.business.validation.Operation;
+import net.woodstock.rockframework.domain.business.validation.ValidationException;
 import net.woodstock.rockframework.domain.business.validation.ValidationResult;
 import net.woodstock.rockframework.util.BeanInfo;
 import net.woodstock.rockframework.util.FieldInfo;
@@ -230,7 +230,7 @@ public class LocalEntityValidator implements EntityValidator {
 	}
 
 	// Instance
-	public static LocalEntityValidator getInstance() {
+	public static EntityValidator getInstance() {
 		if (LocalEntityValidator.entityValidator == null) {
 			synchronized (LocalEntityValidator.class) {
 				if (LocalEntityValidator.entityValidator == null) {

@@ -20,13 +20,7 @@ import java.io.Serializable;
 
 import net.woodstock.rockframework.domain.Entity;
 
-public interface GenericBusiness extends SimpleBusiness {
-
-	public static final String	MESSAGE_INVALID_CLASS	= "business.invalid.class";
-
-	public static final String	MESSAGE_INVALID_ID		= "business.invalid.id";
-
-	public static final String	MESSAGE_INVALID_OBJECT	= "business.invalid.object";
+public interface GenericBusiness extends CrudBusiness {
 
 	// Validation
 	<ID extends Serializable, E extends Entity<ID>> boolean validateRetrieve(Class<E> clazz, ID id);

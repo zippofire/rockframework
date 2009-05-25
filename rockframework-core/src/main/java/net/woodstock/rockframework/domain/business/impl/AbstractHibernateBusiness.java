@@ -21,7 +21,7 @@ import java.io.Serializable;
 import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.BusinessException;
-import net.woodstock.rockframework.domain.business.ValidationException;
+import net.woodstock.rockframework.domain.business.validation.ValidationException;
 
 import org.hibernate.validator.ClassValidator;
 import org.hibernate.validator.InvalidValue;

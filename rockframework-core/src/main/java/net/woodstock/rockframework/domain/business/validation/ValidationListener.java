@@ -14,19 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.util;
+package net.woodstock.rockframework.domain.business.validation;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import net.woodstock.rockframework.domain.Entity;
 
-public class ArrayListSet<E> extends AbstractListSet<E> {
+public interface ValidationListener {
 
-	public ArrayListSet() {
-		super(new ArrayList<E>());
-	}
+	void preRemove(Entity<?> entity);
 
-	public ArrayListSet(Collection<E> collection) {
-		super(new ArrayList<E>(collection));
-	}
+	void preInsert(Entity<?> entity);
+
+	void preUpdate(Entity<?> entity);
 
 }

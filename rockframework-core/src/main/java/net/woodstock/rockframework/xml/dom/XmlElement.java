@@ -53,7 +53,7 @@ public class XmlElement extends ElementWrapper {
 
 	private static final long	serialVersionUID	= 8642703359069757721L;
 
-	private static DateFormat	format;
+	private static DateFormat	dateFormat;
 
 	public static final String	CLASS_ATTRIBUTE		= "class";
 
@@ -119,7 +119,7 @@ public class XmlElement extends ElementWrapper {
 	}
 
 	public XmlElement addElement(String name, Date data) {
-		return this.addElement(name, XmlElement.format.format(data));
+		return this.addElement(name, XmlElement.dateFormat.format(data));
 	}
 
 	public XmlElement addElement(String name, double data) {
@@ -164,7 +164,7 @@ public class XmlElement extends ElementWrapper {
 	}
 
 	public XmlElement addElement(String name, Date data, Map<String, String> attributes) {
-		return this.addElement(name, XmlElement.format.format(data), attributes);
+		return this.addElement(name, XmlElement.dateFormat.format(data), attributes);
 	}
 
 	public XmlElement addElement(String name, double data, Map<String, String> attributes) {
@@ -352,7 +352,7 @@ public class XmlElement extends ElementWrapper {
 		String s = this.getString();
 		if (s != null) {
 			try {
-				return XmlElement.format.parse(s);
+				return XmlElement.dateFormat.parse(s);
 			} catch (ParseException e) {
 				this.getLogger().warn(e.getMessage(), e);
 			}
@@ -368,7 +368,7 @@ public class XmlElement extends ElementWrapper {
 		String s = this.getString(name);
 		if (s != null) {
 			try {
-				return XmlElement.format.parse(s);
+				return XmlElement.dateFormat.parse(s);
 			} catch (ParseException e) {
 				this.getLogger().warn(e.getMessage(), e);
 			}
@@ -554,7 +554,7 @@ public class XmlElement extends ElementWrapper {
 	}
 
 	public void setAttribute(String name, Date data) {
-		super.setAttribute(name, XmlElement.format.format(data));
+		super.setAttribute(name, XmlElement.dateFormat.format(data));
 	}
 
 	public void setAttribute(String name, double data) {
@@ -650,8 +650,7 @@ public class XmlElement extends ElementWrapper {
 			this.write(writer);
 			return writer.toString();
 		} catch (IOException e) {
-			SysLogger.getLogger().warn(e.getMessage(), e);
-			return super.toString();
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -660,6 +659,6 @@ public class XmlElement extends ElementWrapper {
 	}
 
 	static {
-		XmlElement.format = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT);
+		XmlElement.dateFormat = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT);
 	}
 }
