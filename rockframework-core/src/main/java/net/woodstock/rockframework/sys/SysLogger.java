@@ -45,8 +45,8 @@ public abstract class SysLogger {
 
 	public static Log getLogger() {
 		try {
-			StackTraceElement[] stack = Thread.currentThread().getStackTrace();
-			Class<?> clazz = stack[3].getClass();
+			StackTraceElement[] stacks = Thread.currentThread().getStackTrace();
+			Class<?> clazz = Class.forName(stacks[2].getClassName());
 			if (SysLogger.wrapper) {
 				return new LogWrapper(LogFactory.getLog(clazz));
 			}
