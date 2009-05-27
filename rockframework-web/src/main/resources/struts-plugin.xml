@@ -9,11 +9,13 @@
 			<interceptor name="entity" class="net.woodstock.rockframework.web.struts2.interceptor.EntityInterceptor" />
 			<interceptor name="initializable" class="net.woodstock.rockframework.web.struts2.interceptor.InitializableInterceptor" />
 			<interceptor name="around" class="net.woodstock.rockframework.web.struts2.interceptor.AroundInterceptor" />
+			<interceptor name="annotationAround" class="net.woodstock.rockframework.web.struts2.interceptor.AnnotationAroundInterceptor" />
 			<interceptor-stack name="entityStack">
 				<interceptor-ref name="defaultStack" />
 				<interceptor-ref name="entity" />
 				<interceptor-ref name="initializable" />
 				<interceptor-ref name="around" />
+				<interceptor-ref name="annotationAround" />
 			</interceptor-stack>
 		</interceptors>
 
@@ -25,11 +27,13 @@
 			<interceptor name="entity" class="net.woodstock.rockframework.web.struts2.interceptor.EntityInterceptor" />
 			<interceptor name="initializable" class="net.woodstock.rockframework.web.struts2.interceptor.InitializableInterceptor" />
 			<interceptor name="around" class="net.woodstock.rockframework.web.struts2.interceptor.AroundInterceptor" />
+			<interceptor name="annotationAround" class="net.woodstock.rockframework.web.struts2.interceptor.AnnotationAroundInterceptor" />
 			<interceptor-stack name="entityStack">
 				<interceptor-ref name="defaultStack" />
 				<interceptor-ref name="entity" />
 				<interceptor-ref name="initializable" />
 				<interceptor-ref name="around" />
+				<interceptor-ref name="annotationAround" />
 			</interceptor-stack>
 		</interceptors>
 
@@ -42,11 +46,13 @@
 			<interceptor name="entity" class="net.woodstock.rockframework.web.struts2.interceptor.EntityInterceptor" />
 			<interceptor name="initializable" class="net.woodstock.rockframework.web.struts2.interceptor.InitializableInterceptor" />
 			<interceptor name="around" class="net.woodstock.rockframework.web.struts2.interceptor.AroundInterceptor" />
+			<interceptor name="annotationAround" class="net.woodstock.rockframework.web.struts2.interceptor.AnnotationAroundInterceptor" />
 			<interceptor-stack name="entityStack">
 				<interceptor-ref name="defaultStack" />
 				<interceptor-ref name="entity" />
 				<interceptor-ref name="initializable" />
 				<interceptor-ref name="around" />
+				<interceptor-ref name="annotationAround" />
 			</interceptor-stack>
 		</interceptors>
 
