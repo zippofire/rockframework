@@ -16,6 +16,7 @@
  */
 package net.woodstock.rockframework.utils;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -66,6 +67,17 @@ public abstract class IOUtils {
 			writer.flush();
 			writer.close();
 		}
+	}
+
+	public static byte[] toByteArray(InputStream inputStream) throws IOException {
+		byte b[] = new byte[inputStream.available()];
+		inputStream.read(b);
+		return b;
+	}
+
+	public static InputStream toInputStream(byte[] bytes) {
+		InputStream inputStream = new ByteArrayInputStream(bytes);
+		return inputStream;
 	}
 
 }
