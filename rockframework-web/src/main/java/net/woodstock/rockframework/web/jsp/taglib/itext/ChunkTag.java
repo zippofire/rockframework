@@ -26,11 +26,11 @@ import net.woodstock.rockframework.itext.types.Font;
 import net.woodstock.rockframework.itext.types.FontStyle;
 import net.woodstock.rockframework.utils.ColorUtils;
 import net.woodstock.rockframework.utils.StringUtils;
-import net.woodstock.rockframework.web.jsp.taglib.common.TLD;
-import net.woodstock.rockframework.web.jsp.taglib.common.TLDAttribute;
-import net.woodstock.rockframework.web.jsp.taglib.common.TLD.BodyContent;
+import net.woodstock.rockframework.web.jsp.taglib.creator.BodyContent;
+import net.woodstock.rockframework.web.jsp.taglib.creator.TLD;
+import net.woodstock.rockframework.web.jsp.taglib.creator.TLDAttribute;
 
-@TLD(name = "chunk", type = BodyContent.SCRIPTLESS)
+@TLD(name = "chunk", content = BodyContent.SCRIPTLESS)
 public class ChunkTag extends ITextTag {
 
 	private static final long	serialVersionUID	= 1L;

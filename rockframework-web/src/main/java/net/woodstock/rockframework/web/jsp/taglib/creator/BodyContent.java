@@ -14,30 +14,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.office.spreadsheet;
+package net.woodstock.rockframework.web.jsp.taglib.creator;
 
-import java.util.LinkedList;
-import java.util.List;
+public enum BodyContent {
+	EMPTY("empty"), JSP("JSP"), SCRIPTLESS("scriptless"), TAGDEPENDENT("tagdependent");
 
-import net.woodstock.rockframework.office.AbstractDocument;
+	private String	name;
 
-public abstract class SpreadsheetDocument extends AbstractDocument {
-
-	private static final long	serialVersionUID	= 6813958886966892724L;
-
-	private List<Sheet>			sheets;
-
-	public SpreadsheetDocument() {
-		super();
-		this.sheets = new LinkedList<Sheet>();
+	private BodyContent(String name) {
+		this.name = name;
 	}
 
-	public List<Sheet> getSheets() {
-		return this.sheets;
+	public String getName() {
+		return this.name;
 	}
-
-	public void setSheets(List<Sheet> sheets) {
-		this.sheets = sheets;
-	}
-
 }

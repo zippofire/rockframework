@@ -32,5 +32,14 @@ public enum AsyncAlgorithm {
 	public String algorithm() {
 		return this.algorithm;
 	}
+	
+	public static AsyncAlgorithm fromString(String algorithm) {
+		for (AsyncAlgorithm s : AsyncAlgorithm.values()) {
+			if(s.algorithm().equalsIgnoreCase(algorithm)) {
+				return s;
+			}
+		}
+		return null;
+	}
 
 }

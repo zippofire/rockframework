@@ -36,7 +36,7 @@ public class InputOutputStream extends OutputStream {
 	}
 
 	public synchronized InputStream getInputStream() {
-		ByteArrayInputStream input = new ByteArrayInputStream(this.outputStream.toByteArray());
+		InputStream input = new ByteArrayInputStream(this.outputStream.toByteArray());
 		return input;
 	}
 

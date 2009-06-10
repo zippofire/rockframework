@@ -23,14 +23,18 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.SecureRandom;
 
 import javax.crypto.Cipher;
 
 import net.woodstock.rockframework.security.common.Charset;
 import net.woodstock.rockframework.security.crypt.CrypterException;
 import net.woodstock.rockframework.utils.Base64Utils;
+import net.woodstock.rockframework.utils.StringUtils;
 
 public class AsyncCrypter extends CrypterBase<AsyncAlgorithm> {
+
+	private static int	DEFAULT_KEY_SIZE	= 1024;
 
 	private PrivateKey	privateKey;
 
@@ -103,24 +107,22 @@ public class AsyncCrypter extends CrypterBase<AsyncAlgorithm> {
 		}
 	}
 
-	public static AsyncCrypter getInstance(InputStream privateKey, InputStream publicKey,
-			AsyncAlgorithm algorithm, Charset charset) {
+	public static AsyncCrypter getInstance(InputStream privateKey, InputStream publicKey) {
 		try {
 			if (publicKey == null) {
 				throw new IllegalArgumentException("PublicKey must be not null");
 			}
-			if (algorithm == null) {
-				algorithm = AsyncAlgorithm.DEFAULT_ASYNC;
-			}
-			if (charset == null) {
-				charset = Charset.DEFAULT;
-			}
+
+			KeyData publicData = (KeyData) Base64Utils.unserializeFrom(publicKey);
 
 			PrivateKey pik = null;
-			PublicKey puk = (PublicKey) Base64Utils.unserializeFrom(publicKey);
+			PublicKey puk = (PublicKey) publicData.getKey();
+			AsyncAlgorithm algorithm = AsyncAlgorithm.fromString(publicData.getAlgorithm());
+			Charset charset = publicData.getCharset();
 
 			if (privateKey != null) {
-				pik = (PrivateKey) Base64Utils.unserializeFrom(privateKey);
+				KeyData privateData = (KeyData) Base64Utils.unserializeFrom(publicKey);
+				pik = (PrivateKey) privateData.getKey();
 			}
 
 			return new AsyncCrypter(pik, puk, algorithm, charset);
@@ -129,7 +131,11 @@ public class AsyncCrypter extends CrypterBase<AsyncAlgorithm> {
 		}
 	}
 
-	public static AsyncCrypter newInstance(AsyncAlgorithm algorithm, Charset charset) {
+	public static AsyncCrypter newInstance(String seed) {
+		return AsyncCrypter.newInstance(null, null, seed);
+	}
+
+	public static AsyncCrypter newInstance(AsyncAlgorithm algorithm, Charset charset, String seed) {
 		try {
 			if (algorithm == null) {
 				algorithm = AsyncAlgorithm.DEFAULT_ASYNC;
@@ -137,7 +143,15 @@ public class AsyncCrypter extends CrypterBase<AsyncAlgorithm> {
 			if (charset == null) {
 				charset = Charset.DEFAULT;
 			}
-			KeyPair key = KeyPairGenerator.getInstance(algorithm.algorithm()).generateKeyPair();
+
+			KeyPairGenerator generator = KeyPairGenerator.getInstance(algorithm.algorithm());
+
+			if (StringUtils.isEmpty(seed)) {
+				SecureRandom random = new SecureRandom(seed.getBytes());
+				generator.initialize(AsyncCrypter.DEFAULT_KEY_SIZE, random);
+			}
+
+			KeyPair key = generator.generateKeyPair();
 			return new AsyncCrypter(key.getPrivate(), key.getPublic(), algorithm, charset);
 		} catch (Exception e) {
 			throw new CrypterException(e);

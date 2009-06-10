@@ -26,6 +26,7 @@ public class Border implements SpreadsheetElement {
 
 	public Border() {
 		super();
+		this.width = 1;
 		this.color = new Color(0, 0, 0);
 	}
 

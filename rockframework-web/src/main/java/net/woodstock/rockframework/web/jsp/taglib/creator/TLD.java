@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.web.jsp.taglib.common;
+package net.woodstock.rockframework.web.jsp.taglib.creator;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -29,20 +29,6 @@ public @interface TLD {
 
 	String name();
 
-	BodyContent type();
-
-	public static enum BodyContent {
-		EMPTY("empty"), JSP("JSP"), SCRIPTLESS("scriptless"), TAGDEPENDENT("tagdependent");
-
-		private String	name;
-
-		private BodyContent(String name) {
-			this.name = name;
-		}
-
-		public String getName() {
-			return this.name;
-		}
-	}
+	BodyContent content();
 
 }

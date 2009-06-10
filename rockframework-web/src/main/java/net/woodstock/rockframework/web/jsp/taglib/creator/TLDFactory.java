@@ -14,22 +14,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.web.jsp.taglib.common;
+package net.woodstock.rockframework.web.jsp.taglib.creator;
 
 import net.woodstock.rockframework.util.BeanInfo;
 import net.woodstock.rockframework.util.FieldInfo;
-import net.woodstock.rockframework.web.jsp.taglib.common.TLD.BodyContent;
 import net.woodstock.rockframework.xml.dom.XmlDocument;
 import net.woodstock.rockframework.xml.dom.XmlElement;
 
-public abstract class TLDCreator {
+public abstract class TLDFactory {
 
-	public static String create(Class<?> clazz) {
+	private static TLDFactory	factory;
+
+	TLDFactory() {
+		super();
+	}
+
+	public String create(Class<?> clazz) {
 		String name = clazz.getName();
 		String type = BodyContent.JSP.getName();
 		if (clazz.isAnnotationPresent(TLD.class)) {
 			name = clazz.getAnnotation(TLD.class).name();
-			type = clazz.getAnnotation(TLD.class).type().getName();
+			type = clazz.getAnnotation(TLD.class).content().getName();
 		}
 
 		XmlDocument document = new XmlDocument("tag");
@@ -55,6 +60,19 @@ public abstract class TLDCreator {
 		}
 
 		return document.toString();
+	}
+
+	public static TLDFactory getInstance() {
+		if (TLDFactory.factory == null) {
+			synchronized (TLDFactory.class) {
+				if (TLDFactory.factory == null) {
+					TLDFactory.factory = new TLDFactory() {
+						//
+					};
+				}
+			}
+		}
+		return TLDFactory.factory;
 	}
 
 }

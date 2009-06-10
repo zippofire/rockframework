@@ -24,10 +24,10 @@ import javax.servlet.jsp.tagext.SimpleTag;
 import net.woodstock.rockframework.itext.Object;
 import net.woodstock.rockframework.itext.Page;
 import net.woodstock.rockframework.sys.SysLogger;
-import net.woodstock.rockframework.web.jsp.taglib.common.TLD;
-import net.woodstock.rockframework.web.jsp.taglib.common.TLD.BodyContent;
+import net.woodstock.rockframework.web.jsp.taglib.creator.BodyContent;
+import net.woodstock.rockframework.web.jsp.taglib.creator.TLD;
 
-@TLD(name = "page", type = BodyContent.SCRIPTLESS)
+@TLD(name = "page", content = BodyContent.SCRIPTLESS)
 public class PageTag extends ContainerTag {
 
 	private Page	page;

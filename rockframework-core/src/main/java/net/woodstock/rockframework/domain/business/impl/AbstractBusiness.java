@@ -30,11 +30,11 @@ import net.woodstock.rockframework.domain.business.validation.local.LocalEntityV
 
 public abstract class AbstractBusiness extends DelegateGenericBusiness {
 
-	public static final String	MESSAGE_INVALID_CLASS	= "business.invalid.class";
+	public static final String	MESSAGE_INVALID_CLASS	= "domain.business.invalid.class";
 
-	public static final String	MESSAGE_INVALID_ID		= "business.invalid.id";
+	public static final String	MESSAGE_INVALID_ID		= "domain.business.invalid.id";
 
-	public static final String	MESSAGE_INVALID_OBJECT	= "business.invalid.object";
+	public static final String	MESSAGE_INVALID_OBJECT	= "domain.business.invalid.object";
 
 	public AbstractBusiness() {
 		super();

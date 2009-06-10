@@ -26,11 +26,11 @@ import net.woodstock.rockframework.itext.impl.Table;
 import net.woodstock.rockframework.itext.types.Alignment;
 import net.woodstock.rockframework.sys.SysLogger;
 import net.woodstock.rockframework.utils.StringUtils;
-import net.woodstock.rockframework.web.jsp.taglib.common.TLD;
-import net.woodstock.rockframework.web.jsp.taglib.common.TLDAttribute;
-import net.woodstock.rockframework.web.jsp.taglib.common.TLD.BodyContent;
+import net.woodstock.rockframework.web.jsp.taglib.creator.BodyContent;
+import net.woodstock.rockframework.web.jsp.taglib.creator.TLD;
+import net.woodstock.rockframework.web.jsp.taglib.creator.TLDAttribute;
 
-@TLD(name = "table", type = BodyContent.SCRIPTLESS)
+@TLD(name = "table", content = BodyContent.SCRIPTLESS)
 public class TableTag extends ContainerTag {
 
 	@TLDAttribute(required = false, rtexprvalue = true)

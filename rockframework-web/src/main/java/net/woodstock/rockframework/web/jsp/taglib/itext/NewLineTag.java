@@ -21,10 +21,10 @@ import java.io.IOException;
 import javax.servlet.jsp.JspException;
 
 import net.woodstock.rockframework.itext.impl.Paragraph;
-import net.woodstock.rockframework.web.jsp.taglib.common.TLD;
-import net.woodstock.rockframework.web.jsp.taglib.common.TLD.BodyContent;
+import net.woodstock.rockframework.web.jsp.taglib.creator.BodyContent;
+import net.woodstock.rockframework.web.jsp.taglib.creator.TLD;
 
-@TLD(name = "newLine", type = BodyContent.EMPTY)
+@TLD(name = "newLine", content = BodyContent.EMPTY)
 public class NewLineTag extends ITextTag {
 
 	private Paragraph	newLine;

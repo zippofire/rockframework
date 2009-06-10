@@ -234,7 +234,7 @@ public class HSSFSpreadsheetDocument extends SpreadsheetDocument {
 		switch (verticalAlignment) {
 			case BOTTOM:
 				return HSSFCellStyle.VERTICAL_BOTTOM;
-			case CENTER:
+			case MIDDLE:
 				return HSSFCellStyle.VERTICAL_CENTER;
 			case TOP:
 				return HSSFCellStyle.VERTICAL_TOP;

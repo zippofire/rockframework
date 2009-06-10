@@ -36,5 +36,14 @@ public enum SyncAlgorithm {
 	public String algorithm() {
 		return this.algorithm;
 	}
+	
+	public static SyncAlgorithm fromString(String algorithm) {
+		for (SyncAlgorithm s : SyncAlgorithm.values()) {
+			if(s.algorithm().equalsIgnoreCase(algorithm)) {
+				return s;
+			}
+		}
+		return null;
+	}
 
 }

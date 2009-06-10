@@ -27,13 +27,13 @@ import net.woodstock.rockframework.itext.types.OutputType;
 import net.woodstock.rockframework.itext.types.PageSize;
 import net.woodstock.rockframework.itext.types.PrintPages;
 import net.woodstock.rockframework.utils.StringUtils;
-import net.woodstock.rockframework.web.jsp.taglib.common.TLD;
-import net.woodstock.rockframework.web.jsp.taglib.common.TLDAttribute;
-import net.woodstock.rockframework.web.jsp.taglib.common.TLD.BodyContent;
+import net.woodstock.rockframework.web.jsp.taglib.creator.BodyContent;
+import net.woodstock.rockframework.web.jsp.taglib.creator.TLD;
+import net.woodstock.rockframework.web.jsp.taglib.creator.TLDAttribute;
 
 import com.lowagie.text.DocumentException;
 
-@TLD(name = "document", type = BodyContent.SCRIPTLESS)
+@TLD(name = "document", content = BodyContent.SCRIPTLESS)
 public class DocumentTag extends ITextTag {
 
 	private static final String	MIME_TYPE	= "application/pdf";

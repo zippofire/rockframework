@@ -18,6 +18,6 @@ package net.woodstock.rockframework.office.spreadsheet;
 
 public enum VerticalAlignment {
 
-	BOTTOM, CENTER, TOP;
+	BOTTOM, MIDDLE, TOP;
 
 }

@@ -26,11 +26,11 @@ import net.woodstock.rockframework.itext.impl.Watermark;
 import net.woodstock.rockframework.itext.types.Alignment;
 import net.woodstock.rockframework.utils.ColorUtils;
 import net.woodstock.rockframework.utils.StringUtils;
-import net.woodstock.rockframework.web.jsp.taglib.common.TLD;
-import net.woodstock.rockframework.web.jsp.taglib.common.TLDAttribute;
-import net.woodstock.rockframework.web.jsp.taglib.common.TLD.BodyContent;
+import net.woodstock.rockframework.web.jsp.taglib.creator.BodyContent;
+import net.woodstock.rockframework.web.jsp.taglib.creator.TLD;
+import net.woodstock.rockframework.web.jsp.taglib.creator.TLDAttribute;
 
-@TLD(name = "watermark", type = BodyContent.EMPTY)
+@TLD(name = "watermark", content = BodyContent.EMPTY)
 public class WatermarkTag extends ITextTag {
 
 	@TLDAttribute(required = false, rtexprvalue = true)

@@ -71,6 +71,11 @@ public class Cell implements SpreadsheetElement {
 		this.verticalAlignment = Cell.DEFAULT_CERTICAL_ALIGMENT;
 	}
 
+	public Cell(String value) {
+		this();
+		this.value = value;
+	}
+
 	public boolean isWrap() {
 		return this.wrap;
 	}

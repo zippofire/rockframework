@@ -22,10 +22,10 @@ import java.io.StringWriter;
 import javax.servlet.jsp.JspException;
 
 import net.woodstock.rockframework.itext.impl.Phrase;
-import net.woodstock.rockframework.web.jsp.taglib.common.TLD;
-import net.woodstock.rockframework.web.jsp.taglib.common.TLD.BodyContent;
+import net.woodstock.rockframework.web.jsp.taglib.creator.BodyContent;
+import net.woodstock.rockframework.web.jsp.taglib.creator.TLD;
 
-@TLD(name = "phrase", type = BodyContent.SCRIPTLESS)
+@TLD(name = "phrase", content = BodyContent.SCRIPTLESS)
 public class PhraseTag extends ITextTag {
 
 	private Phrase	phrase;

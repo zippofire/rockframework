@@ -19,6 +19,7 @@ package net.woodstock.rockframework.security.crypt.impl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.SecureRandom;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -27,6 +28,7 @@ import javax.crypto.SecretKey;
 import net.woodstock.rockframework.security.common.Charset;
 import net.woodstock.rockframework.security.crypt.CrypterException;
 import net.woodstock.rockframework.utils.Base64Utils;
+import net.woodstock.rockframework.utils.StringUtils;
 
 public class SyncCrypter extends CrypterBase<SyncAlgorithm> {
 
@@ -74,31 +76,33 @@ public class SyncCrypter extends CrypterBase<SyncAlgorithm> {
 
 	public void saveKey(OutputStream outputStream) {
 		try {
-			Base64Utils.serializeTo(this.key, outputStream);
+			KeyData data = new KeyData(this.key.getAlgorithm(), this.key, this.getCharset());
+			Base64Utils.serializeTo(data, outputStream);
 		} catch (IOException e) {
 			throw new CrypterException(e);
 		}
 	}
 
-	public static SyncCrypter getInstance(InputStream inputStream, SyncAlgorithm algorithm, Charset charset) {
+	public static SyncCrypter getInstance(InputStream inputStream) {
 		try {
 			if (inputStream == null) {
 				throw new IllegalArgumentException("InputStream must be not null");
 			}
-			if (algorithm == null) {
-				algorithm = SyncAlgorithm.DEFAULT_SYNC;
-			}
-			if (charset == null) {
-				charset = Charset.DEFAULT;
-			}
-			SecretKey key = (SecretKey) Base64Utils.unserializeFrom(inputStream);
-			return new SyncCrypter(key, algorithm, charset);
+
+			KeyData data = (KeyData) Base64Utils.unserializeFrom(inputStream);
+			SecretKey key = (SecretKey) data.getKey();
+			SyncAlgorithm algorithm = SyncAlgorithm.fromString(data.getAlgorithm());
+			return new SyncCrypter(key, algorithm, data.getCharset());
 		} catch (Exception e) {
 			throw new CrypterException(e);
 		}
 	}
 
-	public static SyncCrypter newInstance(SyncAlgorithm algorithm, Charset charset) {
+	public static SyncCrypter newInstance(String seed) {
+		return SyncCrypter.newInstance(null, null, seed);
+	}
+
+	public static SyncCrypter newInstance(SyncAlgorithm algorithm, Charset charset, String seed) {
 		try {
 			if (algorithm == null) {
 				algorithm = SyncAlgorithm.DEFAULT_SYNC;
@@ -106,6 +110,14 @@ public class SyncCrypter extends CrypterBase<SyncAlgorithm> {
 			if (charset == null) {
 				charset = Charset.DEFAULT;
 			}
+
+			KeyGenerator generator = KeyGenerator.getInstance(algorithm.algorithm());
+
+			if (!StringUtils.isEmpty(seed)) {
+				SecureRandom random = new SecureRandom(seed.getBytes());
+				generator.init(random);
+			}
+
 			SecretKey key = KeyGenerator.getInstance(algorithm.algorithm()).generateKey();
 			return new SyncCrypter(key, algorithm, charset);
 		} catch (Exception e) {
