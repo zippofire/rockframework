@@ -28,7 +28,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 
-import org.apache.commons.codec.binary.Base64;
+import net.woodstock.rockframework.util.Base64Encoder;
 
 public abstract class Base64Utils {
 
@@ -37,35 +37,19 @@ public abstract class Base64Utils {
 	}
 
 	public static byte[] toBase64(byte[] b) {
-		return Base64.encodeBase64Chunked(b);
-	}
-
-	public static byte[] toBase64(String s) {
-		return Base64.encodeBase64Chunked(s.getBytes());
+		return Base64Encoder.getInstance().encode(b);
 	}
 
 	public static byte[] fromBase64(byte[] b) {
-		return Base64.decodeBase64(b);
+		return Base64Encoder.getInstance().decode(b);
 	}
 
-	public static byte[] fromBase64(String s) {
-		return Base64.decodeBase64(s.getBytes());
+	public static String toBase64(String s) {
+		return Base64Encoder.getInstance().encode(s);
 	}
 
-	public static String toBase64String(byte[] b) {
-		return new String(Base64.encodeBase64Chunked(b)).trim();
-	}
-
-	public static String toBase64String(String s) {
-		return new String(Base64.encodeBase64Chunked(s.getBytes())).trim();
-	}
-
-	public static String fromBase64String(byte[] b) {
-		return new String(Base64.decodeBase64(b));
-	}
-
-	public static String fromBase64String(String s) {
-		return new String(Base64.decodeBase64(s.getBytes()));
+	public static String fromBase64(String s) {
+		return Base64Encoder.getInstance().decode(s);
 	}
 
 	public static String serialize(Object o) throws IOException {
@@ -83,7 +67,7 @@ public abstract class Base64Utils {
 	}
 
 	public static Object unserialize(String s) throws IOException, ClassNotFoundException {
-		byte[] b = Base64Utils.fromBase64(s);
+		byte[] b = Base64Encoder.getInstance().decode(s.getBytes());
 
 		ObjectInputStream input = new ObjectInputStream(new ByteArrayInputStream(b));
 		Object o = input.readUnshared();

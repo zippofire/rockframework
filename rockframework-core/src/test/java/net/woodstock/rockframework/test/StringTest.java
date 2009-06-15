@@ -19,7 +19,7 @@ public class StringTest {
 		// scanner.close();
 		// reader.close();
 
-		System.out.println(Base64Utils.toBase64String("37893432349"));
+		System.out.println(Base64Utils.toBase64("37893432349"));
 	}
 
 }

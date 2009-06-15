@@ -69,13 +69,13 @@ public class CryptTest extends TestCase {
 		PrivateKey privateKey = keyPair.getPrivate();
 		PublicKey publicKey = keyPair.getPublic();
 
-		System.out.println(Base64Utils.toBase64String(privateKey.getEncoded()));
-		System.out.println(Base64Utils.toBase64String(publicKey.getEncoded()));
+		System.out.println(Base64Utils.toBase64(privateKey.getEncoded()));
+		System.out.println(Base64Utils.toBase64(publicKey.getEncoded()));
 
 		Cipher cipher = Cipher.getInstance("RSA");
 		cipher.init(Cipher.ENCRYPT_MODE, privateKey);
 
-		System.out.println(Base64Utils.toBase64String(cipher.doFinal("Lourival".getBytes())));
+		System.out.println(Base64Utils.toBase64(cipher.doFinal("Lourival".getBytes())));
 	}
 
 }

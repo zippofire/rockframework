@@ -71,7 +71,7 @@ public class AsyncCrypter extends CrypterBase<AsyncAlgorithm> {
 			}
 			byte[] bytes = str.getBytes(this.getCharset().charset());
 			byte[] enc = this.getEncryptCipher().doFinal(bytes);
-			return Base64Utils.toBase64String(enc);
+			return new String(Base64Utils.toBase64(enc));
 		} catch (Exception e) {
 			throw new CrypterException(e);
 		}
@@ -83,7 +83,7 @@ public class AsyncCrypter extends CrypterBase<AsyncAlgorithm> {
 				this.setDecryptCipher(Cipher.getInstance(this.getAlgorithm().algorithm()));
 				this.getDecryptCipher().init(Cipher.DECRYPT_MODE, this.publicKey);
 			}
-			byte[] dec = Base64Utils.fromBase64(str);
+			byte[] dec = Base64Utils.fromBase64(str.getBytes());
 			byte[] bytes = this.getDecryptCipher().doFinal(dec);
 			return new String(bytes, this.getCharset().charset());
 		} catch (Exception e) {

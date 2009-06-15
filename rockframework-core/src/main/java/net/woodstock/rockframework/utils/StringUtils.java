@@ -52,7 +52,7 @@ public abstract class StringUtils {
 		builder.append(s.substring(1));
 		return builder.toString();
 	}
-	
+
 	public static String camelCase(String s, char separator) {
 		if (s == null) {
 			return null;
@@ -61,30 +61,28 @@ public abstract class StringUtils {
 			return s;
 		}
 		StringBuilder builder = new StringBuilder();
-		String [] array = s.split(Character.toString(separator));
-		for(int i = 0; i < array.length; i++) {
-			if(i == 0) {
+		String[] array = s.split(Character.toString(separator));
+		for (int i = 0; i < array.length; i++) {
+			if (i == 0) {
 				builder.append(Character.toLowerCase(array[i].charAt(0)));
-			}
-			else {
-				builder.append(Character.toUpperCase(array[i].charAt(0)));				
+			} else {
+				builder.append(Character.toUpperCase(array[i].charAt(0)));
 			}
 			builder.append(array[i].substring(1));
 		}
 		return builder.toString();
 	}
-	
-	public static String camelCase(String [] array) {
+
+	public static String camelCase(String[] array) {
 		if (array == null) {
 			return null;
 		}
 		StringBuilder builder = new StringBuilder();
-		for(int i = 0; i < array.length; i++) {
-			if(i == 0) {
+		for (int i = 0; i < array.length; i++) {
+			if (i == 0) {
 				builder.append(Character.toLowerCase(array[i].charAt(0)));
-			}
-			else {
-				builder.append(Character.toUpperCase(array[i].charAt(0)));				
+			} else {
+				builder.append(Character.toUpperCase(array[i].charAt(0)));
 			}
 			builder.append(array[i].substring(1));
 		}
