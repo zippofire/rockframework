@@ -40,7 +40,7 @@ class ApacheBase64Encoder extends Base64Encoder {
 
 	@Override
 	public byte[] encode(byte[] b) {
-		byte[] bytes = Base64.decodeBase64(b);
+		byte[] bytes = Base64.encodeBase64Chunked(b);
 		return bytes;
 	}
 
