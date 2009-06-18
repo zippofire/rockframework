@@ -18,7 +18,7 @@ package net.woodstock.rockframework.util;
 
 import org.apache.commons.codec.binary.Base64;
 
-class ApacheBase64Encoder extends Base64Encoder {
+public class ApacheBase64Encoder extends Base64Encoder {
 
 	@Override
 	public String decode(String s) {
@@ -41,7 +41,8 @@ class ApacheBase64Encoder extends Base64Encoder {
 	@Override
 	public byte[] encode(byte[] b) {
 		byte[] bytes = Base64.encodeBase64Chunked(b);
-		return bytes;
+		String str = new String(bytes);
+		return str.trim().getBytes();
 	}
 
 }

@@ -56,7 +56,8 @@ public abstract class Digester {
 
 	public static String digestBase64(String data, Algorithm algorithm) throws NoSuchAlgorithmException {
 		byte[] b = Digester._digest(data, algorithm);
-		return new String(Base64Utils.toBase64(b));
+		String str = new String(Base64Utils.toBase64(b));
+		return str;
 	}
 
 	public static boolean isEquals(String d1, String d2) {
