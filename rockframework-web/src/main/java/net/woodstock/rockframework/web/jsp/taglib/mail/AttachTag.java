@@ -21,9 +21,9 @@ import java.io.IOException;
 
 import javax.servlet.jsp.JspException;
 
-import net.woodstock.rockframework.web.jsp.taglib.common.CommonTag;
+import net.woodstock.rockframework.web.jsp.taglib.BaseTag;
 
-public class AttachTag extends CommonTag {
+public class AttachTag extends BaseTag {
 
 	private static final long	serialVersionUID	= 1L;
 

@@ -144,7 +144,7 @@ abstract class QueryContextHelper {
 			String alias, Entity<?> value, List<Entity<?>> parsed) throws IllegalArgumentException,
 			NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		if (QueryContextHelper.contains(parsed, value)) {
-			SysLogger.getLogger().warn("Entity " + value + " already parsed!!!");
+			SysLogger.getLogger().debug("Entity " + value + " already parsed!!!");
 			return;
 		}
 
@@ -159,8 +159,7 @@ abstract class QueryContextHelper {
 				String childAlias = fieldInfo.getFieldName();
 				Object childValue = fieldInfo.getFieldValue(value);
 				if (childValue != null) {
-					QueryContextHelper
-							.handleValue(child, options, childName, childAlias, childValue, parsed);
+					QueryContextHelper.handleValue(child, options, childName, childAlias, childValue, parsed);
 				}
 			}
 			context.getChilds().add(child);
@@ -177,7 +176,7 @@ abstract class QueryContextHelper {
 			for (Object o : value) {
 				if (o instanceof Entity) {
 					if (QueryContextHelper.contains(parsed, (Entity<?>) o)) {
-						SysLogger.getLogger().warn("Entity " + value + " already parsed!!!");
+						SysLogger.getLogger().debug("Entity " + value + " already parsed!!!");
 						continue;
 					}
 					parsed.add((Entity<?>) o);
@@ -189,8 +188,8 @@ abstract class QueryContextHelper {
 						String childAlias = fieldInfo.getFieldName() + ALIAS_SEPARADOR + index;
 						Object childValue = fieldInfo.getFieldValue(o);
 						if (childValue != null) {
-							QueryContextHelper.handleValue(child, options, childName, childAlias,
-									childValue, parsed);
+							QueryContextHelper.handleValue(child, options, childName, childAlias, childValue,
+									parsed);
 						}
 					}
 				}

@@ -20,20 +20,6 @@ import java.io.InputStream;
 
 public interface DownloadableAction {
 
-	String	DOWNLOAD_CONTENT_TYPE			= "application/force-download";
-
-	String	HTML_CONTENT_TYPE				= "text/html";
-
-	String	PDF_CONTENT_TYPE				= "application/pdf";
-
-	String	TEXT_CONTENT_TYPE				= "text/plain";
-
-	String	XML_CONTENT_TYPE				= "text/xml";
-
-	String	INLINE_CONTENT_DISPOSITION		= "inline";
-
-	String	ATTACHMENT_CONTENT_DISPOSITION	= "attachment";
-
 	InputStream getInputStream();
 
 	String getContentType();

@@ -16,12 +16,25 @@
  */
 package net.woodstock.rockframework.domain.persistence;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 
 import net.woodstock.rockframework.domain.Entity;
+import net.woodstock.rockframework.domain.business.BusinessException;
 
-public interface GenericRepository extends SimpleRepository {
+public interface GenericRepository extends Repository {
+
+	void save(Entity<?> e) throws PersistenceException;
+
+	void update(Entity<?> e) throws PersistenceException;
+
+	void delete(Entity<?> e) throws PersistenceException;
+
+	<ID extends Serializable, E extends Entity<ID>> E get(Class<E> clazz, ID id) throws PersistenceException,
+			BusinessException, PersistenceException;
+
+	<E extends Entity<?>> Collection<E> listAll(Class<E> clazz, String order) throws PersistenceException;
 
 	<E extends Entity<?>> Collection<E> listByExample(E e, Map<String, Object> options)
 			throws PersistenceException;

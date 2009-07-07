@@ -25,10 +25,6 @@ public abstract class BaseDynaForm extends DynaActionForm {
 
 	private static final long	serialVersionUID	= -5299608278184306255L;
 
-	protected Log getLogger() {
-		return SysLogger.getLogger();
-	}
-
 	public Byte getByte(String name) {
 		Object o = this.get(name);
 		if ((o != null) && (!(o instanceof Byte))) {
@@ -83,6 +79,10 @@ public abstract class BaseDynaForm extends DynaActionForm {
 			o = new Short(o.toString());
 		}
 		return (Short) o;
+	}
+
+	protected Log getLogger() {
+		return SysLogger.getLogger();
 	}
 
 }

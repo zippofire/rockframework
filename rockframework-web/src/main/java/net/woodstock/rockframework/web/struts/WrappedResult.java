@@ -23,10 +23,6 @@ public class WrappedResult implements StrutsResult {
 
 	private ActionForward	forward;
 
-	public WrappedResult() {
-		super();
-	}
-
 	public WrappedResult(ActionForward forward) {
 		super();
 		this.forward = forward;
@@ -34,10 +30,6 @@ public class WrappedResult implements StrutsResult {
 
 	public ActionForward getForward() {
 		return this.forward;
-	}
-
-	public void setForward(ActionForward forward) {
-		this.forward = forward;
 	}
 
 	public ActionForward getForward(ActionMapping mapping) {

@@ -16,6 +16,8 @@
  */
 package net.woodstock.rockframework.web.struts2.action;
 
+import net.woodstock.rockframework.web.utils.ResponseUtils;
+
 /**
  * <pre>
  * &lt;result name=&quot;success&quot; type=&quot;jasper&quot;&gt;
@@ -38,7 +40,7 @@ public abstract class JasperAction<T> extends BaseAction implements JasperableAc
 
 	private String				name;
 
-	private String				contentDisposition	= DownloadableAction.INLINE_CONTENT_DISPOSITION;
+	private String				contentDisposition	= ResponseUtils.INLINE_CONTENT_DISPOSITION;
 
 	public String getLocation() {
 		return this.location;
@@ -78,10 +80,6 @@ public abstract class JasperAction<T> extends BaseAction implements JasperableAc
 
 	public void setContentDisposition(String contentDisposition) {
 		this.contentDisposition = contentDisposition;
-	}
-
-	public static String getAttachmentContentDisposition(String fileName) {
-		return DownloadAction.getAttachmentContentDisposition(fileName);
 	}
 
 }

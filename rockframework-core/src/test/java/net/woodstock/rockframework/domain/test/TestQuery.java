@@ -41,7 +41,7 @@ public class TestQuery extends TestCase {
 		return baz;
 	}
 
-	public void xtest1() throws Exception {
+	public void test1() throws Exception {
 		Bar bar = getBar();
 
 		QueryBuilder builder = new QueryBuilderAdapter();
@@ -51,9 +51,11 @@ public class TestQuery extends TestCase {
 
 		String s = builder.getQueryString();
 		System.out.println(s);
+
+		// builder.getQuery(null);
 	}
 
-	public void xtest2() throws Exception {
+	public void test2() throws Exception {
 		Foo foo = getFoo();
 
 		QueryBuilder builder = new QueryBuilderAdapter();
@@ -63,6 +65,8 @@ public class TestQuery extends TestCase {
 
 		String s = builder.getQueryString();
 		System.out.println(s);
+
+		// builder.getQuery(null);
 	}
 
 	public void test3() throws Exception {
@@ -76,7 +80,7 @@ public class TestQuery extends TestCase {
 		String s = builder.getQueryString();
 		System.out.println(s);
 
-		builder.getQuery(null);
+		// builder.getQuery(null);
 	}
 
 }

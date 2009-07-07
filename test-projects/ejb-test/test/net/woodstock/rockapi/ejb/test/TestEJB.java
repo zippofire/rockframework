@@ -14,7 +14,7 @@ public class TestEJB {
 		try {
 			Properties properties = new Properties();
 			InputStream inputStream = TestEJB.class.getClassLoader().getResourceAsStream(
-					"ejb-client.properties");
+					"ejb-client-login.properties");
 			properties.load(inputStream);
 			Context context = new InitialContext(properties);
 			Calculator calculator = (Calculator) context.lookup("Calculator/remote");

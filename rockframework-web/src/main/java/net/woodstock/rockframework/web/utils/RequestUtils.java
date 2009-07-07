@@ -26,6 +26,18 @@ import javax.servlet.http.HttpServletRequest;
 
 public abstract class RequestUtils {
 
+	public static final String	HEADER_ACCEPT			= "accept";
+
+	public static final String	HEADER_ACCEPT_CHARSET	= "accept-charset";
+
+	public static final String	HEADER_ACCEPT_ENCODING	= "accept-encoding";
+
+	public static final String	HEADER_ACCEPT_LANGUAGE	= "accept-language";
+
+	public static final String	HEADER_USER_AGENT		= "user-agent";
+
+	public static final String	HEADER_X_FORWARDED_FOR	= "X-Forwarded-For";
+
 	private RequestUtils() {
 		//
 	}
@@ -89,12 +101,33 @@ public abstract class RequestUtils {
 		builder.append(RequestUtils.getApplicationUrl(request));
 		builder.append(request.getServletPath());
 
-		// if (request.getQueryString() != null) {
-		// builder.append("?");
-		// builder.append(request.getQueryString());
-		// }
+		return builder.toString();
+	}
+
+	public static String getFullRequestUrl(HttpServletRequest request) {
+		StringBuilder builder = new StringBuilder();
+		builder.append(RequestUtils.getApplicationUrl(request));
+		builder.append(request.getServletPath());
+
+		if (request.getQueryString() != null) {
+			builder.append("?");
+			builder.append(request.getQueryString());
+		}
 
 		return builder.toString();
+	}
+
+	public static String getRequestAddress(HttpServletRequest request) {
+		String address = request.getHeader(RequestUtils.HEADER_X_FORWARDED_FOR);
+
+		if (address != null) {
+			if (address.indexOf(',') != -1) {
+				address = address.split(",")[0];
+			}
+			return address;
+		}
+
+		return request.getRemoteAddr();
 	}
 
 }

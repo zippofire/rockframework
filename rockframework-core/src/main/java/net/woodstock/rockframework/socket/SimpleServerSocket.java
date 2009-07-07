@@ -18,10 +18,12 @@ package net.woodstock.rockframework.socket;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 import net.woodstock.rockframework.sys.SysLogger;
+import net.woodstock.rockframework.utils.NetUtils;
 
 import org.apache.commons.logging.Log;
 
@@ -29,44 +31,54 @@ public abstract class SimpleServerSocket extends Thread {
 
 	private ServerSocket	server;
 
-	private int				port;
-
 	private boolean			run;
 
 	public SimpleServerSocket(int port) throws IOException {
-		this.port = port;
+		this(InetAddress.getLocalHost(), port);
+	}
+
+	public SimpleServerSocket(String address, int port) throws IOException {
+		this(NetUtils.toAddress(address), port);
+	}
+
+	public SimpleServerSocket(InetAddress address, int port) throws IOException {
+		super();
+		this.server = new ServerSocket(port, 0, address);
 		this.run = true;
-		this.server = new ServerSocket(this.port, 0, InetAddress.getLocalHost());
+	}
+
+	public InetAddress getAddress() {
+		return this.server.getInetAddress();
 	}
 
 	public int getPort() {
-		return this.port;
-	}
-
-	public void setPort(int port) {
-		this.port = port;
+		return this.server.getLocalPort();
 	}
 
 	public ServerSocket getServer() {
 		return this.server;
 	}
 
-	public void setServer(ServerSocket server) {
-		this.server = server;
+	public boolean isRun() {
+		return this.run;
+	}
+
+	public void setRun(boolean run) {
+		this.run = run;
 	}
 
 	@Override
 	public void run() {
-		super.run();
-		String h = this.server.getInetAddress().getHostName();
-		int p = this.server.getLocalPort();
+		String address = this.server.getInetAddress().getHostAddress();
+		int port = this.server.getLocalPort();
+
 		while (this.run) {
 			try {
-				this.getLogger().debug("Wait for connections on " + h + ":" + p);
-				this.handle(this.server.accept());
+				this.getLogger().info("Wait for connections on " + address + ":" + port);
+				this.initialHandle(this.server.accept());
 			} catch (Exception e) {
+				e.printStackTrace();
 				this.getLogger().error(e.getMessage(), e);
-				this.run = false;
 			}
 		}
 	}
@@ -75,6 +87,15 @@ public abstract class SimpleServerSocket extends Thread {
 		return SysLogger.getLogger();
 	}
 
-	public abstract void handle(Socket s) throws Exception;
+	protected void initialHandle(Socket s) throws Exception {
+		InetSocketAddress isa = ((InetSocketAddress) s.getRemoteSocketAddress());
+		String address = isa.getAddress().getHostAddress();
+		int port = isa.getPort();
+
+		this.getLogger().info("Connection accepted from host " + address + ":" + port);
+		this.handle(s);
+	}
+
+	protected abstract void handle(Socket s) throws Exception;
 
 }

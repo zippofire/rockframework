@@ -20,9 +20,9 @@ import java.io.IOException;
 import java.io.Writer;
 
 import net.woodstock.rockframework.utils.StringUtils;
-import net.woodstock.rockframework.web.jsp.taglib.common.CommonTag;
+import net.woodstock.rockframework.web.jsp.taglib.BaseTag;
 
-public class FormatTag extends CommonTag {
+public class FormatTag extends BaseTag {
 
 	private String	format;
 
@@ -43,7 +43,15 @@ public class FormatTag extends CommonTag {
 		String value = this.value.toString();
 		char character = this.character.charAt(0);
 		Writer writer = this.getJspContext().getOut();
-		String formated = StringUtils.format(this.format, value, character);
+		String formated = "";
+
+		try {
+			formated = StringUtils.format(this.format, value, character);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			this.getLogger().warn(e.getMessage(), e);
+			formated = "??ERROR??";
+		}
+
 		writer.write(formated);
 	}
 

@@ -35,9 +35,7 @@ import org.apache.struts.actions.DispatchAction;
 
 public abstract class BaseDispatchAction extends DispatchAction {
 
-	protected Log getLogger() {
-		return SysLogger.getLogger();
-	}
+	private static ThreadLocal<ActionMapping>	currentMapping	= new ThreadLocal<ActionMapping>();
 
 	@Override
 	public final ActionForward execute(ActionMapping mapping, ActionForm form, ServletRequest request,
@@ -61,6 +59,8 @@ public abstract class BaseDispatchAction extends DispatchAction {
 	protected ActionForward dispatchMethod(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response, String name) throws Exception {
 		try {
+			BaseDispatchAction.currentMapping.set(mapping);
+
 			Class<?> formClass = ActionForm.class;
 
 			if (form != null) {
@@ -72,16 +72,9 @@ public abstract class BaseDispatchAction extends DispatchAction {
 
 			Method m = ClassUtils.getMethod(this.getClass(), name, methodTypes);
 
-			Object o = m.invoke(this, form, request, response);
+			StrutsResult result = (StrutsResult) m.invoke(this, form, request, response);
 
-			if (o instanceof StrutsResult) {
-				StrutsResult result = (StrutsResult) o;
-				return result.getForward(mapping);
-			} else if (o instanceof String) {
-				return mapping.findForward((String) o);
-			}
-
-			throw new IllegalArgumentException("Invalid result type " + o.getClass().getCanonicalName());
+			return result.getForward(mapping);
 		} catch (InvocationTargetException e) {
 			Throwable throwable = e.getCause();
 			if ((throwable != null) && (throwable instanceof Exception)) {
@@ -89,5 +82,13 @@ public abstract class BaseDispatchAction extends DispatchAction {
 			}
 			throw e;
 		}
+	}
+
+	protected ActionMapping getMapping() {
+		return BaseDispatchAction.currentMapping.get();
+	}
+
+	protected Log getLogger() {
+		return SysLogger.getLogger();
 	}
 }

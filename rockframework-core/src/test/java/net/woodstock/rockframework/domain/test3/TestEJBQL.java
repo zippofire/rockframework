@@ -1,10 +1,8 @@
 package net.woodstock.rockframework.domain.test3;
 
-import java.util.Map;
-
 import junit.framework.TestCase;
-import net.woodstock.rockframework.domain.persistence.query.BuilderException;
-import net.woodstock.rockframework.domain.persistence.query.impl.EJBQLQueryBuilder;
+import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
+import net.woodstock.rockframework.domain.persistence.query.impl.QueryBuilderAdapter;
 
 public class TestEJBQL extends TestCase {
 
@@ -27,7 +25,7 @@ public class TestEJBQL extends TestCase {
 	public void test1() throws Exception {
 		Foo foo = this.getFoo();
 
-		EJBQLQueryBuilder builder = new TestEJBSQLQueryBuilder();
+		QueryBuilder builder = new QueryBuilderAdapter();
 		String sql = builder.parse(foo).getQueryString();
 		System.out.println(sql);
 	}
@@ -35,25 +33,9 @@ public class TestEJBQL extends TestCase {
 	public void test2() throws Exception {
 		Bar bar = this.getBar();
 
-		EJBQLQueryBuilder builder = new TestEJBSQLQueryBuilder();
+		QueryBuilder builder = new QueryBuilderAdapter();
 		String sql = builder.parse(bar).getQueryString();
 		System.out.println(sql);
-	}
-
-	class TestEJBSQLQueryBuilder extends EJBQLQueryBuilder {
-
-		@Override
-		protected Object getQueryLocal(String sql, Object manager) throws BuilderException {
-			return null;
-		}
-
-		@Override
-		protected void setQueryOptions(Object query, Map<String, Object> options) throws BuilderException {
-		}
-
-		@Override
-		protected void setQueryParameter(Object query, String name, Object value) throws BuilderException {
-		}
 	}
 
 }

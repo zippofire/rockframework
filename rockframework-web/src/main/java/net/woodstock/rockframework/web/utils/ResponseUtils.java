@@ -16,6 +16,7 @@
  */
 package net.woodstock.rockframework.web.utils;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,16 +29,23 @@ import javax.servlet.jsp.PageContext;
 
 import net.woodstock.rockframework.utils.FileUtils;
 import net.woodstock.rockframework.utils.IOUtils;
+import net.woodstock.rockframework.utils.MimeUtils;
 
 public abstract class ResponseUtils {
 
-	public static final String	DOWNLOAD_CONTENT_TYPE	= "application/force-download";
+	public static final String	DOWNLOAD_CONTENT_TYPE			= "application/force-download";
 
-	public static final String	HTML_CONTENT_TYPE		= "text/html";
+	public static final String	HTML_CONTENT_TYPE				= "text/html";
 
-	public static final String	TEXT_CONTENT_TYPE		= "text/plain";
+	public static final String	TEXT_CONTENT_TYPE				= "text/plain";
 
-	public static final String	XML_CONTENT_TYPE		= "text/xml";
+	public static final String	XML_CONTENT_TYPE				= "text/xml";
+
+	public static final String	PDF_CONTENT_TYPE				= "application/pdf";
+
+	public static final String	INLINE_CONTENT_DISPOSITION		= "inline";
+
+	public static final String	ATTACHMENT_CONTENT_DISPOSITION	= "attachment";
 
 	private ResponseUtils() {
 		//
@@ -49,15 +57,20 @@ public abstract class ResponseUtils {
 	}
 
 	public static void downloadFile(HttpServletResponse response, String file) throws IOException {
-		response.setContentType(FileUtils.getContentType(file));
-		response.setContentLength(FileUtils.getContentLength(file));
+		File f = new File(file);
+		if (!f.exists()) {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+		}
+
+		response.setContentType(FileUtils.getContentType(f));
+		response.setContentLength(FileUtils.getContentLength(f));
 
 		response.setHeader("Content-type", ResponseUtils.DOWNLOAD_CONTENT_TYPE);
-		response.setHeader("Content-Disposition", "attachment; filename=\"" + FileUtils.getFileName(file)
-				+ "\"");
-		response.setHeader("Content-Length", Integer.toString(FileUtils.getContentLength(file)));
+		response
+				.setHeader("Content-Disposition", "attachment; filename=\"" + FileUtils.getFileName(f) + "\"");
+		response.setHeader("Content-Length", Integer.toString(FileUtils.getContentLength(f)));
 
-		InputStream input = new FileInputStream(file);
+		InputStream input = new FileInputStream(f);
 		OutputStream output = response.getOutputStream();
 
 		IOUtils.copy(input, output, true);
@@ -72,6 +85,18 @@ public abstract class ResponseUtils {
 		InputStream input = new FileInputStream(file);
 		OutputStream output = response.getOutputStream();
 		IOUtils.copy(input, output, true);
+	}
+
+	public static String getAttachmentContentDisposition(String fileName) {
+		return ResponseUtils.ATTACHMENT_CONTENT_DISPOSITION + "; filename=\"" + fileName + "\"";
+	}
+
+	public static String getContentType(String extension) {
+		return MimeUtils.getMimeType(extension);
+	}
+
+	public static String getContentType(File file) throws IOException {
+		return FileUtils.getContentType(file);
 	}
 
 }

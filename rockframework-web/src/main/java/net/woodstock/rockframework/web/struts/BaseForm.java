@@ -35,7 +35,7 @@ public abstract class BaseForm extends ActionForm {
 
 	@Override
 	public final void reset(ActionMapping mapping, ServletRequest request) {
-		this.reset(mapping, (HttpServletRequest) request);
+		this.reset();
 	}
 
 	@Override

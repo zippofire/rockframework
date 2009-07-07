@@ -16,9 +16,6 @@
  */
 package net.woodstock.rockframework.domain.business.impl;
 
-import java.io.Serializable;
-
-import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.BusinessException;
 import net.woodstock.rockframework.domain.business.validation.ValidationException;
@@ -46,20 +43,6 @@ public class AbstractHibernateBusiness extends DelegateGenericBusiness {
 	// CRUD
 	public void validateCreateWithError(Entity<?> entity) throws BusinessException {
 		this.validate(entity);
-	}
-
-	public void validateRetrieveWithError(Entity<?> entity) throws BusinessException {
-		this.validate(entity);
-	}
-
-	public <ID extends Serializable, E extends Entity<ID>> void validateRetrieveWithError(Class<E> clazz,
-			ID id) throws BusinessException {
-		if (clazz == null) {
-			throw new ValidationException(CoreMessage.getInstance().getMessage(MESSAGE_INVALID_CLASS, clazz));
-		}
-		if (id == null) {
-			throw new ValidationException(CoreMessage.getInstance().getMessage(MESSAGE_INVALID_ID, id));
-		}
 	}
 
 	public void validateUpdateWithError(Entity<?> entity) throws BusinessException {

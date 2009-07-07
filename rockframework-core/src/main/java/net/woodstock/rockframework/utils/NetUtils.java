@@ -24,12 +24,15 @@ import java.net.SocketAddress;
 import java.net.UnknownHostException;
 import java.util.Collection;
 import java.util.LinkedHashSet;
+import java.util.regex.Pattern;
 
 import net.woodstock.rockframework.sys.SysLogger;
 
 public abstract class NetUtils {
 
-	public static int	TIMEOUT	= 3000;
+	public static final String	IPV4_REGEX	= "\\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b";
+
+	public static int			TIMEOUT		= 3000;
 
 	private NetUtils() {
 		//
@@ -81,5 +84,17 @@ public abstract class NetUtils {
 		}
 		return bufferNetwork.toString().substring(0, mask).equals(
 				bufferAddress.toString().subSequence(0, mask));
+	}
+
+	public static InetAddress toAddress(String address) throws UnknownHostException {
+		if (!Pattern.matches(IPV4_REGEX, address)) {
+			throw new IllegalArgumentException("Invalid IPV4 address " + address);
+		}
+		String[] array = address.split("\\.");
+		byte b0 = (byte) Integer.parseInt(array[0]);
+		byte b1 = (byte) Integer.parseInt(array[1]);
+		byte b2 = (byte) Integer.parseInt(array[2]);
+		byte b3 = (byte) Integer.parseInt(array[3]);
+		return InetAddress.getByAddress(new byte[] { b0, b1, b2, b3 });
 	}
 }

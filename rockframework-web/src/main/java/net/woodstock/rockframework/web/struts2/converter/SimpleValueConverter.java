@@ -51,7 +51,7 @@ public abstract class SimpleValueConverter<T> extends StrutsTypeConverter {
 		}
 		T t = (T) o;
 		String s = this.convertToString(t);
-		this.getLogger().info("To String [" + o + " => " + s + "]");
+		this.getLogger().info("To String [" + t + " => " + s + "]");
 		return s;
 	}
 

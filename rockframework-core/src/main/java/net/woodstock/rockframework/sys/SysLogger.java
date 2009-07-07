@@ -56,7 +56,7 @@ public abstract class SysLogger {
 		}
 	}
 
-	public static Log getCommonLogger() {
+	 private static Log getCommonLogger() {
 		if (SysLogger.log == null) {
 			if (SysLogger.wrapper) {
 				SysLogger.log = new LogWrapper(LogFactory.getLog(SysLogger.class));

@@ -51,7 +51,11 @@ public abstract class AbstractEntity<ID extends Serializable> implements Entity<
 		StringBuilder builder = new StringBuilder();
 		builder.append(this.getClass().getSimpleName());
 		builder.append("[");
-		builder.append(this.getId());
+		if (this.getId() != null) {
+			builder.append(this.getId());
+		} else {
+			builder.append("undefined");
+		}
 		builder.append("]");
 		return builder.toString();
 	}

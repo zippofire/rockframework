@@ -66,8 +66,16 @@ public abstract class SystemUtils {
 		//
 	}
 
-	public static final String getProperty(String name) {
+	public static String getEnvironment(String name) {
+		return System.getenv(name);
+	}
+
+	public static String getProperty(String name) {
 		return System.getProperty(name);
+	}
+
+	public static void setProperty(String name, String value) {
+		System.setProperty(name, value);
 	}
 
 }

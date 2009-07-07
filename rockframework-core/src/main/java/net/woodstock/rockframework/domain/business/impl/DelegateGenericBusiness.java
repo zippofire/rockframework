@@ -18,7 +18,9 @@ package net.woodstock.rockframework.domain.business.impl;
 
 import java.io.Serializable;
 
+import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
+import net.woodstock.rockframework.domain.business.BusinessException;
 import net.woodstock.rockframework.domain.business.GenericBusiness;
 import net.woodstock.rockframework.domain.business.validation.ValidationException;
 import net.woodstock.rockframework.sys.SysLogger;
@@ -41,15 +43,6 @@ abstract class DelegateGenericBusiness implements GenericBusiness {
 	public boolean validateCreate(Entity<?> entity) {
 		try {
 			this.validateCreateWithError(entity);
-			return true;
-		} catch (ValidationException e) {
-			return false;
-		}
-	}
-
-	public boolean validateRetrieve(Entity<?> entity) {
-		try {
-			this.validateRetrieveWithError(entity);
 			return true;
 		} catch (ValidationException e) {
 			return false;
@@ -89,6 +82,17 @@ abstract class DelegateGenericBusiness implements GenericBusiness {
 			return true;
 		} catch (ValidationException e) {
 			return false;
+		}
+	}
+
+	// Entity
+	public <ID extends Serializable, E extends Entity<ID>> void validateRetrieveWithError(Class<E> clazz,
+			ID id) throws BusinessException {
+		if (clazz == null) {
+			throw new ValidationException(CoreMessage.getInstance().getMessage(MESSAGE_INVALID_CLASS, clazz));
+		}
+		if (id == null) {
+			throw new ValidationException(CoreMessage.getInstance().getMessage(MESSAGE_INVALID_ID, id));
 		}
 	}
 

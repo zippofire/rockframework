@@ -16,7 +16,6 @@
  */
 package net.woodstock.rockframework.domain.business.impl;
 
-import java.io.Serializable;
 import java.util.Collection;
 
 import net.woodstock.rockframework.config.CoreMessage;
@@ -45,27 +44,6 @@ public abstract class AbstractJPABusiness extends DelegateGenericBusiness {
 	// CRUD
 	public void validateCreateWithError(Entity<?> entity) throws BusinessException {
 		this.validate(entity, Operation.CREATE);
-	}
-
-	public void validateRetrieveWithError(Entity<?> entity) throws BusinessException {
-		if (entity == null) {
-			throw new ValidationException(CoreMessage.getInstance()
-					.getMessage(MESSAGE_INVALID_OBJECT, entity));
-		}
-		Object id = entity.getId();
-		if (id == null) {
-			throw new ValidationException(CoreMessage.getInstance().getMessage(MESSAGE_INVALID_ID, id));
-		}
-	}
-
-	public <ID extends Serializable, E extends Entity<ID>> void validateRetrieveWithError(Class<E> clazz,
-			ID id) throws BusinessException {
-		if (clazz == null) {
-			throw new ValidationException(CoreMessage.getInstance().getMessage(MESSAGE_INVALID_CLASS, clazz));
-		}
-		if (id == null) {
-			throw new ValidationException(CoreMessage.getInstance().getMessage(MESSAGE_INVALID_ID, id));
-		}
 	}
 
 	public void validateUpdateWithError(Entity<?> entity) throws BusinessException {

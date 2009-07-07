@@ -26,6 +26,30 @@ public abstract class LDAPRestriction implements Serializable {
 
 	private Object				value;
 
+	public String getPropertyName() {
+		return this.propertyName;
+	}
+
+	public void setPropertyName(String propertyName) {
+		this.propertyName = propertyName;
+	}
+
+	public Object getValue() {
+		return this.value;
+	}
+
+	public void setValue(Object value) {
+		this.value = value;
+	}
+
+	@Override
+	public String toString() {
+		return this.getRestriction();
+	}
+
+	public abstract String getRestriction();
+
+	// Static(Like Hibernate Restrictions)
 	public static LDAPRestriction contains(String propertyName) {
 		LDAPRestriction restriction = new LDAPRestrictionContains(propertyName);
 		return restriction;
@@ -50,28 +74,5 @@ public abstract class LDAPRestriction implements Serializable {
 		LDAPRestriction restriction = new LDAPRestrictionNotContains(propertyName);
 		return restriction;
 	}
-
-	public String getPropertyName() {
-		return this.propertyName;
-	}
-
-	public void setPropertyName(String propertyName) {
-		this.propertyName = propertyName;
-	}
-
-	public Object getValue() {
-		return this.value;
-	}
-
-	public void setValue(Object value) {
-		this.value = value;
-	}
-
-	@Override
-	public String toString() {
-		return this.getRestriction();
-	}
-
-	public abstract String getRestriction();
 
 }

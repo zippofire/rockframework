@@ -20,7 +20,16 @@ import java.io.Serializable;
 
 import net.woodstock.rockframework.domain.Entity;
 
-public interface GenericBusiness extends CrudBusiness {
+public interface GenericBusiness extends Business {
+
+	// Generic
+	boolean validateCreate(Entity<?> entity);
+
+	boolean validateUpdate(Entity<?> pojo);
+
+	boolean validateDelete(Entity<?> pojo);
+
+	boolean validateQuery(Entity<?> pojo);
 
 	// Validation
 	<ID extends Serializable, E extends Entity<ID>> boolean validateRetrieve(Class<E> clazz, ID id);
@@ -28,15 +37,13 @@ public interface GenericBusiness extends CrudBusiness {
 	// Validation With Error
 	void validateCreateWithError(Entity<?> pojo) throws BusinessException;
 
-	void validateRetrieveWithError(Entity<?> pojo) throws BusinessException;
-
-	<ID extends Serializable, E extends Entity<ID>> void validateRetrieveWithError(Class<E> clazz, ID id)
-			throws BusinessException;
-
 	void validateUpdateWithError(Entity<?> pojo) throws BusinessException;
 
 	void validateDeleteWithError(Entity<?> pojo) throws BusinessException;
 
 	void validateQueryWithError(Entity<?> pojo) throws BusinessException;
+
+	<ID extends Serializable, E extends Entity<ID>> void validateRetrieveWithError(Class<E> clazz, ID id)
+			throws BusinessException;
 
 }

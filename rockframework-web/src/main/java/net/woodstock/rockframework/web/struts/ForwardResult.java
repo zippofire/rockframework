@@ -30,11 +30,6 @@ public class ForwardResult implements StrutsResult {
 
 	private Map<String, Object>	parameters;
 
-	public ForwardResult() {
-		super();
-		this.parameters = new HashMap<String, Object>();
-	}
-
 	public ForwardResult(String name) {
 		super();
 		this.name = name;
@@ -43,10 +38,6 @@ public class ForwardResult implements StrutsResult {
 
 	public String getName() {
 		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public Map<String, Object> getParameters() {

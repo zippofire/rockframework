@@ -35,12 +35,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-public class SpringGenericServiceImpl extends AbstractService implements GenericService {
+public abstract class SpringGenericServiceImpl extends AbstractService implements GenericService {
 
 	@Autowired(required = false)
+	// @Qualifier(value = "GenericBusiness")
 	private GenericBusiness		business;
 
 	@Autowired(required = true)
+	// @Qualifier(value = "GenericRepository")
 	private GenericRepository	repository;
 
 	public SpringGenericServiceImpl() {
@@ -51,16 +53,8 @@ public class SpringGenericServiceImpl extends AbstractService implements Generic
 		return this.business;
 	}
 
-	public void setBusiness(GenericBusiness business) {
-		this.business = business;
-	}
-
 	protected GenericRepository getRepository() {
 		return this.repository;
-	}
-
-	public void setRepository(GenericRepository repository) {
-		this.repository = repository;
 	}
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)

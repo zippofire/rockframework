@@ -26,9 +26,9 @@ import javax.mail.internet.AddressException;
 import javax.servlet.jsp.JspException;
 
 import net.woodstock.rockframework.net.mail.Mail;
-import net.woodstock.rockframework.web.jsp.taglib.common.CommonTag;
+import net.woodstock.rockframework.web.jsp.taglib.BaseTag;
 
-public class MessageTag extends CommonTag {
+public class MessageTag extends BaseTag {
 
 	private static final long	serialVersionUID	= 1L;
 

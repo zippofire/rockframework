@@ -21,13 +21,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.util.Scanner;
-
-import net.woodstock.rockframework.utils.FileUtils;
-import net.woodstock.rockframework.utils.MimeUtils;
 
 /**
  * <pre>
@@ -83,18 +79,6 @@ public abstract class DownloadAction extends BaseAction implements DownloadableA
 
 	public void setContentDisposition(String contentDisposition) {
 		this.contentDisposition = contentDisposition;
-	}
-
-	public static String getAttachmentContentDisposition(String fileName) {
-		return DownloadableAction.ATTACHMENT_CONTENT_DISPOSITION + "; filename=\"" + fileName + "\"";
-	}
-
-	public static String getContentType(String extension) {
-		return MimeUtils.getMimeType(extension);
-	}
-
-	public static String getContentType(File file) throws IOException {
-		return FileUtils.getContentType(file);
 	}
 
 }

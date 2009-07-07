@@ -22,9 +22,9 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTag;
 
-import net.woodstock.rockframework.web.jsp.taglib.common.CommonTag;
+import net.woodstock.rockframework.web.jsp.taglib.BaseTag;
 
-abstract class ITextTag extends CommonTag {
+abstract class ITextTag extends BaseTag {
 
 	private ContainerTag	container;
 

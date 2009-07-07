@@ -16,30 +16,40 @@
  */
 package net.woodstock.rockframework.domain.persistence.query.impl;
 
-import net.woodstock.rockframework.domain.Entity;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import net.woodstock.rockframework.domain.persistence.query.BuilderException;
-import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
 
-public class QueryBuilderAdapter extends AbstractQueryBuilder {
+public class QueryBuilderAdapter extends EJBQLQueryBuilder {
 
-	public Object getQuery(Object manager) throws BuilderException {
-		this.getLogger().warn("getQuery " + manager);
+	@Override
+	protected Object getQueryLocal(String sql, Object manager) throws BuilderException {
+		this.getLogger().warn("getQueryLocal(" + sql + ")");
 		return null;
 	}
 
-	public String getQueryString() throws BuilderException {
-		this.getLogger().warn("getQueryString");
-		return null;
+	@Override
+	protected void setQueryOptions(Object query, Map<String, Object> options) throws BuilderException {
+		StringBuilder builder = new StringBuilder();
+		boolean first = true;
+		builder.append("setQueryOptions(");
+		for (Entry<String, Object> entry : options.entrySet()) {
+			if (!first) {
+				builder.append(", ");
+			}
+			builder.append(entry.getKey() + " =>" + entry.getValue());
+			if (first) {
+				first = false;
+			}
+		}
+		builder.append(")");
+		this.getLogger().warn(builder.toString());
 	}
 
-	public QueryBuilder parse(Entity<?> e) throws BuilderException {
-		this.getLogger().warn("parse " + e);
-		return null;
-	}
-
-	public QueryBuilder setOption(String name, Object value) {
-		this.getLogger().warn("setOption [" + name + "] = " + value);
-		return null;
+	@Override
+	protected void setQueryParameter(Object query, String name, Object value) throws BuilderException {
+		this.getLogger().warn("setQueryParameter[" + name + "] => " + value);
 	}
 
 }

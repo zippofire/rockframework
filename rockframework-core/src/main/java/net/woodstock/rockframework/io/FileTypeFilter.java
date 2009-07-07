@@ -21,38 +21,32 @@ import java.io.FileFilter;
 
 public class FileTypeFilter implements FileFilter {
 
-	public static final int	FILE	= 1;
+	private FileType	type;
 
-	public static final int	DIR		= 2;
-
-	public static final int	ALL		= FileTypeFilter.FILE | FileTypeFilter.DIR;
-
-	private int				type;
-
-	public FileTypeFilter() {
-		this(FileTypeFilter.ALL);
+	public FileTypeFilter(FileType type) {
+		this.type = type;
 	}
 
-	public FileTypeFilter(int filter) {
-		this.type = filter;
-	}
-
-	public int getType() {
+	public FileType getType() {
 		return this.type;
 	}
 
-	public void setType(int type) {
+	public void setType(FileType type) {
 		this.type = type;
 	}
 
 	public boolean accept(File pathname) {
-		if (((this.type & FileTypeFilter.FILE) == FileTypeFilter.FILE) && (pathname.isFile())) {
+		if ((this.type == FileType.FILE) && (pathname.isFile())) {
 			return true;
 		}
-		if (((this.type & FileTypeFilter.DIR) == FileTypeFilter.DIR) && (pathname.isDirectory())) {
+		if ((this.type == FileType.DIRECTORY) && (pathname.isDirectory())) {
 			return true;
 		}
 		return false;
+	}
+
+	public static enum FileType {
+		DIRECTORY, FILE;
 	}
 
 }

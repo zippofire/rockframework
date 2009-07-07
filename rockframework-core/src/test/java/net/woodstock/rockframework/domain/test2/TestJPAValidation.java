@@ -8,7 +8,7 @@ public class TestJPAValidation extends TestCase {
 
 	private GenericBusiness getBusiness() {
 		return new AbstractJPABusiness() {
-
+			//
 		};
 	}
 

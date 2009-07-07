@@ -51,23 +51,13 @@ import org.xml.sax.SAXException;
 
 public class XmlDocument extends DocumentWrapper {
 
-	private static final long		serialVersionUID				= -3892243357826950608L;
+	private static final long		serialVersionUID	= -3892243357826950608L;
 
-	public static final String		DEFAULT_NS_PREFIX				= XMLConstants.DEFAULT_NS_PREFIX;
+	public static final String		DEFAULT_NS_PREFIX	= XMLConstants.DEFAULT_NS_PREFIX;
 
-	public static final String		NULL_NS_URI						= XMLConstants.NULL_NS_URI;
+	public static final String		XML_NS_PREFIX		= XMLConstants.XML_NS_PREFIX;
 
-	public static final String		RELAXNG_NS_URI					= XMLConstants.RELAXNG_NS_URI;
-
-	public static final String		W3C_XML_SCHEMA_INSTANCE_NS_URI	= XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI;
-
-	public static final String		W3C_XML_SCHEMA_NS_URI			= XMLConstants.W3C_XML_SCHEMA_NS_URI;
-
-	public static final String		W3C_XPATH_DATATYPE_NS_URI		= XMLConstants.W3C_XPATH_DATATYPE_NS_URI;
-
-	public static final String		XML_NS_PREFIX					= XMLConstants.XML_NS_PREFIX;
-
-	public static final String		XML_NS_URI						= XMLConstants.XML_NS_URI;
+	public static final String		XML_NS_URI			= XMLConstants.XML_NS_URI;
 
 	static DocumentBuilderFactory	factory;
 

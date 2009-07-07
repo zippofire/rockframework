@@ -69,15 +69,25 @@ public class EntityInterceptor extends BaseInterceptor {
 							Entity<?> entity = (Entity<?>) obj;
 							BeanInfo beanInfo = BeanInfo.getBeanInfo(entity.getClass());
 							FieldInfo fieldInfo = beanInfo.getFieldInfo(ENTITY_ID);
-							Object fieldValue = fieldInfo.getFieldValue(entity);
-							if (fieldValue == null) {
-								Class<?> clazz = fieldInfo.getFieldType();
+							Class<?> clazz = fieldInfo.getFieldType();
+
+							try {
 								Constructor<?> contructor = clazz
 										.getConstructor(new Class[] { String.class });
-								fieldValue = contructor.newInstance(new Object[] { value });
+								Object fieldValue = contructor.newInstance(new Object[] { value });
+
 								this.getLogger().info(
 										"Setting entity ID " + entityName + "[" + fieldValue + "]");
 								fieldInfo.setFieldValue(entity, fieldValue);
+							} catch (NoSuchMethodException e) {
+								this.getLogger().warn(
+										"Could not find constructor " + entity.getClass().getCanonicalName()
+												+ "(String). Parameter not setted");
+							} catch (Exception e) {
+								this.getLogger().warn(
+										"Error in constructor " + entity.getClass().getCanonicalName()
+												+ "(String)");
+								this.getLogger().warn(e.getMessage(), e);
 							}
 						}
 					} catch (NoSuchPropertyException e) {

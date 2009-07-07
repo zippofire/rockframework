@@ -31,21 +31,23 @@ import org.apache.struts.action.ActionMapping;
 
 public abstract class BaseAction<F extends ActionForm> extends Action {
 
-	public static final String	ERROR		= "error";
+	public static final String					ERROR			= "error";
 
-	public static final String	INDEX		= "index";
+	public static final String					INDEX			= "index";
 
-	public static final String	INPUT		= "input";
+	public static final String					INPUT			= "input";
 
-	public static final String	LOGIN		= "login";
+	public static final String					LOGIN			= "login";
 
-	public static final String	LOGOUT		= "logout";
+	public static final String					LOGOUT			= "logout";
 
-	public static final String	NO_ACCESS	= "no-access";
+	public static final String					NO_ACCESS		= "no-access";
 
-	public static final String	NO_LOGIN	= "no-login";
+	public static final String					NO_LOGIN		= "no-login";
 
-	public static final String	SUCCESS		= "success";
+	public static final String					SUCCESS			= "success";
+
+	private static ThreadLocal<ActionMapping>	currentMapping	= new ThreadLocal<ActionMapping>();
 
 	@Override
 	public final ActionForward execute(ActionMapping mapping, ActionForm form, ServletRequest request,
@@ -57,23 +59,20 @@ public abstract class BaseAction<F extends ActionForm> extends Action {
 	@SuppressWarnings("unchecked")
 	public final ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		Object o = this.execute((F) form, request, response);
+		BaseAction.currentMapping.set(mapping);
+		StrutsResult result = this.execute((F) form, request, response);
+		return result.getForward(mapping);
+	}
 
-		if (o instanceof StrutsResult) {
-			StrutsResult result = (StrutsResult) o;
-			return result.getForward(mapping);
-		} else if (o instanceof String) {
-			return mapping.findForward((String) o);
-		}
-
-		throw new IllegalArgumentException("Invalid result type " + o.getClass().getCanonicalName());
+	protected ActionMapping getMapping() {
+		return BaseAction.currentMapping.get();
 	}
 
 	protected Log getLogger() {
 		return SysLogger.getLogger();
 	}
 
-	protected abstract Object execute(F form, HttpServletRequest request, HttpServletResponse response)
+	protected abstract StrutsResult execute(F form, HttpServletRequest request, HttpServletResponse response)
 			throws Exception;
 
 }

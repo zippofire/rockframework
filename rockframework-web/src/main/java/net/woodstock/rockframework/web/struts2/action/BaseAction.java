@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import net.woodstock.rockframework.sys.SysLogger;
+import net.woodstock.rockframework.web.struts2.interceptor.PostOnlyInterceptor;
 
 import org.apache.commons.logging.Log;
 import org.apache.struts2.interceptor.ServletRequestAware;
@@ -40,6 +41,8 @@ public abstract class BaseAction extends ActionSupport implements ServletRequest
 	public static final String	INDEX				= "index";
 
 	public static final String	INPUT				= Action.INPUT;
+
+	public static final String	INVALID_METHOD		= PostOnlyInterceptor.INVALID_METHOD;
 
 	public static final String	LOGIN				= Action.LOGIN;
 

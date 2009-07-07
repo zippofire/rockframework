@@ -16,6 +16,7 @@
  */
 package net.woodstock.rockframework.domain.service;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 
@@ -23,9 +24,21 @@ import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.BusinessException;
 import net.woodstock.rockframework.domain.persistence.PersistenceException;
 
-public interface GenericService extends SimpleService {
+public interface GenericService extends Service {
 
-	<E extends Entity<?>> Collection<E> listByExample(E entity, Map<String, Object> options) throws ServiceException,
+	void save(Entity<?> entity) throws ServiceException, BusinessException, PersistenceException;
+
+	void update(Entity<?> entity) throws ServiceException, BusinessException, PersistenceException;
+
+	void delete(Entity<?> entity) throws ServiceException, BusinessException, PersistenceException;
+
+	<ID extends Serializable, E extends Entity<ID>> E get(Class<E> clazz, ID id) throws ServiceException,
 			BusinessException, PersistenceException;
+
+	<E extends Entity<?>> Collection<E> listAll(Class<E> clazz, String order) throws ServiceException,
+			BusinessException, PersistenceException;
+
+	<E extends Entity<?>> Collection<E> listByExample(E entity, Map<String, Object> options)
+			throws ServiceException, BusinessException, PersistenceException;
 
 }

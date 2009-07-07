@@ -18,9 +18,7 @@ package net.woodstock.rockframework.web.utils;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.io.Writer;
+import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -113,27 +111,6 @@ public class MultPartForm {
 		return false;
 	}
 
-	public void printParameters(OutputStream output) throws IOException {
-		Object[] keys = this.parameters.keySet().toArray();
-		for (Object k : keys) {
-			output.write((k.toString() + " = " + this.parameters.get(k) + "\n").getBytes());
-		}
-	}
-
-	public void printParameters(PrintStream output) {
-		Object[] keys = this.parameters.keySet().toArray();
-		for (Object k : keys) {
-			output.print(k.toString() + " = " + this.parameters.get(k) + "\n");
-		}
-	}
-
-	public void printParameters(Writer writer) throws IOException {
-		Object[] keys = this.parameters.keySet().toArray();
-		for (Object k : keys) {
-			writer.write(k.toString() + " = " + this.parameters.get(k) + "\n");
-		}
-	}
-
 	public void writeAll(String dir) throws Exception {
 		Object[] keys = this.files.keySet().toArray();
 		for (Object k : keys) {
@@ -156,6 +133,46 @@ public class MultPartForm {
 			FileItem item = this.files.get(field);
 			item.write(new File(dir + File.separator + name));
 		}
+	}
+
+	public static String getParameter(HttpServletRequest request, String parameter)
+			throws FileUploadException {
+		String value = null;
+		RequestContext requestContext = new ServletRequestContext(request);
+
+		if (FileUploadBase.isMultipartContent(requestContext)) {
+			List<?> items = MultPartForm.upload.parseRequest(requestContext);
+			Iterator<?> i = items.iterator();
+			while (i.hasNext()) {
+				FileItem item = (FileItem) i.next();
+				if ((item.isFormField()) && (item.getFieldName().equals(parameter))) {
+					value = item.getString();
+					break;
+				}
+			}
+		} else {
+			value = request.getParameter(parameter);
+		}
+		return value;
+	}
+
+	public static InputStream getFile(HttpServletRequest request, String parameter)
+			throws FileUploadException, IOException {
+		InputStream value = null;
+		RequestContext requestContext = new ServletRequestContext(request);
+
+		if (FileUploadBase.isMultipartContent(requestContext)) {
+			List<?> items = MultPartForm.upload.parseRequest(requestContext);
+			Iterator<?> i = items.iterator();
+			while (i.hasNext()) {
+				FileItem item = (FileItem) i.next();
+				if ((!item.isFormField()) && (item.getFieldName().equals(parameter))) {
+					value = item.getInputStream();
+					break;
+				}
+			}
+		}
+		return value;
 	}
 
 	static {
