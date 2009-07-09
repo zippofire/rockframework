@@ -27,14 +27,22 @@ import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import net.woodstock.rockframework.domain.pojo.KeyValue;
 
 public abstract class StringUtils {
 
-	public static final String	BLANK				= "";
+	public static final String						BLANK				= "";
 
-	public static final char	DEFAULT_FORMAT_CHAR	= '#';
+	public static final char						DEFAULT_FORMAT_CHAR	= '#';
+
+	private static List<KeyValue<String, Pattern>>	accents;
 
 	private StringUtils() {
 		//
@@ -320,4 +328,35 @@ public abstract class StringUtils {
 		return s.toString();
 	}
 
+	public static String removeAccents(String s) {
+		if (StringUtils.accents == null) {
+			StringUtils.accents = new ArrayList<KeyValue<String, Pattern>>();
+			//
+			StringUtils.accents.add(new KeyValue<String, Pattern>("a", Pattern.compile("[âãáàä]")));
+			StringUtils.accents.add(new KeyValue<String, Pattern>("e", Pattern.compile("[éèêë]")));
+			StringUtils.accents.add(new KeyValue<String, Pattern>("i", Pattern.compile("[íìîï]")));
+			StringUtils.accents.add(new KeyValue<String, Pattern>("o", Pattern.compile("[óòôõö]")));
+			StringUtils.accents.add(new KeyValue<String, Pattern>("u", Pattern.compile("[úùûü]")));
+			//
+			StringUtils.accents.add(new KeyValue<String, Pattern>("A", Pattern.compile("[ÂÃÁÀÄ]")));
+			StringUtils.accents.add(new KeyValue<String, Pattern>("E", Pattern.compile("[ÉÈÊË]")));
+			StringUtils.accents.add(new KeyValue<String, Pattern>("I", Pattern.compile("[ÍÌÎÏ]")));
+			StringUtils.accents.add(new KeyValue<String, Pattern>("O", Pattern.compile("[ÓÒÔÕÖ]")));
+			StringUtils.accents.add(new KeyValue<String, Pattern>("U", Pattern.compile("[ÚÙÛÜ]")));
+			//
+			StringUtils.accents.add(new KeyValue<String, Pattern>("c", Pattern.compile("[ç]")));
+			StringUtils.accents.add(new KeyValue<String, Pattern>("C", Pattern.compile("[Ç]")));
+		}
+
+		String removed = s;
+
+		for (KeyValue<String, Pattern> keyValue : StringUtils.accents) {
+			String character = keyValue.getKey();
+			Pattern pattern = keyValue.getValue();
+			Matcher matcher = pattern.matcher(removed);
+			removed = matcher.replaceAll(character);
+		}
+		return removed;
+
+	}
 }
