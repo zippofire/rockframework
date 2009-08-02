@@ -27,22 +27,17 @@ import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.Normalizer;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import net.woodstock.rockframework.domain.pojo.KeyValue;
 
 public abstract class StringUtils {
 
-	public static final String						BLANK				= "";
+	public static final String	BLANK				= "";
 
-	public static final char						DEFAULT_FORMAT_CHAR	= '#';
+	public static final char	DEFAULT_FORMAT_CHAR	= '#';
 
-	private static List<KeyValue<String, Pattern>>	accents;
+	private static final String	ACCENT_PATTERN		= "[^\\p{ASCII}]";
 
 	private StringUtils() {
 		//
@@ -73,7 +68,8 @@ public abstract class StringUtils {
 		for (int i = 0; i < array.length; i++) {
 			if (i == 0) {
 				builder.append(Character.toLowerCase(array[i].charAt(0)));
-			} else {
+			}
+			else {
 				builder.append(Character.toUpperCase(array[i].charAt(0)));
 			}
 			builder.append(array[i].substring(1));
@@ -89,7 +85,8 @@ public abstract class StringUtils {
 		for (int i = 0; i < array.length; i++) {
 			if (i == 0) {
 				builder.append(Character.toLowerCase(array[i].charAt(0)));
-			} else {
+			}
+			else {
 				builder.append(Character.toUpperCase(array[i].charAt(0)));
 			}
 			builder.append(array[i].substring(1));
@@ -107,14 +104,17 @@ public abstract class StringUtils {
 			boolean capitalize = false;
 			if (i == 0) {
 				capitalize = true;
-			} else if ((i > 0) && (chars[i - 1] == ' ')) {
+			}
+			else if ((i > 0) && (chars[i - 1] == ' ')) {
 				capitalize = true;
 			}
 			if ((capitalize) && (Character.isLetter(chars[i]))) {
 				b.append(Character.toUpperCase(chars[i]));
-			} else if (Character.isLetter(chars[i])) {
+			}
+			else if (Character.isLetter(chars[i])) {
 				b.append(Character.toLowerCase(chars[i]));
-			} else {
+			}
+			else {
 				b.append(chars[i]);
 			}
 		}
@@ -162,7 +162,8 @@ public abstract class StringUtils {
 		for (char element : charsFormat) {
 			if (element != c) {
 				s.append(element);
-			} else {
+			}
+			else {
 				s.append(charsValue[index++]);
 			}
 		}
@@ -328,35 +329,7 @@ public abstract class StringUtils {
 		return s.toString();
 	}
 
-	public static String removeAccents(String s) {
-		if (StringUtils.accents == null) {
-			StringUtils.accents = new ArrayList<KeyValue<String, Pattern>>();
-			//
-			StringUtils.accents.add(new KeyValue<String, Pattern>("a", Pattern.compile("[‚„·‡‰]")));
-			StringUtils.accents.add(new KeyValue<String, Pattern>("e", Pattern.compile("[ÈËÍÎ]")));
-			StringUtils.accents.add(new KeyValue<String, Pattern>("i", Pattern.compile("[ÌÏÓÔ]")));
-			StringUtils.accents.add(new KeyValue<String, Pattern>("o", Pattern.compile("[ÛÚÙıˆ]")));
-			StringUtils.accents.add(new KeyValue<String, Pattern>("u", Pattern.compile("[˙˘˚¸]")));
-			//
-			StringUtils.accents.add(new KeyValue<String, Pattern>("A", Pattern.compile("[¬√¡¿ƒ]")));
-			StringUtils.accents.add(new KeyValue<String, Pattern>("E", Pattern.compile("[…» À]")));
-			StringUtils.accents.add(new KeyValue<String, Pattern>("I", Pattern.compile("[ÕÃŒœ]")));
-			StringUtils.accents.add(new KeyValue<String, Pattern>("O", Pattern.compile("[”“‘’÷]")));
-			StringUtils.accents.add(new KeyValue<String, Pattern>("U", Pattern.compile("[⁄Ÿ€‹]")));
-			//
-			StringUtils.accents.add(new KeyValue<String, Pattern>("c", Pattern.compile("[Á]")));
-			StringUtils.accents.add(new KeyValue<String, Pattern>("C", Pattern.compile("[«]")));
-		}
-
-		String removed = s;
-
-		for (KeyValue<String, Pattern> keyValue : StringUtils.accents) {
-			String character = keyValue.getKey();
-			Pattern pattern = keyValue.getValue();
-			Matcher matcher = pattern.matcher(removed);
-			removed = matcher.replaceAll(character);
-		}
-		return removed;
-
+	public static String normalize(String s) {
+		return Normalizer.normalize(s, Normalizer.Form.NFD).replaceAll(StringUtils.ACCENT_PATTERN, StringUtils.BLANK);
 	}
 }

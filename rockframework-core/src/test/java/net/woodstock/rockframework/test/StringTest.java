@@ -1,10 +1,14 @@
 package net.woodstock.rockframework.test;
 
+import java.text.Normalizer;
+
+import junit.framework.TestCase;
+
 import net.woodstock.rockframework.utils.Base64Utils;
 
-public class StringTest {
+public class StringTest extends TestCase {
 
-	public void test1() throws Exception {
+	public void xtest1() throws Exception {
 		// FileReader reader = new FileReader("D:/temp/teste.txt");
 		// Scanner scanner = new Scanner(reader);
 		//
@@ -20,6 +24,14 @@ public class StringTest {
 		// reader.close();
 
 		System.out.println(Base64Utils.toBase64("37893432349"));
+	}
+
+	public void test2() throws Exception {
+		String s = " mária júnior ";
+
+		s = Normalizer.normalize(s, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+
+		System.out.println("'" + s + "'");
 	}
 
 }

@@ -18,6 +18,7 @@ package net.woodstock.rockframework.util;
 
 import java.text.Collator;
 import java.util.Comparator;
+import java.util.Locale;
 
 public class StringComparator implements Comparator<String> {
 
@@ -25,9 +26,9 @@ public class StringComparator implements Comparator<String> {
 
 	private Collator				collator;
 
-	private StringComparator() {
+	private StringComparator(Locale locale) {
 		super();
-		this.collator = Collator.getInstance();
+		this.collator = Collator.getInstance(locale);
 	}
 
 	public int compare(String o1, String o2) {
@@ -35,10 +36,14 @@ public class StringComparator implements Comparator<String> {
 	}
 
 	public static StringComparator getInstance() {
+		return StringComparator.getInstance(Locale.getDefault());
+	}
+
+	public static StringComparator getInstance(Locale locale) {
 		if (StringComparator.comparator == null) {
 			synchronized (StringComparator.class) {
 				if (StringComparator.comparator == null) {
-					StringComparator.comparator = new StringComparator();
+					StringComparator.comparator = new StringComparator(locale);
 				}
 			}
 		}

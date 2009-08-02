@@ -12,6 +12,7 @@ public class TestFoo extends TestCase {
 		foo.setDate(DateUtils.parse("00/00/0000", "dd/MM/yyyy"));
 
 		GenericBusiness business = new AbstractBusiness() {
+			//
 		};
 		business.validateCreateWithError(foo);
 	}

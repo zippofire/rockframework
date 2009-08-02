@@ -9,7 +9,7 @@ import net.woodstock.rockframework.utils.StringUtils;
 public class ColatorTest extends TestCase {
 
 	public void test1() throws Exception {
-		System.out.println(StringUtils.removeAccents("Júnior"));
+		System.out.println(StringUtils.normalize("Júnior"));
 	}
 
 	public void xtest2() throws Exception {

@@ -37,6 +37,7 @@ public abstract class PojoUtils {
 		return PojoUtils.hasNotNullAttribute(p, false);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static boolean hasNotNullAttribute(Pojo p, boolean includeCollections)
 			throws NoSuchMethodException, IllegalArgumentException, IllegalAccessException,
 			InvocationTargetException {
