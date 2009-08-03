@@ -18,18 +18,18 @@ package net.woodstock.rockframework.domain.pojo.converter.text.impl;
 
 import net.woodstock.rockframework.domain.pojo.converter.text.TextCollection;
 import net.woodstock.rockframework.domain.pojo.converter.text.TextField;
-import net.woodstock.rockframework.util.FieldInfo;
+import net.woodstock.rockframework.reflection.PropertyDescriptor;
 
 abstract class TextAttributeConverterBase<T> implements TextAttributeConverter<T> {
 
 	protected static final String	MESSAGE_ERROR_CONVERTER_SIZE	= "converter.exception.size";
 
-	protected int getSize(FieldInfo f) {
-		if (f.isAnnotationPresent(TextCollection.class)) {
-			return f.getAnnotation(TextCollection.class).itemSize();
+	protected int getSize(PropertyDescriptor p) {
+		if (p.isAnnotationPresent(TextCollection.class)) {
+			return p.getAnnotation(TextCollection.class).itemSize();
 		}
-		if (f.isAnnotationPresent(TextField.class)) {
-			return f.getAnnotation(TextField.class).size();
+		if (p.isAnnotationPresent(TextField.class)) {
+			return p.getAnnotation(TextField.class).size();
 		}
 		return -1;
 	}

@@ -16,12 +16,12 @@
  */
 package net.woodstock.rockframework.domain.pojo.converter.text.impl;
 
-import net.woodstock.rockframework.util.FieldInfo;
+import net.woodstock.rockframework.reflection.PropertyDescriptor;
 
 public interface TextAttributeConverter<T> {
 
-	public T fromText(String text, FieldInfo fieldInfo);
+	public T fromText(String text, PropertyDescriptor propertyDescriptor);
 
-	public String toText(T o, FieldInfo fieldInfo);
+	public String toText(T o, PropertyDescriptor propertyDescriptor);
 
 }

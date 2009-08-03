@@ -18,12 +18,13 @@ package net.woodstock.rockframework.domain.pojo.converter.token.impl;
 
 import net.woodstock.rockframework.domain.Pojo;
 import net.woodstock.rockframework.domain.pojo.converter.token.TokenIgnore;
-import net.woodstock.rockframework.util.BeanInfo;
-import net.woodstock.rockframework.util.FieldInfo;
+import net.woodstock.rockframework.reflection.BeanDescriptor;
+import net.woodstock.rockframework.reflection.PropertyDescriptor;
+import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
 
 class PojoConverter extends TokenAttributeConverterBase<Pojo> {
 
-	public Pojo fromText(String text, FieldInfo fieldInfo) {
+	public Pojo fromText(String text, PropertyDescriptor propertyDescriptor) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -31,22 +32,23 @@ class PojoConverter extends TokenAttributeConverterBase<Pojo> {
 	public Pojo fromText(Class<? extends Pojo> clazz, char delimiter, String text) {
 		try {
 			Pojo pojo = clazz.newInstance();
-			BeanInfo beanInfo = BeanInfo.getBeanInfo(pojo.getClass());
+			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
+					pojo.getClass());
 			String[] values = text.split(new Character(delimiter).toString());
 			int index = 0;
-			for (FieldInfo fieldInfo : beanInfo.getFieldsInfo()) {
-				if (fieldInfo.isAnnotationPresent(TokenIgnore.class)) {
+			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
+				if (propertyDescriptor.isAnnotationPresent(TokenIgnore.class)) {
 					continue;
 				}
 
 				String s = values[index++];
 
-				TokenAttributeConverter converter = TokenConverterBase.getAttributeConverter(fieldInfo
-						.getFieldType());
+				TokenAttributeConverter converter = TokenConverterBase
+						.getAttributeConverter(propertyDescriptor.getType());
 
-				Object value = converter.fromText(s, fieldInfo);
+				Object value = converter.fromText(s, propertyDescriptor);
 
-				fieldInfo.setFieldValue(pojo, value);
+				propertyDescriptor.setValue(pojo, value);
 			}
 			return pojo;
 		} catch (Exception e) {
@@ -58,10 +60,12 @@ class PojoConverter extends TokenAttributeConverterBase<Pojo> {
 	public String toText(Pojo p, char delimiter) {
 		try {
 			StringBuilder builder = new StringBuilder();
-			BeanInfo beanInfo = BeanInfo.getBeanInfo(p.getClass());
+			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
+					p.getClass());
+
 			boolean first = true;
-			for (FieldInfo fieldInfo : beanInfo.getFieldsInfo()) {
-				if (fieldInfo.isAnnotationPresent(TokenIgnore.class)) {
+			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
+				if (propertyDescriptor.isAnnotationPresent(TokenIgnore.class)) {
 					continue;
 				}
 				if (!first) {
@@ -69,12 +73,12 @@ class PojoConverter extends TokenAttributeConverterBase<Pojo> {
 				} else {
 					first = false;
 				}
-				Object value = fieldInfo.getFieldValue(p);
+				Object value = propertyDescriptor.getValue(p);
 				TokenAttributeConverter attributeConverter = TokenConverterBase.getNullAttributeConverter();
 				if (value != null) {
 					attributeConverter = TokenConverterBase.getAttributeConverter(value.getClass());
 				}
-				String s = attributeConverter.toText(value, fieldInfo);
+				String s = attributeConverter.toText(value, propertyDescriptor);
 				builder.append(s);
 			}
 			return builder.toString();
@@ -83,7 +87,7 @@ class PojoConverter extends TokenAttributeConverterBase<Pojo> {
 		}
 	}
 
-	public String toText(Pojo p, FieldInfo fieldInfo) {
+	public String toText(Pojo p, PropertyDescriptor propertyDescriptor) {
 		throw new UnsupportedOperationException();
 	}
 

@@ -17,18 +17,18 @@
 package net.woodstock.rockframework.domain.pojo.converter.token.impl;
 
 import net.woodstock.rockframework.domain.pojo.converter.token.TokenNumber;
-import net.woodstock.rockframework.util.FieldInfo;
+import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.utils.NumberUtils;
 import net.woodstock.rockframework.utils.StringUtils;
 
 class FloatConverter extends TokenAttributeConverterBase<Float> {
 
-	public Float fromText(String text, FieldInfo fieldInfo) {
+	public Float fromText(String text, PropertyDescriptor propertyDescriptor) {
 		try {
 			Float f = null;
 			if (!StringUtils.isEmpty(text)) {
-				if (fieldInfo.isAnnotationPresent(TokenNumber.class)) {
-					String format = fieldInfo.getAnnotation(TokenNumber.class).pattern();
+				if (propertyDescriptor.isAnnotationPresent(TokenNumber.class)) {
+					String format = propertyDescriptor.getAnnotation(TokenNumber.class).pattern();
 					f = new Float(NumberUtils.parse(text, format).floatValue());
 				} else {
 					f = new Float(text);
@@ -40,12 +40,12 @@ class FloatConverter extends TokenAttributeConverterBase<Float> {
 		}
 	}
 
-	public String toText(Float f, FieldInfo fieldInfo) {
+	public String toText(Float f, PropertyDescriptor propertyDescriptor) {
 		try {
 			String s = StringUtils.BLANK;
 			if (f != null) {
-				if (fieldInfo.isAnnotationPresent(TokenNumber.class)) {
-					String format = fieldInfo.getAnnotation(TokenNumber.class).pattern();
+				if (propertyDescriptor.isAnnotationPresent(TokenNumber.class)) {
+					String format = propertyDescriptor.getAnnotation(TokenNumber.class).pattern();
 					s = NumberUtils.format(f.floatValue(), format);
 				} else {
 					s = f.toString();

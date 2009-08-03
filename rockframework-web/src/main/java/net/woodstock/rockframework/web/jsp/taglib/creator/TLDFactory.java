@@ -16,8 +16,9 @@
  */
 package net.woodstock.rockframework.web.jsp.taglib.creator;
 
-import net.woodstock.rockframework.util.BeanInfo;
-import net.woodstock.rockframework.util.FieldInfo;
+import net.woodstock.rockframework.reflection.BeanDescriptor;
+import net.woodstock.rockframework.reflection.PropertyDescriptor;
+import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
 import net.woodstock.rockframework.xml.dom.XmlDocument;
 import net.woodstock.rockframework.xml.dom.XmlElement;
 
@@ -44,17 +45,17 @@ public abstract class TLDFactory {
 		root.addElement("body-content", type);
 		root.addElement("tag-class", clazz.getCanonicalName());
 
-		BeanInfo beanInfo = BeanInfo.getBeanInfo(clazz);
+		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(clazz);
 
-		for (FieldInfo fieldInfo : beanInfo.getFieldsInfo()) {
-			if (!fieldInfo.isAnnotationPresent(TLDAttribute.class)) {
+		for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
+			if (!propertyDescriptor.isAnnotationPresent(TLDAttribute.class)) {
 				continue;
 			}
 
-			TLDAttribute tldAttribute = fieldInfo.getAnnotation(TLDAttribute.class);
+			TLDAttribute tldAttribute = propertyDescriptor.getAnnotation(TLDAttribute.class);
 			XmlElement e = root.addElement("attribute");
 
-			e.addElement("name", fieldInfo.getFieldName());
+			e.addElement("name", propertyDescriptor.getName());
 			e.addElement("rtexprvalue", tldAttribute.rtexprvalue());
 			e.addElement("required", tldAttribute.required());
 		}

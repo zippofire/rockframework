@@ -56,7 +56,6 @@ public class Entry<K, V> implements Map.Entry<K, V>, Serializable {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public boolean equals(Object o) {
 		if (o == null) {
 			return false;

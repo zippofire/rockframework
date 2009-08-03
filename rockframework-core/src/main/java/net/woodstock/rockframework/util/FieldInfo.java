@@ -22,7 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-public class FieldInfo {
+class FieldInfo {
 
 	private BeanInfo	beanInfo;
 

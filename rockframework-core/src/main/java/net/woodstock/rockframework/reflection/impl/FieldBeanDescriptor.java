@@ -43,9 +43,8 @@ class FieldBeanDescriptor extends AbstractBeanDescriptor {
 				try {
 					PropertyDescriptor property = new FieldPropertyDescriptor(this, field);
 					this.getProperties().add(property);
-				}
-				catch (NoSuchMethodException e) {
-					this.getLogger().info(e.getMessage(), e);
+				} catch (NoSuchMethodException e) {
+					// this.getLogger().info(e.getMessage(), e);
 				}
 			}
 			c = c.getSuperclass();

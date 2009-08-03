@@ -23,8 +23,9 @@ import java.util.Comparator;
 import java.util.Date;
 
 import net.woodstock.rockframework.domain.Pojo;
-import net.woodstock.rockframework.util.BeanInfo;
-import net.woodstock.rockframework.util.FieldInfo;
+import net.woodstock.rockframework.reflection.BeanDescriptor;
+import net.woodstock.rockframework.reflection.PropertyDescriptor;
+import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
 
 public abstract class PojoUtils {
 
@@ -32,22 +33,21 @@ public abstract class PojoUtils {
 		//
 	}
 
-	public static boolean hasNotNullAttribute(Pojo p) throws NoSuchMethodException, IllegalArgumentException,
-			IllegalAccessException, InvocationTargetException {
+	public static boolean hasNotNullAttribute(Pojo p) throws NoSuchMethodException, IllegalAccessException,
+			InvocationTargetException {
 		return PojoUtils.hasNotNullAttribute(p, false);
 	}
 
-	@SuppressWarnings("unchecked")
 	public static boolean hasNotNullAttribute(Pojo p, boolean includeCollections)
-			throws NoSuchMethodException, IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
+			throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		if (p == null) {
 			return false;
 		}
 
-		BeanInfo beanInfo = BeanInfo.getBeanInfo(p.getClass());
-		for (FieldInfo fieldInfo : beanInfo.getFieldsInfo()) {
-			Object tmp = fieldInfo.getFieldValue(p);
+		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
+				p.getClass());
+		for (PropertyDescriptor pd : beanDescriptor.getProperties()) {
+			Object tmp = pd.getValue(p);
 			if (tmp != null) {
 				if (PojoUtils.isNotNull(tmp, includeCollections)) {
 					return true;
@@ -77,7 +77,7 @@ public abstract class PojoUtils {
 	}
 
 	private static boolean isNotNull(Object o, boolean includeCollections) throws NoSuchMethodException,
-			IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+			IllegalAccessException, InvocationTargetException {
 		if (o instanceof Boolean) {
 			return true;
 		}
@@ -102,37 +102,36 @@ public abstract class PojoUtils {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T extends Pojo> int compareTo(T t1, T t2, String fieldName) throws NoSuchMethodException,
-			IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchFieldException {
-		BeanInfo beanInfo = BeanInfo.getBeanInfo(t1.getClass());
-		FieldInfo fieldInfo = beanInfo.getFieldInfo(fieldName);
-		Object o1 = fieldInfo.getFieldValue(t1);
-		Object o2 = fieldInfo.getFieldValue(t2);
+	public static <T extends Pojo> int compareTo(T t1, T t2, String fieldName) {
+		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
+				t1.getClass());
+		PropertyDescriptor propertyDescriptor = beanDescriptor.getProperty(fieldName);
+		Object o1 = propertyDescriptor.getValue(t1);
+		Object o2 = propertyDescriptor.getValue(t2);
 		return ((Comparable) o1).compareTo(o2);
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T extends Pojo> Comparator<T> createComparator(T pojo, String fieldName)
-			throws IllegalArgumentException, NoSuchFieldException {
+	public static <T extends Pojo> Comparator<T> createComparator(T pojo, String fieldName) {
 		return new PojoComparator(pojo.getClass(), fieldName);
 	}
 
 	static class PojoComparator<T extends Pojo> implements Comparator<T> {
 
-		private FieldInfo	fieldInfo;
+		private PropertyDescriptor	propertyDescriptor;
 
-		public PojoComparator(Class<? extends Pojo> clazz, String fieldName) throws IllegalArgumentException,
-				NoSuchFieldException {
+		public PojoComparator(Class<? extends Pojo> clazz, String fieldName) {
 			super();
-			BeanInfo beanInfo = BeanInfo.getBeanInfo(clazz);
-			this.fieldInfo = beanInfo.getFieldInfo(fieldName);
+			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
+					clazz);
+			this.propertyDescriptor = beanDescriptor.getProperty(fieldName);
 		}
 
 		@SuppressWarnings("unchecked")
 		public int compare(T t1, T t2) {
 			try {
-				Object o1 = this.fieldInfo.getFieldValue(t1);
-				Object o2 = this.fieldInfo.getFieldValue(t2);
+				Object o1 = this.propertyDescriptor.getValue(t1);
+				Object o2 = this.propertyDescriptor.getValue(t2);
 				return ((Comparable) o1).compareTo(o2);
 			} catch (Exception e) {
 				throw new RuntimeException(e);

@@ -49,7 +49,7 @@ public abstract class LDAPRestriction implements Serializable {
 
 	public abstract String getRestriction();
 
-	// Static(Like Hibernate Restrictions)
+	// Static(Like Hibernate)
 	public static LDAPRestriction contains(String propertyName) {
 		LDAPRestriction restriction = new LDAPRestrictionContains(propertyName);
 		return restriction;

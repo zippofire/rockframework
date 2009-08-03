@@ -20,11 +20,11 @@ import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import org.apache.commons.logging.Log;
-
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.sys.SysLogger;
+
+import org.apache.commons.logging.Log;
 
 abstract class AbstractBeanDescriptor implements BeanDescriptor {
 
@@ -42,7 +42,7 @@ abstract class AbstractBeanDescriptor implements BeanDescriptor {
 	public abstract void init();
 
 	public String getName() {
-		return this.type.getName();
+		return this.type.getSimpleName();
 	}
 
 	@Override
@@ -87,14 +87,15 @@ abstract class AbstractBeanDescriptor implements BeanDescriptor {
 		return this.type.getAnnotations();
 	}
 
-	@Override
-	public String toString() {
-		return this.type.toString();
-	}
-
 	// Logger
 	protected Log getLogger() {
 		return SysLogger.getLogger();
+	}
+
+	// Object
+	@Override
+	public String toString() {
+		return this.getName();
 	}
 
 }

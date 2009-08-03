@@ -17,12 +17,12 @@
 package net.woodstock.rockframework.domain.utils;
 
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
 import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.util.BeanInfo;
-import net.woodstock.rockframework.util.FieldInfo;
+import net.woodstock.rockframework.reflection.BeanDescriptor;
+import net.woodstock.rockframework.reflection.PropertyDescriptor;
+import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
 import net.woodstock.rockframework.utils.ObjectUtils;
 
 public abstract class EntityUtils {
@@ -33,8 +33,7 @@ public abstract class EntityUtils {
 		//
 	}
 
-	public static boolean equals(Entity<?> entity1, Entity<?> entity2) throws NoSuchMethodException,
-			IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+	public static boolean equals(Entity<?> entity1, Entity<?> entity2) {
 		if ((entity1 == null) || (entity2 == null)) {
 			return false;
 		}
@@ -56,13 +55,14 @@ public abstract class EntityUtils {
 			return false;
 		}
 
-		BeanInfo beanInfo = BeanInfo.getBeanInfo(entity1.getClass());
-		Collection<FieldInfo> fields = beanInfo.getFieldsInfo();
+		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
+				entity1.getClass());
+		Collection<PropertyDescriptor> properties = beanDescriptor.getProperties();
 
-		for (FieldInfo field : fields) {
-			if (EntityUtils.isValidType(field.getFieldType())) {
-				Object v1 = field.getFieldValue(entity1);
-				Object v2 = field.getFieldValue(entity2);
+		for (PropertyDescriptor property : properties) {
+			if (EntityUtils.isValidType(property.getType())) {
+				Object v1 = property.getValue(entity1);
+				Object v2 = property.getValue(entity2);
 
 				if (v1 != null) {
 					if (v2 == null) {
@@ -79,8 +79,7 @@ public abstract class EntityUtils {
 		return true;
 	}
 
-	public static int hashCode(Entity<?> entity) throws NoSuchMethodException, IllegalArgumentException,
-			IllegalAccessException, InvocationTargetException {
+	public static int hashCode(Entity<?> entity) {
 		Serializable id = entity.getId();
 
 		if (id != null) {
@@ -88,12 +87,14 @@ public abstract class EntityUtils {
 		}
 
 		int result = 1;
-		BeanInfo beanInfo = BeanInfo.getBeanInfo(entity.getClass());
-		Collection<FieldInfo> fields = beanInfo.getFieldsInfo();
 
-		for (FieldInfo field : fields) {
-			if (EntityUtils.isValidType(field.getFieldType())) {
-				Object value = field.getFieldValue(entity);
+		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
+				entity.getClass());
+		Collection<PropertyDescriptor> properties = beanDescriptor.getProperties();
+
+		for (PropertyDescriptor property : properties) {
+			if (EntityUtils.isValidType(property.getType())) {
+				Object value = property.getValue(entity);
 
 				if (value != null) {
 					result = ObjectUtils.HASH_PRIME * result + value.hashCode();

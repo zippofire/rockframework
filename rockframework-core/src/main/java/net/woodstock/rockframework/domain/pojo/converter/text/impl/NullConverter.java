@@ -16,17 +16,17 @@
  */
 package net.woodstock.rockframework.domain.pojo.converter.text.impl;
 
-import net.woodstock.rockframework.util.FieldInfo;
+import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.utils.StringUtils;
 
 class NullConverter extends TextAttributeConverterBase<Object> {
 
-	public String fromText(String text, FieldInfo fieldInfo) {
+	public String fromText(String text, PropertyDescriptor propertyDescriptor) {
 		return null;
 	}
 
-	public String toText(Object o, FieldInfo fieldInfo) {
-		return TextConverterBase.rdap(StringUtils.BLANK, this.getSize(fieldInfo));
+	public String toText(Object o, PropertyDescriptor propertyDescriptor) {
+		return TextConverterBase.rdap(StringUtils.BLANK, this.getSize(propertyDescriptor));
 	}
 
 }

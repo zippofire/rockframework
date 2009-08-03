@@ -19,17 +19,17 @@ package net.woodstock.rockframework.domain.pojo.converter.text.impl;
 import java.util.Date;
 
 import net.woodstock.rockframework.domain.pojo.converter.text.TextDate;
-import net.woodstock.rockframework.util.FieldInfo;
+import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.utils.DateUtils;
 import net.woodstock.rockframework.utils.StringUtils;
 
 class DateConverter extends TextAttributeConverterBase<Date> {
 
-	public Date fromText(String text, FieldInfo fieldInfo) {
+	public Date fromText(String text, PropertyDescriptor propertyDescriptor) {
 		try {
 			Date d = null;
 			if (!StringUtils.isEmpty(text)) {
-				String format = fieldInfo.getAnnotation(TextDate.class).format();
+				String format = propertyDescriptor.getAnnotation(TextDate.class).format();
 				d = DateUtils.parse(TextConverterBase.trim(text), format);
 			}
 			return d;
@@ -38,14 +38,14 @@ class DateConverter extends TextAttributeConverterBase<Date> {
 		}
 	}
 
-	public String toText(Date d, FieldInfo fieldInfo) {
+	public String toText(Date d, PropertyDescriptor propertyDescriptor) {
 		try {
 			String s = StringUtils.BLANK;
 			if (d != null) {
-				String format = fieldInfo.getAnnotation(TextDate.class).format();
+				String format = propertyDescriptor.getAnnotation(TextDate.class).format();
 				s = DateUtils.format(d, format);
 			}
-			return TextConverterBase.rdap(s, this.getSize(fieldInfo));
+			return TextConverterBase.rdap(s, this.getSize(propertyDescriptor));
 		} catch (Exception e) {
 			throw new TextConverterException(e);
 		}

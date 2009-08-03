@@ -17,18 +17,18 @@
 package net.woodstock.rockframework.domain.pojo.converter.token.impl;
 
 import net.woodstock.rockframework.domain.pojo.converter.token.TokenNumber;
-import net.woodstock.rockframework.util.FieldInfo;
+import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.utils.NumberUtils;
 import net.woodstock.rockframework.utils.StringUtils;
 
 class LongConverter extends TokenAttributeConverterBase<Long> {
 
-	public Long fromText(String text, FieldInfo fieldInfo) {
+	public Long fromText(String text, PropertyDescriptor propertyDescriptor) {
 		try {
 			Long l = null;
 			if (!StringUtils.isEmpty(text)) {
-				if (fieldInfo.isAnnotationPresent(TokenNumber.class)) {
-					String format = fieldInfo.getAnnotation(TokenNumber.class).pattern();
+				if (propertyDescriptor.isAnnotationPresent(TokenNumber.class)) {
+					String format = propertyDescriptor.getAnnotation(TokenNumber.class).pattern();
 					l = new Long(NumberUtils.parse(text, format).longValue());
 				} else {
 					l = new Long(text);
@@ -40,12 +40,12 @@ class LongConverter extends TokenAttributeConverterBase<Long> {
 		}
 	}
 
-	public String toText(Long l, FieldInfo fieldInfo) {
+	public String toText(Long l, PropertyDescriptor propertyDescriptor) {
 		try {
 			String s = StringUtils.BLANK;
 			if (l != null) {
-				if (fieldInfo.isAnnotationPresent(TokenNumber.class)) {
-					String format = fieldInfo.getAnnotation(TokenNumber.class).pattern();
+				if (propertyDescriptor.isAnnotationPresent(TokenNumber.class)) {
+					String format = propertyDescriptor.getAnnotation(TokenNumber.class).pattern();
 					s = NumberUtils.format(l.longValue(), format);
 				} else {
 					s = l.toString();

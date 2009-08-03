@@ -48,7 +48,7 @@ public class AnnotationAroundInterceptor extends BaseInterceptor {
 		return invocation.invoke();
 	}
 
-	private void executeBeforeMethod(Object action) throws IllegalArgumentException, IllegalAccessException {
+	private void executeBeforeMethod(Object action) throws IllegalAccessException {
 		Class<?> clazz = action.getClass();
 		Method[] methods = clazz.getMethods();
 		for (Method method : methods) {

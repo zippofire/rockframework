@@ -37,88 +37,88 @@ public abstract class AbstractGenericService extends AbstractService implements 
 
 	private GenericRepository	repository;
 
-	public AbstractGenericService(GenericBusiness business, GenericRepository repository) {
+	public AbstractGenericService() {
 		super();
-		this.business = business;
-		this.repository = repository;
 	}
 
+	// Objects
 	protected GenericBusiness getBusiness() {
 		return this.business;
+	}
+
+	public void setBusiness(GenericBusiness business) {
+		this.business = business;
 	}
 
 	protected GenericRepository getRepository() {
 		return this.repository;
 	}
 
+	public void setRepository(GenericRepository repository) {
+		this.repository = repository;
+	}
+
+	// Methods
 	public void save(Entity<?> entity) throws ServiceException, BusinessException, PersistenceException {
 		try {
 			if (this.business != null) {
 				this.business.validateCreateWithError(entity);
 			}
 			this.repository.save(entity);
-		}
-		catch (PersistenceException e) {
+		} catch (PersistenceException e) {
 			throw e;
-		}
-		catch (BusinessException e) {
+		} catch (BusinessException e) {
 			throw e;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
 	}
 
-	public <ID extends Serializable, E extends Entity<ID>> E get(Class<E> clazz, ID id) throws ServiceException, BusinessException, PersistenceException {
+	public <ID extends Serializable, E extends Entity<ID>> E get(Class<E> clazz, ID id)
+			throws ServiceException, BusinessException, PersistenceException {
 		try {
 			if (this.business != null) {
 				this.business.validateRetrieveWithError(clazz, id);
 			}
 			return this.repository.get(clazz, id);
-		}
-		catch (PersistenceException e) {
+		} catch (PersistenceException e) {
 			throw e;
-		}
-		catch (BusinessException e) {
+		} catch (BusinessException e) {
 			throw e;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
 	}
 
-	public <E extends Entity<?>> Collection<E> listAll(Class<E> clazz, String order) throws ServiceException, BusinessException, PersistenceException {
+	public <E extends Entity<?>> Collection<E> listAll(Class<E> clazz, String order) throws ServiceException,
+			BusinessException, PersistenceException {
 		try {
 			if (clazz == null) {
-				throw new ValidationException(CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_INVALID_CLASS, clazz));
+				throw new ValidationException(CoreMessage.getInstance().getMessage(
+						AbstractBusiness.MESSAGE_INVALID_CLASS, clazz));
 			}
 			return this.repository.listAll(clazz, order);
-		}
-		catch (PersistenceException e) {
+		} catch (PersistenceException e) {
 			throw e;
-		}
-		catch (BusinessException e) {
+		} catch (BusinessException e) {
 			throw e;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
 	}
 
-	public <E extends Entity<?>> Collection<E> listByExample(E entity, Map<String, Object> options) throws ServiceException, BusinessException, PersistenceException {
+	public <E extends Entity<?>> Collection<E> listByExample(E entity, Map<String, Object> options)
+			throws ServiceException, BusinessException, PersistenceException {
 		try {
 			if (this.business != null) {
 				this.business.validateQueryWithError(entity);
 			}
 			return this.repository.listByExample(entity, options);
-		}
-		catch (PersistenceException e) {
+		} catch (PersistenceException e) {
 			throw e;
-		}
-		catch (BusinessException e) {
+		} catch (BusinessException e) {
 			throw e;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
 	}
@@ -129,14 +129,11 @@ public abstract class AbstractGenericService extends AbstractService implements 
 				this.business.validateUpdateWithError(entity);
 			}
 			this.repository.update(entity);
-		}
-		catch (PersistenceException e) {
+		} catch (PersistenceException e) {
 			throw e;
-		}
-		catch (BusinessException e) {
+		} catch (BusinessException e) {
 			throw e;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
 	}
@@ -147,14 +144,11 @@ public abstract class AbstractGenericService extends AbstractService implements 
 				this.business.validateDeleteWithError(entity);
 			}
 			this.repository.delete(entity);
-		}
-		catch (PersistenceException e) {
+		} catch (PersistenceException e) {
 			throw e;
-		}
-		catch (BusinessException e) {
+		} catch (BusinessException e) {
 			throw e;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new ServiceException(e);
 		}
 	}

@@ -16,12 +16,12 @@
  */
 package net.woodstock.rockframework.domain.pojo.converter.text.impl;
 
-import net.woodstock.rockframework.util.FieldInfo;
+import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.utils.StringUtils;
 
 class CharacterConverter extends TextAttributeConverterBase<Character> {
 
-	public Character fromText(String text, FieldInfo fieldInfo) {
+	public Character fromText(String text, PropertyDescriptor propertyDescriptor) {
 		try {
 			Character c = null;
 			if (!StringUtils.isEmpty(text)) {
@@ -33,13 +33,13 @@ class CharacterConverter extends TextAttributeConverterBase<Character> {
 		}
 	}
 
-	public String toText(Character c, FieldInfo fieldInfo) {
+	public String toText(Character c, PropertyDescriptor propertyDescriptor) {
 		try {
 			String s = StringUtils.BLANK;
 			if (c != null) {
 				s = c.toString();
 			}
-			return TextConverterBase.ldap(s, this.getSize(fieldInfo));
+			return TextConverterBase.ldap(s, this.getSize(propertyDescriptor));
 		} catch (Exception e) {
 			throw new TextConverterException(e);
 		}

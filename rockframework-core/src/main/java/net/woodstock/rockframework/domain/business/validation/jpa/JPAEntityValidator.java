@@ -38,8 +38,9 @@ import net.woodstock.rockframework.domain.business.validation.ValidationResult;
 import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
 import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
 import net.woodstock.rockframework.domain.business.validation.local.Validator;
-import net.woodstock.rockframework.util.BeanInfo;
-import net.woodstock.rockframework.util.FieldInfo;
+import net.woodstock.rockframework.reflection.BeanDescriptor;
+import net.woodstock.rockframework.reflection.PropertyDescriptor;
+import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
 import net.woodstock.rockframework.utils.StringUtils;
 
 public class JPAEntityValidator implements EntityValidator {
@@ -92,9 +93,10 @@ public class JPAEntityValidator implements EntityValidator {
 						LocalEntityValidator.MESSAGE_ERROR_NULL));
 			}
 
-			BeanInfo pojoInfo = BeanInfo.getBeanInfo(pojo.getClass());
-			for (FieldInfo fieldInfo : pojoInfo.getFieldsInfo()) {
-				for (Annotation annotation : fieldInfo.getAnnotations()) {
+			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
+					pojo.getClass());
+			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
+				for (Annotation annotation : propertyDescriptor.getAnnotations()) {
 					Validator validator = null;
 					boolean validate = false;
 					if (operation == Operation.RETRIEVE) {
@@ -153,8 +155,8 @@ public class JPAEntityValidator implements EntityValidator {
 					}
 
 					if (validate) {
-						Object value = fieldInfo.getFieldValue(pojo);
-						String name = fieldInfo.getFieldName();
+						Object value = propertyDescriptor.getValue(pojo);
+						String name = propertyDescriptor.getName();
 
 						LocalValidationContext context = new JPAValidationContext(value, name, annotation,
 								operation, parentContext);
@@ -186,8 +188,8 @@ public class JPAEntityValidator implements EntityValidator {
 		return className;
 	}
 
-	private String getMessage(Annotation annotation) throws SecurityException, IllegalArgumentException,
-			IllegalAccessException, InvocationTargetException {
+	private String getMessage(Annotation annotation) throws SecurityException, IllegalAccessException,
+			InvocationTargetException {
 		try {
 			Method m = annotation.getClass().getMethod(LocalEntityValidator.MESSAGE_PARAM, new Class[] {});
 			String message = (String) m.invoke(annotation, new Object[] {});

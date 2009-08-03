@@ -17,18 +17,18 @@
 package net.woodstock.rockframework.domain.pojo.converter.text.impl;
 
 import net.woodstock.rockframework.domain.pojo.converter.text.TextNumber;
-import net.woodstock.rockframework.util.FieldInfo;
+import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.utils.NumberUtils;
 import net.woodstock.rockframework.utils.StringUtils;
 
 class LongConverter extends TextAttributeConverterBase<Long> {
 
-	public Long fromText(String text, FieldInfo fieldInfo) {
+	public Long fromText(String text, PropertyDescriptor propertyDescriptor) {
 		try {
 			Long l = null;
 			if (!StringUtils.isEmpty(text)) {
-				if (fieldInfo.isAnnotationPresent(TextNumber.class)) {
-					String format = fieldInfo.getAnnotation(TextNumber.class).pattern();
+				if (propertyDescriptor.isAnnotationPresent(TextNumber.class)) {
+					String format = propertyDescriptor.getAnnotation(TextNumber.class).pattern();
 					l = new Long(NumberUtils.parse(TextConverterBase.trim(text), format).longValue());
 				} else {
 					l = new Long(TextConverterBase.trim(text));
@@ -40,18 +40,18 @@ class LongConverter extends TextAttributeConverterBase<Long> {
 		}
 	}
 
-	public String toText(Long l, FieldInfo fieldInfo) {
+	public String toText(Long l, PropertyDescriptor propertyDescriptor) {
 		try {
 			String s = StringUtils.BLANK;
 			if (l != null) {
-				if (fieldInfo.isAnnotationPresent(TextNumber.class)) {
-					String format = fieldInfo.getAnnotation(TextNumber.class).pattern();
+				if (propertyDescriptor.isAnnotationPresent(TextNumber.class)) {
+					String format = propertyDescriptor.getAnnotation(TextNumber.class).pattern();
 					s = NumberUtils.format(l.longValue(), format);
 				} else {
 					s = l.toString();
 				}
 			}
-			return TextConverterBase.ldap(s, this.getSize(fieldInfo));
+			return TextConverterBase.ldap(s, this.getSize(propertyDescriptor));
 		} catch (Exception e) {
 			throw new TextConverterException(e);
 		}

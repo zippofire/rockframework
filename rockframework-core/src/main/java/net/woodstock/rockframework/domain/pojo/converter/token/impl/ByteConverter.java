@@ -17,18 +17,18 @@
 package net.woodstock.rockframework.domain.pojo.converter.token.impl;
 
 import net.woodstock.rockframework.domain.pojo.converter.token.TokenNumber;
-import net.woodstock.rockframework.util.FieldInfo;
+import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.utils.NumberUtils;
 import net.woodstock.rockframework.utils.StringUtils;
 
 class ByteConverter extends TokenAttributeConverterBase<Byte> {
 
-	public Byte fromText(String text, FieldInfo fieldInfo) {
+	public Byte fromText(String text, PropertyDescriptor propertyDescriptor) {
 		try {
 			Byte b = null;
 			if (!StringUtils.isEmpty(text)) {
-				if (fieldInfo.isAnnotationPresent(TokenNumber.class)) {
-					String format = fieldInfo.getAnnotation(TokenNumber.class).pattern();
+				if (propertyDescriptor.isAnnotationPresent(TokenNumber.class)) {
+					String format = propertyDescriptor.getAnnotation(TokenNumber.class).pattern();
 					b = new Byte(NumberUtils.parse(text, format).byteValue());
 				} else {
 					b = new Byte(text);
@@ -40,12 +40,12 @@ class ByteConverter extends TokenAttributeConverterBase<Byte> {
 		}
 	}
 
-	public String toText(Byte b, FieldInfo fieldInfo) {
+	public String toText(Byte b, PropertyDescriptor propertyDescriptor) {
 		try {
 			String s = StringUtils.BLANK;
 			if (b != null) {
-				if (fieldInfo.isAnnotationPresent(TokenNumber.class)) {
-					String format = fieldInfo.getAnnotation(TokenNumber.class).pattern();
+				if (propertyDescriptor.isAnnotationPresent(TokenNumber.class)) {
+					String format = propertyDescriptor.getAnnotation(TokenNumber.class).pattern();
 					s = NumberUtils.format(b.byteValue(), format);
 				} else {
 					s = b.toString();

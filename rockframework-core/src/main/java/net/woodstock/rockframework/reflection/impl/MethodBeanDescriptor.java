@@ -29,27 +29,25 @@ class MethodBeanDescriptor extends AbstractBeanDescriptor {
 	@Override
 	public void init() {
 		Class<?> c = this.getType();
-		while (c != null) {
-			for (Method method : c.getMethods()) {
-				String methodName = method.getName();
-				if (BeanDescriptorHelper.isGetter(methodName)) {
-					try {
-						String propertyName = BeanDescriptorHelper.getPropertyName(methodName);
-						String setMethodName = BeanDescriptorHelper.getMethodName(BeanDescriptorHelper.GET_METHOD_PREFIX, propertyName);
-						Class<?> returnType = method.getReturnType();
+		for (Method method : c.getMethods()) {
+			String methodName = method.getName();
+			if (BeanDescriptorHelper.isGetter(methodName)) {
+				try {
+					String propertyName = BeanDescriptorHelper.getPropertyName(methodName);
+					String setMethodName = BeanDescriptorHelper.getMethodName(
+							BeanDescriptorHelper.SET_METHOD_PREFIX, propertyName);
+					Class<?> returnType = method.getReturnType();
 
-						c.getMethod(setMethodName, new Class[] { returnType });
+					c.getMethod(setMethodName, new Class[] { returnType });
 
-						PropertyDescriptor property = new MethodPropertyDescriptor(this, propertyName);
-						this.getProperties().add(property);
-					}
-					catch (NoSuchMethodException e) {
-						this.getLogger().info(e.getMessage(), e);
-					}
+					PropertyDescriptor property = new MethodPropertyDescriptor(this, propertyName, returnType);
+					this.getProperties().add(property);
+				} catch (NoSuchMethodException e) {
+					// this.getLogger().info(e.getMessage(), e);
 				}
 			}
-			c = c.getSuperclass();
 		}
+		c = c.getSuperclass();
 	}
 
 }

@@ -20,20 +20,18 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.BusinessException;
-import net.woodstock.rockframework.domain.business.GenericBusiness;
-import net.woodstock.rockframework.domain.persistence.GenericRepository;
 import net.woodstock.rockframework.domain.persistence.PersistenceException;
 import net.woodstock.rockframework.domain.service.ServiceException;
 
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 public abstract class SpringGenericServiceImpl extends AbstractGenericService {
 
-	public SpringGenericServiceImpl(GenericBusiness business, GenericRepository repository) {
-		super(business, repository);
+	public SpringGenericServiceImpl() {
+		super();
 	}
 
 	@Override
@@ -44,19 +42,22 @@ public abstract class SpringGenericServiceImpl extends AbstractGenericService {
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public <ID extends Serializable, E extends Entity<ID>> E get(Class<E> clazz, ID id) throws ServiceException, BusinessException, PersistenceException {
+	public <ID extends Serializable, E extends Entity<ID>> E get(Class<E> clazz, ID id)
+			throws ServiceException, BusinessException, PersistenceException {
 		return super.get(clazz, id);
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public <E extends Entity<?>> Collection<E> listAll(Class<E> clazz, String order) throws ServiceException, BusinessException, PersistenceException {
+	public <E extends Entity<?>> Collection<E> listAll(Class<E> clazz, String order) throws ServiceException,
+			BusinessException, PersistenceException {
 		return super.listAll(clazz, order);
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public <E extends Entity<?>> Collection<E> listByExample(E entity, Map<String, Object> options) throws ServiceException, BusinessException, PersistenceException {
+	public <E extends Entity<?>> Collection<E> listByExample(E entity, Map<String, Object> options)
+			throws ServiceException, BusinessException, PersistenceException {
 		return super.listByExample(entity, options);
 	}
 

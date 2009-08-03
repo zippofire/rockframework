@@ -25,8 +25,9 @@ import net.woodstock.rockframework.domain.business.validation.ValidationResult;
 import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
 import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
 import net.woodstock.rockframework.domain.business.validation.local.validator.AbstractValidator;
-import net.woodstock.rockframework.util.BeanInfo;
-import net.woodstock.rockframework.util.FieldInfo;
+import net.woodstock.rockframework.reflection.BeanDescriptor;
+import net.woodstock.rockframework.reflection.PropertyDescriptor;
+import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
 
 public class ValidatorId extends AbstractValidator {
 
@@ -44,8 +45,9 @@ public class ValidatorId extends AbstractValidator {
 				return context.getErrorResult(this.getInvalidTypeErrorMessage(context));
 			}
 
-			BeanInfo beanInfo = BeanInfo.getBeanInfo(parent.getClass());
-			FieldInfo fieldInfo = beanInfo.getFieldInfo(context.getName());
+			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
+					parent.getClass());
+			PropertyDescriptor propertyDescriptor = beanDescriptor.getProperty(context.getName());
 
 			if ((operation == Operation.RETRIEVE) || (operation == Operation.UPDATE)
 					|| (operation == Operation.DELETE)) {
@@ -55,13 +57,13 @@ public class ValidatorId extends AbstractValidator {
 				return context.getSuccessResult();
 			} else if (operation == Operation.CREATE) {
 				if (value == null) {
-					if (fieldInfo.isAnnotationPresent(GeneratedValue.class)) {
+					if (propertyDescriptor.isAnnotationPresent(GeneratedValue.class)) {
 						return context.getSuccessResult();
 					}
 					return context.getErrorResult(this.getEmptyErrorMessage(context));
 				}
 
-				if (fieldInfo.isAnnotationPresent(GeneratedValue.class)) {
+				if (propertyDescriptor.isAnnotationPresent(GeneratedValue.class)) {
 					return context.getErrorResult(this.getNotEmptyErrorMessage(context));
 				}
 				return context.getSuccessResult();

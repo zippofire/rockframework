@@ -26,7 +26,7 @@ import net.woodstock.rockframework.sys.SysLogger;
 
 import org.apache.commons.logging.Log;
 
-public abstract class BeanInfo {
+abstract class BeanInfo {
 
 	private Class<?>				clazz;
 

@@ -38,7 +38,7 @@ public abstract class ContextUtils {
 	public static Object getContextObject(Context c, String name) throws NamingException {
 		Object o = null;
 		if (c == null) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Context must be not null");
 		}
 		try {
 			o = c.lookup(name);

@@ -19,18 +19,18 @@ package net.woodstock.rockframework.domain.pojo.converter.token.impl;
 import java.math.BigDecimal;
 
 import net.woodstock.rockframework.domain.pojo.converter.token.TokenNumber;
-import net.woodstock.rockframework.util.FieldInfo;
+import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.utils.NumberUtils;
 import net.woodstock.rockframework.utils.StringUtils;
 
 class BigDecimalConverter extends TokenAttributeConverterBase<BigDecimal> {
 
-	public BigDecimal fromText(String text, FieldInfo fieldInfo) {
+	public BigDecimal fromText(String text, PropertyDescriptor propertyDescriptor) {
 		try {
 			BigDecimal b = null;
 			if (!StringUtils.isEmpty(text)) {
-				if (fieldInfo.isAnnotationPresent(TokenNumber.class)) {
-					String format = fieldInfo.getAnnotation(TokenNumber.class).pattern();
+				if (propertyDescriptor.isAnnotationPresent(TokenNumber.class)) {
+					String format = propertyDescriptor.getAnnotation(TokenNumber.class).pattern();
 					b = new BigDecimal(NumberUtils.parse(text, format).toString());
 				} else {
 					b = new BigDecimal(text);
@@ -42,12 +42,12 @@ class BigDecimalConverter extends TokenAttributeConverterBase<BigDecimal> {
 		}
 	}
 
-	public String toText(BigDecimal b, FieldInfo fieldInfo) {
+	public String toText(BigDecimal b, PropertyDescriptor propertyDescriptor) {
 		try {
 			String s = StringUtils.BLANK;
 			if (b != null) {
-				if (fieldInfo.isAnnotationPresent(TokenNumber.class)) {
-					String format = fieldInfo.getAnnotation(TokenNumber.class).pattern();
+				if (propertyDescriptor.isAnnotationPresent(TokenNumber.class)) {
+					String format = propertyDescriptor.getAnnotation(TokenNumber.class).pattern();
 					s = NumberUtils.format(b, format);
 				} else {
 					s = b.toString();

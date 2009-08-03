@@ -85,8 +85,7 @@ abstract class AbstractPropertyDescriptor implements PropertyDescriptor {
 				throw new NoSuchMethodException(this.getReadMethodName());
 			}
 			return this.getReadMethod().invoke(o, new Object[] {});
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new ReflectionException(e);
 		}
 	}
@@ -97,10 +96,15 @@ abstract class AbstractPropertyDescriptor implements PropertyDescriptor {
 				throw new NoSuchMethodException(this.getWriteMethodName());
 			}
 			this.getWriteMethod().invoke(o, new Object[] { value });
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new ReflectionException(e);
 		}
+	}
+	
+	// Object
+	@Override
+	public String toString() {
+		return this.getName();
 	}
 
 }

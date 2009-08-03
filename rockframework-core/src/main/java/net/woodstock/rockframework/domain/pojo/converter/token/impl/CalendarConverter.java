@@ -19,17 +19,17 @@ package net.woodstock.rockframework.domain.pojo.converter.token.impl;
 import java.util.Calendar;
 
 import net.woodstock.rockframework.domain.pojo.converter.token.TokenDate;
-import net.woodstock.rockframework.util.FieldInfo;
+import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.utils.DateUtils;
 import net.woodstock.rockframework.utils.StringUtils;
 
 class CalendarConverter extends TokenAttributeConverterBase<Calendar> {
 
-	public Calendar fromText(String text, FieldInfo fieldInfo) {
+	public Calendar fromText(String text, PropertyDescriptor propertyDescriptor) {
 		try {
 			Calendar c = null;
 			if (!StringUtils.isEmpty(text)) {
-				String format = fieldInfo.getAnnotation(TokenDate.class).format();
+				String format = propertyDescriptor.getAnnotation(TokenDate.class).format();
 				c = Calendar.getInstance();
 				c.setTime(DateUtils.parse(text, format));
 			}
@@ -39,11 +39,11 @@ class CalendarConverter extends TokenAttributeConverterBase<Calendar> {
 		}
 	}
 
-	public String toText(Calendar c, FieldInfo fieldInfo) {
+	public String toText(Calendar c, PropertyDescriptor propertyDescriptor) {
 		try {
 			String s = StringUtils.BLANK;
 			if (c != null) {
-				String format = fieldInfo.getAnnotation(TokenDate.class).format();
+				String format = propertyDescriptor.getAnnotation(TokenDate.class).format();
 				s = DateUtils.format(c.getTime(), format);
 			}
 			return s;

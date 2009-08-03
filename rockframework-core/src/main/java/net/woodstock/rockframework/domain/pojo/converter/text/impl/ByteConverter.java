@@ -17,18 +17,18 @@
 package net.woodstock.rockframework.domain.pojo.converter.text.impl;
 
 import net.woodstock.rockframework.domain.pojo.converter.text.TextNumber;
-import net.woodstock.rockframework.util.FieldInfo;
+import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.utils.NumberUtils;
 import net.woodstock.rockframework.utils.StringUtils;
 
 class ByteConverter extends TextAttributeConverterBase<Byte> {
 
-	public Byte fromText(String text, FieldInfo fieldInfo) {
+	public Byte fromText(String text, PropertyDescriptor propertyDescriptor) {
 		try {
 			Byte b = null;
 			if (!StringUtils.isEmpty(text)) {
-				if (fieldInfo.isAnnotationPresent(TextNumber.class)) {
-					String format = fieldInfo.getAnnotation(TextNumber.class).pattern();
+				if (propertyDescriptor.isAnnotationPresent(TextNumber.class)) {
+					String format = propertyDescriptor.getAnnotation(TextNumber.class).pattern();
 					b = new Byte(NumberUtils.parse(TextConverterBase.trim(text), format).byteValue());
 				} else {
 					b = new Byte(TextConverterBase.trim(text));
@@ -40,18 +40,18 @@ class ByteConverter extends TextAttributeConverterBase<Byte> {
 		}
 	}
 
-	public String toText(Byte b, FieldInfo fieldInfo) {
+	public String toText(Byte b, PropertyDescriptor propertyDescriptor) {
 		try {
 			String s = StringUtils.BLANK;
 			if (b != null) {
-				if (fieldInfo.isAnnotationPresent(TextNumber.class)) {
-					String format = fieldInfo.getAnnotation(TextNumber.class).pattern();
+				if (propertyDescriptor.isAnnotationPresent(TextNumber.class)) {
+					String format = propertyDescriptor.getAnnotation(TextNumber.class).pattern();
 					s = NumberUtils.format(b.byteValue(), format);
 				} else {
 					s = b.toString();
 				}
 			}
-			return TextConverterBase.ldap(s, this.getSize(fieldInfo));
+			return TextConverterBase.ldap(s, this.getSize(propertyDescriptor));
 		} catch (Exception e) {
 			throw new TextConverterException(e);
 		}

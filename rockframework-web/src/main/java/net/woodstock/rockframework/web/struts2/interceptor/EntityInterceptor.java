@@ -22,8 +22,9 @@ import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.util.BeanInfo;
-import net.woodstock.rockframework.util.FieldInfo;
+import net.woodstock.rockframework.reflection.BeanDescriptor;
+import net.woodstock.rockframework.reflection.PropertyDescriptor;
+import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
 import net.woodstock.rockframework.utils.StringUtils;
 import ognl.NoSuchPropertyException;
 import ognl.Ognl;
@@ -67,9 +68,12 @@ public class EntityInterceptor extends BaseInterceptor {
 						Object obj = Ognl.getValue(entityName, action);
 						if ((obj != null) && (obj instanceof Entity)) {
 							Entity<?> entity = (Entity<?>) obj;
-							BeanInfo beanInfo = BeanInfo.getBeanInfo(entity.getClass());
-							FieldInfo fieldInfo = beanInfo.getFieldInfo(ENTITY_ID);
-							Class<?> clazz = fieldInfo.getFieldType();
+
+							BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance()
+									.getBeanDescriptor(entity.getClass());
+
+							PropertyDescriptor propertyDescriptor = beanDescriptor.getProperty(ENTITY_ID);
+							Class<?> clazz = propertyDescriptor.getType();
 
 							try {
 								Constructor<?> contructor = clazz
@@ -78,7 +82,7 @@ public class EntityInterceptor extends BaseInterceptor {
 
 								this.getLogger().info(
 										"Setting entity ID " + entityName + "[" + fieldValue + "]");
-								fieldInfo.setFieldValue(entity, fieldValue);
+								propertyDescriptor.setValue(entity, fieldValue);
 							} catch (NoSuchMethodException e) {
 								this.getLogger().warn(
 										"Could not find constructor " + entity.getClass().getCanonicalName()

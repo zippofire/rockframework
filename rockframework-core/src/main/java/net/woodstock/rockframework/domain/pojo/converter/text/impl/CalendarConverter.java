@@ -19,17 +19,17 @@ package net.woodstock.rockframework.domain.pojo.converter.text.impl;
 import java.util.Calendar;
 
 import net.woodstock.rockframework.domain.pojo.converter.text.TextDate;
-import net.woodstock.rockframework.util.FieldInfo;
+import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.utils.DateUtils;
 import net.woodstock.rockframework.utils.StringUtils;
 
 class CalendarConverter extends TextAttributeConverterBase<Calendar> {
 
-	public Calendar fromText(String text, FieldInfo fieldInfo) {
+	public Calendar fromText(String text, PropertyDescriptor propertyDescriptor) {
 		try {
 			Calendar c = null;
 			if (!StringUtils.isEmpty(text)) {
-				String format = fieldInfo.getAnnotation(TextDate.class).format();
+				String format = propertyDescriptor.getAnnotation(TextDate.class).format();
 				c = Calendar.getInstance();
 				c.setTime(DateUtils.parse(TextConverterBase.trim(text), format));
 			}
@@ -39,14 +39,14 @@ class CalendarConverter extends TextAttributeConverterBase<Calendar> {
 		}
 	}
 
-	public String toText(Calendar c, FieldInfo fieldInfo) {
+	public String toText(Calendar c, PropertyDescriptor propertyDescriptor) {
 		try {
 			String s = StringUtils.BLANK;
 			if (c != null) {
-				String format = fieldInfo.getAnnotation(TextDate.class).format();
+				String format = propertyDescriptor.getAnnotation(TextDate.class).format();
 				s = DateUtils.format(c.getTime(), format);
 			}
-			return TextConverterBase.ldap(s, this.getSize(fieldInfo));
+			return TextConverterBase.ldap(s, this.getSize(propertyDescriptor));
 		} catch (Exception e) {
 			throw new TextConverterException(e);
 		}

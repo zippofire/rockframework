@@ -28,9 +28,10 @@ import net.woodstock.rockframework.domain.persistence.query.LikeMode;
 import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
 import net.woodstock.rockframework.domain.persistence.query.impl.QueryContextParameter.Operator;
 import net.woodstock.rockframework.domain.utils.PojoUtils;
+import net.woodstock.rockframework.reflection.BeanDescriptor;
+import net.woodstock.rockframework.reflection.PropertyDescriptor;
+import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
 import net.woodstock.rockframework.sys.SysLogger;
-import net.woodstock.rockframework.util.BeanInfo;
-import net.woodstock.rockframework.util.FieldInfo;
 
 abstract class QueryContextHelper {
 
@@ -52,15 +53,16 @@ abstract class QueryContextHelper {
 
 			QueryContext context = new QueryContext(className, ROOT_ALIAS, null);
 
-			BeanInfo beanInfo = BeanInfo.getBeanInfo(clazz);
+			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
+					clazz);
 
 			List<Entity<?>> parsed = new ArrayList<Entity<?>>();
 			parsed.add(e);
 
-			for (FieldInfo fieldInfo : beanInfo.getFieldsInfo()) {
-				String name = fieldInfo.getFieldName();
+			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
+				String name = propertyDescriptor.getName();
 				String alias = name;
-				Object value = fieldInfo.getFieldValue(e);
+				Object value = propertyDescriptor.getValue(e);
 				if (value != null) {
 					QueryContextHelper.handleValue(context, options, name, alias, value, parsed);
 				}
@@ -105,7 +107,6 @@ abstract class QueryContextHelper {
 		context.setQueryString(builder.toString().trim());
 	}
 
-	@SuppressWarnings("unchecked")
 	private static void handleValue(QueryContext context, Map<String, Object> options, String name,
 			String alias, Object value, List<Entity<?>> parsed) throws BuilderException {
 		try {
@@ -142,8 +143,8 @@ abstract class QueryContextHelper {
 	}
 
 	private static void handleEntityValue(QueryContext context, Map<String, Object> options, String name,
-			String alias, Entity<?> value, List<Entity<?>> parsed) throws IllegalArgumentException,
-			NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+			String alias, Entity<?> value, List<Entity<?>> parsed) throws NoSuchMethodException,
+			IllegalAccessException, InvocationTargetException {
 		if (QueryContextHelper.contains(parsed, value)) {
 			SysLogger.getLogger().debug("Entity " + value + " already parsed!!!");
 			return;
@@ -154,11 +155,12 @@ abstract class QueryContextHelper {
 		if (PojoUtils.hasNotNullAttribute(value, true)) {
 			Class<?> clazz = value.getClass();
 			QueryContext child = new QueryContext(name, alias, context);
-			BeanInfo beanInfo = BeanInfo.getBeanInfo(clazz);
-			for (FieldInfo fieldInfo : beanInfo.getFieldsInfo()) {
-				String childName = fieldInfo.getFieldName();
-				String childAlias = fieldInfo.getFieldName();
-				Object childValue = fieldInfo.getFieldValue(value);
+			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
+					clazz);
+			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
+				String childName = propertyDescriptor.getName();
+				String childAlias = propertyDescriptor.getName();
+				Object childValue = propertyDescriptor.getValue(value);
 				if (childValue != null) {
 					QueryContextHelper.handleValue(child, options, childName, childAlias, childValue, parsed);
 				}
@@ -167,10 +169,8 @@ abstract class QueryContextHelper {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	private static void handleCollectionValue(QueryContext context, Map<String, Object> options, String name,
-			String alias, Collection<?> value, List<Entity<?>> parsed) throws IllegalArgumentException,
-			NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+			String alias, Collection<?> value, List<Entity<?>> parsed) {
 		if (value.size() > 0) {
 			QueryContext child = new QueryContext(name, alias, context);
 			child.setJoinNeeded(true);
@@ -184,11 +184,12 @@ abstract class QueryContextHelper {
 					parsed.add((Entity<?>) o);
 
 					Class<?> clazz = o.getClass();
-					BeanInfo beanInfo = BeanInfo.getBeanInfo(clazz);
-					for (FieldInfo fieldInfo : beanInfo.getFieldsInfo()) {
-						String childName = fieldInfo.getFieldName();
-						String childAlias = fieldInfo.getFieldName() + ALIAS_SEPARADOR + index;
-						Object childValue = fieldInfo.getFieldValue(o);
+					BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance()
+							.getBeanDescriptor(clazz);
+					for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
+						String childName = propertyDescriptor.getName();
+						String childAlias = propertyDescriptor.getName() + ALIAS_SEPARADOR + index;
+						Object childValue = propertyDescriptor.getValue(o);
 						if (childValue != null) {
 							QueryContextHelper.handleValue(child, options, childName, childAlias, childValue,
 									parsed);

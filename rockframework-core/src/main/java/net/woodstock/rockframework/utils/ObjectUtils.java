@@ -19,9 +19,9 @@ package net.woodstock.rockframework.utils;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
-import net.woodstock.rockframework.sys.SysLogger;
-import net.woodstock.rockframework.util.BeanInfo;
-import net.woodstock.rockframework.util.FieldInfo;
+import net.woodstock.rockframework.reflection.BeanDescriptor;
+import net.woodstock.rockframework.reflection.PropertyDescriptor;
+import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
 
 public abstract class ObjectUtils {
 
@@ -29,73 +29,70 @@ public abstract class ObjectUtils {
 
 	private static final char	PROPERTY_SEPARATOR	= '.';
 
-	public static void copyAttributes(Object from, Object to, Class<?>[] ignoredTypes)
-			throws NoSuchMethodException, IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
-		BeanInfo beanInfoFrom = BeanInfo.getBeanInfo(from.getClass());
-		BeanInfo beanInfoTo = BeanInfo.getBeanInfo(to.getClass());
-		outer: for (FieldInfo fieldInfo : beanInfoFrom.getFieldsInfo()) {
-			try {
-				FieldInfo fieldInfoTo = beanInfoTo.getFieldInfo(fieldInfo.getFieldName());
-				if (ignoredTypes != null) {
-					for (Class<?> c : ignoredTypes) {
-						if ((c.isAssignableFrom(fieldInfo.getFieldType()))
-								|| (c.isAssignableFrom(fieldInfoTo.getFieldType()))) {
-							continue outer;
-						}
+	public static void copyAttributes(Object from, Object to, Class<?>[] ignoredTypes) {
+		BeanDescriptor beanDescriptorFrom = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
+				from.getClass());
+		BeanDescriptor beanDescriptorTo = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
+				to.getClass());
+
+		outer: for (PropertyDescriptor propertyDescriptor : beanDescriptorFrom.getProperties()) {
+			PropertyDescriptor propertyDescriptorTo = beanDescriptorTo.getProperty(propertyDescriptor
+					.getName());
+			if (ignoredTypes != null) {
+				for (Class<?> c : ignoredTypes) {
+					if ((c.isAssignableFrom(propertyDescriptor.getType()))
+							|| (c.isAssignableFrom(propertyDescriptorTo.getType()))) {
+						continue outer;
 					}
 				}
-				if (!fieldInfoTo.getFieldType().isAssignableFrom(fieldInfo.getFieldType())) {
-					continue;
-				}
-				Object tmp = fieldInfo.getFieldValue(from);
-				fieldInfoTo.setFieldValue(to, tmp);
-			} catch (NoSuchFieldException e) {
-				SysLogger.getLogger().debug(e.getMessage(), e);
 			}
+			if (!propertyDescriptorTo.getType().isAssignableFrom(propertyDescriptor.getType())) {
+				continue;
+			}
+			Object tmp = propertyDescriptor.getValue(from);
+			propertyDescriptorTo.setValue(to, tmp);
 		}
 	}
 
-	public static void copyAttributes(Object from, Object to, String[] ignoredAttributes)
-			throws NoSuchMethodException, IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
-		BeanInfo beanInfoFrom = BeanInfo.getBeanInfo(from.getClass());
-		BeanInfo beanInfoTo = BeanInfo.getBeanInfo(to.getClass());
-		outer: for (FieldInfo fieldInfo : beanInfoFrom.getFieldsInfo()) {
-			try {
-				FieldInfo fieldInfoTo = beanInfoTo.getFieldInfo(fieldInfo.getFieldName());
-				if (ignoredAttributes != null) {
-					for (String s : ignoredAttributes) {
-						if (s.equals(fieldInfo.getFieldName())) {
-							continue outer;
-						}
+	public static void copyAttributes(Object from, Object to, String[] ignoredAttributes) {
+		BeanDescriptor beanDescriptorFrom = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
+				from.getClass());
+		BeanDescriptor beanDescriptorTo = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
+				to.getClass());
+
+		outer: for (PropertyDescriptor propertyDescriptor : beanDescriptorFrom.getProperties()) {
+			PropertyDescriptor propertyDescriptorTo = beanDescriptorTo.getProperty(propertyDescriptor
+					.getName());
+			if (ignoredAttributes != null) {
+				for (String s : ignoredAttributes) {
+					if (s.equals(propertyDescriptor.getName())) {
+						continue outer;
 					}
 				}
-				if (!fieldInfoTo.getFieldType().isAssignableFrom(fieldInfo.getFieldType())) {
-					continue;
-				}
-				Object tmp = fieldInfo.getFieldValue(from);
-				fieldInfoTo.setFieldValue(to, tmp);
-			} catch (NoSuchFieldException e) {
-				SysLogger.getLogger().debug(e.getMessage(), e);
 			}
+			if (!propertyDescriptorTo.getType().isAssignableFrom(propertyDescriptor.getType())) {
+				continue;
+			}
+			Object tmp = propertyDescriptor.getValue(from);
+			propertyDescriptorTo.setValue(to, tmp);
 		}
 	}
 
-	public static boolean equals(Object o1, Object o2) throws NoSuchMethodException,
-			IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+	public static boolean equals(Object o1, Object o2) {
 		if ((o1 == null) || (o2 == null)) {
 			return false;
 		}
 		if (!o1.getClass().isAssignableFrom(o2.getClass())) {
 			return false;
 		}
-		BeanInfo beanInfo = BeanInfo.getBeanInfo(o1.getClass());
-		Collection<FieldInfo> fields = beanInfo.getFieldsInfo();
 
-		for (FieldInfo field : fields) {
-			Object v1 = field.getFieldValue(o1);
-			Object v2 = field.getFieldValue(o2);
+		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
+				o1.getClass());
+		Collection<PropertyDescriptor> properties = beanDescriptor.getProperties();
+
+		for (PropertyDescriptor property : properties) {
+			Object v1 = property.getValue(o1);
+			Object v2 = property.getValue(o2);
 
 			if (v1 != null) {
 				if (v2 == null) {
@@ -111,14 +108,14 @@ public abstract class ObjectUtils {
 		return true;
 	}
 
-	public static int hashCode(Object obj) throws NoSuchMethodException, IllegalArgumentException,
-			IllegalAccessException, InvocationTargetException {
+	public static int hashCode(Object obj) {
 		int result = 1;
-		BeanInfo beanInfo = BeanInfo.getBeanInfo(obj.getClass());
-		Collection<FieldInfo> fields = beanInfo.getFieldsInfo();
+		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
+				obj.getClass());
+		Collection<PropertyDescriptor> properties = beanDescriptor.getProperties();
 
-		for (FieldInfo field : fields) {
-			Object value = field.getFieldValue(obj);
+		for (PropertyDescriptor property : properties) {
+			Object value = property.getValue(obj);
 
 			if (value != null) {
 				result = ObjectUtils.HASH_PRIME * result + value.hashCode();
@@ -134,25 +131,25 @@ public abstract class ObjectUtils {
 	}
 
 	public static Object getObjectAttribute(Object o, String name) throws NoSuchMethodException,
-			NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+			NoSuchFieldException, IllegalAccessException, InvocationTargetException {
 		if (o == null) {
 			return null;
 		}
 
-		BeanInfo beanInfo = BeanInfo.getBeanInfo(o.getClass());
-
+		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
+				o.getClass());
 		if (name.indexOf(ObjectUtils.PROPERTY_SEPARATOR) != -1) {
 			String fieldName = name.substring(0, name.indexOf(ObjectUtils.PROPERTY_SEPARATOR));
 			name = name.substring(name.indexOf(ObjectUtils.PROPERTY_SEPARATOR) + 1);
 
-			FieldInfo fieldInfo = beanInfo.getFieldInfo(fieldName);
+			PropertyDescriptor propertyDescriptor = beanDescriptor.getProperty(fieldName);
 
-			Object tmp = fieldInfo.getFieldValue(o);
+			Object tmp = propertyDescriptor.getValue(o);
 			return ObjectUtils.getObjectAttribute(tmp, name);
 		}
 
-		FieldInfo fieldInfo = beanInfo.getFieldInfo(name);
-		return fieldInfo.getFieldValue(o);
+		PropertyDescriptor propertyDescriptor = beanDescriptor.getProperty(name);
+		return propertyDescriptor.getValue(o);
 	}
 
 }

@@ -16,12 +16,12 @@
  */
 package net.woodstock.rockframework.domain.pojo.converter.token.impl;
 
-import net.woodstock.rockframework.util.FieldInfo;
+import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.utils.StringUtils;
 
 class StringConverter extends TokenAttributeConverterBase<String> {
 
-	public String fromText(String text, FieldInfo fieldInfo) {
+	public String fromText(String text, PropertyDescriptor propertyDescriptor) {
 		try {
 			String s = null;
 			if (!StringUtils.isEmpty(text)) {
@@ -33,7 +33,7 @@ class StringConverter extends TokenAttributeConverterBase<String> {
 		}
 	}
 
-	public String toText(String s, FieldInfo fieldInfo) {
+	public String toText(String s, PropertyDescriptor propertyDescriptor) {
 		try {
 			if (s == null) {
 				s = StringUtils.BLANK;

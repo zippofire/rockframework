@@ -17,16 +17,16 @@
 package net.woodstock.rockframework.domain.pojo.converter.token.impl;
 
 import net.woodstock.rockframework.domain.pojo.converter.token.TokenBoolean;
-import net.woodstock.rockframework.util.FieldInfo;
+import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.utils.StringUtils;
 
 class BooleanConverter extends TokenAttributeConverterBase<Boolean> {
 
-	public Boolean fromText(String text, FieldInfo fieldInfo) {
+	public Boolean fromText(String text, PropertyDescriptor propertyDescriptor) {
 		try {
 			Boolean b = null;
 			if (!StringUtils.isEmpty(text)) {
-				if (text.equals(fieldInfo.getAnnotation(TokenBoolean.class).trueValue())) {
+				if (text.equals(propertyDescriptor.getAnnotation(TokenBoolean.class).trueValue())) {
 					b = Boolean.TRUE;
 				} else {
 					b = Boolean.FALSE;
@@ -38,14 +38,14 @@ class BooleanConverter extends TokenAttributeConverterBase<Boolean> {
 		}
 	}
 
-	public String toText(Boolean b, FieldInfo fieldInfo) {
+	public String toText(Boolean b, PropertyDescriptor propertyDescriptor) {
 		try {
 			String s = StringUtils.BLANK;
 			if (b != null) {
 				if (b.booleanValue()) {
-					s = fieldInfo.getAnnotation(TokenBoolean.class).trueValue();
+					s = propertyDescriptor.getAnnotation(TokenBoolean.class).trueValue();
 				} else {
-					s = fieldInfo.getAnnotation(TokenBoolean.class).falseValue();
+					s = propertyDescriptor.getAnnotation(TokenBoolean.class).falseValue();
 				}
 			}
 			return s;
