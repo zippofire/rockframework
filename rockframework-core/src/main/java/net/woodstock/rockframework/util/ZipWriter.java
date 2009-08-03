@@ -26,11 +26,11 @@ import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import net.woodstock.rockframework.utils.StringUtils;
+
 public class ZipWriter {
 
-	public static final String	SEPARATOR	= "/";	//$NON-NLS-1$
-
-	public static final String	BLANK		= "";	//$NON-NLS-1$
+	public static final String	SEPARATOR	= "/";
 
 	private Set<File>			files;
 
@@ -104,7 +104,7 @@ public class ZipWriter {
 		File[] files = dir.listFiles();
 		for (File f : files) {
 			if (f.isDirectory()) {
-				String name = (parent != null ? parent.getName() + ZipWriter.SEPARATOR : ZipWriter.BLANK)
+				String name = (parent != null ? parent.getName() + ZipWriter.SEPARATOR : StringUtils.BLANK)
 						+ dir.getName() + ZipWriter.SEPARATOR;
 				out.putNextEntry(new ZipEntry(name));
 				out.closeEntry();
@@ -117,7 +117,7 @@ public class ZipWriter {
 
 	private static void addFile(ZipOutputStream out, File parent, File file) throws IOException {
 		FileInputStream input = new FileInputStream(file);
-		String name = (parent != null ? parent.getName() + ZipWriter.SEPARATOR : ZipWriter.BLANK)
+		String name = (parent != null ? parent.getName() + ZipWriter.SEPARATOR : StringUtils.BLANK)
 				+ file.getName();
 		out.putNextEntry(new ZipEntry(name));
 		byte[] buf = new byte[1024];

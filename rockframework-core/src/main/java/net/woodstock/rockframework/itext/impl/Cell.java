@@ -20,15 +20,16 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import net.woodstock.rockframework.itext.Object;
-import net.woodstock.rockframework.itext.types.Alignment;
-import net.woodstock.rockframework.itext.types.Font;
-import net.woodstock.rockframework.itext.types.FontStyle;
-
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Element;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.PdfPCell;
+
+import net.woodstock.rockframework.itext.Object;
+import net.woodstock.rockframework.itext.types.Alignment;
+import net.woodstock.rockframework.itext.types.Font;
+import net.woodstock.rockframework.itext.types.FontStyle;
+import net.woodstock.rockframework.utils.StringUtils;
 
 public class Cell extends ObjectBase {
 
@@ -77,7 +78,7 @@ public class Cell extends ObjectBase {
 		this.fontStyle = FontStyle.DEFAULT;
 		this.height = Float.MIN_VALUE;
 		this.padding = 1;
-		this.text = "";
+		this.text = StringUtils.BLANK;
 		this.verticalAlignment = Alignment.TOP;
 		this.width = Float.MIN_VALUE;
 

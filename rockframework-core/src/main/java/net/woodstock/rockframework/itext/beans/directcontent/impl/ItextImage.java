@@ -25,6 +25,8 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.Image;
 import com.lowagie.text.pdf.PdfContentByte;
 
+import net.woodstock.rockframework.utils.StringUtils;
+
 public class ItextImage extends ItextBasicImpl {
 
 	private static final long	serialVersionUID	= 1L;
@@ -33,7 +35,7 @@ public class ItextImage extends ItextBasicImpl {
 
 	private Image				image				= null;
 
-	private String				imageUrl			= "";
+	private String				imageUrl			= StringUtils.BLANK;
 
 	private float				scale				= 100;
 

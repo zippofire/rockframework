@@ -40,11 +40,11 @@ public abstract class ReflectUtils {
 	public static void printClassDeclaration(Class<?> c, PrintStream out) {
 		StringBuilder s = new StringBuilder();
 		int m = c.getModifiers();
-		s.append(Modifier.isPrivate(m) ? "private " : "");
-		s.append(Modifier.isProtected(m) ? "protected " : "");
-		s.append(Modifier.isPublic(m) ? "public " : "");
-		s.append(Modifier.isAbstract(m) ? "abstract " : "");
-		s.append(Modifier.isFinal(m) ? "final " : "");
+		s.append(Modifier.isPrivate(m) ? "private " : StringUtils.BLANK);
+		s.append(Modifier.isProtected(m) ? "protected " : StringUtils.BLANK);
+		s.append(Modifier.isPublic(m) ? "public " : StringUtils.BLANK);
+		s.append(Modifier.isAbstract(m) ? "abstract " : StringUtils.BLANK);
+		s.append(Modifier.isFinal(m) ? "final " : StringUtils.BLANK);
 		s.append(Modifier.isInterface(m) ? "interface " : "class ");
 		s.append(c.getSimpleName());
 		s.append(" extends ");
@@ -78,9 +78,9 @@ public abstract class ReflectUtils {
 		for (Constructor<?> t : con) {
 			int m = t.getModifiers();
 			StringBuilder s = new StringBuilder();
-			s.append(Modifier.isPrivate(m) ? "private " : "");
-			s.append(Modifier.isProtected(m) ? "protected " : "");
-			s.append(Modifier.isPublic(m) ? "public " : "");
+			s.append(Modifier.isPrivate(m) ? "private " : StringUtils.BLANK);
+			s.append(Modifier.isProtected(m) ? "protected " : StringUtils.BLANK);
+			s.append(Modifier.isPublic(m) ? "public " : StringUtils.BLANK);
 			s.append(c.getSimpleName());
 			s.append("(");
 			Class<?>[] p = t.getParameterTypes();
@@ -110,13 +110,13 @@ public abstract class ReflectUtils {
 		for (Field ff : f) {
 			int m = ff.getModifiers();
 			StringBuilder s = new StringBuilder();
-			s.append(Modifier.isPrivate(m) ? "private " : "");
-			s.append(Modifier.isProtected(m) ? "protected " : "");
-			s.append(Modifier.isPublic(m) ? "public " : "");
-			s.append(Modifier.isStatic(m) ? "static " : "");
-			s.append(Modifier.isFinal(m) ? "final " : "");
-			s.append(Modifier.isTransient(m) ? "transient " : "");
-			s.append(Modifier.isVolatile(m) ? "volatile " : "");
+			s.append(Modifier.isPrivate(m) ? "private " : StringUtils.BLANK);
+			s.append(Modifier.isProtected(m) ? "protected " : StringUtils.BLANK);
+			s.append(Modifier.isPublic(m) ? "public " : StringUtils.BLANK);
+			s.append(Modifier.isStatic(m) ? "static " : StringUtils.BLANK);
+			s.append(Modifier.isFinal(m) ? "final " : StringUtils.BLANK);
+			s.append(Modifier.isTransient(m) ? "transient " : StringUtils.BLANK);
+			s.append(Modifier.isVolatile(m) ? "volatile " : StringUtils.BLANK);
 			s.append(ff.getType());
 			s.append(" ");
 			s.append(ff.getName());
@@ -134,7 +134,7 @@ public abstract class ReflectUtils {
 	}
 
 	public static void printHierarchy(Class<?> c, PrintStream out) {
-		ReflectUtils.printHierarchy("", c, out);
+		ReflectUtils.printHierarchy(StringUtils.BLANK, c, out);
 	}
 
 	private static void printHierarchy(String prefix, Class<?> c, PrintStream out) {
@@ -174,13 +174,13 @@ public abstract class ReflectUtils {
 		Method[] m = c.getDeclaredMethods();
 		for (Method mm : m) {
 			StringBuilder s = new StringBuilder();
-			s.append(Modifier.isPrivate(mm.getModifiers()) ? "private " : "");
-			s.append(Modifier.isProtected(mm.getModifiers()) ? "protected " : "");
-			s.append(Modifier.isPublic(mm.getModifiers()) ? "public " : "");
-			s.append(Modifier.isStatic(mm.getModifiers()) ? "static " : "");
-			s.append(Modifier.isSynchronized(mm.getModifiers()) ? "synchronized " : "");
-			s.append(Modifier.isFinal(mm.getModifiers()) ? "final " : "");
-			s.append(Modifier.isNative(mm.getModifiers()) ? "native " : "");
+			s.append(Modifier.isPrivate(mm.getModifiers()) ? "private " : StringUtils.BLANK);
+			s.append(Modifier.isProtected(mm.getModifiers()) ? "protected " : StringUtils.BLANK);
+			s.append(Modifier.isPublic(mm.getModifiers()) ? "public " : StringUtils.BLANK);
+			s.append(Modifier.isStatic(mm.getModifiers()) ? "static " : StringUtils.BLANK);
+			s.append(Modifier.isSynchronized(mm.getModifiers()) ? "synchronized " : StringUtils.BLANK);
+			s.append(Modifier.isFinal(mm.getModifiers()) ? "final " : StringUtils.BLANK);
+			s.append(Modifier.isNative(mm.getModifiers()) ? "native " : StringUtils.BLANK);
 			s.append(mm.getReturnType().getSimpleName() + " ");
 			s.append(mm.getName());
 			s.append("(");

@@ -17,6 +17,7 @@
 package net.woodstock.rockframework.domain.pojo.converter.token.impl;
 
 import net.woodstock.rockframework.util.FieldInfo;
+import net.woodstock.rockframework.utils.StringUtils;
 
 class NullConverter extends TokenAttributeConverterBase<Object> {
 
@@ -25,7 +26,7 @@ class NullConverter extends TokenAttributeConverterBase<Object> {
 	}
 
 	public String toText(Object o, FieldInfo fieldInfo) {
-		return "";
+		return StringUtils.BLANK;
 	}
 
 }

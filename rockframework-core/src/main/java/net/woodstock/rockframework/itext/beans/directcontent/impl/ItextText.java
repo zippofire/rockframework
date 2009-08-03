@@ -36,7 +36,7 @@ public class ItextText extends ItextBasicImpl {
 
 	private float				size				= 10f;
 
-	private String				text				= "";
+	private String				text				= StringUtils.BLANK;
 
 	private BaseFont			font				= BaseFont.DEFAULT;
 

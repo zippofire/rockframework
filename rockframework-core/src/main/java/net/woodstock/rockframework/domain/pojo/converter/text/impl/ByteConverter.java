@@ -42,7 +42,7 @@ class ByteConverter extends TextAttributeConverterBase<Byte> {
 
 	public String toText(Byte b, FieldInfo fieldInfo) {
 		try {
-			String s = "";
+			String s = StringUtils.BLANK;
 			if (b != null) {
 				if (fieldInfo.isAnnotationPresent(TextNumber.class)) {
 					String format = fieldInfo.getAnnotation(TextNumber.class).pattern();

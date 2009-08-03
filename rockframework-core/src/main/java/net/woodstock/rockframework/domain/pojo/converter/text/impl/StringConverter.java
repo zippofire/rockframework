@@ -36,7 +36,7 @@ class StringConverter extends TextAttributeConverterBase<String> {
 	public String toText(String s, FieldInfo fieldInfo) {
 		try {
 			if (s == null) {
-				s = "";
+				s = StringUtils.BLANK;
 			}
 			return TextConverterBase.rdap(s, this.getSize(fieldInfo));
 		} catch (Exception e) {

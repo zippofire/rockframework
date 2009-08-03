@@ -66,8 +66,7 @@ public abstract class ResponseUtils {
 		response.setContentLength(FileUtils.getContentLength(f));
 
 		response.setHeader("Content-type", ResponseUtils.DOWNLOAD_CONTENT_TYPE);
-		response
-				.setHeader("Content-Disposition", "attachment; filename=\"" + FileUtils.getFileName(f) + "\"");
+		response.setHeader("Content-Disposition", ResponseUtils.getAttachmentContentDisposition(FileUtils.getFileName(f)));
 		response.setHeader("Content-Length", Integer.toString(FileUtils.getContentLength(f)));
 
 		InputStream input = new FileInputStream(f);
@@ -88,7 +87,7 @@ public abstract class ResponseUtils {
 	}
 
 	public static String getAttachmentContentDisposition(String fileName) {
-		return ResponseUtils.ATTACHMENT_CONTENT_DISPOSITION + "; filename=\"" + fileName + "\"";
+		return "attachment; filename=\"" + fileName + "\"";
 	}
 
 	public static String getContentType(String extension) {

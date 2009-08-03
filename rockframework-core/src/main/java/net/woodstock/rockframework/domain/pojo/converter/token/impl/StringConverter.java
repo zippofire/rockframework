@@ -36,7 +36,7 @@ class StringConverter extends TokenAttributeConverterBase<String> {
 	public String toText(String s, FieldInfo fieldInfo) {
 		try {
 			if (s == null) {
-				s = "";
+				s = StringUtils.BLANK;
 			}
 			return s;
 		} catch (Exception e) {

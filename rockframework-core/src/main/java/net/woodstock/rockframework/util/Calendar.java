@@ -22,6 +22,8 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import net.woodstock.rockframework.utils.StringUtils;
+
 public class Calendar extends GregorianCalendar {
 
 	private static final long		serialVersionUID			= -5683383305791225831L;
@@ -304,7 +306,7 @@ public class Calendar extends GregorianCalendar {
 	public String getFormated(String format) {
 		for (String s : Calendar.ALL_FORMAT) {
 			while (format.indexOf(s) != -1) {
-				SimpleDateFormat sdf = new SimpleDateFormat(s.replace("%", ""), this.locale);
+				SimpleDateFormat sdf = new SimpleDateFormat(s.replace("%", StringUtils.BLANK), this.locale);
 				format = format.replace(s, sdf.format(this.getTime()));
 			}
 		}

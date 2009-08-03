@@ -23,6 +23,7 @@ import net.woodstock.rockframework.domain.pojo.converter.text.TextField;
 import net.woodstock.rockframework.domain.pojo.converter.text.TextIgnore;
 import net.woodstock.rockframework.util.BeanInfo;
 import net.woodstock.rockframework.util.FieldInfo;
+import net.woodstock.rockframework.utils.StringUtils;
 
 class PojoConverter extends TextAttributeConverterBase<Pojo> {
 
@@ -77,7 +78,7 @@ class PojoConverter extends TextAttributeConverterBase<Pojo> {
 					throw new TextConverterException(msg);
 				}
 
-				String s = "";
+				String s = StringUtils.BLANK;
 
 				if (size != -1) {
 					s = text.substring(0, size);

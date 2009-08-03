@@ -40,7 +40,7 @@ class DateConverter extends TextAttributeConverterBase<Date> {
 
 	public String toText(Date d, FieldInfo fieldInfo) {
 		try {
-			String s = "";
+			String s = StringUtils.BLANK;
 			if (d != null) {
 				String format = fieldInfo.getAnnotation(TextDate.class).format();
 				s = DateUtils.format(d, format);

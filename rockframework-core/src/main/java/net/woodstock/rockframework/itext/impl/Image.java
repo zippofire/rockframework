@@ -58,7 +58,7 @@ public class Image extends ObjectBase {
 		this.absoluteX = Float.MIN_VALUE;
 		this.absoluteY = Float.MIN_VALUE;
 		this.alignment = Alignment.LEFT;
-		this.alt = "";
+		this.alt = StringUtils.BLANK;
 		this.borderColor = Color.black;
 		this.borderWidth = Float.MIN_VALUE;
 		this.indentationLeft = Float.MIN_VALUE;
@@ -67,7 +67,7 @@ public class Image extends ObjectBase {
 		this.scale = 100;
 		this.spacingAfter = Float.MIN_VALUE;
 		this.spacingBefore = Float.MIN_VALUE;
-		this.url = "";
+		this.url = StringUtils.BLANK;
 	}
 
 	public Element getObject() {

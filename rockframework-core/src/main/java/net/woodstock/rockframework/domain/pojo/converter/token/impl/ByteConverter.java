@@ -42,7 +42,7 @@ class ByteConverter extends TokenAttributeConverterBase<Byte> {
 
 	public String toText(Byte b, FieldInfo fieldInfo) {
 		try {
-			String s = "";
+			String s = StringUtils.BLANK;
 			if (b != null) {
 				if (fieldInfo.isAnnotationPresent(TokenNumber.class)) {
 					String format = fieldInfo.getAnnotation(TokenNumber.class).pattern();

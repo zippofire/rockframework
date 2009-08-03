@@ -44,7 +44,7 @@ class BigDecimalConverter extends TextAttributeConverterBase<BigDecimal> {
 
 	public String toText(BigDecimal b, FieldInfo fieldInfo) {
 		try {
-			String s = "";
+			String s = StringUtils.BLANK;
 			if (b != null) {
 				if (fieldInfo.isAnnotationPresent(TextNumber.class)) {
 					String format = fieldInfo.getAnnotation(TextNumber.class).pattern();

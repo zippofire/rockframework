@@ -18,37 +18,30 @@ package net.woodstock.rockframework.reflection.impl;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 
 import net.woodstock.rockframework.reflection.BeanDescriptor;
-import net.woodstock.rockframework.reflection.ReflectionException;
 
 class FieldPropertyDescriptor extends AbstractPropertyDescriptor {
 
 	private Field	field;
 
-	FieldPropertyDescriptor(BeanDescriptor beanDescriptor, Field field) {
+	FieldPropertyDescriptor(BeanDescriptor beanDescriptor, Field field) throws NoSuchMethodException {
 		super();
 		this.setBeanDescriptor(beanDescriptor);
 		this.field = field;
 		this.init();
 	}
 
-	private void init() {
-		try {
-			this.initGet();
-			this.initSet();
-		}
-		catch (NoSuchMethodException e) {
-			throw new ReflectionException(e);
-		}
+	private void init() throws NoSuchMethodException {
+		this.initGet();
+		this.initSet();
 	}
 
 	private void initGet() throws NoSuchMethodException {
 		Class<?> c = this.getBeanDescriptor().getType();
 		// Is
 		if (this.field.getType().getCanonicalName().equals(boolean.class.getCanonicalName())) {
-			this.setReadMethodName(this.getMethodName(AbstractPropertyDescriptor.IS_METHOD_PREFIX, this.field));
+			this.setReadMethodName(this.getMethodName(BeanDescriptorHelper.IS_METHOD_PREFIX, this.field));
 			try {
 				this.setReadMethod(c.getMethod(this.getReadMethodName(), new Class[] {}));
 				return;
@@ -58,13 +51,13 @@ class FieldPropertyDescriptor extends AbstractPropertyDescriptor {
 			}
 		}
 		// Get
-		this.setReadMethodName(this.getMethodName(AbstractPropertyDescriptor.GET_METHOD_PREFIX, this.field));
+		this.setReadMethodName(this.getMethodName(BeanDescriptorHelper.GET_METHOD_PREFIX, this.field));
 		this.setReadMethod(c.getMethod(this.getReadMethodName(), new Class[] {}));
 	}
 
 	private void initSet() throws NoSuchMethodException {
 		Class<?> c = this.getBeanDescriptor().getType();
-		this.setWriteMethodName(this.getMethodName(AbstractPropertyDescriptor.SET_METHOD_PREFIX, this.field));
+		this.setWriteMethodName(this.getMethodName(BeanDescriptorHelper.SET_METHOD_PREFIX, this.field));
 		this.setWriteMethod(c.getMethod(this.getWriteMethodName(), new Class[] { this.field.getType() }));
 	}
 
@@ -88,40 +81,9 @@ class FieldPropertyDescriptor extends AbstractPropertyDescriptor {
 		return this.field.getAnnotations();
 	}
 
-	public Object getValue(Object o) {
-		try {
-			if (Modifier.isPublic(this.field.getModifiers())) {
-				return this.field.get(o);
-			}
-			if (this.getReadMethod() == null) {
-				throw new NoSuchMethodException(this.getReadMethodName());
-			}
-			return this.getReadMethod().invoke(o, new Object[] {});
-		}
-		catch (Exception e) {
-			throw new ReflectionException(e);
-		}
-	}
-
-	public void setValue(Object o, Object value) {
-		try {
-			if (Modifier.isPublic(this.field.getModifiers())) {
-				this.field.set(o, value);
-				return;
-			}
-			if (this.getWriteMethod() == null) {
-				throw new NoSuchMethodException(this.getWriteMethodName());
-			}
-			this.getWriteMethod().invoke(o, new Object[] { value });
-		}
-		catch (Exception e) {
-			throw new ReflectionException(e);
-		}
-	}
-
 	private String getMethodName(String prefix, Field field) {
 		String property = field.getName();
-		return this.getMethodName(prefix, property);
+		return BeanDescriptorHelper.getMethodName(prefix, property);
 	}
 
 }

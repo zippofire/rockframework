@@ -35,7 +35,7 @@ class CharacterConverter extends TextAttributeConverterBase<Character> {
 
 	public String toText(Character c, FieldInfo fieldInfo) {
 		try {
-			String s = "";
+			String s = StringUtils.BLANK;
 			if (c != null) {
 				s = c.toString();
 			}

@@ -62,7 +62,7 @@ public abstract class FileUtils {
 		if (fileName.indexOf('.') != -1) {
 			return fileName.substring(fileName.lastIndexOf('.') + 1);
 		}
-		return "";
+		return StringUtils.BLANK;
 	}
 
 	public static int lineCount(String src) throws IOException {

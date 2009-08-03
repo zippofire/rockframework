@@ -19,13 +19,14 @@ package net.woodstock.rockframework.web.struts2.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import net.woodstock.rockframework.sys.SysLogger;
-
 import org.apache.commons.logging.Log;
 import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.interceptor.Interceptor;
+
+import net.woodstock.rockframework.sys.SysLogger;
+import net.woodstock.rockframework.utils.StringUtils;
 
 public abstract class BaseInterceptor implements Interceptor {
 
@@ -76,7 +77,7 @@ public abstract class BaseInterceptor implements Interceptor {
 	}
 
 	protected String getRequestPath() {
-		String path = this.getRequest().getRequestURI().replace(this.getContextPath(), "");
+		String path = this.getRequest().getRequestURI().replace(this.getContextPath(), StringUtils.BLANK);
 		if (path.indexOf('!') != -1) {
 			path = path.replaceAll("!\\w*\\.", ".");
 		}

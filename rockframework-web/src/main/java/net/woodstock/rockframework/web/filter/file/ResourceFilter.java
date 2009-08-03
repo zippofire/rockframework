@@ -48,8 +48,8 @@ public class ResourceFilter extends HttpFilter {
 	public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws IOException {
 		String context = request.getContextPath();
-		String resource = request.getRequestURI().replace(context, "");
-		resource = resource.replaceAll("^/\\w*/", "");
+		String resource = request.getRequestURI().replace(context, StringUtils.BLANK);
+		resource = resource.replaceAll("^/\\w*/", StringUtils.BLANK);
 
 		if ((StringUtils.isEmpty(resource)) || (resource.endsWith("/"))) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

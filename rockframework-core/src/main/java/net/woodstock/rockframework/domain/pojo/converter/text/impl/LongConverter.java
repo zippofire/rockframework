@@ -42,7 +42,7 @@ class LongConverter extends TextAttributeConverterBase<Long> {
 
 	public String toText(Long l, FieldInfo fieldInfo) {
 		try {
-			String s = "";
+			String s = StringUtils.BLANK;
 			if (l != null) {
 				if (fieldInfo.isAnnotationPresent(TextNumber.class)) {
 					String format = fieldInfo.getAnnotation(TextNumber.class).pattern();

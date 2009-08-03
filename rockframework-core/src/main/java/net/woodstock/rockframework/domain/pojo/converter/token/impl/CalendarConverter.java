@@ -41,7 +41,7 @@ class CalendarConverter extends TokenAttributeConverterBase<Calendar> {
 
 	public String toText(Calendar c, FieldInfo fieldInfo) {
 		try {
-			String s = "";
+			String s = StringUtils.BLANK;
 			if (c != null) {
 				String format = fieldInfo.getAnnotation(TokenDate.class).format();
 				s = DateUtils.format(c.getTime(), format);

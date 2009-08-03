@@ -42,7 +42,7 @@ class FloatConverter extends TextAttributeConverterBase<Float> {
 
 	public String toText(Float f, FieldInfo fieldInfo) {
 		try {
-			String s = "";
+			String s = StringUtils.BLANK;
 			if (f != null) {
 				if (fieldInfo.isAnnotationPresent(TextNumber.class)) {
 					String format = fieldInfo.getAnnotation(TextNumber.class).pattern();

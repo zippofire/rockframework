@@ -24,6 +24,7 @@ import java.lang.annotation.Target;
 import net.woodstock.rockframework.domain.business.validation.Operation;
 import net.woodstock.rockframework.domain.business.validation.local.Validate;
 import net.woodstock.rockframework.domain.business.validation.local.validator.ValidatorFloatConstraint;
+import net.woodstock.rockframework.utils.StringUtils;
 
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target(value = ElementType.FIELD)
@@ -34,6 +35,6 @@ public @interface ValidateFloatConstraint {
 
 	Operation[] operation() default { Operation.ALL };
 
-	String message() default "";
+	String message() default StringUtils.BLANK;
 
 }

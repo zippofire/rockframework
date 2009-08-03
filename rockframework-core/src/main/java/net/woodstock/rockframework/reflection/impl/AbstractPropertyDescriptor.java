@@ -20,24 +20,19 @@ import java.lang.reflect.Method;
 
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
+import net.woodstock.rockframework.reflection.ReflectionException;
 
 abstract class AbstractPropertyDescriptor implements PropertyDescriptor {
 
-	protected static final String	GET_METHOD_PREFIX	= "get";
+	private BeanDescriptor	beanDescriptor;
 
-	protected static final String	IS_METHOD_PREFIX	= "is";
+	private Method			readMethod;
 
-	protected static final String	SET_METHOD_PREFIX	= "set";
+	private String			readMethodName;
 
-	private BeanDescriptor			beanDescriptor;
+	private Method			writeMethod;
 
-	private Method					readMethod;
-
-	private String					readMethodName;
-
-	private Method					writeMethod;
-
-	private String					writeMethodName;
+	private String			writeMethodName;
 
 	public AbstractPropertyDescriptor() {
 		super();
@@ -83,13 +78,29 @@ abstract class AbstractPropertyDescriptor implements PropertyDescriptor {
 		this.writeMethodName = writeMethodName;
 	}
 
-	// Common
-	protected String getMethodName(String prefix, String property) {
-		StringBuilder builder = new StringBuilder();
-		builder.append(prefix);
-		builder.append(Character.toUpperCase(property.charAt(0)));
-		builder.append(property.substring(1));
-		return builder.toString();
+	// Getters and Setters
+	public Object getValue(Object o) {
+		try {
+			if (this.getReadMethod() == null) {
+				throw new NoSuchMethodException(this.getReadMethodName());
+			}
+			return this.getReadMethod().invoke(o, new Object[] {});
+		}
+		catch (Exception e) {
+			throw new ReflectionException(e);
+		}
+	}
+
+	public void setValue(Object o, Object value) {
+		try {
+			if (this.getWriteMethod() == null) {
+				throw new NoSuchMethodException(this.getWriteMethodName());
+			}
+			this.getWriteMethod().invoke(o, new Object[] { value });
+		}
+		catch (Exception e) {
+			throw new ReflectionException(e);
+		}
 	}
 
 }

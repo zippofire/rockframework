@@ -79,7 +79,7 @@ public class ItextBarcode extends ItextObjectImpl {
 		this.absoluteX = Float.MIN_VALUE;
 		this.absoluteY = Float.MIN_VALUE;
 		this.alignment = Alignment.LEFT;
-		this.alt = "";
+		this.alt = StringUtils.BLANK;
 		this.barcode = Barcode.DEFAULT;
 		this.barcodeStyle = BarcodeStyle.DEFAULT;
 		this.borderColor = Color.black;
@@ -92,7 +92,7 @@ public class ItextBarcode extends ItextObjectImpl {
 		this.showText = true;
 		this.spacingAfter = Float.MIN_VALUE;
 		this.spacingBefore = Float.MIN_VALUE;
-		this.text = "";
+		this.text = StringUtils.BLANK;
 		this.textAlignment = Alignment.CENTER;
 		this.textColor = Color.black;
 		this.textSize = 10;

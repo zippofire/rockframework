@@ -24,6 +24,8 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionRedirect;
 
+import net.woodstock.rockframework.utils.StringUtils;
+
 public class ForwardResult implements StrutsResult {
 
 	private String				name;
@@ -56,7 +58,7 @@ public class ForwardResult implements StrutsResult {
 		ActionRedirect redirect = new ActionRedirect(mapping.findForwardConfig(this.name));
 		for (Entry<String, Object> entry : this.parameters.entrySet()) {
 			String k = entry.getKey();
-			String v = "";
+			String v = StringUtils.BLANK;
 			if (entry.getValue() != null) {
 				v = entry.getValue().toString();
 			}

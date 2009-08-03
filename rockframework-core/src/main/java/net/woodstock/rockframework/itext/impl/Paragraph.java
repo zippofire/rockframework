@@ -20,14 +20,15 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.lowagie.text.Chunk;
+import com.lowagie.text.Element;
+import com.lowagie.text.Phrase;
+
 import net.woodstock.rockframework.itext.Object;
 import net.woodstock.rockframework.itext.types.Alignment;
 import net.woodstock.rockframework.itext.types.Font;
 import net.woodstock.rockframework.itext.types.FontStyle;
-
-import com.lowagie.text.Chunk;
-import com.lowagie.text.Element;
-import com.lowagie.text.Phrase;
+import net.woodstock.rockframework.utils.StringUtils;
 
 public class Paragraph extends ObjectBase {
 
@@ -75,7 +76,7 @@ public class Paragraph extends ObjectBase {
 		this.leading = Float.MIN_VALUE;
 		this.spacingAfter = Float.MIN_VALUE;
 		this.spacingBefore = Float.MIN_VALUE;
-		this.text = "";
+		this.text = StringUtils.BLANK;
 		this.items = new ArrayList<Object>();
 	}
 

@@ -24,12 +24,20 @@ public class RegexTest extends TestCase {
 		return false;
 	}
 
-	public void test1() throws Exception {
+	public void xtest1() throws Exception {
 		System.out.println(RegexTest.verificaAcesso("/faces"));
 		System.out.println(RegexTest.verificaAcesso("/index.jsp"));
 		System.out.println(RegexTest.verificaAcesso("/css/default.css"));
 		System.out.println(RegexTest.verificaAcesso("/theme/default.txt"));
 		System.out.println(RegexTest.verificaAcesso("/scripts/util.js"));
+	}
+
+	public void test2() throws Exception {
+		String[] names = new String[] { "getName", "isValid", "setName" };
+		for (String s : names) {
+			String result = s.replaceAll("^(get|is|set)", "");
+			System.out.println(result);
+		}
 	}
 
 }

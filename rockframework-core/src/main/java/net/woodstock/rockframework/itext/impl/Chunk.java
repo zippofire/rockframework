@@ -59,12 +59,12 @@ public class Chunk extends ObjectBase {
 		this.fontStyle = FontStyle.DEFAULT;
 		this.horizontalScaling = 1;
 		this.textRise = Float.MIN_VALUE;
-		this.text = "";
+		this.text = StringUtils.BLANK;
 		this.underlines = new ArrayList<float[]>();
 	}
 
 	public Element getObject() {
-		com.lowagie.text.Chunk chunk = new com.lowagie.text.Chunk("");
+		com.lowagie.text.Chunk chunk = new com.lowagie.text.Chunk(StringUtils.BLANK);
 
 		if (!StringUtils.isEmpty(this.anchor)) {
 			chunk.setAnchor(this.anchor);

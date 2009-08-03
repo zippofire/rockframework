@@ -45,7 +45,7 @@ public class ItextBarcode extends ItextBasicImpl {
 
 	private float				height				= 1;
 
-	private String				text				= "";
+	private String				text				= StringUtils.BLANK;
 
 	private Color				textColor			= Color.BLACK;
 
@@ -132,7 +132,7 @@ public class ItextBarcode extends ItextBasicImpl {
 			throw new DocumentException("Cold not write barcode: barcode text not defined");
 		}
 		if (this.charGroup > 0) {
-			String tmp = "";
+			String tmp = StringUtils.BLANK;
 			while (this.text.length() > this.charGroup) {
 				tmp += this.text.substring(0, this.charGroup) + "  " + this.charSeparator + "  ";
 				this.text = this.text.substring(this.charGroup);

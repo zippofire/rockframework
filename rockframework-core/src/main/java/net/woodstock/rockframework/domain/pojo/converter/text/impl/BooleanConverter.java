@@ -41,7 +41,7 @@ class BooleanConverter extends TextAttributeConverterBase<Boolean> {
 
 	public String toText(Boolean b, FieldInfo fieldInfo) {
 		try {
-			String s = "";
+			String s = StringUtils.BLANK;
 			if (b != null) {
 				if (b.booleanValue()) {
 					s = fieldInfo.getAnnotation(TextBoolean.class).trueValue();

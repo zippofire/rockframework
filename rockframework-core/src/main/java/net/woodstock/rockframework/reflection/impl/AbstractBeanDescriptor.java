@@ -17,8 +17,6 @@
 package net.woodstock.rockframework.reflection.impl;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -26,45 +24,22 @@ import org.apache.commons.logging.Log;
 
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
-import net.woodstock.rockframework.reflection.ReflectionException;
 import net.woodstock.rockframework.sys.SysLogger;
 
-class BeanDescriptorImpl implements BeanDescriptor {
+abstract class AbstractBeanDescriptor implements BeanDescriptor {
 
 	private Class<?>						type;
 
 	private Collection<PropertyDescriptor>	properties;
 
-	public BeanDescriptorImpl(Class<?> clazz) {
+	public AbstractBeanDescriptor(Class<?> clazz) {
 		super();
 		this.type = clazz;
 		this.properties = new LinkedList<PropertyDescriptor>();
 		this.init();
 	}
 
-	public void init() {
-		Class<?> c = this.type;
-		while (c != null) {
-			for (Field field : c.getDeclaredFields()) {
-				if (this.hasProperty(field.getName())) {
-					continue;
-				}
-
-				if (Modifier.isStatic(field.getModifiers())) {
-					continue;
-				}
-
-				try {
-					PropertyDescriptor property = new FieldPropertyDescriptor(this, field);
-					this.properties.add(property);
-				}
-				catch (ReflectionException e) {
-					// this.getLogger().info(e.getMessage(), e);
-				}
-			}
-			c = c.getSuperclass();
-		}
-	}
+	public abstract void init();
 
 	public String getName() {
 		return this.type.getName();

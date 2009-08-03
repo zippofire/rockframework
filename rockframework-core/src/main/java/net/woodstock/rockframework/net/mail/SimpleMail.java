@@ -21,15 +21,17 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 
+import net.woodstock.rockframework.utils.StringUtils;
+
 public class SimpleMail implements Serializable {
 
 	private static final long	serialVersionUID	= -7704634381340126487L;
 
-	private String				text				= "";
+	private String				text				= StringUtils.BLANK;
 
-	private String				subject				= "";
+	private String				subject				= StringUtils.BLANK;
 
-	private String				from				= "";
+	private String				from				= StringUtils.BLANK;
 
 	private boolean				html				= false;
 

@@ -42,7 +42,7 @@ class ShortConverter extends TokenAttributeConverterBase<Short> {
 
 	public String toText(Short s, FieldInfo fieldInfo) {
 		try {
-			String ss = "";
+			String ss = StringUtils.BLANK;
 			if (s != null) {
 				if (fieldInfo.isAnnotationPresent(TokenNumber.class)) {
 					String format = fieldInfo.getAnnotation(TokenNumber.class).pattern();

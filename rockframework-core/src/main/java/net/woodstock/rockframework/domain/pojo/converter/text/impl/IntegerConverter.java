@@ -42,7 +42,7 @@ class IntegerConverter extends TextAttributeConverterBase<Integer> {
 
 	public String toText(Integer i, FieldInfo fieldInfo) {
 		try {
-			String s = "";
+			String s = StringUtils.BLANK;
 			if (i != null) {
 				if (fieldInfo.isAnnotationPresent(TextNumber.class)) {
 					String format = fieldInfo.getAnnotation(TextNumber.class).pattern();

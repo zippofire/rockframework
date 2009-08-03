@@ -60,12 +60,12 @@ public class ItextChunk extends ItextObjectImpl {
 		this.fontStyle = FontStyle.DEFAULT;
 		this.horizontalScaling = 1;
 		this.textRise = Float.MIN_VALUE;
-		this.text = "";
+		this.text = StringUtils.BLANK;
 		this.underlines = new ArrayList<float[]>();
 	}
 
 	public Element getObject() {
-		Chunk chunk = new Chunk("");
+		Chunk chunk = new Chunk(StringUtils.BLANK);
 
 		if (!StringUtils.isEmpty(this.anchor)) {
 			chunk.setAnchor(this.anchor);

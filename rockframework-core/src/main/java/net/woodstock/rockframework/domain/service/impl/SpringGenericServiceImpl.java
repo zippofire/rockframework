@@ -20,7 +20,6 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +32,6 @@ import net.woodstock.rockframework.domain.service.ServiceException;
 
 public abstract class SpringGenericServiceImpl extends AbstractGenericService {
 
-	@Autowired(required = true)
 	public SpringGenericServiceImpl(GenericBusiness business, GenericRepository repository) {
 		super(business, repository);
 	}

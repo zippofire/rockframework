@@ -42,7 +42,7 @@ class DoubleConverter extends TokenAttributeConverterBase<Double> {
 
 	public String toText(Double d, FieldInfo fieldInfo) {
 		try {
-			String s = "";
+			String s = StringUtils.BLANK;
 			if (d != null) {
 				if (fieldInfo.isAnnotationPresent(TokenNumber.class)) {
 					String format = fieldInfo.getAnnotation(TokenNumber.class).pattern();

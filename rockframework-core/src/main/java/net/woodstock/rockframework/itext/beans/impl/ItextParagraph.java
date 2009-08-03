@@ -20,15 +20,16 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import net.woodstock.rockframework.itext.beans.ItextObject;
-import net.woodstock.rockframework.itext.types.Alignment;
-import net.woodstock.rockframework.itext.types.Font;
-import net.woodstock.rockframework.itext.types.FontStyle;
-
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Element;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
+
+import net.woodstock.rockframework.itext.beans.ItextObject;
+import net.woodstock.rockframework.itext.types.Alignment;
+import net.woodstock.rockframework.itext.types.Font;
+import net.woodstock.rockframework.itext.types.FontStyle;
+import net.woodstock.rockframework.utils.StringUtils;
 
 public class ItextParagraph extends ItextObjectImpl {
 
@@ -76,7 +77,7 @@ public class ItextParagraph extends ItextObjectImpl {
 		this.leading = Float.MIN_VALUE;
 		this.spacingAfter = Float.MIN_VALUE;
 		this.spacingBefore = Float.MIN_VALUE;
-		this.text = "";
+		this.text = StringUtils.BLANK;
 		this.items = new ArrayList<ItextObject>();
 	}
 

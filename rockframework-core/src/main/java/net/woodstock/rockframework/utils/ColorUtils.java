@@ -52,7 +52,7 @@ public abstract class ColorUtils {
 		int green = 0;
 		int blue = 0;
 		if ((s.startsWith("rgb(")) && (s.endsWith(")"))) {
-			String colors[] = s.replaceAll("rgb\\(", "").replaceAll("\\)", "").split(",");
+			String colors[] = s.replaceAll("rgb\\(", StringUtils.BLANK).replaceAll("\\)", StringUtils.BLANK).split(",");
 			if (colors.length == 3) {
 				red = Integer.parseInt(colors[0].trim());
 				green = Integer.parseInt(colors[1].trim());

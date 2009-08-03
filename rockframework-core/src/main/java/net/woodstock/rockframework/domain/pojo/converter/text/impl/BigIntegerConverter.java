@@ -44,7 +44,7 @@ class BigIntegerConverter extends TextAttributeConverterBase<BigInteger> {
 
 	public String toText(BigInteger b, FieldInfo fieldInfo) {
 		try {
-			String s = "";
+			String s = StringUtils.BLANK;
 			if (b != null) {
 				if (fieldInfo.isAnnotationPresent(TextNumber.class)) {
 					String format = fieldInfo.getAnnotation(TextNumber.class).pattern();

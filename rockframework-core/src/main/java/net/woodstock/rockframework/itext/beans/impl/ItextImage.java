@@ -59,7 +59,7 @@ public class ItextImage extends ItextObjectImpl {
 		this.absoluteX = Float.MIN_VALUE;
 		this.absoluteY = Float.MIN_VALUE;
 		this.alignment = Alignment.LEFT;
-		this.alt = "";
+		this.alt = StringUtils.BLANK;
 		this.borderColor = Color.black;
 		this.borderWidth = Float.MIN_VALUE;
 		this.indentationLeft = Float.MIN_VALUE;
@@ -68,7 +68,7 @@ public class ItextImage extends ItextObjectImpl {
 		this.scale = 100;
 		this.spacingAfter = Float.MIN_VALUE;
 		this.spacingBefore = Float.MIN_VALUE;
-		this.url = "";
+		this.url = StringUtils.BLANK;
 	}
 
 	public Element getObject() {

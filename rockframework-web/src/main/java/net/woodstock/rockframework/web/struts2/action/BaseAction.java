@@ -20,9 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import net.woodstock.rockframework.sys.SysLogger;
-import net.woodstock.rockframework.web.struts2.interceptor.PostOnlyInterceptor;
-
 import org.apache.commons.logging.Log;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
@@ -30,6 +27,10 @@ import org.apache.struts2.interceptor.ServletResponseAware;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
+
+import net.woodstock.rockframework.sys.SysLogger;
+import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.web.struts2.interceptor.PostOnlyInterceptor;
 
 public abstract class BaseAction extends ActionSupport implements ServletRequestAware, ServletResponseAware,
 		Preparable {
@@ -128,7 +129,7 @@ public abstract class BaseAction extends ActionSupport implements ServletRequest
 	}
 
 	protected String getRequestPath() {
-		String path = this.getRequest().getRequestURI().replace(this.getContextPath(), "");
+		String path = this.getRequest().getRequestURI().replace(this.getContextPath(), StringUtils.BLANK);
 		if (path.indexOf('!') != -1) {
 			path = path.replaceAll("!\\w*\\.", ".");
 		}

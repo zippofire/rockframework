@@ -42,7 +42,7 @@ class DoubleConverter extends TextAttributeConverterBase<Double> {
 
 	public String toText(Double d, FieldInfo fieldInfo) {
 		try {
-			String s = "";
+			String s = StringUtils.BLANK;
 			if (d != null) {
 				if (fieldInfo.isAnnotationPresent(TextNumber.class)) {
 					String format = fieldInfo.getAnnotation(TextNumber.class).pattern();
