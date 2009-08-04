@@ -29,10 +29,6 @@ public abstract class BaseForm extends ActionForm {
 
 	private static final long	serialVersionUID	= -5299608278184306255L;
 
-	protected Log getLogger() {
-		return SysLogger.getLogger();
-	}
-
 	@Override
 	public final void reset(ActionMapping mapping, ServletRequest request) {
 		this.reset();
@@ -44,5 +40,9 @@ public abstract class BaseForm extends ActionForm {
 	}
 
 	public abstract void reset();
+
+	protected Log getLogger() {
+		return SysLogger.getLogger();
+	}
 
 }

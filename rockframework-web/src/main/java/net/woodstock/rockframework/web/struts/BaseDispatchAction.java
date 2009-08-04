@@ -40,6 +40,12 @@ public abstract class BaseDispatchAction extends DispatchAction {
 	@Override
 	public final ActionForward execute(ActionMapping mapping, ActionForm form, ServletRequest request,
 			ServletResponse response) throws Exception {
+		if ((request instanceof HttpServletRequest)) {
+			throw new IllegalArgumentException("Invalid request type");
+		}
+		if ((response instanceof HttpServletResponse)) {
+			throw new IllegalArgumentException("Invalid response type");
+		}
 		return this.execute(mapping, form, (HttpServletRequest) request, (HttpServletResponse) response);
 	}
 

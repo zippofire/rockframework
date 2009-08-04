@@ -16,15 +16,31 @@
  */
 package net.woodstock.rockframework.web.struts;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+
 import net.woodstock.rockframework.sys.SysLogger;
 
 import org.apache.commons.logging.Log;
+import org.apache.struts.action.ActionMapping;
 import org.apache.struts.validator.ValidatorForm;
 
 public abstract class BaseValidatorForm extends ValidatorForm {
 
 	private static final long	serialVersionUID	= -8932478661740480652L;
 
+	@Override
+	public final void reset(ActionMapping mapping, ServletRequest request) {
+		this.reset();
+	}
+
+	@Override
+	public final void reset(ActionMapping mapping, HttpServletRequest request) {
+		this.reset();
+	}
+	
+	public abstract void reset();
+	
 	protected Log getLogger() {
 		return SysLogger.getLogger();
 	}

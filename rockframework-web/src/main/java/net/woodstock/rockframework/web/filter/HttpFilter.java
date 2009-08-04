@@ -29,6 +29,12 @@ import javax.servlet.http.HttpServletResponse;
 public abstract class HttpFilter extends BaseFilter {
 
 	@Override
+	public final void destroy() {
+		this.doDestroy();
+		super.destroy();
+	}
+
+	@Override
 	public final void init(FilterConfig filterConfig) {
 		super.init(filterConfig);
 		this.doInit();
@@ -39,14 +45,6 @@ public abstract class HttpFilter extends BaseFilter {
 		this.doFilter((HttpServletRequest) request, (HttpServletResponse) response, chain);
 	}
 
-	public abstract void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-			throws IOException, ServletException;
-
-	@Override
-	public final void destroy() {
-		this.doDestroy();
-	}
-
 	public void doInit() {
 		//
 	}
@@ -54,4 +52,8 @@ public abstract class HttpFilter extends BaseFilter {
 	public void doDestroy() {
 		//
 	}
+
+	public abstract void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+			throws IOException, ServletException;
+
 }

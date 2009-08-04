@@ -24,11 +24,13 @@ import net.woodstock.rockframework.web.jsp.taglib.BaseTag;
 
 public class FormatTag extends BaseTag {
 
-	private String	format;
+	private static final String	ERROR_VALUE	= "??ERROR??";
 
-	private Object	value;
+	private String				format;
 
-	private String	character;
+	private Object				value;
+
+	private String				character;
 
 	public FormatTag() {
 		super();
@@ -49,7 +51,7 @@ public class FormatTag extends BaseTag {
 			formated = StringUtils.format(this.format, value, character);
 		} catch (ArrayIndexOutOfBoundsException e) {
 			this.getLogger().warn(e.getMessage(), e);
-			formated = "??ERROR??";
+			formated = FormatTag.ERROR_VALUE;
 		}
 
 		writer.write(formated);

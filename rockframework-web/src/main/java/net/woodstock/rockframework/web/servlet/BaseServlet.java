@@ -29,13 +29,19 @@ public abstract class BaseServlet extends HttpServlet {
 	private static final long	serialVersionUID	= -5677220024908433472L;
 
 	@Override
-	public void init() throws ServletException {
+	public final void init() throws ServletException {
 		super.init();
 	}
 
 	@Override
-	public void init(ServletConfig config) throws ServletException {
+	public final void init(ServletConfig config) throws ServletException {
 		super.init(config);
+		this.doInit();
+	}
+
+	@SuppressWarnings("unused")
+	public void doInit() throws ServletException {
+		//
 	}
 
 	protected Log getLogger() {
