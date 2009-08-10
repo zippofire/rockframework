@@ -153,6 +153,9 @@ public class LDAPClient implements Serializable {
 		if ((this.connectOnSearch) && (!this.isConnected())) {
 			this.connect();
 		}
+		if (this.context == null) {
+			throw new IllegalStateException("Client not connected");
+		}
 		SearchControls controls = new SearchControls();
 		controls.setReturningAttributes(attributes);
 		controls.setCountLimit(limit);
