@@ -1,4 +1,0 @@
-Manifest-Version: 1.0  
-Class-Path: lib/rockframework-core-1.0.0-SNAPSHOT.jar
-  lib/rockframework-web-1.0.0-SNAPSHOT.jar
-  
