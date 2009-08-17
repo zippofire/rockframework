@@ -8,5 +8,5 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/rockframework-core-1.0.0-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/rockframework-web-1.0.0-SNAPSHOT.jar"/>
-	<classpathentry kind="output" path="build/classes"/>
+	<classpathentry kind="output" path="build"/>
 </classpath>
