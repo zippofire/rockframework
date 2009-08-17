@@ -34,8 +34,7 @@ public class ProxyObject implements InvocationHandler {
 		this.object = object;
 	}
 
-	public Object invoke(Object proxy, Method method, Object[] args) throws InvocationTargetException,
-			IllegalAccessException {
+	public Object invoke(Object proxy, Method method, Object[] args) throws InvocationTargetException, IllegalAccessException {
 		SysLogger.getLogger().info("Calling method " + method.getName());
 		return method.invoke(this.object, args);
 	}

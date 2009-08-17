@@ -78,8 +78,7 @@ public class CaptchaImage {
 			throw new IllegalArgumentException("Text must be not empty");
 		}
 
-		BufferedImage bufferedImage = new BufferedImage(this.getWidth(), CaptchaImage.HEIGHT,
-				BufferedImage.TYPE_INT_RGB);
+		BufferedImage bufferedImage = new BufferedImage(this.getWidth(), CaptchaImage.HEIGHT, BufferedImage.TYPE_INT_RGB);
 		Graphics2D graphics = bufferedImage.createGraphics();
 
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -104,7 +103,7 @@ public class CaptchaImage {
 	}
 
 	private void drawLines(Graphics2D graphics) {
-		for (int i = 0; i < MAX_DRAW; i++) {
+		for (int i = 0; i < CaptchaImage.MAX_DRAW; i++) {
 			graphics.setColor(this.getBackgroundColor());
 			int x1 = NumberUtils.random(this.getWidth());
 			int x2 = NumberUtils.random(this.getWidth());
@@ -115,7 +114,7 @@ public class CaptchaImage {
 	}
 
 	private void drawOvals(Graphics2D graphics) {
-		for (int i = 0; i < MAX_DRAW; i++) {
+		for (int i = 0; i < CaptchaImage.MAX_DRAW; i++) {
 			graphics.setColor(this.getBackgroundColor());
 			int x = NumberUtils.random(this.getWidth());
 			int y = NumberUtils.random(this.getWidth());
@@ -126,7 +125,7 @@ public class CaptchaImage {
 	}
 
 	private void drawRects(Graphics2D graphics) {
-		for (int i = 0; i < MAX_DRAW; i++) {
+		for (int i = 0; i < CaptchaImage.MAX_DRAW; i++) {
 			graphics.setColor(this.getBackgroundColor());
 			int x = NumberUtils.random(this.getWidth());
 			int y = NumberUtils.random(this.getWidth());
@@ -155,51 +154,51 @@ public class CaptchaImage {
 	}
 
 	private int getWidth() {
-		return this.text.length() * CHAR_WIDTH;
+		return this.text.length() * CaptchaImage.CHAR_WIDTH;
 	}
 
 	private Color getFontColor() {
-		int index = NumberUtils.random(fontColors.size() - 1);
-		return fontColors.get(index);
+		int index = NumberUtils.random(CaptchaImage.fontColors.size() - 1);
+		return CaptchaImage.fontColors.get(index);
 	}
 
 	private Color getBackgroundColor() {
-		int index = NumberUtils.random(backgroundColors.size() - 1);
-		return backgroundColors.get(index);
+		int index = NumberUtils.random(CaptchaImage.backgroundColors.size() - 1);
+		return CaptchaImage.backgroundColors.get(index);
 	}
 
 	private Font getFont() {
-		int index = NumberUtils.random(fonts.size() - 1);
-		return fonts.get(index);
+		int index = NumberUtils.random(CaptchaImage.fonts.size() - 1);
+		return CaptchaImage.fonts.get(index);
 	}
 
 	// Static
 	static {
-		fonts = new ArrayList<Font>();
-		fontColors = new ArrayList<Color>();
-		backgroundColors = new ArrayList<Color>();
+		CaptchaImage.fonts = new ArrayList<Font>();
+		CaptchaImage.fontColors = new ArrayList<Color>();
+		CaptchaImage.backgroundColors = new ArrayList<Color>();
 
-		for (int i = MIN_FONT; i < MAX_FONT; i++) {
-			fonts.add(new Font(Font.DIALOG, Font.ITALIC, i));
-			fonts.add(new Font(Font.MONOSPACED, Font.ITALIC, i));
-			fonts.add(new Font(Font.SANS_SERIF, Font.ITALIC, i));
+		for (int i = CaptchaImage.MIN_FONT; i < CaptchaImage.MAX_FONT; i++) {
+			CaptchaImage.fonts.add(new Font(Font.DIALOG, Font.ITALIC, i));
+			CaptchaImage.fonts.add(new Font(Font.MONOSPACED, Font.ITALIC, i));
+			CaptchaImage.fonts.add(new Font(Font.SANS_SERIF, Font.ITALIC, i));
 		}
-		for (int i = MIN_FONT; i < MAX_FONT; i++) {
-			fonts.add(new Font(Font.DIALOG, Font.BOLD, i));
-			fonts.add(new Font(Font.MONOSPACED, Font.BOLD, i));
-			fonts.add(new Font(Font.SANS_SERIF, Font.BOLD, i));
+		for (int i = CaptchaImage.MIN_FONT; i < CaptchaImage.MAX_FONT; i++) {
+			CaptchaImage.fonts.add(new Font(Font.DIALOG, Font.BOLD, i));
+			CaptchaImage.fonts.add(new Font(Font.MONOSPACED, Font.BOLD, i));
+			CaptchaImage.fonts.add(new Font(Font.SANS_SERIF, Font.BOLD, i));
 		}
-		for (int i = MIN_FONT; i < MAX_FONT; i++) {
-			fonts.add(new Font(Font.DIALOG, Font.BOLD | Font.ITALIC, i));
-			fonts.add(new Font(Font.MONOSPACED, Font.BOLD | Font.ITALIC, i));
-			fonts.add(new Font(Font.SANS_SERIF, Font.BOLD | Font.ITALIC, i));
+		for (int i = CaptchaImage.MIN_FONT; i < CaptchaImage.MAX_FONT; i++) {
+			CaptchaImage.fonts.add(new Font(Font.DIALOG, Font.BOLD | Font.ITALIC, i));
+			CaptchaImage.fonts.add(new Font(Font.MONOSPACED, Font.BOLD | Font.ITALIC, i));
+			CaptchaImage.fonts.add(new Font(Font.SANS_SERIF, Font.BOLD | Font.ITALIC, i));
 		}
 
 		for (int r = 127; r > 0; r -= 4) {
 			for (int g = 127; g > 0; g -= 4) {
 				for (int b = 127; b > 0; b -= 4) {
 					Color c = new Color(r, g, b);
-					fontColors.add(c);
+					CaptchaImage.fontColors.add(c);
 				}
 			}
 		}
@@ -208,7 +207,7 @@ public class CaptchaImage {
 			for (int g = 127; g < 255; g += 4) {
 				for (int b = 127; b < 255; b += 4) {
 					Color c = new Color(r, g, b);
-					backgroundColors.add(c);
+					CaptchaImage.backgroundColors.add(c);
 				}
 			}
 		}

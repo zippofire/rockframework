@@ -25,8 +25,7 @@ import net.woodstock.rockframework.utils.StringUtils;
 public abstract class SimpleFacesConverter<T> extends FacesConverter {
 
 	@Override
-	public final Object getAsObject(FacesContext context, UIComponent component, String value)
-			throws ConverterException {
+	public final Object getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException {
 		if (StringUtils.isEmpty(value)) {
 			return null;
 		}
@@ -38,8 +37,7 @@ public abstract class SimpleFacesConverter<T> extends FacesConverter {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public final String getAsString(FacesContext context, UIComponent component, Object value)
-			throws ConverterException {
+	public final String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException {
 		if (value == null) {
 			return null;
 		}

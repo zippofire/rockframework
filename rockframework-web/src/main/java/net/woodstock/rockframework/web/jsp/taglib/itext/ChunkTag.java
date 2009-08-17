@@ -59,7 +59,7 @@ public class ChunkTag extends ITextTag {
 	@TLDAttribute(required = false, rtexprvalue = true)
 	private String				textRise;
 
-	private Chunk			chunk;
+	private Chunk				chunk;
 
 	@Override
 	protected void doTagInternal() throws JspException, IOException {

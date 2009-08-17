@@ -100,7 +100,7 @@ abstract class AbstractPropertyDescriptor implements PropertyDescriptor {
 			throw new ReflectionException(e);
 		}
 	}
-	
+
 	// Object
 	@Override
 	public String toString() {

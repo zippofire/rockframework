@@ -73,8 +73,7 @@ public abstract class TokenConverterBase {
 	}
 
 	protected static TokenAttributeConverter<?> getAttributeConverter(Class<?> clazz) {
-		for (Entry<Class<?>, TokenAttributeConverter<?>> entry : TokenConverterBase.extraConverters
-				.entrySet()) {
+		for (Entry<Class<?>, TokenAttributeConverter<?>> entry : TokenConverterBase.extraConverters.entrySet()) {
 			if (entry.getKey().equals(clazz)) {
 				return entry.getValue();
 			}
@@ -84,8 +83,7 @@ public abstract class TokenConverterBase {
 				return entry.getValue();
 			}
 		}
-		for (Entry<Class<?>, TokenAttributeConverter<?>> entry : TokenConverterBase.extraConverters
-				.entrySet()) {
+		for (Entry<Class<?>, TokenAttributeConverter<?>> entry : TokenConverterBase.extraConverters.entrySet()) {
 			if (entry.getKey().isAssignableFrom(clazz)) {
 				return entry.getValue();
 			}
@@ -127,8 +125,7 @@ public abstract class TokenConverterBase {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T extends Pojo> T from(String s, Class<T> clazz, char delimiter)
-			throws TokenConverterException {
+	public static <T extends Pojo> T from(String s, Class<T> clazz, char delimiter) throws TokenConverterException {
 		try {
 			return (T) TokenConverterBase.pojoConverter.fromText(clazz, delimiter, s);
 		} catch (TokenConverterException e) {

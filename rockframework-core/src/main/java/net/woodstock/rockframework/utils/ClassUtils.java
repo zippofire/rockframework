@@ -114,8 +114,7 @@ public abstract class ClassUtils {
 		return c;
 	}
 
-	public static Method getMethod(Class<?> c, String methodName, Object... params)
-			throws NoSuchMethodException {
+	public static Method getMethod(Class<?> c, String methodName, Object... params) throws NoSuchMethodException {
 		Class<?>[] paramsTypes = null;
 		if (params != null) {
 			paramsTypes = new Class<?>[params.length];
@@ -132,8 +131,7 @@ public abstract class ClassUtils {
 		return ClassUtils.getMethod(c, methodName, paramsTypes);
 	}
 
-	public static Method getMethod(Class<?> c, String methodName, Class<?>... paramTypes)
-			throws NoSuchMethodException {
+	public static Method getMethod(Class<?> c, String methodName, Class<?>... paramTypes) throws NoSuchMethodException {
 		Class<?> tmp = c;
 		while (tmp != null) {
 			try {
@@ -234,14 +232,12 @@ public abstract class ClassUtils {
 		return types;
 	}
 
-	public static Collection<Class<?>> getClasses(String packageName) throws IOException,
-			ClassNotFoundException {
+	public static Collection<Class<?>> getClasses(String packageName) throws IOException, ClassNotFoundException {
 		Collection<Class<?>> classes = new LinkedList<Class<?>>();
 		URL url = ClassUtils.class.getClassLoader().getResource(packageName.replaceAll("\\.", "/"));
 		String fileName = url.getFile();
 		Pattern jarPattern = Pattern.compile("\\.[ejsw]ar!");
-		Pattern classPattern = Pattern.compile(packageName.replaceAll("\\.", "\\\\.") + "\\."
-				+ "[a-zA-Z1-9_$]+\\.class");
+		Pattern classPattern = Pattern.compile(packageName.replaceAll("\\.", "\\\\.") + "\\." + "[a-zA-Z1-9_$]+\\.class");
 		if (jarPattern.matcher(fileName).find()) {
 			fileName = fileName.substring(0, fileName.indexOf('!'));
 			fileName = fileName.replace("file:/", StringUtils.BLANK);
@@ -268,8 +264,7 @@ public abstract class ClassUtils {
 				File[] files = directory.listFiles();
 				for (File file : files) {
 					if ((file.isFile()) && (file.getName().endsWith(".class"))) {
-						String className = packageName + "."
-								+ file.getName().substring(0, file.getName().indexOf(".class"));
+						String className = packageName + "." + file.getName().substring(0, file.getName().indexOf(".class"));
 						Class<?> clazz = Class.forName(className);
 						classes.add(clazz);
 					}

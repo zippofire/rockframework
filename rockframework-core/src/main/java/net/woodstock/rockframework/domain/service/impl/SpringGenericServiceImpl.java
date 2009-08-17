@@ -42,22 +42,19 @@ public abstract class SpringGenericServiceImpl extends AbstractGenericService {
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public <ID extends Serializable, E extends Entity<ID>> E get(Class<E> clazz, ID id)
-			throws ServiceException, BusinessException, PersistenceException {
+	public <ID extends Serializable, E extends Entity<ID>> E get(Class<E> clazz, ID id) throws ServiceException, BusinessException, PersistenceException {
 		return super.get(clazz, id);
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public <E extends Entity<?>> Collection<E> listAll(Class<E> clazz, String order) throws ServiceException,
-			BusinessException, PersistenceException {
+	public <E extends Entity<?>> Collection<E> listAll(Class<E> clazz, String order) throws ServiceException, BusinessException, PersistenceException {
 		return super.listAll(clazz, order);
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public <E extends Entity<?>> Collection<E> listByExample(E entity, Map<String, Object> options)
-			throws ServiceException, BusinessException, PersistenceException {
+	public <E extends Entity<?>> Collection<E> listByExample(E entity, Map<String, Object> options) throws ServiceException, BusinessException, PersistenceException {
 		return super.listByExample(entity, options);
 	}
 

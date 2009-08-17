@@ -29,11 +29,11 @@ import org.apache.commons.logging.Log;
 
 abstract class DelegateGenericBusiness implements GenericBusiness {
 
-	public static final String	MESSAGE_INVALID_CLASS	= "domain.business.invalid.class";
+	protected static final String	MESSAGE_INVALID_CLASS	= "domain.business.invalid.class";
 
-	public static final String	MESSAGE_INVALID_ID		= "domain.business.invalid.id";
+	protected static final String	MESSAGE_INVALID_ID		= "domain.business.invalid.id";
 
-	public static final String	MESSAGE_INVALID_OBJECT	= "domain.business.invalid.object";
+	protected static final String	MESSAGE_INVALID_OBJECT	= "domain.business.invalid.object";
 
 	public DelegateGenericBusiness() {
 		super();
@@ -86,13 +86,12 @@ abstract class DelegateGenericBusiness implements GenericBusiness {
 	}
 
 	// Entity
-	public <ID extends Serializable, E extends Entity<ID>> void validateRetrieveWithError(Class<E> clazz,
-			ID id) throws BusinessException {
+	public <ID extends Serializable, E extends Entity<ID>> void validateRetrieveWithError(Class<E> clazz, ID id) throws BusinessException {
 		if (clazz == null) {
-			throw new ValidationException(CoreMessage.getInstance().getMessage(MESSAGE_INVALID_CLASS, clazz));
+			throw new ValidationException(CoreMessage.getInstance().getMessage(DelegateGenericBusiness.MESSAGE_INVALID_CLASS, clazz));
 		}
 		if (id == null) {
-			throw new ValidationException(CoreMessage.getInstance().getMessage(MESSAGE_INVALID_ID, id));
+			throw new ValidationException(CoreMessage.getInstance().getMessage(DelegateGenericBusiness.MESSAGE_INVALID_ID, id));
 		}
 	}
 

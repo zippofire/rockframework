@@ -19,7 +19,6 @@ package net.woodstock.rockframework.test;
 import java.util.Locale;
 
 import junit.framework.TestCase;
-
 import net.woodstock.rockframework.util.Calendar;
 
 public class DateTest extends TestCase {

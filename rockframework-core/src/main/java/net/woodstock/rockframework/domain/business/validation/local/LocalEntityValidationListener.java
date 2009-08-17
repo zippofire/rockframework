@@ -26,8 +26,8 @@ import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.validation.EntityValidator;
 import net.woodstock.rockframework.domain.business.validation.Operation;
 import net.woodstock.rockframework.domain.business.validation.ValidationException;
-import net.woodstock.rockframework.domain.business.validation.ValidationResult;
 import net.woodstock.rockframework.domain.business.validation.ValidationListener;
+import net.woodstock.rockframework.domain.business.validation.ValidationResult;
 
 public class LocalEntityValidationListener implements ValidationListener {
 

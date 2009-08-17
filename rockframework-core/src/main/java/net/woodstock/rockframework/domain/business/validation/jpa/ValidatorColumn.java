@@ -53,13 +53,11 @@ public class ValidatorColumn extends AbstractValidator {
 	}
 
 	private String getEmptyErrorMessage(LocalValidationContext context) throws ValidationException {
-		return this
-				.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_NOT_EMPTY, context.getCanonicalName());
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_NOT_EMPTY, context.getCanonicalName());
 	}
 
 	private String getLengthErrorMessage(LocalValidationContext context, int length) {
-		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_LENGTH, context.getCanonicalName(),
-				new Integer(0), new Integer(length));
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_LENGTH, context.getCanonicalName(), new Integer(0), new Integer(length));
 	}
 
 }

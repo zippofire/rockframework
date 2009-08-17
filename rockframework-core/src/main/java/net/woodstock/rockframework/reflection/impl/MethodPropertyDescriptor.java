@@ -26,8 +26,7 @@ class MethodPropertyDescriptor extends AbstractPropertyDescriptor {
 
 	private Class<?>	type;
 
-	MethodPropertyDescriptor(BeanDescriptor beanDescriptor, String name, Class<?> type)
-			throws NoSuchMethodException {
+	MethodPropertyDescriptor(BeanDescriptor beanDescriptor, String name, Class<?> type) throws NoSuchMethodException {
 		super();
 		this.setBeanDescriptor(beanDescriptor);
 		this.name = name;
@@ -44,8 +43,7 @@ class MethodPropertyDescriptor extends AbstractPropertyDescriptor {
 		Class<?> c = this.getBeanDescriptor().getType();
 		// Is
 		if (this.type.getCanonicalName().equals(boolean.class.getCanonicalName())) {
-			this.setReadMethodName(BeanDescriptorHelper.getMethodName(BeanDescriptorHelper.IS_METHOD_PREFIX,
-					this.name));
+			this.setReadMethodName(BeanDescriptorHelper.getMethodName(BeanDescriptorHelper.IS_METHOD_PREFIX, this.name));
 			try {
 				this.setReadMethod(c.getMethod(this.getReadMethodName(), new Class[] {}));
 				return;
@@ -54,15 +52,13 @@ class MethodPropertyDescriptor extends AbstractPropertyDescriptor {
 			}
 		}
 		// Get
-		this.setReadMethodName(BeanDescriptorHelper.getMethodName(BeanDescriptorHelper.GET_METHOD_PREFIX,
-				this.name));
+		this.setReadMethodName(BeanDescriptorHelper.getMethodName(BeanDescriptorHelper.GET_METHOD_PREFIX, this.name));
 		this.setReadMethod(c.getMethod(this.getReadMethodName(), new Class[] {}));
 	}
 
 	private void initSet() throws NoSuchMethodException {
 		Class<?> c = this.getBeanDescriptor().getType();
-		this.setWriteMethodName(BeanDescriptorHelper.getMethodName(BeanDescriptorHelper.SET_METHOD_PREFIX,
-				this.name));
+		this.setWriteMethodName(BeanDescriptorHelper.getMethodName(BeanDescriptorHelper.SET_METHOD_PREFIX, this.name));
 		this.setWriteMethod(c.getMethod(this.getWriteMethodName(), new Class[] { this.type }));
 	}
 

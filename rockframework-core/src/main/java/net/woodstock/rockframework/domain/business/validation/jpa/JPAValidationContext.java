@@ -23,8 +23,7 @@ import net.woodstock.rockframework.domain.business.validation.local.LocalValidat
 
 public class JPAValidationContext extends LocalValidationContext {
 
-	public JPAValidationContext(Object value, String name, Annotation annotation, Operation operation,
-			LocalValidationContext parentContext) {
+	public JPAValidationContext(Object value, String name, Annotation annotation, Operation operation, LocalValidationContext parentContext) {
 		super(value, name, annotation, operation, parentContext);
 	}
 

@@ -22,26 +22,26 @@ import java.lang.reflect.Method;
 public interface PropertyDescriptor {
 
 	String getName();
-	
+
 	Class<?> getType();
-	
+
 	BeanDescriptor getBeanDescriptor();
-	
+
 	// Method
 	Method getReadMethod();
-	
+
 	Method getWriteMethod();
-	
+
 	// Get/Set Value
 	Object getValue(Object o);
-	
+
 	void setValue(Object o, Object value);
-	
+
 	// Annotation
 	boolean isAnnotationPresent(Class<? extends Annotation> clazz);
 
 	<A extends Annotation> A getAnnotation(Class<A> clazz);
-	
+
 	Annotation[] getAnnotations();
-	
+
 }

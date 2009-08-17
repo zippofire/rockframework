@@ -36,43 +36,43 @@ import net.woodstock.rockframework.web.jsp.taglib.creator.TLDAttribute;
 public class CellTag extends ContainerTag {
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String		alignment;
+	private String	alignment;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String		backgroundColor;
+	private String	backgroundColor;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String		borderColor;
+	private String	borderColor;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String		borderWidth;
+	private String	borderWidth;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String		color;
+	private String	color;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String		colspan;
+	private String	colspan;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String		font;
+	private String	font;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String		fontSize;
+	private String	fontSize;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String		fontStyle;
+	private String	fontStyle;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String		height;
+	private String	height;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String		padding;
+	private String	padding;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String		verticalAlignment;
+	private String	verticalAlignment;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String		width;
+	private String	width;
 
 	private Cell	cell;
 

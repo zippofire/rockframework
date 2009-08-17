@@ -41,25 +41,22 @@ public class DownloadServlet extends BaseServlet {
 	}
 
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-			IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		this.doAll(request, response);
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-			IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		this.doAll(request, response);
 	}
 
-	private void doAll(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-			IOException {
-		this.chroot = this.getServletConfig().getInitParameter(CHROOT_CONTEXT_PARAM);
+	private void doAll(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		this.chroot = this.getServletConfig().getInitParameter(DownloadServlet.CHROOT_CONTEXT_PARAM);
 		if (StringUtils.isEmpty(this.chroot)) {
 			throw new ServletException("Invalid root directory");
 		}
 
-		String path = request.getParameter(PATH_PARAM);
+		String path = request.getParameter(DownloadServlet.PATH_PARAM);
 		if (StringUtils.isEmpty(path)) {
 			throw new ServletException("Invalid path");
 		}

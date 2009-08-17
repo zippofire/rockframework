@@ -40,8 +40,7 @@ public abstract class HttpFilter extends BaseFilter {
 		this.doInit();
 	}
 
-	public final void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
+	public final void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		this.doFilter((HttpServletRequest) request, (HttpServletResponse) response, chain);
 	}
 
@@ -53,7 +52,6 @@ public abstract class HttpFilter extends BaseFilter {
 		//
 	}
 
-	public abstract void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-			throws IOException, ServletException;
+	public abstract void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException;
 
 }

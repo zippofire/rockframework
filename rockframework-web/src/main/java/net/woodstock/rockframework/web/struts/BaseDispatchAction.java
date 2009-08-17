@@ -38,8 +38,7 @@ public abstract class BaseDispatchAction extends DispatchAction {
 	private static ThreadLocal<ActionMapping>	currentMapping	= new ThreadLocal<ActionMapping>();
 
 	@Override
-	public final ActionForward execute(ActionMapping mapping, ActionForm form, ServletRequest request,
-			ServletResponse response) throws Exception {
+	public final ActionForward execute(ActionMapping mapping, ActionForm form, ServletRequest request, ServletResponse response) throws Exception {
 		if ((request instanceof HttpServletRequest)) {
 			throw new IllegalArgumentException("Invalid request type");
 		}
@@ -50,20 +49,17 @@ public abstract class BaseDispatchAction extends DispatchAction {
 	}
 
 	@Override
-	public final ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	public final ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		return super.execute(mapping, form, request, response);
 	}
 
 	@Override
-	protected final ActionForward unspecified(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
+	protected final ActionForward unspecified(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		return mapping.findForward(BaseAction.INPUT);
 	}
 
 	@Override
-	protected ActionForward dispatchMethod(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response, String name) throws Exception {
+	protected ActionForward dispatchMethod(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response, String name) throws Exception {
 		try {
 			BaseDispatchAction.currentMapping.set(mapping);
 
@@ -73,8 +69,7 @@ public abstract class BaseDispatchAction extends DispatchAction {
 				formClass = formClass.getClass();
 			}
 
-			Class<?>[] methodTypes = new Class<?>[] { formClass, HttpServletRequest.class,
-					HttpServletResponse.class };
+			Class<?>[] methodTypes = new Class<?>[] { formClass, HttpServletRequest.class, HttpServletResponse.class };
 
 			Method m = ClassUtils.getMethod(this.getClass(), name, methodTypes);
 

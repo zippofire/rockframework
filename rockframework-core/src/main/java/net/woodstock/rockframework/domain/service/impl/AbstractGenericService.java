@@ -20,12 +20,9 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 
-import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.BusinessException;
 import net.woodstock.rockframework.domain.business.GenericBusiness;
-import net.woodstock.rockframework.domain.business.impl.AbstractBusiness;
-import net.woodstock.rockframework.domain.business.validation.ValidationException;
 import net.woodstock.rockframework.domain.persistence.GenericRepository;
 import net.woodstock.rockframework.domain.persistence.PersistenceException;
 import net.woodstock.rockframework.domain.service.GenericService;
@@ -61,6 +58,7 @@ public abstract class AbstractGenericService extends AbstractService implements 
 	// Methods
 	public void save(Entity<?> entity) throws ServiceException, BusinessException, PersistenceException {
 		try {
+			this.verifyObjects();
 			if (this.business != null) {
 				this.business.validateCreateWithError(entity);
 			}
@@ -74,9 +72,9 @@ public abstract class AbstractGenericService extends AbstractService implements 
 		}
 	}
 
-	public <ID extends Serializable, E extends Entity<ID>> E get(Class<E> clazz, ID id)
-			throws ServiceException, BusinessException, PersistenceException {
+	public <ID extends Serializable, E extends Entity<ID>> E get(Class<E> clazz, ID id) throws ServiceException, BusinessException, PersistenceException {
 		try {
+			this.verifyObjects();
 			if (this.business != null) {
 				this.business.validateRetrieveWithError(clazz, id);
 			}
@@ -90,12 +88,11 @@ public abstract class AbstractGenericService extends AbstractService implements 
 		}
 	}
 
-	public <E extends Entity<?>> Collection<E> listAll(Class<E> clazz, String order) throws ServiceException,
-			BusinessException, PersistenceException {
+	public <E extends Entity<?>> Collection<E> listAll(Class<E> clazz, String order) throws ServiceException, BusinessException, PersistenceException {
 		try {
+			this.verifyObjects();
 			if (clazz == null) {
-				throw new ValidationException(CoreMessage.getInstance().getMessage(
-						AbstractBusiness.MESSAGE_INVALID_CLASS, clazz));
+				throw new IllegalArgumentException("Clazz must be not null");
 			}
 			return this.repository.listAll(clazz, order);
 		} catch (PersistenceException e) {
@@ -107,9 +104,9 @@ public abstract class AbstractGenericService extends AbstractService implements 
 		}
 	}
 
-	public <E extends Entity<?>> Collection<E> listByExample(E entity, Map<String, Object> options)
-			throws ServiceException, BusinessException, PersistenceException {
+	public <E extends Entity<?>> Collection<E> listByExample(E entity, Map<String, Object> options) throws ServiceException, BusinessException, PersistenceException {
 		try {
+			this.verifyObjects();
 			if (this.business != null) {
 				this.business.validateQueryWithError(entity);
 			}
@@ -125,6 +122,7 @@ public abstract class AbstractGenericService extends AbstractService implements 
 
 	public void update(Entity<?> entity) throws ServiceException, BusinessException, PersistenceException {
 		try {
+			this.verifyObjects();
 			if (this.business != null) {
 				this.business.validateUpdateWithError(entity);
 			}
@@ -140,6 +138,7 @@ public abstract class AbstractGenericService extends AbstractService implements 
 
 	public void delete(Entity<?> entity) throws ServiceException, BusinessException, PersistenceException {
 		try {
+			this.verifyObjects();
 			if (this.business != null) {
 				this.business.validateDeleteWithError(entity);
 			}
@@ -150,6 +149,15 @@ public abstract class AbstractGenericService extends AbstractService implements 
 			throw e;
 		} catch (Exception e) {
 			throw new ServiceException(e);
+		}
+	}
+
+	private void verifyObjects() {
+		if (this.business == null) {
+			// throw new IllegalStateException("Business is null");
+		}
+		if (this.repository == null) {
+			throw new IllegalStateException("Repository is null");
 		}
 	}
 

@@ -72,16 +72,14 @@ public class TipoTelefone implements Serializable {
 			if (other.descricao != null) {
 				return false;
 			}
-		}
-		else if (!this.descricao.equals(other.descricao)) {
+		} else if (!this.descricao.equals(other.descricao)) {
 			return false;
 		}
 		if (this.id == null) {
 			if (other.id != null) {
 				return false;
 			}
-		}
-		else if (!this.id.equals(other.id)) {
+		} else if (!this.id.equals(other.id)) {
 			return false;
 		}
 		return true;

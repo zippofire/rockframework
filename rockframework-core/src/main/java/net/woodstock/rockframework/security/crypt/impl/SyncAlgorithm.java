@@ -18,14 +18,7 @@ package net.woodstock.rockframework.security.crypt.impl;
 
 public enum SyncAlgorithm {
 
-	AES("AES"),
-	BLOWFISH("Blowfish"),
-	DEFAULT_SYNC("DESede"),
-	DESAES("DESAES"),
-	DES("DES"),
-	DESEDE("DESede"),
-	MD5("HmacMD5"),
-	SHA1("HmacSHA1");
+	AES("AES"), BLOWFISH("Blowfish"), DEFAULT_SYNC("DESede"), DESAES("DESAES"), DES("DES"), DESEDE("DESede"), MD5("HmacMD5"), SHA1("HmacSHA1");
 
 	private String	algorithm;
 
@@ -36,10 +29,10 @@ public enum SyncAlgorithm {
 	public String algorithm() {
 		return this.algorithm;
 	}
-	
+
 	public static SyncAlgorithm fromString(String algorithm) {
 		for (SyncAlgorithm s : SyncAlgorithm.values()) {
-			if(s.algorithm().equalsIgnoreCase(algorithm)) {
+			if (s.algorithm().equalsIgnoreCase(algorithm)) {
 				return s;
 			}
 		}

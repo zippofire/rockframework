@@ -18,10 +18,10 @@ package net.woodstock.rockframework.domain.business.validation;
 
 import java.util.Collection;
 
-import net.woodstock.rockframework.domain.Pojo;
+import net.woodstock.rockframework.domain.Entity;
 
 public interface EntityValidator {
 
-	Collection<ValidationResult> validate(Pojo pojo, Operation operation) throws ValidationException;
+	Collection<ValidationResult> validate(Entity<?> entity, Operation operation) throws ValidationException;
 
 }

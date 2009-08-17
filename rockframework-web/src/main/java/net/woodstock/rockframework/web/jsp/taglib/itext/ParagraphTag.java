@@ -35,40 +35,40 @@ import net.woodstock.rockframework.web.jsp.taglib.creator.TLDAttribute;
 public class ParagraphTag extends ITextTag {
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String			alignment;
+	private String		alignment;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String			backgroundColor;
+	private String		backgroundColor;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String			color;
+	private String		color;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String			firstLineIndent;
+	private String		firstLineIndent;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String			font;
+	private String		font;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String			fontSize;
+	private String		fontSize;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String			fontStyle;
+	private String		fontStyle;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String			indentationLeft;
+	private String		indentationLeft;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String			indentationRight;
+	private String		indentationRight;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String			leading;
+	private String		leading;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String			spacingAfter;
+	private String		spacingAfter;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String			spacingBefore;
+	private String		spacingBefore;
 
 	private Paragraph	paragraph;
 

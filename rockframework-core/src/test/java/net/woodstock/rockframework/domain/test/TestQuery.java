@@ -20,7 +20,7 @@ public class TestQuery extends TestCase {
 		Foo foo = new Foo();
 		foo.setId(new Integer(11));
 		foo.setName("Teste FOO");
-		foo.setBar(getBar());
+		foo.setBar(this.getBar());
 		return foo;
 	}
 
@@ -28,7 +28,7 @@ public class TestQuery extends TestCase {
 		Baz baz = new Baz();
 		baz.setId(new Integer(111));
 		baz.setName("Teste BAZ");
-		baz.setFoo(getFoo());
+		baz.setFoo(this.getFoo());
 		baz.setBars(new LinkedHashSet<Bar>());
 
 		for (int i = 0; i < 10; i++) {
@@ -42,7 +42,7 @@ public class TestQuery extends TestCase {
 	}
 
 	public void test1() throws Exception {
-		Bar bar = getBar();
+		Bar bar = this.getBar();
 
 		QueryBuilder builder = new QueryBuilderAdapter();
 		builder.setOption(QueryBuilder.OPTION_LIKE_MODE, LikeMode.ALL);
@@ -56,7 +56,7 @@ public class TestQuery extends TestCase {
 	}
 
 	public void test2() throws Exception {
-		Foo foo = getFoo();
+		Foo foo = this.getFoo();
 
 		QueryBuilder builder = new QueryBuilderAdapter();
 		builder.setOption(QueryBuilder.OPTION_LIKE_MODE, LikeMode.ALL);
@@ -70,7 +70,7 @@ public class TestQuery extends TestCase {
 	}
 
 	public void test3() throws Exception {
-		Baz baz = getBaz();
+		Baz baz = this.getBaz();
 
 		QueryBuilder builder = new QueryBuilderAdapter();
 		builder.setOption(QueryBuilder.OPTION_LIKE_MODE, LikeMode.ALL);

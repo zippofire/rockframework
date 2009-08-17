@@ -39,8 +39,7 @@ public abstract class TestCaseSpringHibernate extends TestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		SessionHolder sessionHolder = (SessionHolder) TransactionSynchronizationManager
-				.unbindResource(this.factory);
+		SessionHolder sessionHolder = (SessionHolder) TransactionSynchronizationManager.unbindResource(this.factory);
 		SessionFactoryUtils.closeSession(sessionHolder.getSession());
 	}
 

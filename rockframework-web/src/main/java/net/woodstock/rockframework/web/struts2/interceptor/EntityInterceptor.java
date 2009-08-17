@@ -69,28 +69,21 @@ public class EntityInterceptor extends BaseInterceptor {
 						if ((obj != null) && (obj instanceof Entity)) {
 							Entity<?> entity = (Entity<?>) obj;
 
-							BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance()
-									.getBeanDescriptor(entity.getClass());
+							BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(entity.getClass());
 
-							PropertyDescriptor propertyDescriptor = beanDescriptor.getProperty(ENTITY_ID);
+							PropertyDescriptor propertyDescriptor = beanDescriptor.getProperty(EntityInterceptor.ENTITY_ID);
 							Class<?> clazz = propertyDescriptor.getType();
 
 							try {
-								Constructor<?> contructor = clazz
-										.getConstructor(new Class[] { String.class });
+								Constructor<?> contructor = clazz.getConstructor(new Class[] { String.class });
 								Object fieldValue = contructor.newInstance(new Object[] { value });
 
-								this.getLogger().info(
-										"Setting entity ID " + entityName + "[" + fieldValue + "]");
+								this.getLogger().info("Setting entity ID " + entityName + "[" + fieldValue + "]");
 								propertyDescriptor.setValue(entity, fieldValue);
 							} catch (NoSuchMethodException e) {
-								this.getLogger().warn(
-										"Could not find constructor " + entity.getClass().getCanonicalName()
-												+ "(String). Parameter not setted");
+								this.getLogger().warn("Could not find constructor " + entity.getClass().getCanonicalName() + "(String). Parameter not setted");
 							} catch (Exception e) {
-								this.getLogger().warn(
-										"Error in constructor " + entity.getClass().getCanonicalName()
-												+ "(String)");
+								this.getLogger().warn("Error in constructor " + entity.getClass().getCanonicalName() + "(String)");
 								this.getLogger().warn(e.getMessage(), e);
 							}
 						}
@@ -104,10 +97,10 @@ public class EntityInterceptor extends BaseInterceptor {
 	}
 
 	private boolean isIdParameter(String name) {
-		return Pattern.matches(ENTITY_ID_REGEX, name);
+		return Pattern.matches(EntityInterceptor.ENTITY_ID_REGEX, name);
 	}
 
 	private String getEntityName(String name) {
-		return name.substring(0, name.lastIndexOf(ENTITY_SEPARATOR + ENTITY_ID));
+		return name.substring(0, name.lastIndexOf(EntityInterceptor.ENTITY_SEPARATOR + EntityInterceptor.ENTITY_ID));
 	}
 }

@@ -27,8 +27,7 @@ public class PackageTest extends TestCase {
 
 	public void test1() throws Exception {
 		String packageName = "javax.servlet";
-		File file = new File(Thread.currentThread().getContextClassLoader().getResource(
-				packageName.replaceAll("\\.", "/")).getFile());
+		File file = new File(Thread.currentThread().getContextClassLoader().getResource(packageName.replaceAll("\\.", "/")).getFile());
 
 		System.out.println(file.getAbsolutePath());
 		if ((file.isFile()) || (file.getAbsolutePath().indexOf(".jar!") != -1)) {

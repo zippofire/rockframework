@@ -104,8 +104,7 @@ public class ZipWriter {
 		File[] files = dir.listFiles();
 		for (File f : files) {
 			if (f.isDirectory()) {
-				String name = (parent != null ? parent.getName() + ZipWriter.SEPARATOR : StringUtils.BLANK)
-						+ dir.getName() + ZipWriter.SEPARATOR;
+				String name = (parent != null ? parent.getName() + ZipWriter.SEPARATOR : StringUtils.BLANK) + dir.getName() + ZipWriter.SEPARATOR;
 				out.putNextEntry(new ZipEntry(name));
 				out.closeEntry();
 				ZipWriter.addDir(out, dir, f);
@@ -117,8 +116,7 @@ public class ZipWriter {
 
 	private static void addFile(ZipOutputStream out, File parent, File file) throws IOException {
 		FileInputStream input = new FileInputStream(file);
-		String name = (parent != null ? parent.getName() + ZipWriter.SEPARATOR : StringUtils.BLANK)
-				+ file.getName();
+		String name = (parent != null ? parent.getName() + ZipWriter.SEPARATOR : StringUtils.BLANK) + file.getName();
 		out.putNextEntry(new ZipEntry(name));
 		byte[] buf = new byte[1024];
 		int len = input.read(buf);

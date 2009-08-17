@@ -28,17 +28,17 @@ import com.lowagie.text.pdf.PdfPTable;
 
 public class Table extends ObjectBase {
 
-	private static final long		serialVersionUID	= 2409125692861023173L;
+	private static final long	serialVersionUID	= 2409125692861023173L;
 
-	private Alignment				alignment;
+	private Alignment			alignment;
 
-	private int						columns;
+	private int					columns;
 
-	private float					spacingAfter;
+	private float				spacingAfter;
 
-	private float					spacingBefore;
+	private float				spacingBefore;
 
-	private float					totalWidth;
+	private float				totalWidth;
 
 	private Collection<Cell>	cells;
 

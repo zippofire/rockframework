@@ -20,9 +20,7 @@ import com.lowagie.text.Element;
 
 public enum Alignment {
 
-	BASELINE(Element.ALIGN_BASELINE), BOTTOM(Element.ALIGN_BOTTOM), CENTER(Element.ALIGN_CENTER), DEFAULT(
-			Element.ALIGN_LEFT), JUSTIFIED(Element.ALIGN_JUSTIFIED), LEFT(Element.ALIGN_LEFT), MIDDLE(
-			Element.ALIGN_MIDDLE), RIGHT(Element.ALIGN_RIGHT), TOP(Element.ALIGN_TOP);
+	BASELINE(Element.ALIGN_BASELINE), BOTTOM(Element.ALIGN_BOTTOM), CENTER(Element.ALIGN_CENTER), DEFAULT(Element.ALIGN_LEFT), JUSTIFIED(Element.ALIGN_JUSTIFIED), LEFT(Element.ALIGN_LEFT), MIDDLE(Element.ALIGN_MIDDLE), RIGHT(Element.ALIGN_RIGHT), TOP(Element.ALIGN_TOP);
 
 	private int	alignment;
 

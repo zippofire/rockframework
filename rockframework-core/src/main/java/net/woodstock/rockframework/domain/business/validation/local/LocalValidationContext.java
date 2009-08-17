@@ -30,8 +30,7 @@ public class LocalValidationContext extends ValidationContext {
 		this(value, name, annotation, operation, null);
 	}
 
-	protected LocalValidationContext(Object value, String name, Annotation annotation, Operation operation,
-			LocalValidationContext parentContext) {
+	protected LocalValidationContext(Object value, String name, Annotation annotation, Operation operation, LocalValidationContext parentContext) {
 		super(value, name, operation, parentContext);
 		this.annotation = annotation;
 	}

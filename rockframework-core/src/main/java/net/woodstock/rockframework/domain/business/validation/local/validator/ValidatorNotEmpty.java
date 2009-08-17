@@ -41,8 +41,7 @@ public class ValidatorNotEmpty extends AbstractValidator {
 			}
 			if (value instanceof Character) {
 				Character c = (Character) value;
-				if ((c.charValue() == '\0') || (c.charValue() == '\n') || (c.charValue() == '\r')
-						|| (c.charValue() == '\t') || (c.charValue() == ' ')) {
+				if ((c.charValue() == '\0') || (c.charValue() == '\n') || (c.charValue() == '\r') || (c.charValue() == '\t') || (c.charValue() == ' ')) {
 					return context.getErrorResult(this.getErrorMessage(context));
 				}
 			}
@@ -78,8 +77,7 @@ public class ValidatorNotEmpty extends AbstractValidator {
 	}
 
 	private String getErrorMessage(LocalValidationContext context) {
-		return this
-				.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_NOT_EMPTY, context.getCanonicalName());
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_NOT_EMPTY, context.getCanonicalName());
 	}
 
 }

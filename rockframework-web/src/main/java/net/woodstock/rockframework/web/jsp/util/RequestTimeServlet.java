@@ -30,8 +30,7 @@ public class RequestTimeServlet extends BaseServlet {
 	private static final long	serialVersionUID	= 1186351388097961933L;
 
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-			IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/plain");
 		for (RequestDebug r : RequestTimeListener.getRequests()) {
 			StringBuilder builder = new StringBuilder();

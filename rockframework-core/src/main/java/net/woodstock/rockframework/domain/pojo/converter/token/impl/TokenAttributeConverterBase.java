@@ -16,7 +16,6 @@
  */
 package net.woodstock.rockframework.domain.pojo.converter.token.impl;
 
-
 abstract class TokenAttributeConverterBase<T> implements TokenAttributeConverter<T> {
 	//
 }

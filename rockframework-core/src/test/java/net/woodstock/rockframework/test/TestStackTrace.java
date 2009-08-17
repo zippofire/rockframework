@@ -26,8 +26,7 @@ public class TestStackTrace extends TestCase {
 	public void xxx() {
 		StackTraceElement[] stacks = Thread.currentThread().getStackTrace();
 		for (StackTraceElement stack : stacks) {
-			System.out.println(stack.getClassName() + "." + stack.getMethodName() + ":"
-					+ stack.getLineNumber());
+			System.out.println(stack.getClassName() + "." + stack.getMethodName() + ":" + stack.getLineNumber());
 		}
 	}
 

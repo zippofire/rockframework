@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import net.woodstock.rockframework.domain.Entity;
 
@@ -19,6 +21,10 @@ public class Bar implements Entity<Integer> {
 
 	@Column(name = "value", length = 10, nullable = false)
 	private String				value;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "id_foo", referencedColumnName = "id")
+	private Foo					foo;
 
 	public Bar() {
 		super();
@@ -38,6 +44,14 @@ public class Bar implements Entity<Integer> {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	public Foo getFoo() {
+		return this.foo;
+	}
+
+	public void setFoo(Foo foo) {
+		this.foo = foo;
 	}
 
 }

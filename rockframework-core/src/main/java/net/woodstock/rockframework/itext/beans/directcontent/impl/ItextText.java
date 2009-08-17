@@ -90,17 +90,14 @@ public class ItextText extends ItextBasicImpl {
 		}
 		com.lowagie.text.pdf.BaseFont baseFont;
 		try {
-			baseFont = com.lowagie.text.pdf.BaseFont.createFont(this.font.getFont(),
-					com.lowagie.text.pdf.BaseFont.CP1252, com.lowagie.text.pdf.BaseFont.NOT_EMBEDDED);
+			baseFont = com.lowagie.text.pdf.BaseFont.createFont(this.font.getFont(), com.lowagie.text.pdf.BaseFont.CP1252, com.lowagie.text.pdf.BaseFont.NOT_EMBEDDED);
 		} catch (IOException e) {
 			throw new DocumentException(e);
 		}
 		content.beginText();
 		content.setFontAndSize(baseFont, this.size);
 		content.setColorFill(this.color);
-		content.setTextMatrix((float) Math.cos(Math.toRadians(this.angle)), (float) Math.sin(Math
-				.toRadians(this.angle)), (float) (-Math.sin(Math.toRadians(this.angle))), (float) Math
-				.cos(Math.toRadians(this.angle)), this.left, document.getPageSize().top() - this.top);
+		content.setTextMatrix((float) Math.cos(Math.toRadians(this.angle)), (float) Math.sin(Math.toRadians(this.angle)), (float) (-Math.sin(Math.toRadians(this.angle))), (float) Math.cos(Math.toRadians(this.angle)), this.left, document.getPageSize().top() - this.top);
 		content.showText(this.text);
 		content.endText();
 

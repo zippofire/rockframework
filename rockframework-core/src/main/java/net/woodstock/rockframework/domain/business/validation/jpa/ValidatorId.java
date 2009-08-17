@@ -45,12 +45,10 @@ public class ValidatorId extends AbstractValidator {
 				return context.getErrorResult(this.getInvalidTypeErrorMessage(context));
 			}
 
-			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
-					parent.getClass());
+			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(parent.getClass());
 			PropertyDescriptor propertyDescriptor = beanDescriptor.getProperty(context.getName());
 
-			if ((operation == Operation.RETRIEVE) || (operation == Operation.UPDATE)
-					|| (operation == Operation.DELETE)) {
+			if ((operation == Operation.RETRIEVE) || (operation == Operation.UPDATE) || (operation == Operation.DELETE)) {
 				if (value == null) {
 					return context.getErrorResult(this.getEmptyErrorMessage(context));
 				}
@@ -76,13 +74,11 @@ public class ValidatorId extends AbstractValidator {
 	}
 
 	private String getEmptyErrorMessage(LocalValidationContext context) throws ValidationException {
-		return this
-				.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_NOT_EMPTY, context.getCanonicalName());
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_NOT_EMPTY, context.getCanonicalName());
 	}
 
 	private String getInvalidTypeErrorMessage(LocalValidationContext context) throws ValidationException {
-		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_INVALID_TYPE, context
-				.getCanonicalName());
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_INVALID_TYPE, context.getCanonicalName());
 	}
 
 	private String getNotEmptyErrorMessage(LocalValidationContext context) {

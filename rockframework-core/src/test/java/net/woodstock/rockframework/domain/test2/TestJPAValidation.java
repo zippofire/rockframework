@@ -14,28 +14,23 @@ public class TestJPAValidation extends TestCase {
 
 	private Bar getBar() {
 		Bar bar = new Bar();
-		bar.setId(new Integer(1));
+		// bar.setId(new Integer(1));
+		bar.setFoo(this.getFoo());
+		bar.setValue("1234567890");
 		return bar;
 	}
 
 	private Foo getFoo() {
 		Foo foo = new Foo();
-		// foo.setId(new Integer(1));
-		foo.setName("Teste1Teste1Teste1Teste1");
-		foo.setBar(this.getBar());
+		foo.setId(new Integer(1));
+		// foo.setName("Teste1Teste1Teste1Teste1");
 		return foo;
 	}
 
-	public void xtest1() throws Exception {
+	public void test1() throws Exception {
 		GenericBusiness business = this.getBusiness();
 		Bar bar = this.getBar();
 		business.validateCreateWithError(bar);
-	}
-
-	public void test2() throws Exception {
-		GenericBusiness business = this.getBusiness();
-		Foo foo = this.getFoo();
-		business.validateCreateWithError(foo);
 	}
 
 }

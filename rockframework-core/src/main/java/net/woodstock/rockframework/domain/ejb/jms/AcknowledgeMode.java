@@ -18,22 +18,18 @@ package net.woodstock.rockframework.domain.ejb.jms;
 
 import javax.jms.Session;
 
-
 public enum AcknowledgeMode {
 
-	AUTO_ACKNOWLEDGE(Session.AUTO_ACKNOWLEDGE),
-	CLIENT_ACKNOWLEDGE(Session.CLIENT_ACKNOWLEDGE),
-	DUPS_OK_ACKNOWLEDGE(Session.DUPS_OK_ACKNOWLEDGE),
-	SESSION_TRANSACTED(Session.SESSION_TRANSACTED);	
-	
-	private int mode;
-	
+	AUTO_ACKNOWLEDGE(Session.AUTO_ACKNOWLEDGE), CLIENT_ACKNOWLEDGE(Session.CLIENT_ACKNOWLEDGE), DUPS_OK_ACKNOWLEDGE(Session.DUPS_OK_ACKNOWLEDGE), SESSION_TRANSACTED(Session.SESSION_TRANSACTED);
+
+	private int	mode;
+
 	AcknowledgeMode(int mode) {
 		this.mode = mode;
 	}
-	
+
 	public int getMode() {
 		return this.mode;
 	}
-	
+
 }

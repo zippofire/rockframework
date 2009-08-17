@@ -67,7 +67,8 @@ public abstract class MimeUtils {
 	private static void init() {
 		// grep -v ^# /etc/mime.types | \
 		// grep -v ^$ | \
-		// awk '{print "createMimeMap(\StringUtils.BLANK$1"\", new String[]{\StringUtils.BLANK$2"\", \StringUtils.BLANK$3"\",\StringUtils.BLANK$4"\", \StringUtils.BLANK$5"\"});"}'
+		// awk '{print "createMimeMap(\StringUtils.BLANK$1"\", new String[]{\StringUtils.BLANK$2"\",
+		// \StringUtils.BLANK$3"\",\StringUtils.BLANK$4"\", \StringUtils.BLANK$5"\"});"}'
 		MimeUtils.mimeMap = new TreeMap<String, Collection<String>>();
 		MimeUtils.createMimeMap("application/activemessage", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/andrew-inset", new String[] { "ez", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
@@ -180,10 +181,8 @@ public abstract class MimeUtils {
 		MimeUtils.createMimeMap("application/vnd.accpac.simply.imp", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.acucobol", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.aether.imp", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
-		MimeUtils.createMimeMap("application/vnd.anser-web-certificate-issue-initiation", new String[] { StringUtils.BLANK,
-				StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
-		MimeUtils.createMimeMap("application/vnd.anser-web-funds-transfer-initiation", new String[] { StringUtils.BLANK, StringUtils.BLANK,
-				StringUtils.BLANK, StringUtils.BLANK });
+		MimeUtils.createMimeMap("application/vnd.anser-web-certificate-issue-initiation", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
+		MimeUtils.createMimeMap("application/vnd.anser-web-funds-transfer-initiation", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.audiograph", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.bmi", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.businessobjects", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
@@ -231,8 +230,7 @@ public abstract class MimeUtils {
 		MimeUtils.createMimeMap("application/vnd.fujitsu.oasysprs", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.fujixerox.ddd", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.fujixerox.docuworks", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
-		MimeUtils
-				.createMimeMap("application/vnd.fujixerox.docuworks.binder", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
+		MimeUtils.createMimeMap("application/vnd.fujixerox.docuworks.binder", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.fut-misnet", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.google-earth.kml+xml", new String[] { "kml", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.google-earth.kmz", new String[] { "kmz", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
@@ -262,17 +260,14 @@ public abstract class MimeUtils {
 		MimeUtils.createMimeMap("application/vnd.intu.qfx", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.irepository.package+xml", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.is-xpr", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
-		MimeUtils
-				.createMimeMap("application/vnd.japannet-directory-service", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
+		MimeUtils.createMimeMap("application/vnd.japannet-directory-service", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.japannet-jpnstore-wakeup", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.japannet-payment-wakeup", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.japannet-registration", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
-		MimeUtils.createMimeMap("application/vnd.japannet-registration-wakeup",
-				new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
+		MimeUtils.createMimeMap("application/vnd.japannet-registration-wakeup", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.japannet-setstore-wakeup", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.japannet-verification", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
-		MimeUtils.createMimeMap("application/vnd.japannet-verification-wakeup",
-				new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
+		MimeUtils.createMimeMap("application/vnd.japannet-verification-wakeup", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.koan", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.lotus-1-2-3", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.lotus-approach", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
@@ -286,8 +281,7 @@ public abstract class MimeUtils {
 		MimeUtils.createMimeMap("application/vnd.meridian-slingshot", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.mif", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.minisoft-hp3000-save", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
-		MimeUtils.createMimeMap("application/vnd.mitsubishi.misty-guard.trustweb", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK,
-				StringUtils.BLANK });
+		MimeUtils.createMimeMap("application/vnd.mitsubishi.misty-guard.trustweb", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.mobius.daf", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.mobius.dis", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.mobius.msl", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
@@ -322,34 +316,20 @@ public abstract class MimeUtils {
 		MimeUtils.createMimeMap("application/vnd.novadigm.EDM", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.novadigm.EDX", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.novadigm.EXT", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
-		MimeUtils.createMimeMap("application/vnd.oasis.opendocument.chart",
-				new String[] { "odc", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
-		MimeUtils.createMimeMap("application/vnd.oasis.opendocument.database", new String[] { "odb", StringUtils.BLANK, StringUtils.BLANK,
-				StringUtils.BLANK });
-		MimeUtils.createMimeMap("application/vnd.oasis.opendocument.formula", new String[] { "odf", StringUtils.BLANK, StringUtils.BLANK,
-				StringUtils.BLANK });
-		MimeUtils.createMimeMap("application/vnd.oasis.opendocument.graphics", new String[] { "odg", StringUtils.BLANK, StringUtils.BLANK,
-				StringUtils.BLANK });
-		MimeUtils.createMimeMap("application/vnd.oasis.opendocument.graphics-template", new String[] { "otg",
-				StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
-		MimeUtils.createMimeMap("application/vnd.oasis.opendocument.image",
-				new String[] { "odi", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
-		MimeUtils.createMimeMap("application/vnd.oasis.opendocument.presentation", new String[] { "odp", StringUtils.BLANK,
-				StringUtils.BLANK, StringUtils.BLANK });
-		MimeUtils.createMimeMap("application/vnd.oasis.opendocument.presentation-template", new String[] {
-				"otp", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
-		MimeUtils.createMimeMap("application/vnd.oasis.opendocument.spreadsheet", new String[] { "ods", StringUtils.BLANK,
-				StringUtils.BLANK, StringUtils.BLANK });
-		MimeUtils.createMimeMap("application/vnd.oasis.opendocument.spreadsheet-template", new String[] {
-				"ots", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
-		MimeUtils
-				.createMimeMap("application/vnd.oasis.opendocument.text", new String[] { "odt", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
-		MimeUtils.createMimeMap("application/vnd.oasis.opendocument.text-master", new String[] { "odm", StringUtils.BLANK,
-				StringUtils.BLANK, StringUtils.BLANK });
-		MimeUtils.createMimeMap("application/vnd.oasis.opendocument.text-template", new String[] { "ott", StringUtils.BLANK,
-				StringUtils.BLANK, StringUtils.BLANK });
-		MimeUtils.createMimeMap("application/vnd.oasis.opendocument.text-web", new String[] { "oth", StringUtils.BLANK, StringUtils.BLANK,
-				StringUtils.BLANK });
+		MimeUtils.createMimeMap("application/vnd.oasis.opendocument.chart", new String[] { "odc", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
+		MimeUtils.createMimeMap("application/vnd.oasis.opendocument.database", new String[] { "odb", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
+		MimeUtils.createMimeMap("application/vnd.oasis.opendocument.formula", new String[] { "odf", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
+		MimeUtils.createMimeMap("application/vnd.oasis.opendocument.graphics", new String[] { "odg", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
+		MimeUtils.createMimeMap("application/vnd.oasis.opendocument.graphics-template", new String[] { "otg", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
+		MimeUtils.createMimeMap("application/vnd.oasis.opendocument.image", new String[] { "odi", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
+		MimeUtils.createMimeMap("application/vnd.oasis.opendocument.presentation", new String[] { "odp", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
+		MimeUtils.createMimeMap("application/vnd.oasis.opendocument.presentation-template", new String[] { "otp", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
+		MimeUtils.createMimeMap("application/vnd.oasis.opendocument.spreadsheet", new String[] { "ods", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
+		MimeUtils.createMimeMap("application/vnd.oasis.opendocument.spreadsheet-template", new String[] { "ots", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
+		MimeUtils.createMimeMap("application/vnd.oasis.opendocument.text", new String[] { "odt", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
+		MimeUtils.createMimeMap("application/vnd.oasis.opendocument.text-master", new String[] { "odm", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
+		MimeUtils.createMimeMap("application/vnd.oasis.opendocument.text-template", new String[] { "ott", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
+		MimeUtils.createMimeMap("application/vnd.oasis.opendocument.text-web", new String[] { "oth", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.osa.netdeploy", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.palm", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.pg.format", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
@@ -369,10 +349,8 @@ public abstract class MimeUtils {
 		MimeUtils.createMimeMap("application/vnd.s3sms", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.seemail", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.shana.informed.formdata", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
-		MimeUtils.createMimeMap("application/vnd.shana.informed.formtemplate",
-				new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
-		MimeUtils
-				.createMimeMap("application/vnd.shana.informed.interchange", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
+		MimeUtils.createMimeMap("application/vnd.shana.informed.formtemplate", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
+		MimeUtils.createMimeMap("application/vnd.shana.informed.interchange", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.shana.informed.package", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.smaf", new String[] { "mmf", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.sss-cod", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
@@ -384,21 +362,18 @@ public abstract class MimeUtils {
 		MimeUtils.createMimeMap("application/vnd.stardivision.impress", new String[] { "sdd", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.stardivision.math", new String[] { "sdf", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.stardivision.writer", new String[] { "sdw", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
-		MimeUtils.createMimeMap("application/vnd.stardivision.writer-global", new String[] { "sgl", StringUtils.BLANK, StringUtils.BLANK,
-				StringUtils.BLANK });
+		MimeUtils.createMimeMap("application/vnd.stardivision.writer-global", new String[] { "sgl", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.street-stream", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.sun.xml.calc", new String[] { "sxc", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.sun.xml.calc.template", new String[] { "stc", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.sun.xml.draw", new String[] { "sxd", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.sun.xml.draw.template", new String[] { "std", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.sun.xml.impress", new String[] { "sxi", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
-		MimeUtils.createMimeMap("application/vnd.sun.xml.impress.template",
-				new String[] { "sti", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
+		MimeUtils.createMimeMap("application/vnd.sun.xml.impress.template", new String[] { "sti", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.sun.xml.math", new String[] { "sxm", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.sun.xml.writer", new String[] { "sxw", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.sun.xml.writer.global", new String[] { "sxg", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
-		MimeUtils
-				.createMimeMap("application/vnd.sun.xml.writer.template", new String[] { "stw", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
+		MimeUtils.createMimeMap("application/vnd.sun.xml.writer.template", new String[] { "stw", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.svd", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.swiftview-ics", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.symbian.install", new String[] { "sis", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
@@ -410,8 +385,7 @@ public abstract class MimeUtils {
 		MimeUtils.createMimeMap("application/vnd.uplanet.alert", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.uplanet.alert-wbxml", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.uplanet.bearer-choice", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
-		MimeUtils.createMimeMap("application/vnd.uplanet.bearer-choice-wbxml",
-				new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
+		MimeUtils.createMimeMap("application/vnd.uplanet.bearer-choice-wbxml", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.uplanet.cacheop", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.uplanet.cacheop-wbxml", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/vnd.uplanet.channel", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
@@ -471,8 +445,7 @@ public abstract class MimeUtils {
 		MimeUtils.createMimeMap("application/x-httpd-php", new String[] { "phtml", "pht", "php", StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/x-httpd-php-source", new String[] { "phps", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/x-httpd-php3", new String[] { "php3", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
-		MimeUtils
-				.createMimeMap("application/x-httpd-php3-preprocessed", new String[] { "php3p", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
+		MimeUtils.createMimeMap("application/x-httpd-php3-preprocessed", new String[] { "php3p", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/x-httpd-php4", new String[] { "php4", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/x-ica", new String[] { "ica", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/x-internet-signup", new String[] { "ins", "isp", StringUtils.BLANK, StringUtils.BLANK });

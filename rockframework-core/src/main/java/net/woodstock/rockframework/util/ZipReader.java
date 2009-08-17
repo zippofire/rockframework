@@ -108,8 +108,7 @@ public class ZipReader {
 		while (entry != null) {
 			entry = input.getNextEntry();
 			if (fileList.contains(entry.getName())) {
-				FileOutputStream output = new FileOutputStream(outDir.getAbsolutePath() + File.separator
-						+ entry.getName());
+				FileOutputStream output = new FileOutputStream(outDir.getAbsolutePath() + File.separator + entry.getName());
 				int b = -1;
 				do {
 					b = input.read();
@@ -132,8 +131,7 @@ public class ZipReader {
 		ZipEntry entry = input.getNextEntry();
 		while (entry != null) {
 			entry = input.getNextEntry();
-			FileOutputStream output = new FileOutputStream(outDir.getAbsolutePath() + File.separator
-					+ entry.getName());
+			FileOutputStream output = new FileOutputStream(outDir.getAbsolutePath() + File.separator + entry.getName());
 			int b = -1;
 			do {
 				b = input.read();

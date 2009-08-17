@@ -33,8 +33,7 @@ public class RegexRefererFilter extends NoRefererFilter {
 	private String				regex;
 
 	@Override
-	public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
+	public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 		if (this.regex == null) {
 			this.regex = this.getInitParameter(RegexRefererFilter.REGEX_PARAMETER);
 		}

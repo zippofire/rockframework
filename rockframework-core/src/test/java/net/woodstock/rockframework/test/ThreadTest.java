@@ -30,10 +30,10 @@ public class ThreadTest extends TestCase {
 		private static final ThreadLocal<Double>	thread	= new ThreadLocal<Double>();
 
 		public static Double getDouble() {
-			Double d = thread.get();
+			Double d = ClassX.thread.get();
 			if (d == null) {
 				d = new Double(Math.random());
-				thread.set(d);
+				ClassX.thread.set(d);
 			}
 			return ClassX.thread.get();
 		}

@@ -20,7 +20,7 @@ import java.util.Collection;
 
 import javax.persistence.ManyToOne;
 
-import net.woodstock.rockframework.domain.Pojo;
+import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.validation.Operation;
 import net.woodstock.rockframework.domain.business.validation.ValidationException;
 import net.woodstock.rockframework.domain.business.validation.ValidationResult;
@@ -43,17 +43,16 @@ public class ValidatorManyToOne extends AbstractValidator {
 				return context.getErrorResult(this.getEmptyErrorMessage(context));
 			}
 
-			if (!(value instanceof Pojo)) {
+			if (!(value instanceof Entity)) {
 				return context.getErrorResult(this.getInvalidTypeErrorMessage(context));
 			}
 
 			if ((operation == Operation.CREATE) || (operation == Operation.UPDATE)) {
-				Pojo p = (Pojo) value;
+				Entity<?> e = (Entity<?>) value;
 
 				JPAEntityValidator entityValidator = (JPAEntityValidator) JPAEntityValidator.getInstance();
 
-				Collection<ValidationResult> results = entityValidator.validate(context, p,
-						Operation.RETRIEVE);
+				Collection<ValidationResult> results = entityValidator.validate(context, e, Operation.RETRIEVE);
 				for (ValidationResult result : results) {
 					if (result.isError()) {
 						return context.getErrorResult(result.getMessage());
@@ -69,13 +68,11 @@ public class ValidatorManyToOne extends AbstractValidator {
 	}
 
 	private String getEmptyErrorMessage(LocalValidationContext context) throws ValidationException {
-		return this
-				.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_NOT_EMPTY, context.getCanonicalName());
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_NOT_EMPTY, context.getCanonicalName());
 	}
 
 	private String getInvalidTypeErrorMessage(LocalValidationContext context) throws ValidationException {
-		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_INVALID_TYPE, context
-				.getCanonicalName());
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_INVALID_TYPE, context.getCanonicalName());
 	}
 
 }

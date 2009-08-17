@@ -46,8 +46,7 @@ class CollectionConverter implements TextAttributeConverter<Collection<?>> {
 				if (Pojo.class.isAssignableFrom(textCollection.itemType())) {
 					Pojo pojo = (Pojo) textCollection.itemType().newInstance();
 
-					BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance()
-							.getBeanDescriptor(pojo.getClass());
+					BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(pojo.getClass());
 					for (PropertyDescriptor p : beanDescriptor.getProperties()) {
 						if (p.isAnnotationPresent(TextIgnore.class)) {
 							continue;
@@ -58,8 +57,7 @@ class CollectionConverter implements TextAttributeConverter<Collection<?>> {
 						String ss = s.substring(0, size);
 						s = s.substring(size);
 
-						TextAttributeConverter converter = TextConverterBase.getAttributeConverter(p
-								.getType());
+						TextAttributeConverter converter = TextConverterBase.getAttributeConverter(p.getType());
 
 						Object value = converter.fromText(ss, p);
 
@@ -67,8 +65,7 @@ class CollectionConverter implements TextAttributeConverter<Collection<?>> {
 					}
 					collection.add(pojo);
 				} else {
-					TextAttributeConverter converter = TextConverterBase.getAttributeConverter(textCollection
-							.itemType());
+					TextAttributeConverter converter = TextConverterBase.getAttributeConverter(textCollection.itemType());
 					Object o = converter.fromText(s, propertyDescriptor);
 					collection.add(o);
 				}
@@ -88,25 +85,21 @@ class CollectionConverter implements TextAttributeConverter<Collection<?>> {
 				for (Object o : c) {
 					if (Pojo.class.isAssignableFrom(textCollection.itemType())) {
 						Pojo p = (Pojo) o;
-						BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance()
-								.getBeanDescriptor(p.getClass());
+						BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(p.getClass());
 						for (PropertyDescriptor pd : beanDescriptor.getProperties()) {
 							if (propertyDescriptor.isAnnotationPresent(TextIgnore.class)) {
 								continue;
 							}
 							Object value = pd.getValue(p);
-							TextAttributeConverter attributeConverter = TextConverterBase
-									.getNullAttributeConverter();
+							TextAttributeConverter attributeConverter = TextConverterBase.getNullAttributeConverter();
 							if (value != null) {
-								attributeConverter = TextConverterBase
-										.getAttributeConverter(value.getClass());
+								attributeConverter = TextConverterBase.getAttributeConverter(value.getClass());
 							}
 							String s = attributeConverter.toText(value, pd);
 							builder.append(s);
 						}
 					} else {
-						TextAttributeConverter attributeConverter = TextConverterBase
-								.getAttributeConverter(textCollection.itemType());
+						TextAttributeConverter attributeConverter = TextConverterBase.getAttributeConverter(textCollection.itemType());
 						builder.append(attributeConverter.toText(o, propertyDescriptor));
 					}
 				}

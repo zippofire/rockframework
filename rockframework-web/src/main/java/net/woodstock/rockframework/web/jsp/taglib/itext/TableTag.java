@@ -34,19 +34,19 @@ import net.woodstock.rockframework.web.jsp.taglib.creator.TLDAttribute;
 public class TableTag extends ContainerTag {
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String		alignment;
+	private String	alignment;
 
 	@TLDAttribute(required = true, rtexprvalue = true)
-	private String		columns;
+	private String	columns;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String		spacingAfter;
+	private String	spacingAfter;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String		spacingBefore;
+	private String	spacingBefore;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String		width;
+	private String	width;
 
 	private Table	table;
 

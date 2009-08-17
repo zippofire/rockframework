@@ -16,52 +16,10 @@
  */
 package net.woodstock.rockframework.domain.business.impl;
 
-import java.util.Collection;
-
-import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.domain.Pojo;
-import net.woodstock.rockframework.domain.business.BusinessException;
-import net.woodstock.rockframework.domain.business.validation.Operation;
-import net.woodstock.rockframework.domain.business.validation.ValidationException;
-import net.woodstock.rockframework.domain.business.validation.ValidationResult;
-import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
-
-public abstract class AbstractBusiness extends DelegateGenericBusiness {
-
-	public static final String	MESSAGE_INVALID_CLASS	= "domain.business.invalid.class";
-
-	public static final String	MESSAGE_INVALID_ID		= "domain.business.invalid.id";
-
-	public static final String	MESSAGE_INVALID_OBJECT	= "domain.business.invalid.object";
+abstract class AbstractBusiness extends AbstractLocalBusiness {
 
 	public AbstractBusiness() {
 		super();
-	}
-
-	private void validate(Pojo pojo, Operation operation) throws BusinessException {
-		Collection<ValidationResult> results = LocalEntityValidator.getInstance().validate(pojo, operation);
-		for (ValidationResult result : results) {
-			if (result.isError()) {
-				throw new ValidationException(result.getMessage());
-			}
-		}
-	}
-
-	// CRUD
-	public void validateCreateWithError(Entity<?> entity) throws BusinessException {
-		this.validate(entity, Operation.CREATE);
-	}
-
-	public void validateUpdateWithError(Entity<?> entity) throws BusinessException {
-		this.validate(entity, Operation.UPDATE);
-	}
-
-	public void validateDeleteWithError(Entity<?> entity) throws BusinessException {
-		this.validate(entity, Operation.DELETE);
-	}
-
-	public void validateQueryWithError(Entity<?> entity) throws BusinessException {
-		this.validate(entity, Operation.QUERY);
 	}
 
 }

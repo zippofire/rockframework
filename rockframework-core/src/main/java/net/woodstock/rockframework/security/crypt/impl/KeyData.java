@@ -5,8 +5,7 @@ import java.security.Key;
 
 import net.woodstock.rockframework.security.common.Charset;
 
-
-public class KeyData  implements Serializable {
+public class KeyData implements Serializable {
 
 	private static final long	serialVersionUID	= -2115977775361614829L;
 
@@ -34,6 +33,5 @@ public class KeyData  implements Serializable {
 	public Charset getCharset() {
 		return this.charset;
 	}
-
 
 }

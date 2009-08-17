@@ -55,16 +55,14 @@ public abstract class AbstractHibernateRepository extends AbstractGenericReposit
 	}
 
 	@SuppressWarnings("unchecked")
-	public <ID extends Serializable, E extends Entity<ID>> E get(Class<E> clazz, ID id)
-			throws PersistenceException {
+	public <ID extends Serializable, E extends Entity<ID>> E get(Class<E> clazz, ID id) throws PersistenceException {
 		Session s = this.getSession();
 		E entity = (E) s.get(clazz, id);
 		return entity;
 	}
 
 	@SuppressWarnings("unchecked")
-	public <E extends Entity<?>> Collection<E> listAll(Class<E> clazz, String order)
-			throws PersistenceException {
+	public <E extends Entity<?>> Collection<E> listAll(Class<E> clazz, String order) throws PersistenceException {
 		Session s = this.getSession();
 		String sql = AbstractRepository.getListAllSql(clazz, order);
 		Query q = s.createQuery(sql);
@@ -73,8 +71,7 @@ public abstract class AbstractHibernateRepository extends AbstractGenericReposit
 	}
 
 	@SuppressWarnings("unchecked")
-	public <E extends Entity<?>> Collection<E> listByExample(E e, Map<String, Object> options)
-			throws PersistenceException {
+	public <E extends Entity<?>> Collection<E> listByExample(E e, Map<String, Object> options) throws PersistenceException {
 		QueryBuilder builder = new HibernateQueryBuilder();
 		if ((options != null) && (options.size() > 0)) {
 			for (Entry<String, Object> option : options.entrySet()) {

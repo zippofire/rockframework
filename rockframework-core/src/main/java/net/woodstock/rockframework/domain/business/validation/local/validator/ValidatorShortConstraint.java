@@ -47,8 +47,7 @@ public class ValidatorShortConstraint extends AbstractValidator {
 	}
 
 	private String getErrorMessage(ValidateShortConstraint annotation, String name) {
-		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_CONSTRAINT, name, ArrayUtils
-				.toString(annotation.values()));
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_CONSTRAINT, name, ArrayUtils.toString(annotation.values()));
 	}
 
 }

@@ -38,9 +38,9 @@ public abstract class BaseValidatorForm extends ValidatorForm {
 	public final void reset(ActionMapping mapping, HttpServletRequest request) {
 		this.reset();
 	}
-	
+
 	public abstract void reset();
-	
+
 	protected Log getLogger() {
 		return SysLogger.getLogger();
 	}

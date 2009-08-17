@@ -18,7 +18,7 @@ package net.woodstock.rockframework.domain.business.validation.local.validator;
 
 import java.util.Collection;
 
-import net.woodstock.rockframework.domain.Pojo;
+import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.validation.ValidationException;
 import net.woodstock.rockframework.domain.business.validation.ValidationResult;
 import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
@@ -39,17 +39,15 @@ public class ValidatorReference extends AbstractValidator {
 				return context.getSuccessResult();
 			}
 
-			if (!(value instanceof Pojo)) {
+			if (!(value instanceof Entity)) {
 				return context.getErrorResult(this.getInvalidTypeErrorMessage(context));
 			}
 
-			Pojo p = (Pojo) value;
+			Entity<?> e = (Entity<?>) value;
 
-			LocalEntityValidator localEntityValidator = (LocalEntityValidator) LocalEntityValidator
-					.getInstance();
+			LocalEntityValidator localEntityValidator = (LocalEntityValidator) LocalEntityValidator.getInstance();
 
-			Collection<ValidationResult> results = localEntityValidator.validate(context, p, annotation
-					.referenceOperaton());
+			Collection<ValidationResult> results = localEntityValidator.validate(context, e, annotation.referenceOperaton());
 
 			for (ValidationResult result : results) {
 				if (result.isError()) {
@@ -68,8 +66,7 @@ public class ValidatorReference extends AbstractValidator {
 	}
 
 	private String getInvalidTypeErrorMessage(LocalValidationContext context) {
-		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_INVALID_TYPE, context
-				.getCanonicalName());
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_INVALID_TYPE, context.getCanonicalName());
 	}
 
 }

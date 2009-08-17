@@ -18,9 +18,7 @@ package net.woodstock.rockframework.itext.types;
 
 public enum Font {
 
-	COURIER(com.lowagie.text.Font.COURIER), DEFAULT(com.lowagie.text.Font.HELVETICA), HELVETICA(
-			com.lowagie.text.Font.HELVETICA), SYMBOL(com.lowagie.text.Font.SYMBOL), TIMES(
-			com.lowagie.text.Font.TIMES_ROMAN), ZAPFDINGBATS(com.lowagie.text.Font.ZAPFDINGBATS);
+	COURIER(com.lowagie.text.Font.COURIER), DEFAULT(com.lowagie.text.Font.HELVETICA), HELVETICA(com.lowagie.text.Font.HELVETICA), SYMBOL(com.lowagie.text.Font.SYMBOL), TIMES(com.lowagie.text.Font.TIMES_ROMAN), ZAPFDINGBATS(com.lowagie.text.Font.ZAPFDINGBATS);
 
 	private int	font;
 

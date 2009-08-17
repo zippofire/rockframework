@@ -32,12 +32,12 @@ public abstract class SimpleValueConverter<T> extends StrutsTypeConverter {
 		if ((o == null) || (o.length != 1)) {
 			super.performFallbackConversion(context, o, toClass);
 		}
-		
+
 		String s = o[0];
-		if(StringUtils.isEmpty(s)) {
+		if (StringUtils.isEmpty(s)) {
 			super.performFallbackConversion(context, o, toClass);
 		}
-		
+
 		T t = this.convertFromString(o[0], toClass);
 		this.getLogger().info("From String [" + s + " => " + t + "]");
 		return t;

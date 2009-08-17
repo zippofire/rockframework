@@ -26,7 +26,7 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import net.woodstock.rockframework.config.CoreMessage;
-import net.woodstock.rockframework.domain.Pojo;
+import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.validation.EntityValidator;
 import net.woodstock.rockframework.domain.business.validation.Operation;
 import net.woodstock.rockframework.domain.business.validation.ValidationException;
@@ -87,25 +87,22 @@ public class LocalEntityValidator implements EntityValidator {
 		this.validators = new HashMap<Class<? extends Validator>, Validator>();
 	}
 
-	public Collection<ValidationResult> validate(Pojo pojo, Operation operation) throws ValidationException {
-		String pojoName = this.getPojoName(pojo);
-		LocalValidationContext rootContext = new LocalValidationContext(pojo, pojoName, null, operation);
-		return this.validate(rootContext, pojo, operation);
+	public Collection<ValidationResult> validate(Entity<?> entity, Operation operation) throws ValidationException {
+		String pojoName = this.getEntityName(entity);
+		LocalValidationContext rootContext = new LocalValidationContext(entity, pojoName, null, operation);
+		return this.validate(rootContext, entity, operation);
 	}
 
-	public Collection<ValidationResult> validate(LocalValidationContext rootContext, Pojo pojo,
-			Operation operation) throws ValidationException {
+	public Collection<ValidationResult> validate(LocalValidationContext rootContext, Entity<?> entity, Operation operation) throws ValidationException {
 		Collection<ValidationResult> results = new LinkedList<ValidationResult>();
-		this.validate(rootContext, pojo, operation, results);
+		this.validate(rootContext, entity, operation, results);
 		return results;
 	}
 
-	private void validate(LocalValidationContext parentContext, Pojo pojo, Operation operation,
-			Collection<ValidationResult> results) {
+	private void validate(LocalValidationContext parentContext, Entity<?> entity, Operation operation, Collection<ValidationResult> results) {
 		try {
-			if (pojo == null) {
-				throw new ValidationException(CoreMessage.getInstance().getMessage(
-						LocalEntityValidator.MESSAGE_ERROR_NULL));
+			if (entity == null) {
+				throw new ValidationException(CoreMessage.getInstance().getMessage(LocalEntityValidator.MESSAGE_ERROR_NULL));
 			}
 
 			if (operation == Operation.QUERY) {
@@ -113,12 +110,10 @@ public class LocalEntityValidator implements EntityValidator {
 			}
 
 			if (operation == Operation.ALL) {
-				throw new ValidationException(CoreMessage.getInstance().getMessage(
-						LocalEntityValidator.MESSAGE_ERROR_NULL));
+				throw new ValidationException(CoreMessage.getInstance().getMessage(LocalEntityValidator.MESSAGE_ERROR_NULL));
 			}
 
-			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
-					pojo.getClass());
+			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(entity.getClass());
 			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
 				for (Annotation annotation : propertyDescriptor.getAnnotations()) {
 					Class<?> annotationClass = this.getAnnotationClass(annotation);
@@ -134,16 +129,14 @@ public class LocalEntityValidator implements EntityValidator {
 							}
 						}
 						if (validate) {
-							Class<? extends Validator> validatorClass = this
-									.getValidatorClass(annotationClass);
+							Class<? extends Validator> validatorClass = this.getValidatorClass(annotationClass);
 
 							Validator validator = this.getValidator(validatorClass);
 
-							Object value = propertyDescriptor.getValue(pojo);
+							Object value = propertyDescriptor.getValue(entity);
 							String name = propertyDescriptor.getName();
 
-							LocalValidationContext context = new LocalValidationContext(value, name,
-									annotation, operation, parentContext);
+							LocalValidationContext context = new LocalValidationContext(value, name, annotation, operation, parentContext);
 							ValidationResult result = validator.validate(context);
 
 							results.add(result);
@@ -165,16 +158,15 @@ public class LocalEntityValidator implements EntityValidator {
 	}
 
 	// Utils
-	private String getPojoName(Pojo pojo) {
-		if (pojo == null) {
+	private String getEntityName(Entity<?> entity) {
+		if (entity == null) {
 			return null;
 		}
-		String className = pojo.getClass().getSimpleName();
+		String className = entity.getClass().getSimpleName();
 		return className;
 	}
 
-	private Validator getValidator(Class<? extends Validator> clazz) throws InstantiationException,
-			IllegalAccessException {
+	private Validator getValidator(Class<? extends Validator> clazz) throws InstantiationException, IllegalAccessException {
 		if (!this.validators.containsKey(clazz)) {
 			Validator validator = clazz.newInstance();
 			if (validator instanceof InitializableValidator) {
@@ -206,11 +198,9 @@ public class LocalEntityValidator implements EntityValidator {
 		return clazz;
 	}
 
-	private Operation[] getOperations(Annotation annotation) throws SecurityException,
-			IllegalAccessException, InvocationTargetException {
+	private Operation[] getOperations(Annotation annotation) throws SecurityException, IllegalAccessException, InvocationTargetException {
 		try {
-			Method method = annotation.getClass().getMethod(LocalEntityValidator.OPERATION_PARAM,
-					new Class[] {});
+			Method method = annotation.getClass().getMethod(LocalEntityValidator.OPERATION_PARAM, new Class[] {});
 			Operation[] operations = (Operation[]) method.invoke(annotation, new Object[] {});
 			return operations;
 		} catch (NoSuchMethodException e) {
@@ -218,8 +208,7 @@ public class LocalEntityValidator implements EntityValidator {
 		}
 	}
 
-	private String getMessage(Annotation annotation) throws SecurityException, IllegalAccessException,
-			InvocationTargetException {
+	private String getMessage(Annotation annotation) throws SecurityException, IllegalAccessException, InvocationTargetException {
 		try {
 			Method m = annotation.getClass().getMethod(LocalEntityValidator.MESSAGE_PARAM, new Class[] {});
 			String message = (String) m.invoke(annotation, new Object[] {});

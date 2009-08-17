@@ -55,8 +55,7 @@ public abstract class EntityUtils {
 			return false;
 		}
 
-		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
-				entity1.getClass());
+		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(entity1.getClass());
 		Collection<PropertyDescriptor> properties = beanDescriptor.getProperties();
 
 		for (PropertyDescriptor property : properties) {
@@ -88,8 +87,7 @@ public abstract class EntityUtils {
 
 		int result = 1;
 
-		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
-				entity.getClass());
+		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(entity.getClass());
 		Collection<PropertyDescriptor> properties = beanDescriptor.getProperties();
 
 		for (PropertyDescriptor property : properties) {

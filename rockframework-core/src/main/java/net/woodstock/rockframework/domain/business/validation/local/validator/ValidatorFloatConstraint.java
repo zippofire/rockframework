@@ -47,8 +47,7 @@ public class ValidatorFloatConstraint extends AbstractValidator {
 	}
 
 	private String getErrorMessage(ValidateFloatConstraint annotation, String name) {
-		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_CONSTRAINT, name, ArrayUtils
-				.toString(annotation.values()));
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_CONSTRAINT, name, ArrayUtils.toString(annotation.values()));
 	}
 
 }

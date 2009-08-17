@@ -1,11 +1,12 @@
 package net.woodstock.rockframework.domain.test2;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import net.woodstock.rockframework.domain.Entity;
 
@@ -21,9 +22,8 @@ public class Foo implements Entity<Integer> {
 	@Column(name = "name", length = 10, nullable = false)
 	private String				name;
 
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "id_bar", referencedColumnName = "id")
-	private Bar					bar;
+	@OneToMany(mappedBy = "foo")
+	private Set<Bar>			bars;
 
 	public Foo() {
 		super();
@@ -45,12 +45,11 @@ public class Foo implements Entity<Integer> {
 		this.name = name;
 	}
 
-	public Bar getBar() {
-		return this.bar;
+	public Set<Bar> getBars() {
+		return this.bars;
 	}
 
-	public void setBar(Bar bar) {
-		this.bar = bar;
+	public void setBars(Set<Bar> bars) {
+		this.bars = bars;
 	}
-
 }

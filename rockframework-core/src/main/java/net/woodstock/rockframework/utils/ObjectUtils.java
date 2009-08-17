@@ -30,18 +30,14 @@ public abstract class ObjectUtils {
 	private static final char	PROPERTY_SEPARATOR	= '.';
 
 	public static void copyAttributes(Object from, Object to, Class<?>[] ignoredTypes) {
-		BeanDescriptor beanDescriptorFrom = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
-				from.getClass());
-		BeanDescriptor beanDescriptorTo = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
-				to.getClass());
+		BeanDescriptor beanDescriptorFrom = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(from.getClass());
+		BeanDescriptor beanDescriptorTo = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(to.getClass());
 
 		outer: for (PropertyDescriptor propertyDescriptor : beanDescriptorFrom.getProperties()) {
-			PropertyDescriptor propertyDescriptorTo = beanDescriptorTo.getProperty(propertyDescriptor
-					.getName());
+			PropertyDescriptor propertyDescriptorTo = beanDescriptorTo.getProperty(propertyDescriptor.getName());
 			if (ignoredTypes != null) {
 				for (Class<?> c : ignoredTypes) {
-					if ((c.isAssignableFrom(propertyDescriptor.getType()))
-							|| (c.isAssignableFrom(propertyDescriptorTo.getType()))) {
+					if ((c.isAssignableFrom(propertyDescriptor.getType())) || (c.isAssignableFrom(propertyDescriptorTo.getType()))) {
 						continue outer;
 					}
 				}
@@ -55,14 +51,11 @@ public abstract class ObjectUtils {
 	}
 
 	public static void copyAttributes(Object from, Object to, String[] ignoredAttributes) {
-		BeanDescriptor beanDescriptorFrom = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
-				from.getClass());
-		BeanDescriptor beanDescriptorTo = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
-				to.getClass());
+		BeanDescriptor beanDescriptorFrom = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(from.getClass());
+		BeanDescriptor beanDescriptorTo = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(to.getClass());
 
 		outer: for (PropertyDescriptor propertyDescriptor : beanDescriptorFrom.getProperties()) {
-			PropertyDescriptor propertyDescriptorTo = beanDescriptorTo.getProperty(propertyDescriptor
-					.getName());
+			PropertyDescriptor propertyDescriptorTo = beanDescriptorTo.getProperty(propertyDescriptor.getName());
 			if (ignoredAttributes != null) {
 				for (String s : ignoredAttributes) {
 					if (s.equals(propertyDescriptor.getName())) {
@@ -86,8 +79,7 @@ public abstract class ObjectUtils {
 			return false;
 		}
 
-		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
-				o1.getClass());
+		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(o1.getClass());
 		Collection<PropertyDescriptor> properties = beanDescriptor.getProperties();
 
 		for (PropertyDescriptor property : properties) {
@@ -110,8 +102,7 @@ public abstract class ObjectUtils {
 
 	public static int hashCode(Object obj) {
 		int result = 1;
-		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
-				obj.getClass());
+		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(obj.getClass());
 		Collection<PropertyDescriptor> properties = beanDescriptor.getProperties();
 
 		for (PropertyDescriptor property : properties) {
@@ -130,14 +121,12 @@ public abstract class ObjectUtils {
 		//
 	}
 
-	public static Object getObjectAttribute(Object o, String name) throws NoSuchMethodException,
-			NoSuchFieldException, IllegalAccessException, InvocationTargetException {
+	public static Object getObjectAttribute(Object o, String name) throws NoSuchMethodException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
 		if (o == null) {
 			return null;
 		}
 
-		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
-				o.getClass());
+		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(o.getClass());
 		if (name.indexOf(ObjectUtils.PROPERTY_SEPARATOR) != -1) {
 			String fieldName = name.substring(0, name.indexOf(ObjectUtils.PROPERTY_SEPARATOR));
 			name = name.substring(name.indexOf(ObjectUtils.PROPERTY_SEPARATOR) + 1);

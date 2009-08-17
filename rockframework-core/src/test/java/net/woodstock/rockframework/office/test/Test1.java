@@ -102,8 +102,7 @@ public class Test1 extends TestCase {
 
 		sheet.getMerges().add(new IntegerCellMerge(0, 0, 0, 5));
 
-		sheet.getImages()
-				.add(new Image(new FileInputStream("D:/image001.jpg"), 0, 0, ImageType.JPEG, 80, 60));
+		sheet.getImages().add(new Image(new FileInputStream("D:/image001.jpg"), 0, 0, ImageType.JPEG, 80, 60));
 
 		for (int i = 0; i < 10; i++) {
 			Cell cell = new Cell();

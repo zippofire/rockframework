@@ -45,16 +45,14 @@ abstract class QueryContextHelper {
 		//
 	}
 
-	public static QueryContext createQueryContext(Entity<?> e, Map<String, Object> options)
-			throws BuilderException {
+	public static QueryContext createQueryContext(Entity<?> e, Map<String, Object> options) throws BuilderException {
 		try {
 			Class<?> clazz = e.getClass();
 			String className = clazz.getCanonicalName();
 
-			QueryContext context = new QueryContext(className, ROOT_ALIAS, null);
+			QueryContext context = new QueryContext(className, QueryContextHelper.ROOT_ALIAS, null);
 
-			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
-					clazz);
+			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(clazz);
 
 			List<Entity<?>> parsed = new ArrayList<Entity<?>>();
 			parsed.add(e);
@@ -107,11 +105,10 @@ abstract class QueryContextHelper {
 		context.setQueryString(builder.toString().trim());
 	}
 
-	private static void handleValue(QueryContext context, Map<String, Object> options, String name,
-			String alias, Object value, List<Entity<?>> parsed) throws BuilderException {
+	private static void handleValue(QueryContext context, Map<String, Object> options, String name, String alias, Object value, List<Entity<?>> parsed) throws BuilderException {
 		try {
-			name = getFieldName(context, name);
-			alias = getFieldAlias(context, alias);
+			name = QueryContextHelper.getFieldName(context, name);
+			alias = QueryContextHelper.getFieldAlias(context, alias);
 			if (value instanceof Entity) {
 				boolean disable = false;
 				if (options.containsKey(QueryBuilder.OPTION_DISABLE_CHILD)) {
@@ -119,7 +116,7 @@ abstract class QueryContextHelper {
 					disable = b.booleanValue();
 				}
 				if (!disable) {
-					handleEntityValue(context, options, name, alias, (Entity<?>) value, parsed);
+					QueryContextHelper.handleEntityValue(context, options, name, alias, (Entity<?>) value, parsed);
 				}
 			} else if (value instanceof Collection) {
 				boolean disable = false;
@@ -128,12 +125,12 @@ abstract class QueryContextHelper {
 					disable = b.booleanValue();
 				}
 				if (!disable) {
-					handleCollectionValue(context, options, name, alias, (Collection<?>) value, parsed);
+					QueryContextHelper.handleCollectionValue(context, options, name, alias, (Collection<?>) value, parsed);
 				}
 			} else if (value instanceof String) {
-				handleStringValue(context, options, name, alias, (String) value);
+				QueryContextHelper.handleStringValue(context, options, name, alias, (String) value);
 			} else {
-				handleCommonValue(context, name, alias, value);
+				QueryContextHelper.handleCommonValue(context, name, alias, value);
 			}
 		} catch (BuilderException exception) {
 			throw exception;
@@ -142,9 +139,7 @@ abstract class QueryContextHelper {
 		}
 	}
 
-	private static void handleEntityValue(QueryContext context, Map<String, Object> options, String name,
-			String alias, Entity<?> value, List<Entity<?>> parsed) throws NoSuchMethodException,
-			IllegalAccessException, InvocationTargetException {
+	private static void handleEntityValue(QueryContext context, Map<String, Object> options, String name, String alias, Entity<?> value, List<Entity<?>> parsed) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		if (QueryContextHelper.contains(parsed, value)) {
 			SysLogger.getLogger().debug("Entity " + value + " already parsed!!!");
 			return;
@@ -155,8 +150,7 @@ abstract class QueryContextHelper {
 		if (PojoUtils.hasNotNullAttribute(value, true)) {
 			Class<?> clazz = value.getClass();
 			QueryContext child = new QueryContext(name, alias, context);
-			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
-					clazz);
+			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(clazz);
 			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
 				String childName = propertyDescriptor.getName();
 				String childAlias = propertyDescriptor.getName();
@@ -169,8 +163,7 @@ abstract class QueryContextHelper {
 		}
 	}
 
-	private static void handleCollectionValue(QueryContext context, Map<String, Object> options, String name,
-			String alias, Collection<?> value, List<Entity<?>> parsed) {
+	private static void handleCollectionValue(QueryContext context, Map<String, Object> options, String name, String alias, Collection<?> value, List<Entity<?>> parsed) {
 		if (value.size() > 0) {
 			QueryContext child = new QueryContext(name, alias, context);
 			child.setJoinNeeded(true);
@@ -184,15 +177,13 @@ abstract class QueryContextHelper {
 					parsed.add((Entity<?>) o);
 
 					Class<?> clazz = o.getClass();
-					BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance()
-							.getBeanDescriptor(clazz);
+					BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(clazz);
 					for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
 						String childName = propertyDescriptor.getName();
-						String childAlias = propertyDescriptor.getName() + ALIAS_SEPARADOR + index;
+						String childAlias = propertyDescriptor.getName() + QueryContextHelper.ALIAS_SEPARADOR + index;
 						Object childValue = propertyDescriptor.getValue(o);
 						if (childValue != null) {
-							QueryContextHelper.handleValue(child, options, childName, childAlias, childValue,
-									parsed);
+							QueryContextHelper.handleValue(child, options, childName, childAlias, childValue, parsed);
 						}
 					}
 				}
@@ -202,8 +193,7 @@ abstract class QueryContextHelper {
 		}
 	}
 
-	private static void handleStringValue(QueryContext context, Map<String, Object> options, String name,
-			String alias, String value) {
+	private static void handleStringValue(QueryContext context, Map<String, Object> options, String name, String alias, String value) {
 		String sqlName = name;
 		String sqlAlias = alias;
 		if (options.containsKey(QueryBuilder.OPTION_IGNORE_CASE)) {
@@ -214,8 +204,7 @@ abstract class QueryContextHelper {
 			}
 		}
 
-		if ((options.containsKey(QueryBuilder.OPTION_LIKE_MODE))
-				&& (options.get(QueryBuilder.OPTION_LIKE_MODE) instanceof LikeMode)) {
+		if ((options.containsKey(QueryBuilder.OPTION_LIKE_MODE)) && (options.get(QueryBuilder.OPTION_LIKE_MODE) instanceof LikeMode)) {
 			LikeMode likeMode = (LikeMode) options.get(QueryBuilder.OPTION_LIKE_MODE);
 			if (likeMode != null) {
 				switch (likeMode) {
@@ -233,22 +222,17 @@ abstract class QueryContextHelper {
 				}
 			}
 			if (likeMode == LikeMode.DISABLED) {
-				context.getParameters().add(
-						new QueryContextParameter(name, sqlName, alias, sqlAlias, value, Operator.EQUALS));
+				context.getParameters().add(new QueryContextParameter(name, sqlName, alias, sqlAlias, value, Operator.EQUALS));
 			} else {
-				context.getParameters().add(
-						new QueryContextParameter(name, sqlName, alias, sqlAlias, value, Operator.LIKE));
+				context.getParameters().add(new QueryContextParameter(name, sqlName, alias, sqlAlias, value, Operator.LIKE));
 			}
 		} else {
-			context.getParameters().add(
-					new QueryContextParameter(name, sqlName, alias, sqlAlias, value, Operator.EQUALS));
+			context.getParameters().add(new QueryContextParameter(name, sqlName, alias, sqlAlias, value, Operator.EQUALS));
 		}
 	}
 
-	private static void handleCommonValue(QueryContext context, String name, String alias, Object value)
-			throws BuilderException {
-		context.getParameters().add(
-				new QueryContextParameter(name, name, alias, alias, value, Operator.EQUALS));
+	private static void handleCommonValue(QueryContext context, String name, String alias, Object value) throws BuilderException {
+		context.getParameters().add(new QueryContextParameter(name, name, alias, alias, value, Operator.EQUALS));
 	}
 
 	private static String getFieldName(QueryContext context, String name) {
@@ -258,7 +242,7 @@ abstract class QueryContextHelper {
 		} else {
 			builder.append(context.getName());
 		}
-		builder.append(OBJECT_SEPARATOR);
+		builder.append(QueryContextHelper.OBJECT_SEPARATOR);
 		builder.append(name);
 		return builder.toString();
 	}
@@ -266,7 +250,7 @@ abstract class QueryContextHelper {
 	private static String getFieldAlias(QueryContext context, String alias) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(context.getAlias());
-		builder.append(ALIAS_SEPARADOR);
+		builder.append(QueryContextHelper.ALIAS_SEPARADOR);
 		builder.append(alias);
 		return builder.toString();
 	}

@@ -20,16 +20,16 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.lowagie.text.Chunk;
-import com.lowagie.text.Element;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.Phrase;
-
 import net.woodstock.rockframework.itext.beans.ItextObject;
 import net.woodstock.rockframework.itext.types.Alignment;
 import net.woodstock.rockframework.itext.types.Font;
 import net.woodstock.rockframework.itext.types.FontStyle;
 import net.woodstock.rockframework.utils.StringUtils;
+
+import com.lowagie.text.Chunk;
+import com.lowagie.text.Element;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.Phrase;
 
 public class ItextParagraph extends ItextObjectImpl {
 
@@ -119,8 +119,7 @@ public class ItextParagraph extends ItextObjectImpl {
 		} else {
 			Chunk chunk = new Chunk(this.text);
 			chunk.setBackground(this.backgroundColor);
-			chunk.setFont(new com.lowagie.text.Font(this.font.getFont(), this.fontSize, this.fontStyle
-					.getFontStyle(), this.color));
+			chunk.setFont(new com.lowagie.text.Font(this.font.getFont(), this.fontSize, this.fontStyle.getFontStyle(), this.color));
 			paragraph.add(chunk);
 			paragraph.add(new Phrase("\n"));
 		}

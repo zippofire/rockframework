@@ -56,8 +56,7 @@ public class CommonClient implements Client {
 	}
 
 	public Object callFunction(SqlType outType, String functionName, ParameterList args) throws SQLException {
-		CallableStatement cs = this.createFuncionStatement(this.getType(outType), functionName,
-				this.connection, args);
+		CallableStatement cs = this.createFuncionStatement(this.getType(outType), functionName, this.connection, args);
 		cs.execute();
 		Object o = this.getParameter(1, outType, cs);
 		cs.close();
@@ -92,8 +91,7 @@ public class CommonClient implements Client {
 	}
 
 	// Utils
-	private PreparedStatement createStatement(String sql, Connection c, ParameterList args)
-			throws SQLException {
+	private PreparedStatement createStatement(String sql, Connection c, ParameterList args) throws SQLException {
 		PreparedStatement ps = null;
 		ps = c.prepareStatement(sql);
 		if (args != null) {
@@ -102,8 +100,7 @@ public class CommonClient implements Client {
 		return ps;
 	}
 
-	private CallableStatement createFuncionStatement(int outType, String name, Connection c,
-			ParameterList args) throws SQLException {
+	private CallableStatement createFuncionStatement(int outType, String name, Connection c, ParameterList args) throws SQLException {
 		CallableStatement cs = null;
 		StringBuilder sql = new StringBuilder("{ ? = call " + name + "(");
 		if (args != null) {
@@ -124,8 +121,7 @@ public class CommonClient implements Client {
 		return cs;
 	}
 
-	private CallableStatement createProcedureStatement(String name, Connection c, ParameterList args)
-			throws SQLException {
+	private CallableStatement createProcedureStatement(String name, Connection c, ParameterList args) throws SQLException {
 		CallableStatement cs = null;
 		StringBuilder sql = new StringBuilder("{ call " + name + "(");
 		if (args != null) {

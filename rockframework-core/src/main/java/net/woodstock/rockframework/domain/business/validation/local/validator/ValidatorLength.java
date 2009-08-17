@@ -46,8 +46,7 @@ public class ValidatorLength extends AbstractValidator {
 	}
 
 	private String getErrorMessage(ValidateLength annotation, String name) {
-		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_LENGTH, name, new Integer(annotation
-				.min()), new Integer(annotation.max()));
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_LENGTH, name, new Integer(annotation.min()), new Integer(annotation.max()));
 	}
 
 }

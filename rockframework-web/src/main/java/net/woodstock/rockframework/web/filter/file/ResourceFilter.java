@@ -45,8 +45,7 @@ public class ResourceFilter extends HttpFilter {
 	}
 
 	@Override
-	public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-			throws IOException {
+	public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException {
 		String context = request.getContextPath();
 		String resource = request.getRequestURI().replace(context, StringUtils.BLANK);
 		resource = resource.replaceAll("^/\\w*/", StringUtils.BLANK);

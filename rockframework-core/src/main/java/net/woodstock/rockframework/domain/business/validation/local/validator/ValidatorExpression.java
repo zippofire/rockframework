@@ -61,9 +61,7 @@ public class ValidatorExpression extends AbstractValidator {
 				Object result = e.evaluate(jc);
 
 				if (!(result instanceof Boolean)) {
-					return context.getErrorResult(this.getExpressionResultErrorMessage(context
-							.getCanonicalName(), ValidatorExpression.EXPECTED_RESULT_TYPE, this
-							.getResultType(result)));
+					return context.getErrorResult(this.getExpressionResultErrorMessage(context.getCanonicalName(), ValidatorExpression.EXPECTED_RESULT_TYPE, this.getResultType(result)));
 				}
 
 				Boolean b = (Boolean) result;
@@ -91,8 +89,7 @@ public class ValidatorExpression extends AbstractValidator {
 	}
 
 	private String getExpressionResultErrorMessage(String name, String expected, String found) {
-		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_EXPRESSION_RESULT, name, expected,
-				found);
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_EXPRESSION_RESULT, name, expected, found);
 	}
 
 }

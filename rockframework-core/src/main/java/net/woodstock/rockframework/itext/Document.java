@@ -96,8 +96,7 @@ public class Document implements Serializable {
 	public void write(OutputStream output, OutputType type) throws DocumentException {
 		com.lowagie.text.Document document = new com.lowagie.text.Document();
 
-		if ((this.marginLeft != Float.MIN_VALUE) && (this.marginRight != Float.MIN_VALUE)
-				&& (this.marginTop != Float.MIN_VALUE) && (this.marginBottom != Float.MIN_VALUE)) {
+		if ((this.marginLeft != Float.MIN_VALUE) && (this.marginRight != Float.MIN_VALUE) && (this.marginTop != Float.MIN_VALUE) && (this.marginBottom != Float.MIN_VALUE)) {
 			document.setMargins(this.marginLeft, this.marginRight, this.marginTop, this.marginBottom);
 		} else if (this.margin != Float.MIN_VALUE) {
 			document.setMargins(this.margin, this.margin, this.margin, this.margin);

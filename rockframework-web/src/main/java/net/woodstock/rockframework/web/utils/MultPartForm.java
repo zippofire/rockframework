@@ -135,8 +135,7 @@ public class MultPartForm {
 		}
 	}
 
-	public static String getParameter(HttpServletRequest request, String parameter)
-			throws FileUploadException {
+	public static String getParameter(HttpServletRequest request, String parameter) throws FileUploadException {
 		String value = null;
 		RequestContext requestContext = new ServletRequestContext(request);
 
@@ -156,8 +155,7 @@ public class MultPartForm {
 		return value;
 	}
 
-	public static InputStream getFile(HttpServletRequest request, String parameter)
-			throws FileUploadException, IOException {
+	public static InputStream getFile(HttpServletRequest request, String parameter) throws FileUploadException, IOException {
 		InputStream value = null;
 		RequestContext requestContext = new ServletRequestContext(request);
 

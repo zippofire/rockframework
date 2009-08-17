@@ -23,15 +23,14 @@ public class TestValidation extends TestCase {
 		Foo foo = new Foo();
 		// foo.setId(new Integer(1));
 		foo.setName("T");
-		foo.setBar(getBar());
+		foo.setBar(this.getBar());
 		return foo;
 	}
 
 	public void testRockapi() throws Exception {
-		Foo foo = getFoo();
+		Foo foo = this.getFoo();
 
-		Collection<ValidationResult> results = LocalEntityValidator.getInstance().validate(foo,
-				Operation.CREATE);
+		Collection<ValidationResult> results = LocalEntityValidator.getInstance().validate(foo, Operation.CREATE);
 
 		for (ValidationResult result : LocalValidationResult.getErrors(results)) {
 			LocalValidationResult localValidationResult = (LocalValidationResult) result;
@@ -43,14 +42,13 @@ public class TestValidation extends TestCase {
 
 	@SuppressWarnings("unchecked")
 	public void testHibernate() throws Exception {
-		Foo foo = getFoo();
+		Foo foo = this.getFoo();
 
 		ClassValidator<Foo> validator = new ClassValidator(Foo.class);
 		if (validator.hasValidationRules()) {
 			InvalidValue values[] = validator.getInvalidValues(foo);
 			for (InvalidValue value : values) {
-				System.out.println("\t" + value.getRootBean().getClass().getSimpleName() + "."
-						+ value.getPropertyPath());
+				System.out.println("\t" + value.getRootBean().getClass().getSimpleName() + "." + value.getPropertyPath());
 				System.out.println("\t\t" + value.getMessage());
 			}
 		}

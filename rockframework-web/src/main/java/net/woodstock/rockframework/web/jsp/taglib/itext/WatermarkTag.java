@@ -34,49 +34,49 @@ import net.woodstock.rockframework.web.jsp.taglib.creator.TLDAttribute;
 public class WatermarkTag extends ITextTag {
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String			absoluteX;
+	private String		absoluteX;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String			absoluteY;
+	private String		absoluteY;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String			alignment;
+	private String		alignment;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String			alt;
+	private String		alt;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String			borderColor;
+	private String		borderColor;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String			borderWidth;
+	private String		borderWidth;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String			indentationLeft;
+	private String		indentationLeft;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String			indentationRight;
+	private String		indentationRight;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String			offsetX;
+	private String		offsetX;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String			offsetY;
+	private String		offsetY;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String			rotation;
+	private String		rotation;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String			scale;
+	private String		scale;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String			spacingAfter;
+	private String		spacingAfter;
 
 	@TLDAttribute(required = false, rtexprvalue = true)
-	private String			spacingBefore;
+	private String		spacingBefore;
 
 	@TLDAttribute(required = true, rtexprvalue = true)
-	private String			src;
+	private String		src;
 
 	private Watermark	mark;
 

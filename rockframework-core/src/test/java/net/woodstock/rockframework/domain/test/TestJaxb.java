@@ -16,30 +16,30 @@ public class TestJaxb extends TestCase {
 		Foo foo = new Foo();
 		foo.setId(new Integer(1));
 		foo.setName("Foo");
-		foo.setBar(getBar());
+		foo.setBar(this.getBar());
 		return foo;
 	}
 
 	public void testBar() throws Exception {
-		Bar bar = getBar();
+		Bar bar = this.getBar();
 
 		String s = new JaxbConverter().to(bar);
 		System.out.println(s);
-		
+
 		bar = new JaxbConverter().from(Bar.class, s);
 		new JaxbConverter().to(bar);
-		System.out.println(s);	
+		System.out.println(s);
 	}
 
 	public void testFoo() throws Exception {
-		Foo foo = getFoo();
+		Foo foo = this.getFoo();
 
 		String s = new JaxbConverter().to(foo);
 		System.out.println(s);
-		
+
 		foo = new JaxbConverter().from(Foo.class, s);
 		new JaxbConverter().to(foo);
-		System.out.println(s);		
+		System.out.println(s);
 	}
 
 }

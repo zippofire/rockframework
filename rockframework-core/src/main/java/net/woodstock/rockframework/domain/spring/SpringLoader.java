@@ -34,8 +34,7 @@ public class SpringLoader implements Loader {
 
 	public static final String		WEBAPPLICATION_CONFIGURATION	= "WEB-INF/applicationContext.xml";
 
-	private static final String[]	configFiles						= {
-			SpringLoader.APPLICATION_CONFIGURATION, SpringLoader.WEBAPPLICATION_CONFIGURATION };
+	private static final String[]	configFiles						= { SpringLoader.APPLICATION_CONFIGURATION, SpringLoader.WEBAPPLICATION_CONFIGURATION };
 
 	private static SpringLoader		loader;
 
@@ -58,7 +57,7 @@ public class SpringLoader implements Loader {
 		return ContextLoader.getCurrentWebApplicationContext();
 	}
 
-	private ApplicationContext getApplicationContext() {
+	private ApplicationContext getApplicationContext() throws DomainException {
 		Collection<String> configs = new LinkedHashSet<String>();
 		ClassLoader classLoader = SpringLoader.class.getClassLoader();
 		for (String config : SpringLoader.configFiles) {
@@ -68,29 +67,26 @@ public class SpringLoader implements Loader {
 		}
 
 		if (configs.size() == 0) {
-			throw new DomainException(CoreMessage.getInstance().getMessage(
-					Loader.MESSAGE_ERROR_CONFIG_NOT_FOUND));
+			throw new DomainException(CoreMessage.getInstance().getMessage(Loader.MESSAGE_ERROR_CONFIG_NOT_FOUND));
 		}
 
 		return new ClassPathXmlApplicationContext(configs.toArray(new String[configs.size()]));
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T getObject(Class<T> clazz) {
+	public <T> T getObject(Class<T> clazz) throws DomainException {
 		Map<String, Object> map = this.context.getBeansOfType(clazz);
 		if (map.size() == 0) {
-			throw new DomainException(CoreMessage.getInstance().getMessage(Loader.MESSAGE_ERROR_NOT_FOUND,
-					clazz.getCanonicalName()));
+			throw new DomainException(CoreMessage.getInstance().getMessage(Loader.MESSAGE_ERROR_NOT_FOUND, clazz.getCanonicalName()));
 		}
 		if (map.size() > 1) {
-			throw new DomainException(CoreMessage.getInstance().getMessage(Loader.MESSAGE_ERROR_MANY_FOUND,
-					clazz.getCanonicalName()));
+			throw new DomainException(CoreMessage.getInstance().getMessage(Loader.MESSAGE_ERROR_MANY_FOUND, clazz.getCanonicalName()));
 		}
 
 		return (T) map.values().iterator().next();
 	}
 
-	public Object getObject(String name) {
+	public Object getObject(String name) throws DomainException {
 		return this.context.getBean(name);
 	}
 

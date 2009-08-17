@@ -32,8 +32,7 @@ class PojoConverter extends TextAttributeConverterBase<Pojo> {
 	public Pojo fromText(String text, PropertyDescriptor propertyDescriptor) {
 		try {
 			Pojo pojo = (Pojo) propertyDescriptor.getType().newInstance();
-			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
-					pojo.getClass());
+			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(pojo.getClass());
 			for (PropertyDescriptor p : beanDescriptor.getProperties()) {
 				if (p.isAnnotationPresent(TextIgnore.class)) {
 					continue;
@@ -60,8 +59,7 @@ class PojoConverter extends TextAttributeConverterBase<Pojo> {
 	public Pojo fromText(Class<? extends Pojo> clazz, String text) {
 		try {
 			Pojo pojo = clazz.newInstance();
-			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
-					pojo.getClass());
+			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(pojo.getClass());
 			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
 				if (propertyDescriptor.isAnnotationPresent(TextIgnore.class)) {
 					continue;
@@ -75,9 +73,7 @@ class PojoConverter extends TextAttributeConverterBase<Pojo> {
 				}
 
 				if ((size == -1) && (!propertyDescriptor.isAnnotationPresent(TextCollection.class))) {
-					String msg = CoreMessage.getInstance().getMessage(
-							TextAttributeConverterBase.MESSAGE_ERROR_CONVERTER_SIZE,
-							propertyDescriptor.getName());
+					String msg = CoreMessage.getInstance().getMessage(TextAttributeConverterBase.MESSAGE_ERROR_CONVERTER_SIZE, propertyDescriptor.getName());
 					throw new TextConverterException(msg);
 				}
 
@@ -91,8 +87,7 @@ class PojoConverter extends TextAttributeConverterBase<Pojo> {
 					text = null;
 				}
 
-				TextAttributeConverter converter = TextConverterBase.getAttributeConverter(propertyDescriptor
-						.getType());
+				TextAttributeConverter converter = TextConverterBase.getAttributeConverter(propertyDescriptor.getType());
 
 				Object value = converter.fromText(s, propertyDescriptor);
 
@@ -108,8 +103,7 @@ class PojoConverter extends TextAttributeConverterBase<Pojo> {
 	public String toText(Pojo p) {
 		try {
 			StringBuilder builder = new StringBuilder();
-			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
-					p.getClass());
+			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(p.getClass());
 			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
 				if (propertyDescriptor.isAnnotationPresent(TextIgnore.class)) {
 					continue;

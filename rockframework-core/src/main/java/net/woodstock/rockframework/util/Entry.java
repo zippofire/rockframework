@@ -64,14 +64,12 @@ public class Entry<K, V> implements Map.Entry<K, V>, Serializable {
 			return false;
 		}
 		Entry<?, ?> e = (Entry<?, ?>) o;
-		return (this.key == null ? e.getKey() == null : this.key.equals(e.getKey()))
-				&& (this.value == null ? e.getValue() == null : this.value.equals(e.getValue()));
+		return (this.key == null ? e.getKey() == null : this.key.equals(e.getKey())) && (this.value == null ? e.getValue() == null : this.value.equals(e.getValue()));
 	}
 
 	@Override
 	public int hashCode() {
-		return (this.key == null ? 0 : this.key.hashCode())
-				^ (this.value == null ? 0 : this.value.hashCode());
+		return (this.key == null ? 0 : this.key.hashCode()) ^ (this.value == null ? 0 : this.value.hashCode());
 	}
 
 }

@@ -30,4 +30,8 @@ public class BusinessException extends DomainException {
 		super(cause);
 	}
 
+	public BusinessException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
 }

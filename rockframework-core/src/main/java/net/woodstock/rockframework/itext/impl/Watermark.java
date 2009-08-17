@@ -79,8 +79,7 @@ public class Watermark extends ObjectBase {
 
 	public Element getObject() {
 		try {
-			com.lowagie.text.Watermark mark = new com.lowagie.text.Watermark(Image.getInstance(this.url),
-					this.offsetX, this.offsetY);
+			com.lowagie.text.Watermark mark = new com.lowagie.text.Watermark(Image.getInstance(this.url), this.offsetX, this.offsetY);
 
 			if (!StringUtils.isEmpty(this.alt)) {
 				mark.setAlt(this.alt);

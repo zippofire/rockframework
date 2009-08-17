@@ -26,8 +26,7 @@ public class HttpTest extends TestCase {
 
 	public void test1() throws Exception {
 		HttpClient http = new HttpClient();
-		System.out.println(http.openXml("http://svn.woodstock.net/index.php",
-				(Collection<Entry<String, Object>>) null));
+		System.out.println(http.openXml("http://svn.woodstock.net/index.php", (Collection<Entry<String, Object>>) null));
 	}
 
 }

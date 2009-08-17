@@ -43,7 +43,6 @@ public interface GenericBusiness extends Business {
 
 	void validateQueryWithError(Entity<?> pojo) throws BusinessException;
 
-	<ID extends Serializable, E extends Entity<ID>> void validateRetrieveWithError(Class<E> clazz, ID id)
-			throws BusinessException;
+	<ID extends Serializable, E extends Entity<ID>> void validateRetrieveWithError(Class<E> clazz, ID id) throws BusinessException;
 
 }

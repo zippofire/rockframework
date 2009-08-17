@@ -103,8 +103,7 @@ public class ParameterList extends LinkedList<Parameter> {
 				Method m = this.getClass().getMethod("add", p.getClass());
 				m.invoke(this, p);
 			} catch (Exception e) {
-				throw new RuntimeException("Invalid parameter type: '" + p.getClass().getCanonicalName()
-						+ "'");
+				throw new RuntimeException("Invalid parameter type: '" + p.getClass().getCanonicalName() + "'");
 			}
 		}
 	}

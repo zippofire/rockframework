@@ -41,17 +41,16 @@ public class CaptchaServlet extends BaseServlet {
 
 	@Override
 	public void doInit() throws ServletException {
-		String randomChars = this.getInitParameter(RANDOM_CHARS_PARAMETER);
+		String randomChars = this.getInitParameter(CaptchaServlet.RANDOM_CHARS_PARAMETER);
 		if (randomChars != null) {
 			this.chars = randomChars.toCharArray();
 		} else {
-			this.chars = RANDOM_CHARS.toCharArray();
+			this.chars = CaptchaServlet.RANDOM_CHARS.toCharArray();
 		}
 	}
 
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-			IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		StringBuilder builder = new StringBuilder();
 		for (int i = 0; i < 6; i++) {
 			int index = NumberUtils.random(this.chars.length - 1);
@@ -62,14 +61,14 @@ public class CaptchaServlet extends BaseServlet {
 		CaptchaImage captchaImage = new CaptchaImage(text);
 		byte[] bytes = captchaImage.getBytes();
 
-		request.getSession().setAttribute(CAPTCHA_PARAMETER, text);
-		response.setContentType(CONTENT_TYPE);
+		request.getSession().setAttribute(CaptchaServlet.CAPTCHA_PARAMETER, text);
+		response.setContentType(CaptchaServlet.CONTENT_TYPE);
 		response.setContentLength(bytes.length);
 		response.getOutputStream().write(bytes);
 	}
 
 	public static String getSessionCaptcha(HttpServletRequest request) {
-		return (String) request.getSession().getAttribute(CAPTCHA_PARAMETER);
+		return (String) request.getSession().getAttribute(CaptchaServlet.CAPTCHA_PARAMETER);
 	}
 
 }

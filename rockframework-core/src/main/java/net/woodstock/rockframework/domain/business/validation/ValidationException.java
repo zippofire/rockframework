@@ -16,13 +16,11 @@
  */
 package net.woodstock.rockframework.domain.business.validation;
 
-public class ValidationException extends RuntimeException {
+import net.woodstock.rockframework.domain.business.BusinessException;
+
+public class ValidationException extends BusinessException {
 
 	private static final long	serialVersionUID	= 1L;
-
-	public ValidationException() {
-		super();
-	}
 
 	public ValidationException(String message) {
 		super(message);

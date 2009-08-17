@@ -3,7 +3,6 @@ package net.woodstock.rockframework.test;
 import java.text.Normalizer;
 
 import junit.framework.TestCase;
-
 import net.woodstock.rockframework.utils.Base64Utils;
 
 public class StringTest extends TestCase {

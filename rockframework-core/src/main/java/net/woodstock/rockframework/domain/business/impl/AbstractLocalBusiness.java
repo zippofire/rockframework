@@ -18,22 +18,21 @@ package net.woodstock.rockframework.domain.business.impl;
 
 import java.util.Collection;
 
-import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.BusinessException;
 import net.woodstock.rockframework.domain.business.validation.Operation;
 import net.woodstock.rockframework.domain.business.validation.ValidationException;
 import net.woodstock.rockframework.domain.business.validation.ValidationResult;
-import net.woodstock.rockframework.domain.business.validation.jpa.JPAEntityValidator;
+import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
 
-public abstract class AbstractJPABusiness extends DelegateGenericBusiness {
+public abstract class AbstractLocalBusiness extends DelegateGenericBusiness {
 
-	public AbstractJPABusiness() {
+	public AbstractLocalBusiness() {
 		super();
 	}
 
 	private void validate(Entity<?> entity, Operation operation) throws BusinessException {
-		Collection<ValidationResult> results = JPAEntityValidator.getInstance().validate(entity, operation);
+		Collection<ValidationResult> results = LocalEntityValidator.getInstance().validate(entity, operation);
 		for (ValidationResult result : results) {
 			if (result.isError()) {
 				throw new ValidationException(result.getMessage());
@@ -51,19 +50,11 @@ public abstract class AbstractJPABusiness extends DelegateGenericBusiness {
 	}
 
 	public void validateDeleteWithError(Entity<?> entity) throws BusinessException {
-		if (entity == null) {
-			throw new ValidationException(CoreMessage.getInstance().getMessage(DelegateGenericBusiness.MESSAGE_INVALID_OBJECT, entity));
-		}
-		Object id = entity.getId();
-		if (id == null) {
-			throw new ValidationException(CoreMessage.getInstance().getMessage(DelegateGenericBusiness.MESSAGE_INVALID_ID, id));
-		}
+		this.validate(entity, Operation.DELETE);
 	}
 
 	public void validateQueryWithError(Entity<?> entity) throws BusinessException {
-		if (entity == null) {
-			throw new ValidationException(CoreMessage.getInstance().getMessage(DelegateGenericBusiness.MESSAGE_INVALID_OBJECT, entity));
-		}
+		this.validate(entity, Operation.QUERY);
 	}
 
 }

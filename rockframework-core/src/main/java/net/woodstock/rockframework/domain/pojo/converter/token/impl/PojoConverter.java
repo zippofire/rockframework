@@ -32,8 +32,7 @@ class PojoConverter extends TokenAttributeConverterBase<Pojo> {
 	public Pojo fromText(Class<? extends Pojo> clazz, char delimiter, String text) {
 		try {
 			Pojo pojo = clazz.newInstance();
-			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
-					pojo.getClass());
+			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(pojo.getClass());
 			String[] values = text.split(new Character(delimiter).toString());
 			int index = 0;
 			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
@@ -43,8 +42,7 @@ class PojoConverter extends TokenAttributeConverterBase<Pojo> {
 
 				String s = values[index++];
 
-				TokenAttributeConverter converter = TokenConverterBase
-						.getAttributeConverter(propertyDescriptor.getType());
+				TokenAttributeConverter converter = TokenConverterBase.getAttributeConverter(propertyDescriptor.getType());
 
 				Object value = converter.fromText(s, propertyDescriptor);
 
@@ -60,8 +58,7 @@ class PojoConverter extends TokenAttributeConverterBase<Pojo> {
 	public String toText(Pojo p, char delimiter) {
 		try {
 			StringBuilder builder = new StringBuilder();
-			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
-					p.getClass());
+			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(p.getClass());
 
 			boolean first = true;
 			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {

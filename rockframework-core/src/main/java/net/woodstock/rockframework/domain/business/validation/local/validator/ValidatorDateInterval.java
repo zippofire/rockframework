@@ -75,8 +75,7 @@ public class ValidatorDateInterval extends AbstractValidator {
 				return context.getSuccessResult();
 			}
 
-			return context.getErrorResult(this.getErrorMessage(annotation, current, context
-					.getCanonicalName()));
+			return context.getErrorResult(this.getErrorMessage(annotation, current, context.getCanonicalName()));
 		} catch (Exception e) {
 			this.getLogger().info(e.getMessage(), e);
 			throw new ValidationException(e);
@@ -110,7 +109,6 @@ public class ValidatorDateInterval extends AbstractValidator {
 		String pastDate = this.dateFormat.format(pastCalendar.getTime());
 		String futureDate = this.dateFormat.format(futureCalendar.getTime());
 
-		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_DATE_INTERVAL, name, pastDate,
-				futureDate, annotation.type().name());
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_DATE_INTERVAL, name, pastDate, futureDate, annotation.type().name());
 	}
 }

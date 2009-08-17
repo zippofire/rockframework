@@ -32,13 +32,10 @@ public interface GenericService extends Service {
 
 	void delete(Entity<?> entity) throws ServiceException, BusinessException, PersistenceException;
 
-	<ID extends Serializable, E extends Entity<ID>> E get(Class<E> clazz, ID id) throws ServiceException,
-			BusinessException, PersistenceException;
+	<ID extends Serializable, E extends Entity<ID>> E get(Class<E> clazz, ID id) throws ServiceException, BusinessException, PersistenceException;
 
-	<E extends Entity<?>> Collection<E> listAll(Class<E> clazz, String order) throws ServiceException,
-			BusinessException, PersistenceException;
+	<E extends Entity<?>> Collection<E> listAll(Class<E> clazz, String order) throws ServiceException, BusinessException, PersistenceException;
 
-	<E extends Entity<?>> Collection<E> listByExample(E entity, Map<String, Object> options)
-			throws ServiceException, BusinessException, PersistenceException;
+	<E extends Entity<?>> Collection<E> listByExample(E entity, Map<String, Object> options) throws ServiceException, BusinessException, PersistenceException;
 
 }

@@ -45,13 +45,11 @@ public class HibernateQueryBuilder extends EJBQLQueryBuilder {
 	@Override
 	protected void setQueryOptions(Object query, Map<String, Object> options) throws BuilderException {
 		Query q = (Query) query;
-		if ((options.containsKey(QueryBuilder.OPTION_FIRST_RESULT))
-				&& (options.get(QueryBuilder.OPTION_FIRST_RESULT) instanceof Integer)) {
+		if ((options.containsKey(QueryBuilder.OPTION_FIRST_RESULT)) && (options.get(QueryBuilder.OPTION_FIRST_RESULT) instanceof Integer)) {
 			Integer firstResult = (Integer) options.get(QueryBuilder.OPTION_FIRST_RESULT);
 			q.setFirstResult(firstResult.intValue());
 		}
-		if ((options.containsKey(QueryBuilder.OPTION_MAX_RESULT))
-				&& (options.get(QueryBuilder.OPTION_MAX_RESULT) instanceof Integer)) {
+		if ((options.containsKey(QueryBuilder.OPTION_MAX_RESULT)) && (options.get(QueryBuilder.OPTION_MAX_RESULT) instanceof Integer)) {
 			Integer maxResult = (Integer) options.get(QueryBuilder.OPTION_MAX_RESULT);
 			q.setMaxResults(maxResult.intValue());
 		}

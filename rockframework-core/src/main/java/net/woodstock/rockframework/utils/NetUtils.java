@@ -82,12 +82,11 @@ public abstract class NetUtils {
 			}
 			bufferNetwork.append(StringUtils.lpad(Integer.toBinaryString(i), 8, '0'));
 		}
-		return bufferNetwork.toString().substring(0, mask).equals(
-				bufferAddress.toString().subSequence(0, mask));
+		return bufferNetwork.toString().substring(0, mask).equals(bufferAddress.toString().subSequence(0, mask));
 	}
 
 	public static InetAddress toAddress(String address) throws UnknownHostException {
-		if (!Pattern.matches(IPV4_REGEX, address)) {
+		if (!Pattern.matches(NetUtils.IPV4_REGEX, address)) {
 			throw new IllegalArgumentException("Invalid IPV4 address " + address);
 		}
 		String[] array = address.split("\\.");

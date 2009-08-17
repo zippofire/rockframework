@@ -18,10 +18,7 @@ package net.woodstock.rockframework.itext.types;
 
 public enum FontStyle {
 
-	BOLD(com.lowagie.text.Font.BOLD), BOLDITALIC(com.lowagie.text.Font.BOLDITALIC), DEFAULT(
-			com.lowagie.text.Font.NORMAL), ITALIC(com.lowagie.text.Font.ITALIC), NORMAL(
-			com.lowagie.text.Font.NORMAL), STRIKETHRU(com.lowagie.text.Font.STRIKETHRU), UNDERLINE(
-			com.lowagie.text.Font.UNDERLINE);
+	BOLD(com.lowagie.text.Font.BOLD), BOLDITALIC(com.lowagie.text.Font.BOLDITALIC), DEFAULT(com.lowagie.text.Font.NORMAL), ITALIC(com.lowagie.text.Font.ITALIC), NORMAL(com.lowagie.text.Font.NORMAL), STRIKETHRU(com.lowagie.text.Font.STRIKETHRU), UNDERLINE(com.lowagie.text.Font.UNDERLINE);
 
 	private int	fontStyle;
 

@@ -206,8 +206,7 @@ public class NamedParameter extends Parameter {
 	public boolean equals(Object obj) {
 		if (obj instanceof NamedParameter) {
 			NamedParameter other = (NamedParameter) obj;
-			return (this.getType().type() == other.getType().type())
-					&& this.getValue().equals(other.getValue()) && this.getName().equals(other.getName());
+			return (this.getType().type() == other.getType().type()) && this.getValue().equals(other.getValue()) && this.getName().equals(other.getName());
 		}
 		return false;
 	}

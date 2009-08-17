@@ -47,8 +47,7 @@ public class ValidatorDoubleConstraint extends AbstractValidator {
 	}
 
 	private String getErrorMessage(ValidateDoubleConstraint annotation, String name) {
-		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_CONSTRAINT, name, ArrayUtils
-				.toString(annotation.values()));
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_CONSTRAINT, name, ArrayUtils.toString(annotation.values()));
 	}
 
 }

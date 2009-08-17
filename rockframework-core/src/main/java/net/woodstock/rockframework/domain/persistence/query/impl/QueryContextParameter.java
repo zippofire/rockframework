@@ -38,8 +38,7 @@ class QueryContextParameter implements Serializable {
 		super();
 	}
 
-	public QueryContextParameter(String name, String sqlName, String alias, String sqlAlias, Object value,
-			Operator operator) {
+	public QueryContextParameter(String name, String sqlName, String alias, String sqlAlias, Object value, Operator operator) {
 		super();
 		this.name = name;
 		this.sqlName = sqlName;

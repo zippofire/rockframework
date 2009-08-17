@@ -40,8 +40,7 @@ public class AsyncCrypter extends CrypterBase<AsyncAlgorithm> {
 
 	private PublicKey	publicKey;
 
-	protected AsyncCrypter(PrivateKey privateKey, PublicKey publicKey, AsyncAlgorithm algorithm,
-			Charset charset) {
+	protected AsyncCrypter(PrivateKey privateKey, PublicKey publicKey, AsyncAlgorithm algorithm, Charset charset) {
 		super(algorithm, charset);
 
 		if (publicKey == null) {

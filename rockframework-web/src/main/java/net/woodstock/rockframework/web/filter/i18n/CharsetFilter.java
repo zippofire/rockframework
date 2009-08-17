@@ -44,8 +44,7 @@ public class CharsetFilter extends HttpFilter {
 	}
 
 	@Override
-	public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
+	public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 		BufferedServletResponseWrapper responseWrapper = new BufferedServletResponseWrapper(response);
 
 		this.getLogger().debug("Filtering " + request.getRequestURI());

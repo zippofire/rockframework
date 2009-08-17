@@ -47,21 +47,18 @@ public class SpringHibernateRepository extends HibernateDaoSupport implements Ge
 	}
 
 	@SuppressWarnings("unchecked")
-	public <ID extends Serializable, E extends Entity<ID>> E get(Class<E> clazz, ID id)
-			throws PersistenceException {
+	public <ID extends Serializable, E extends Entity<ID>> E get(Class<E> clazz, ID id) throws PersistenceException {
 		return (E) this.getHibernateTemplate().get(clazz, id);
 	}
 
 	@SuppressWarnings("unchecked")
-	public <E extends Entity<?>> Collection<E> listAll(Class<E> clazz, String order)
-			throws PersistenceException {
+	public <E extends Entity<?>> Collection<E> listAll(Class<E> clazz, String order) throws PersistenceException {
 		String sql = AbstractRepository.getListAllSql(clazz, order);
 		return this.getHibernateTemplate().find(sql);
 	}
 
 	@SuppressWarnings("unchecked")
-	public <E extends Entity<?>> Collection<E> listByExample(E e, Map<String, Object> options)
-			throws PersistenceException {
+	public <E extends Entity<?>> Collection<E> listByExample(E e, Map<String, Object> options) throws PersistenceException {
 		QueryBuilder builder = new HibernateQueryBuilder();
 		if ((options != null) && (options.size() > 0)) {
 			for (Entry<String, Object> option : options.entrySet()) {

@@ -113,8 +113,7 @@ public class ItextBarcode extends ItextObjectImpl {
 			barcode.setFont(null);
 		}
 
-		Image image = barcode
-				.createImageWithBarcode(this.getContentByte(), this.barcodeColor, this.textColor);
+		Image image = barcode.createImageWithBarcode(this.getContentByte(), this.barcodeColor, this.textColor);
 
 		if (!StringUtils.isEmpty(this.alt)) {
 			image.setAlt(this.alt);

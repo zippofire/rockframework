@@ -66,27 +66,7 @@ public class Calendar extends GregorianCalendar {
 
 	public static final String		WEEK_IN_MONTH_FORMAT		= "%W";
 
-	private static final String[]	ALL_FORMAT					= new String[] {
-		Calendar.AM_PM_FORMAT,
-		Calendar.ERA_FORMAT,
-		Calendar.DAY_IN_MONTH_FORMAT,
-		Calendar.DAY_IN_MONTH_LONG_FORMAT,
-		Calendar.DAY_NAME_FORMAT,
-		Calendar.DAY_OF_WEEK_IN_MONTH_FORMAT,
-		Calendar.DAY_IN_YEAR_FORMAT,
-		Calendar.HOUR12_FORMAT,
-		Calendar.HOUR24_FORMAT,
-		Calendar.MILLISECOND_FORMAT,
-		Calendar.MINUTE_FORMAT,
-		Calendar.MONTH_FORMAT,
-		Calendar.MONTH_NAME_FORMAT,
-		Calendar.SECOND_FORMAT,
-		Calendar.TIMEZONE_FORMAT,
-		Calendar.YEAR_FORMAT,
-		Calendar.YEAR_LONG_FORMAT,
-		Calendar.WEEK_IN_YEAR_FORMAT,
-		Calendar.WEEK_IN_MONTH_FORMAT
-	};
+	private static final String[]	ALL_FORMAT					= new String[] { Calendar.AM_PM_FORMAT, Calendar.ERA_FORMAT, Calendar.DAY_IN_MONTH_FORMAT, Calendar.DAY_IN_MONTH_LONG_FORMAT, Calendar.DAY_NAME_FORMAT, Calendar.DAY_OF_WEEK_IN_MONTH_FORMAT, Calendar.DAY_IN_YEAR_FORMAT, Calendar.HOUR12_FORMAT, Calendar.HOUR24_FORMAT, Calendar.MILLISECOND_FORMAT, Calendar.MINUTE_FORMAT, Calendar.MONTH_FORMAT, Calendar.MONTH_NAME_FORMAT, Calendar.SECOND_FORMAT, Calendar.TIMEZONE_FORMAT, Calendar.YEAR_FORMAT, Calendar.YEAR_LONG_FORMAT, Calendar.WEEK_IN_YEAR_FORMAT, Calendar.WEEK_IN_MONTH_FORMAT };
 
 	private Locale					locale;
 

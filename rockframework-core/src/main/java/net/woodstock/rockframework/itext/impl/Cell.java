@@ -20,48 +20,48 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.lowagie.text.Chunk;
-import com.lowagie.text.Element;
-import com.lowagie.text.Phrase;
-import com.lowagie.text.pdf.PdfPCell;
-
 import net.woodstock.rockframework.itext.Object;
 import net.woodstock.rockframework.itext.types.Alignment;
 import net.woodstock.rockframework.itext.types.Font;
 import net.woodstock.rockframework.itext.types.FontStyle;
 import net.woodstock.rockframework.utils.StringUtils;
 
+import com.lowagie.text.Chunk;
+import com.lowagie.text.Element;
+import com.lowagie.text.Phrase;
+import com.lowagie.text.pdf.PdfPCell;
+
 public class Cell extends ObjectBase {
 
-	private static final long		serialVersionUID	= -2242004760388063763L;
+	private static final long	serialVersionUID	= -2242004760388063763L;
 
-	private Alignment				alignment;
+	private Alignment			alignment;
 
-	private Color					backgroundColor;
+	private Color				backgroundColor;
 
-	private Color					borderColor;
+	private Color				borderColor;
 
-	private float					borderWidth;
+	private float				borderWidth;
 
-	private Color					color;
+	private Color				color;
 
-	private int						colspan;
+	private int					colspan;
 
-	private Font					font;
+	private Font				font;
 
-	private float					fontSize;
+	private float				fontSize;
 
-	private FontStyle				fontStyle;
+	private FontStyle			fontStyle;
 
-	private float					height;
+	private float				height;
 
-	private float					padding;
+	private float				padding;
 
-	private String					text;
+	private String				text;
 
-	private Alignment				verticalAlignment;
+	private Alignment			verticalAlignment;
 
-	private float					width;
+	private float				width;
 
 	private Collection<Object>	items;
 
@@ -112,8 +112,7 @@ public class Cell extends ObjectBase {
 		} else {
 			Phrase phrase = new Phrase();
 			Chunk chunk = new Chunk(this.text);
-			chunk.setFont(new com.lowagie.text.Font(this.font.getFont(), this.fontSize, this.fontStyle
-					.getFontStyle(), this.color));
+			chunk.setFont(new com.lowagie.text.Font(this.font.getFont(), this.fontSize, this.fontStyle.getFontStyle(), this.color));
 			phrase.add(chunk);
 			cell.setPhrase(phrase);
 		}

@@ -18,10 +18,7 @@ package net.woodstock.rockframework.security.crypt.impl;
 
 public enum AsyncAlgorithm {
 
-	DEFAULT_ASYNC("RSA"),
-	DSA("DSA"),
-	DIFFIE_HELLMAN("DiffieHellman"),
-	RSA("RSA");
+	DEFAULT_ASYNC("RSA"), DSA("DSA"), DIFFIE_HELLMAN("DiffieHellman"), RSA("RSA");
 
 	private String	algorithm;
 
@@ -32,10 +29,10 @@ public enum AsyncAlgorithm {
 	public String algorithm() {
 		return this.algorithm;
 	}
-	
+
 	public static AsyncAlgorithm fromString(String algorithm) {
 		for (AsyncAlgorithm s : AsyncAlgorithm.values()) {
-			if(s.algorithm().equalsIgnoreCase(algorithm)) {
+			if (s.algorithm().equalsIgnoreCase(algorithm)) {
 				return s;
 			}
 		}

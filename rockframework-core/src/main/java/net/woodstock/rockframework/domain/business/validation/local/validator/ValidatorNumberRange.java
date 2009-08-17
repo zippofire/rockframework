@@ -51,8 +51,7 @@ public class ValidatorNumberRange extends AbstractValidator {
 	}
 
 	private String getErrorMessage(ValidateNumberRange annotation, String name) {
-		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_RANGE, name, new BigDecimal(
-				annotation.min()), new BigDecimal(annotation.max()));
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_RANGE, name, new BigDecimal(annotation.min()), new BigDecimal(annotation.max()));
 	}
 
 }

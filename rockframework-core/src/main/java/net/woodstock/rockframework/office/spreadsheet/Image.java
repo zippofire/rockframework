@@ -67,8 +67,7 @@ public class Image implements SpreadsheetElement {
 		this.height = height;
 	}
 
-	public Image(InputStream inputStream, int row, int column, ImageType type, int width, int height)
-			throws IOException {
+	public Image(InputStream inputStream, int row, int column, ImageType type, int width, int height) throws IOException {
 		super();
 		this.bytes = IOUtils.toByteArray(inputStream);
 		this.row = row;

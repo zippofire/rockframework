@@ -20,11 +20,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.woodstock.rockframework.utils.StringUtils;
+
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionRedirect;
-
-import net.woodstock.rockframework.utils.StringUtils;
 
 public class ForwardResult implements StrutsResult {
 

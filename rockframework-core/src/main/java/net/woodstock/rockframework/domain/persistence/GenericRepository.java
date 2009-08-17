@@ -31,12 +31,10 @@ public interface GenericRepository extends Repository {
 
 	void delete(Entity<?> e) throws PersistenceException;
 
-	<ID extends Serializable, E extends Entity<ID>> E get(Class<E> clazz, ID id) throws PersistenceException,
-			BusinessException, PersistenceException;
+	<ID extends Serializable, E extends Entity<ID>> E get(Class<E> clazz, ID id) throws PersistenceException, BusinessException, PersistenceException;
 
 	<E extends Entity<?>> Collection<E> listAll(Class<E> clazz, String order) throws PersistenceException;
 
-	<E extends Entity<?>> Collection<E> listByExample(E e, Map<String, Object> options)
-			throws PersistenceException;
+	<E extends Entity<?>> Collection<E> listByExample(E e, Map<String, Object> options) throws PersistenceException;
 
 }

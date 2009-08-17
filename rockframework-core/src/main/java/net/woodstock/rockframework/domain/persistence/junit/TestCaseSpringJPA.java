@@ -39,8 +39,7 @@ public abstract class TestCaseSpringJPA extends TestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		EntityManagerHolder entityManagerHolder = (EntityManagerHolder) TransactionSynchronizationManager
-				.unbindResource(this.factory);
+		EntityManagerHolder entityManagerHolder = (EntityManagerHolder) TransactionSynchronizationManager.unbindResource(this.factory);
 		entityManagerHolder.getEntityManager().close();
 	}
 

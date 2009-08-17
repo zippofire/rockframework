@@ -115,8 +115,7 @@ class FieldInfo {
 		return this.writeMethodName;
 	}
 
-	public Object getFieldValue(Object o) throws NoSuchMethodException, IllegalArgumentException,
-			IllegalAccessException, InvocationTargetException {
+	public Object getFieldValue(Object o) throws NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		if (Modifier.isPublic(this.field.getModifiers())) {
 			return this.field.get(o);
 		}
@@ -126,8 +125,7 @@ class FieldInfo {
 		return this.readMethod.invoke(o, new Object[] {});
 	}
 
-	public void setFieldValue(Object o, Object value) throws NoSuchMethodException, IllegalArgumentException,
-			IllegalAccessException, InvocationTargetException {
+	public void setFieldValue(Object o, Object value) throws NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		if (Modifier.isPublic(this.field.getModifiers())) {
 			this.field.set(o, value);
 			return;

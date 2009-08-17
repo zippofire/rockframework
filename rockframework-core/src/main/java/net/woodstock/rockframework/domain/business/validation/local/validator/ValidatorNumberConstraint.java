@@ -51,8 +51,7 @@ public class ValidatorNumberConstraint extends AbstractValidator {
 	}
 
 	private String getErrorMessage(ValidateNumberConstraint annotation, String name) {
-		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_CONSTRAINT, name, ArrayUtils
-				.toString(annotation.values()));
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_CONSTRAINT, name, ArrayUtils.toString(annotation.values()));
 	}
 
 }

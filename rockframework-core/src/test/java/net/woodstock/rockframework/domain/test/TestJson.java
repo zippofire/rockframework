@@ -16,12 +16,12 @@ public class TestJson extends TestCase {
 		Foo foo = new Foo();
 		foo.setId(new Integer(1));
 		foo.setName("Foo");
-		foo.setBar(getBar());
+		foo.setBar(this.getBar());
 		return foo;
 	}
 
 	public void xtestBar() throws Exception {
-		Bar bar = getBar();
+		Bar bar = this.getBar();
 
 		String s = new JsonConverter().to(bar);
 		System.out.println(s);
@@ -32,7 +32,7 @@ public class TestJson extends TestCase {
 	}
 
 	public void testFoo() throws Exception {
-		Foo foo = getFoo();
+		Foo foo = this.getFoo();
 
 		String s = new JsonConverter().to(foo);
 		System.out.println(s);

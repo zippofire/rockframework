@@ -78,8 +78,7 @@ public class ItextChunk extends ItextObjectImpl {
 		}
 
 		chunk.setBackground(this.backgroundColor);
-		chunk.setFont(new com.lowagie.text.Font(this.font.getFont(), this.fontSize, this.fontStyle
-				.getFontStyle(), this.color));
+		chunk.setFont(new com.lowagie.text.Font(this.font.getFont(), this.fontSize, this.fontStyle.getFontStyle(), this.color));
 		chunk.setHorizontalScaling(this.horizontalScaling);
 		chunk.append(this.text);
 

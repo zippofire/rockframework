@@ -19,13 +19,13 @@ package net.woodstock.rockframework.itext.beans.directcontent.impl;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import net.woodstock.rockframework.utils.StringUtils;
+
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Image;
 import com.lowagie.text.pdf.PdfContentByte;
-
-import net.woodstock.rockframework.utils.StringUtils;
 
 public class ItextImage extends ItextBasicImpl {
 

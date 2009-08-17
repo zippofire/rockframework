@@ -44,23 +44,20 @@ public class ProxyEntity<ID extends Serializable> implements Entity<ID>, Invocat
 		this.entity.setId(id);
 	}
 
-	public Object invoke(Object proxy, Method method, Object[] args) throws InvocationTargetException,
-			IllegalAccessException {
+	public Object invoke(Object proxy, Method method, Object[] args) throws InvocationTargetException, IllegalAccessException {
 		SysLogger.getLogger().info("Calling method " + method.getName());
 		return method.invoke(this.entity, args);
 	}
 
 	@SuppressWarnings("unchecked")
 	public static <E extends Entity<? extends Serializable>> E newInstance(E entity) {
-		Object obj = Proxy.newProxyInstance(entity.getClass().getClassLoader(), entity.getClass()
-				.getInterfaces(), new ProxyEntity(entity));
+		Object obj = Proxy.newProxyInstance(entity.getClass().getClassLoader(), entity.getClass().getInterfaces(), new ProxyEntity(entity));
 		return (E) obj;
 	}
 
 	@SuppressWarnings("unchecked")
 	public static Object newInstance2(Object obj) {
-		return Proxy.newProxyInstance(obj.getClass().getClassLoader(), obj.getClass().getInterfaces(),
-				new ProxyEntity((Entity) obj));
+		return Proxy.newProxyInstance(obj.getClass().getClassLoader(), obj.getClass().getInterfaces(), new ProxyEntity((Entity) obj));
 	}
 
 }

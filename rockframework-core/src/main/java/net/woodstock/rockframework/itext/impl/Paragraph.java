@@ -20,45 +20,45 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.lowagie.text.Chunk;
-import com.lowagie.text.Element;
-import com.lowagie.text.Phrase;
-
 import net.woodstock.rockframework.itext.Object;
 import net.woodstock.rockframework.itext.types.Alignment;
 import net.woodstock.rockframework.itext.types.Font;
 import net.woodstock.rockframework.itext.types.FontStyle;
 import net.woodstock.rockframework.utils.StringUtils;
 
+import com.lowagie.text.Chunk;
+import com.lowagie.text.Element;
+import com.lowagie.text.Phrase;
+
 public class Paragraph extends ObjectBase {
 
-	private static final long		serialVersionUID	= 4662309802060227935L;
+	private static final long	serialVersionUID	= 4662309802060227935L;
 
-	private Alignment				alignment;
+	private Alignment			alignment;
 
-	private Color					backgroundColor;
+	private Color				backgroundColor;
 
-	private Color					color;
+	private Color				color;
 
-	private float					firstLineIndent;
+	private float				firstLineIndent;
 
-	private Font					font;
+	private Font				font;
 
-	private float					fontSize;
+	private float				fontSize;
 
-	private FontStyle				fontStyle;
+	private FontStyle			fontStyle;
 
-	private float					indentationLeft;
+	private float				indentationLeft;
 
-	private float					indentationRight;
+	private float				indentationRight;
 
-	private float					leading;
+	private float				leading;
 
-	private float					spacingAfter;
+	private float				spacingAfter;
 
-	private float					spacingBefore;
+	private float				spacingBefore;
 
-	private String					text;
+	private String				text;
 
 	private Collection<Object>	items;
 
@@ -118,8 +118,7 @@ public class Paragraph extends ObjectBase {
 		} else {
 			Chunk chunk = new Chunk(this.text);
 			chunk.setBackground(this.backgroundColor);
-			chunk.setFont(new com.lowagie.text.Font(this.font.getFont(), this.fontSize, this.fontStyle
-					.getFontStyle(), this.color));
+			chunk.setFont(new com.lowagie.text.Font(this.font.getFont(), this.fontSize, this.fontStyle.getFontStyle(), this.color));
 			paragraph.add(chunk);
 			paragraph.add(new Phrase("\n"));
 		}

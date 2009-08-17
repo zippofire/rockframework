@@ -28,8 +28,7 @@ import net.woodstock.rockframework.utils.StringUtils;
 public class NoRefererFilter extends RefererFilter {
 
 	@Override
-	public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
+	public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 		if (!this.hasReferer(request)) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return;

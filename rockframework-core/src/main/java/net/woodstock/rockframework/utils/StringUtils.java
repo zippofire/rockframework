@@ -68,8 +68,7 @@ public abstract class StringUtils {
 		for (int i = 0; i < array.length; i++) {
 			if (i == 0) {
 				builder.append(Character.toLowerCase(array[i].charAt(0)));
-			}
-			else {
+			} else {
 				builder.append(Character.toUpperCase(array[i].charAt(0)));
 			}
 			builder.append(array[i].substring(1));
@@ -85,8 +84,7 @@ public abstract class StringUtils {
 		for (int i = 0; i < array.length; i++) {
 			if (i == 0) {
 				builder.append(Character.toLowerCase(array[i].charAt(0)));
-			}
-			else {
+			} else {
 				builder.append(Character.toUpperCase(array[i].charAt(0)));
 			}
 			builder.append(array[i].substring(1));
@@ -104,17 +102,14 @@ public abstract class StringUtils {
 			boolean capitalize = false;
 			if (i == 0) {
 				capitalize = true;
-			}
-			else if ((i > 0) && (chars[i - 1] == ' ')) {
+			} else if ((i > 0) && (chars[i - 1] == ' ')) {
 				capitalize = true;
 			}
 			if ((capitalize) && (Character.isLetter(chars[i]))) {
 				b.append(Character.toUpperCase(chars[i]));
-			}
-			else if (Character.isLetter(chars[i])) {
+			} else if (Character.isLetter(chars[i])) {
 				b.append(Character.toLowerCase(chars[i]));
-			}
-			else {
+			} else {
 				b.append(chars[i]);
 			}
 		}
@@ -162,8 +157,7 @@ public abstract class StringUtils {
 		for (char element : charsFormat) {
 			if (element != c) {
 				s.append(element);
-			}
-			else {
+			} else {
 				s.append(charsValue[index++]);
 			}
 		}

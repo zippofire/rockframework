@@ -45,8 +45,7 @@ class FieldPropertyDescriptor extends AbstractPropertyDescriptor {
 			try {
 				this.setReadMethod(c.getMethod(this.getReadMethodName(), new Class[] {}));
 				return;
-			}
-			catch (NoSuchMethodException scme) {
+			} catch (NoSuchMethodException scme) {
 				// scme.printStackTrace();
 			}
 		}

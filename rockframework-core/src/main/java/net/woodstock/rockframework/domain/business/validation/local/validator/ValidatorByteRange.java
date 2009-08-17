@@ -44,8 +44,7 @@ public class ValidatorByteRange extends AbstractValidator {
 	}
 
 	private String getErrorMessage(ValidateByteRange annotation, String name) {
-		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_RANGE, name, new Byte(annotation
-				.min()), new Byte(annotation.max()));
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_RANGE, name, new Byte(annotation.min()), new Byte(annotation.max()));
 	}
 
 }

@@ -33,19 +33,16 @@ public abstract class PojoUtils {
 		//
 	}
 
-	public static boolean hasNotNullAttribute(Pojo p) throws NoSuchMethodException, IllegalAccessException,
-			InvocationTargetException {
+	public static boolean hasNotNullAttribute(Pojo p) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		return PojoUtils.hasNotNullAttribute(p, false);
 	}
 
-	public static boolean hasNotNullAttribute(Pojo p, boolean includeCollections)
-			throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+	public static boolean hasNotNullAttribute(Pojo p, boolean includeCollections) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		if (p == null) {
 			return false;
 		}
 
-		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
-				p.getClass());
+		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(p.getClass());
 		for (PropertyDescriptor pd : beanDescriptor.getProperties()) {
 			Object tmp = pd.getValue(p);
 			if (tmp != null) {
@@ -76,8 +73,7 @@ public abstract class PojoUtils {
 		return false;
 	}
 
-	private static boolean isNotNull(Object o, boolean includeCollections) throws NoSuchMethodException,
-			IllegalAccessException, InvocationTargetException {
+	private static boolean isNotNull(Object o, boolean includeCollections) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		if (o instanceof Boolean) {
 			return true;
 		}
@@ -103,8 +99,7 @@ public abstract class PojoUtils {
 
 	@SuppressWarnings("unchecked")
 	public static <T extends Pojo> int compareTo(T t1, T t2, String fieldName) {
-		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
-				t1.getClass());
+		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(t1.getClass());
 		PropertyDescriptor propertyDescriptor = beanDescriptor.getProperty(fieldName);
 		Object o1 = propertyDescriptor.getValue(t1);
 		Object o2 = propertyDescriptor.getValue(t2);
@@ -122,8 +117,7 @@ public abstract class PojoUtils {
 
 		public PojoComparator(Class<? extends Pojo> clazz, String fieldName) {
 			super();
-			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
-					clazz);
+			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(clazz);
 			this.propertyDescriptor = beanDescriptor.getProperty(fieldName);
 		}
 

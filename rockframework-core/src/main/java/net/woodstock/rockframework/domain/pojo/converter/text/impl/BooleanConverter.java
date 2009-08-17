@@ -26,8 +26,7 @@ class BooleanConverter extends TextAttributeConverterBase<Boolean> {
 		try {
 			Boolean b = null;
 			if (!StringUtils.isEmpty(text)) {
-				if (TextConverterBase.trim(text).equals(
-						propertyDescriptor.getAnnotation(TextBoolean.class).trueValue())) {
+				if (TextConverterBase.trim(text).equals(propertyDescriptor.getAnnotation(TextBoolean.class).trueValue())) {
 					b = Boolean.TRUE;
 				} else {
 					b = Boolean.FALSE;

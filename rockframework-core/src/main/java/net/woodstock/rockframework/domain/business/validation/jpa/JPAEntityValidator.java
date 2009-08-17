@@ -30,7 +30,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import net.woodstock.rockframework.config.CoreMessage;
-import net.woodstock.rockframework.domain.Pojo;
+import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.validation.EntityValidator;
 import net.woodstock.rockframework.domain.business.validation.Operation;
 import net.woodstock.rockframework.domain.business.validation.ValidationException;
@@ -63,25 +63,22 @@ public class JPAEntityValidator implements EntityValidator {
 		super();
 	}
 
-	public Collection<ValidationResult> validate(Pojo pojo, Operation operation) throws ValidationException {
-		String pojoName = this.getPojoName(pojo);
-		LocalValidationContext rootContext = new JPAValidationContext(pojo, pojoName, null, operation);
-		return this.validate(rootContext, pojo, operation);
+	public Collection<ValidationResult> validate(Entity<?> entity, Operation operation) throws ValidationException {
+		String entityName = this.getEntityName(entity);
+		LocalValidationContext rootContext = new JPAValidationContext(entity, entityName, null, operation);
+		return this.validate(rootContext, entity, operation);
 	}
 
-	public Collection<ValidationResult> validate(LocalValidationContext rootContext, Pojo pojo,
-			Operation operation) throws ValidationException {
+	public Collection<ValidationResult> validate(LocalValidationContext rootContext, Entity<?> entity, Operation operation) throws ValidationException {
 		Collection<ValidationResult> results = new LinkedList<ValidationResult>();
-		this.validate(rootContext, pojo, operation, results);
+		this.validate(rootContext, entity, operation, results);
 		return results;
 	}
 
-	private void validate(LocalValidationContext parentContext, Pojo pojo, Operation operation,
-			Collection<ValidationResult> results) {
+	private void validate(LocalValidationContext parentContext, Entity<?> entity, Operation operation, Collection<ValidationResult> results) {
 		try {
-			if (pojo == null) {
-				throw new ValidationException(CoreMessage.getInstance().getMessage(
-						LocalEntityValidator.MESSAGE_ERROR_NULL));
+			if (entity == null) {
+				throw new ValidationException(CoreMessage.getInstance().getMessage(LocalEntityValidator.MESSAGE_ERROR_NULL));
 			}
 
 			if (operation == Operation.QUERY) {
@@ -89,77 +86,74 @@ public class JPAEntityValidator implements EntityValidator {
 			}
 
 			if (operation == Operation.ALL) {
-				throw new ValidationException(CoreMessage.getInstance().getMessage(
-						LocalEntityValidator.MESSAGE_ERROR_NULL));
+				throw new ValidationException(CoreMessage.getInstance().getMessage(LocalEntityValidator.MESSAGE_ERROR_NULL));
 			}
 
-			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(
-					pojo.getClass());
+			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(entity.getClass());
 			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
 				for (Annotation annotation : propertyDescriptor.getAnnotations()) {
 					Validator validator = null;
 					boolean validate = false;
 					if (operation == Operation.RETRIEVE) {
 						if (annotation instanceof Id) {
-							if (validatorId == null) {
-								validatorId = new ValidatorId();
-								validatorId.init();
+							if (JPAEntityValidator.validatorId == null) {
+								JPAEntityValidator.validatorId = new ValidatorId();
+								JPAEntityValidator.validatorId.init();
 							}
 							validate = true;
-							validator = validatorId;
+							validator = JPAEntityValidator.validatorId;
 						}
 					} else {
 						if (annotation instanceof Id) {
-							if (validatorId == null) {
-								validatorId = new ValidatorId();
-								validatorId.init();
+							if (JPAEntityValidator.validatorId == null) {
+								JPAEntityValidator.validatorId = new ValidatorId();
+								JPAEntityValidator.validatorId.init();
 							}
 							validate = true;
-							validator = validatorId;
+							validator = JPAEntityValidator.validatorId;
 						} else if (annotation instanceof Column) {
-							if (validatorColumn == null) {
-								validatorColumn = new ValidatorColumn();
-								validatorColumn.init();
+							if (JPAEntityValidator.validatorColumn == null) {
+								JPAEntityValidator.validatorColumn = new ValidatorColumn();
+								JPAEntityValidator.validatorColumn.init();
 							}
 							validate = true;
-							validator = validatorColumn;
+							validator = JPAEntityValidator.validatorColumn;
 						} else if (annotation instanceof OneToOne) {
-							if (validatorOneToOne == null) {
-								validatorOneToOne = new ValidatorOneToOne();
-								validatorOneToOne.init();
+							if (JPAEntityValidator.validatorOneToOne == null) {
+								JPAEntityValidator.validatorOneToOne = new ValidatorOneToOne();
+								JPAEntityValidator.validatorOneToOne.init();
 							}
 							validate = true;
-							validator = validatorOneToOne;
+							validator = JPAEntityValidator.validatorOneToOne;
 						} else if (annotation instanceof OneToMany) {
-							if (validatorOneToMany == null) {
-								validatorOneToMany = new ValidatorOneToMany();
-								validatorOneToMany.init();
+							if (JPAEntityValidator.validatorOneToMany == null) {
+								JPAEntityValidator.validatorOneToMany = new ValidatorOneToMany();
+								JPAEntityValidator.validatorOneToMany.init();
 							}
 							validate = true;
-							validator = validatorOneToMany;
+							validator = JPAEntityValidator.validatorOneToMany;
 						} else if (annotation instanceof ManyToOne) {
-							if (validatorManyToOne == null) {
-								validatorManyToOne = new ValidatorManyToOne();
-								validatorManyToOne.init();
+							if (JPAEntityValidator.validatorManyToOne == null) {
+								JPAEntityValidator.validatorManyToOne = new ValidatorManyToOne();
+								JPAEntityValidator.validatorManyToOne.init();
 							}
 							validate = true;
-							validator = validatorManyToOne;
+							validator = JPAEntityValidator.validatorManyToOne;
 						} else if (annotation instanceof ManyToMany) {
-							if (validatorManyToMany == null) {
-								validatorManyToMany = new ValidatorManyToMany();
-								validatorManyToMany.init();
+							if (JPAEntityValidator.validatorManyToMany == null) {
+								JPAEntityValidator.validatorManyToMany = new ValidatorManyToMany();
+								JPAEntityValidator.validatorManyToMany.init();
 							}
 							validate = true;
-							validator = validatorManyToMany;
+							validator = JPAEntityValidator.validatorManyToMany;
 						}
 					}
 
 					if (validate) {
-						Object value = propertyDescriptor.getValue(pojo);
+						Object value = propertyDescriptor.getValue(entity);
 						String name = propertyDescriptor.getName();
 
-						LocalValidationContext context = new JPAValidationContext(value, name, annotation,
-								operation, parentContext);
+						LocalValidationContext context = new JPAValidationContext(value, name, annotation, operation, parentContext);
 						ValidationResult result = validator.validate(context);
 
 						results.add(result);
@@ -180,16 +174,15 @@ public class JPAEntityValidator implements EntityValidator {
 	}
 
 	// Utils
-	private String getPojoName(Pojo pojo) {
-		if (pojo == null) {
+	private String getEntityName(Entity<?> entity) {
+		if (entity == null) {
 			return null;
 		}
-		String className = pojo.getClass().getSimpleName();
+		String className = entity.getClass().getSimpleName();
 		return className;
 	}
 
-	private String getMessage(Annotation annotation) throws SecurityException, IllegalAccessException,
-			InvocationTargetException {
+	private String getMessage(Annotation annotation) throws SecurityException, IllegalAccessException, InvocationTargetException {
 		try {
 			Method m = annotation.getClass().getMethod(LocalEntityValidator.MESSAGE_PARAM, new Class[] {});
 			String message = (String) m.invoke(annotation, new Object[] {});

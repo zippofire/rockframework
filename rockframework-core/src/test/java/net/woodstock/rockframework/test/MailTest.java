@@ -10,14 +10,14 @@ public class MailTest extends TestCase {
 		SimpleMail mail = new SimpleMail();
 		mail.setFrom("helio.costa@mc.gov.br");
 		mail.addTo("wesley.neves@mc.gov.br");
-		//mail.addTo("wesleyneves81@gmail.com");
+		// mail.addTo("wesleyneves81@gmail.com");
 		mail.setSubject("Problema");
 		mail.setText("VC esta com problema!!!");
 
 		SimpleMailSender mailSender = new SimpleMailSender("10.209.64.33");
 		mailSender.setDebug(true);
-		//mailSender.setUser("sistema.gesac");
-		//mailSender.setPassword("gesac123");
+		// mailSender.setUser("sistema.gesac");
+		// mailSender.setPassword("gesac123");
 
 		mailSender.send(mail);
 	}

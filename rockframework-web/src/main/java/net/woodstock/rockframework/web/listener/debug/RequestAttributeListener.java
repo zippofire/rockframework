@@ -26,16 +26,12 @@ public class RequestAttributeListener extends BaseListener implements ServletReq
 
 	public void requestInitialized(ServletRequestEvent sre) {
 		HttpServletRequest request = (HttpServletRequest) sre.getServletRequest();
-		this.getLogger().info(
-				"Initialized request on URL " + request.getRequestURI() + " for client "
-						+ request.getRemoteAddr());
+		this.getLogger().info("Initialized request on URL " + request.getRequestURI() + " for client " + request.getRemoteAddr());
 	}
 
 	public void requestDestroyed(ServletRequestEvent sre) {
 		HttpServletRequest request = (HttpServletRequest) sre.getServletRequest();
-		this.getLogger().info(
-				"Destroyed request on URL " + request.getRequestURI() + " for client "
-						+ request.getRemoteAddr());
+		this.getLogger().info("Destroyed request on URL " + request.getRequestURI() + " for client " + request.getRemoteAddr());
 	}
 
 }

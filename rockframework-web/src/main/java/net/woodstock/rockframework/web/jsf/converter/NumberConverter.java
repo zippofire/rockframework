@@ -44,8 +44,7 @@ public class NumberConverter extends SimpleFacesConverter<Number> {
 	protected Number getAsObject(String value) throws ConverterException {
 		try {
 			Number n = this.format.parse(value);
-			Constructor<? extends Number> constructor = this.clazz
-					.getConstructor(new Class[] { String.class });
+			Constructor<? extends Number> constructor = this.clazz.getConstructor(new Class[] { String.class });
 			return constructor.newInstance(new Object[] { n.toString() });
 		} catch (Exception e) {
 			throw new ConverterException(e);

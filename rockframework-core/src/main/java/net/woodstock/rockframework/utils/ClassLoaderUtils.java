@@ -54,8 +54,7 @@ public abstract class ClassLoaderUtils {
 		return ClassLoaderUtils.getResourceAsStream(Thread.currentThread().getContextClassLoader(), name);
 	}
 
-	public static InputStream getResourceAsStream(ClassLoader loader, String name) throws URISyntaxException,
-			IOException {
+	public static InputStream getResourceAsStream(ClassLoader loader, String name) throws URISyntaxException, IOException {
 		URL url = loader.getResource(name);
 		if (url != null) {
 			String s = url.toString();

@@ -89,8 +89,7 @@ public class ItextRect extends ItextBasicImpl {
 			content.setColorFill(this.fillColor);
 		}
 		content.setLineWidth(this.lineWidth);
-		content.rectangle(this.left, document.getPageSize().top() - (this.top + this.height), this.width,
-				this.height);
+		content.rectangle(this.left, document.getPageSize().top() - (this.top + this.height), this.width, this.height);
 		if (this.fillColor != null) {
 			content.fillStroke();
 		} else {

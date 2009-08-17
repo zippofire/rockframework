@@ -30,8 +30,7 @@ public class LocalRefererFilter extends NoRefererFilter {
 	private String	applicationUrl;
 
 	@Override
-	public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
+	public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 		if (this.applicationUrl == null) {
 			this.applicationUrl = RequestUtils.getApplicationUrl(request);
 		}

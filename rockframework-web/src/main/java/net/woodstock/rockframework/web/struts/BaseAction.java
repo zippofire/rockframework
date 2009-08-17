@@ -50,8 +50,7 @@ public abstract class BaseAction<F extends ActionForm> extends Action {
 	private static ThreadLocal<ActionMapping>	currentMapping	= new ThreadLocal<ActionMapping>();
 
 	@Override
-	public final ActionForward execute(ActionMapping mapping, ActionForm form, ServletRequest request,
-			ServletResponse response) throws Exception {
+	public final ActionForward execute(ActionMapping mapping, ActionForm form, ServletRequest request, ServletResponse response) throws Exception {
 		if ((request instanceof HttpServletRequest)) {
 			throw new IllegalArgumentException("Invalid request type");
 		}
@@ -63,8 +62,7 @@ public abstract class BaseAction<F extends ActionForm> extends Action {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public final ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	public final ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		BaseAction.currentMapping.set(mapping);
 		StrutsResult result = this.execute((F) form, request, response);
 		return result.getForward(mapping);
@@ -78,7 +76,6 @@ public abstract class BaseAction<F extends ActionForm> extends Action {
 		return SysLogger.getLogger();
 	}
 
-	protected abstract StrutsResult execute(F form, HttpServletRequest request, HttpServletResponse response)
-			throws Exception;
+	protected abstract StrutsResult execute(F form, HttpServletRequest request, HttpServletResponse response) throws Exception;
 
 }

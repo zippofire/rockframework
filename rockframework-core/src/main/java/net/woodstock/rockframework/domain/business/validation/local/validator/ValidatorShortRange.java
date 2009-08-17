@@ -44,8 +44,7 @@ public class ValidatorShortRange extends AbstractValidator {
 	}
 
 	private String getErrorMessage(ValidateShortRange annotation, String name) {
-		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_RANGE, name, new Short(annotation
-				.min()), new Short(annotation.max()));
+		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_RANGE, name, new Short(annotation.min()), new Short(annotation.max()));
 	}
 
 }

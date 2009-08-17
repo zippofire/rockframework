@@ -20,15 +20,7 @@ import com.lowagie.text.Rectangle;
 
 public enum PageSize {
 
-	A0(com.lowagie.text.PageSize.A0), A1(com.lowagie.text.PageSize.A1), A2(com.lowagie.text.PageSize.A2), A3(
-			com.lowagie.text.PageSize.A3), A4(com.lowagie.text.PageSize.A4), A5(com.lowagie.text.PageSize.A5), A6(
-			com.lowagie.text.PageSize.A6), A7(com.lowagie.text.PageSize.A7), A8(com.lowagie.text.PageSize.A8), A9(
-			com.lowagie.text.PageSize.A9), A10(com.lowagie.text.PageSize.A10), B0(
-			com.lowagie.text.PageSize.B0), B1(com.lowagie.text.PageSize.B1), B2(com.lowagie.text.PageSize.B2), B3(
-			com.lowagie.text.PageSize.B3), B4(com.lowagie.text.PageSize.B4), B5(com.lowagie.text.PageSize.B5), DEFAULT(
-			com.lowagie.text.PageSize.A4), LEDGER(com.lowagie.text.PageSize.LEDGER), LEGAL(
-			com.lowagie.text.PageSize.LEGAL), LETTER(com.lowagie.text.PageSize.LETTER), NOTE(
-			com.lowagie.text.PageSize.NOTE);
+	A0(com.lowagie.text.PageSize.A0), A1(com.lowagie.text.PageSize.A1), A2(com.lowagie.text.PageSize.A2), A3(com.lowagie.text.PageSize.A3), A4(com.lowagie.text.PageSize.A4), A5(com.lowagie.text.PageSize.A5), A6(com.lowagie.text.PageSize.A6), A7(com.lowagie.text.PageSize.A7), A8(com.lowagie.text.PageSize.A8), A9(com.lowagie.text.PageSize.A9), A10(com.lowagie.text.PageSize.A10), B0(com.lowagie.text.PageSize.B0), B1(com.lowagie.text.PageSize.B1), B2(com.lowagie.text.PageSize.B2), B3(com.lowagie.text.PageSize.B3), B4(com.lowagie.text.PageSize.B4), B5(com.lowagie.text.PageSize.B5), DEFAULT(com.lowagie.text.PageSize.A4), LEDGER(com.lowagie.text.PageSize.LEDGER), LEGAL(com.lowagie.text.PageSize.LEGAL), LETTER(com.lowagie.text.PageSize.LETTER), NOTE(com.lowagie.text.PageSize.NOTE);
 
 	private Rectangle	pageSize;
 

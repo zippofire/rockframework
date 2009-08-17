@@ -130,26 +130,22 @@ public class LDAPClient implements Serializable {
 	}
 
 	public Collection<LDAPSearchResult> search(LDAPFilter filter) throws NamingException {
-		return this.search(filter.getBaseName(), filter.getFilter(), filter.getAttributes(), filter
-				.getLimit());
+		return this.search(filter.getBaseName(), filter.getFilter(), filter.getAttributes(), filter.getLimit());
 	}
 
 	public Collection<LDAPSearchResult> search(String baseName, String filter) throws NamingException {
 		return this.search(baseName, filter, null, 0);
 	}
 
-	public Collection<LDAPSearchResult> search(String baseName, String filter, int limit)
-			throws NamingException {
+	public Collection<LDAPSearchResult> search(String baseName, String filter, int limit) throws NamingException {
 		return this.search(baseName, filter, null, limit);
 	}
 
-	public Collection<LDAPSearchResult> search(String baseName, String filter, String[] attributes)
-			throws NamingException {
+	public Collection<LDAPSearchResult> search(String baseName, String filter, String[] attributes) throws NamingException {
 		return this.search(baseName, filter, attributes, 0);
 	}
 
-	public Collection<LDAPSearchResult> search(String baseName, String filter, String[] attributes, int limit)
-			throws NamingException {
+	public Collection<LDAPSearchResult> search(String baseName, String filter, String[] attributes, int limit) throws NamingException {
 		if ((this.connectOnSearch) && (!this.isConnected())) {
 			this.connect();
 		}
@@ -173,8 +169,7 @@ public class LDAPClient implements Serializable {
 		return c;
 	}
 
-	private Collection<LDAPSearchResult> toCollection(NamingEnumeration<SearchResult> results)
-			throws NamingException {
+	private Collection<LDAPSearchResult> toCollection(NamingEnumeration<SearchResult> results) throws NamingException {
 		Collection<LDAPSearchResult> collection = new LinkedList<LDAPSearchResult>();
 		while (results.hasMore()) {
 			SearchResult result = results.next();

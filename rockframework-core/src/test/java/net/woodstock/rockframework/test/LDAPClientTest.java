@@ -22,8 +22,7 @@ public class LDAPClientTest extends TestCase {
 		client.setUrl("ldap://10.209.64.150:389/dc=mc,dc=intranet");
 		client.connect();
 
-		LDAPFilter filter = new LDAPFilter("ou=Estrutura - MC", new String[] { "sAMAccountName", "name",
-				"mail" });
+		LDAPFilter filter = new LDAPFilter("ou=Estrutura - MC", new String[] { "sAMAccountName", "name", "mail" });
 		// LDAPRestrictionGroup or = LDAPRestrictionGroup.or();
 		// LDAPRestrictionGroup and = LDAPRestrictionGroup.and();
 
@@ -63,8 +62,7 @@ public class LDAPClientTest extends TestCase {
 			filter.add(LDAPRestriction.eq("sAMAccountName", line));
 			Collection<LDAPSearchResult> results = client.search(filter);
 			for (LDAPSearchResult result : results) {
-				System.out.printf("%-20s %-50s %-50s\n", line, result.getAttribute("name"), result
-						.getAttribute("mail"));
+				System.out.printf("%-20s %-50s %-50s\n", line, result.getAttribute("name"), result.getAttribute("mail"));
 			}
 		}
 
@@ -83,8 +81,7 @@ public class LDAPClientTest extends TestCase {
 		client.setConnectOnSearch(false);
 		client.connect();
 
-		LDAPFilter filter = new LDAPFilter("ou=Estrutura - MC", new String[] { "sAMAccountName", "name",
-				"mail" });
+		LDAPFilter filter = new LDAPFilter("ou=Estrutura - MC", new String[] { "sAMAccountName", "name", "mail" });
 		// filter.add(LDAPRestriction.eq("name", "KELLY"));
 		filter.add(LDAPRestriction.like("sAMAccountName", "aldenne"));
 		Collection<LDAPSearchResult> results = client.search(filter);
