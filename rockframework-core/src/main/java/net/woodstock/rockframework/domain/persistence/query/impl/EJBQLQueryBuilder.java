@@ -69,6 +69,9 @@ public abstract class EJBQLQueryBuilder extends AbstractQueryBuilder {
 		String sql = this.context.getQueryString();
 
 		Object query = this.getQueryLocal(sql, manager);
+
+		this.setQueryOptions(query, this.options);
+
 		for (QueryContextParameter parameter : this.context.getParametersRecursive()) {
 			this.setQueryParameter(query, parameter.getAlias(), parameter.getValue());
 		}
