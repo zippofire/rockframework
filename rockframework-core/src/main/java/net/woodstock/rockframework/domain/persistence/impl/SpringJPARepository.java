@@ -16,66 +16,14 @@
  */
 package net.woodstock.rockframework.domain.persistence.impl;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.persistence.Query;
-
-import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.domain.persistence.GenericRepository;
-import net.woodstock.rockframework.domain.persistence.PersistenceException;
-import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
-import net.woodstock.rockframework.domain.persistence.query.impl.JPAQueryBuilder;
+import net.woodstock.rockframework.domain.persistence.Repository;
 
 import org.springframework.orm.jpa.support.JpaDaoSupport;
 
-public class SpringJPARepository extends JpaDaoSupport implements GenericRepository {
+public class SpringJPARepository extends JpaDaoSupport implements Repository {
 
 	public SpringJPARepository() {
 		super();
-	}
-
-	public void delete(Entity<?> e) throws PersistenceException {
-		this.getJpaTemplate().remove(e);
-	}
-
-	public <ID extends Serializable, E extends Entity<ID>> E get(Class<E> clazz, ID id) throws PersistenceException {
-		return this.getJpaTemplate().find(clazz, id);
-	}
-
-	@SuppressWarnings("unchecked")
-	public <E extends Entity<?>> Collection<E> listAll(Class<E> clazz) throws PersistenceException {
-		return this.getJpaTemplate().find("SELECT o FROM " + clazz.getCanonicalName() + " AS o");
-	}
-
-	@SuppressWarnings("unchecked")
-	public <E extends Entity<?>> Collection<E> listAll(Class<E> clazz, String order) throws PersistenceException {
-		String sql = AbstractRepository.getListAllSql(clazz, order);
-		return this.getJpaTemplate().find(sql);
-	}
-
-	@SuppressWarnings("unchecked")
-	public <E extends Entity<?>> Collection<E> listByExample(E e, Map<String, Object> options) throws PersistenceException {
-		QueryBuilder builder = new JPAQueryBuilder();
-		if ((options != null) && (options.size() > 0)) {
-			for (Entry<String, Object> option : options.entrySet()) {
-				builder.setOption(option.getKey(), option.getValue());
-			}
-		}
-		builder.parse(e);
-		Query q = (Query) builder.getQuery(this.getJpaTemplate().getEntityManager());
-		Collection<E> list = q.getResultList();
-		return list;
-	}
-
-	public void save(Entity<?> e) throws PersistenceException {
-		this.getJpaTemplate().persist(e);
-	}
-
-	public void update(Entity<?> e) throws PersistenceException {
-		this.getJpaTemplate().merge(e);
 	}
 
 }

@@ -16,14 +16,26 @@
  */
 package net.woodstock.rockframework.domain.persistence.impl;
 
-import net.woodstock.rockframework.domain.persistence.Repository;
+import net.woodstock.rockframework.domain.persistence.PersistenceException;
 
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.hibernate.Session;
 
-public class SpringHibernateRepository extends HibernateDaoSupport implements Repository {
+public class HibernateGenericRepository extends AbstractHibernateGenericRepository {
 
-	public SpringHibernateRepository() {
+	private Session	session;
+
+	public HibernateGenericRepository(Session session) {
 		super();
+		this.session = session;
+	}
+
+	@Override
+	protected Session getSession() throws PersistenceException {
+		return this.session;
+	}
+
+	public void setSession(Session session) {
+		this.session = session;
 	}
 
 }

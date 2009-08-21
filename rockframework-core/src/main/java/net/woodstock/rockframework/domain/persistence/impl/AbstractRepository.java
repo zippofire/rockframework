@@ -22,7 +22,7 @@ import net.woodstock.rockframework.utils.StringUtils;
 
 import org.apache.commons.logging.Log;
 
-abstract class AbstractRepository implements Repository {
+class AbstractRepository implements Repository {
 
 	protected Log getLogger() {
 		return SysLogger.getLogger();

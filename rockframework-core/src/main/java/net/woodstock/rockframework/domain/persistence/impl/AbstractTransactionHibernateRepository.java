@@ -24,7 +24,7 @@ import org.hibernate.PropertyValueException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public abstract class AbstractTransactionHibernateRepository extends AbstractHibernateRepository {
+abstract class AbstractTransactionHibernateRepository extends AbstractHibernateGenericRepository {
 
 	public AbstractTransactionHibernateRepository() {
 		super();

@@ -16,18 +16,35 @@
  */
 package net.woodstock.rockframework.domain.persistence.impl;
 
-import net.woodstock.rockframework.domain.persistence.PersistenceException;
+import java.sql.SQLException;
 
+import net.woodstock.rockframework.domain.Entity;
+
+import org.hibernate.HibernateException;
+import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Session;
+import org.springframework.orm.hibernate3.HibernateCallback;
 
-abstract class AbstractHibernateRepository extends AbstractRepository {
+public class HibernateUpdateCallback implements HibernateCallback {
 
-	public static final String	MSG_ERROR_TWO_SESSION	= "Illegal attempt to associate a collection with two open sessions";
+	private Entity<?>	entity;
 
-	public AbstractHibernateRepository() {
+	public HibernateUpdateCallback(Entity<?> entity) {
 		super();
+		this.entity = entity;
 	}
 
-	protected abstract Session getSession() throws PersistenceException;
+	public Object doInHibernate(Session session) throws HibernateException, SQLException {
+		try {
+			session.update(this.entity);
+		} catch (NonUniqueObjectException nuoe) {
+			session.merge(this.entity);
+		} catch (HibernateException he) {
+			if (he.getMessage().startsWith(AbstractHibernateRepository.MSG_ERROR_TWO_SESSION)) {
+				session.merge(this.entity);
+			}
+		}
+		return null;
+	}
 
 }

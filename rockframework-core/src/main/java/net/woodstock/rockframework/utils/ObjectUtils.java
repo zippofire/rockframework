@@ -34,19 +34,21 @@ public abstract class ObjectUtils {
 		BeanDescriptor beanDescriptorTo = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(to.getClass());
 
 		outer: for (PropertyDescriptor propertyDescriptor : beanDescriptorFrom.getProperties()) {
-			PropertyDescriptor propertyDescriptorTo = beanDescriptorTo.getProperty(propertyDescriptor.getName());
-			if (ignoredTypes != null) {
-				for (Class<?> c : ignoredTypes) {
-					if ((c.isAssignableFrom(propertyDescriptor.getType())) || (c.isAssignableFrom(propertyDescriptorTo.getType()))) {
-						continue outer;
+			if (beanDescriptorTo.hasProperty(propertyDescriptor.getName())) {
+				PropertyDescriptor propertyDescriptorTo = beanDescriptorTo.getProperty(propertyDescriptor.getName());
+				if (ignoredTypes != null) {
+					for (Class<?> c : ignoredTypes) {
+						if ((c.isAssignableFrom(propertyDescriptor.getType())) || (c.isAssignableFrom(propertyDescriptorTo.getType()))) {
+							continue outer;
+						}
 					}
 				}
+				if (!propertyDescriptorTo.getType().isAssignableFrom(propertyDescriptor.getType())) {
+					continue;
+				}
+				Object tmp = propertyDescriptor.getValue(from);
+				propertyDescriptorTo.setValue(to, tmp);
 			}
-			if (!propertyDescriptorTo.getType().isAssignableFrom(propertyDescriptor.getType())) {
-				continue;
-			}
-			Object tmp = propertyDescriptor.getValue(from);
-			propertyDescriptorTo.setValue(to, tmp);
 		}
 	}
 
@@ -55,19 +57,21 @@ public abstract class ObjectUtils {
 		BeanDescriptor beanDescriptorTo = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(to.getClass());
 
 		outer: for (PropertyDescriptor propertyDescriptor : beanDescriptorFrom.getProperties()) {
-			PropertyDescriptor propertyDescriptorTo = beanDescriptorTo.getProperty(propertyDescriptor.getName());
-			if (ignoredAttributes != null) {
-				for (String s : ignoredAttributes) {
-					if (s.equals(propertyDescriptor.getName())) {
-						continue outer;
+			if (beanDescriptorTo.hasProperty(propertyDescriptor.getName())) {
+				PropertyDescriptor propertyDescriptorTo = beanDescriptorTo.getProperty(propertyDescriptor.getName());
+				if (ignoredAttributes != null) {
+					for (String s : ignoredAttributes) {
+						if (s.equals(propertyDescriptor.getName())) {
+							continue outer;
+						}
 					}
 				}
+				if (!propertyDescriptorTo.getType().isAssignableFrom(propertyDescriptor.getType())) {
+					continue;
+				}
+				Object tmp = propertyDescriptor.getValue(from);
+				propertyDescriptorTo.setValue(to, tmp);
 			}
-			if (!propertyDescriptorTo.getType().isAssignableFrom(propertyDescriptor.getType())) {
-				continue;
-			}
-			Object tmp = propertyDescriptor.getValue(from);
-			propertyDescriptorTo.setValue(to, tmp);
 		}
 	}
 

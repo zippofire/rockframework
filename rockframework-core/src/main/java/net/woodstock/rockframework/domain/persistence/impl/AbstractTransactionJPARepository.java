@@ -22,7 +22,7 @@ import javax.persistence.EntityTransaction;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.persistence.PersistenceException;
 
-public abstract class AbstractTransactionJPARepository extends AbstractJPARepository {
+abstract class AbstractTransactionJPARepository extends AbstractJPAGenericRepository {
 
 	public AbstractTransactionJPARepository() {
 		super();
