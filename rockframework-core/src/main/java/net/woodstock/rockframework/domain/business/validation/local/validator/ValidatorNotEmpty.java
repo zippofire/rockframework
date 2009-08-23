@@ -28,6 +28,7 @@ import net.woodstock.rockframework.utils.StringUtils;
 
 public class ValidatorNotEmpty extends AbstractValidator {
 
+	@SuppressWarnings("unchecked")
 	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
 		try {
 			Object value = context.getValue();
