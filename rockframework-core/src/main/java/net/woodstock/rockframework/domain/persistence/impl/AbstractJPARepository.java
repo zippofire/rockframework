@@ -19,8 +19,9 @@ package net.woodstock.rockframework.domain.persistence.impl;
 import javax.persistence.EntityManager;
 
 import net.woodstock.rockframework.domain.persistence.PersistenceException;
+import net.woodstock.rockframework.domain.persistence.Repository;
 
-abstract class AbstractJPARepository extends AbstractRepository {
+abstract class AbstractJPARepository implements Repository {
 
 	public AbstractJPARepository() {
 		super();

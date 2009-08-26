@@ -51,7 +51,7 @@ abstract class AbstractJPAGenericRepository extends AbstractJPARepository implem
 	@SuppressWarnings("unchecked")
 	public <E extends Entity<?>> Collection<E> listAll(Class<E> clazz, String order) throws PersistenceException {
 		EntityManager m = this.getEntityManager();
-		String sql = AbstractRepository.getListAllSql(clazz, order);
+		String sql = RepositoryHelper.getListAllSql(clazz, order);
 		Query q = m.createQuery(sql);
 		Collection<E> list = q.getResultList();
 		return list;

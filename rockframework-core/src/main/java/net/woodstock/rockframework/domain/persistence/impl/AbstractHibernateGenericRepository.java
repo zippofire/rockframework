@@ -65,7 +65,7 @@ abstract class AbstractHibernateGenericRepository extends AbstractHibernateRepos
 	@SuppressWarnings("unchecked")
 	public <E extends Entity<?>> Collection<E> listAll(Class<E> clazz, String order) throws PersistenceException {
 		Session s = this.getSession();
-		String sql = AbstractRepository.getListAllSql(clazz, order);
+		String sql = RepositoryHelper.getListAllSql(clazz, order);
 		Query q = s.createQuery(sql);
 		Collection<E> list = q.list();
 		return list;

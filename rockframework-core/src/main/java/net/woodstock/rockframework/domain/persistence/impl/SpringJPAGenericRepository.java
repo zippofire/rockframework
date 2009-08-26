@@ -29,9 +29,7 @@ import net.woodstock.rockframework.domain.persistence.PersistenceException;
 import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
 import net.woodstock.rockframework.domain.persistence.query.impl.JPAQueryBuilder;
 
-import org.springframework.orm.jpa.support.JpaDaoSupport;
-
-public class SpringJPAGenericRepository extends JpaDaoSupport implements GenericRepository {
+public class SpringJPAGenericRepository extends SpringJPARepository implements GenericRepository {
 
 	public SpringJPAGenericRepository() {
 		super();
@@ -52,7 +50,7 @@ public class SpringJPAGenericRepository extends JpaDaoSupport implements Generic
 
 	@SuppressWarnings("unchecked")
 	public <E extends Entity<?>> Collection<E> listAll(Class<E> clazz, String order) throws PersistenceException {
-		String sql = AbstractRepository.getListAllSql(clazz, order);
+		String sql = RepositoryHelper.getListAllSql(clazz, order);
 		return this.getJpaTemplate().find(sql);
 	}
 

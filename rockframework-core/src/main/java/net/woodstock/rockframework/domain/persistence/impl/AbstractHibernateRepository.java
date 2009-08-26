@@ -17,10 +17,11 @@
 package net.woodstock.rockframework.domain.persistence.impl;
 
 import net.woodstock.rockframework.domain.persistence.PersistenceException;
+import net.woodstock.rockframework.domain.persistence.Repository;
 
 import org.hibernate.Session;
 
-abstract class AbstractHibernateRepository extends AbstractRepository {
+abstract class AbstractHibernateRepository implements Repository {
 
 	public static final String	MSG_ERROR_TWO_SESSION	= "Illegal attempt to associate a collection with two open sessions";
 

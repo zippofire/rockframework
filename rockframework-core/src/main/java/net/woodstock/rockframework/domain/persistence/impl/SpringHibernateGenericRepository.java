@@ -28,9 +28,8 @@ import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
 import net.woodstock.rockframework.domain.persistence.query.impl.HibernateQueryBuilder;
 
 import org.hibernate.Query;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-public class SpringHibernateGenericRepository extends HibernateDaoSupport implements GenericRepository {
+public class SpringHibernateGenericRepository extends SpringHibernateRepository implements GenericRepository {
 
 	public SpringHibernateGenericRepository() {
 		super();
@@ -47,7 +46,7 @@ public class SpringHibernateGenericRepository extends HibernateDaoSupport implem
 
 	@SuppressWarnings("unchecked")
 	public <E extends Entity<?>> Collection<E> listAll(Class<E> clazz, String order) throws PersistenceException {
-		String sql = AbstractRepository.getListAllSql(clazz, order);
+		String sql = RepositoryHelper.getListAllSql(clazz, order);
 		return this.getHibernateTemplate().find(sql);
 	}
 
@@ -72,7 +71,5 @@ public class SpringHibernateGenericRepository extends HibernateDaoSupport implem
 	public void update(Entity<?> e) throws PersistenceException {
 		this.getHibernateTemplate().execute(new HibernateUpdateCallback(e));
 	}
-
-	
 
 }
