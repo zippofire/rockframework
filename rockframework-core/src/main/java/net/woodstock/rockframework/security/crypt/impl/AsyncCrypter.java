@@ -92,7 +92,7 @@ public class AsyncCrypter extends CrypterBase<AsyncAlgorithm> {
 
 	public void savePrivateKey(OutputStream outputStream) {
 		try {
-			Base64Utils.serializeTo(this.privateKey, outputStream);
+			Base64Utils.serialize(this.privateKey, outputStream);
 		} catch (IOException e) {
 			throw new CrypterException(e);
 		}
@@ -100,7 +100,7 @@ public class AsyncCrypter extends CrypterBase<AsyncAlgorithm> {
 
 	public void savePublicKey(OutputStream outputStream) {
 		try {
-			Base64Utils.serializeTo(this.privateKey, outputStream);
+			Base64Utils.serialize(this.privateKey, outputStream);
 		} catch (IOException e) {
 			throw new CrypterException(e);
 		}
@@ -112,7 +112,7 @@ public class AsyncCrypter extends CrypterBase<AsyncAlgorithm> {
 				throw new IllegalArgumentException("PublicKey must be not null");
 			}
 
-			KeyData publicData = (KeyData) Base64Utils.unserializeFrom(publicKey);
+			KeyData publicData = (KeyData) Base64Utils.unserialize(publicKey);
 
 			PrivateKey pik = null;
 			PublicKey puk = (PublicKey) publicData.getKey();
@@ -120,7 +120,7 @@ public class AsyncCrypter extends CrypterBase<AsyncAlgorithm> {
 			Charset charset = publicData.getCharset();
 
 			if (privateKey != null) {
-				KeyData privateData = (KeyData) Base64Utils.unserializeFrom(publicKey);
+				KeyData privateData = (KeyData) Base64Utils.unserialize(publicKey);
 				pik = (PrivateKey) privateData.getKey();
 			}
 

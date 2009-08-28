@@ -77,7 +77,7 @@ public class SyncCrypter extends CrypterBase<SyncAlgorithm> {
 	public void saveKey(OutputStream outputStream) {
 		try {
 			KeyData data = new KeyData(this.key.getAlgorithm(), this.key, this.getCharset());
-			Base64Utils.serializeTo(data, outputStream);
+			Base64Utils.serialize(data, outputStream);
 		} catch (IOException e) {
 			throw new CrypterException(e);
 		}
@@ -89,7 +89,7 @@ public class SyncCrypter extends CrypterBase<SyncAlgorithm> {
 				throw new IllegalArgumentException("InputStream must be not null");
 			}
 
-			KeyData data = (KeyData) Base64Utils.unserializeFrom(inputStream);
+			KeyData data = (KeyData) Base64Utils.unserialize(inputStream);
 			SecretKey key = (SecretKey) data.getKey();
 			SyncAlgorithm algorithm = SyncAlgorithm.fromString(data.getAlgorithm());
 			return new SyncCrypter(key, algorithm, data.getCharset());

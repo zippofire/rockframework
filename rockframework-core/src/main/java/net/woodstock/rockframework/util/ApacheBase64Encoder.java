@@ -28,7 +28,7 @@ public class ApacheBase64Encoder extends Base64Encoder {
 
 	@Override
 	public byte[] decode(byte[] b) {
-		byte[] bytes = Base64.encodeBase64Chunked(b);
+		byte[] bytes = Base64.decodeBase64(b);
 		return bytes;
 	}
 

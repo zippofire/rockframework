@@ -514,7 +514,7 @@ public class XmlElement extends ElementWrapper {
 	}
 
 	public XmlElement addObject(String name, Serializable object) throws IOException {
-		String encoded = Base64Utils.serialize(object);
+		byte[] bytes = Base64Utils.serialize(object);
 
 		HashMap<String, String> attributes = new HashMap<String, String>();
 
@@ -528,16 +528,22 @@ public class XmlElement extends ElementWrapper {
 
 		attributes.put(XmlElement.CLASS_ATTRIBUTE, className);
 
-		return this.addElement(name, encoded, attributes);
+		return this.addElement(name, new String(bytes), attributes);
 	}
 
 	public Object getObject() throws IOException, ClassNotFoundException {
-		Object o = Base64Utils.unserialize(this.getString());
+		if (StringUtils.isEmpty(this.getString())) {
+			return null;
+		}
+		Object o = Base64Utils.unserialize(this.getString().getBytes());
 		return o;
 	}
 
 	public Object getObject(String name) throws IOException, ClassNotFoundException {
-		Object o = Base64Utils.unserialize(this.getString(name));
+		if (StringUtils.isEmpty(this.getString(name))) {
+			return null;
+		}
+		Object o = Base64Utils.unserialize(this.getString(name).getBytes());
 		return o;
 	}
 
