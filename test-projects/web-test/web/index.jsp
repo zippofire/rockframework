@@ -3,6 +3,6 @@
 		<title>Teste Captcha</title>
 	</head>
 	<body>
-		Catpcha: <img src="${pageContext.request.contextPath}/Captcha" />
+		XXXX
 	</body>
 </html>

@@ -30,19 +30,12 @@ class MethodBeanDescriptor extends AbstractBeanDescriptor {
 	public void init() {
 		Class<?> c = this.getType();
 		for (Method method : c.getMethods()) {
-			String methodName = method.getName();
-			if (BeanDescriptorHelper.isGetter(methodName)) {
-				try {
-					String propertyName = BeanDescriptorHelper.getPropertyName(methodName);
-					String setMethodName = BeanDescriptorHelper.getMethodName(BeanDescriptorHelper.SET_METHOD_PREFIX, propertyName);
-					Class<?> returnType = method.getReturnType();
-
-					c.getMethod(setMethodName, new Class[] { returnType });
-
+			if (BeanDescriptorHelper.isValidGetterOrSetter(method)) {
+				String propertyName = BeanDescriptorHelper.getPropertyName(method);
+				if (!this.hasProperty(propertyName)) {
+					Class<?> returnType = BeanDescriptorHelper.getPropertyType(method);
 					PropertyDescriptor property = new MethodPropertyDescriptor(this, propertyName, returnType);
 					this.getProperties().add(property);
-				} catch (NoSuchMethodException e) {
-					// this.getLogger().info(e.getMessage(), e);
 				}
 			}
 		}

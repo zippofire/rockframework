@@ -30,6 +30,7 @@ import net.woodstock.rockframework.domain.business.validation.local.validator.Ab
 
 public class ValidatorManyToOne extends AbstractValidator {
 
+	@SuppressWarnings("unchecked")
 	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
 		try {
 			Object value = context.getValue();

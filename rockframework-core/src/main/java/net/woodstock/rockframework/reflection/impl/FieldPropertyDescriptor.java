@@ -18,6 +18,7 @@ package net.woodstock.rockframework.reflection.impl;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 
@@ -25,39 +26,57 @@ class FieldPropertyDescriptor extends AbstractPropertyDescriptor {
 
 	private Field	field;
 
-	FieldPropertyDescriptor(BeanDescriptor beanDescriptor, Field field) throws NoSuchMethodException {
+	FieldPropertyDescriptor(BeanDescriptor beanDescriptor, Field field) {
 		super();
 		this.setBeanDescriptor(beanDescriptor);
 		this.field = field;
 		this.init();
 	}
 
-	private void init() throws NoSuchMethodException {
+	private void init() {
 		this.initGet();
 		this.initSet();
 	}
 
-	private void initGet() throws NoSuchMethodException {
+	private void initGet() {
 		Class<?> c = this.getBeanDescriptor().getType();
+		String readMethodName = null;
+		Method readMethod = null;
 		// Is
-		if (this.field.getType().getCanonicalName().equals(boolean.class.getCanonicalName())) {
-			this.setReadMethodName(this.getMethodName(BeanDescriptorHelper.IS_METHOD_PREFIX, this.field));
+		if (this.field.getType().equals(Boolean.TYPE)) {
 			try {
-				this.setReadMethod(c.getMethod(this.getReadMethodName(), new Class[] {}));
-				return;
-			} catch (NoSuchMethodException scme) {
-				// scme.printStackTrace();
+				readMethodName = this.getMethodName(BeanDescriptorHelper.IS_METHOD_PREFIX, this.field);
+				readMethod = c.getMethod(readMethodName, new Class[] {});
+			} catch (NoSuchMethodException e) {
+				// this.getLogger().info(e.getMessage(), e);
 			}
 		}
 		// Get
-		this.setReadMethodName(this.getMethodName(BeanDescriptorHelper.GET_METHOD_PREFIX, this.field));
-		this.setReadMethod(c.getMethod(this.getReadMethodName(), new Class[] {}));
+		else {
+			try {
+				readMethodName = this.getMethodName(BeanDescriptorHelper.GET_METHOD_PREFIX, this.field);
+				readMethod = c.getMethod(readMethodName, new Class[] {});
+			} catch (NoSuchMethodException e) {
+				// this.getLogger().info(e.getMessage(), e);
+			}
+		}
+		this.setReadMethodName(readMethodName);
+		this.setReadMethod(readMethod);
 	}
 
-	private void initSet() throws NoSuchMethodException {
+	private void initSet() {
 		Class<?> c = this.getBeanDescriptor().getType();
-		this.setWriteMethodName(this.getMethodName(BeanDescriptorHelper.SET_METHOD_PREFIX, this.field));
-		this.setWriteMethod(c.getMethod(this.getWriteMethodName(), new Class[] { this.field.getType() }));
+		String writeMethodName = null;
+		Method writeMethod = null;
+		// Set
+		try {
+			writeMethodName = this.getMethodName(BeanDescriptorHelper.SET_METHOD_PREFIX, this.field);
+			writeMethod = c.getMethod(writeMethodName, new Class[] { this.field.getType() });
+		} catch (NoSuchMethodException e) {
+			// e.printStackTrace();
+		}
+		this.setWriteMethodName(writeMethodName);
+		this.setWriteMethod(writeMethod);
 	}
 
 	public String getName() {

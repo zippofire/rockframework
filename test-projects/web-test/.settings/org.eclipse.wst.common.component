@@ -3,6 +3,12 @@
     <wb-module deploy-name="web-test">
         <wb-resource deploy-path="/" source-path="/web"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <dependent-module archiveName="rockframework-core.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rockframework-core/rockframework-core">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="rockframework-web.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rockframework-web/rockframework-web">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="web-test"/>
         <property name="java-output-path"/>
     </wb-module>

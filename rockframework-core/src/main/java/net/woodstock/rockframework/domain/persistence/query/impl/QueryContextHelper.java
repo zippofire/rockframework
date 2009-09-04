@@ -105,6 +105,7 @@ abstract class QueryContextHelper {
 		context.setQueryString(builder.toString().trim());
 	}
 
+	@SuppressWarnings("unchecked")
 	private static void handleValue(QueryContext context, Map<String, Object> options, String name, String alias, Object value, List<Entity<?>> parsed) throws BuilderException {
 		try {
 			name = QueryContextHelper.getFieldName(context, name);
@@ -163,6 +164,7 @@ abstract class QueryContextHelper {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private static void handleCollectionValue(QueryContext context, Map<String, Object> options, String name, String alias, Collection<?> value, List<Entity<?>> parsed) {
 		if (value.size() > 0) {
 			QueryContext child = new QueryContext(name, alias, context);

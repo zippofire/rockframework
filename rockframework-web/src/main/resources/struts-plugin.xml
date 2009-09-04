@@ -5,6 +5,9 @@
 <struts>
 
 	<package name="rockframework-default" extends="struts-default" abstract="true">
+		<result-types>
+            <result-type name="rockframework-json" class="net.woodstock.rockframework.web.struts2.result.JsonResult"/>
+        </result-types>
 		<interceptors>
 			<interceptor name="entity" class="net.woodstock.rockframework.web.struts2.interceptor.EntityInterceptor" />
 			<interceptor name="initializable" class="net.woodstock.rockframework.web.struts2.interceptor.InitializableInterceptor" />
@@ -22,6 +25,7 @@
 		<default-interceptor-ref name="entityStack" />
 	</package>
 	
+	<!-- Delete !!! -->
 	<package name="rockframework-json-default" extends="json-default" abstract="true">
 		<interceptors>
 			<interceptor name="entity" class="net.woodstock.rockframework.web.struts2.interceptor.EntityInterceptor" />
@@ -40,8 +44,10 @@
 		<default-interceptor-ref name="entityStack" />
 	</package>
 	
-	
 	<package name="rockframework-tiles-default" extends="tiles-default" abstract="true">
+		<result-types>
+            <result-type name="rockframework-json" class="net.woodstock.rockframework.web.struts2.result.JsonResult"/>
+        </result-types>
 		<interceptors>
 			<interceptor name="entity" class="net.woodstock.rockframework.web.struts2.interceptor.EntityInterceptor" />
 			<interceptor name="initializable" class="net.woodstock.rockframework.web.struts2.interceptor.InitializableInterceptor" />

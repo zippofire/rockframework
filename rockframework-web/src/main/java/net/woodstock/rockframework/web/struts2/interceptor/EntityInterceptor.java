@@ -28,6 +28,7 @@ import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
 import net.woodstock.rockframework.utils.StringUtils;
 import ognl.NoSuchPropertyException;
 import ognl.Ognl;
+import ognl.OgnlException;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
@@ -64,36 +65,41 @@ public class EntityInterceptor extends BaseInterceptor {
 
 				if ((!StringUtils.isEmpty(value)) && (this.isIdParameter(key))) {
 					String entityName = this.getEntityName(key);
-					try {
-						Object obj = Ognl.getValue(entityName, action);
-						if ((obj != null) && (obj instanceof Entity)) {
-							Entity<?> entity = (Entity<?>) obj;
-
-							BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(entity.getClass());
-
-							PropertyDescriptor propertyDescriptor = beanDescriptor.getProperty(EntityInterceptor.ENTITY_ID);
-							Class<?> clazz = propertyDescriptor.getType();
-
-							try {
-								Constructor<?> contructor = clazz.getConstructor(new Class[] { String.class });
-								Object fieldValue = contructor.newInstance(new Object[] { value });
-
-								this.getLogger().info("Setting entity ID " + entityName + "[" + fieldValue + "]");
-								propertyDescriptor.setValue(entity, fieldValue);
-							} catch (NoSuchMethodException e) {
-								this.getLogger().warn("Could not find constructor " + entity.getClass().getCanonicalName() + "(String). Parameter not setted");
-							} catch (Exception e) {
-								this.getLogger().warn("Error in constructor " + entity.getClass().getCanonicalName() + "(String)");
-								this.getLogger().warn(e.getMessage(), e);
-							}
-						}
-					} catch (NoSuchPropertyException e) {
-						//
-					}
+					this.setIdParameter(action, entityName, value);
 				}
 			}
 		}
 		return invocation.invoke();
+	}
+
+	@SuppressWarnings("unchecked")
+	private void setIdParameter(Object action, String entityName, String value) throws OgnlException {
+		try {
+			Object obj = Ognl.getValue(entityName, action);
+			if ((obj != null) && (obj instanceof Entity)) {
+				Entity<?> entity = (Entity<?>) obj;
+
+				BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(entity.getClass());
+
+				PropertyDescriptor propertyDescriptor = beanDescriptor.getProperty(EntityInterceptor.ENTITY_ID);
+				Class<?> clazz = propertyDescriptor.getType();
+
+				try {
+					Constructor<?> contructor = clazz.getConstructor(new Class[] { String.class });
+					Object fieldValue = contructor.newInstance(new Object[] { value });
+
+					this.getLogger().info("Setting entity ID " + entityName + "[" + fieldValue + "]");
+					propertyDescriptor.setValue(entity, fieldValue);
+				} catch (NoSuchMethodException e) {
+					this.getLogger().warn("Could not find constructor " + entity.getClass().getCanonicalName() + "(String). Parameter not setted");
+				} catch (Exception e) {
+					this.getLogger().warn("Error in constructor " + entity.getClass().getCanonicalName() + "(String)");
+					this.getLogger().warn(e.getMessage(), e);
+				}
+			}
+		} catch (NoSuchPropertyException e) {
+			//
+		}
 	}
 
 	private boolean isIdParameter(String name) {

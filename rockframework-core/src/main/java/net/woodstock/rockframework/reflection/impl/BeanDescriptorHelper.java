@@ -16,6 +16,8 @@
  */
 package net.woodstock.rockframework.reflection.impl;
 
+import java.lang.reflect.Method;
+
 import net.woodstock.rockframework.utils.StringUtils;
 
 abstract class BeanDescriptorHelper {
@@ -30,26 +32,6 @@ abstract class BeanDescriptorHelper {
 
 	private static String	METHOD_PREFIX_REGEX		= "^(get|is|set)";
 
-	public static boolean isGetter(String methodName) {
-		if (methodName.startsWith(BeanDescriptorHelper.GET_METHOD_PREFIX)) {
-			return true;
-		}
-		if (methodName.startsWith(BeanDescriptorHelper.IS_METHOD_PREFIX)) {
-			return true;
-		}
-		return false;
-	}
-
-	public static boolean isSetter(String methodName) {
-		if (methodName.startsWith(BeanDescriptorHelper.GET_METHOD_PREFIX)) {
-			return true;
-		}
-		if (methodName.startsWith(BeanDescriptorHelper.IS_METHOD_PREFIX)) {
-			return true;
-		}
-		return false;
-	}
-
 	public static String getMethodName(String prefix, String property) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(prefix);
@@ -58,12 +40,67 @@ abstract class BeanDescriptorHelper {
 		return builder.toString();
 	}
 
-	public static String getPropertyName(String methodName) {
+	public static String getPropertyName(Method method) {
+		String methodName = method.getName();
 		StringBuilder builder = new StringBuilder();
 		String name = methodName.replaceAll(BeanDescriptorHelper.METHOD_PREFIX_REGEX, StringUtils.BLANK);
 		builder.append(Character.toLowerCase(name.charAt(0)));
 		builder.append(name.substring(1));
 		return builder.toString();
+	}
+
+	public static Class<?> getPropertyType(Method method) {
+		if (BeanDescriptorHelper.isGetter(method)) {
+			return method.getReturnType();
+		} else if (BeanDescriptorHelper.isSetter(method)) {
+			Class<?>[] parameterTypes = method.getParameterTypes();
+			if ((parameterTypes != null) && (parameterTypes.length == 1)) {
+				return parameterTypes[0];
+			}
+		}
+		return null;
+	}
+
+	public static boolean isGetter(Method method) {
+		String methodName = method.getName();
+		if (methodName.startsWith(BeanDescriptorHelper.GET_METHOD_PREFIX)) {
+			if (methodName.equals(BeanDescriptorHelper.GET_CLASS_METHOD_NAME)) {
+				return false;
+			}
+			if ((method.getParameterTypes() != null) && (method.getParameterTypes().length > 0)) {
+				return false;
+			}
+			if (method.getReturnType().equals(Void.TYPE)) {
+				return false;
+			}
+			return true;
+		}
+		if (methodName.startsWith(BeanDescriptorHelper.IS_METHOD_PREFIX)) {
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean isSetter(Method method) {
+		String methodName = method.getName();
+		if (methodName.startsWith(BeanDescriptorHelper.SET_METHOD_PREFIX)) {
+			Class<?>[] parameterTypes = method.getParameterTypes();
+			if ((parameterTypes != null) && (parameterTypes.length == 1)) {
+				return true;
+			}
+			return false;
+		}
+		return false;
+	}
+
+	public static boolean isValidGetterOrSetter(Method method) {
+		if (BeanDescriptorHelper.isGetter(method)) {
+			return true;
+		}
+		if (BeanDescriptorHelper.isSetter(method)) {
+			return true;
+		}
+		return false;
 	}
 
 }

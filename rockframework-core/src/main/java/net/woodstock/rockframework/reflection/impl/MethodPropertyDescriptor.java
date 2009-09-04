@@ -17,6 +17,7 @@
 package net.woodstock.rockframework.reflection.impl;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 
@@ -26,7 +27,7 @@ class MethodPropertyDescriptor extends AbstractPropertyDescriptor {
 
 	private Class<?>	type;
 
-	MethodPropertyDescriptor(BeanDescriptor beanDescriptor, String name, Class<?> type) throws NoSuchMethodException {
+	MethodPropertyDescriptor(BeanDescriptor beanDescriptor, String name, Class<?> type) {
 		super();
 		this.setBeanDescriptor(beanDescriptor);
 		this.name = name;
@@ -34,32 +35,50 @@ class MethodPropertyDescriptor extends AbstractPropertyDescriptor {
 		this.init();
 	}
 
-	private void init() throws NoSuchMethodException {
+	private void init() {
 		this.initGet();
 		this.initSet();
 	}
 
-	private void initGet() throws NoSuchMethodException {
+	private void initGet() {
 		Class<?> c = this.getBeanDescriptor().getType();
+		String readMethodName = null;
+		Method readMethod = null;
 		// Is
-		if (this.type.getCanonicalName().equals(boolean.class.getCanonicalName())) {
-			this.setReadMethodName(BeanDescriptorHelper.getMethodName(BeanDescriptorHelper.IS_METHOD_PREFIX, this.name));
+		if (this.type.equals(Boolean.TYPE)) {
 			try {
-				this.setReadMethod(c.getMethod(this.getReadMethodName(), new Class[] {}));
-				return;
-			} catch (NoSuchMethodException scme) {
-				// scme.printStackTrace();
+				readMethodName = BeanDescriptorHelper.getMethodName(BeanDescriptorHelper.IS_METHOD_PREFIX, this.name);
+				readMethod = c.getMethod(readMethodName, new Class[] {});
+			} catch (NoSuchMethodException e) {
+				// this.getLogger().info(e.getMessage(), e);
 			}
 		}
 		// Get
-		this.setReadMethodName(BeanDescriptorHelper.getMethodName(BeanDescriptorHelper.GET_METHOD_PREFIX, this.name));
-		this.setReadMethod(c.getMethod(this.getReadMethodName(), new Class[] {}));
+		else {
+			try {
+				readMethodName = BeanDescriptorHelper.getMethodName(BeanDescriptorHelper.GET_METHOD_PREFIX, this.name);
+				readMethod = c.getMethod(readMethodName, new Class[] {});
+			} catch (NoSuchMethodException e) {
+				// this.getLogger().info(e.getMessage(), e);
+			}
+		}
+		this.setReadMethodName(readMethodName);
+		this.setReadMethod(readMethod);
 	}
 
-	private void initSet() throws NoSuchMethodException {
+	private void initSet() {
 		Class<?> c = this.getBeanDescriptor().getType();
-		this.setWriteMethodName(BeanDescriptorHelper.getMethodName(BeanDescriptorHelper.SET_METHOD_PREFIX, this.name));
-		this.setWriteMethod(c.getMethod(this.getWriteMethodName(), new Class[] { this.type }));
+		String writeMethodName = null;
+		Method writeMethod = null;
+		// Set
+		try {
+			writeMethodName = BeanDescriptorHelper.getMethodName(BeanDescriptorHelper.SET_METHOD_PREFIX, this.name);
+			writeMethod = c.getMethod(writeMethodName, new Class[] { this.type });
+		} catch (NoSuchMethodException e) {
+			// e.printStackTrace();
+		}
+		this.setWriteMethodName(writeMethodName);
+		this.setWriteMethod(writeMethod);
 	}
 
 	public String getName() {
@@ -71,15 +90,24 @@ class MethodPropertyDescriptor extends AbstractPropertyDescriptor {
 	}
 
 	public boolean isAnnotationPresent(Class<? extends Annotation> clazz) {
-		return this.getReadMethod().isAnnotationPresent(clazz);
+		if (this.getReadMethod() != null) {
+			return this.getReadMethod().isAnnotationPresent(clazz);
+		}
+		return this.getWriteMethod().isAnnotationPresent(clazz);
 	}
 
 	public <T extends Annotation> T getAnnotation(Class<T> clazz) {
-		return this.getReadMethod().getAnnotation(clazz);
+		if (this.getReadMethod() != null) {
+			return this.getReadMethod().getAnnotation(clazz);
+		}
+		return this.getWriteMethod().getAnnotation(clazz);
 	}
 
 	public Annotation[] getAnnotations() {
-		return this.getReadMethod().getAnnotations();
+		if (this.getReadMethod() != null) {
+			return this.getReadMethod().getAnnotations();
+		}
+		return this.getWriteMethod().getAnnotations();
 	}
 
 }

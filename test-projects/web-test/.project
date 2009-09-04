@@ -3,6 +3,8 @@
 	<name>web-test</name>
 	<comment></comment>
 	<projects>
+		<project>rockframework-core</project>
+		<project>rockframework-web</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

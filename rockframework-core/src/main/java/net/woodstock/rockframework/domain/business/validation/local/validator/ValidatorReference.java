@@ -27,6 +27,7 @@ import net.woodstock.rockframework.domain.business.validation.local.annotation.V
 
 public class ValidatorReference extends AbstractValidator {
 
+	@SuppressWarnings("unchecked")
 	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
 		try {
 			ValidateReference annotation = (ValidateReference) context.getAnnotation();

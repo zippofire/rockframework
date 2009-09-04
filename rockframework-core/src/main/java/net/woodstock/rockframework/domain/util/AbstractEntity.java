@@ -25,6 +25,7 @@ public abstract class AbstractEntity<ID extends Serializable> implements Entity<
 
 	private static final long	serialVersionUID	= 7167657368775342614L;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	@SuppressWarnings("unchecked")
 	public boolean equals(Object obj) {

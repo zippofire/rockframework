@@ -1,5 +1,7 @@
 package net.woodstock.rockframework.domain.test;
 
+import java.lang.reflect.Method;
+
 import junit.framework.TestCase;
 import net.woodstock.rockframework.domain.pojo.converter.JsonConverter;
 
@@ -31,7 +33,7 @@ public class TestJson extends TestCase {
 		System.out.println(s);
 	}
 
-	public void testFoo() throws Exception {
+	public void xtestFoo() throws Exception {
 		Foo foo = this.getFoo();
 
 		String s = new JsonConverter().to(foo);
@@ -40,6 +42,11 @@ public class TestJson extends TestCase {
 		foo = new JsonConverter().from(Foo.class, s);
 		new JsonConverter().to(foo);
 		System.out.println(s);
+	}
+	
+	public void testXYZ() throws Exception {
+		Method method = Foo.class.getMethod("setId", new Class[]{Integer.class});
+		System.out.println(method.getReturnType().equals(Void.TYPE));
 	}
 
 }
