@@ -82,7 +82,7 @@ abstract class AbstractPropertyDescriptor implements PropertyDescriptor {
 	public Object getValue(Object o) {
 		try {
 			if (this.getReadMethod() == null) {
-				throw new NoSuchMethodException(this.getReadMethodName());
+				throw new NoSuchMethodException(this.beanDescriptor.getType().getCanonicalName() + "." + this.getReadMethodName());
 			}
 			return this.getReadMethod().invoke(o, new Object[] {});
 		} catch (Exception e) {
@@ -93,12 +93,23 @@ abstract class AbstractPropertyDescriptor implements PropertyDescriptor {
 	public void setValue(Object o, Object value) {
 		try {
 			if (this.getWriteMethod() == null) {
-				throw new NoSuchMethodException(this.getWriteMethodName());
+				throw new NoSuchMethodException(this.beanDescriptor.getType().getCanonicalName() + "." + this.getWriteMethodName());
 			}
 			this.getWriteMethod().invoke(o, new Object[] { value });
 		} catch (Exception e) {
 			throw new ReflectionException(e);
 		}
+	}
+
+	// Aux
+	@Override
+	public boolean isReadable() {
+		return this.getReadMethod() != null;
+	}
+
+	@Override
+	public boolean isWriteable() {
+		return this.getWriteMethod() != null;
 	}
 
 	// Object

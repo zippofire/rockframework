@@ -71,7 +71,7 @@ public abstract class JsonUtils {
 			builder.append(JsonUtils.NULL);
 			return builder.toString();
 		}
-		return JsonUtils.toJson(obj, null, ignoreFields, new HashMap<Object, String>(), 0, maxLevel);
+		return JsonUtils.toJson(obj, obj.getClass(), null, ignoreFields, new HashMap<Object, String>(), 0, maxLevel);
 	}
 
 	public static String toJson(Collection<?> collection, String[] ignoreFields, int maxLevel) {
@@ -91,16 +91,17 @@ public abstract class JsonUtils {
 			} else {
 				first = false;
 			}
-			builder.append(JsonUtils.toJson(obj, null, ignoreFields, queue, 0, maxLevel));
+			builder.append(JsonUtils.toJson(obj, obj.getClass(), null, ignoreFields, queue, 0, maxLevel));
 		}
 		builder.append(JsonUtils.END_ARRAY);
 
 		return builder.toString();
 	}
 
-	private static String toJson(Object obj, Object parent, String[] ignoreFields, Map<Object, String> queue, int currentLevel, int maxLevel) {
+	private static String toJson(Object obj, Class<?> type, Object parent, String[] ignoreFields, Map<Object, String> queue, int currentLevel, int maxLevel) {
 		StringBuilder builder = new StringBuilder();
-		BeanDescriptor BeanDescriptor = BeanDescriptorFactory.getByMethodInstance().getBeanDescriptor(obj.getClass());
+
+		BeanDescriptor BeanDescriptor = BeanDescriptorFactory.getByMethodInstance().getBeanDescriptor(type);
 		Collection<PropertyDescriptor> properties = BeanDescriptor.getProperties();
 		Map<String, Set<String>> ignore = new HashMap<String, Set<String>>();
 
@@ -128,9 +129,13 @@ public abstract class JsonUtils {
 		builder.append(JsonUtils.BEGIN_CLASS);
 
 		for (PropertyDescriptor property : properties) {
+			if (!property.isReadable()) {
+				continue;
+			}
+
 			String propertyName = property.getName();
 
-			Class<?> fieldClass = property.getType();
+			Class<?> propertyType = property.getType();
 			Object propertyValue = property.getValue(obj);
 
 			if (!first) {
@@ -151,16 +156,16 @@ public abstract class JsonUtils {
 				continue;
 			}
 
-			if (Boolean.class.isAssignableFrom(fieldClass)) {
+			if (Boolean.class.isAssignableFrom(propertyType)) {
 				builder.append(propertyValue.toString());
-			} else if (Character.class.isAssignableFrom(fieldClass)) {
+			} else if (Character.class.isAssignableFrom(propertyType)) {
 				builder.append(JsonUtils.STRING_DELIMITER + JsonUtils.addEscape(propertyValue.toString()) + JsonUtils.STRING_DELIMITER);
-			} else if (Date.class.isAssignableFrom(fieldClass)) {
+			} else if (Date.class.isAssignableFrom(propertyType)) {
 				long time = ((Date) propertyValue).getTime();
 				builder.append("new Date(" + time + ")");
-			} else if (Number.class.isAssignableFrom(fieldClass)) {
+			} else if (Number.class.isAssignableFrom(propertyType)) {
 				builder.append(propertyValue.toString());
-			} else if (String.class.isAssignableFrom(fieldClass)) {
+			} else if (String.class.isAssignableFrom(propertyType)) {
 				builder.append(JsonUtils.STRING_DELIMITER + JsonUtils.addEscape(propertyValue.toString()) + JsonUtils.STRING_DELIMITER);
 			} else {
 				if ((ignore.containsKey(JsonUtils.ALL_FIELDS)) && (!ignore.containsKey(propertyName))) {
@@ -171,18 +176,17 @@ public abstract class JsonUtils {
 					builder.append(JsonUtils.NULL);
 					continue;
 				}
-				if (Collection.class.isAssignableFrom(fieldClass)) {
+				if (Collection.class.isAssignableFrom(propertyType)) {
 					Collection<?> collection = (Collection<?>) propertyValue;
 					int index = 0;
 					builder.append(JsonUtils.BEGIN_ARRAY);
 					for (Object o : collection) {
 						if (!queue.containsKey(o)) {
-
 							String[] s = null;
 							if (ignore.containsKey(propertyName)) {
 								s = ignore.get(propertyName).toArray(new String[] {});
 							}
-							String str = JsonUtils.toJson(o, obj, s, queue, currentLevel + 1, maxLevel);
+							String str = JsonUtils.toJson(o, o.getClass(), obj, s, queue, currentLevel + 1, maxLevel);
 							queue.put(o, str);
 							builder.append(str);
 							index++;
@@ -201,7 +205,7 @@ public abstract class JsonUtils {
 						if (ignore.containsKey(propertyName)) {
 							s = ignore.get(propertyName).toArray(new String[] {});
 						}
-						String str = JsonUtils.toJson(propertyValue, obj, s, queue, currentLevel + 1, maxLevel);
+						String str = JsonUtils.toJson(propertyValue, propertyType, obj, s, queue, currentLevel + 1, maxLevel);
 						queue.put(propertyValue, str);
 						builder.append(str);
 					} else {
@@ -215,19 +219,6 @@ public abstract class JsonUtils {
 		builder.append(JsonUtils.END_CLASS);
 
 		return builder.toString();
-	}
-
-	public static void addEscape(Object o) {
-		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByMethodInstance().getBeanDescriptor(o.getClass());
-		for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
-			if (String.class.isAssignableFrom(propertyDescriptor.getType())) {
-				String value = (String) propertyDescriptor.getValue(o);
-				if (value != null) {
-					value = JsonUtils.addEscape(value);
-					propertyDescriptor.setValue(o, value);
-				}
-			}
-		}
 	}
 
 	public static String addEscape(String str) {

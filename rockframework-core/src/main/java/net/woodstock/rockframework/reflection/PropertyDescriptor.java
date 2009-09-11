@@ -17,7 +17,6 @@
 package net.woodstock.rockframework.reflection;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 
 public interface PropertyDescriptor {
 
@@ -27,15 +26,15 @@ public interface PropertyDescriptor {
 
 	BeanDescriptor getBeanDescriptor();
 
-	// Method
-	Method getReadMethod();
-
-	Method getWriteMethod();
-
 	// Get/Set Value
 	Object getValue(Object o);
 
 	void setValue(Object o, Object value);
+
+	// Aux
+	boolean isReadable();
+
+	boolean isWriteable();
 
 	// Annotation
 	boolean isAnnotationPresent(Class<? extends Annotation> clazz);

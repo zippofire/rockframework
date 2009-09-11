@@ -23,12 +23,15 @@ import net.woodstock.rockframework.domain.Entity;
 import org.hibernate.HibernateException;
 import org.hibernate.NonUniqueObjectException;
 import org.hibernate.PropertyValueException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
 
 public class HibernateDeleteCallback implements HibernateCallback {
 
-	private Entity<?>	entity;
+	private static final String	ID_ATTRIBUTE	= "id";
+
+	private Entity<?>			entity;
 
 	public HibernateDeleteCallback(Entity<?> entity) {
 		super();
@@ -44,6 +47,13 @@ public class HibernateDeleteCallback implements HibernateCallback {
 		} catch (NonUniqueObjectException nuoe) {
 			Entity<?> e = (Entity<?>) session.get(this.entity.getClass(), this.entity.getId());
 			session.delete(e);
+		} catch (HibernateException he) {
+			if (he.getMessage().startsWith(AbstractHibernateRepository.MSG_ERROR_TWO_SESSION)) {
+				String sql = RepositoryHelper.getDeleteSql(this.entity);
+				Query query = session.createQuery(sql);
+				query.setParameter(HibernateDeleteCallback.ID_ATTRIBUTE, this.entity.getId());
+				query.executeUpdate();
+			}
 		}
 		return null;
 	}

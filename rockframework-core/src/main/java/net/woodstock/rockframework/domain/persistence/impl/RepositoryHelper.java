@@ -1,5 +1,6 @@
 package net.woodstock.rockframework.domain.persistence.impl;
 
+import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.utils.StringUtils;
 
 abstract class RepositoryHelper {
@@ -17,6 +18,14 @@ abstract class RepositoryHelper {
 			builder.append(" ORDER BY ");
 			builder.append(order);
 		}
+		return builder.toString();
+	}
+
+	public static String getDeleteSql(Entity<?> e) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("DELETE FROM ");
+		builder.append(e.getClass().getCanonicalName());
+		builder.append(" WHERE id = :id");
 		return builder.toString();
 	}
 
