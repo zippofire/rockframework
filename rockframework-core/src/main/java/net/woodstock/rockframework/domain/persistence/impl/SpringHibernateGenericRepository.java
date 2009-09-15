@@ -16,7 +16,6 @@
  */
 package net.woodstock.rockframework.domain.persistence.impl;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -29,7 +28,7 @@ import net.woodstock.rockframework.domain.persistence.query.impl.HibernateQueryB
 
 import org.hibernate.Query;
 
-public class SpringHibernateGenericRepository extends SpringHibernateRepository implements GenericRepository {
+public abstract class SpringHibernateGenericRepository extends SpringHibernateRepository implements GenericRepository {
 
 	public SpringHibernateGenericRepository() {
 		super();
@@ -40,13 +39,13 @@ public class SpringHibernateGenericRepository extends SpringHibernateRepository 
 	}
 
 	@SuppressWarnings("unchecked")
-	public <ID extends Serializable, E extends Entity<ID>> E get(Class<E> clazz, ID id) throws PersistenceException {
-		return (E) this.getHibernateTemplate().get(clazz, id);
+	public <E extends Entity<?>> E get(E entity) throws PersistenceException {
+		return (E) this.getHibernateTemplate().get(entity.getClass(), entity.getId());
 	}
 
 	@SuppressWarnings("unchecked")
-	public <E extends Entity<?>> Collection<E> listAll(Class<E> clazz, String order) throws PersistenceException {
-		String sql = RepositoryHelper.getListAllSql(clazz, order);
+	public <E extends Entity<?>> Collection<E> listAll(E e, String order) throws PersistenceException {
+		String sql = RepositoryHelper.getListAllSql(e.getClass(), order);
 		return this.getHibernateTemplate().find(sql);
 	}
 

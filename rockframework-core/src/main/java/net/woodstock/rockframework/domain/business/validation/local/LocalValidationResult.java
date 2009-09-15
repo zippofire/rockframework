@@ -20,48 +20,21 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.woodstock.rockframework.domain.business.validation.ValidationResult;
+import net.woodstock.rockframework.domain.business.ValidationResult;
 
-public class LocalValidationResult implements ValidationResult {
+public class LocalValidationResult extends ValidationResult {
 
 	private static final long		serialVersionUID	= 6766952296126588148L;
 
 	private LocalValidationContext	context;
 
-	private boolean					error;
-
-	private String					message;
-
 	private LocalValidationResult(LocalValidationContext context, boolean error, String message) {
-		super();
+		super(error, message);
 		this.context = context;
-		this.error = error;
-		this.message = message;
 	}
 
 	public LocalValidationContext getContext() {
 		return this.context;
-	}
-
-	public void setError(boolean error) {
-		this.error = error;
-	}
-
-	public boolean isError() {
-		return this.error;
-	}
-
-	public String getMessage() {
-		return this.message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-	// Others
-	public boolean isSuccess() {
-		return !this.error;
 	}
 
 	@Override
@@ -71,7 +44,7 @@ public class LocalValidationResult implements ValidationResult {
 		builder.append("\n\tAnnotation: ");
 		builder.append(this.context.getAnnotation());
 		builder.append("\n\tStatus    : ");
-		if (this.error) {
+		if (this.isError()) {
 			builder.append("ERROR ");
 			builder.append(this.getMessage());
 		} else {

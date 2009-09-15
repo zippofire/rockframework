@@ -14,18 +14,43 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.business.validation;
+package net.woodstock.rockframework.domain.business;
 
 import java.io.Serializable;
 
-public interface ValidationResult extends Serializable {
+public class ValidationResult implements Serializable {
 
-	boolean isError();
+	private static final long	serialVersionUID	= 6766952296126588148L;
 
-	void setError(boolean error);
+	private boolean				error;
 
-	String getMessage();
+	private String				message;
 
-	void setMessage(String message);
+	public ValidationResult(boolean error, String message) {
+		super();
+		this.error = error;
+		this.message = message;
+	}
+
+	public void setError(boolean error) {
+		this.error = error;
+	}
+
+	public boolean isError() {
+		return this.error;
+	}
+
+	public String getMessage() {
+		return this.message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	// Others
+	public boolean isSuccess() {
+		return !this.error;
+	}
 
 }

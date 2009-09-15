@@ -16,45 +16,45 @@
  */
 package net.woodstock.rockframework.domain.business.impl;
 
+import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.BusinessException;
-import net.woodstock.rockframework.domain.business.validation.ValidationException;
+import net.woodstock.rockframework.domain.business.ValidationResult;
 
 import org.hibernate.validator.ClassValidator;
 import org.hibernate.validator.InvalidValue;
 
-public class AbstractHibernateBusiness extends DelegateGenericBusiness {
+public abstract class AbstractHibernateBusiness extends AbstractBusiness {
 
 	public AbstractHibernateBusiness() {
 		super();
 	}
 
 	@SuppressWarnings("unchecked")
-	private void validate(Entity<?> entity) throws BusinessException {
+	private ValidationResult validate(Entity<?> entity) throws BusinessException {
 		ClassValidator validator = new ClassValidator(entity.getClass());
 		if (validator.hasValidationRules()) {
 			InvalidValue values[] = validator.getInvalidValues(entity);
 			if ((values != null) && (values.length > 0)) {
-				throw new ValidationException(values[0].toString());
+				boolean error = false;
+				String message = values[0].toString();
+				new ValidationResult(error, message);
 			}
 		}
+		return new ValidationResult(false, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_OK));
 	}
 
 	// CRUD
-	public void validateCreateWithError(Entity<?> entity) throws BusinessException {
-		this.validate(entity);
+	public ValidationResult validateSave(Entity<?> entity) throws BusinessException {
+		return this.validate(entity);
 	}
 
-	public void validateUpdateWithError(Entity<?> entity) throws BusinessException {
-		this.validate(entity);
+	public ValidationResult validateUpdate(Entity<?> entity) throws BusinessException {
+		return this.validate(entity);
 	}
 
-	public void validateDeleteWithError(Entity<?> entity) throws BusinessException {
-		this.validate(entity);
-	}
-
-	public void validateQueryWithError(Entity<?> entity) throws BusinessException {
-		this.validate(entity);
+	public ValidationResult validateDelete(Entity<?> entity) throws BusinessException {
+		return this.validate(entity);
 	}
 
 }

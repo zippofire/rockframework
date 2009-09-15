@@ -19,6 +19,7 @@ package net.woodstock.rockframework.domain.business.validation;
 import java.util.Collection;
 
 import net.woodstock.rockframework.domain.Entity;
+import net.woodstock.rockframework.domain.business.ValidationResult;
 
 public interface EntityValidator {
 

@@ -16,33 +16,19 @@
  */
 package net.woodstock.rockframework.domain.business;
 
-import java.io.Serializable;
-
 import net.woodstock.rockframework.domain.Entity;
 
 public interface GenericBusiness extends Business {
 
-	// Generic
-	boolean validateCreate(Entity<?> entity);
-
-	boolean validateUpdate(Entity<?> pojo);
-
-	boolean validateDelete(Entity<?> pojo);
-
-	boolean validateQuery(Entity<?> pojo);
-
-	// Validation
-	<ID extends Serializable, E extends Entity<ID>> boolean validateRetrieve(Class<E> clazz, ID id);
-
 	// Validation With Error
-	void validateCreateWithError(Entity<?> pojo) throws BusinessException;
+	ValidationResult validateSave(Entity<?> entity) throws BusinessException;
 
-	void validateUpdateWithError(Entity<?> pojo) throws BusinessException;
+	ValidationResult validateUpdate(Entity<?> entity) throws BusinessException;
 
-	void validateDeleteWithError(Entity<?> pojo) throws BusinessException;
+	ValidationResult validateDelete(Entity<?> entity) throws BusinessException;
 
-	void validateQueryWithError(Entity<?> pojo) throws BusinessException;
+	ValidationResult validateList(Entity<?> entity) throws BusinessException;
 
-	<ID extends Serializable, E extends Entity<ID>> void validateRetrieveWithError(Class<E> clazz, ID id) throws BusinessException;
+	ValidationResult validateGet(Entity<?> entity) throws BusinessException;
 
 }

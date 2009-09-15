@@ -14,7 +14,7 @@ public class TestFoo extends TestCase {
 		GenericBusiness business = new AbstractLocalBusiness() {
 			//
 		};
-		business.validateCreateWithError(foo);
+		business.validateSave(foo);
 	}
 
 }

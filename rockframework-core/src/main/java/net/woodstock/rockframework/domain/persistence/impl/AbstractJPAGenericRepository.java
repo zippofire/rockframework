@@ -16,7 +16,6 @@
  */
 package net.woodstock.rockframework.domain.persistence.impl;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -42,16 +41,17 @@ abstract class AbstractJPAGenericRepository extends AbstractJPARepository implem
 		m.flush();
 	}
 
-	public <ID extends Serializable, E extends Entity<ID>> E get(Class<E> clazz, ID id) throws PersistenceException {
+	@SuppressWarnings("unchecked")
+	public <E extends Entity<?>> E get(E entity) throws PersistenceException {
 		EntityManager m = this.getEntityManager();
-		E entity = m.find(clazz, id);
-		return entity;
+		E e = (E) m.find(entity.getClass(), entity.getId());
+		return e;
 	}
 
 	@SuppressWarnings("unchecked")
-	public <E extends Entity<?>> Collection<E> listAll(Class<E> clazz, String order) throws PersistenceException {
+	public <E extends Entity<?>> Collection<E> listAll(E e, String order) throws PersistenceException {
 		EntityManager m = this.getEntityManager();
-		String sql = RepositoryHelper.getListAllSql(clazz, order);
+		String sql = RepositoryHelper.getListAllSql(e.getClass(), order);
 		Query q = m.createQuery(sql);
 		Collection<E> list = q.getResultList();
 		return list;

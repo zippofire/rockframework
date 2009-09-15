@@ -41,11 +41,6 @@ public class GenericServiceAdapter extends AbstractService implements GenericSer
 		return null;
 	}
 
-	public <ID extends Serializable, E extends Entity<ID>> E get(Class<E> clazz, ID id) throws ServiceException, BusinessException, PersistenceException {
-		this.getLogger().info("Retrieve: " + clazz.getCanonicalName() + " " + id);
-		return null;
-	}
-
 	public void update(Entity<?> e) throws ServiceException, BusinessException, PersistenceException {
 		this.getLogger().info("Update: " + e.getClass());
 	}
@@ -58,8 +53,8 @@ public class GenericServiceAdapter extends AbstractService implements GenericSer
 		this.getLogger().info("Delete: " + clazz.getCanonicalName() + " " + id);
 	}
 
-	public <E extends Entity<?>> Collection<E> listAll(Class<E> clazz, String order) throws ServiceException, BusinessException, PersistenceException {
-		this.getLogger().info("Query: " + clazz.getCanonicalName() + " Order: " + order);
+	public <E extends Entity<?>> Collection<E> listAll(E e, String order) throws ServiceException, BusinessException, PersistenceException {
+		this.getLogger().info("Query: " + e + " Order: " + order);
 		return null;
 	}
 

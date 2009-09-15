@@ -13,7 +13,7 @@
 		<action name="json" class="net.woodstoc.rockframework.struts2.test.JsonAction">
 			<result name="success" type="rockframework-json">
 				<param name="root">foos</param>
-				<param name="ignoreProperties">bars.baz.*</param>
+				<param name="ignoreProperties">bars.foo, bars.baz.*</param>
 			</result>
 		</action>
 	</package>

@@ -16,7 +16,6 @@
  */
 package net.woodstock.rockframework.domain.service.impl;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 
@@ -42,14 +41,14 @@ public abstract class SpringGenericServiceImpl extends AbstractGenericService {
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public <ID extends Serializable, E extends Entity<ID>> E get(Class<E> clazz, ID id) throws ServiceException, BusinessException, PersistenceException {
-		return super.get(clazz, id);
+	public <E extends Entity<?>> E get(E entity) throws ServiceException, BusinessException, PersistenceException {
+		return super.get(entity);
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public <E extends Entity<?>> Collection<E> listAll(Class<E> clazz, String order) throws ServiceException, BusinessException, PersistenceException {
-		return super.listAll(clazz, order);
+	public <E extends Entity<?>> Collection<E> listAll(E entity, String order) throws ServiceException, BusinessException, PersistenceException {
+		return super.listAll(entity, order);
 	}
 
 	@Override

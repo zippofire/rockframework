@@ -16,7 +16,6 @@
  */
 package net.woodstock.rockframework.domain.persistence.impl;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -29,7 +28,7 @@ import net.woodstock.rockframework.domain.persistence.PersistenceException;
 import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
 import net.woodstock.rockframework.domain.persistence.query.impl.JPAQueryBuilder;
 
-public class SpringJPAGenericRepository extends SpringJPARepository implements GenericRepository {
+public abstract class SpringJPAGenericRepository extends SpringJPARepository implements GenericRepository {
 
 	public SpringJPAGenericRepository() {
 		super();
@@ -39,8 +38,9 @@ public class SpringJPAGenericRepository extends SpringJPARepository implements G
 		this.getJpaTemplate().remove(e);
 	}
 
-	public <ID extends Serializable, E extends Entity<ID>> E get(Class<E> clazz, ID id) throws PersistenceException {
-		return this.getJpaTemplate().find(clazz, id);
+	@SuppressWarnings("unchecked")
+	public <E extends Entity<?>> E get(E entity) throws PersistenceException {
+		return (E) this.getJpaTemplate().find(entity.getClass(), entity.getId());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -49,8 +49,8 @@ public class SpringJPAGenericRepository extends SpringJPARepository implements G
 	}
 
 	@SuppressWarnings("unchecked")
-	public <E extends Entity<?>> Collection<E> listAll(Class<E> clazz, String order) throws PersistenceException {
-		String sql = RepositoryHelper.getListAllSql(clazz, order);
+	public <E extends Entity<?>> Collection<E> listAll(E e, String order) throws PersistenceException {
+		String sql = RepositoryHelper.getListAllSql(e.getClass(), order);
 		return this.getJpaTemplate().find(sql);
 	}
 

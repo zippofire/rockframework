@@ -18,9 +18,9 @@ package net.woodstock.rockframework.domain.business.validation.local;
 
 import java.lang.annotation.Annotation;
 
+import net.woodstock.rockframework.domain.business.ValidationResult;
 import net.woodstock.rockframework.domain.business.validation.Operation;
 import net.woodstock.rockframework.domain.business.validation.ValidationContext;
-import net.woodstock.rockframework.domain.business.validation.ValidationResult;
 
 public class LocalValidationContext extends ValidationContext {
 

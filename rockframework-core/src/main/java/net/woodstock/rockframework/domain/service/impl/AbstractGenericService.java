@@ -16,13 +16,14 @@
  */
 package net.woodstock.rockframework.domain.service.impl;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.BusinessException;
 import net.woodstock.rockframework.domain.business.GenericBusiness;
+import net.woodstock.rockframework.domain.business.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.ValidationException;
 import net.woodstock.rockframework.domain.persistence.GenericRepository;
 import net.woodstock.rockframework.domain.persistence.PersistenceException;
 import net.woodstock.rockframework.domain.service.GenericService;
@@ -60,7 +61,10 @@ public abstract class AbstractGenericService extends AbstractService implements 
 		try {
 			this.verifyObjects();
 			if (this.business != null) {
-				this.business.validateCreateWithError(entity);
+				ValidationResult result = this.business.validateSave(entity);
+				if (result.isError()) {
+					throw new ValidationException(result.getMessage());
+				}
 			}
 			this.repository.save(entity);
 		} catch (PersistenceException e) {
@@ -72,13 +76,17 @@ public abstract class AbstractGenericService extends AbstractService implements 
 		}
 	}
 
-	public <ID extends Serializable, E extends Entity<ID>> E get(Class<E> clazz, ID id) throws ServiceException, BusinessException, PersistenceException {
+	@Override
+	public <E extends Entity<?>> E get(E entity) throws ServiceException, BusinessException, PersistenceException {
 		try {
 			this.verifyObjects();
 			if (this.business != null) {
-				this.business.validateRetrieveWithError(clazz, id);
+				ValidationResult result = this.business.validateGet(entity);
+				if (result.isError()) {
+					throw new ValidationException(result.getMessage());
+				}
 			}
-			return this.repository.get(clazz, id);
+			return this.repository.get(entity);
 		} catch (PersistenceException e) {
 			throw e;
 		} catch (BusinessException e) {
@@ -88,13 +96,16 @@ public abstract class AbstractGenericService extends AbstractService implements 
 		}
 	}
 
-	public <E extends Entity<?>> Collection<E> listAll(Class<E> clazz, String order) throws ServiceException, BusinessException, PersistenceException {
+	public <E extends Entity<?>> Collection<E> listAll(E entity, String order) throws ServiceException, BusinessException, PersistenceException {
 		try {
 			this.verifyObjects();
-			if (clazz == null) {
-				throw new IllegalArgumentException("Clazz must be not null");
+			if (this.business != null) {
+				ValidationResult result = this.business.validateList(entity);
+				if (result.isError()) {
+					throw new ValidationException(result.getMessage());
+				}
 			}
-			return this.repository.listAll(clazz, order);
+			return this.repository.listAll(entity, order);
 		} catch (PersistenceException e) {
 			throw e;
 		} catch (BusinessException e) {
@@ -108,7 +119,10 @@ public abstract class AbstractGenericService extends AbstractService implements 
 		try {
 			this.verifyObjects();
 			if (this.business != null) {
-				this.business.validateQueryWithError(entity);
+				ValidationResult result = this.business.validateList(entity);
+				if (result.isError()) {
+					throw new ValidationException(result.getMessage());
+				}
 			}
 			return this.repository.listByExample(entity, options);
 		} catch (PersistenceException e) {
@@ -124,7 +138,10 @@ public abstract class AbstractGenericService extends AbstractService implements 
 		try {
 			this.verifyObjects();
 			if (this.business != null) {
-				this.business.validateUpdateWithError(entity);
+				ValidationResult result = this.business.validateUpdate(entity);
+				if (result.isError()) {
+					throw new ValidationException(result.getMessage());
+				}
 			}
 			this.repository.update(entity);
 		} catch (PersistenceException e) {
@@ -140,7 +157,10 @@ public abstract class AbstractGenericService extends AbstractService implements 
 		try {
 			this.verifyObjects();
 			if (this.business != null) {
-				this.business.validateDeleteWithError(entity);
+				ValidationResult result = this.business.validateDelete(entity);
+				if (result.isError()) {
+					throw new ValidationException(result.getMessage());
+				}
 			}
 			this.repository.delete(entity);
 		} catch (PersistenceException e) {

@@ -20,7 +20,7 @@ import net.woodstock.rockframework.domain.persistence.PersistenceException;
 
 import org.hibernate.Session;
 
-public class HibernateGenericRepository extends AbstractHibernateGenericRepository {
+public abstract class HibernateGenericRepository extends AbstractHibernateGenericRepository {
 
 	private Session	session;
 

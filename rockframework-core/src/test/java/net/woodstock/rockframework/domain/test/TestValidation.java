@@ -3,8 +3,8 @@ package net.woodstock.rockframework.domain.test;
 import java.util.Collection;
 
 import junit.framework.TestCase;
+import net.woodstock.rockframework.domain.business.ValidationResult;
 import net.woodstock.rockframework.domain.business.validation.Operation;
-import net.woodstock.rockframework.domain.business.validation.ValidationResult;
 import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
 import net.woodstock.rockframework.domain.business.validation.local.LocalValidationResult;
 

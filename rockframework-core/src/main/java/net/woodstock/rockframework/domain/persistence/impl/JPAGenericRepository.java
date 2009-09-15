@@ -20,7 +20,7 @@ import javax.persistence.EntityManager;
 
 import net.woodstock.rockframework.domain.persistence.PersistenceException;
 
-public class JPAGenericRepository extends AbstractJPAGenericRepository {
+public abstract class JPAGenericRepository extends AbstractJPAGenericRepository {
 
 	private EntityManager	entityManager;
 

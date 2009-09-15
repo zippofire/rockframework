@@ -21,49 +21,48 @@ import java.util.Collection;
 import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.BusinessException;
+import net.woodstock.rockframework.domain.business.ValidationResult;
 import net.woodstock.rockframework.domain.business.validation.Operation;
-import net.woodstock.rockframework.domain.business.validation.ValidationException;
-import net.woodstock.rockframework.domain.business.validation.ValidationResult;
 import net.woodstock.rockframework.domain.business.validation.jpa.JPAEntityValidator;
 
-public abstract class AbstractJPABusiness extends DelegateGenericBusiness {
+public abstract class AbstractJPABusiness extends AbstractBusiness {
 
 	public AbstractJPABusiness() {
 		super();
 	}
 
-	private void validate(Entity<?> entity, Operation operation) throws BusinessException {
+	private ValidationResult validate(Entity<?> entity, Operation operation) throws BusinessException {
 		Collection<ValidationResult> results = JPAEntityValidator.getInstance().validate(entity, operation);
 		for (ValidationResult result : results) {
 			if (result.isError()) {
-				throw new ValidationException(result.getMessage());
+				return result;
 			}
 		}
+		return new ValidationResult(false, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_OK));
 	}
 
 	// CRUD
-	public void validateCreateWithError(Entity<?> entity) throws BusinessException {
-		this.validate(entity, Operation.CREATE);
+	public ValidationResult validateSave(Entity<?> entity) throws BusinessException {
+		return this.validate(entity, Operation.CREATE);
 	}
 
-	public void validateUpdateWithError(Entity<?> entity) throws BusinessException {
-		this.validate(entity, Operation.UPDATE);
+	public ValidationResult validateUpdate(Entity<?> entity) throws BusinessException {
+		return this.validate(entity, Operation.UPDATE);
 	}
 
-	public void validateDeleteWithError(Entity<?> entity) throws BusinessException {
+	public ValidationResult validateDelete(Entity<?> entity) throws BusinessException {
+		boolean error = false;
+		String message = CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_OK);
 		if (entity == null) {
-			throw new ValidationException(CoreMessage.getInstance().getMessage(DelegateGenericBusiness.MESSAGE_INVALID_OBJECT, entity));
+			error = true;
+			message = CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_INVALID_OBJECT, entity);
 		}
 		Object id = entity.getId();
 		if (id == null) {
-			throw new ValidationException(CoreMessage.getInstance().getMessage(DelegateGenericBusiness.MESSAGE_INVALID_ID, id));
+			error = true;
+			message = CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_INVALID_ID, id);
 		}
-	}
-
-	public void validateQueryWithError(Entity<?> entity) throws BusinessException {
-		if (entity == null) {
-			throw new ValidationException(CoreMessage.getInstance().getMessage(DelegateGenericBusiness.MESSAGE_INVALID_OBJECT, entity));
-		}
+		return new ValidationResult(error, message);
 	}
 
 }

@@ -30,7 +30,7 @@ public class TestJPAValidation extends TestCase {
 	public void test1() throws Exception {
 		GenericBusiness business = this.getBusiness();
 		Bar bar = this.getBar();
-		business.validateCreateWithError(bar);
+		business.validateSave(bar);
 	}
 
 }
