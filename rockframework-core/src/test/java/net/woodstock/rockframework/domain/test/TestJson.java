@@ -3,7 +3,12 @@ package net.woodstock.rockframework.domain.test;
 import java.lang.reflect.Method;
 
 import junit.framework.TestCase;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
+
 import net.woodstock.rockframework.domain.pojo.converter.JsonConverter;
+import net.woodstock.rockframework.utils.StringUtils;
 
 public class TestJson extends TestCase {
 
@@ -36,11 +41,14 @@ public class TestJson extends TestCase {
 	public void xtestFoo() throws Exception {
 		Foo foo = this.getFoo();
 
-		String s = new JsonConverter().to(foo);
-		System.out.println(s);
-
-		foo = new JsonConverter().from(Foo.class, s);
-		new JsonConverter().to(foo);
+		Class<?> clazz = foo.getClass();
+		String name = StringUtils.camelCase(clazz.getSimpleName());
+		XStream xstream = new XStream(new JsonHierarchicalStreamDriver());
+		xstream.alias(name, clazz);
+		
+		xstream.omitField(Bar.class, "bar");
+		
+		String s = xstream.toXML(foo);
 		System.out.println(s);
 	}
 	

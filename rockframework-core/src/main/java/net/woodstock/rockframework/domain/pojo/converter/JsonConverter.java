@@ -18,13 +18,19 @@ package net.woodstock.rockframework.domain.pojo.converter;
 
 import javax.xml.bind.JAXBException;
 
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.HierarchicalStreamDriver;
+import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
+import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
+
 import net.woodstock.rockframework.domain.Pojo;
 import net.woodstock.rockframework.utils.StringUtils;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
-
 public class JsonConverter implements Converter {
+
+	private static final HierarchicalStreamDriver	TO_DRIVER	= new JsonHierarchicalStreamDriver();
+
+	private static final HierarchicalStreamDriver	FROM_DRIVER	= new JettisonMappedXmlDriver();
 
 	public JsonConverter() {
 		super();
@@ -33,8 +39,8 @@ public class JsonConverter implements Converter {
 	public String to(Pojo pojo) throws JAXBException {
 		Class<?> clazz = pojo.getClass();
 		String name = StringUtils.camelCase(clazz.getSimpleName());
-		XStream xstream = new XStream(new JettisonMappedXmlDriver());
-		xstream.alias(name, clazz);
+		XStream xstream = new XStream(JsonConverter.TO_DRIVER);
+		xstream.alias(name, clazz);		
 		String s = xstream.toXML(pojo);
 		return s;
 	}
@@ -42,7 +48,7 @@ public class JsonConverter implements Converter {
 	@SuppressWarnings("unchecked")
 	public <T extends Pojo> T from(Class<T> clazz, String s) throws JAXBException {
 		String name = StringUtils.camelCase(clazz.getSimpleName());
-		XStream xstream = new XStream(new JettisonMappedXmlDriver());
+		XStream xstream = new XStream(JsonConverter.FROM_DRIVER);
 		xstream.alias(name, clazz);
 		Object obj = xstream.fromXML(s);
 		return (T) obj;
