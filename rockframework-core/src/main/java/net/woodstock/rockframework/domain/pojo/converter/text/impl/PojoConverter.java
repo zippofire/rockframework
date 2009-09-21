@@ -18,15 +18,18 @@ package net.woodstock.rockframework.domain.pojo.converter.text.impl;
 
 import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Pojo;
+import net.woodstock.rockframework.domain.pojo.converter.ConverterException;
+import net.woodstock.rockframework.domain.pojo.converter.common.AttributeConverter;
+import net.woodstock.rockframework.domain.pojo.converter.common.Ignore;
+import net.woodstock.rockframework.domain.pojo.converter.common.Size;
+import net.woodstock.rockframework.domain.pojo.converter.common.impl.AbstractAttributeConverter;
 import net.woodstock.rockframework.domain.pojo.converter.text.TextCollection;
-import net.woodstock.rockframework.domain.pojo.converter.text.TextField;
-import net.woodstock.rockframework.domain.pojo.converter.text.TextIgnore;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
 import net.woodstock.rockframework.utils.StringUtils;
 
-class PojoConverter extends TextAttributeConverterBase<Pojo> {
+class PojoConverter extends AbstractAttributeConverter<Pojo> {
 
 	@SuppressWarnings("unchecked")
 	public Pojo fromText(String text, PropertyDescriptor propertyDescriptor) {
@@ -34,16 +37,15 @@ class PojoConverter extends TextAttributeConverterBase<Pojo> {
 			Pojo pojo = (Pojo) propertyDescriptor.getType().newInstance();
 			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(pojo.getClass());
 			for (PropertyDescriptor p : beanDescriptor.getProperties()) {
-				if (p.isAnnotationPresent(TextIgnore.class)) {
+				if (p.isAnnotationPresent(Ignore.class)) {
 					continue;
 				}
-				TextField textField = p.getAnnotation(TextField.class);
-				int size = textField.size();
+				int size = p.getAnnotation(Size.class).value();
 
 				String s = text.substring(0, size);
 				text = text.substring(size);
 
-				TextAttributeConverter converter = TextConverterBase.getAttributeConverter(p.getType());
+				AttributeConverter converter = TextConverterHelper.getAttributeConverter(p.getType());
 
 				Object value = converter.fromText(s, p);
 
@@ -51,7 +53,7 @@ class PojoConverter extends TextAttributeConverterBase<Pojo> {
 			}
 			return pojo;
 		} catch (Exception e) {
-			throw new TextConverterException(e);
+			throw new ConverterException(e);
 		}
 	}
 
@@ -61,20 +63,19 @@ class PojoConverter extends TextAttributeConverterBase<Pojo> {
 			Pojo pojo = clazz.newInstance();
 			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(pojo.getClass());
 			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
-				if (propertyDescriptor.isAnnotationPresent(TextIgnore.class)) {
+				if (propertyDescriptor.isAnnotationPresent(Ignore.class)) {
 					continue;
 				}
 
 				int size = -1;
 
-				if (propertyDescriptor.isAnnotationPresent(TextField.class)) {
-					TextField textField = propertyDescriptor.getAnnotation(TextField.class);
-					size = textField.size();
+				if (propertyDescriptor.isAnnotationPresent(Size.class)) {
+					size = propertyDescriptor.getAnnotation(Size.class).value();
 				}
 
 				if ((size == -1) && (!propertyDescriptor.isAnnotationPresent(TextCollection.class))) {
-					String msg = CoreMessage.getInstance().getMessage(TextAttributeConverterBase.MESSAGE_ERROR_CONVERTER_SIZE, propertyDescriptor.getName());
-					throw new TextConverterException(msg);
+					String msg = CoreMessage.getInstance().getMessage("Invalid size for " + clazz.getCanonicalName());
+					throw new ConverterException(msg);
 				}
 
 				String s = StringUtils.BLANK;
@@ -87,7 +88,7 @@ class PojoConverter extends TextAttributeConverterBase<Pojo> {
 					text = null;
 				}
 
-				TextAttributeConverter converter = TextConverterBase.getAttributeConverter(propertyDescriptor.getType());
+				AttributeConverter converter = TextConverterHelper.getAttributeConverter(propertyDescriptor.getType());
 
 				Object value = converter.fromText(s, propertyDescriptor);
 
@@ -95,7 +96,7 @@ class PojoConverter extends TextAttributeConverterBase<Pojo> {
 			}
 			return pojo;
 		} catch (Exception e) {
-			throw new TextConverterException(e);
+			throw new ConverterException(e);
 		}
 	}
 
@@ -105,28 +106,28 @@ class PojoConverter extends TextAttributeConverterBase<Pojo> {
 			StringBuilder builder = new StringBuilder();
 			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(p.getClass());
 			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
-				if (propertyDescriptor.isAnnotationPresent(TextIgnore.class)) {
+				if (propertyDescriptor.isAnnotationPresent(Ignore.class)) {
 					continue;
 				}
 				Object value = propertyDescriptor.getValue(p);
-				TextAttributeConverter attributeConverter = TextConverterBase.getNullAttributeConverter();
+				AttributeConverter attributeConverter = TextConverterHelper.getNullAttributeConverter();
 				if (value != null) {
-					attributeConverter = TextConverterBase.getAttributeConverter(value.getClass());
+					attributeConverter = TextConverterHelper.getAttributeConverter(value.getClass());
 				}
 				String s = attributeConverter.toText(value, propertyDescriptor);
 				builder.append(s);
 			}
 			return builder.toString();
 		} catch (Exception e) {
-			throw new TextConverterException(e);
+			throw new ConverterException(e);
 		}
 	}
 
 	public String toText(Pojo p, PropertyDescriptor propertyDescriptor) {
 		try {
-			return TextConverterBase.ldap(this.toText(p), this.getSize(propertyDescriptor));
+			return this.lpad(this.toText(p), this.getSize(propertyDescriptor));
 		} catch (Exception e) {
-			throw new TextConverterException(e);
+			throw new ConverterException(e);
 		}
 	}
 

@@ -29,8 +29,8 @@ public class Bar implements Entity<Integer> {
 	@Min(value = 0)
 	@Max(value = 10)
 	// Rockapi
-	@ValidateNull(operation = { Operation.CREATE })
-	@ValidateNotNull(operation = { Operation.RETRIEVE, Operation.UPDATE, Operation.DELETE })
+	@ValidateNull(operation = { Operation.SAVE })
+	@ValidateNotNull(operation = { Operation.GET, Operation.UPDATE, Operation.DELETE })
 	@ValidateIntRange(min = 0, max = 10)
 	// Xml
 	@XmlElement(name = "id")
@@ -40,11 +40,13 @@ public class Bar implements Entity<Integer> {
 	@NotNull
 	@Length(min = 5, max = 50)
 	// Rockapi
-	@ValidateNotEmpty(operation = { Operation.CREATE, Operation.UPDATE })
+	@ValidateNotEmpty(operation = { Operation.GET, Operation.UPDATE })
 	@ValidateLength(min = 5, max = 50)
 	// Xml
 	@XmlElement(name = "value")
 	private String				value;
+
+	private Baz					baz;
 
 	public Bar() {
 		super();
@@ -64,6 +66,14 @@ public class Bar implements Entity<Integer> {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	public Baz getBaz() {
+		return this.baz;
+	}
+
+	public void setBaz(Baz baz) {
+		this.baz = baz;
 	}
 
 }

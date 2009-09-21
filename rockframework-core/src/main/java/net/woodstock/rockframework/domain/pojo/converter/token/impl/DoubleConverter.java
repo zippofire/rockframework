@@ -16,45 +16,6 @@
  */
 package net.woodstock.rockframework.domain.pojo.converter.token.impl;
 
-import net.woodstock.rockframework.domain.pojo.converter.token.TokenNumber;
-import net.woodstock.rockframework.reflection.PropertyDescriptor;
-import net.woodstock.rockframework.utils.NumberUtils;
-import net.woodstock.rockframework.utils.StringUtils;
-
-class DoubleConverter extends TokenAttributeConverterBase<Double> {
-
-	public Double fromText(String text, PropertyDescriptor propertyDescriptor) {
-		try {
-			Double d = null;
-			if (!StringUtils.isEmpty(text)) {
-				if (propertyDescriptor.isAnnotationPresent(TokenNumber.class)) {
-					String format = propertyDescriptor.getAnnotation(TokenNumber.class).pattern();
-					d = new Double(NumberUtils.parse(text, format).doubleValue());
-				} else {
-					d = new Double(text);
-				}
-			}
-			return d;
-		} catch (Exception e) {
-			throw new TokenConverterException(e);
-		}
-	}
-
-	public String toText(Double d, PropertyDescriptor propertyDescriptor) {
-		try {
-			String s = StringUtils.BLANK;
-			if (d != null) {
-				if (propertyDescriptor.isAnnotationPresent(TokenNumber.class)) {
-					String format = propertyDescriptor.getAnnotation(TokenNumber.class).pattern();
-					s = NumberUtils.format(d.doubleValue(), format);
-				} else {
-					s = d.toString();
-				}
-			}
-			return s;
-		} catch (Exception e) {
-			throw new TokenConverterException(e);
-		}
-	}
-
+class DoubleConverter extends net.woodstock.rockframework.domain.pojo.converter.common.impl.DoubleConverter {
+	//
 }

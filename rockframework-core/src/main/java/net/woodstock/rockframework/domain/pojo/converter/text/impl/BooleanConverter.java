@@ -16,42 +16,14 @@
  */
 package net.woodstock.rockframework.domain.pojo.converter.text.impl;
 
-import net.woodstock.rockframework.domain.pojo.converter.text.TextBoolean;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
-import net.woodstock.rockframework.utils.StringUtils;
 
-class BooleanConverter extends TextAttributeConverterBase<Boolean> {
+class BooleanConverter extends net.woodstock.rockframework.domain.pojo.converter.common.impl.BooleanConverter {
 
-	public Boolean fromText(String text, PropertyDescriptor propertyDescriptor) {
-		try {
-			Boolean b = null;
-			if (!StringUtils.isEmpty(text)) {
-				if (TextConverterBase.trim(text).equals(propertyDescriptor.getAnnotation(TextBoolean.class).trueValue())) {
-					b = Boolean.TRUE;
-				} else {
-					b = Boolean.FALSE;
-				}
-			}
-			return b;
-		} catch (Exception e) {
-			throw new TextConverterException(e);
-		}
-	}
-
+	@Override
 	public String toText(Boolean b, PropertyDescriptor propertyDescriptor) {
-		try {
-			String s = StringUtils.BLANK;
-			if (b != null) {
-				if (b.booleanValue()) {
-					s = propertyDescriptor.getAnnotation(TextBoolean.class).trueValue();
-				} else {
-					s = propertyDescriptor.getAnnotation(TextBoolean.class).falseValue();
-				}
-			}
-			return TextConverterBase.rdap(s, this.getSize(propertyDescriptor));
-		} catch (Exception e) {
-			throw new TextConverterException(e);
-		}
+		String s = super.toText(b, propertyDescriptor);
+		return this.lpad(s, this.getSize(propertyDescriptor));
 	}
 
 }

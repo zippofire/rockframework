@@ -16,45 +16,6 @@
  */
 package net.woodstock.rockframework.domain.pojo.converter.token.impl;
 
-import net.woodstock.rockframework.domain.pojo.converter.token.TokenNumber;
-import net.woodstock.rockframework.reflection.PropertyDescriptor;
-import net.woodstock.rockframework.utils.NumberUtils;
-import net.woodstock.rockframework.utils.StringUtils;
-
-class ByteConverter extends TokenAttributeConverterBase<Byte> {
-
-	public Byte fromText(String text, PropertyDescriptor propertyDescriptor) {
-		try {
-			Byte b = null;
-			if (!StringUtils.isEmpty(text)) {
-				if (propertyDescriptor.isAnnotationPresent(TokenNumber.class)) {
-					String format = propertyDescriptor.getAnnotation(TokenNumber.class).pattern();
-					b = new Byte(NumberUtils.parse(text, format).byteValue());
-				} else {
-					b = new Byte(text);
-				}
-			}
-			return b;
-		} catch (Exception e) {
-			throw new TokenConverterException(e);
-		}
-	}
-
-	public String toText(Byte b, PropertyDescriptor propertyDescriptor) {
-		try {
-			String s = StringUtils.BLANK;
-			if (b != null) {
-				if (propertyDescriptor.isAnnotationPresent(TokenNumber.class)) {
-					String format = propertyDescriptor.getAnnotation(TokenNumber.class).pattern();
-					s = NumberUtils.format(b.byteValue(), format);
-				} else {
-					s = b.toString();
-				}
-			}
-			return s;
-		} catch (Exception e) {
-			throw new TokenConverterException(e);
-		}
-	}
-
+class ByteConverter extends net.woodstock.rockframework.domain.pojo.converter.common.impl.ByteConverter {
+	//
 }

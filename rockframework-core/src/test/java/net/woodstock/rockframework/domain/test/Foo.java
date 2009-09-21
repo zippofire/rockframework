@@ -31,8 +31,8 @@ public class Foo implements Entity<Integer> {
 	@Min(value = 0)
 	@Max(value = 10)
 	// Rockapi
-	@ValidateNull(operation = { Operation.CREATE })
-	@ValidateNotNull(operation = { Operation.RETRIEVE, Operation.UPDATE, Operation.DELETE })
+	@ValidateNull(operation = { Operation.SAVE })
+	@ValidateNotNull(operation = { Operation.GET, Operation.UPDATE, Operation.DELETE })
 	@ValidateIntRange(min = 0, max = 10)
 	// Xml
 	@XmlElement(name = "id")
@@ -42,7 +42,7 @@ public class Foo implements Entity<Integer> {
 	@NotNull
 	@Length(min = 5, max = 50)
 	// Rockapi
-	@ValidateNotEmpty(operation = { Operation.CREATE, Operation.UPDATE })
+	@ValidateNotEmpty(operation = { Operation.SAVE, Operation.UPDATE })
 	@ValidateLength(min = 5, max = 50)
 	// Xml
 	@XmlElement(name = "name")
@@ -52,8 +52,8 @@ public class Foo implements Entity<Integer> {
 	@NotNull
 	@Valid
 	// Rockapi
-	@ValidateNotNull(operation = { Operation.CREATE, Operation.UPDATE })
-	@ValidateReference(operation = { Operation.CREATE, Operation.UPDATE })
+	@ValidateNotNull(operation = { Operation.SAVE, Operation.UPDATE })
+	@ValidateReference(operation = { Operation.SAVE, Operation.UPDATE })
 	// Xml
 	@XmlElement(name = "bar")
 	private Bar					bar;

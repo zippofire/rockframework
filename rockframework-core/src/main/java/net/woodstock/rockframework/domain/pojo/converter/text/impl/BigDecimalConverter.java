@@ -18,45 +18,14 @@ package net.woodstock.rockframework.domain.pojo.converter.text.impl;
 
 import java.math.BigDecimal;
 
-import net.woodstock.rockframework.domain.pojo.converter.text.TextNumber;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
-import net.woodstock.rockframework.utils.NumberUtils;
-import net.woodstock.rockframework.utils.StringUtils;
 
-class BigDecimalConverter extends TextAttributeConverterBase<BigDecimal> {
+class BigDecimalConverter extends net.woodstock.rockframework.domain.pojo.converter.common.impl.BigDecimalConverter {
 
-	public BigDecimal fromText(String text, PropertyDescriptor propertyDescriptor) {
-		try {
-			BigDecimal b = null;
-			if (!StringUtils.isEmpty(text)) {
-				if (propertyDescriptor.isAnnotationPresent(TextNumber.class)) {
-					String format = propertyDescriptor.getAnnotation(TextNumber.class).pattern();
-					b = new BigDecimal(NumberUtils.parse(TextConverterBase.trim(text), format).toString());
-				} else {
-					b = new BigDecimal(TextConverterBase.trim(text));
-				}
-			}
-			return b;
-		} catch (Exception e) {
-			throw new TextConverterException(e);
-		}
-	}
-
+	@Override
 	public String toText(BigDecimal b, PropertyDescriptor propertyDescriptor) {
-		try {
-			String s = StringUtils.BLANK;
-			if (b != null) {
-				if (propertyDescriptor.isAnnotationPresent(TextNumber.class)) {
-					String format = propertyDescriptor.getAnnotation(TextNumber.class).pattern();
-					s = NumberUtils.format(b, format);
-				} else {
-					s = b.toString();
-				}
-			}
-			return TextConverterBase.ldap(s, this.getSize(propertyDescriptor));
-		} catch (Exception e) {
-			throw new TextConverterException(e);
-		}
+		String s = super.toText(b, propertyDescriptor);
+		return this.lpad(s, this.getSize(propertyDescriptor));
 	}
 
 }

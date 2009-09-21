@@ -16,28 +16,12 @@
  */
 package net.woodstock.rockframework.sys;
 
-import net.woodstock.rockframework.config.CoreConfig;
-import net.woodstock.rockframework.utils.StringUtils;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public abstract class SysLogger {
 
-	private static final String	KEY_LOG_WRAPPER	= "log.wrapper";
-
-	private static Log			log;
-
-	private static boolean		wrapper;
-
-	static {
-		String s = CoreConfig.getInstance().getValue(SysLogger.KEY_LOG_WRAPPER, "false");
-		if (!StringUtils.isEmpty(s)) {
-			SysLogger.wrapper = Boolean.parseBoolean(s);
-		} else {
-			SysLogger.wrapper = false;
-		}
-	}
+	private static Log	log;
 
 	private SysLogger() {
 		super();
@@ -47,9 +31,6 @@ public abstract class SysLogger {
 		try {
 			StackTraceElement[] stacks = Thread.currentThread().getStackTrace();
 			Class<?> clazz = Class.forName(stacks[2].getClassName());
-			if (SysLogger.wrapper) {
-				return new LogWrapper(LogFactory.getLog(clazz));
-			}
 			return LogFactory.getLog(clazz);
 		} catch (Exception e) {
 			return SysLogger.getCommonLogger();
@@ -58,10 +39,10 @@ public abstract class SysLogger {
 
 	private static Log getCommonLogger() {
 		if (SysLogger.log == null) {
-			if (SysLogger.wrapper) {
-				SysLogger.log = new LogWrapper(LogFactory.getLog(SysLogger.class));
-			} else {
-				SysLogger.log = LogFactory.getLog(SysLogger.class);
+			synchronized (SysLogger.class) {
+				if (SysLogger.log == null) {
+					SysLogger.log = LogFactory.getLog(SysLogger.class);
+				}
 			}
 		}
 		return SysLogger.log;

@@ -16,39 +16,6 @@
  */
 package net.woodstock.rockframework.domain.pojo.converter.token.impl;
 
-import java.util.Date;
-
-import net.woodstock.rockframework.domain.pojo.converter.token.TokenDate;
-import net.woodstock.rockframework.reflection.PropertyDescriptor;
-import net.woodstock.rockframework.utils.DateUtils;
-import net.woodstock.rockframework.utils.StringUtils;
-
-class DateConverter extends TokenAttributeConverterBase<Date> {
-
-	public Date fromText(String text, PropertyDescriptor propertyDescriptor) {
-		try {
-			Date d = null;
-			if (!StringUtils.isEmpty(text)) {
-				String format = propertyDescriptor.getAnnotation(TokenDate.class).format();
-				d = DateUtils.parse(text, format);
-			}
-			return d;
-		} catch (Exception e) {
-			throw new TokenConverterException(e);
-		}
-	}
-
-	public String toText(Date d, PropertyDescriptor propertyDescriptor) {
-		try {
-			String s = StringUtils.BLANK;
-			if (d != null) {
-				String format = propertyDescriptor.getAnnotation(TokenDate.class).format();
-				s = DateUtils.format(d, format);
-			}
-			return s;
-		} catch (Exception e) {
-			throw new TokenConverterException(e);
-		}
-	}
-
+class DateConverter extends net.woodstock.rockframework.domain.pojo.converter.common.impl.DateConverter {
+	//
 }

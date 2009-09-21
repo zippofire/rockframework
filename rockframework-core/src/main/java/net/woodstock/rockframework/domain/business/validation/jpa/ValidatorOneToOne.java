@@ -21,9 +21,9 @@ import java.util.Collection;
 import javax.persistence.OneToOne;
 
 import net.woodstock.rockframework.domain.Entity;
+import net.woodstock.rockframework.domain.business.ValidationException;
 import net.woodstock.rockframework.domain.business.ValidationResult;
 import net.woodstock.rockframework.domain.business.validation.Operation;
-import net.woodstock.rockframework.domain.business.validation.ValidationException;
 import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
 import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
 import net.woodstock.rockframework.domain.business.validation.local.validator.AbstractValidator;
@@ -48,12 +48,12 @@ public class ValidatorOneToOne extends AbstractValidator {
 				return context.getErrorResult(this.getInvalidTypeErrorMessage(context));
 			}
 
-			if ((operation == Operation.CREATE) || (operation == Operation.UPDATE)) {
+			if ((operation == Operation.SAVE) || (operation == Operation.UPDATE)) {
 				Entity<?> e = (Entity<?>) value;
 
 				JPAEntityValidator entityValidator = (JPAEntityValidator) JPAEntityValidator.getInstance();
 
-				Collection<ValidationResult> results = entityValidator.validate(context, e, Operation.RETRIEVE);
+				Collection<ValidationResult> results = entityValidator.validate(context, e, Operation.GET);
 				for (ValidationResult result : results) {
 					if (result.isError()) {
 						return context.getErrorResult(result.getMessage());

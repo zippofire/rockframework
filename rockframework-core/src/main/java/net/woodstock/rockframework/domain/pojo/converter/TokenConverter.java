@@ -17,8 +17,7 @@
 package net.woodstock.rockframework.domain.pojo.converter;
 
 import net.woodstock.rockframework.domain.Pojo;
-import net.woodstock.rockframework.domain.pojo.converter.token.impl.TokenConverterBase;
-import net.woodstock.rockframework.domain.pojo.converter.token.impl.TokenConverterException;
+import net.woodstock.rockframework.domain.pojo.converter.token.impl.TokenConverterHelper;
 
 public class TokenConverter implements Converter {
 
@@ -29,12 +28,12 @@ public class TokenConverter implements Converter {
 		this.delimiter = delimiter;
 	}
 
-	public <T extends Pojo> T from(Class<T> clazz, String s) throws TokenConverterException {
-		return TokenConverterBase.from(s, clazz, this.delimiter);
+	public <T extends Pojo> T from(Class<T> clazz, String s) {
+		return TokenConverterHelper.from(s, clazz, this.delimiter);
 	}
 
-	public String to(Pojo pojo) throws TokenConverterException {
-		return TokenConverterBase.to(pojo, this.delimiter);
+	public String to(Pojo pojo) {
+		return TokenConverterHelper.to(pojo, this.delimiter);
 	}
 
 }

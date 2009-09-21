@@ -20,8 +20,8 @@ import net.woodstock.rockframework.domain.Pojo;
 
 public interface Converter {
 
-	String to(Pojo pojo) throws Exception;
+	String to(Pojo pojo) throws ConverterException;
 
-	<T extends Pojo> T from(Class<T> clazz, String s) throws Exception;
+	<T extends Pojo> T from(Class<T> clazz, String s) throws ConverterException;
 
 }

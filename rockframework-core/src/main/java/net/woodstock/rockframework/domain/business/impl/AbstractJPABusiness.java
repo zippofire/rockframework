@@ -43,7 +43,7 @@ public abstract class AbstractJPABusiness extends AbstractBusiness {
 
 	// CRUD
 	public ValidationResult validateSave(Entity<?> entity) throws BusinessException {
-		return this.validate(entity, Operation.CREATE);
+		return this.validate(entity, Operation.SAVE);
 	}
 
 	public ValidationResult validateUpdate(Entity<?> entity) throws BusinessException {

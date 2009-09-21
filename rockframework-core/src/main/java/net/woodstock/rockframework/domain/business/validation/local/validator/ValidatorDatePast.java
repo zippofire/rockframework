@@ -18,8 +18,8 @@ package net.woodstock.rockframework.domain.business.validation.local.validator;
 
 import java.util.Date;
 
+import net.woodstock.rockframework.domain.business.ValidationException;
 import net.woodstock.rockframework.domain.business.ValidationResult;
-import net.woodstock.rockframework.domain.business.validation.ValidationException;
 import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
 import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
 

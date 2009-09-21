@@ -16,45 +16,6 @@
  */
 package net.woodstock.rockframework.domain.pojo.converter.token.impl;
 
-import net.woodstock.rockframework.domain.pojo.converter.token.TokenNumber;
-import net.woodstock.rockframework.reflection.PropertyDescriptor;
-import net.woodstock.rockframework.utils.NumberUtils;
-import net.woodstock.rockframework.utils.StringUtils;
-
-class IntegerConverter extends TokenAttributeConverterBase<Integer> {
-
-	public Integer fromText(String text, PropertyDescriptor propertyDescriptor) {
-		try {
-			Integer i = null;
-			if (!StringUtils.isEmpty(text)) {
-				if (propertyDescriptor.isAnnotationPresent(TokenNumber.class)) {
-					String format = propertyDescriptor.getAnnotation(TokenNumber.class).pattern();
-					i = new Integer(NumberUtils.parse(text, format).intValue());
-				} else {
-					i = new Integer(text);
-				}
-			}
-			return i;
-		} catch (Exception e) {
-			throw new TokenConverterException(e);
-		}
-	}
-
-	public String toText(Integer i, PropertyDescriptor propertyDescriptor) {
-		try {
-			String s = StringUtils.BLANK;
-			if (i != null) {
-				if (propertyDescriptor.isAnnotationPresent(TokenNumber.class)) {
-					String format = propertyDescriptor.getAnnotation(TokenNumber.class).pattern();
-					s = NumberUtils.format(i.intValue(), format);
-				} else {
-					s = i.toString();
-				}
-			}
-			return s;
-		} catch (Exception e) {
-			throw new TokenConverterException(e);
-		}
-	}
-
+class IntegerConverter extends net.woodstock.rockframework.domain.pojo.converter.common.impl.IntegerConverter {
+	//
 }

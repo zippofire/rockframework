@@ -16,42 +16,6 @@
  */
 package net.woodstock.rockframework.domain.pojo.converter.token.impl;
 
-import net.woodstock.rockframework.domain.pojo.converter.token.TokenBoolean;
-import net.woodstock.rockframework.reflection.PropertyDescriptor;
-import net.woodstock.rockframework.utils.StringUtils;
-
-class BooleanConverter extends TokenAttributeConverterBase<Boolean> {
-
-	public Boolean fromText(String text, PropertyDescriptor propertyDescriptor) {
-		try {
-			Boolean b = null;
-			if (!StringUtils.isEmpty(text)) {
-				if (text.equals(propertyDescriptor.getAnnotation(TokenBoolean.class).trueValue())) {
-					b = Boolean.TRUE;
-				} else {
-					b = Boolean.FALSE;
-				}
-			}
-			return b;
-		} catch (Exception e) {
-			throw new TokenConverterException(e);
-		}
-	}
-
-	public String toText(Boolean b, PropertyDescriptor propertyDescriptor) {
-		try {
-			String s = StringUtils.BLANK;
-			if (b != null) {
-				if (b.booleanValue()) {
-					s = propertyDescriptor.getAnnotation(TokenBoolean.class).trueValue();
-				} else {
-					s = propertyDescriptor.getAnnotation(TokenBoolean.class).falseValue();
-				}
-			}
-			return s;
-		} catch (Exception e) {
-			throw new TokenConverterException(e);
-		}
-	}
-
+class BooleanConverter extends net.woodstock.rockframework.domain.pojo.converter.common.impl.BooleanConverter {
+	//
 }

@@ -3,7 +3,7 @@ package net.woodstock.rockframework.json;
 import java.util.HashSet;
 
 import junit.framework.TestCase;
-import net.woodstock.rockframework.utils.JsonUtils;
+import net.woodstock.rockframework.domain.pojo.converter.JsonConverter;
 
 public class TestJavascript extends TestCase {
 
@@ -37,15 +37,15 @@ public class TestJavascript extends TestCase {
 
 	}
 
-	public void testPessoa() throws Exception {
+	public void xtestPessoa() throws Exception {
 		Pessoa pessoa = getPessoa("Teste");
 		pessoa.getTelefones().add(getTelefone(pessoa, "61", "34754728"));
 		pessoa.getTelefones().add(getTelefone(pessoa, "61", "92310557"));
 
-		System.out.println(JsonUtils.toJson(pessoa, new String[] { "telefones.tipo" }));
+		System.out.println(new JsonConverter().to(pessoa));
 	}
 
-	public void xtestEmpresa() throws Exception {
+	public void testEmpresa() throws Exception {
 		Empresa empresa = getEmpresa("Teste");
 
 		Pessoa pessoa1 = getPessoa("Teste 1");
@@ -59,6 +59,6 @@ public class TestJavascript extends TestCase {
 		empresa.getPessoas().add(pessoa1);
 		empresa.getPessoas().add(pessoa2);
 
-		System.out.println(JsonUtils.toJson(empresa, new String[] { "pessoas.telefones.tipo" }));
+		System.out.println(new JsonConverter().to(empresa));
 	}
 }

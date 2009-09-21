@@ -23,10 +23,10 @@ import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 
 import net.woodstock.rockframework.domain.Entity;
+import net.woodstock.rockframework.domain.business.ValidationException;
 import net.woodstock.rockframework.domain.business.ValidationResult;
 import net.woodstock.rockframework.domain.business.validation.EntityValidator;
 import net.woodstock.rockframework.domain.business.validation.Operation;
-import net.woodstock.rockframework.domain.business.validation.ValidationException;
 import net.woodstock.rockframework.domain.business.validation.ValidationListener;
 
 public class JPAEntityValidationListener implements ValidationListener {
@@ -50,7 +50,7 @@ public class JPAEntityValidationListener implements ValidationListener {
 
 	@PrePersist
 	public void preInsert(Entity<?> entity) {
-		Collection<ValidationResult> results = this.validator.validate(entity, Operation.CREATE);
+		Collection<ValidationResult> results = this.validator.validate(entity, Operation.SAVE);
 		for (ValidationResult result : results) {
 			if (result.isError()) {
 				throw new ValidationException(result.getMessage());

@@ -19,9 +19,9 @@ package net.woodstock.rockframework.domain.business.validation.jpa;
 import javax.persistence.GeneratedValue;
 
 import net.woodstock.rockframework.domain.Pojo;
+import net.woodstock.rockframework.domain.business.ValidationException;
 import net.woodstock.rockframework.domain.business.ValidationResult;
 import net.woodstock.rockframework.domain.business.validation.Operation;
-import net.woodstock.rockframework.domain.business.validation.ValidationException;
 import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
 import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
 import net.woodstock.rockframework.domain.business.validation.local.validator.AbstractValidator;
@@ -48,12 +48,12 @@ public class ValidatorId extends AbstractValidator {
 			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(parent.getClass());
 			PropertyDescriptor propertyDescriptor = beanDescriptor.getProperty(context.getName());
 
-			if ((operation == Operation.RETRIEVE) || (operation == Operation.UPDATE) || (operation == Operation.DELETE)) {
+			if ((operation == Operation.GET) || (operation == Operation.UPDATE) || (operation == Operation.DELETE)) {
 				if (value == null) {
 					return context.getErrorResult(this.getEmptyErrorMessage(context));
 				}
 				return context.getSuccessResult();
-			} else if (operation == Operation.CREATE) {
+			} else if (operation == Operation.SAVE) {
 				if (value == null) {
 					if (propertyDescriptor.isAnnotationPresent(GeneratedValue.class)) {
 						return context.getSuccessResult();

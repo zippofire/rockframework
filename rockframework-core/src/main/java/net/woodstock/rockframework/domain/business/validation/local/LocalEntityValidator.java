@@ -27,10 +27,10 @@ import java.util.Map;
 
 import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
+import net.woodstock.rockframework.domain.business.ValidationException;
 import net.woodstock.rockframework.domain.business.ValidationResult;
 import net.woodstock.rockframework.domain.business.validation.EntityValidator;
 import net.woodstock.rockframework.domain.business.validation.Operation;
-import net.woodstock.rockframework.domain.business.validation.ValidationException;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
@@ -105,7 +105,7 @@ public class LocalEntityValidator implements EntityValidator {
 				throw new ValidationException(CoreMessage.getInstance().getMessage(LocalEntityValidator.MESSAGE_ERROR_NULL));
 			}
 
-			if (operation == Operation.QUERY) {
+			if (operation == Operation.LIST) {
 				return;
 			}
 

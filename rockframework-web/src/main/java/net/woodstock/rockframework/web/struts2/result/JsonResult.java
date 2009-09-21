@@ -17,11 +17,9 @@
 package net.woodstock.rockframework.web.struts2.result;
 
 import java.io.PrintWriter;
-import java.util.Collection;
 
 import javax.servlet.http.HttpServletResponse;
 
-import net.woodstock.rockframework.utils.JsonUtils;
 import net.woodstock.rockframework.utils.StringUtils;
 
 import org.apache.struts2.StrutsStatics;
@@ -42,8 +40,6 @@ public class JsonResult extends BaseResult {
 
 	private String				charset				= JsonResult.JSON_CHARSET;
 
-	private int					maxLevel			= JsonUtils.ALL_LEVELS;
-
 	private String				root;
 
 	@Override
@@ -57,11 +53,11 @@ public class JsonResult extends BaseResult {
 
 		String json = null;
 
-		if (rootObject instanceof Collection) {
-			json = JsonUtils.toJson((Collection<?>) rootObject, this.ignoreProperties, this.maxLevel);
-		} else {
-			json = JsonUtils.toJson(rootObject, this.ignoreProperties, this.maxLevel);
-		}
+		// if (rootObject instanceof Collection) {
+		// json = JsonUtils.toJson((Collection<?>) rootObject, this.ignoreProperties, this.maxLevel);
+		// } else {
+		// json = JsonUtils.toJson(rootObject, this.ignoreProperties, this.maxLevel);
+		// }
 
 		response.setContentType(JsonResult.JSON_CONTENT_TYPE);
 		response.setCharacterEncoding(this.charset);
@@ -71,18 +67,6 @@ public class JsonResult extends BaseResult {
 	public void setCharset(String charset) {
 		if (!StringUtils.isEmpty(charset)) {
 			this.charset = charset;
-		}
-	}
-
-	public void setIgnoreProperties(String ignoreProperties) {
-		if (!StringUtils.isEmpty(ignoreProperties)) {
-			this.ignoreProperties = ignoreProperties.split(",");
-		}
-	}
-
-	public void setMaxLevel(String maxLevel) {
-		if (StringUtils.isEmpty(maxLevel)) {
-			this.maxLevel = Integer.parseInt(maxLevel);
 		}
 	}
 

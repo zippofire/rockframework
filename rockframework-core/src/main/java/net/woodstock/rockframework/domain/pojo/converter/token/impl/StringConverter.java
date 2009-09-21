@@ -16,32 +16,6 @@
  */
 package net.woodstock.rockframework.domain.pojo.converter.token.impl;
 
-import net.woodstock.rockframework.reflection.PropertyDescriptor;
-import net.woodstock.rockframework.utils.StringUtils;
-
-class StringConverter extends TokenAttributeConverterBase<String> {
-
-	public String fromText(String text, PropertyDescriptor propertyDescriptor) {
-		try {
-			String s = null;
-			if (!StringUtils.isEmpty(text)) {
-				s = text;
-			}
-			return s;
-		} catch (Exception e) {
-			throw new TokenConverterException(e);
-		}
-	}
-
-	public String toText(String s, PropertyDescriptor propertyDescriptor) {
-		try {
-			if (s == null) {
-				s = StringUtils.BLANK;
-			}
-			return s;
-		} catch (Exception e) {
-			throw new TokenConverterException(e);
-		}
-	}
-
+class StringConverter extends net.woodstock.rockframework.domain.pojo.converter.common.impl.StringConverter {
+	//
 }

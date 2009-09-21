@@ -18,6 +18,11 @@ package net.woodstock.rockframework.domain.business.validation;
 
 public enum Operation {
 
-	ALL, CREATE, RETRIEVE, UPDATE, DELETE, QUERY;
+	ALL,
+	SAVE, // CREATE
+	GET, // RETRIEVE
+	UPDATE,
+	DELETE,
+	LIST; // QUERY
 
 }

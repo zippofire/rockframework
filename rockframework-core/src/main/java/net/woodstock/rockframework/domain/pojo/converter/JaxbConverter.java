@@ -32,22 +32,30 @@ public class JaxbConverter implements Converter {
 		super();
 	}
 
-	public String to(Pojo pojo) throws JAXBException {
-		StringWriter writer = new StringWriter();
-		JAXBContext context = JAXBContext.newInstance(pojo.getClass());
-		Marshaller marshaller = context.createMarshaller();
-		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-		marshaller.marshal(pojo, writer);
-		return writer.toString();
+	public String to(Pojo pojo) {
+		try {
+			StringWriter writer = new StringWriter();
+			JAXBContext context = JAXBContext.newInstance(pojo.getClass());
+			Marshaller marshaller = context.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+			marshaller.marshal(pojo, writer);
+			return writer.toString();
+		} catch (JAXBException e) {
+			throw new ConverterException(e);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T extends Pojo> T from(Class<T> clazz, String s) throws JAXBException {
-		StringReader reader = new StringReader(s);
-		JAXBContext context = JAXBContext.newInstance(clazz);
-		Unmarshaller unmarshaller = context.createUnmarshaller();
-		Object obj = unmarshaller.unmarshal(reader);
-		return (T) obj;
+	public <T extends Pojo> T from(Class<T> clazz, String s) {
+		try {
+			StringReader reader = new StringReader(s);
+			JAXBContext context = JAXBContext.newInstance(clazz);
+			Unmarshaller unmarshaller = context.createUnmarshaller();
+			Object obj = unmarshaller.unmarshal(reader);
+			return (T) obj;
+		} catch (JAXBException e) {
+			throw new ConverterException(e);
+		}
 	}
 
 }

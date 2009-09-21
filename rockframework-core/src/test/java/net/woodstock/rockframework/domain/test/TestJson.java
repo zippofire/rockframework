@@ -1,60 +1,38 @@
 package net.woodstock.rockframework.domain.test;
 
-import java.lang.reflect.Method;
+import java.util.HashSet;
 
 import junit.framework.TestCase;
-
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
-
 import net.woodstock.rockframework.domain.pojo.converter.JsonConverter;
-import net.woodstock.rockframework.utils.StringUtils;
 
 public class TestJson extends TestCase {
 
-	private Bar getBar() {
-		Bar bar = new Bar();
-		bar.setId(new Integer(1));
-		bar.setValue("Bar");
-		return bar;
-	}
+	private Baz getBaz() {
+		Baz baz = new Baz();
+		baz.setId(new Integer(1));
+		baz.setName("baz");
+		baz.setBars(new HashSet<Bar>());
 
-	private Foo getFoo() {
 		Foo foo = new Foo();
 		foo.setId(new Integer(1));
 		foo.setName("Foo");
-		foo.setBar(this.getBar());
-		return foo;
+		baz.setFoo(foo);
+
+		for (int i = 0; i < 2; i++) {
+			Bar bar = new Bar();
+			bar.setId(new Integer(1));
+			bar.setValue("Bar");
+			bar.setBaz(baz);
+			baz.getBars().add(bar);
+		}
+		return baz;
 	}
 
-	public void xtestBar() throws Exception {
-		Bar bar = this.getBar();
+	public void test() throws Exception {
+		Baz baz = this.getBaz();
 
-		String s = new JsonConverter().to(bar);
+		String s = new JsonConverter().to(baz);
 		System.out.println(s);
-
-		bar = new JsonConverter().from(Bar.class, s);
-		new JsonConverter().to(bar);
-		System.out.println(s);
-	}
-
-	public void xtestFoo() throws Exception {
-		Foo foo = this.getFoo();
-
-		Class<?> clazz = foo.getClass();
-		String name = StringUtils.camelCase(clazz.getSimpleName());
-		XStream xstream = new XStream(new JsonHierarchicalStreamDriver());
-		xstream.alias(name, clazz);
-		
-		xstream.omitField(Bar.class, "bar");
-		
-		String s = xstream.toXML(foo);
-		System.out.println(s);
-	}
-	
-	public void testXYZ() throws Exception {
-		Method method = Foo.class.getMethod("setId", new Class[]{Integer.class});
-		System.out.println(method.getReturnType().equals(Void.TYPE));
 	}
 
 }

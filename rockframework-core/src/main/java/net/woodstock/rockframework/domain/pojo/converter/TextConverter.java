@@ -17,8 +17,7 @@
 package net.woodstock.rockframework.domain.pojo.converter;
 
 import net.woodstock.rockframework.domain.Pojo;
-import net.woodstock.rockframework.domain.pojo.converter.text.impl.TextConverterBase;
-import net.woodstock.rockframework.domain.pojo.converter.token.impl.TokenConverterException;
+import net.woodstock.rockframework.domain.pojo.converter.text.impl.TextConverterHelper;
 
 public class TextConverter implements Converter {
 
@@ -26,12 +25,12 @@ public class TextConverter implements Converter {
 		super();
 	}
 
-	public <T extends Pojo> T from(Class<T> clazz, String s) throws TokenConverterException {
-		return TextConverterBase.from(s, clazz);
+	public <T extends Pojo> T from(Class<T> clazz, String s) {
+		return TextConverterHelper.from(s, clazz);
 	}
 
-	public String to(Pojo pojo) throws TokenConverterException {
-		return TextConverterBase.to(pojo);
+	public String to(Pojo pojo) {
+		return TextConverterHelper.to(pojo);
 	}
 
 }

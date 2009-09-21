@@ -16,45 +16,6 @@
  */
 package net.woodstock.rockframework.domain.pojo.converter.token.impl;
 
-import net.woodstock.rockframework.domain.pojo.converter.token.TokenNumber;
-import net.woodstock.rockframework.reflection.PropertyDescriptor;
-import net.woodstock.rockframework.utils.NumberUtils;
-import net.woodstock.rockframework.utils.StringUtils;
-
-class LongConverter extends TokenAttributeConverterBase<Long> {
-
-	public Long fromText(String text, PropertyDescriptor propertyDescriptor) {
-		try {
-			Long l = null;
-			if (!StringUtils.isEmpty(text)) {
-				if (propertyDescriptor.isAnnotationPresent(TokenNumber.class)) {
-					String format = propertyDescriptor.getAnnotation(TokenNumber.class).pattern();
-					l = new Long(NumberUtils.parse(text, format).longValue());
-				} else {
-					l = new Long(text);
-				}
-			}
-			return l;
-		} catch (Exception e) {
-			throw new TokenConverterException(e);
-		}
-	}
-
-	public String toText(Long l, PropertyDescriptor propertyDescriptor) {
-		try {
-			String s = StringUtils.BLANK;
-			if (l != null) {
-				if (propertyDescriptor.isAnnotationPresent(TokenNumber.class)) {
-					String format = propertyDescriptor.getAnnotation(TokenNumber.class).pattern();
-					s = NumberUtils.format(l.longValue(), format);
-				} else {
-					s = l.toString();
-				}
-			}
-			return s;
-		} catch (Exception e) {
-			throw new TokenConverterException(e);
-		}
-	}
-
+class LongConverter extends net.woodstock.rockframework.domain.pojo.converter.common.impl.LongConverter {
+	//
 }

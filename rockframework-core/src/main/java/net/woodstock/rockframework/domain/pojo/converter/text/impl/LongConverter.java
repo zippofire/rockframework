@@ -16,45 +16,14 @@
  */
 package net.woodstock.rockframework.domain.pojo.converter.text.impl;
 
-import net.woodstock.rockframework.domain.pojo.converter.text.TextNumber;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
-import net.woodstock.rockframework.utils.NumberUtils;
-import net.woodstock.rockframework.utils.StringUtils;
 
-class LongConverter extends TextAttributeConverterBase<Long> {
+class LongConverter extends net.woodstock.rockframework.domain.pojo.converter.common.impl.LongConverter {
 
-	public Long fromText(String text, PropertyDescriptor propertyDescriptor) {
-		try {
-			Long l = null;
-			if (!StringUtils.isEmpty(text)) {
-				if (propertyDescriptor.isAnnotationPresent(TextNumber.class)) {
-					String format = propertyDescriptor.getAnnotation(TextNumber.class).pattern();
-					l = new Long(NumberUtils.parse(TextConverterBase.trim(text), format).longValue());
-				} else {
-					l = new Long(TextConverterBase.trim(text));
-				}
-			}
-			return l;
-		} catch (Exception e) {
-			throw new TextConverterException(e);
-		}
-	}
-
+	@Override
 	public String toText(Long l, PropertyDescriptor propertyDescriptor) {
-		try {
-			String s = StringUtils.BLANK;
-			if (l != null) {
-				if (propertyDescriptor.isAnnotationPresent(TextNumber.class)) {
-					String format = propertyDescriptor.getAnnotation(TextNumber.class).pattern();
-					s = NumberUtils.format(l.longValue(), format);
-				} else {
-					s = l.toString();
-				}
-			}
-			return TextConverterBase.ldap(s, this.getSize(propertyDescriptor));
-		} catch (Exception e) {
-			throw new TextConverterException(e);
-		}
+		String s = super.toText(l, propertyDescriptor);
+		return this.lpad(s, this.getSize(propertyDescriptor));
 	}
 
 }

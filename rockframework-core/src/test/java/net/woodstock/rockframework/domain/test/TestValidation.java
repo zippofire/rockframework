@@ -30,7 +30,7 @@ public class TestValidation extends TestCase {
 	public void testRockapi() throws Exception {
 		Foo foo = this.getFoo();
 
-		Collection<ValidationResult> results = LocalEntityValidator.getInstance().validate(foo, Operation.CREATE);
+		Collection<ValidationResult> results = LocalEntityValidator.getInstance().validate(foo, Operation.GET);
 
 		for (ValidationResult result : LocalValidationResult.getErrors(results)) {
 			LocalValidationResult localValidationResult = (LocalValidationResult) result;

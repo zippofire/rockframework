@@ -17,31 +17,13 @@
 package net.woodstock.rockframework.domain.pojo.converter.text.impl;
 
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
-import net.woodstock.rockframework.utils.StringUtils;
 
-class StringConverter extends TextAttributeConverterBase<String> {
+class StringConverter extends net.woodstock.rockframework.domain.pojo.converter.common.impl.StringConverter {
 
-	public String fromText(String text, PropertyDescriptor propertyDescriptor) {
-		try {
-			String s = null;
-			if (!StringUtils.isEmpty(text)) {
-				s = TextConverterBase.trim(text);
-			}
-			return s;
-		} catch (Exception e) {
-			throw new TextConverterException(e);
-		}
-	}
-
+	@Override
 	public String toText(String s, PropertyDescriptor propertyDescriptor) {
-		try {
-			if (s == null) {
-				s = StringUtils.BLANK;
-			}
-			return TextConverterBase.rdap(s, this.getSize(propertyDescriptor));
-		} catch (Exception e) {
-			throw new TextConverterException(e);
-		}
+		s = super.toText(s, propertyDescriptor);
+		return this.rpad(s, this.getSize(propertyDescriptor));
 	}
 
 }

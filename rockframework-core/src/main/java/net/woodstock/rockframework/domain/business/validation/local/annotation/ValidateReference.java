@@ -33,7 +33,7 @@ public @interface ValidateReference {
 
 	Operation[] operation();
 
-	Operation referenceOperaton() default Operation.RETRIEVE;
+	Operation referenceOperaton() default Operation.GET;
 
 	String message() default StringUtils.BLANK;
 

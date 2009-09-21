@@ -19,14 +19,17 @@ package net.woodstock.rockframework.domain.pojo.converter.text.impl;
 import java.util.Collection;
 
 import net.woodstock.rockframework.domain.Pojo;
+import net.woodstock.rockframework.domain.pojo.converter.ConverterException;
+import net.woodstock.rockframework.domain.pojo.converter.common.AttributeConverter;
+import net.woodstock.rockframework.domain.pojo.converter.common.Ignore;
+import net.woodstock.rockframework.domain.pojo.converter.common.Size;
+import net.woodstock.rockframework.domain.pojo.converter.common.impl.AbstractAttributeConverter;
 import net.woodstock.rockframework.domain.pojo.converter.text.TextCollection;
-import net.woodstock.rockframework.domain.pojo.converter.text.TextField;
-import net.woodstock.rockframework.domain.pojo.converter.text.TextIgnore;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
 
-class CollectionConverter implements TextAttributeConverter<Collection<?>> {
+class CollectionConverter extends AbstractAttributeConverter<Collection<?>> {
 
 	@SuppressWarnings("unchecked")
 	public Collection<?> fromText(String text, PropertyDescriptor propertyDescriptor) {
@@ -48,16 +51,16 @@ class CollectionConverter implements TextAttributeConverter<Collection<?>> {
 
 					BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(pojo.getClass());
 					for (PropertyDescriptor p : beanDescriptor.getProperties()) {
-						if (p.isAnnotationPresent(TextIgnore.class)) {
+						if (p.isAnnotationPresent(Ignore.class)) {
 							continue;
 						}
 
-						int size = p.getAnnotation(TextField.class).size();
+						int size = p.getAnnotation(Size.class).value();
 
 						String ss = s.substring(0, size);
 						s = s.substring(size);
 
-						TextAttributeConverter converter = TextConverterBase.getAttributeConverter(p.getType());
+						AttributeConverter converter = TextConverterHelper.getAttributeConverter(p.getType());
 
 						Object value = converter.fromText(ss, p);
 
@@ -65,14 +68,14 @@ class CollectionConverter implements TextAttributeConverter<Collection<?>> {
 					}
 					collection.add(pojo);
 				} else {
-					TextAttributeConverter converter = TextConverterBase.getAttributeConverter(textCollection.itemType());
+					AttributeConverter converter = TextConverterHelper.getAttributeConverter(textCollection.itemType());
 					Object o = converter.fromText(s, propertyDescriptor);
 					collection.add(o);
 				}
 			}
 			return collection;
 		} catch (Exception e) {
-			throw new TextConverterException(e);
+			throw new ConverterException(e);
 		}
 	}
 
@@ -87,30 +90,30 @@ class CollectionConverter implements TextAttributeConverter<Collection<?>> {
 						Pojo p = (Pojo) o;
 						BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(p.getClass());
 						for (PropertyDescriptor pd : beanDescriptor.getProperties()) {
-							if (propertyDescriptor.isAnnotationPresent(TextIgnore.class)) {
+							if (propertyDescriptor.isAnnotationPresent(Ignore.class)) {
 								continue;
 							}
 							Object value = pd.getValue(p);
-							TextAttributeConverter attributeConverter = TextConverterBase.getNullAttributeConverter();
+							AttributeConverter attributeConverter = TextConverterHelper.getNullAttributeConverter();
 							if (value != null) {
-								attributeConverter = TextConverterBase.getAttributeConverter(value.getClass());
+								attributeConverter = TextConverterHelper.getAttributeConverter(value.getClass());
 							}
 							String s = attributeConverter.toText(value, pd);
 							builder.append(s);
 						}
 					} else {
-						TextAttributeConverter attributeConverter = TextConverterBase.getAttributeConverter(textCollection.itemType());
+						AttributeConverter attributeConverter = TextConverterHelper.getAttributeConverter(textCollection.itemType());
 						builder.append(attributeConverter.toText(o, propertyDescriptor));
 					}
 				}
 			}
-			if (propertyDescriptor.isAnnotationPresent(TextField.class)) {
-				TextField textField = propertyDescriptor.getAnnotation(TextField.class);
-				return TextConverterBase.rdap(builder.toString(), textField.size());
+			if (propertyDescriptor.isAnnotationPresent(Size.class)) {
+				Size size = propertyDescriptor.getAnnotation(Size.class);
+				return this.rpad(builder.toString(), size.value());
 			}
 			return builder.toString();
 		} catch (Exception e) {
-			throw new TextConverterException(e);
+			throw new ConverterException(e);
 		}
 	}
 

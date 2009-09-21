@@ -31,10 +31,10 @@ import javax.persistence.OneToOne;
 
 import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
+import net.woodstock.rockframework.domain.business.ValidationException;
 import net.woodstock.rockframework.domain.business.ValidationResult;
 import net.woodstock.rockframework.domain.business.validation.EntityValidator;
 import net.woodstock.rockframework.domain.business.validation.Operation;
-import net.woodstock.rockframework.domain.business.validation.ValidationException;
 import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
 import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
 import net.woodstock.rockframework.domain.business.validation.local.Validator;
@@ -81,7 +81,7 @@ public class JPAEntityValidator implements EntityValidator {
 				throw new ValidationException(CoreMessage.getInstance().getMessage(LocalEntityValidator.MESSAGE_ERROR_NULL));
 			}
 
-			if (operation == Operation.QUERY) {
+			if (operation == Operation.LIST) {
 				return;
 			}
 
@@ -94,7 +94,7 @@ public class JPAEntityValidator implements EntityValidator {
 				for (Annotation annotation : propertyDescriptor.getAnnotations()) {
 					Validator validator = null;
 					boolean validate = false;
-					if (operation == Operation.RETRIEVE) {
+					if (operation == Operation.GET) {
 						if (annotation instanceof Id) {
 							if (JPAEntityValidator.validatorId == null) {
 								JPAEntityValidator.validatorId = new ValidatorId();
