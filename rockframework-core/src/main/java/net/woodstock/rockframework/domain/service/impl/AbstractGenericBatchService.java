@@ -31,7 +31,7 @@ public class AbstractGenericBatchService extends AbstractGenericService implemen
 	}
 
 	@Override
-	public void save(Iterable<Entity<?>> entities) throws ServiceException, BusinessException, PersistenceException {
+	public void save(Entity<?>... entities) throws ServiceException, BusinessException, PersistenceException {
 		for (Entity<?> entity : entities) {
 			ValidationResult result = this.getBusiness().validateSave(entity);
 			if (result.isError()) {
@@ -44,7 +44,7 @@ public class AbstractGenericBatchService extends AbstractGenericService implemen
 	}
 
 	@Override
-	public void update(Iterable<Entity<?>> entities) throws ServiceException, BusinessException, PersistenceException {
+	public void update(Entity<?>... entities) throws ServiceException, BusinessException, PersistenceException {
 		for (Entity<?> entity : entities) {
 			ValidationResult result = this.getBusiness().validateUpdate(entity);
 			if (result.isError()) {
@@ -57,7 +57,7 @@ public class AbstractGenericBatchService extends AbstractGenericService implemen
 	}
 
 	@Override
-	public void delete(Iterable<Entity<?>> entities) throws ServiceException, BusinessException, PersistenceException {
+	public void delete(Entity<?>... entities) throws ServiceException, BusinessException, PersistenceException {
 		for (Entity<?> entity : entities) {
 			ValidationResult result = this.getBusiness().validateDelete(entity);
 			if (result.isError()) {

@@ -14,18 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.service;
+package net.woodstock.rockframework.reflection;
 
-import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.domain.business.BusinessException;
-import net.woodstock.rockframework.domain.persistence.PersistenceException;
+public interface PropertyNavigator {
 
-public interface GenericBatchService extends GenericService {
+	String getCanonicalName();
 
-	void save(Entity<?>... entities) throws ServiceException, BusinessException, PersistenceException;
+	String getName();
 
-	void update(Entity<?>... entities) throws ServiceException, BusinessException, PersistenceException;
+	BeanNavigator getParent();
 
-	void delete(Entity<?>... entities) throws ServiceException, BusinessException, PersistenceException;
+	Class<?> getType();
+
+	// Get/Set Value
+	Object getValue();
+
+	void setValue(Object value);
 
 }

@@ -27,9 +27,9 @@ import net.woodstock.rockframework.domain.service.ServiceException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-public abstract class SpringGenericServiceImpl extends AbstractGenericBatchService {
+public abstract class SpringGenericService extends AbstractGenericBatchService {
 
-	public SpringGenericServiceImpl() {
+	public SpringGenericService() {
 		super();
 	}
 
@@ -72,19 +72,19 @@ public abstract class SpringGenericServiceImpl extends AbstractGenericBatchServi
 	// Batch
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public void save(Iterable<Entity<?>> entities) throws ServiceException, BusinessException, PersistenceException {
+	public void save(Entity<?>... entities) throws ServiceException, BusinessException, PersistenceException {
 		super.save(entities);
 	}
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public void update(Iterable<Entity<?>> entities) throws ServiceException, BusinessException, PersistenceException {
+	public void update(Entity<?>... entities) throws ServiceException, BusinessException, PersistenceException {
 		super.update(entities);
 	}
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public void delete(Iterable<Entity<?>> entities) throws ServiceException, BusinessException, PersistenceException {
+	public void delete(Entity<?>... entities) throws ServiceException, BusinessException, PersistenceException {
 		super.delete(entities);
 	}
 
