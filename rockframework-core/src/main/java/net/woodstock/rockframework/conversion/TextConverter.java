@@ -16,10 +16,7 @@
  */
 package net.woodstock.rockframework.conversion;
 
-public interface Converter<F, T> {
 
-	T from(ConverterContext context, F f) throws ConverterException;
-
-	F to(ConverterContext context, T t) throws ConverterException;
-
+public interface TextConverter<T> extends Converter<String, T> {
+	//
 }

@@ -18,10 +18,10 @@ package net.woodstock.rockframework.conversion.common.converters;
 
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.conversion.ConverterException;
-import net.woodstock.rockframework.conversion.common.AbstractConverter;
+import net.woodstock.rockframework.conversion.common.AbstractTextConverter;
 import net.woodstock.rockframework.utils.StringUtils;
 
-public class CharacterConverter extends AbstractConverter<Character> {
+public class CharacterConverter extends AbstractTextConverter<Character> {
 
 	@Override
 	public Character from(ConverterContext context, String s) throws ConverterException {

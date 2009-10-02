@@ -18,6 +18,7 @@ package net.woodstock.rockframework.conversion.common;
 
 import java.lang.annotation.Annotation;
 
+
 public class SimpleConverterContext extends AbstractConverterContext {
 
 	public SimpleConverterContext() {

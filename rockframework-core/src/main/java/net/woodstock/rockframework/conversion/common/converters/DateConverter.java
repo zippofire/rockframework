@@ -23,11 +23,11 @@ import java.util.Date;
 
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.conversion.ConverterException;
-import net.woodstock.rockframework.conversion.common.AbstractConverter;
+import net.woodstock.rockframework.conversion.common.AbstractTextConverter;
 import net.woodstock.rockframework.conversion.common.Format;
 import net.woodstock.rockframework.utils.StringUtils;
 
-public class DateConverter extends AbstractConverter<Date> {
+public class DateConverter extends AbstractTextConverter<Date> {
 
 	@Override
 	public Date from(ConverterContext context, String s) throws ConverterException {

@@ -5,10 +5,12 @@ import java.lang.reflect.Field;
 
 import junit.framework.TestCase;
 import net.woodstock.rockframework.conversion.Converter;
+import net.woodstock.rockframework.conversion.TextConverter;
 import net.woodstock.rockframework.conversion.text.converters.BeanConverter;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
+import net.woodstock.rockframework.xml.dom.XmlDocument;
 
 public class TextTest extends TestCase {
 
@@ -17,9 +19,19 @@ public class TextTest extends TestCase {
 		foo.setId(new Integer(1));
 		foo.setName("Lourival Sabino");
 
-		Converter<Object> converter = new BeanConverter();
+		TextConverter<Object> converter = new BeanConverter();
 		String s = converter.to(null, foo);
 		System.out.println(s);
+	}
+
+	public void test2() throws Exception {
+		Foo foo = new Foo();
+		foo.setId(new Integer(1));
+		foo.setName("Lourival Sabino");
+
+		Converter<XmlDocument, Object> converter = new net.woodstock.rockframework.conversion.xml.converters.BeanConverter();
+		XmlDocument doc = converter.to(null, foo);
+		System.out.println(doc);
 	}
 
 	public void xtest2() throws Exception {

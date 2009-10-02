@@ -14,12 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.conversion;
+package net.woodstock.rockframework.conversion.common;
 
-public interface Converter<F, T> {
+import net.woodstock.rockframework.conversion.TextConverter;
+import net.woodstock.rockframework.sys.SysLogger;
 
-	T from(ConverterContext context, F f) throws ConverterException;
+import org.apache.commons.logging.Log;
 
-	F to(ConverterContext context, T t) throws ConverterException;
+public abstract class AbstractTextConverter<T> implements TextConverter<T> {
+
+	public Log getLogger() {
+		return SysLogger.getLogger();
+	}
 
 }

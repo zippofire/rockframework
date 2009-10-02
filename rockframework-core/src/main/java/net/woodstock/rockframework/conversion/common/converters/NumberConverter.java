@@ -21,11 +21,11 @@ import java.text.ParseException;
 
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.conversion.ConverterException;
-import net.woodstock.rockframework.conversion.common.AbstractConverter;
+import net.woodstock.rockframework.conversion.common.AbstractTextConverter;
 import net.woodstock.rockframework.conversion.common.Format;
 import net.woodstock.rockframework.utils.StringUtils;
 
-public abstract class NumberConverter<T extends Number> extends AbstractConverter<T> {
+public abstract class NumberConverter<T extends Number> extends AbstractTextConverter<T> {
 
 	@Override
 	public T from(ConverterContext context, String s) throws ConverterException {

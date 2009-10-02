@@ -21,46 +21,16 @@ import net.woodstock.rockframework.conversion.ConverterException;
 import net.woodstock.rockframework.conversion.common.AbstractTextConverter;
 import net.woodstock.rockframework.utils.StringUtils;
 
-public class BooleanConverter extends AbstractTextConverter<Boolean> {
+public class NullConverter extends AbstractTextConverter<Object> {
 
 	@Override
-	public Boolean from(ConverterContext context, String s) throws ConverterException {
-		if (StringUtils.isEmpty(s)) {
-			return null;
-		}
-		if ((context != null) && (context.isAnnotationPresent(BooleanFormat.class))) {
-			BooleanFormat format = context.getAnnotation(BooleanFormat.class);
-			if (s.equals(format.trueValue())) {
-				return Boolean.TRUE;
-			} else if (s.equals(format.falseValue())) {
-				return Boolean.FALSE;
-			}
-			return null;
-		}
-		return new Boolean(s);
+	public Object from(ConverterContext context, String s) throws ConverterException {
+		return null;
 	}
 
 	@Override
-	public String to(ConverterContext context, Boolean t) throws ConverterException {
-		if (t == null) {
-			return StringUtils.BLANK;
-		}
-		if ((context != null) && (context.isAnnotationPresent(BooleanFormat.class))) {
-			BooleanFormat format = context.getAnnotation(BooleanFormat.class);
-			if (t.booleanValue()) {
-				return format.trueValue();
-			}
-			return format.falseValue();
-		}
-		return t.toString();
-	}
-
-	public static @interface BooleanFormat {
-
-		String trueValue();
-
-		String falseValue();
-
+	public String to(ConverterContext context, Object t) throws ConverterException {
+		return StringUtils.BLANK;
 	}
 
 }

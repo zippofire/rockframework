@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.conversion.text.converters;
+package net.woodstock.rockframework.conversion.xml.converters;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -23,18 +23,37 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.woodstock.rockframework.conversion.Converter;
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.conversion.ConverterException;
 import net.woodstock.rockframework.conversion.Ignore;
 import net.woodstock.rockframework.conversion.TextConverter;
-import net.woodstock.rockframework.conversion.common.AbstractTextConverter;
+import net.woodstock.rockframework.conversion.common.AbstractConverter;
 import net.woodstock.rockframework.conversion.common.BeanConverterContext;
 import net.woodstock.rockframework.conversion.common.PropertyConverterContext;
+import net.woodstock.rockframework.conversion.common.converters.BigDecimalConverter;
+import net.woodstock.rockframework.conversion.common.converters.BigIntegerConverter;
+import net.woodstock.rockframework.conversion.common.converters.BooleanConverter;
+import net.woodstock.rockframework.conversion.common.converters.ByteConverter;
+import net.woodstock.rockframework.conversion.common.converters.CharacterConverter;
+import net.woodstock.rockframework.conversion.common.converters.DateConverter;
+import net.woodstock.rockframework.conversion.common.converters.DoubleConverter;
+import net.woodstock.rockframework.conversion.common.converters.FloatConverter;
+import net.woodstock.rockframework.conversion.common.converters.IntegerConverter;
+import net.woodstock.rockframework.conversion.common.converters.LongConverter;
+import net.woodstock.rockframework.conversion.common.converters.NullConverter;
+import net.woodstock.rockframework.conversion.common.converters.ShortConverter;
+import net.woodstock.rockframework.conversion.common.converters.StringConverter;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
+import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.xml.dom.XmlDocument;
+import net.woodstock.rockframework.xml.dom.XmlElement;
 
-public class BeanConverter extends AbstractTextConverter<Object> {
+public class BeanConverter extends AbstractConverter<XmlDocument, Object> {
+
+	private static final String						CLASS_ATTRIBUTE	= "class";
 
 	private static Map<Class<?>, TextConverter<?>>	converters;
 
@@ -63,20 +82,23 @@ public class BeanConverter extends AbstractTextConverter<Object> {
 	}
 
 	@Override
-	public Object from(ConverterContext context, String s) throws ConverterException {
+	public Object from(ConverterContext context, XmlDocument f) throws ConverterException {
 		return null;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public String to(ConverterContext context, Object t) throws ConverterException {
+	public XmlDocument to(ConverterContext context, Object t) throws ConverterException {
 		if (context == null) {
 			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(t.getClass());
 			context = new BeanConverterContext(beanDescriptor, t);
 		}
 
-		StringBuilder builder = new StringBuilder();
 		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(t.getClass());
+		XmlDocument document = new XmlDocument(this.getElementName(beanDescriptor.getName()));
+		XmlElement root = document.getRoot();
+		root.setAttribute(BeanConverter.CLASS_ATTRIBUTE, beanDescriptor.getType().getCanonicalName());
+
 		for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
 			if (propertyDescriptor.isAnnotationPresent(Ignore.class)) {
 				continue;
@@ -85,26 +107,63 @@ public class BeanConverter extends AbstractTextConverter<Object> {
 			Class<?> type = propertyDescriptor.getType();
 			Object value = propertyDescriptor.getValue(t);
 			ConverterContext subContext = new PropertyConverterContext(propertyDescriptor, context, name, type, value);
-			TextConverter converter = BeanConverter.nullConverter;
+			Converter converter = BeanConverter.nullConverter;
 			if (value != null) {
 				converter = this.getConverter(value.getClass());
 			}
-			String s = (String) converter.to(subContext, value);
-			builder.append(s);
+			if (converter instanceof BeanConverter) {
+				XmlElement element = root.addElement(this.getElementName(name));
+				XmlDocument doc = (XmlDocument) converter.to(subContext, value);
+				for (XmlElement e : doc.getRoot().getElements()) {
+					element.addElement(e);
+				}
+			} else {
+				String s = (String) converter.to(subContext, value);
+				if (StringUtils.isEmpty(s)) {
+					root.addElement(this.getElementName(name));
+				} else {
+					root.addElement(this.getElementName(name), s);
+				}
+			}
 		}
-		String s = builder.toString();
-		int size = TextConverterHelper.getSize(context);
-		return TextConverterHelper.lpad(s, size);
+		return document;
 	}
 
 	// Util
-	private TextConverter<?> getConverter(Class<?> clazz) {
+	private Converter<?, ?> getConverter(Class<?> clazz) {
 		for (Entry<Class<?>, TextConverter<?>> entry : BeanConverter.converters.entrySet()) {
 			if (entry.getKey().isAssignableFrom(clazz)) {
 				return entry.getValue();
 			}
 		}
 		return this;
+	}
+
+	private String getElementName(String s) {
+		StringBuilder b = new StringBuilder();
+		boolean charUpper = false;
+		boolean numeric = false;
+		for (char c : s.toCharArray()) {
+			if ((Character.isLetter(c)) && (Character.isUpperCase(c))) {
+				c = Character.toLowerCase(c);
+				if ((b.length() > 0) && (!charUpper)) {
+					b.append('-');
+				}
+				charUpper = true;
+				numeric = false;
+			} else if (Character.isDigit(c)) {
+				if ((b.length() > 0) && (!numeric)) {
+					b.append('-');
+				}
+				charUpper = false;
+				numeric = true;
+			} else {
+				charUpper = false;
+				numeric = false;
+			}
+			b.append(c);
+		}
+		return b.toString();
 	}
 
 }

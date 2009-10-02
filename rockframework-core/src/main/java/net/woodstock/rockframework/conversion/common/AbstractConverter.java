@@ -21,7 +21,7 @@ import net.woodstock.rockframework.sys.SysLogger;
 
 import org.apache.commons.logging.Log;
 
-public abstract class AbstractConverter<T> implements Converter<T> {
+public abstract class AbstractConverter<F, T> implements Converter<F, T> {
 
 	public Log getLogger() {
 		return SysLogger.getLogger();

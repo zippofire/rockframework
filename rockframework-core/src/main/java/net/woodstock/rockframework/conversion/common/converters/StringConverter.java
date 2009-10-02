@@ -18,9 +18,9 @@ package net.woodstock.rockframework.conversion.common.converters;
 
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.conversion.ConverterException;
-import net.woodstock.rockframework.conversion.common.AbstractConverter;
+import net.woodstock.rockframework.conversion.common.AbstractTextConverter;
 
-public class StringConverter extends AbstractConverter<String> {
+public class StringConverter extends AbstractTextConverter<String> {
 
 	@Override
 	public String from(ConverterContext context, String s) throws ConverterException {
