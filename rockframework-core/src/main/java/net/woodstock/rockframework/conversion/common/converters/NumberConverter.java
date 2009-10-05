@@ -16,6 +16,7 @@
  */
 package net.woodstock.rockframework.conversion.common.converters;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 
@@ -39,7 +40,8 @@ public abstract class NumberConverter<T extends Number> extends AbstractTextConv
 				Number n = decimalFormat.parse(s);
 				return this.toNumber(n);
 			}
-			return null;
+			BigDecimal bd = new BigDecimal(s);
+			return this.toNumber(bd);
 		} catch (ParseException e) {
 			throw new ConverterException(e);
 		}

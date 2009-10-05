@@ -4,7 +4,7 @@ import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.conversion.text.Size;
 import net.woodstock.rockframework.utils.StringUtils;
 
-public abstract class TextConverterHelper {
+abstract class TextConverterHelper {
 
 	private TextConverterHelper() {
 		//

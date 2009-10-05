@@ -34,20 +34,15 @@ abstract class AbstractConverterContext implements ConverterContext {
 
 	private Class<?>				type;
 
-	private Object					value;
+	private Object					object;
 
 	private Queue<Object>			queue;
 
-	public AbstractConverterContext() {
-		super();
-	}
-
-	public AbstractConverterContext(ConverterContext parent, String name, Class<?> type, Object value) {
+	public AbstractConverterContext(ConverterContext parent, String name, Class<?> type) {
 		super();
 		this.parent = parent;
 		this.name = name;
 		this.type = type;
-		this.value = value;
 		this.queue = new LinkedList<Object>();
 	}
 
@@ -76,12 +71,12 @@ abstract class AbstractConverterContext implements ConverterContext {
 		this.type = type;
 	}
 
-	public Object getValue() {
-		return this.value;
+	public Object getObject() {
+		return this.object;
 	}
 
-	public void setValue(Object value) {
-		this.value = value;
+	public void setObject(Object object) {
+		this.object = object;
 	}
 
 	public Queue<Object> getQueue() {

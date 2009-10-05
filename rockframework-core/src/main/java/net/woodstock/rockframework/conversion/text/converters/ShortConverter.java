@@ -19,7 +19,7 @@ package net.woodstock.rockframework.conversion.text.converters;
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.conversion.ConverterException;
 
-public class ShortConverter extends net.woodstock.rockframework.conversion.common.converters.ShortConverter {
+class ShortConverter extends net.woodstock.rockframework.conversion.common.converters.ShortConverter {
 
 	@Override
 	public Short from(ConverterContext context, String s) throws ConverterException {

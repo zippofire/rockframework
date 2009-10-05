@@ -19,7 +19,7 @@ package net.woodstock.rockframework.conversion.text.converters;
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.conversion.ConverterException;
 
-public class LongConverter extends net.woodstock.rockframework.conversion.common.converters.LongConverter {
+class LongConverter extends net.woodstock.rockframework.conversion.common.converters.LongConverter {
 
 	@Override
 	public Long from(ConverterContext context, String s) throws ConverterException {

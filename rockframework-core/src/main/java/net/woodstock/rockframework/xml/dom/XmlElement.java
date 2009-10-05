@@ -66,6 +66,11 @@ public class XmlElement extends ElementWrapper {
 		this.setElement(e);
 	}
 
+	// Document
+	public XmlDocument getOwnerXmlDocument() {
+		return XmlDocument.toXmlDocument(this.getOwnerDocument());
+	}
+
 	public CDATASection addCDATASection(String data) {
 		CDATASection cdata = this.getOwnerDocument().createCDATASection(data);
 		this.appendChild(cdata);

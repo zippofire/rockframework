@@ -21,7 +21,7 @@ import java.util.Date;
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.conversion.ConverterException;
 
-public class DateConverter extends net.woodstock.rockframework.conversion.common.converters.DateConverter {
+class DateConverter extends net.woodstock.rockframework.conversion.common.converters.DateConverter {
 
 	@Override
 	public Date from(ConverterContext context, String s) throws ConverterException {

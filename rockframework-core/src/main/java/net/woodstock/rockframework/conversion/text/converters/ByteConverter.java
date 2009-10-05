@@ -19,7 +19,7 @@ package net.woodstock.rockframework.conversion.text.converters;
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.conversion.ConverterException;
 
-public class ByteConverter extends net.woodstock.rockframework.conversion.common.converters.ByteConverter {
+class ByteConverter extends net.woodstock.rockframework.conversion.common.converters.ByteConverter {
 
 	@Override
 	public Byte from(ConverterContext context, String s) throws ConverterException {

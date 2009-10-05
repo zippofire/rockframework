@@ -3,7 +3,7 @@ package net.woodstock.rockframework.domain.conversion;
 import net.woodstock.rockframework.conversion.text.Size;
 import net.woodstock.rockframework.domain.util.IntegerEntity;
 
-public class Foo extends IntegerEntity {
+public class Bar extends IntegerEntity {
 
 	private static final long	serialVersionUID	= 1L;
 
@@ -13,10 +13,7 @@ public class Foo extends IntegerEntity {
 	@Size(50)
 	private String				name;
 
-	@Size(60)
-	private Bar					bar;
-
-	public Foo() {
+	public Bar() {
 		super();
 	}
 
@@ -36,22 +33,12 @@ public class Foo extends IntegerEntity {
 		this.name = name;
 	}
 
-	public Bar getBar() {
-		return this.bar;
-	}
-
-	public void setBar(Bar bar) {
-		this.bar = bar;
-	}
-
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("ID: " + this.id);
 		builder.append(" ");
 		builder.append("Name: " + this.name);
-		builder.append(" ");
-		builder.append("Bar: [" + this.bar + "]");
 		return builder.toString();
 	}
 

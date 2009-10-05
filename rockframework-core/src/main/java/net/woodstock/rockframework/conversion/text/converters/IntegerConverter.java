@@ -19,7 +19,7 @@ package net.woodstock.rockframework.conversion.text.converters;
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.conversion.ConverterException;
 
-public class IntegerConverter extends net.woodstock.rockframework.conversion.common.converters.IntegerConverter {
+class IntegerConverter extends net.woodstock.rockframework.conversion.common.converters.IntegerConverter {
 
 	@Override
 	public Integer from(ConverterContext context, String s) throws ConverterException {

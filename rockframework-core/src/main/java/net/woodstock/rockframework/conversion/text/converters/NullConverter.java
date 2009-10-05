@@ -21,7 +21,7 @@ import net.woodstock.rockframework.conversion.ConverterException;
 import net.woodstock.rockframework.conversion.common.AbstractTextConverter;
 import net.woodstock.rockframework.utils.StringUtils;
 
-public class NullConverter extends AbstractTextConverter<Object> {
+class NullConverter extends AbstractTextConverter<Object> {
 
 	@Override
 	public Object from(ConverterContext context, String s) throws ConverterException {

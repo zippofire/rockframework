@@ -18,15 +18,21 @@ package net.woodstock.rockframework.conversion.common;
 
 import java.lang.annotation.Annotation;
 
+import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
+import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
 
 public class BeanConverterContext extends AbstractConverterContext {
 
 	private BeanDescriptor	beanDescriptor;
 
-	public BeanConverterContext(BeanDescriptor beanDescriptor, Object value) {
-		super(null, beanDescriptor.getName(), beanDescriptor.getType(), value);
-		this.beanDescriptor = beanDescriptor;
+	public BeanConverterContext(ConverterContext parent, Class<?> type) {
+		super(parent, type.getName(), type);
+		this.beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(type);
+	}
+
+	public BeanDescriptor getBeanDescriptor() {
+		return this.beanDescriptor;
 	}
 
 	@Override

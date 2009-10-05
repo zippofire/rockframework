@@ -19,7 +19,7 @@ package net.woodstock.rockframework.conversion.text.converters;
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.conversion.ConverterException;
 
-public class FloatConverter extends net.woodstock.rockframework.conversion.common.converters.FloatConverter {
+class FloatConverter extends net.woodstock.rockframework.conversion.common.converters.FloatConverter {
 
 	@Override
 	public Float from(ConverterContext context, String s) throws ConverterException {

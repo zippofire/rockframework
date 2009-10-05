@@ -19,7 +19,7 @@ package net.woodstock.rockframework.conversion.text.converters;
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.conversion.ConverterException;
 
-public class CharacterConverter extends net.woodstock.rockframework.conversion.common.converters.CharacterConverter {
+class CharacterConverter extends net.woodstock.rockframework.conversion.common.converters.CharacterConverter {
 
 	@Override
 	public Character from(ConverterContext context, String s) throws ConverterException {

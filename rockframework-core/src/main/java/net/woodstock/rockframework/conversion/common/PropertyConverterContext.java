@@ -19,15 +19,21 @@ package net.woodstock.rockframework.conversion.common;
 import java.lang.annotation.Annotation;
 
 import net.woodstock.rockframework.conversion.ConverterContext;
+import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 
 public class PropertyConverterContext extends AbstractConverterContext {
 
 	private PropertyDescriptor	propertyDescriptor;
 
-	public PropertyConverterContext(PropertyDescriptor propertyDescriptor, ConverterContext parent, String name, Class<?> type, Object value) {
-		super(parent, name, type, value);
-		this.propertyDescriptor = propertyDescriptor;
+	public PropertyConverterContext(ConverterContext parent, String name, Class<?> type) {
+		super(parent, name, type);
+		if (!(parent instanceof BeanConverterContext)) {
+			throw new IllegalArgumentException("Parent must be an instance of " + BeanConverterContext.class.getCanonicalName());
+		}
+		BeanConverterContext context = (BeanConverterContext) parent;
+		BeanDescriptor beanDescriptor = context.getBeanDescriptor();
+		this.propertyDescriptor = beanDescriptor.getProperty(name);
 	}
 
 	@Override

@@ -29,7 +29,7 @@ public interface ConverterContext {
 
 	Class<?> getType();
 
-	Object getValue();
+	Object getObject();
 
 	// Stack
 	Queue<Object> getQueue();

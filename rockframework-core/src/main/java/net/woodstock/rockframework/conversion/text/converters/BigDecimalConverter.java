@@ -21,7 +21,7 @@ import java.math.BigDecimal;
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.conversion.ConverterException;
 
-public class BigDecimalConverter extends net.woodstock.rockframework.conversion.common.converters.BigDecimalConverter {
+class BigDecimalConverter extends net.woodstock.rockframework.conversion.common.converters.BigDecimalConverter {
 
 	@Override
 	public BigDecimal from(ConverterContext context, String s) throws ConverterException {

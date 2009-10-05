@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.conversion.text.converters;
+package net.woodstock.rockframework.conversion.json.converters;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -30,17 +30,23 @@ import net.woodstock.rockframework.conversion.TextConverter;
 import net.woodstock.rockframework.conversion.common.AbstractTextConverter;
 import net.woodstock.rockframework.conversion.common.BeanConverterContext;
 import net.woodstock.rockframework.conversion.common.PropertyConverterContext;
-import net.woodstock.rockframework.conversion.text.Size;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
-import net.woodstock.rockframework.utils.StringUtils;
 
 public class BeanConverter extends AbstractTextConverter<Object> {
 
 	private static Map<Class<?>, TextConverter<?>>	converters;
 
 	private static TextConverter<?>					nullConverter;
+
+	private static String							BEGIN_OBJECT		= "{";
+
+	private static String							END_OBJECT			= "}";
+
+	private static String							VALUE_SEPARATOR		= ": ";
+
+	private static String							PROPERTY_SEPARATOR	= ", ";
 
 	public BeanConverter() {
 		super();
@@ -65,51 +71,8 @@ public class BeanConverter extends AbstractTextConverter<Object> {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public Object from(ConverterContext context, String s) throws ConverterException {
-		if (context == null) {
-			throw new IllegalArgumentException("Context must be not null");
-		}
-		if (context.getType() == null) {
-			throw new IllegalArgumentException("Type must be not null");
-		}
-		try {
-			Class<?> clazz = context.getType();
-			Object obj = clazz.newInstance();
-			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(clazz);
-
-			if (!(context instanceof BeanConverterContext)) {
-				context = new BeanConverterContext(context.getParent(), context.getType());
-			}
-
-			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
-				if (propertyDescriptor.isAnnotationPresent(Ignore.class)) {
-					continue;
-				}
-				String name = propertyDescriptor.getName();
-				Class<?> type = propertyDescriptor.getType();
-				if (!propertyDescriptor.isAnnotationPresent(Size.class)) {
-					throw new ConverterException("Missing @Size in " + beanDescriptor.getName() + "." + propertyDescriptor.getName());
-				}
-				int size = propertyDescriptor.getAnnotation(Size.class).value();
-				String str = s.substring(0, size);
-
-				ConverterContext subContext = new PropertyConverterContext(context, name, type);
-				TextConverter converter = BeanConverter.nullConverter;
-				if (!StringUtils.isEmpty(str)) {
-					converter = this.getConverter(type);
-				}
-				Object value = converter.from(subContext, str);
-				propertyDescriptor.setValue(obj, value);
-
-				s = s.substring(size);
-			}
-			return obj;
-		} catch (ConverterException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new ConverterException(e);
-		}
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -124,10 +87,13 @@ public class BeanConverter extends AbstractTextConverter<Object> {
 		try {
 			StringBuilder builder = new StringBuilder();
 			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(t.getClass());
+			boolean first = true;
 
 			if (!(context instanceof BeanConverterContext)) {
 				context = new BeanConverterContext(context.getParent(), t.getClass());
 			}
+
+			builder.append(BeanConverter.BEGIN_OBJECT);
 
 			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
 				if (propertyDescriptor.isAnnotationPresent(Ignore.class)) {
@@ -142,11 +108,24 @@ public class BeanConverter extends AbstractTextConverter<Object> {
 					converter = this.getConverter(value.getClass());
 				}
 				String s = (String) converter.to(subContext, value);
+
+				if (!first) {
+					builder.append(BeanConverter.PROPERTY_SEPARATOR);
+				}
+
+				builder.append(name);
+				builder.append(BeanConverter.VALUE_SEPARATOR);
 				builder.append(s);
+
+				if (first) {
+					first = false;
+				}
 			}
+
+			builder.append(BeanConverter.END_OBJECT);
+
 			String s = builder.toString();
-			int size = TextConverterHelper.getSize(context);
-			return TextConverterHelper.lpad(s, size);
+			return s;
 		} catch (ConverterException e) {
 			throw e;
 		} catch (Exception e) {

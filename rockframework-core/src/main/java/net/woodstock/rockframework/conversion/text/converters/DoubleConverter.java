@@ -19,7 +19,7 @@ package net.woodstock.rockframework.conversion.text.converters;
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.conversion.ConverterException;
 
-public class DoubleConverter extends net.woodstock.rockframework.conversion.common.converters.DoubleConverter {
+class DoubleConverter extends net.woodstock.rockframework.conversion.common.converters.DoubleConverter {
 
 	@Override
 	public Double from(ConverterContext context, String s) throws ConverterException {

@@ -21,7 +21,7 @@ import java.math.BigInteger;
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.conversion.ConverterException;
 
-public class BigIntegerConverter extends net.woodstock.rockframework.conversion.common.converters.BigIntegerConverter {
+class BigIntegerConverter extends net.woodstock.rockframework.conversion.common.converters.BigIntegerConverter {
 
 	@Override
 	public BigInteger from(ConverterContext context, String s) throws ConverterException {

@@ -51,7 +51,7 @@ import net.woodstock.rockframework.utils.StringUtils;
 import net.woodstock.rockframework.xml.dom.XmlDocument;
 import net.woodstock.rockframework.xml.dom.XmlElement;
 
-public class BeanConverter extends AbstractConverter<XmlDocument, Object> {
+public class BeanConverter extends AbstractConverter<XmlElement, Object> {
 
 	private static final String						CLASS_ATTRIBUTE	= "class";
 
@@ -82,51 +82,101 @@ public class BeanConverter extends AbstractConverter<XmlDocument, Object> {
 	}
 
 	@Override
-	public Object from(ConverterContext context, XmlDocument f) throws ConverterException {
-		return null;
+	@SuppressWarnings("unchecked")
+	public Object from(ConverterContext context, XmlElement f) throws ConverterException {
+		if (context == null) {
+			throw new IllegalArgumentException("Context must be not null");
+		}
+		if (context.getType() == null) {
+			throw new IllegalArgumentException("Type must be not null");
+		}
+		try {
+			Class<?> clazz = context.getType();
+			Object obj = clazz.newInstance();
+			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(clazz);
+
+			if (!(context instanceof BeanConverterContext)) {
+				context = new BeanConverterContext(context.getParent(), context.getType());
+			}
+
+			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
+				if (propertyDescriptor.isAnnotationPresent(Ignore.class)) {
+					continue;
+				}
+				String name = propertyDescriptor.getName();
+				Class<?> type = propertyDescriptor.getType();
+				ConverterContext subContext = new PropertyConverterContext(context, name, type);
+				String elementName = this.getElementName(name);
+				if (f.hasElement(elementName)) {
+					XmlElement e = f.getElement(elementName);
+					Converter converter = this.getConverter(type);
+					Object value = null;
+					if (e.hasAttribute(BeanConverter.CLASS_ATTRIBUTE)) {
+						value = converter.from(subContext, e);
+					} else {
+						value = converter.from(subContext, e.getString());
+					}
+					propertyDescriptor.setValue(obj, value);
+				}
+			}
+			return obj;
+		} catch (ConverterException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new ConverterException(e);
+		}
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public XmlDocument to(ConverterContext context, Object t) throws ConverterException {
+	public XmlElement to(ConverterContext context, Object t) throws ConverterException {
 		if (context == null) {
+			throw new IllegalArgumentException("Context must be not null");
+		}
+		if (t == null) {
+			throw new IllegalArgumentException("Object must be not null");
+		}
+
+		try {
 			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(t.getClass());
-			context = new BeanConverterContext(beanDescriptor, t);
-		}
+			XmlDocument document = new XmlDocument(this.getElementName(beanDescriptor.getName()));
+			XmlElement root = document.getRoot();
+			root.setAttribute(BeanConverter.CLASS_ATTRIBUTE, beanDescriptor.getType().getCanonicalName());
 
-		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(t.getClass());
-		XmlDocument document = new XmlDocument(this.getElementName(beanDescriptor.getName()));
-		XmlElement root = document.getRoot();
-		root.setAttribute(BeanConverter.CLASS_ATTRIBUTE, beanDescriptor.getType().getCanonicalName());
+			if (!(context instanceof BeanConverterContext)) {
+				context = new BeanConverterContext(context.getParent(), t.getClass());
+			}
 
-		for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
-			if (propertyDescriptor.isAnnotationPresent(Ignore.class)) {
-				continue;
-			}
-			String name = propertyDescriptor.getName();
-			Class<?> type = propertyDescriptor.getType();
-			Object value = propertyDescriptor.getValue(t);
-			ConverterContext subContext = new PropertyConverterContext(propertyDescriptor, context, name, type, value);
-			Converter converter = BeanConverter.nullConverter;
-			if (value != null) {
-				converter = this.getConverter(value.getClass());
-			}
-			if (converter instanceof BeanConverter) {
-				XmlElement element = root.addElement(this.getElementName(name));
-				XmlDocument doc = (XmlDocument) converter.to(subContext, value);
-				for (XmlElement e : doc.getRoot().getElements()) {
-					element.addElement(e);
+			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
+				if (propertyDescriptor.isAnnotationPresent(Ignore.class)) {
+					continue;
 				}
-			} else {
-				String s = (String) converter.to(subContext, value);
-				if (StringUtils.isEmpty(s)) {
-					root.addElement(this.getElementName(name));
+				String name = propertyDescriptor.getName();
+				Class<?> type = propertyDescriptor.getType();
+				Object value = propertyDescriptor.getValue(t);
+				ConverterContext subContext = new PropertyConverterContext(context, name, type);
+				Converter converter = BeanConverter.nullConverter;
+				if (value != null) {
+					converter = this.getConverter(value.getClass());
+				}
+				if (converter instanceof BeanConverter) {
+					XmlElement e = (XmlElement) converter.to(subContext, value);
+					root.addElement(e);
 				} else {
-					root.addElement(this.getElementName(name), s);
+					String s = (String) converter.to(subContext, value);
+					if (StringUtils.isEmpty(s)) {
+						root.addElement(this.getElementName(name));
+					} else {
+						root.addElement(this.getElementName(name), s);
+					}
 				}
 			}
+			return root;
+		} catch (ConverterException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new ConverterException(e);
 		}
-		return document;
 	}
 
 	// Util

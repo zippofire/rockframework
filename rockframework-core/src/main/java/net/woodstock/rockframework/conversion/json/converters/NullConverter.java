@@ -14,29 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.conversion.common;
+package net.woodstock.rockframework.conversion.json.converters;
 
-import java.lang.annotation.Annotation;
+import net.woodstock.rockframework.conversion.ConverterContext;
+import net.woodstock.rockframework.conversion.ConverterException;
+import net.woodstock.rockframework.conversion.common.AbstractTextConverter;
 
-public class SimpleConverterContext extends AbstractConverterContext {
-
-	public SimpleConverterContext() {
-		super(null, null, null);
-	}
+class NullConverter extends AbstractTextConverter<Object> {
 
 	@Override
-	public <A extends Annotation> A getAnnotation(Class<A> clazz) {
+	public Object from(ConverterContext context, String s) throws ConverterException {
 		return null;
 	}
 
 	@Override
-	public Annotation[] getAnnotations() {
-		return new Annotation[0];
-	}
-
-	@Override
-	public boolean isAnnotationPresent(Class<? extends Annotation> clazz) {
-		return false;
+	public String to(ConverterContext context, Object t) throws ConverterException {
+		return null;
 	}
 
 }
