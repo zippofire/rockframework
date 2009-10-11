@@ -39,7 +39,7 @@ import java.sql.Timestamp;
 import net.woodstock.rockframework.jdbc.Client;
 import net.woodstock.rockframework.jdbc.Parameter;
 import net.woodstock.rockframework.jdbc.ParameterList;
-import net.woodstock.rockframework.jdbc.SqlType;
+import net.woodstock.rockframework.jdbc.Type;
 
 public class CommonClient implements Client {
 
@@ -51,11 +51,11 @@ public class CommonClient implements Client {
 	}
 
 	//
-	public int getType(SqlType type) {
+	public int getType(Type type) {
 		return type.type();
 	}
 
-	public Object callFunction(SqlType outType, String functionName, ParameterList args) throws SQLException {
+	public Object callFunction(Type outType, String functionName, ParameterList args) throws SQLException {
 		CallableStatement cs = this.createFuncionStatement(this.getType(outType), functionName, this.connection, args);
 		cs.execute();
 		Object o = this.getParameter(1, outType, cs);
@@ -140,7 +140,7 @@ public class CommonClient implements Client {
 		return cs;
 	}
 
-	private Object getParameter(int index, SqlType outType, CallableStatement cs) throws SQLException {
+	private Object getParameter(int index, Type outType, CallableStatement cs) throws SQLException {
 		Object o = null;
 		switch (outType) {
 			case ARRAY:
@@ -220,9 +220,9 @@ public class CommonClient implements Client {
 
 	private void setParameter(int index, PreparedStatement cs, Parameter param) throws SQLException {
 		Object value = param.getValue();
-		SqlType type = param.getType();
+		Type type = param.getType();
 		if (value == null) {
-			cs.setNull(index, type.type());
+			cs.setNull(index, this.getType(type));
 			return;
 		}
 		switch (type) {

@@ -22,7 +22,7 @@ import java.sql.SQLException;
 public interface Client {
 
 	// Default type
-	int getType(SqlType type);
+	int getType(Type type);
 
 	// DML
 	boolean execute(String sql, ParameterList args) throws SQLException;
@@ -32,7 +32,7 @@ public interface Client {
 	int update(String update, ParameterList args) throws SQLException;
 
 	// Stored
-	Object callFunction(SqlType outType, String functionName, ParameterList args) throws SQLException;
+	Object callFunction(Type outType, String functionName, ParameterList args) throws SQLException;
 
 	void callProcedure(String procedureName, ParameterList args) throws SQLException;
 

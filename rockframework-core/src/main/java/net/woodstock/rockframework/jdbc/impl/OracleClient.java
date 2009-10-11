@@ -18,7 +18,7 @@ package net.woodstock.rockframework.jdbc.impl;
 
 import java.sql.Connection;
 
-import net.woodstock.rockframework.jdbc.SqlType;
+import net.woodstock.rockframework.jdbc.Type;
 
 public class OracleClient extends CommonClient {
 
@@ -29,7 +29,7 @@ public class OracleClient extends CommonClient {
 	}
 
 	@Override
-	public int getType(SqlType type) {
+	public int getType(Type type) {
 		switch (type) {
 			case RESULTSET:
 				return OracleClient.CURSOR;
