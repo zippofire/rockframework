@@ -16,12 +16,26 @@
  */
 package net.woodstock.rockframework.conversion.json.converters;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import net.woodstock.rockframework.conversion.TextConverter;
 
 abstract class JsonConverterHelper {
 
-	private static Collection<String[]>	replacement;
+	private static Collection<String[]>				replacement;
+
+	private static Map<Class<?>, TextConverter<?>>	converters;
+
+	private static TextConverter<?>					nullConverter;
+
+	private static TextConverter<?>					beanConverter;
 
 	private JsonConverterHelper() {
 		//
@@ -44,6 +58,46 @@ abstract class JsonConverterHelper {
 		}
 
 		return str;
+	}
+
+	public static TextConverter<?> getConverter(Class<?> clazz) {
+		if (JsonConverterHelper.converters == null) {
+			JsonConverterHelper.converters = new HashMap<Class<?>, TextConverter<?>>();
+			JsonConverterHelper.converters.put(BigDecimal.class, new BigDecimalConverter());
+			JsonConverterHelper.converters.put(BigInteger.class, new BigIntegerConverter());
+			JsonConverterHelper.converters.put(Boolean.class, new BooleanConverter());
+			JsonConverterHelper.converters.put(Byte.class, new ByteConverter());
+			JsonConverterHelper.converters.put(Character.class, new CharacterConverter());
+			JsonConverterHelper.converters.put(Collection.class, new CollectionConverter());
+			JsonConverterHelper.converters.put(Date.class, new DateConverter());
+			JsonConverterHelper.converters.put(Double.class, new DoubleConverter());
+			JsonConverterHelper.converters.put(Float.class, new FloatConverter());
+			JsonConverterHelper.converters.put(Integer.class, new IntegerConverter());
+			JsonConverterHelper.converters.put(Long.class, new LongConverter());
+			JsonConverterHelper.converters.put(Short.class, new ShortConverter());
+			JsonConverterHelper.converters.put(String.class, new StringConverter());
+		}
+		if (JsonConverterHelper.beanConverter == null) {
+			JsonConverterHelper.beanConverter = new BeanConverter();
+		}
+		if (JsonConverterHelper.nullConverter == null) {
+			JsonConverterHelper.nullConverter = new NullConverter();
+		}
+
+		for (Entry<Class<?>, TextConverter<?>> entry : JsonConverterHelper.converters.entrySet()) {
+			if (entry.getKey().isAssignableFrom(clazz)) {
+				return entry.getValue();
+			}
+		}
+		return JsonConverterHelper.beanConverter;
+	}
+
+	public static TextConverter<?> getBeanConverter() {
+		return JsonConverterHelper.beanConverter;
+	}
+
+	public static TextConverter<?> getNullConverter() {
+		return JsonConverterHelper.nullConverter;
 	}
 
 }

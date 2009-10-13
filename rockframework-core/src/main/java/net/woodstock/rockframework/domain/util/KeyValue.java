@@ -14,8 +14,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.pojo.converter.json.impl;
+package net.woodstock.rockframework.domain.util;
 
-class IntegerConverter extends net.woodstock.rockframework.domain.pojo.converter.common.impl.IntegerConverter {
-	//
+import java.io.Serializable;
+
+import net.woodstock.rockframework.domain.Pojo;
+import net.woodstock.rockframework.util.Entry;
+
+public class KeyValue<K extends Serializable, V extends Serializable> extends Entry<K, V> implements Pojo {
+
+	private static final long	serialVersionUID	= 611990085341006973L;
+
+	public KeyValue() {
+		super();
+	}
+
+	public KeyValue(K key, V value) {
+		super(key, value);
+	}
+
+	public KeyValue(Entry<K, V> entry) {
+		super(entry.getKey(), entry.getValue());
+	}
+
 }

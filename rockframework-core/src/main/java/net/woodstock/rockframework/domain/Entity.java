@@ -18,7 +18,7 @@ package net.woodstock.rockframework.domain;
 
 import java.io.Serializable;
 
-import net.woodstock.rockframework.domain.pojo.Identifiable;
+import net.woodstock.rockframework.domain.util.Identifiable;
 
 public interface Entity<ID extends Serializable> extends Pojo, Identifiable<ID> {
 	//

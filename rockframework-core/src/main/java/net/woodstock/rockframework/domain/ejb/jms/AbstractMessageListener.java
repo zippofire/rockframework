@@ -16,7 +16,6 @@
  */
 package net.woodstock.rockframework.domain.ejb.jms;
 
-import javax.annotation.Resource;
 import javax.ejb.MessageDrivenContext;
 import javax.jms.MessageListener;
 
@@ -26,11 +25,14 @@ import org.apache.commons.logging.Log;
 
 public abstract class AbstractMessageListener implements MessageListener {
 
-	@Resource
 	private MessageDrivenContext	context;
 
 	protected MessageDrivenContext getContext() {
 		return this.context;
+	}
+
+	public void setContext(MessageDrivenContext context) {
+		this.context = context;
 	}
 
 	protected Log getLogger() {

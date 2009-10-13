@@ -16,35 +16,31 @@
  */
 package net.woodstock.rockframework.conversion.json.converters;
 
+import java.util.Collection;
+
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.conversion.ConverterException;
-import net.woodstock.rockframework.conversion.Ignore;
 import net.woodstock.rockframework.conversion.TextConverter;
 import net.woodstock.rockframework.conversion.common.AbstractTextConverter;
 import net.woodstock.rockframework.conversion.common.BeanConverterContext;
 import net.woodstock.rockframework.conversion.common.PropertyConverterContext;
-import net.woodstock.rockframework.reflection.BeanDescriptor;
-import net.woodstock.rockframework.reflection.PropertyDescriptor;
-import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
 
-public class BeanConverter extends AbstractTextConverter<Object> {
+@SuppressWarnings("unchecked")
+public class CollectionConverter extends AbstractTextConverter<Collection> {
 
-	private static String	BEGIN_OBJECT		= "{";
+	private static String	BEGIN_ARRAY			= "[";
 
-	private static String	END_OBJECT			= "}";
+	private static String	END_ARRAY			= "]";
 
-	private static String	VALUE_SEPARATOR		= ": ";
-
-	private static String	PROPERTY_SEPARATOR	= ", ";
+	private static String	ELEMENT_SEPARATOR	= ", ";
 
 	@Override
-	public Object from(ConverterContext context, String s) throws ConverterException {
+	public Collection from(ConverterContext context, String s) throws ConverterException {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public String to(ConverterContext context, Object t) throws ConverterException {
+	public String to(ConverterContext context, Collection t) throws ConverterException {
 		if (context == null) {
 			throw new IllegalArgumentException("Context must be not null");
 		}
@@ -53,43 +49,33 @@ public class BeanConverter extends AbstractTextConverter<Object> {
 		}
 		try {
 			StringBuilder builder = new StringBuilder();
-			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(t.getClass());
 			boolean first = true;
 
 			if (!(context instanceof BeanConverterContext)) {
 				context = new BeanConverterContext(context.getParent(), t.getClass());
 			}
 
-			builder.append(BeanConverter.BEGIN_OBJECT);
+			builder.append(CollectionConverter.BEGIN_ARRAY);
 
-			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
-				if (propertyDescriptor.isAnnotationPresent(Ignore.class)) {
-					continue;
-				}
-				String name = propertyDescriptor.getName();
-				Class<?> type = propertyDescriptor.getType();
-				Object value = propertyDescriptor.getValue(t);
-				ConverterContext subContext = new PropertyConverterContext(context, name, type);
-				TextConverter converter = JsonConverterHelper.getNullConverter();
-				if (value != null) {
-					converter = JsonConverterHelper.getConverter(value.getClass());
-				}
-				String s = (String) converter.to(subContext, value);
+			for (Object o : t) {
+				if (o != null) {
+					TextConverter converter = JsonConverterHelper.getConverter(o.getClass());
+					ConverterContext subContext = new PropertyConverterContext(context, context.getName(), o.getClass());
+					String s = (String) converter.to(subContext, o);
 
-				if (!first) {
-					builder.append(BeanConverter.PROPERTY_SEPARATOR);
-				}
+					if (!first) {
+						builder.append(CollectionConverter.ELEMENT_SEPARATOR);
+					}
 
-				builder.append(name);
-				builder.append(BeanConverter.VALUE_SEPARATOR);
-				builder.append(s);
+					builder.append(s);
 
-				if (first) {
-					first = false;
+					if (first) {
+						first = false;
+					}
 				}
 			}
 
-			builder.append(BeanConverter.END_OBJECT);
+			builder.append(CollectionConverter.END_ARRAY);
 
 			String s = builder.toString();
 			return s;
@@ -99,4 +85,5 @@ public class BeanConverter extends AbstractTextConverter<Object> {
 			throw new ConverterException(e);
 		}
 	}
+
 }

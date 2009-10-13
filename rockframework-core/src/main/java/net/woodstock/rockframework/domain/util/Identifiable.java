@@ -14,17 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.pojo.converter.common;
+package net.woodstock.rockframework.domain.util;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+public interface Identifiable<T> {
 
-@Retention(value = RetentionPolicy.RUNTIME)
-@Target(value = ElementType.FIELD)
-public @interface NumberFormat {
+	T getId();
 
-	String value();
+	void setId(T id);
 
 }

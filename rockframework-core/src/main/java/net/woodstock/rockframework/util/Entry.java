@@ -23,6 +23,12 @@ public class Entry<K, V> implements Map.Entry<K, V>, Serializable {
 
 	private static final long	serialVersionUID	= -3491714904009797034L;
 
+	private static final String	VALUE_SEPARATOR		= "=";
+
+	private static final String	BEGIN_ENTRY			= "[";
+
+	private static final String	END_ENTRY			= "]";
+
 	private K					key;
 
 	private V					value;
@@ -71,6 +77,18 @@ public class Entry<K, V> implements Map.Entry<K, V>, Serializable {
 	@Override
 	public int hashCode() {
 		return (this.key == null ? 0 : this.key.hashCode()) ^ (this.value == null ? 0 : this.value.hashCode());
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(this.getClass().getSimpleName());
+		builder.append(Entry.BEGIN_ENTRY);
+		builder.append(this.key);
+		builder.append(Entry.VALUE_SEPARATOR);
+		builder.append(this.value);
+		builder.append(Entry.END_ENTRY);
+		return builder.toString();
 	}
 
 }

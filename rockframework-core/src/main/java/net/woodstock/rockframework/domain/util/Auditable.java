@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.pojo;
+package net.woodstock.rockframework.domain.util;
 
-public interface Executable {
+public interface Auditable {
 
-	void execute();
+	void audit();
 
 }
