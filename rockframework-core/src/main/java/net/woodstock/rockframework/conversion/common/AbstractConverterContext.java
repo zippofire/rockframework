@@ -16,11 +16,15 @@
  */
 package net.woodstock.rockframework.conversion.common;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.regex.Pattern;
 
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.sys.SysLogger;
+import net.woodstock.rockframework.utils.StringUtils;
 
 import org.apache.commons.logging.Log;
 
@@ -38,12 +42,22 @@ abstract class AbstractConverterContext implements ConverterContext {
 
 	private Queue<Object>			queue;
 
+	private Collection<String>		ignored;
+
 	public AbstractConverterContext(ConverterContext parent, String name, Class<?> type) {
 		super();
+		if (StringUtils.isEmpty(name)) {
+			throw new IllegalArgumentException("Name must be not null");
+		}
+		if (StringUtils.isEmpty(name)) {
+			throw new IllegalArgumentException("Type must be not null");
+		}
+
 		this.parent = parent;
 		this.name = name;
 		this.type = type;
 		this.queue = new LinkedList<Object>();
+		this.ignored = new ArrayList<String>();
 	}
 
 	// Getters and Setters
@@ -87,6 +101,14 @@ abstract class AbstractConverterContext implements ConverterContext {
 		this.queue = stack;
 	}
 
+	public Collection<String> getIgnored() {
+		return this.ignored;
+	}
+
+	public void setIgnored(Collection<String> ignored) {
+		this.ignored = ignored;
+	}
+
 	// Stack
 	@Override
 	public boolean isQueued(Object o) {
@@ -99,6 +121,20 @@ abstract class AbstractConverterContext implements ConverterContext {
 		return false;
 	}
 
+	// Ignore
+	@Override
+	public boolean isIgnored() {
+		String canonicalName = this.getCanonicalName();
+		Collection<String> ignoreds = this.getIgnoredRecursive();
+		for (String ignored : ignoreds) {
+			if (Pattern.matches(ignored, canonicalName)) {
+				this.getLogger().info("Context Ignored: " + canonicalName);
+				return true;
+			}
+		}
+		return false;
+	}
+
 	// Canonical
 	public String getCanonicalName() {
 		StringBuilder builder = new StringBuilder();
@@ -106,8 +142,20 @@ abstract class AbstractConverterContext implements ConverterContext {
 			builder.append(this.parent.getCanonicalName());
 			builder.append(AbstractConverterContext.CONTEXT_SEPARATOR);
 		}
-		builder.append(this.name);
+		if (!StringUtils.isEmpty(this.name)) {
+			builder.append(this.name);
+		}
 		return builder.toString();
+	}
+
+	private Collection<String> getIgnoredRecursive() {
+		Collection<String> collection = new ArrayList<String>();
+		collection.addAll(this.ignored);
+		if (this.parent != null) {
+			AbstractConverterContext context = (AbstractConverterContext) this.parent;
+			collection.addAll(context.getIgnoredRecursive());
+		}
+		return collection;
 	}
 
 	// Object

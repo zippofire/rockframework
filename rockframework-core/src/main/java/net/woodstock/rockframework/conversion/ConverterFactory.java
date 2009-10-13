@@ -16,37 +16,8 @@
  */
 package net.woodstock.rockframework.conversion;
 
-import java.lang.annotation.Annotation;
-import java.util.Collection;
-import java.util.Queue;
+public interface ConverterFactory<F, T> {
 
-public interface ConverterContext {
-
-	String getCanonicalName();
-
-	String getName();
-
-	ConverterContext getParent();
-
-	Class<?> getType();
-
-	Object getObject();
-
-	// Stack
-	Queue<Object> getQueue();
-
-	boolean isQueued(Object o);
-
-	// Ignored
-	Collection<String> getIgnored();
-
-	boolean isIgnored();
-
-	// Annotation
-	boolean isAnnotationPresent(Class<? extends Annotation> clazz);
-
-	<A extends Annotation> A getAnnotation(Class<A> clazz);
-
-	Annotation[] getAnnotations();
+	Converter<F, T> getConverter();
 
 }

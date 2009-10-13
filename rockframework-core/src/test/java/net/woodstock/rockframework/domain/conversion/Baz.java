@@ -1,10 +1,8 @@
 package net.woodstock.rockframework.domain.conversion;
 
-import java.util.Collection;
-
 import net.woodstock.rockframework.domain.util.IntegerEntity;
 
-public class Foo extends IntegerEntity {
+public class Baz extends IntegerEntity {
 
 	private static final long	serialVersionUID	= 1L;
 
@@ -12,9 +10,9 @@ public class Foo extends IntegerEntity {
 
 	private String				name;
 
-	private Collection<Bar>		bars;
+	private Bar					bar;
 
-	public Foo() {
+	public Baz() {
 		super();
 	}
 
@@ -34,12 +32,12 @@ public class Foo extends IntegerEntity {
 		this.name = name;
 	}
 
-	public Collection<Bar> getBars() {
-		return this.bars;
+	public Bar getBar() {
+		return this.bar;
 	}
 
-	public void setBars(Collection<Bar> bars) {
-		this.bars = bars;
+	public void setBar(Bar bar) {
+		this.bar = bar;
 	}
 
 	@Override
@@ -48,22 +46,6 @@ public class Foo extends IntegerEntity {
 		builder.append("ID: " + this.id);
 		builder.append(" ");
 		builder.append("Name: " + this.name);
-		if (this.bars != null) {
-			boolean first = true;
-			builder.append("[");
-			for (Bar b : this.bars) {
-				if (!first) {
-					builder.append(",");
-				}
-				builder.append("{");
-				builder.append(b);
-				builder.append("}");
-				if (first) {
-					first = false;
-				}
-			}
-			builder.append("]");
-		}
 		return builder.toString();
 	}
 

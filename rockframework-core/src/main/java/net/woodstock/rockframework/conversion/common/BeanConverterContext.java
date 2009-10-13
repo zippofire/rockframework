@@ -26,8 +26,8 @@ public class BeanConverterContext extends AbstractConverterContext {
 
 	private BeanDescriptor	beanDescriptor;
 
-	public BeanConverterContext(ConverterContext parent, Class<?> type) {
-		super(parent, type.getName(), type);
+	public BeanConverterContext(ConverterContext parent, String name, Class<?> type) {
+		super(parent, name, type);
 		this.beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(type);
 	}
 

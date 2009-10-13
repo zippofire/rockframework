@@ -17,9 +17,14 @@
 package net.woodstock.rockframework.web.struts2.result;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.servlet.http.HttpServletResponse;
 
+import net.woodstock.rockframework.conversion.ConverterContext;
+import net.woodstock.rockframework.conversion.common.BeanConverterContext;
+import net.woodstock.rockframework.conversion.json.JsonConverterFactory;
 import net.woodstock.rockframework.utils.StringUtils;
 
 import org.apache.struts2.StrutsStatics;
@@ -36,32 +41,54 @@ public class JsonResult extends BaseResult {
 
 	public static final String	JSON_CHARSET		= "utf-8";
 
-	private String[]			ignoreProperties;
+	public static final String	IGNORE_SEPARATOR	= ",";
+
+	private Collection<String>	ignored;
 
 	private String				charset				= JsonResult.JSON_CHARSET;
 
 	private String				root;
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public void execute(ActionInvocation invocation) throws Exception {
+		if (StringUtils.isEmpty(this.root)) {
+			throw new IllegalArgumentException("Root must be not empty");
+		}
 		ActionContext actionContext = invocation.getInvocationContext();
 		ValueStack stack = invocation.getStack();
 		HttpServletResponse response = (HttpServletResponse) actionContext.get(StrutsStatics.HTTP_RESPONSE);
 		PrintWriter writer = response.getWriter();
 		Object rootObject = stack.findValue(this.root);
-
 		String json = null;
 
-		// if (rootObject instanceof Collection) {
-		// json = JsonUtils.toJson((Collection<?>) rootObject, this.ignoreProperties, this.maxLevel);
-		// } else {
-		// json = JsonUtils.toJson(rootObject, this.ignoreProperties, this.maxLevel);
-		// }
+		if (rootObject != null) {
+			ConverterContext context = new BeanConverterContext(null, this.root, rootObject.getClass());
+
+			if (this.ignored != null) {
+				context.getIgnored().addAll(this.ignored);
+			}
+
+			json = JsonConverterFactory.getInstance().getConverter().to(context, rootObject);
+		} else {
+			this.getLogger().warn("Root object is empty");
+			json = "";
+		}
 
 		response.setContentType(JsonResult.JSON_CONTENT_TYPE);
 		response.setCharacterEncoding(this.charset);
 		writer.write(json);
+	}
+
+	public void setIgnore(String ignore) {
+		if (!StringUtils.isEmpty(ignore)) {
+			String[] ignores = ignore.split(JsonResult.IGNORE_SEPARATOR);
+			this.ignored = new ArrayList<String>();
+			for (String s : ignores) {
+				if (!StringUtils.isEmpty(s)) {
+					this.ignored.add(s.trim());
+				}
+			}
+		}
 	}
 
 	public void setCharset(String charset) {

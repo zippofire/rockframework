@@ -25,25 +25,6 @@
 		<default-interceptor-ref name="entityStack" />
 	</package>
 	
-	<!-- Delete !!! -->
-	<package name="rockframework-json-default" extends="json-default" abstract="true">
-		<interceptors>
-			<interceptor name="entity" class="net.woodstock.rockframework.web.struts2.interceptor.EntityInterceptor" />
-			<interceptor name="initializable" class="net.woodstock.rockframework.web.struts2.interceptor.InitializableInterceptor" />
-			<interceptor name="around" class="net.woodstock.rockframework.web.struts2.interceptor.AroundInterceptor" />
-			<interceptor name="annotationAround" class="net.woodstock.rockframework.web.struts2.interceptor.AnnotationAroundInterceptor" />
-			<interceptor-stack name="entityStack">
-				<interceptor-ref name="defaultStack" />
-				<interceptor-ref name="entity" />
-				<interceptor-ref name="initializable" />
-				<interceptor-ref name="around" />
-				<interceptor-ref name="annotationAround" />
-			</interceptor-stack>
-		</interceptors>
-
-		<default-interceptor-ref name="entityStack" />
-	</package>
-	
 	<package name="rockframework-tiles-default" extends="tiles-default" abstract="true">
 		<result-types>
             <result-type name="rockframework-json" class="net.woodstock.rockframework.web.struts2.result.JsonResult"/>

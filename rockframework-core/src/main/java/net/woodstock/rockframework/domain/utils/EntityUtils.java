@@ -142,9 +142,9 @@ public abstract class EntityUtils {
 			return true;
 		}
 		// Entity
-		if (Entity.class.isAssignableFrom(clazz)) {
-			return true;
-		}
+		// if (Entity.class.isAssignableFrom(clazz)) {
+		// return true;
+		// }
 		return false;
 	}
 

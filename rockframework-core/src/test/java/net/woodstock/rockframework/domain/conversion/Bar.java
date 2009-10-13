@@ -1,17 +1,18 @@
 package net.woodstock.rockframework.domain.conversion;
 
-import net.woodstock.rockframework.conversion.text.Size;
 import net.woodstock.rockframework.domain.util.IntegerEntity;
 
 public class Bar extends IntegerEntity {
 
 	private static final long	serialVersionUID	= 1L;
 
-	@Size(10)
 	private Integer				id;
 
-	@Size(50)
 	private String				name;
+
+	private Foo					foo;
+
+	private Baz					baz;
 
 	public Bar() {
 		super();
@@ -31,6 +32,22 @@ public class Bar extends IntegerEntity {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Foo getFoo() {
+		return this.foo;
+	}
+
+	public void setFoo(Foo foo) {
+		this.foo = foo;
+	}
+
+	public Baz getBaz() {
+		return this.baz;
+	}
+
+	public void setBaz(Baz baz) {
+		this.baz = baz;
 	}
 
 	@Override

@@ -14,39 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.conversion;
+package net.woodstock.rockframework.conversion.json;
 
-import java.lang.annotation.Annotation;
-import java.util.Collection;
-import java.util.Queue;
+import net.woodstock.rockframework.conversion.ConverterContext;
+import net.woodstock.rockframework.conversion.ConverterException;
 
-public interface ConverterContext {
+class CharacterConverter extends net.woodstock.rockframework.conversion.common.converters.CharacterConverter {
 
-	String getCanonicalName();
-
-	String getName();
-
-	ConverterContext getParent();
-
-	Class<?> getType();
-
-	Object getObject();
-
-	// Stack
-	Queue<Object> getQueue();
-
-	boolean isQueued(Object o);
-
-	// Ignored
-	Collection<String> getIgnored();
-
-	boolean isIgnored();
-
-	// Annotation
-	boolean isAnnotationPresent(Class<? extends Annotation> clazz);
-
-	<A extends Annotation> A getAnnotation(Class<A> clazz);
-
-	Annotation[] getAnnotations();
+	@Override
+	public String to(ConverterContext context, Character t) throws ConverterException {
+		String s = super.to(context, t);
+		if (s != null) {
+			StringBuilder builder = new StringBuilder();
+			builder.append('\'');
+			builder.append(JsonConverterHelper.addEscape(s));
+			builder.append('\'');
+			return builder.toString();
+		}
+		return null;
+	}
 
 }

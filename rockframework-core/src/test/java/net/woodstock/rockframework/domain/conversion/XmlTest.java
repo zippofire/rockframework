@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 import net.woodstock.rockframework.conversion.Converter;
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.conversion.common.BeanConverterContext;
-import net.woodstock.rockframework.conversion.xml.converters.BeanConverter;
+import net.woodstock.rockframework.conversion.xml.XmlConverterFactory;
 import net.woodstock.rockframework.xml.dom.XmlElement;
 
 public class XmlTest extends TestCase {
@@ -25,29 +25,29 @@ public class XmlTest extends TestCase {
 
 	public void xtestXml1() throws Exception {
 		Foo foo = this.getFoo();
-		foo.setBar(this.getBar());
+		// foo.setBar(this.getBar());
 
-		ConverterContext context1 = new BeanConverterContext(null, Foo.class);
+		ConverterContext context1 = new BeanConverterContext(null, "foo", Foo.class);
 
-		Converter<XmlElement, Object> converter = new BeanConverter();
+		Converter<XmlElement, Object> converter = XmlConverterFactory.getInstance().getConverter();
 		XmlElement e = converter.to(context1, foo);
 		System.out.println(e);
 	}
 
 	public void testXml2() throws Exception {
 		Foo foo1 = this.getFoo();
-		foo1.setBar(this.getBar());
+		// foo1.setBar(this.getBar());
 
-		Converter<XmlElement, Object> converter = new BeanConverter();
-		XmlElement e = converter.to(new BeanConverterContext(null, Foo.class), foo1);
+		Converter<XmlElement, Object> converter = XmlConverterFactory.getInstance().getConverter();
+		XmlElement e = converter.to(new BeanConverterContext(null, "foo", Foo.class), foo1);
 
-		Foo foo2 = (Foo) converter.from(new BeanConverterContext(null, Foo.class), e);
+		Foo foo2 = (Foo) converter.from(new BeanConverterContext(null, "foo", Foo.class), e);
 
 		System.out.println(foo1);
 		System.out.println(foo2);
 
-		System.out.println(converter.to(new BeanConverterContext(null, Foo.class), foo1));
-		System.out.println(converter.to(new BeanConverterContext(null, Foo.class), foo2));
+		System.out.println(converter.to(new BeanConverterContext(null, "foo", Foo.class), foo1));
+		System.out.println(converter.to(new BeanConverterContext(null, "foo", Foo.class), foo2));
 	}
 
 }

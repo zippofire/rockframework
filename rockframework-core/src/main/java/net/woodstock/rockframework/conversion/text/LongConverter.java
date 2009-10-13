@@ -14,39 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.conversion;
+package net.woodstock.rockframework.conversion.text;
 
-import java.lang.annotation.Annotation;
-import java.util.Collection;
-import java.util.Queue;
+import net.woodstock.rockframework.conversion.ConverterContext;
+import net.woodstock.rockframework.conversion.ConverterException;
 
-public interface ConverterContext {
+class LongConverter extends net.woodstock.rockframework.conversion.common.converters.LongConverter {
 
-	String getCanonicalName();
+	@Override
+	public Long from(ConverterContext context, String s) throws ConverterException {
+		s = TextConverterHelper.trim(s);
+		return super.from(context, s);
+	}
 
-	String getName();
-
-	ConverterContext getParent();
-
-	Class<?> getType();
-
-	Object getObject();
-
-	// Stack
-	Queue<Object> getQueue();
-
-	boolean isQueued(Object o);
-
-	// Ignored
-	Collection<String> getIgnored();
-
-	boolean isIgnored();
-
-	// Annotation
-	boolean isAnnotationPresent(Class<? extends Annotation> clazz);
-
-	<A extends Annotation> A getAnnotation(Class<A> clazz);
-
-	Annotation[] getAnnotations();
+	@Override
+	public String to(ConverterContext context, Number t) throws ConverterException {
+		String s = super.to(context, t);
+		int size = TextConverterHelper.getSize(context);
+		return TextConverterHelper.lpad(s, size);
+	}
 
 }
