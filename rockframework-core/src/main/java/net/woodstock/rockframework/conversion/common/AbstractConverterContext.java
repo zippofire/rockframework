@@ -128,7 +128,7 @@ abstract class AbstractConverterContext implements ConverterContext {
 		Collection<String> ignoreds = this.getIgnoredRecursive();
 		for (String ignored : ignoreds) {
 			if (Pattern.matches(ignored, canonicalName)) {
-				this.getLogger().info("Context Ignored: " + canonicalName);
+				//this.getLogger().info("Context Ignored: " + canonicalName);
 				return true;
 			}
 		}

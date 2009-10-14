@@ -44,20 +44,20 @@ abstract class JsonConverterHelper {
 	public static String addEscape(String str) {
 		if (JsonConverterHelper.replacement == null) {
 			JsonConverterHelper.replacement = new LinkedList<String[]>();
-			JsonConverterHelper.replacement.add(new String[] { "\n", "\\n" });
-			JsonConverterHelper.replacement.add(new String[] { "\r", "\\r" });
-			JsonConverterHelper.replacement.add(new String[] { "\t", "\\t" });
-			JsonConverterHelper.replacement.add(new String[] { "'", "\\'" });
-			JsonConverterHelper.replacement.add(new String[] { "\"", "\\\"" });
+			JsonConverterHelper.replacement.add(new String[] { "\n", "\\\\n" });
+			JsonConverterHelper.replacement.add(new String[] { "\r", "\\\\r" });
+			JsonConverterHelper.replacement.add(new String[] { "\t", "\\\\t" });
+			JsonConverterHelper.replacement.add(new String[] { "\\'", "\\\\'" });
+			JsonConverterHelper.replacement.add(new String[] { "\"", "\\\\\"" });
 		}
 		if (str == null) {
 			return null;
 		}
+		String escapedString = str;
 		for (String[] s : JsonConverterHelper.replacement) {
-			str = str.replaceAll(s[0], s[1]);
+			escapedString = escapedString.replaceAll(s[0], s[1]);
 		}
-
-		return str;
+		return escapedString;
 	}
 
 	public static TextConverter<?> getConverter(Class<?> clazz) {

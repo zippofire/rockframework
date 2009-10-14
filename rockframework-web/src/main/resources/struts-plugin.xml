@@ -25,6 +25,12 @@
 		<default-interceptor-ref name="entityStack" />
 	</package>
 	
+	<package name="rockframework-json-default" extends="rockframework-default" abstract="true">
+		<result-types>
+            <result-type name="json" class="net.woodstock.rockframework.web.struts2.result.JsonResultDecorator"/>
+        </result-types>
+	</package>
+	
 	<package name="rockframework-tiles-default" extends="tiles-default" abstract="true">
 		<result-types>
             <result-type name="rockframework-json" class="net.woodstock.rockframework.web.struts2.result.JsonResult"/>

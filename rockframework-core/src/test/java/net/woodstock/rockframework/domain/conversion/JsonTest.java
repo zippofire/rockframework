@@ -54,9 +54,9 @@ public class JsonTest extends TestCase {
 
 	public void testText2() throws Exception {
 		Collection<Bar> bars = new ArrayList<Bar>();
-		for (int i = 0; i < 15; i++) {
-			Bar bar = this.getBar(new Integer(i), "Bar " + i, null);
-			bar.setBaz(this.getBaz(new Integer(i), "Baz " + i, bar));
+		for (int i = 0; i < 5; i++) {
+			Bar bar = this.getBar(new Integer(i), "Bar '" + i + "'", null);
+			bar.setBaz(this.getBaz(new Integer(i), "Baz '" + i + "'", bar));
 			bars.add(bar);
 		}
 
@@ -67,6 +67,13 @@ public class JsonTest extends TestCase {
 		TextConverter<Object> converter = JsonConverterFactory.getInstance().getConverter();
 		String s = converter.to(context1, bars);
 		System.out.println(s);
+	}
+
+	public void xtestText3() throws Exception {
+		String regex = "\n";
+		String replace = "\\\\n";
+		String text = "Teste \n1\n";
+		System.out.println(text.replaceAll(regex, replace));
 	}
 
 }
