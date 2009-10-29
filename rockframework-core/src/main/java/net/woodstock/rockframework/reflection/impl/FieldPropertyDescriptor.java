@@ -79,6 +79,11 @@ class FieldPropertyDescriptor extends AbstractPropertyDescriptor {
 		this.setWriteMethod(writeMethod);
 	}
 
+	@Override
+	public int getModifiers() {
+		return this.field.getModifiers();
+	}
+
 	public String getName() {
 		return this.field.getName();
 	}

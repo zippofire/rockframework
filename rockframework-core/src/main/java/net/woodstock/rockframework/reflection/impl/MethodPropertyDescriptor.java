@@ -27,11 +27,14 @@ class MethodPropertyDescriptor extends AbstractPropertyDescriptor {
 
 	private Class<?>	type;
 
+	private int			modifiers;
+
 	MethodPropertyDescriptor(BeanDescriptor beanDescriptor, String name, Class<?> type) {
 		super();
 		this.setBeanDescriptor(beanDescriptor);
 		this.name = name;
 		this.type = type;
+		this.modifiers = -1;
 		this.init();
 	}
 
@@ -64,6 +67,9 @@ class MethodPropertyDescriptor extends AbstractPropertyDescriptor {
 		}
 		this.setReadMethodName(readMethodName);
 		this.setReadMethod(readMethod);
+		if (readMethod != null) {
+			this.modifiers = readMethod.getModifiers();
+		}
 	}
 
 	private void initSet() {
@@ -79,6 +85,11 @@ class MethodPropertyDescriptor extends AbstractPropertyDescriptor {
 		}
 		this.setWriteMethodName(writeMethodName);
 		this.setWriteMethod(writeMethod);
+	}
+
+	@Override
+	public int getModifiers() {
+		return this.modifiers;
 	}
 
 	public String getName() {

@@ -127,7 +127,7 @@ public class Test1 extends TestCase {
 			row.getCells().add(cell);
 			sheet.getColumnsWith().put(new Integer(i), new Integer(25));
 		}
-
+		
 		sheet.getRows().add(row);
 		document.getSheets().add(sheet);
 

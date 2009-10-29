@@ -17,6 +17,7 @@
 package net.woodstock.rockframework.domain.persistence.query.impl;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -61,7 +62,8 @@ abstract class QueryContextHelper {
 				String name = propertyDescriptor.getName();
 				String alias = name;
 				Object value = propertyDescriptor.getValue(e);
-				if (value != null) {
+				boolean isTransient = QueryContextHelper.isTransient(propertyDescriptor);
+				if ((value != null) && (!isTransient)) {
 					QueryContextHelper.handleValue(context, options, name, alias, value, parsed);
 				}
 			}
@@ -156,7 +158,8 @@ abstract class QueryContextHelper {
 				String childName = propertyDescriptor.getName();
 				String childAlias = propertyDescriptor.getName();
 				Object childValue = propertyDescriptor.getValue(value);
-				if (childValue != null) {
+				boolean isTransient = QueryContextHelper.isTransient(propertyDescriptor);
+				if ((childValue != null) && (!isTransient)) {
 					QueryContextHelper.handleValue(child, options, childName, childAlias, childValue, parsed);
 				}
 			}
@@ -264,6 +267,18 @@ abstract class QueryContextHelper {
 			}
 		}
 		return false;
+	}
+
+	private static boolean isTransient(PropertyDescriptor propertyDescriptor) {
+		if (Modifier.isTransient(propertyDescriptor.getModifiers())) {
+			return true;
+		}
+		try {
+			Class.forName("javax.persistence.Transient");
+			return JPATransientHelper.isTransient(propertyDescriptor);
+		} catch (ClassNotFoundException e) {
+			return false;
+		}
 	}
 
 }

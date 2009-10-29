@@ -103,6 +103,9 @@ class BeanConverter extends AbstractConverter<XmlElement, Object> {
 				if (propertyDescriptor.isAnnotationPresent(Ignore.class)) {
 					continue;
 				}
+				if(!propertyDescriptor.isWriteable()) {
+					continue;
+				}
 				String name = propertyDescriptor.getName();
 				Class<?> type = propertyDescriptor.getType();
 				ConverterContext subContext = new PropertyConverterContext(context, name, type);
@@ -149,6 +152,9 @@ class BeanConverter extends AbstractConverter<XmlElement, Object> {
 
 			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
 				if (propertyDescriptor.isAnnotationPresent(Ignore.class)) {
+					continue;
+				}
+				if(!propertyDescriptor.isReadable()) {
 					continue;
 				}
 				String name = propertyDescriptor.getName();

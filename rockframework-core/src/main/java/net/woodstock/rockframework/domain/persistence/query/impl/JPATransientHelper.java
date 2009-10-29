@@ -14,35 +14,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.reflection;
+package net.woodstock.rockframework.domain.persistence.query.impl;
 
-import java.lang.annotation.Annotation;
+import javax.persistence.Transient;
 
-public interface PropertyDescriptor {
+import net.woodstock.rockframework.reflection.PropertyDescriptor;
 
-	String getName();
+abstract class JPATransientHelper {
 
-	Class<?> getType();
-
-	BeanDescriptor getBeanDescriptor();
-
-	// Get/Set Value
-	Object getValue(Object o);
-
-	void setValue(Object o, Object value);
-
-	// Aux
-	boolean isReadable();
-
-	boolean isWriteable();
-
-	int getModifiers();
-
-	// Annotation
-	boolean isAnnotationPresent(Class<? extends Annotation> clazz);
-
-	<A extends Annotation> A getAnnotation(Class<A> clazz);
-
-	Annotation[] getAnnotations();
+	public static boolean isTransient(PropertyDescriptor descriptor) {
+		if (descriptor.isAnnotationPresent(Transient.class)) {
+			return true;
+		}
+		return false;
+	}
 
 }

@@ -16,6 +16,9 @@
 				<param name="ignoreProperties">bars.foo, bars.baz.*</param>
 			</result>
 		</action>
+		<action name="list" class="net.woodstoc.rockframework.struts2.test.ListAction">
+			<result name="success">/test/list.jsp</result>
+		</action>
 	</package>
 
 </struts>

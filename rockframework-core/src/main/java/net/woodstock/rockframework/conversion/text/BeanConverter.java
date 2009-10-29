@@ -85,6 +85,9 @@ class BeanConverter extends AbstractTextConverter<Object> {
 				if (propertyDescriptor.isAnnotationPresent(Ignore.class)) {
 					continue;
 				}
+				if(!propertyDescriptor.isWriteable()) {
+					continue;
+				}
 				String name = propertyDescriptor.getName();
 				Class<?> type = propertyDescriptor.getType();
 				if (!propertyDescriptor.isAnnotationPresent(Size.class)) {
@@ -130,6 +133,9 @@ class BeanConverter extends AbstractTextConverter<Object> {
 
 			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
 				if (propertyDescriptor.isAnnotationPresent(Ignore.class)) {
+					continue;
+				}
+				if(!propertyDescriptor.isReadable()) {
 					continue;
 				}
 				String name = propertyDescriptor.getName();

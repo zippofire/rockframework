@@ -70,6 +70,9 @@ class BeanConverter extends AbstractTextConverter<Object> {
 					if (propertyDescriptor.isAnnotationPresent(Ignore.class)) {
 						continue;
 					}
+					if(!propertyDescriptor.isReadable()) {
+						continue;
+					}
 					String name = propertyDescriptor.getName();
 					Class<?> type = propertyDescriptor.getType();
 					Object value = propertyDescriptor.getValue(t);
