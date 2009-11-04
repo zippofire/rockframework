@@ -22,48 +22,64 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Random;
 
+import net.woodstock.rockframework.config.CoreConfig;
+
 public abstract class NumberUtils {
 
-	private static DecimalFormat	decimalFormat;
+	private static final String			DECIMAL_FORMAT_PROPERTY	= "decimal.format";
+
+	private static final String			INTEGER_FORMAT_PROPERTY	= "integer.format";
+
+	private static final DecimalFormat	DECIMAL_FORMAT			= new DecimalFormat(CoreConfig.getInstance().getValue(NumberUtils.DECIMAL_FORMAT_PROPERTY));
+
+	private static final DecimalFormat	INTEGER_FORMAT			= new DecimalFormat(CoreConfig.getInstance().getValue(NumberUtils.INTEGER_FORMAT_PROPERTY));
+
+	private static final Random			random					= new Random();
 
 	public static String format(BigDecimal value) {
-		if (NumberUtils.decimalFormat == null) {
-			throw new IllegalStateException("Format must be defined");
+		if (value == null) {
+			return null;
 		}
-		return NumberUtils.decimalFormat.format(value);
+		return NumberUtils.DECIMAL_FORMAT.format(value);
 	}
 
 	public static String format(BigDecimal value, String format) {
+		if (value == null) {
+			return null;
+		}
 		return new DecimalFormat(format).format(value);
 	}
 
 	public static String format(BigInteger value) {
-		if (NumberUtils.decimalFormat == null) {
-			throw new IllegalStateException("Format must be defined");
+		if (value == null) {
+			return null;
 		}
-		return NumberUtils.decimalFormat.format(value);
+		return NumberUtils.INTEGER_FORMAT.format(value);
 	}
 
 	public static String format(BigInteger value, String format) {
+		if (value == null) {
+			return null;
+		}
 		return new DecimalFormat(format).format(value);
 	}
 
 	public static String format(Byte value) {
-		if (NumberUtils.decimalFormat == null) {
-			throw new IllegalStateException("Format must be defined");
+		if (value == null) {
+			return null;
 		}
-		return NumberUtils.decimalFormat.format(value.byteValue());
+		return NumberUtils.INTEGER_FORMAT.format(value.byteValue());
 	}
 
 	public static String format(Byte value, String format) {
+		if (value == null) {
+			return null;
+		}
 		return new DecimalFormat(format).format(value.byteValue());
 	}
 
 	public static String format(double value) {
-		if (NumberUtils.decimalFormat == null) {
-			throw new IllegalStateException("Format must be defined");
-		}
-		return NumberUtils.decimalFormat.format(value);
+		return NumberUtils.DECIMAL_FORMAT.format(value);
 	}
 
 	public static String format(double value, String format) {
@@ -71,32 +87,38 @@ public abstract class NumberUtils {
 	}
 
 	public static String format(Double value) {
-		if (NumberUtils.decimalFormat == null) {
-			throw new IllegalStateException("Format must be defined");
+		if (value == null) {
+			return null;
 		}
-		return NumberUtils.decimalFormat.format(value.doubleValue());
+		return NumberUtils.DECIMAL_FORMAT.format(value.doubleValue());
 	}
 
 	public static String format(Double value, String format) {
+		if (value == null) {
+			return null;
+		}
 		return new DecimalFormat(format).format(value.doubleValue());
 	}
 
 	public static String format(Float value) {
-		if (NumberUtils.decimalFormat == null) {
-			throw new IllegalStateException("Format must be defined");
+		if (value == null) {
+			return null;
 		}
-		return NumberUtils.decimalFormat.format(value.floatValue());
+		return NumberUtils.DECIMAL_FORMAT.format(value.floatValue());
 	}
 
 	public static String format(Float value, String format) {
+		if (value == null) {
+			return null;
+		}
 		return new DecimalFormat(format).format(value.floatValue());
 	}
 
 	public static String format(Integer value) {
-		if (NumberUtils.decimalFormat == null) {
-			throw new IllegalStateException("Format must be defined");
+		if (value == null) {
+			return null;
 		}
-		return NumberUtils.decimalFormat.format(value.intValue());
+		return NumberUtils.INTEGER_FORMAT.format(value.intValue());
 	}
 
 	public static String format(Integer value, String format) {
@@ -104,10 +126,7 @@ public abstract class NumberUtils {
 	}
 
 	public static String format(long value) {
-		if (NumberUtils.decimalFormat == null) {
-			throw new IllegalStateException("Format must be defined");
-		}
-		return NumberUtils.decimalFormat.format(value);
+		return NumberUtils.INTEGER_FORMAT.format(value);
 	}
 
 	public static String format(long value, String format) {
@@ -115,62 +134,67 @@ public abstract class NumberUtils {
 	}
 
 	public static String format(Long value) {
-		if (NumberUtils.decimalFormat == null) {
-			throw new IllegalStateException("Format must be defined");
+		if (value == null) {
+			return null;
 		}
-		return NumberUtils.decimalFormat.format(value.longValue());
+		return NumberUtils.INTEGER_FORMAT.format(value.longValue());
 	}
 
 	public static String format(Long value, String format) {
+		if (value == null) {
+			return null;
+		}
 		return new DecimalFormat(format).format(value.longValue());
 	}
 
 	public static String format(Number value) {
-		if (NumberUtils.decimalFormat == null) {
-			throw new IllegalStateException("Format must be defined");
+		if (value == null) {
+			return null;
 		}
-		return NumberUtils.decimalFormat.format(value.doubleValue());
+		return NumberUtils.DECIMAL_FORMAT.format(value.doubleValue());
 	}
 
 	public static String format(Number value, String format) {
+		if (value == null) {
+			return null;
+		}
 		return new DecimalFormat(format).format(value.doubleValue());
 	}
 
 	public static String format(Short value) {
-		if (NumberUtils.decimalFormat == null) {
-			throw new IllegalStateException("Format must be defined");
+		if (value == null) {
+			return null;
 		}
-		return NumberUtils.decimalFormat.format(value.shortValue());
+		return NumberUtils.INTEGER_FORMAT.format(value.shortValue());
 	}
 
 	public static String format(Short value, String format) {
+		if (value == null) {
+			return null;
+		}
 		return new DecimalFormat(format).format(value.shortValue());
 	}
 
 	public static Number parse(String value) throws ParseException {
-		if (value == null) {
+		if (StringUtils.isEmpty(value)) {
 			return null;
 		}
-		return NumberUtils.decimalFormat.parse(value);
+		return NumberUtils.DECIMAL_FORMAT.parse(value);
 	}
 
 	public static Number parse(String value, String format) throws ParseException {
-		if (value == null) {
+		if (StringUtils.isEmpty(value)) {
 			return null;
 		}
 		return new DecimalFormat(format).parse(value);
 	}
 
 	public static int random() {
-		return new Random().nextInt();
+		return NumberUtils.random.nextInt();
 	}
 
 	public static int random(int max) {
-		return new Random().nextInt(max);
-	}
-
-	public static void setDecimalFormat(String format) {
-		NumberUtils.decimalFormat = new DecimalFormat(format);
+		return NumberUtils.random.nextInt(max);
 	}
 
 	private NumberUtils() {

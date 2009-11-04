@@ -80,6 +80,15 @@ public abstract class BaseDynaForm extends DynaActionForm {
 		}
 		return (Short) o;
 	}
+	
+	@Override
+	public String getString(String name) {
+		Object o = this.get(name);
+		if ((o != null) && (!(o instanceof String))) {
+			o = o.toString();
+		}
+		return (String) o;
+	}
 
 	protected Log getLogger() {
 		return SysLogger.getLogger();

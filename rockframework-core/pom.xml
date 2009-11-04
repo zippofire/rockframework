@@ -9,12 +9,12 @@
 		<artifactId>rockframework-parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<dependencies>
+	<dependencies>		
 		<dependency>
 			<groupId>com.lowagie</groupId>
 			<artifactId>itext</artifactId>
 			<version>1.4.8</version>
-			<optional>false</optional>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>

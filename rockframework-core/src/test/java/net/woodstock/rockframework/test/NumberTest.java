@@ -16,13 +16,19 @@
  */
 package net.woodstock.rockframework.test;
 
-import java.text.DecimalFormat;
+import java.util.Random;
 
-public class NumberTest {
+import junit.framework.TestCase;
+
+public class NumberTest extends TestCase {
 
 	public void test1() throws Exception {
-		DecimalFormat format = new DecimalFormat("###,##0.00");
-		System.out.println(format.format(123.45));
+		Random random = new Random();
+		System.out.println(random.nextInt());
+		System.out.println(random.nextInt());
+		System.out.println(random.nextInt());
+		System.out.println(random.nextInt());
+		System.out.println(random.nextInt());
 	}
 
 }

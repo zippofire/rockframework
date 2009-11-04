@@ -24,10 +24,9 @@ import net.woodstock.rockframework.domain.business.BusinessException;
 import net.woodstock.rockframework.domain.business.ValidationException;
 import net.woodstock.rockframework.domain.business.ValidationResult;
 import net.woodstock.rockframework.domain.persistence.PersistenceException;
-import net.woodstock.rockframework.domain.service.GenericService;
 import net.woodstock.rockframework.domain.service.ServiceException;
 
-public abstract class AbstractGenericService extends GenericServiceBean implements GenericService {
+public abstract class AbstractGenericService extends GenericServiceBean {
 
 	public AbstractGenericService() {
 		super();

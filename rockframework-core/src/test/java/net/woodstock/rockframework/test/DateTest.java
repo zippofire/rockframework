@@ -16,10 +16,14 @@
  */
 package net.woodstock.rockframework.test;
 
+import java.util.Date;
 import java.util.Locale;
 
 import junit.framework.TestCase;
+
 import net.woodstock.rockframework.util.Calendar;
+import net.woodstock.rockframework.utils.DateUtils;
+import net.woodstock.rockframework.utils.TimeUtils;
 
 public class DateTest extends TestCase {
 
@@ -76,6 +80,8 @@ public class DateTest extends TestCase {
 	}
 
 	public void test1() throws Exception {
-		DateTest.format();
+		Date date = new Date();
+		System.out.println(DateUtils.format(date));
+		System.out.println(TimeUtils.format(date));
 	}
 }

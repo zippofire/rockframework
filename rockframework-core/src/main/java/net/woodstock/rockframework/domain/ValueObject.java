@@ -1,27 +1,10 @@
-/*
- * This file is part of rockframework.
- * 
- * rockframework is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
- * 
- * rockframework is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
- */
 package net.woodstock.rockframework.domain;
 
 import net.woodstock.rockframework.utils.ObjectUtils;
 
-@SuppressWarnings("unchecked")
-public class ValueObject<T> implements Comparable<ValueObject>, Pojo {
+public class ValueObject<T> implements Pojo {
 
-	private static final long	serialVersionUID	= 6578883151658994879L;
+	private static final long	serialVersionUID	= 5096193480689528838L;
 
 	private T					value;
 
@@ -34,27 +17,28 @@ public class ValueObject<T> implements Comparable<ValueObject>, Pojo {
 		return this.value;
 	}
 
-	// Comparable
+	// Object
 	@Override
-	public int compareTo(ValueObject o) {
-		if (this.value == null) {
-			if (o.value == null) {
-				return 0;
-			}
-			return -1;
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
 		}
-		if (o.value == null) {
-			return 1;
+		if (obj == null) {
+			return false;
 		}
-		if ((this.value instanceof Comparable) && (o.value instanceof Comparable)) {
-			Comparable c1 = (Comparable) this.value;
-			Comparable c2 = (Comparable) o.value;
-			return c1.compareTo(c2);
+		if (obj instanceof ValueObject<?>) {
+			return false;
 		}
-		return 0;
+
+		ValueObject<?> other = (ValueObject<?>) obj;
+		if ((this.value == null) && (other.value != null)) {
+			return false;
+		} else if (!this.value.equals(other.value)) {
+			return false;
+		}
+		return true;
 	}
 
-	// Object
 	@Override
 	public int hashCode() {
 		final int prime = ObjectUtils.HASH_PRIME;
@@ -64,25 +48,12 @@ public class ValueObject<T> implements Comparable<ValueObject>, Pojo {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		ValueObject<?> other = (ValueObject<?>) obj;
-		if (this.value == null) {
-			if (other.value != null) {
-				return false;
-			}
-		} else if (!this.value.equals(other.value)) {
-			return false;
-		}
-		return true;
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("ValueObject[");
+		builder.append(this.value);
+		builder.append("]");
+		return builder.toString();
 	}
 
 }

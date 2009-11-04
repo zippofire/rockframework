@@ -60,7 +60,7 @@ public class Calendar extends GregorianCalendar {
 
 	public static final String		YEAR_FORMAT					= "%y";
 
-	public static final String		YEAR_LONG_FORMAT			= "%y";
+	public static final String		YEAR_LONG_FORMAT			= "%yyyy";
 
 	public static final String		WEEK_IN_YEAR_FORMAT			= "%w";
 

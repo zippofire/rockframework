@@ -23,13 +23,13 @@ import java.util.Date;
 
 import net.woodstock.rockframework.config.CoreConfig;
 
-public abstract class DateUtils {
+public abstract class TimeUtils {
 
-	private static final String		DATE_FORMAT_PROPERTY	= "date.format";
+	private static final String		TIME_FORMAT_PROPERTY	= "time.format";
 
-	private static final DateFormat	DATE_FORMAT				= new SimpleDateFormat(CoreConfig.getInstance().getValue(DateUtils.DATE_FORMAT_PROPERTY));
+	private static final DateFormat	dateFormat				= new SimpleDateFormat(CoreConfig.getInstance().getValue(TimeUtils.TIME_FORMAT_PROPERTY));
 
-	private DateUtils() {
+	private TimeUtils() {
 		//
 	}
 
@@ -37,7 +37,7 @@ public abstract class DateUtils {
 		if (date == null) {
 			return null;
 		}
-		return DateUtils.DATE_FORMAT.format(date);
+		return TimeUtils.dateFormat.format(date);
 	}
 
 	public static String format(Date date, String format) {
@@ -51,7 +51,7 @@ public abstract class DateUtils {
 		if (StringUtils.isEmpty(date)) {
 			return null;
 		}
-		return DateUtils.DATE_FORMAT.parse(date);
+		return TimeUtils.dateFormat.parse(date);
 	}
 
 	public static Date parse(String date, String format) throws ParseException {
