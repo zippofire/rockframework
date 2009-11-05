@@ -37,6 +37,8 @@ abstract class JsonConverterHelper {
 
 	private static TextConverter<?>					beanConverter;
 
+	private static TextConverter<?>					arrayConverter;
+
 	private JsonConverterHelper() {
 		//
 	}
@@ -83,12 +85,20 @@ abstract class JsonConverterHelper {
 		if (JsonConverterHelper.nullConverter == null) {
 			JsonConverterHelper.nullConverter = new NullConverter();
 		}
+		if (JsonConverterHelper.arrayConverter == null) {
+			JsonConverterHelper.arrayConverter = new ArrayConverter();
+		}
 
 		for (Entry<Class<?>, TextConverter<?>> entry : JsonConverterHelper.converters.entrySet()) {
 			if (entry.getKey().isAssignableFrom(clazz)) {
 				return entry.getValue();
 			}
 		}
+
+		if (clazz.isArray()) {
+			return JsonConverterHelper.arrayConverter;
+		}
+
 		return JsonConverterHelper.beanConverter;
 	}
 

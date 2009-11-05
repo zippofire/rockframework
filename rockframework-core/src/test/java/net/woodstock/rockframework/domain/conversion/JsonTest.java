@@ -1,7 +1,6 @@
 package net.woodstock.rockframework.domain.conversion;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import junit.framework.TestCase;
 import net.woodstock.rockframework.conversion.ConverterContext;
@@ -53,11 +52,11 @@ public class JsonTest extends TestCase {
 	}
 
 	public void testText2() throws Exception {
-		Collection<Bar> bars = new ArrayList<Bar>();
+		Bar[] bars = new Bar[5];
 		for (int i = 0; i < 5; i++) {
 			Bar bar = this.getBar(new Integer(i), "Bar '" + i + "'", null);
 			bar.setBaz(this.getBaz(new Integer(i), "Baz '" + i + "'", bar));
-			bars.add(bar);
+			bars[i] = bar;
 		}
 
 		ConverterContext context1 = new BeanConverterContext(null, "bars", bars.getClass());
