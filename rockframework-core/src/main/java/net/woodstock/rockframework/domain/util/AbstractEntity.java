@@ -25,47 +25,23 @@ public abstract class AbstractEntity<ID extends Serializable> implements Entity<
 
 	private static final long	serialVersionUID	= 7167657368775342614L;
 
-	private static final String	UNDEFINED_ID		= "undefined";
-
-	private static final String	BEGIN_ID			= "[";
-
-	private static final String	END_ID				= "]";
-
 	@Override
 	@SuppressWarnings("unchecked")
 	public boolean equals(Object obj) {
-		try {
-			if (!(obj instanceof Entity)) {
-				return false;
-			}
-			return EntityUtils.equals(this, (Entity<?>) obj);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+		if (!(obj instanceof Entity)) {
+			return false;
 		}
+		return EntityUtils.equals(this, (Entity<?>) obj);
 	}
 
 	@Override
 	public int hashCode() {
-		try {
-			return EntityUtils.hashCode(this);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		return EntityUtils.hashCode(this);
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		ID id = this.getId();
-		builder.append(this.getClass().getSimpleName());
-		builder.append(AbstractEntity.BEGIN_ID);
-		if (id != null) {
-			builder.append(id);
-		} else {
-			builder.append(AbstractEntity.UNDEFINED_ID);
-		}
-		builder.append(AbstractEntity.END_ID);
-		return builder.toString();
+		return EntityUtils.toString(this);
 	}
 
 }

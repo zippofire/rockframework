@@ -16,7 +16,6 @@
  */
 package net.woodstock.rockframework.domain.persistence.query.impl;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,7 +27,7 @@ import net.woodstock.rockframework.domain.persistence.query.BuilderException;
 import net.woodstock.rockframework.domain.persistence.query.LikeMode;
 import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
 import net.woodstock.rockframework.domain.persistence.query.impl.QueryContextParameter.Operator;
-import net.woodstock.rockframework.domain.utils.PojoUtils;
+import net.woodstock.rockframework.domain.utils.EntityUtils;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
@@ -36,17 +35,29 @@ import net.woodstock.rockframework.sys.SysLogger;
 
 abstract class QueryContextHelper {
 
-	private static final String	ROOT_ALIAS			= "_obj";
+	private static final String	HIBERNATE_PROXY_CLASS	= "org.hibernate.proxy.HibernateProxy";
 
-	private static final String	ALIAS_SEPARADOR		= "_";
+	private static final String	OPENJPA_PROXY_CLASS		= "org.apache.openjpa.enhance.PersistenceCapable";
 
-	private static final String	OBJECT_SEPARATOR	= ".";
+	private static final String	JPA_TRANSIENT_CLASS		= "javax.persistence.Transient";
+
+	private static final String	ROOT_ALIAS				= "_obj";
+
+	private static final String	ALIAS_SEPARADOR			= "_";
+
+	private static final String	OBJECT_SEPARATOR		= ".";
 
 	private QueryContextHelper() {
 		//
 	}
 
 	public static QueryContext createQueryContext(Entity<?> e, Map<String, Object> options) throws BuilderException {
+		if (e == null) {
+			throw new IllegalArgumentException("Entity must be not null");
+		}
+		if (QueryContextHelper.isProxy(e)) {
+			throw new IllegalArgumentException("Proxy classes cannot be parsed[" + e.getClass().getCanonicalName() + "]");
+		}
 		try {
 			Class<?> clazz = e.getClass();
 			String className = clazz.getCanonicalName();
@@ -59,10 +70,19 @@ abstract class QueryContextHelper {
 			parsed.add(e);
 
 			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
+				if (!propertyDescriptor.isReadable()) {
+					continue;
+				}
 				String name = propertyDescriptor.getName();
 				String alias = name;
 				Object value = propertyDescriptor.getValue(e);
 				boolean isTransient = QueryContextHelper.isTransient(propertyDescriptor);
+				boolean isProxy = QueryContextHelper.isProxy(value);
+
+				if (isProxy) {
+					throw new IllegalArgumentException("Proxy classes cannot be parsed[" + value.getClass().getCanonicalName() + "]");
+				}
+
 				if ((value != null) && (!isTransient)) {
 					QueryContextHelper.handleValue(context, options, name, alias, value, parsed);
 				}
@@ -142,7 +162,7 @@ abstract class QueryContextHelper {
 		}
 	}
 
-	private static void handleEntityValue(QueryContext context, Map<String, Object> options, String name, String alias, Entity<?> value, List<Entity<?>> parsed) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+	private static void handleEntityValue(QueryContext context, Map<String, Object> options, String name, String alias, Entity<?> value, List<Entity<?>> parsed) {
 		if (QueryContextHelper.contains(parsed, value)) {
 			SysLogger.getLogger().debug("Entity " + value + " already parsed!!!");
 			return;
@@ -150,16 +170,25 @@ abstract class QueryContextHelper {
 
 		parsed.add(value);
 
-		if (PojoUtils.hasNotNullAttribute(value, true)) {
+		if (EntityUtils.hasNotNullAttribute(value)) {
 			Class<?> clazz = value.getClass();
 			QueryContext child = new QueryContext(name, alias, context);
 			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(clazz);
 			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
+				if (!propertyDescriptor.isReadable()) {
+					continue;
+				}
 				String childName = propertyDescriptor.getName();
 				String childAlias = propertyDescriptor.getName();
 				Object childValue = propertyDescriptor.getValue(value);
 				boolean isTransient = QueryContextHelper.isTransient(propertyDescriptor);
-				if ((childValue != null) && (!isTransient)) {
+				boolean isProxy = QueryContextHelper.isProxy(childValue);
+
+				if (isProxy) {
+					throw new IllegalArgumentException("Proxy classes cannot be parsed[" + childValue.getClass().getCanonicalName() + "]");
+				}
+
+				if ((value != null) && (!isTransient)) {
 					QueryContextHelper.handleValue(child, options, childName, childAlias, childValue, parsed);
 				}
 			}
@@ -184,6 +213,9 @@ abstract class QueryContextHelper {
 					Class<?> clazz = o.getClass();
 					BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(clazz);
 					for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
+						if (!propertyDescriptor.isReadable()) {
+							continue;
+						}
 						String childName = propertyDescriptor.getName();
 						String childAlias = propertyDescriptor.getName() + QueryContextHelper.ALIAS_SEPARADOR + index;
 						Object childValue = propertyDescriptor.getValue(o);
@@ -274,11 +306,36 @@ abstract class QueryContextHelper {
 			return true;
 		}
 		try {
-			Class.forName("javax.persistence.Transient");
+			Class.forName(QueryContextHelper.JPA_TRANSIENT_CLASS);
 			return JPATransientHelper.isTransient(propertyDescriptor);
 		} catch (ClassNotFoundException e) {
 			return false;
 		}
 	}
 
+	private static boolean isProxy(Object o) {
+		if (o == null) {
+			return false;
+		}
+		boolean b = false;
+		// Hibernate
+		try {
+			Class.forName(QueryContextHelper.HIBERNATE_PROXY_CLASS);
+			b = HibernateProxyHelper.isProxy(o);
+		} catch (ClassNotFoundException e) {
+			//
+		}
+		// OpenJPA
+		if (!b) {
+			try {
+				Class.forName(QueryContextHelper.OPENJPA_PROXY_CLASS);
+				b = OpenJPAProxyHelper.isProxy(o);
+			} catch (ClassNotFoundException e) {
+				//
+			}
+		}
+		// EclipseLink
+		// TopLink
+		return b;
+	}
 }

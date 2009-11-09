@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+	<persistence-unit name="default" transaction-type="RESOURCE_LOCAL">
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+		<class>net.woodstock.rockframework.jpa.Email</class>
+		<class>net.woodstock.rockframework.jpa.Endereco</class>
+		<class>net.woodstock.rockframework.jpa.Pessoa</class>
+		<class>net.woodstock.rockframework.jpa.Telefone</class>
+		<properties>
+			<property name="eclipselink.jdbc.url" value="jdbc:jtds:sqlserver://10.209.64.135:1433/AVALIACAO_JAVA" />
+			<property name="eclipselink.jdbc.driver" value="net.sourceforge.jtds.jdbc.Driver" />
+			<property name="eclipselink.jdbc.user" value="usr_avaliacao_java" />
+			<property name="eclipselink.jdbc.password" value="pwd_avaliacao_java" />
+			<property name="eclipselink.logging.level" value="INFO"/>			
+		</properties>
+	</persistence-unit>
+</persistence>

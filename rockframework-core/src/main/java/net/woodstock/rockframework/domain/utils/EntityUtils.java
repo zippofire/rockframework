@@ -18,6 +18,7 @@ package net.woodstock.rockframework.domain.utils;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
@@ -27,12 +28,17 @@ import net.woodstock.rockframework.utils.ObjectUtils;
 
 public abstract class EntityUtils {
 
-	public static final int	HASH_PRIME	= 31;
+	private static final String	UNDEFINED_ID	= "undefined";
+
+	private static final String	BEGIN_ID		= "[";
+
+	private static final String	END_ID			= "]";
 
 	private EntityUtils() {
 		//
 	}
 
+	// Object
 	public static boolean equals(Entity<?> entity1, Entity<?> entity2) {
 		if ((entity1 == null) || (entity2 == null)) {
 			return false;
@@ -59,6 +65,9 @@ public abstract class EntityUtils {
 		Collection<PropertyDescriptor> properties = beanDescriptor.getProperties();
 
 		for (PropertyDescriptor property : properties) {
+			if (!property.isReadable()) {
+				continue;
+			}
 			if (EntityUtils.isValidType(property.getType())) {
 				Object v1 = property.getValue(entity1);
 				Object v2 = property.getValue(entity2);
@@ -91,6 +100,10 @@ public abstract class EntityUtils {
 		Collection<PropertyDescriptor> properties = beanDescriptor.getProperties();
 
 		for (PropertyDescriptor property : properties) {
+			if (!property.isReadable()) {
+				continue;
+			}
+
 			if (EntityUtils.isValidType(property.getType())) {
 				Object value = property.getValue(entity);
 
@@ -102,6 +115,65 @@ public abstract class EntityUtils {
 			}
 		}
 		return result;
+	}
+
+	public static String toString(Entity<?> e) {
+		if (e == null) {
+			return null;
+		}
+		StringBuilder builder = new StringBuilder();
+		Object id = e.getId();
+		builder.append(e.getClass().getSimpleName());
+		builder.append(EntityUtils.BEGIN_ID);
+		if (id != null) {
+			builder.append(id);
+		} else {
+			builder.append(EntityUtils.UNDEFINED_ID);
+		}
+		builder.append(EntityUtils.END_ID);
+		return builder.toString();
+	}
+
+	// Aux
+	@SuppressWarnings("unchecked")
+	public static boolean hasNotNullAttribute(Entity<?> e) {
+		if (e == null) {
+			return false;
+		}
+
+		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(e.getClass());
+		for (PropertyDescriptor property : beanDescriptor.getProperties()) {
+			if (!property.isReadable()) {
+				continue;
+			}
+			Object tmp = property.getValue(e);
+			if (tmp != null) {
+				if (EntityUtils.isValidType(property.getType())) {
+					return true;
+				}
+				if (tmp instanceof Entity) {
+					boolean b = EntityUtils.hasNotNullAttribute(e);
+					if (b) {
+						return true;
+					}
+				}
+				if (tmp instanceof Collection) {
+					Collection<?> collection = (Collection<?>) tmp;
+					if (collection.size() > 0) {
+						for (Object o : collection) {
+							if (o instanceof Entity) {
+								boolean b = EntityUtils.hasNotNullAttribute((Entity) o);
+								if (b) {
+									return true;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return false;
 	}
 
 	private static boolean isValidType(Class<?> clazz) {
@@ -134,6 +206,14 @@ public abstract class EntityUtils {
 		if (clazz == String.class) {
 			return true;
 		}
+		// Number
+		if (Number.class.isAssignableFrom(clazz)) {
+			return true;
+		}
+		// Date
+		if (Date.class.isAssignableFrom(clazz)) {
+			return true;
+		}
 		// Primitives
 		if (clazz.isEnum()) {
 			return true;
@@ -141,8 +221,13 @@ public abstract class EntityUtils {
 		if (clazz.isPrimitive()) {
 			return true;
 		}
+
 		// Entity
 		// if (Entity.class.isAssignableFrom(clazz)) {
+		// return true;
+		// }
+		// Collection
+		// if(Collection.class.isAssignableFrom(clazz)) {
 		// return true;
 		// }
 		return false;
