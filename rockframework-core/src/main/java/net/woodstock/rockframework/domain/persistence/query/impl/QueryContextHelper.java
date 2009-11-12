@@ -78,11 +78,6 @@ abstract class QueryContextHelper {
 				String alias = name;
 				Object value = propertyDescriptor.getValue(e);
 				boolean isTransient = QueryContextHelper.isTransient(propertyDescriptor);
-				boolean isProxy = QueryContextHelper.isProxy(value);
-
-				if (isProxy) {
-					throw new IllegalArgumentException("Proxy classes cannot be parsed[" + value.getClass().getCanonicalName() + "]");
-				}
 
 				if ((value != null) && (!isTransient)) {
 					QueryContextHelper.handleValue(context, options, name, alias, value, parsed);
@@ -168,6 +163,9 @@ abstract class QueryContextHelper {
 			SysLogger.getLogger().debug("Entity " + value + " already parsed!!!");
 			return;
 		}
+		if (QueryContextHelper.isProxy(value)) {
+			throw new IllegalArgumentException("Proxy classes cannot be parsed[" + value.getClass().getCanonicalName() + "]");
+		}
 
 		parsed.add(value);
 
@@ -183,13 +181,8 @@ abstract class QueryContextHelper {
 				String childAlias = propertyDescriptor.getName();
 				Object childValue = propertyDescriptor.getValue(value);
 				boolean isTransient = QueryContextHelper.isTransient(propertyDescriptor);
-				boolean isProxy = QueryContextHelper.isProxy(childValue);
 
-				if (isProxy) {
-					throw new IllegalArgumentException("Proxy classes cannot be parsed[" + childValue.getClass().getCanonicalName() + "]");
-				}
-
-				if ((value != null) && (!isTransient)) {
+				if ((childValue != null) && (!isTransient)) {
 					QueryContextHelper.handleValue(child, options, childName, childAlias, childValue, parsed);
 				}
 			}
