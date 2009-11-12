@@ -98,6 +98,29 @@ public class ArrayUtils {
 		return builder.toString();
 	}
 
+	public static String toString(String[] array) {
+		if (array == null) {
+			return null;
+		}
+
+		boolean first = true;
+		StringBuilder builder = new StringBuilder();
+
+		builder.append("[");
+		for (Object o : array) {
+			if (!first) {
+				builder.append(",");
+			}
+			builder.append(o);
+			if (first) {
+				first = false;
+			}
+		}
+		builder.append("]");
+
+		return builder.toString();
+	}
+
 	public static String toString(Object[] array) {
 		if (array == null) {
 			return null;

@@ -32,6 +32,7 @@ import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
 import net.woodstock.rockframework.sys.SysLogger;
+import net.woodstock.rockframework.utils.StringUtils;
 
 abstract class QueryContextHelper {
 
@@ -231,6 +232,9 @@ abstract class QueryContextHelper {
 	}
 
 	private static void handleStringValue(QueryContext context, Map<String, Object> options, String name, String alias, String value) {
+		if (StringUtils.isEmpty(value)) {
+			return;
+		}
 		String sqlName = name;
 		String sqlAlias = alias;
 		if (options.containsKey(QueryBuilder.OPTION_IGNORE_CASE)) {
