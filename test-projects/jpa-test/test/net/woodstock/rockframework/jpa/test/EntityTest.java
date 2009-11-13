@@ -7,10 +7,10 @@ import javax.persistence.Persistence;
 import junit.framework.TestCase;
 import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
 import net.woodstock.rockframework.domain.persistence.query.impl.HibernateQueryBuilder;
-import net.woodstock.rockframework.jpa.Email;
-import net.woodstock.rockframework.jpa.Endereco;
-import net.woodstock.rockframework.jpa.Pessoa;
-import net.woodstock.rockframework.jpa.Telefone;
+import net.woodstock.rockframework.test.jpa.Email;
+import net.woodstock.rockframework.test.jpa.Endereco;
+import net.woodstock.rockframework.test.jpa.Pessoa;
+import net.woodstock.rockframework.test.jpa.Telefone;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
