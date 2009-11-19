@@ -19,9 +19,15 @@ package net.woodstock.rockframework.config;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.Collection;
 import java.util.Properties;
 
+import net.woodstock.rockframework.sys.SysLogger;
 import net.woodstock.rockframework.utils.ClassLoaderUtils;
+import net.woodstock.rockframework.utils.StringUtils;
+
+import org.apache.commons.logging.Log;
 
 public abstract class AbstractConfig {
 
@@ -29,9 +35,33 @@ public abstract class AbstractConfig {
 
 	public AbstractConfig(String propertiesName) throws URISyntaxException, IOException {
 		super();
+		if (StringUtils.isEmpty(propertiesName)) {
+			throw new IllegalArgumentException("Properties name must be not empty");
+		}
 		this.properties = new Properties();
-		InputStream inputStream = ClassLoaderUtils.getResourceAsStream(propertiesName);
-		this.properties.load(inputStream);
+		Collection<URL> urls = ClassLoaderUtils.getResources(propertiesName);
+		if (urls != null) {
+			for (URL url : urls) {
+				String s = url.toString();
+				if (s.startsWith(ClassLoaderUtils.JAR_PREFIX)) {
+					InputStream inputStream = ClassLoaderUtils.getInputStream(url, propertiesName);
+					if (inputStream != null) {
+						this.getLogger().info("Load properties " + propertiesName + " from JAR " + url);
+						this.properties.load(inputStream);
+					}
+				}
+			}
+			for (URL url : urls) {
+				String s = url.toString();
+				if (s.startsWith(ClassLoaderUtils.FILE_PREFIX)) {
+					InputStream inputStream = ClassLoaderUtils.getInputStream(url, propertiesName);
+					if (inputStream != null) {
+						this.getLogger().info("Load properties " + propertiesName + " from FILE " + url);
+						this.properties.load(inputStream);
+					}
+				}
+			}
+		}
 	}
 
 	public String getValue(String key) {
@@ -40,6 +70,11 @@ public abstract class AbstractConfig {
 
 	public String getValue(String key, String defaultValue) {
 		return this.properties.getProperty(key, defaultValue);
+	}
+
+	// Logger
+	protected Log getLogger() {
+		return SysLogger.getLogger();
 	}
 
 }

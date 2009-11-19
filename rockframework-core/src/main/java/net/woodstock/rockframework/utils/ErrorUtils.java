@@ -22,6 +22,8 @@ import java.util.LinkedHashSet;
 
 public abstract class ErrorUtils {
 
+	private static final String	NEW_LINE	= "\n";
+
 	private ErrorUtils() {
 		//
 	}
@@ -41,6 +43,7 @@ public abstract class ErrorUtils {
 		StringBuilder buffer = new StringBuilder();
 		for (StackTraceElement e : s) {
 			buffer.append(e);
+			buffer.append(ErrorUtils.NEW_LINE);
 		}
 
 		return buffer.toString();

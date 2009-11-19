@@ -21,7 +21,9 @@ import org.apache.commons.logging.LogFactory;
 
 public abstract class SysLogger {
 
-	private static Log	log;
+	private static final String	LOG_NAME	= "net.woodstock.rockframework";
+
+	private static Log			log;
 
 	private SysLogger() {
 		super();
@@ -41,7 +43,7 @@ public abstract class SysLogger {
 		if (SysLogger.log == null) {
 			synchronized (SysLogger.class) {
 				if (SysLogger.log == null) {
-					SysLogger.log = LogFactory.getLog(SysLogger.class);
+					SysLogger.log = LogFactory.getLog(SysLogger.LOG_NAME);
 				}
 			}
 		}

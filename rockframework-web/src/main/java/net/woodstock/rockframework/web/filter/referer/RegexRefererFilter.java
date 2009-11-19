@@ -16,13 +16,9 @@
  */
 package net.woodstock.rockframework.web.filter.referer;
 
-import java.io.IOException;
 import java.util.regex.Pattern;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import net.woodstock.rockframework.utils.StringUtils;
 
@@ -33,29 +29,20 @@ public class RegexRefererFilter extends NoRefererFilter {
 	private String				regex;
 
 	@Override
-	public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+	protected boolean validateReferer(HttpServletRequest request) {
 		if (this.regex == null) {
 			this.regex = this.getInitParameter(RegexRefererFilter.REGEX_PARAMETER);
 		}
 		if (StringUtils.isEmpty(this.regex)) {
-			throw new ServletException("Parameter '" + RegexRefererFilter.REGEX_PARAMETER + "' must be set");
+			throw new RuntimeException("Parameter '" + RegexRefererFilter.REGEX_PARAMETER + "' must be set");
 		}
-		if (!this.hasReferer(request)) {
-			this.handleNoReferer(response);
-			return;
+		if (super.validateReferer(request)) {
+			String referer = this.getReferer(request);
+			if (Pattern.matches(this.regex, referer)) {
+				return true;
+			}
 		}
-		String url = this.getReferer(request);
-		if (!Pattern.matches(this.regex, url)) {
-			this.handleInvalidReferer(request, response);
-			return;
-		}
-		chain.doFilter(request, response);
-	}
-
-	protected void handleInvalidReferer(HttpServletRequest request, HttpServletResponse response) {
-		String url = this.getReferer(request);
-		this.getLogger().warn("Invalid referer " + url);
-		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		return false;
 	}
 
 }

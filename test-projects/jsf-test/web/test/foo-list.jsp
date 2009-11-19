@@ -35,12 +35,22 @@
 						<td><h:outputText value="#{foo.id}" /></td>
 						<td><h:outputText value="#{foo.name}" /></td>
 						<td>
+							<!--
 							<h:commandLink action="#{fooMB.edit}">
 								<f:setPropertyActionListener value="#{foo.id}" target="#{fooMB.foo.id}"  />
 								Edit
 							</h:commandLink>
 							<h:commandLink action="#{fooMB.delete}">
 								<f:setPropertyActionListener value="#{foo.id}" target="#{fooMB.foo.id}" />
+								Delete
+							</h:commandLink>
+							-->
+							<h:commandLink action="#{fooMB.edit}">
+								<f:param name="foo.id" value="#{foo.id}" />
+								Edit
+							</h:commandLink>
+							<h:commandLink action="#{fooMB.delete}">
+								<f:param name="foo.id" value="#{foo.id}" />
 								Delete
 							</h:commandLink>
 						</td>

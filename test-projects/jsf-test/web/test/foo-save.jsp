@@ -35,7 +35,14 @@
 				</tr>
 				<tr>
 					<td colspan="2">
-						<h:commandButton action="#{fooMB.save}" value="Save" />
+						<c:choose>
+							<c:when test="${empty fooMB.foo.id}">
+								<h:commandButton action="#{fooMB.save}" value="Save" />
+							</c:when>
+							<c:otherwise>
+								<h:commandButton action="#{fooMB.update}" value="Update" />
+							</c:otherwise>
+						</c:choose>
 						&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
 						<h:commandButton action="#{fooMB.list}" value="Back" />
 					</td>

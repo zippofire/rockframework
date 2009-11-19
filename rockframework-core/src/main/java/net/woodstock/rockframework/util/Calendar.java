@@ -42,19 +42,19 @@ public class Calendar extends GregorianCalendar {
 
 	public static final String		DAY_IN_YEAR_FORMAT			= "%D";
 
-	public static final String		HOUR12_FORMAT				= "%K";
+	public static final String		HOUR12_FORMAT				= "%hh";
 
-	public static final String		HOUR24_FORMAT				= "%H";
+	public static final String		HOUR24_FORMAT				= "%HH";
 
 	public static final String		MILLISECOND_FORMAT			= "%S";
 
-	public static final String		MINUTE_FORMAT				= "%m";
+	public static final String		MINUTE_FORMAT				= "%mm";
 
 	public static final String		MONTH_FORMAT				= "%MM";
 
 	public static final String		MONTH_NAME_FORMAT			= "%MMMMM";
 
-	public static final String		SECOND_FORMAT				= "%s";
+	public static final String		SECOND_FORMAT				= "%ss";
 
 	public static final String		TIMEZONE_FORMAT				= "%Z";
 

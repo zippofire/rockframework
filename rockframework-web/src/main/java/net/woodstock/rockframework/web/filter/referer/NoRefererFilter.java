@@ -16,40 +16,19 @@
  */
 package net.woodstock.rockframework.web.filter.referer;
 
-import java.io.IOException;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import net.woodstock.rockframework.utils.StringUtils;
 
 public class NoRefererFilter extends RefererFilter {
 
 	@Override
-	public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-		if (!this.hasReferer(request)) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			return;
-		}
-		chain.doFilter(request, response);
-	}
-
-	protected void handleNoReferer(HttpServletResponse response) {
-		this.getLogger().warn("No referer found");
-		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-	}
-
-	protected boolean hasReferer(HttpServletRequest request) {
-		if (StringUtils.isEmpty(request.getHeader(RefererFilter.REFERER_HEADER_KEY))) {
+	protected boolean validateReferer(HttpServletRequest request) {
+		String referer = this.getReferer(request);
+		if (StringUtils.isEmpty(referer)) {
 			return false;
 		}
 		return true;
-	}
-
-	protected String getReferer(HttpServletRequest request) {
-		return request.getHeader(RefererFilter.REFERER_HEADER_KEY);
 	}
 
 }

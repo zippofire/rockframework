@@ -18,7 +18,7 @@ package net.woodstock.rockframework.util;
 
 import org.apache.commons.codec.binary.Base64;
 
-public class ApacheBase64Encoder extends Base64Encoder {
+class ApacheBase64Encoder extends Base64Encoder {
 
 	@Override
 	public String decode(String s) {

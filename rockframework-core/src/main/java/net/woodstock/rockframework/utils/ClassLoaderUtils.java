@@ -23,6 +23,9 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.LinkedList;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -43,51 +46,80 @@ public abstract class ClassLoaderUtils {
 	}
 
 	public static URL getResource(String name) {
-		return ClassLoaderUtils.getResource(ClassLoaderUtils.class.getClassLoader(), name);
+		return ClassLoaderUtils.getResource(Thread.currentThread().getContextClassLoader(), name);
 	}
 
-	public static URL getResource(ClassLoader loader, String name) {
-		return loader.getResource(name);
+	public static URL getResource(ClassLoader classLoader, String name) {
+		return classLoader.getResource(name);
+	}
+
+	public static Collection<URL> getResources(String name) throws IOException {
+		return ClassLoaderUtils.getResources(Thread.currentThread().getContextClassLoader(), name);
+	}
+
+	public static Collection<URL> getResources(ClassLoader classLoader, String name) throws IOException {
+		Enumeration<URL> urls = classLoader.getResources(name);
+		return CollectionUtils.toCollection(urls);
 	}
 
 	public static InputStream getResourceAsStream(String name) throws URISyntaxException, IOException {
 		return ClassLoaderUtils.getResourceAsStream(Thread.currentThread().getContextClassLoader(), name);
 	}
 
-	public static InputStream getResourceAsStream(ClassLoader loader, String name) throws URISyntaxException, IOException {
-		URL url = loader.getResource(name);
+	public static InputStream getResourceAsStream(ClassLoader classLoader, String name) throws URISyntaxException, IOException {
+		URL url = classLoader.getResource(name);
 		if (url != null) {
-			String s = url.toString();
-			boolean isJar = s.startsWith(ClassLoaderUtils.JAR_PREFIX);
-			URI uri = ClassLoaderUtils.getURI(s);
-			if (isJar) {
-				JarFile file = new JarFile(new File(uri));
-				JarEntry entry = file.getJarEntry(name);
-				InputStream input = file.getInputStream(entry);
-				return input;
-			}
-			File file = new File(uri);
-			InputStream input = new FileInputStream(file);
-			return input;
+			InputStream inputStream = ClassLoaderUtils.getInputStream(url, name);
+			return inputStream;
 		}
 		return null;
 	}
 
-	public static URI getURI(URL url) throws URISyntaxException {
-		return ClassLoaderUtils.getURI(url.toString());
+	public static Collection<InputStream> getResourcesAsStream(String name) throws URISyntaxException, IOException {
+		return ClassLoaderUtils.getResourcesAsStream(Thread.currentThread().getContextClassLoader(), name);
 	}
 
-	public static URI getURI(String url) throws URISyntaxException {
+	public static Collection<InputStream> getResourcesAsStream(ClassLoader classLoader, String name) throws URISyntaxException, IOException {
+		Collection<URL> urls = ClassLoaderUtils.getResources(classLoader, name);
+		Collection<InputStream> collection = new LinkedList<InputStream>();
+		if (urls != null) {
+			for (URL url : urls) {
+				InputStream inputStream = ClassLoaderUtils.getInputStream(url, name);
+				if (inputStream != null) {
+					collection.add(inputStream);
+				}
+			}
+		}
+		return collection;
+	}
+
+	public static URI getURI(URL url) throws URISyntaxException {
+		String urlString = url.toString();
 		URI uri = null;
-		if (url.startsWith(ClassLoaderUtils.JAR_PREFIX)) {
-			int start = url.indexOf(ClassLoaderUtils.FILE_PREFIX);
-			int end = url.indexOf(ClassLoaderUtils.JAR_SEPARATOR);
-			String s = url.substring(start, end);
+		if (urlString.startsWith(ClassLoaderUtils.JAR_PREFIX)) {
+			int start = urlString.indexOf(ClassLoaderUtils.FILE_PREFIX);
+			int end = urlString.indexOf(ClassLoaderUtils.JAR_SEPARATOR);
+			String s = urlString.substring(start, end);
 			uri = new URI(s);
 		} else {
-			uri = new URI(url);
+			uri = new URI(urlString);
 		}
 		return uri;
+	}
+
+	public static InputStream getInputStream(URL url, String name) throws URISyntaxException, IOException {
+		String urlString = url.toString();
+		boolean isJar = urlString.startsWith(ClassLoaderUtils.JAR_PREFIX);
+		URI uri = ClassLoaderUtils.getURI(url);
+		if (isJar) {
+			JarFile file = new JarFile(new File(uri));
+			JarEntry entry = file.getJarEntry(name);
+			InputStream input = file.getInputStream(entry);
+			return input;
+		}
+		File file = new File(uri);
+		InputStream input = new FileInputStream(file);
+		return input;
 	}
 
 }

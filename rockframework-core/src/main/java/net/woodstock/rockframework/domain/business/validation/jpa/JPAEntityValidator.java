@@ -40,6 +40,7 @@ import net.woodstock.rockframework.domain.business.validation.local.LocalValidat
 import net.woodstock.rockframework.domain.business.validation.local.Validator;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
+import net.woodstock.rockframework.reflection.ReflectionType;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
 import net.woodstock.rockframework.utils.StringUtils;
 
@@ -89,7 +90,7 @@ public class JPAEntityValidator implements EntityValidator {
 				throw new ValidationException(CoreMessage.getInstance().getMessage(LocalEntityValidator.MESSAGE_ERROR_NULL));
 			}
 
-			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(entity.getClass());
+			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(entity.getClass());
 			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
 				for (Annotation annotation : propertyDescriptor.getAnnotations()) {
 					Validator validator = null;

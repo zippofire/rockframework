@@ -27,6 +27,7 @@ import net.woodstock.rockframework.domain.business.validation.local.LocalValidat
 import net.woodstock.rockframework.domain.business.validation.local.validator.AbstractValidator;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
+import net.woodstock.rockframework.reflection.ReflectionType;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
 
 public class ValidatorId extends AbstractValidator {
@@ -45,7 +46,7 @@ public class ValidatorId extends AbstractValidator {
 				return context.getErrorResult(this.getInvalidTypeErrorMessage(context));
 			}
 
-			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(parent.getClass());
+			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(parent.getClass());
 			PropertyDescriptor propertyDescriptor = beanDescriptor.getProperty(context.getName());
 
 			if ((operation == Operation.GET) || (operation == Operation.UPDATE) || (operation == Operation.DELETE)) {

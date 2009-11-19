@@ -32,6 +32,7 @@ import net.woodstock.rockframework.conversion.common.BeanConverterContext;
 import net.woodstock.rockframework.conversion.common.PropertyConverterContext;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
+import net.woodstock.rockframework.reflection.ReflectionType;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
 import net.woodstock.rockframework.utils.StringUtils;
 
@@ -75,7 +76,7 @@ class BeanConverter extends AbstractTextConverter<Object> {
 		try {
 			Class<?> clazz = context.getType();
 			Object obj = clazz.newInstance();
-			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(clazz);
+			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(clazz);
 
 			if (!(context instanceof BeanConverterContext)) {
 				context = new BeanConverterContext(context.getParent(), context.getName(), context.getType());
@@ -125,7 +126,7 @@ class BeanConverter extends AbstractTextConverter<Object> {
 		}
 		try {
 			StringBuilder builder = new StringBuilder();
-			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(t.getClass());
+			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(t.getClass());
 
 			if (!(context instanceof BeanConverterContext)) {
 				context = new BeanConverterContext(context.getParent(), context.getName(), t.getClass());

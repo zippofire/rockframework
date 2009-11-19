@@ -30,6 +30,7 @@ import net.woodstock.rockframework.domain.persistence.query.impl.QueryContextPar
 import net.woodstock.rockframework.domain.utils.EntityUtils;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
+import net.woodstock.rockframework.reflection.ReflectionType;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
 import net.woodstock.rockframework.sys.SysLogger;
 import net.woodstock.rockframework.utils.StringUtils;
@@ -65,7 +66,7 @@ abstract class QueryContextHelper {
 
 			QueryContext context = new QueryContext(className, QueryContextHelper.ROOT_ALIAS, null);
 
-			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(clazz);
+			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(clazz);
 
 			List<Entity<?>> parsed = new ArrayList<Entity<?>>();
 			parsed.add(e);
@@ -172,7 +173,7 @@ abstract class QueryContextHelper {
 		if (EntityUtils.hasNotNullAttribute(value)) {
 			Class<?> clazz = value.getClass();
 			QueryContext child = new QueryContext(name, alias, context);
-			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(clazz);
+			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(clazz);
 			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
 				if (!propertyDescriptor.isReadable()) {
 					continue;
@@ -205,7 +206,7 @@ abstract class QueryContextHelper {
 					parsed.add((Entity<?>) o);
 
 					Class<?> clazz = o.getClass();
-					BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(clazz);
+					BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(clazz);
 					for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
 						if (!propertyDescriptor.isReadable()) {
 							continue;

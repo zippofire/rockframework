@@ -25,12 +25,16 @@ public class FooMB extends ManagedBean {
 	}
 
 	public String delete() {
+		Integer id = new Integer(this.getRequest().getParameter("foo.id"));
+		this.foo.setId(id);
 		this.fooRepository.delete(this.foo);
+		this.foos = this.fooRepository.list();
 		return ManagedBean.SUCCESS;
 	}
 
 	public String edit() {
-		System.out.println("ID: " + this.foo.getId());
+		Integer id = new Integer(this.getRequest().getParameter("foo.id"));
+		this.foo.setId(id);
 		this.foo = this.fooRepository.get(this.foo);
 		return ManagedBean.SUCCESS;
 	}

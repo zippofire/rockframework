@@ -21,6 +21,7 @@ import java.util.Map;
 
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.ReflectionException;
+import net.woodstock.rockframework.reflection.ReflectionType;
 
 public abstract class BeanDescriptorFactory {
 
@@ -28,9 +29,27 @@ public abstract class BeanDescriptorFactory {
 
 	private static BeanDescriptorFactory	methodBeanDescriptorFactory;
 
+	private static BeanDescriptorFactory	mixedBeanDescriptorFactory;
+
 	public abstract BeanDescriptor getBeanDescriptor(Class<?> clazz);
 
-	public static BeanDescriptorFactory getByFieldInstance() {
+	public static BeanDescriptorFactory getInstance(ReflectionType type) {
+		if (type == null) {
+			throw new IllegalArgumentException("Type must be not null");
+		}
+		switch (type) {
+			case FIELD:
+				return BeanDescriptorFactory.getByFieldInstance();
+			case METHOD:
+				return BeanDescriptorFactory.getByMethodInstance();
+			case MIXED:
+				return BeanDescriptorFactory.getMixedInstance();
+			default:
+				throw new IllegalArgumentException("Invalid type " + type);
+		}
+	}
+
+	private static BeanDescriptorFactory getByFieldInstance() {
 		if (BeanDescriptorFactory.fieldBeanDescriptorFactory == null) {
 			synchronized (BeanDescriptorFactory.class) {
 				if (BeanDescriptorFactory.fieldBeanDescriptorFactory == null) {
@@ -41,7 +60,7 @@ public abstract class BeanDescriptorFactory {
 		return BeanDescriptorFactory.fieldBeanDescriptorFactory;
 	}
 
-	public static BeanDescriptorFactory getByMethodInstance() {
+	private static BeanDescriptorFactory getByMethodInstance() {
 		if (BeanDescriptorFactory.methodBeanDescriptorFactory == null) {
 			synchronized (BeanDescriptorFactory.class) {
 				if (BeanDescriptorFactory.methodBeanDescriptorFactory == null) {
@@ -50,6 +69,17 @@ public abstract class BeanDescriptorFactory {
 			}
 		}
 		return BeanDescriptorFactory.methodBeanDescriptorFactory;
+	}
+
+	private static BeanDescriptorFactory getMixedInstance() {
+		if (BeanDescriptorFactory.mixedBeanDescriptorFactory == null) {
+			synchronized (BeanDescriptorFactory.class) {
+				if (BeanDescriptorFactory.mixedBeanDescriptorFactory == null) {
+					BeanDescriptorFactory.mixedBeanDescriptorFactory = new MixedBeanDescriptorFactory();
+				}
+			}
+		}
+		return BeanDescriptorFactory.mixedBeanDescriptorFactory;
 	}
 
 	abstract static class AbstractBeanDescriptorFactory extends BeanDescriptorFactory {
@@ -100,6 +130,15 @@ public abstract class BeanDescriptorFactory {
 		@Override
 		public BeanDescriptor getBeanDescriptorInternal(Class<?> clazz) throws ReflectionException {
 			return new MethodBeanDescriptor(clazz);
+		}
+
+	}
+
+	static class MixedBeanDescriptorFactory extends AbstractBeanDescriptorFactory {
+
+		@Override
+		public BeanDescriptor getBeanDescriptorInternal(Class<?> clazz) throws ReflectionException {
+			return new MixedBeanDescriptor(clazz);
 		}
 
 	}

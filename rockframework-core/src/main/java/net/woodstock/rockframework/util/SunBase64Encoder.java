@@ -21,7 +21,7 @@ import java.io.IOException;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
-public class SunBase64Encoder extends Base64Encoder {
+class SunBase64Encoder extends Base64Encoder {
 
 	private BASE64Decoder	decoder;
 

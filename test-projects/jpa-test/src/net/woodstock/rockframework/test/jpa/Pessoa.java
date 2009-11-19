@@ -12,11 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import net.woodstock.rockframework.domain.business.validation.Operation;
-import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateIntConstraint;
-import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateLength;
-import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateNotNull;
-import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateNull;
 import net.woodstock.rockframework.domain.util.IntegerEntity;
 
 @Entity
@@ -28,16 +23,12 @@ public class Pessoa extends IntegerEntity {
 	@Id
 	@Column(name = "ID_PESSOA")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@ValidateNotNull(operation = { Operation.GET, Operation.DELETE, Operation.UPDATE })
-	@ValidateNull(operation = { Operation.SAVE })
 	private Integer				id;
 
 	@Column(name = "NOM_PESSOA", nullable = false, length = 50)
-	@ValidateLength(min = 10, max = 50)
 	private String				nome;
 
 	@Column(name = "NUM_IDADE", nullable = false)
-	@ValidateIntConstraint(values = { 18, 50 })
 	private Integer				idade;
 
 	@Column(name = "FLG_ATIVO", nullable = false)

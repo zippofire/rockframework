@@ -16,9 +16,37 @@
  */
 package net.woodstock.rockframework.web.filter.referer;
 
+import java.io.IOException;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import net.woodstock.rockframework.web.filter.HttpFilter;
 
-abstract class RefererFilter extends HttpFilter {
+public abstract class RefererFilter extends HttpFilter {
+
+	protected static final int		BAD_REQUEST			= HttpServletResponse.SC_BAD_REQUEST;
 
 	protected static final String	REFERER_HEADER_KEY	= "referer";
+
+	protected String getReferer(HttpServletRequest request) {
+		return request.getHeader(RefererFilter.REFERER_HEADER_KEY);
+	}
+
+	@Override
+	public final void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+		boolean b = this.validateReferer(request);
+		if (!b) {
+			String url = request.getRequestURI();
+			String referer = this.getReferer(request);
+			this.getLogger().info("Invalid referer for URL: " + url + " referer: " + referer);
+			response.setStatus(RefererFilter.BAD_REQUEST);
+			return;
+		}
+		chain.doFilter(request, response);
+	}
+
+	protected abstract boolean validateReferer(HttpServletRequest request);
 }

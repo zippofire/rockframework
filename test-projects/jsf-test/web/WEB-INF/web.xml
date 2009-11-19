@@ -14,4 +14,12 @@
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>/faces/*</url-pattern>
 	</servlet-mapping>
+	<filter>
+		<filter-name>NoRefererFilter</filter-name>
+		<filter-class>net.woodstock.rockframework.web.filter.referer.NoRefererFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>NoRefererFilter</filter-name>
+		<url-pattern>/faces/test/*</url-pattern>
+	</filter-mapping>
 </web-app>

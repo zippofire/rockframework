@@ -46,6 +46,7 @@ import net.woodstock.rockframework.conversion.common.converters.ShortConverter;
 import net.woodstock.rockframework.conversion.common.converters.StringConverter;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
+import net.woodstock.rockframework.reflection.ReflectionType;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
 import net.woodstock.rockframework.utils.StringUtils;
 import net.woodstock.rockframework.xml.dom.XmlDocument;
@@ -93,7 +94,7 @@ class BeanConverter extends AbstractConverter<XmlElement, Object> {
 		try {
 			Class<?> clazz = context.getType();
 			Object obj = clazz.newInstance();
-			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(clazz);
+			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(clazz);
 
 			if (!(context instanceof BeanConverterContext)) {
 				context = new BeanConverterContext(context.getParent(), context.getName(), context.getType());
@@ -141,7 +142,7 @@ class BeanConverter extends AbstractConverter<XmlElement, Object> {
 		}
 
 		try {
-			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getByFieldInstance().getBeanDescriptor(t.getClass());
+			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(t.getClass());
 			XmlDocument document = new XmlDocument(this.getElementName(beanDescriptor.getName()));
 			XmlElement root = document.getRoot();
 			root.setAttribute(BeanConverter.CLASS_ATTRIBUTE, beanDescriptor.getType().getCanonicalName());

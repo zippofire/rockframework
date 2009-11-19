@@ -14,28 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.web.filter.referer;
+package net.woodstock.rockframework.reflection;
 
-import javax.servlet.http.HttpServletRequest;
-
-import net.woodstock.rockframework.web.utils.RequestUtils;
-
-public class LocalRefererFilter extends NoRefererFilter {
-
-	private String	applicationUrl;
-
-	@Override
-	protected boolean validateReferer(HttpServletRequest request) {
-		if (this.applicationUrl == null) {
-			this.applicationUrl = RequestUtils.getApplicationUrl(request);
-		}
-		if (super.validateReferer(request)) {
-			String referer = this.getReferer(request);
-			if (referer.startsWith(this.applicationUrl)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
+public enum ReflectionType {
+	FIELD, METHOD, MIXED;
 }
