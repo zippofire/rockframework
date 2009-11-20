@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf125872246377216" configfile="/facelets-test/web/WEB-INF/faces-navigation.xml">
+  <nodes xsi:type="pageflow:PFPage" name="*" x="122" y="370" id="pf12587422740400" referenceLink="//@navigationRule.1/@fromViewId|" outlinks="pf12587422740411 pf12587422740412" path="*"/>
+  <nodes xsi:type="pageflow:PFPage" name="index/index.xhtml" id="pf12587422740413" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf12587422740411" path="/index/index.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="test/foo-list.xhtml" id="pf12587422740414" referenceLink="//@navigationRule.2/@fromViewId|" outlinks="pf12587422740415 pf12587422740416 pf12587422740417" inlinks="pf12587422740412 pf12587422740415" path="/test/foo-list.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="test/foo-save.xhtml" id="pf12587422740418" referenceLink="//@navigationRule.3/@navigationCase.1/@toViewId|" outlinks="pf12587422740419 pf125874227404110" inlinks="pf12587422740416 pf12587422740417 pf12587422740419 pf125874227404110" path="/test/foo-save.xhtml"/>
+  <links id="pf12587422740411" target="pf12587422740413" source="pf12587422740400" outcome="index"/>
+  <links id="pf12587422740412" target="pf12587422740414" source="pf12587422740400" fromaction="#{fooMB.list}"/>
+  <links id="pf12587422740415" target="pf12587422740414" source="pf12587422740414" fromaction="#{fooMB.delete}"/>
+  <links id="pf12587422740416" target="pf12587422740418" source="pf12587422740414" fromaction="#{fooMB.edit}"/>
+  <links id="pf12587422740417" target="pf12587422740418" source="pf12587422740414" outcome="save"/>
+  <links id="pf12587422740419" target="pf12587422740418" source="pf12587422740418" outcome="success" fromaction="#{fooMB.save}"/>
+  <links id="pf125874227404110" target="pf12587422740418" source="pf12587422740418" outcome="success" fromaction="#{fooMB.update}"/>
+</pageflow:Pageflow>

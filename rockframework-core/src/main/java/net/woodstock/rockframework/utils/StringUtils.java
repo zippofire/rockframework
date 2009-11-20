@@ -117,8 +117,12 @@ public abstract class StringUtils {
 	}
 
 	public static String convertCharset(Charset from, String text) throws CharacterCodingException {
+		return StringUtils.convertCharset(from, Charset.defaultCharset(), text);
+	}
+
+	public static String convertCharset(Charset from, Charset to, String text) throws CharacterCodingException {
 		CharsetDecoder decoderFrom = from.newDecoder();
-		CharsetEncoder encoderTo = Charset.defaultCharset().newEncoder();
+		CharsetEncoder encoderTo = to.newEncoder();
 
 		CharBuffer charBufferFrom = decoderFrom.decode(ByteBuffer.wrap(text.getBytes()));
 		String tmp = charBufferFrom.toString();

@@ -25,18 +25,18 @@ public class WebConfig extends AbstractConfig {
 
 	private static final String	CONFIG_FILE	= "rockframework-web.properties";
 
-	private static WebConfig	coreConfig;
+	private static WebConfig	config;
 
 	private WebConfig() throws URISyntaxException, IOException {
 		super(WebConfig.CONFIG_FILE);
 	}
 
 	public static WebConfig getInstance() {
-		if (WebConfig.coreConfig == null) {
+		if (WebConfig.config == null) {
 			synchronized (WebConfig.class) {
-				if (WebConfig.coreConfig == null) {
+				if (WebConfig.config == null) {
 					try {
-						WebConfig.coreConfig = new WebConfig();
+						WebConfig.config = new WebConfig();
 					} catch (URISyntaxException e) {
 						throw new RuntimeException(e);
 					} catch (IOException e) {
@@ -45,6 +45,6 @@ public class WebConfig extends AbstractConfig {
 				}
 			}
 		}
-		return WebConfig.coreConfig;
+		return WebConfig.config;
 	}
 }

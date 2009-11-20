@@ -33,14 +33,24 @@ public class CharsetFilter extends HttpFilter {
 
 	public static final String	FROM_PARAMETER	= "from";
 
+	public static final String	TO_PARAMETER	= "to";
+
 	private String				from;
 
-	private Charset				charset;
+	private String				to;
+
+	private Charset				charsetFrom;
+
+	private Charset				charsetTo;
 
 	@Override
 	public void doInit() {
 		this.from = this.getInitParameter(CharsetFilter.FROM_PARAMETER);
-		this.charset = Charset.forName(this.from);
+		this.to = this.getInitParameter(CharsetFilter.FROM_PARAMETER);
+		if (StringUtils.isEmpty(this.to)) {
+			this.charsetTo = Charset.defaultCharset();
+		}
+		this.charsetFrom = Charset.forName(this.from);
 	}
 
 	@Override
@@ -54,11 +64,11 @@ public class CharsetFilter extends HttpFilter {
 		this.getLogger().debug("Getting response content");
 		ServletOutputStreamWrapper wrapper = responseWrapper.getOutputStreamWrapper();
 
-		this.getLogger().debug("Convert charset from response");
+		this.getLogger().debug("Convert from charset " + this.charsetFrom.displayName() + " to " + this.charsetTo.displayName());
 		String text = wrapper.getOutputText();
-		String content = StringUtils.convertCharset(this.charset, text);
+		String content = StringUtils.convertCharset(this.charsetFrom, this.charsetTo, text);
 
-		this.getLogger().debug("Writing converted text to output");
+		this.getLogger().debug("Writing text to output");
 		response.getOutputStream().write(content.getBytes());
 	}
 }

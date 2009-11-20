@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"      
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+	<ui:composition template="/layout/main.xhtml">
+		<ui:define name="title">
+			List Foo
+		</ui:define>
+		<ui:define name="body">
+			<f:view>
+				<h:form>
+					<table>
+						<tr>
+							<td>ID</td>
+							<td>Name</td>
+						</tr>
+						<c:forEach items="#{fooMB.foos}" var="foo" varStatus="status">
+							<tr>
+								<td><h:outputText value="#{foo.id}" /></td>
+								<td><h:outputText value="#{foo.name}" /></td>
+								<td>
+									<h:commandLink action="#{fooMB.edit}">
+										<f:param name="foo.id" value="#{foo.id}" />
+										Edit
+									</h:commandLink>
+									<h:commandLink action="#{fooMB.delete}">
+										<f:param name="foo.id" value="#{foo.id}" />
+										Delete
+									</h:commandLink>
+								</td>
+							</tr>
+						</c:forEach>
+					</table>
+					<div>
+						<h:commandLink action="index">Index</h:commandLink>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<h:commandLink action="save">Save</h:commandLink>
+					</div>
+				</h:form>
+			</f:view>
+			<f:view>
+				<h:form>
+					<h:commandLink action="#{fooMB.list}" >
+						Foo
+					</h:commandLink>
+				</h:form>
+			</f:view>
+		</ui:define>
+	</ui:composition>
+</html>

@@ -1,20 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf12581104730500" configfile="/jsf-test/web/WEB-INF/faces-config.xml">
-  <nodes xsi:type="pageflow:PFPage" name="index/index" x="122" y="562" id="pf12581144535491" referenceLink="//@navigationRule.1/@fromViewId|" outlinks="pf12581147255574 pf12581306269210" path="*"/>
-  <nodes xsi:type="pageflow:PFPage" name="test/foo-list" x="338" y="1330" id="pf12581144535502" referenceLink="//@navigationRule.3/@navigationCase.1/@toViewId|" outlinks="pf12581306269211 pf12581306269212 pf12581306269213" inlinks="pf12581147255574 pf12581306269211 pf12581306269214 pf12581306269215" path="/test/foo-list.jsp"/>
-  <nodes xsi:type="pageflow:PFPage" name="test/foo-save" x="122" y="178" id="pf12581144535503" referenceLink="//@navigationRule.2/@navigationCase.1/@toViewId|" path="/test/foo-list.jsp"/>
-  <nodes xsi:type="pageflow:PFPage" name="*" x="122" y="946" id="pf12581147581248" path="*"/>
-  <nodes xsi:type="pageflow:PFPage" name="index/index" x="338" y="562" id="pf12581306269226" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf12581306269210" path="/index/index.jsp"/>
-  <nodes xsi:type="pageflow:PFPage" name="test/foo-save" x="122" y="1330" id="pf12581306269227" referenceLink="//@navigationRule.3/@fromViewId|" outlinks="pf12581306269214 pf12581306269215" inlinks="pf12581306269212 pf12581306269213" path="/test/foo-save.jsp"/>
-  <links id="pf12581147255574" target="pf12581144535502" source="pf12581144535491" fromaction="#{fooMB.list}"/>
-  <links id="pf12581306269210" target="pf12581306269226" source="pf12581144535491" outcome="index"/>
-  <links id="pf12581306269212" target="pf12581306269227" source="pf12581144535502" fromaction="#{fooMB.edit}"/>
-  <links id="pf12581306269213" target="pf12581306269227" source="pf12581144535502" outcome="save"/>
-  <links id="pf12581306269214" target="pf12581144535502" source="pf12581306269227" outcome="success" fromaction="#{fooMB.save}"/>
-  <links id="pf12581306269215" target="pf12581144535502" source="pf12581306269227" outcome="success" fromaction="#{fooMB.update}"/>
-  <links id="pf12581306269211" target="pf12581144535502" source="pf12581144535502" fromaction="#{fooMB.delete}">
-    <bendPoints d1Height="-36" d2Height="-36"/>
-    <bendPoints d1Width="-64" d1Height="-36" d2Width="-64" d2Height="-36"/>
-    <bendPoints d1Width="-64" d2Width="-64"/>
-  </links>
+  <nodes xsi:type="pageflow:PFPage" name="index/index" x="122" y="370" id="pf12581144535491" referenceLink="//@navigationRule.1/@fromViewId|" path="*"/>
+  <nodes xsi:type="pageflow:PFPage" name="test/foo-list" x="338" y="178" id="pf12581144535502" referenceLink="//@navigationRule.2/@fromViewId|" path="/test/foo-list.jsp"/>
+  <nodes xsi:type="pageflow:PFPage" name="test/foo-save" x="122" y="754" id="pf12581144535503" referenceLink="//@navigationRule.2/@navigationCase.1/@toViewId|" path="/test/foo-list.jsp"/>
+  <nodes xsi:type="pageflow:PFPage" name="*" x="122" y="1138" id="pf12581147581248" path="*"/>
+  <nodes xsi:type="pageflow:PFPage" name="index/index" x="338" y="562" id="pf12581306269226" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" path="/index/index.jsp"/>
+  <nodes xsi:type="pageflow:PFPage" name="test/foo-save" x="554" y="178" id="pf12581306269227" referenceLink="//@navigationRule.3/@navigationCase.1/@toViewId|" path="/test/foo-save.jsp"/>
 </pageflow:Pageflow>
