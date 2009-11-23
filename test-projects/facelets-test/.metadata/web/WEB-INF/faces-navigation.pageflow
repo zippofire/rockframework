@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf125872246377216" configfile="/facelets-test/web/WEB-INF/faces-navigation.xml">
-  <nodes xsi:type="pageflow:PFPage" name="*" x="122" y="370" id="pf12587422740400" referenceLink="//@navigationRule.1/@fromViewId|" outlinks="pf12587422740411 pf12587422740412" path="*"/>
-  <nodes xsi:type="pageflow:PFPage" name="index/index.xhtml" id="pf12587422740413" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf12587422740411" path="/index/index.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="test/foo-list.xhtml" id="pf12587422740414" referenceLink="//@navigationRule.2/@fromViewId|" outlinks="pf12587422740415 pf12587422740416 pf12587422740417" inlinks="pf12587422740412 pf12587422740415" path="/test/foo-list.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="test/foo-save.xhtml" id="pf12587422740418" referenceLink="//@navigationRule.3/@navigationCase.1/@toViewId|" outlinks="pf12587422740419 pf125874227404110" inlinks="pf12587422740416 pf12587422740417 pf12587422740419 pf125874227404110" path="/test/foo-save.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="*" x="122" y="764" id="pf12587422740400" referenceLink="//@navigationRule.2/@fromViewId|" outlinks="pf12587422740411 pf125899689113510 pf125899689113511 pf125899689113512 pf125899693259817 pf125899693259818" path="*"/>
+  <nodes xsi:type="pageflow:PFPage" name="index/index.xhtml" x="338" y="178" id="pf12587422740413" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf12587422740411" path="/index/index.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="test/foo-save.xhtml" x="554" y="785" id="pf12589829840894" referenceLink="//@navigationRule.3/@navigationCase.0/@toViewId|" inlinks="pf125899689113510 pf125899689113511 pf125899689113512 pf125899693259820" path="/test/foo-save.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="test/foo-list.xhtml" id="pf125899693259821" referenceLink="//@navigationRule.3/@fromViewId|" outlinks="pf125899693259820" inlinks="pf125899693259817 pf125899693259818" path="/test/foo-list.xhtml"/>
   <links id="pf12587422740411" target="pf12587422740413" source="pf12587422740400" outcome="index"/>
-  <links id="pf12587422740412" target="pf12587422740414" source="pf12587422740400" fromaction="#{fooMB.list}"/>
-  <links id="pf12587422740415" target="pf12587422740414" source="pf12587422740414" fromaction="#{fooMB.delete}"/>
-  <links id="pf12587422740416" target="pf12587422740418" source="pf12587422740414" fromaction="#{fooMB.edit}"/>
-  <links id="pf12587422740417" target="pf12587422740418" source="pf12587422740414" outcome="save"/>
-  <links id="pf12587422740419" target="pf12587422740418" source="pf12587422740418" outcome="success" fromaction="#{fooMB.save}"/>
-  <links id="pf125874227404110" target="pf12587422740418" source="pf12587422740418" outcome="success" fromaction="#{fooMB.update}"/>
+  <links id="pf125899689113510" target="pf12589829840894" source="pf12587422740400" fromaction="#{fooMB.edit}"/>
+  <links id="pf125899689113511" target="pf12589829840894" source="pf12587422740400" outcome="success" fromaction="#{fooMB.save}"/>
+  <links id="pf125899689113512" target="pf12589829840894" source="pf12587422740400" outcome="success" fromaction="#{fooMB.update}"/>
+  <links id="pf125899693259820" target="pf12589829840894" source="pf125899693259821" outcome="save"/>
+  <links id="pf125899693259817" target="pf125899693259821" source="pf12587422740400" fromaction="#{fooMB.list}"/>
+  <links id="pf125899693259818" target="pf125899693259821" source="pf12587422740400" fromaction="#{fooMB.delete}"/>
 </pageflow:Pageflow>

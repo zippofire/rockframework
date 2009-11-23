@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"      
-      xmlns:c="http://java.sun.com/jstl/core"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets">
@@ -11,9 +10,9 @@
 		</ui:define>
 		<ui:define name="body">
 			<f:view>
-				<c:if test="${not empty fooMB.message}">
-					${fooMB.message}
-				</c:if>
+				<ui:fragment rendered="#{not empty fooMB.message}">
+					<h:outputText value="${fooMB.message}" />
+				</ui:fragment>
 				<h:form>
 					<table>
 						<tr>
@@ -26,15 +25,13 @@
 						</tr>
 						<tr>
 							<td colspan="2">
-								<c:choose>
-									<c:when test="${empty fooMB.foo.id}">
-										<h:commandButton action="#{fooMB.save}" value="Save" />
-									</c:when>
-									<c:otherwise>
-										<h:commandButton action="#{fooMB.update}" value="Update" />
-									</c:otherwise>
-								</c:choose>
-								&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+								<ui:fragment rendered="#{empty fooMB.foo.id}">
+									<h:commandButton action="#{fooMB.save}" value="Save" />
+								</ui:fragment>
+								<ui:fragment rendered="fooMB.foo.id}">
+									<h:commandButton action="#{fooMB.update}" value="Update" />
+								</ui:fragment>
+								&nbsp;&nbsp;&nbsp;&nbsp;
 								<h:commandButton action="#{fooMB.list}" value="Back" />
 							</td>
 						</tr>
