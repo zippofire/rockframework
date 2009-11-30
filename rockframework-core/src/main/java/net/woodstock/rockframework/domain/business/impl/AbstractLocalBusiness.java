@@ -50,8 +50,4 @@ public abstract class AbstractLocalBusiness extends AbstractBusiness {
 		return this.validate(entity, Operation.UPDATE);
 	}
 
-	public ValidationResult validateDelete(Entity<?> entity) throws BusinessException {
-		return this.validate(entity, Operation.DELETE);
-	}
-
 }

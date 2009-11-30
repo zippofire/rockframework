@@ -53,8 +53,4 @@ public abstract class AbstractHibernateBusiness extends AbstractBusiness {
 		return this.validate(entity);
 	}
 
-	public ValidationResult validateDelete(Entity<?> entity) throws BusinessException {
-		return this.validate(entity);
-	}
-
 }

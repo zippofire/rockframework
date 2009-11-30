@@ -26,9 +26,9 @@ import net.woodstock.rockframework.config.CoreConfig;
 
 public abstract class NumberUtils {
 
-	private static final String			DECIMAL_FORMAT_PROPERTY	= "decimal.format";
+	private static final String			DECIMAL_FORMAT_PROPERTY	= "format.decimal";
 
-	private static final String			INTEGER_FORMAT_PROPERTY	= "integer.format";
+	private static final String			INTEGER_FORMAT_PROPERTY	= "format.integer";
 
 	private static final DecimalFormat	DECIMAL_FORMAT			= new DecimalFormat(CoreConfig.getInstance().getValue(NumberUtils.DECIMAL_FORMAT_PROPERTY));
 

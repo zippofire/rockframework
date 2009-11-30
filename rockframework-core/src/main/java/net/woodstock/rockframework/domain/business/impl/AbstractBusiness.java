@@ -47,17 +47,17 @@ abstract class AbstractBusiness implements GenericBusiness {
 			error = true;
 			message = CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_INVALID_OBJECT, entity);
 		}
-		Class<?> clazz = entity.getClass();
 		Object id = entity.getId();
-		if (clazz == null) {
-			error = true;
-			message = CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_INVALID_CLASS, clazz);
-		}
 		if (id == null) {
 			error = true;
 			message = CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_INVALID_ID, id);
 		}
 		return new ValidationResult(error, message);
+	}
+
+	@Override
+	public ValidationResult validateDelete(Entity<?> entity) throws BusinessException {
+		return this.validateGet(entity);
 	}
 
 	@Override

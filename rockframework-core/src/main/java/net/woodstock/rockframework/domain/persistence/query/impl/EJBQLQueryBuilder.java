@@ -80,8 +80,8 @@ public abstract class EJBQLQueryBuilder extends AbstractQueryBuilder {
 
 	protected abstract Object getQueryLocal(String sql, Object manager) throws BuilderException;
 
-	protected abstract void setQueryParameter(Object query, String name, Object value) throws BuilderException;
-
 	protected abstract void setQueryOptions(Object query, Map<String, Object> options) throws BuilderException;
+
+	protected abstract void setQueryParameter(Object query, String name, Object value) throws BuilderException;
 
 }

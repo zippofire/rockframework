@@ -50,19 +50,4 @@ public abstract class AbstractJPABusiness extends AbstractBusiness {
 		return this.validate(entity, Operation.UPDATE);
 	}
 
-	public ValidationResult validateDelete(Entity<?> entity) throws BusinessException {
-		boolean error = false;
-		String message = CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_OK);
-		if (entity == null) {
-			error = true;
-			message = CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_INVALID_OBJECT, entity);
-		}
-		Object id = entity.getId();
-		if (id == null) {
-			error = true;
-			message = CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_INVALID_ID, id);
-		}
-		return new ValidationResult(error, message);
-	}
-
 }

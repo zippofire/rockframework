@@ -25,7 +25,7 @@ import net.woodstock.rockframework.config.CoreConfig;
 
 public abstract class TimeUtils {
 
-	private static final String		TIME_FORMAT_PROPERTY	= "time.format";
+	private static final String		TIME_FORMAT_PROPERTY	= "format.time";
 
 	private static final DateFormat	dateFormat				= new SimpleDateFormat(CoreConfig.getInstance().getValue(TimeUtils.TIME_FORMAT_PROPERTY));
 

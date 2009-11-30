@@ -25,7 +25,7 @@ import net.woodstock.rockframework.config.CoreConfig;
 
 public abstract class DateUtils {
 
-	private static final String		DATE_FORMAT_PROPERTY	= "date.format";
+	private static final String		DATE_FORMAT_PROPERTY	= "format.date";
 
 	private static final DateFormat	DATE_FORMAT				= new SimpleDateFormat(CoreConfig.getInstance().getValue(DateUtils.DATE_FORMAT_PROPERTY));
 
