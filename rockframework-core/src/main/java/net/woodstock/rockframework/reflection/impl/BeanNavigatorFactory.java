@@ -29,6 +29,10 @@ public abstract class BeanNavigatorFactory {
 
 	public abstract BeanNavigator getBeanNavigator(Object bean);
 
+	public static BeanNavigatorFactory getInstance() {
+		return BeanNavigatorFactory.getInstance(BeanDescriptorFactory.REFLECTION_TYPE);
+	}
+
 	public static BeanNavigatorFactory getInstance(ReflectionType type) {
 		if (type == null) {
 			throw new IllegalArgumentException("Type must be not null");

@@ -12,7 +12,6 @@
 		<!-- Maven -->
 		<gpg.passphrase>rockframework</gpg.passphrase>
 		<!-- Libs -->
-		<commons.logging.version>1.1.1</commons.logging.version>
 		<junit.version>3.8.2</junit.version>
 		<test />
 	</properties>
@@ -66,6 +65,11 @@
 			<name>JBoss Repository</name>
 			<url>http://repository.jboss.org/maven2</url>
 		</repository>
+		<repository>
+			<id>jboss.com</id>
+			<name>JBoss Repository</name>
+			<url>http://repository.jboss.com/maven2</url>
+		</repository>		
 	</repositories>
 	-->
 	<build>

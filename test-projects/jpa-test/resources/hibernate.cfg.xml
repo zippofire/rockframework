@@ -32,6 +32,7 @@
         <mapping class="net.woodstock.rockframework.test.jpa.Endereco" />
         <mapping class="net.woodstock.rockframework.test.jpa.Pessoa" />
         <mapping class="net.woodstock.rockframework.test.jpa.Telefone" />
-
+        
+        
     </session-factory>
 </hibernate-configuration>

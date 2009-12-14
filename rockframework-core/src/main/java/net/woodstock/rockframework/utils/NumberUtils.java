@@ -197,6 +197,16 @@ public abstract class NumberUtils {
 		return NumberUtils.random.nextInt(max);
 	}
 
+	public static double root(double value, double root) {
+		if (root == 2) {
+			return Math.sqrt(value);
+		}
+		if (root == 3) {
+			return Math.cbrt(value);
+		}
+		return Math.pow(value, 1.0 / root);
+	}
+
 	private NumberUtils() {
 		//
 	}

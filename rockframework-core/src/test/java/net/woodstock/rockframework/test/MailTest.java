@@ -8,16 +8,15 @@ public class MailTest extends TestCase {
 
 	public void test1() throws Exception {
 		SimpleMail mail = new SimpleMail();
-		mail.setFrom("helio.costa@mc.gov.br");
-		mail.addTo("wesley.neves@mc.gov.br");
-		// mail.addTo("wesleyneves81@gmail.com");
-		mail.setSubject("Problema");
-		mail.setText("VC esta com problema!!!");
+		mail.setFrom("SisOuvidoria <ouvidoria@mc.gov.br>");
+		mail.addTo("ls_junior@uol.com.br");
+		mail.setSubject("Teste");
+		mail.setText("Teste");
 
-		SimpleMailSender mailSender = new SimpleMailSender("10.209.64.33");
-		mailSender.setDebug(true);
-		// mailSender.setUser("sistema.gesac");
-		// mailSender.setPassword("gesac123");
+		SimpleMailSender mailSender = new SimpleMailSender("10.209.64.105");
+		mailSender.setDebug(false);
+		mailSender.setUser("ouvidoria");
+		mailSender.setPassword("12345678");
 
 		mailSender.send(mail);
 	}

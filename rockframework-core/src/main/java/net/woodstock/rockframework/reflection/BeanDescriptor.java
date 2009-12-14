@@ -20,7 +20,7 @@ import java.lang.annotation.Annotation;
 import java.util.Collection;
 
 public interface BeanDescriptor {
-
+	
 	String getName();
 
 	Class<?> getType();

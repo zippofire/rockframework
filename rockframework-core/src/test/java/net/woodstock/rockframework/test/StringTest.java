@@ -1,9 +1,8 @@
 package net.woodstock.rockframework.test;
 
-import java.text.Normalizer;
-
 import junit.framework.TestCase;
 import net.woodstock.rockframework.utils.Base64Utils;
+import net.woodstock.rockframework.utils.StringUtils;
 
 public class StringTest extends TestCase {
 
@@ -26,11 +25,7 @@ public class StringTest extends TestCase {
 	}
 
 	public void test2() throws Exception {
-		String s = " mária júnior ";
-
-		s = Normalizer.normalize(s, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
-
-		System.out.println("'" + s + "'");
+		System.out.println(StringUtils.random(10000));
 	}
 
 }

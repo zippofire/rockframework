@@ -19,11 +19,18 @@ package net.woodstock.rockframework.reflection.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.woodstock.rockframework.config.CoreConfig;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.ReflectionException;
 import net.woodstock.rockframework.reflection.ReflectionType;
 
 public abstract class BeanDescriptorFactory {
+
+	public static final String				REFLECTION_TYPE_PROPERTY	= "reflection.type";
+
+	public static final String				REFLECTION_TYPE_VALUE		= CoreConfig.getInstance().getValue(BeanDescriptorFactory.REFLECTION_TYPE_PROPERTY);
+
+	public static final ReflectionType		REFLECTION_TYPE				= ReflectionType.valueOf(BeanDescriptorFactory.REFLECTION_TYPE_VALUE);
 
 	private static BeanDescriptorFactory	fieldBeanDescriptorFactory;
 
@@ -32,6 +39,10 @@ public abstract class BeanDescriptorFactory {
 	private static BeanDescriptorFactory	mixedBeanDescriptorFactory;
 
 	public abstract BeanDescriptor getBeanDescriptor(Class<?> clazz);
+
+	public static BeanDescriptorFactory getInstance() {
+		return BeanDescriptorFactory.getInstance(BeanDescriptorFactory.REFLECTION_TYPE);
+	}
 
 	public static BeanDescriptorFactory getInstance(ReflectionType type) {
 		if (type == null) {

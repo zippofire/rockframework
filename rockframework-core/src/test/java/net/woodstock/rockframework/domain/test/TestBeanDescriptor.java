@@ -19,14 +19,14 @@ public class TestBeanDescriptor extends TestCase {
 		for (PropertyDescriptor property : bean.getProperties()) {
 			System.out.println(property.getName() + " => " + property.getValue(x));
 		}
-		
+
 		bean.getProperty("fullName").setValue(x, "Lourival Sabino");
 	}
 
 	public void test2() throws Exception {
 		X x = new X();
 
-		BeanDescriptor bean = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(x.getClass());
+		BeanDescriptor bean = BeanDescriptorFactory.getInstance().getBeanDescriptor(x.getClass());
 
 		bean.getProperty("id").setValue(x, new Integer(1));
 		bean.getProperty("firstName").setValue(x, "Lourival");

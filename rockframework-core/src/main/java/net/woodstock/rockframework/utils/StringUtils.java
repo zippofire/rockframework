@@ -39,6 +39,14 @@ public abstract class StringUtils {
 
 	private static final String	ACCENT_PATTERN		= "[^\\p{ASCII}]";
 
+	private static final String	LOWERCASE_LETTERS	= "abcdefghijklmnopkrstuvwxyz";
+
+	private static final String	DIGITS				= "0123456789";
+
+	private static final String	UPERCASE_LETTERS	= "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+	private static final String	LETTERS_DIGITS		= UPERCASE_LETTERS + LOWERCASE_LETTERS + DIGITS;
+
 	private StringUtils() {
 		//
 	}
@@ -234,6 +242,17 @@ public abstract class StringUtils {
 			builder.append(pad);
 		}
 		builder.append(s);
+		return builder.toString();
+	}
+
+	public static String random(int size) {
+		StringBuilder builder = new StringBuilder();
+		int max = LETTERS_DIGITS.length();
+		while (size > 0) {
+			int index = NumberUtils.random(max);
+			builder.append(LETTERS_DIGITS.charAt(index));
+			size--;
+		}
 		return builder.toString();
 	}
 

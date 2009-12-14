@@ -17,7 +17,7 @@
 package net.woodstock.rockframework.test;
 
 import junit.framework.TestCase;
-import net.woodstock.rockframework.utils.MathUtils;
+import net.woodstock.rockframework.utils.NumberUtils;
 
 public class MathTest extends TestCase {
 
@@ -29,11 +29,11 @@ public class MathTest extends TestCase {
 		 * System.out.println(Math.cos(Math.toRadians(angle)));
 		 */
 
-		System.out.println(MathUtils.root(10000, 4));
-		System.out.println(MathUtils.root(10000.0, 4.0));
+		System.out.println(NumberUtils.root(10000, 4));
+		System.out.println(NumberUtils.root(10000.0, 4.0));
 		System.out.println(Math.pow(10.0, 4.0));
 
-		System.out.println(MathUtils.root(10.0, 0));
+		System.out.println(NumberUtils.root(10.0, 0));
 	}
 
 }

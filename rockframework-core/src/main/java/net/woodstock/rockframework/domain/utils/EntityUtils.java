@@ -23,7 +23,6 @@ import java.util.Date;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
-import net.woodstock.rockframework.reflection.ReflectionType;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
 import net.woodstock.rockframework.utils.ObjectUtils;
 
@@ -62,7 +61,7 @@ public abstract class EntityUtils {
 			return false;
 		}
 
-		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(entity1.getClass());
+		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance().getBeanDescriptor(entity1.getClass());
 		Collection<PropertyDescriptor> properties = beanDescriptor.getProperties();
 
 		for (PropertyDescriptor property : properties) {
@@ -97,7 +96,7 @@ public abstract class EntityUtils {
 
 		int result = 1;
 
-		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(entity.getClass());
+		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance().getBeanDescriptor(entity.getClass());
 		Collection<PropertyDescriptor> properties = beanDescriptor.getProperties();
 
 		for (PropertyDescriptor property : properties) {
@@ -142,7 +141,7 @@ public abstract class EntityUtils {
 			return false;
 		}
 
-		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(e.getClass());
+		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance().getBeanDescriptor(e.getClass());
 		for (PropertyDescriptor property : beanDescriptor.getProperties()) {
 			if (!property.isReadable()) {
 				continue;

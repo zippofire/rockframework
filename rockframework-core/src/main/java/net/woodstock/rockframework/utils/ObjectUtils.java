@@ -31,8 +31,8 @@ public abstract class ObjectUtils {
 	private static final char	PROPERTY_SEPARATOR	= '.';
 
 	public static void copyAttributes(Object from, Object to, Class<?>[] ignoredTypes) {
-		BeanDescriptor beanDescriptorFrom = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(from.getClass());
-		BeanDescriptor beanDescriptorTo = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(to.getClass());
+		BeanDescriptor beanDescriptorFrom = BeanDescriptorFactory.getInstance().getBeanDescriptor(from.getClass());
+		BeanDescriptor beanDescriptorTo = BeanDescriptorFactory.getInstance().getBeanDescriptor(to.getClass());
 
 		outer: for (PropertyDescriptor propertyDescriptor : beanDescriptorFrom.getProperties()) {
 			if (beanDescriptorTo.hasProperty(propertyDescriptor.getName())) {
