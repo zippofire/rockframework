@@ -31,7 +31,7 @@ import net.woodstock.rockframework.domain.business.validation.local.validator.Ab
 public class ValidatorManyToOne extends AbstractValidator {
 
 	@SuppressWarnings("unchecked")
-	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
+	public ValidationResult validate(final LocalValidationContext context) {
 		try {
 			Object value = context.getValue();
 			ManyToOne annotation = (ManyToOne) context.getAnnotation();
@@ -68,11 +68,11 @@ public class ValidatorManyToOne extends AbstractValidator {
 		}
 	}
 
-	private String getEmptyErrorMessage(LocalValidationContext context) throws ValidationException {
+	private String getEmptyErrorMessage(final LocalValidationContext context) {
 		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_NOT_EMPTY, context.getCanonicalName());
 	}
 
-	private String getInvalidTypeErrorMessage(LocalValidationContext context) throws ValidationException {
+	private String getInvalidTypeErrorMessage(final LocalValidationContext context) {
 		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_INVALID_TYPE, context.getCanonicalName());
 	}
 

@@ -45,28 +45,28 @@ public abstract class ClassLoaderUtils {
 		//
 	}
 
-	public static URL getResource(String name) {
+	public static URL getResource(final String name) {
 		return ClassLoaderUtils.getResource(Thread.currentThread().getContextClassLoader(), name);
 	}
 
-	public static URL getResource(ClassLoader classLoader, String name) {
+	public static URL getResource(final ClassLoader classLoader, final String name) {
 		return classLoader.getResource(name);
 	}
 
-	public static Collection<URL> getResources(String name) throws IOException {
+	public static Collection<URL> getResources(final String name) throws IOException {
 		return ClassLoaderUtils.getResources(Thread.currentThread().getContextClassLoader(), name);
 	}
 
-	public static Collection<URL> getResources(ClassLoader classLoader, String name) throws IOException {
+	public static Collection<URL> getResources(final ClassLoader classLoader, final String name) throws IOException {
 		Enumeration<URL> urls = classLoader.getResources(name);
 		return CollectionUtils.toCollection(urls);
 	}
 
-	public static InputStream getResourceAsStream(String name) throws URISyntaxException, IOException {
+	public static InputStream getResourceAsStream(final String name) throws URISyntaxException, IOException {
 		return ClassLoaderUtils.getResourceAsStream(Thread.currentThread().getContextClassLoader(), name);
 	}
 
-	public static InputStream getResourceAsStream(ClassLoader classLoader, String name) throws URISyntaxException, IOException {
+	public static InputStream getResourceAsStream(final ClassLoader classLoader, final String name) throws URISyntaxException, IOException {
 		URL url = classLoader.getResource(name);
 		if (url != null) {
 			InputStream inputStream = ClassLoaderUtils.getInputStream(url, name);
@@ -75,11 +75,11 @@ public abstract class ClassLoaderUtils {
 		return null;
 	}
 
-	public static Collection<InputStream> getResourcesAsStream(String name) throws URISyntaxException, IOException {
+	public static Collection<InputStream> getResourcesAsStream(final String name) throws URISyntaxException, IOException {
 		return ClassLoaderUtils.getResourcesAsStream(Thread.currentThread().getContextClassLoader(), name);
 	}
 
-	public static Collection<InputStream> getResourcesAsStream(ClassLoader classLoader, String name) throws URISyntaxException, IOException {
+	public static Collection<InputStream> getResourcesAsStream(final ClassLoader classLoader, final String name) throws URISyntaxException, IOException {
 		Collection<URL> urls = ClassLoaderUtils.getResources(classLoader, name);
 		Collection<InputStream> collection = new LinkedList<InputStream>();
 		if (urls != null) {
@@ -93,7 +93,7 @@ public abstract class ClassLoaderUtils {
 		return collection;
 	}
 
-	public static URI getURI(URL url) throws URISyntaxException {
+	public static URI getURI(final URL url) throws URISyntaxException {
 		String urlString = url.toString();
 		URI uri = null;
 		if (urlString.startsWith(ClassLoaderUtils.JAR_PREFIX)) {
@@ -107,7 +107,7 @@ public abstract class ClassLoaderUtils {
 		return uri;
 	}
 
-	public static InputStream getInputStream(URL url, String name) throws URISyntaxException, IOException {
+	public static InputStream getInputStream(final URL url, final String name) throws URISyntaxException, IOException {
 		String urlString = url.toString();
 		boolean isJar = urlString.startsWith(ClassLoaderUtils.JAR_PREFIX);
 		URI uri = ClassLoaderUtils.getURI(url);

@@ -37,7 +37,7 @@ public class AnnotationAroundInterceptor extends BaseInterceptor {
 		this.listener = new AnnotationAroundInterceptorListener();
 	}
 
-	public String intercept(ActionInvocation invocation) throws Exception {
+	public String intercept(final ActionInvocation invocation) throws Exception {
 		Object action = invocation.getAction();
 		Class<?> clazz = action.getClass();
 		if (clazz.isAnnotationPresent(Around.class)) {
@@ -48,7 +48,7 @@ public class AnnotationAroundInterceptor extends BaseInterceptor {
 		return invocation.invoke();
 	}
 
-	private void executeBeforeMethod(Object action) throws IllegalAccessException {
+	private void executeBeforeMethod(final Object action) throws IllegalAccessException {
 		Class<?> clazz = action.getClass();
 		Method[] methods = clazz.getMethods();
 		for (Method method : methods) {
@@ -64,7 +64,7 @@ public class AnnotationAroundInterceptor extends BaseInterceptor {
 
 	class AnnotationAroundInterceptorListener implements PreResultListener {
 
-		public void beforeResult(ActionInvocation invocation, String resultCode) {
+		public void beforeResult(final ActionInvocation invocation, final String resultCode) {
 			Object action = invocation.getAction();
 			Class<?> clazz = action.getClass();
 			Method[] methods = clazz.getMethods();

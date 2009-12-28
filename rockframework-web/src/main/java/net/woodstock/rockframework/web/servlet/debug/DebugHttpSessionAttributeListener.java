@@ -23,7 +23,7 @@ import net.woodstock.rockframework.sys.SysLogger;
 
 public class DebugHttpSessionAttributeListener implements HttpSessionAttributeListener {
 
-	public void attributeAdded(HttpSessionBindingEvent event) {
+	public void attributeAdded(final HttpSessionBindingEvent event) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("\nAdded");
 		builder.append("\nID      : " + event.getSession().getId());
@@ -35,7 +35,7 @@ public class DebugHttpSessionAttributeListener implements HttpSessionAttributeLi
 		SysLogger.getLogger().info(builder.toString());
 	}
 
-	public void attributeRemoved(HttpSessionBindingEvent event) {
+	public void attributeRemoved(final HttpSessionBindingEvent event) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("\nRemoved");
 		builder.append("\nID      : " + event.getSession().getId());
@@ -47,7 +47,7 @@ public class DebugHttpSessionAttributeListener implements HttpSessionAttributeLi
 		SysLogger.getLogger().info(builder.toString());
 	}
 
-	public void attributeReplaced(HttpSessionBindingEvent event) {
+	public void attributeReplaced(final HttpSessionBindingEvent event) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("\nReplaced");
 		builder.append("\nID      : " + event.getSession().getId());

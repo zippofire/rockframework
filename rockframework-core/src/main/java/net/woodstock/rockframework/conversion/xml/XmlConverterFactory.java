@@ -20,13 +20,13 @@ import net.woodstock.rockframework.conversion.Converter;
 import net.woodstock.rockframework.conversion.ConverterFactory;
 import net.woodstock.rockframework.xml.dom.XmlElement;
 
-public class XmlConverterFactory implements ConverterFactory<XmlElement, Object> {
+public final class XmlConverterFactory implements ConverterFactory<XmlElement, Object> {
 
-	private static XmlConverterFactory		factory;
+	private static XmlConverterFactory		instance	= new XmlConverterFactory();
 
 	private Converter<XmlElement, Object>	converter;
 
-	public XmlConverterFactory() {
+	private XmlConverterFactory() {
 		super();
 		this.converter = new BeanConverter();
 	}
@@ -36,14 +36,7 @@ public class XmlConverterFactory implements ConverterFactory<XmlElement, Object>
 	}
 
 	public static XmlConverterFactory getInstance() {
-		if (XmlConverterFactory.factory == null) {
-			synchronized (XmlConverterFactory.class) {
-				if (XmlConverterFactory.factory == null) {
-					XmlConverterFactory.factory = new XmlConverterFactory();
-				}
-			}
-		}
-		return XmlConverterFactory.factory;
+		return XmlConverterFactory.instance;
 	}
 
 }

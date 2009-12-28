@@ -22,21 +22,21 @@ import javax.servlet.http.HttpServletRequest;
 
 public abstract class AbstractServletRequestListener extends BaseListener implements ServletRequestListener {
 
-	public final void requestDestroyed(ServletRequestEvent event) {
+	public final void requestDestroyed(final ServletRequestEvent event) {
 		this.requestDestroyed(event, (HttpServletRequest) event.getServletRequest());
 	}
 
-	public final void requestInitialized(ServletRequestEvent event) {
+	public final void requestInitialized(final ServletRequestEvent event) {
 		this.requestInitialized(event, (HttpServletRequest) event.getServletRequest());
 	}
 
 	@SuppressWarnings("unused")
-	public void requestDestroyed(ServletRequestEvent event, HttpServletRequest request) {
+	public void requestDestroyed(final ServletRequestEvent event, final HttpServletRequest request) {
 		this.getLogger().info("Destroying request");
 	}
 
 	@SuppressWarnings("unused")
-	public void requestInitialized(ServletRequestEvent event, HttpServletRequest request) {
+	public void requestInitialized(final ServletRequestEvent event, final HttpServletRequest request) {
 		this.getLogger().info("Initializing request");
 	}
 

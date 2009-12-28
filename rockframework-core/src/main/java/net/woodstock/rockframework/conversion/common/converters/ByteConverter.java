@@ -19,12 +19,12 @@ package net.woodstock.rockframework.conversion.common.converters;
 public class ByteConverter extends NumberConverter<Byte> {
 
 	@Override
-	protected Byte toNumber(Number n) {
+	protected Byte toNumber(final Number n) {
 		return new Byte(n.byteValue());
 	}
 
 	@Override
-	protected Byte toNumber(String s) {
+	protected Byte toNumber(final String s) {
 		return new Byte(s);
 	}
 

@@ -3,9 +3,14 @@ package net.woodstoc.rockframework.test.struts2.action;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.context.annotation.Scope;
+
 import net.woodstoc.rockframework.test.struts2.entity.ListItem;
 import net.woodstock.rockframework.web.struts2.action.BaseAction;
+import net.woodstock.rockframework.web.struts2.spring.Action;
 
+@Action
+@Scope(value = "prototype")
 public class ListAction extends BaseAction {
 
 	private static final long	serialVersionUID	= 1L;

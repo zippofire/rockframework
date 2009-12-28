@@ -30,11 +30,11 @@ public class ValidationContext {
 
 	private ValidationContext	parentContext;
 
-	protected ValidationContext(Object value, String name, Operation operation) {
+	protected ValidationContext(final Object value, final String name, final Operation operation) {
 		this(value, name, operation, null);
 	}
 
-	protected ValidationContext(Object value, String name, Operation operation, ValidationContext parentContext) {
+	protected ValidationContext(final Object value, final String name, final Operation operation, final ValidationContext parentContext) {
 		super();
 		this.value = value;
 		this.name = name;

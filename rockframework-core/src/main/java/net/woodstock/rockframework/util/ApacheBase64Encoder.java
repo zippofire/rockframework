@@ -21,25 +21,25 @@ import org.apache.commons.codec.binary.Base64;
 class ApacheBase64Encoder extends Base64Encoder {
 
 	@Override
-	public String decode(String s) {
+	public String decode(final String s) {
 		String str = new String(Base64.decodeBase64(s.getBytes()));
 		return str;
 	}
 
 	@Override
-	public byte[] decode(byte[] b) {
+	public byte[] decode(final byte[] b) {
 		byte[] bytes = Base64.decodeBase64(b);
 		return bytes;
 	}
 
 	@Override
-	public String encode(String s) {
+	public String encode(final String s) {
 		String str = new String(Base64.encodeBase64Chunked(s.getBytes())).trim();
 		return str;
 	}
 
 	@Override
-	public byte[] encode(byte[] b) {
+	public byte[] encode(final byte[] b) {
 		byte[] bytes = Base64.encodeBase64Chunked(b);
 		String str = new String(bytes);
 		return str.trim().getBytes();

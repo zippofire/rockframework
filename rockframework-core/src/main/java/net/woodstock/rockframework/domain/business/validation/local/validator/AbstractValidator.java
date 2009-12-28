@@ -17,14 +17,15 @@
 package net.woodstock.rockframework.domain.business.validation.local.validator;
 
 import net.woodstock.rockframework.config.CoreMessage;
-import net.woodstock.rockframework.domain.business.validation.local.InitializableValidator;
+import net.woodstock.rockframework.domain.business.validation.local.Validator;
 import net.woodstock.rockframework.sys.SysLogger;
 
 import org.apache.commons.logging.Log;
 
-public abstract class AbstractValidator implements InitializableValidator {
+public abstract class AbstractValidator implements Validator {
 
-	public void init() {
+	public AbstractValidator() {
+		super();
 		this.getLogger().info("Initializing validator " + this.getClass().getCanonicalName());
 	}
 
@@ -33,7 +34,7 @@ public abstract class AbstractValidator implements InitializableValidator {
 		return SysLogger.getLogger();
 	}
 
-	protected String getMessage(String message, Object... args) {
+	protected String getMessage(final String message, final Object... args) {
 		return CoreMessage.getInstance().getMessage(message, args);
 	}
 

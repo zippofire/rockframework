@@ -23,7 +23,7 @@ public abstract class GenericMessageListener<T extends Message> extends Abstract
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public final void onMessage(Message message) {
+	public final void onMessage(final Message message) {
 		try {
 			T sm = (T) message;
 			this.onLocalMessage(sm);

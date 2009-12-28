@@ -33,7 +33,7 @@ public abstract class AbstractGenericService extends GenericServiceBean {
 	}
 
 	// Methods
-	public void save(Entity<?> entity) throws ServiceException, BusinessException, PersistenceException {
+	public void save(final Entity<?> entity) {
 		try {
 			ValidationResult result = this.getBusiness().validateSave(entity);
 			if (result.isError()) {
@@ -50,7 +50,7 @@ public abstract class AbstractGenericService extends GenericServiceBean {
 	}
 
 	@Override
-	public <E extends Entity<?>> E get(E entity) throws ServiceException, BusinessException, PersistenceException {
+	public <E extends Entity<?>> E get(final E entity) {
 		try {
 			ValidationResult result = this.getBusiness().validateGet(entity);
 			if (result.isError()) {
@@ -66,7 +66,7 @@ public abstract class AbstractGenericService extends GenericServiceBean {
 		}
 	}
 
-	public <E extends Entity<?>> Collection<E> listAll(E entity, String order) throws ServiceException, BusinessException, PersistenceException {
+	public <E extends Entity<?>> Collection<E> listAll(final E entity, final String order) {
 		try {
 			ValidationResult result = this.getBusiness().validateList(entity);
 			if (result.isError()) {
@@ -82,7 +82,7 @@ public abstract class AbstractGenericService extends GenericServiceBean {
 		}
 	}
 
-	public <E extends Entity<?>> Collection<E> listByExample(E entity, Map<String, Object> options) throws ServiceException, BusinessException, PersistenceException {
+	public <E extends Entity<?>> Collection<E> listByExample(final E entity, final Map<String, Object> options) {
 		try {
 			ValidationResult result = this.getBusiness().validateList(entity);
 			if (result.isError()) {
@@ -98,7 +98,7 @@ public abstract class AbstractGenericService extends GenericServiceBean {
 		}
 	}
 
-	public void update(Entity<?> entity) throws ServiceException, BusinessException, PersistenceException {
+	public void update(final Entity<?> entity) {
 		try {
 			ValidationResult result = this.getBusiness().validateUpdate(entity);
 			if (result.isError()) {
@@ -114,7 +114,7 @@ public abstract class AbstractGenericService extends GenericServiceBean {
 		}
 	}
 
-	public void delete(Entity<?> entity) throws ServiceException, BusinessException, PersistenceException {
+	public void delete(final Entity<?> entity) {
 		try {
 			ValidationResult result = this.getBusiness().validateDelete(entity);
 			if (result.isError()) {

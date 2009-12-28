@@ -22,7 +22,7 @@ public class NamedParameter extends Parameter {
 
 	private String				name;
 
-	public NamedParameter(String name, Object value, Type type) {
+	public NamedParameter(final String name, final Object value, final Type type) {
 		super(value, type);
 		this.name = name;
 	}
@@ -31,12 +31,12 @@ public class NamedParameter extends Parameter {
 		return this.name;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof NamedParameter) {
 			NamedParameter other = (NamedParameter) obj;
 			return (this.getType().type() == other.getType().type()) && this.getValue().equals(other.getValue()) && this.getName().equals(other.getName());

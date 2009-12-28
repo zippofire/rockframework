@@ -32,7 +32,7 @@ abstract class XmlWriter {
 
 	protected static final String	XML_ENCODING			= "UTF-8";
 
-	private static XmlWriter		xmlWriter;
+	private static XmlWriter		instance				= XmlWriter.getAvailable();
 
 	protected static Log getLogger() {
 		return SysLogger.getLogger();
@@ -41,26 +41,25 @@ abstract class XmlWriter {
 	public abstract void write(Document document, Writer writer) throws IOException;
 
 	public static XmlWriter getInstance() {
-		if (XmlWriter.xmlWriter == null) {
-			synchronized (XmlWriter.class) {
-				if (XmlWriter.xmlWriter == null) {
-					try {
-						Class.forName(XmlWriter.APACHE_XML_SERIALIZER);
-						XmlWriter.xmlWriter = new ApacheXmlWriter();
-						XmlWriter.getLogger().info("Using Apache XML serializer");
-					} catch (ClassNotFoundException e) {
-						try {
-							Class.forName(XmlWriter.SUN_XML_SERIALIZER);
-							XmlWriter.xmlWriter = new SunXmlWriter();
-							XmlWriter.getLogger().info("Using Sun XML serializer");
-						} catch (ClassNotFoundException ee) {
-							throw new UnsupportedOperationException("No XML serializer found");
-						}
-					}
-				}
+		return XmlWriter.instance;
+	}
+
+	private static XmlWriter getAvailable() {
+		try {
+			Class.forName(XmlWriter.APACHE_XML_SERIALIZER);
+			XmlWriter xmlWriter = new ApacheXmlWriter();
+			XmlWriter.getLogger().info("Using Apache XML serializer(Xerces)");
+			return xmlWriter;
+		} catch (ClassNotFoundException e) {
+			try {
+				Class.forName(XmlWriter.SUN_XML_SERIALIZER);
+				XmlWriter xmlWriter = new SunXmlWriter();
+				XmlWriter.getLogger().info("Using Sun XML serializer");
+				return xmlWriter;
+			} catch (ClassNotFoundException ee) {
+				throw new UnsupportedOperationException("No XML serializer found");
 			}
 		}
-		return XmlWriter.xmlWriter;
 	}
 
 }

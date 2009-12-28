@@ -34,7 +34,7 @@ public abstract class BaseServlet extends HttpServlet {
 	}
 
 	@Override
-	public final void init(ServletConfig config) throws ServletException {
+	public final void init(final ServletConfig config) throws ServletException {
 		super.init(config);
 		this.doInit();
 	}

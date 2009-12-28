@@ -31,7 +31,7 @@ public abstract class AbstractMessageListener implements MessageListener {
 		return this.context;
 	}
 
-	public void setContext(MessageDrivenContext context) {
+	public void setContext(final MessageDrivenContext context) {
 		this.context = context;
 	}
 

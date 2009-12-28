@@ -24,12 +24,12 @@ public class OracleClient extends CommonClient {
 
 	private static final int	CURSOR	= -10;
 
-	public OracleClient(Connection connection) {
+	public OracleClient(final Connection connection) {
 		super(connection);
 	}
 
 	@Override
-	public int getType(Type type) {
+	public int getType(final Type type) {
 		switch (type) {
 			case RESULTSET:
 				return OracleClient.CURSOR;

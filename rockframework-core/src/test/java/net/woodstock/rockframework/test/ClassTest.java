@@ -23,7 +23,7 @@ import net.woodstock.rockframework.utils.ClassUtils;
 
 public class ClassTest extends TestCase {
 
-	public void print(CharSequence s) {
+	public void print(final CharSequence s) {
 		System.out.println("CharSequence: " + s);
 	}
 

@@ -31,7 +31,7 @@ class LDAPRestrictionAnd extends LDAPRestrictionGroup {
 	}
 
 	@Override
-	public void add(LDAPRestriction restriction) {
+	public void add(final LDAPRestriction restriction) {
 		this.restrictions.add(restriction);
 	}
 

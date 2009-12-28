@@ -23,23 +23,23 @@ import java.lang.reflect.Proxy;
 
 import net.woodstock.rockframework.sys.SysLogger;
 
-public class ProxyObject implements InvocationHandler {
+public final class ProxyObject implements InvocationHandler {
 
 	private static final long	serialVersionUID	= 5134816048976402977L;
 
 	private Object				object;
 
-	private ProxyObject(Object object) {
+	private ProxyObject(final Object object) {
 		super();
 		this.object = object;
 	}
 
-	public Object invoke(Object proxy, Method method, Object[] args) throws InvocationTargetException, IllegalAccessException {
+	public Object invoke(final Object proxy, final Method method, final Object[] args) throws InvocationTargetException, IllegalAccessException {
 		SysLogger.getLogger().info("Calling method " + method.getName());
 		return method.invoke(this.object, args);
 	}
 
-	public static Object newInstance(Object obj) {
+	public static Object newInstance(final Object obj) {
 		ClassLoader classLoader = obj.getClass().getClassLoader();
 		Class<?>[] classes = obj.getClass().getInterfaces();
 		return Proxy.newProxyInstance(classLoader, classes, new ProxyObject(obj));

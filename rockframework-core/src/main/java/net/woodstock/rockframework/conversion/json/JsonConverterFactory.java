@@ -19,13 +19,13 @@ package net.woodstock.rockframework.conversion.json;
 import net.woodstock.rockframework.conversion.ConverterFactory;
 import net.woodstock.rockframework.conversion.TextConverter;
 
-public class JsonConverterFactory implements ConverterFactory<String, Object> {
+public final class JsonConverterFactory implements ConverterFactory<String, Object> {
 
-	private static JsonConverterFactory	factory;
+	private static JsonConverterFactory	instance	= new JsonConverterFactory();
 
 	private TextConverter<Object>		converter;
 
-	public JsonConverterFactory() {
+	private JsonConverterFactory() {
 		super();
 		this.converter = new CommonConverter();
 	}
@@ -35,14 +35,7 @@ public class JsonConverterFactory implements ConverterFactory<String, Object> {
 	}
 
 	public static JsonConverterFactory getInstance() {
-		if (JsonConverterFactory.factory == null) {
-			synchronized (JsonConverterFactory.class) {
-				if (JsonConverterFactory.factory == null) {
-					JsonConverterFactory.factory = new JsonConverterFactory();
-				}
-			}
-		}
-		return JsonConverterFactory.factory;
+		return JsonConverterFactory.instance;
 	}
 
 }

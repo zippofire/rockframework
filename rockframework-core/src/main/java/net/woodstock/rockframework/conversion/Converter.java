@@ -18,8 +18,8 @@ package net.woodstock.rockframework.conversion;
 
 public interface Converter<F, T> {
 
-	T from(ConverterContext context, F f) throws ConverterException;
+	T from(ConverterContext context, F f);
 
-	F to(ConverterContext context, T t) throws ConverterException;
+	F to(ConverterContext context, T t);
 
 }

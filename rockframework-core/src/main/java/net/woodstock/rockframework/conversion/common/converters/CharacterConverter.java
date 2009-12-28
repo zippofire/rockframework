@@ -17,14 +17,13 @@
 package net.woodstock.rockframework.conversion.common.converters;
 
 import net.woodstock.rockframework.conversion.ConverterContext;
-import net.woodstock.rockframework.conversion.ConverterException;
 import net.woodstock.rockframework.conversion.common.AbstractTextConverter;
 import net.woodstock.rockframework.utils.StringUtils;
 
 public class CharacterConverter extends AbstractTextConverter<Character> {
 
 	@Override
-	public Character from(ConverterContext context, String s) throws ConverterException {
+	public Character from(final ConverterContext context, final String s) {
 		if (StringUtils.isEmpty(s)) {
 			return null;
 		}
@@ -32,7 +31,7 @@ public class CharacterConverter extends AbstractTextConverter<Character> {
 	}
 
 	@Override
-	public String to(ConverterContext context, Character t) throws ConverterException {
+	public String to(final ConverterContext context, final Character t) {
 		if (t == null) {
 			return StringUtils.BLANK;
 		}

@@ -31,7 +31,7 @@ abstract class CrypterBase<A> implements Crypter {
 
 	private Cipher	decryptCipher;
 
-	protected CrypterBase(A algorithm, Charset charset) {
+	protected CrypterBase(final A algorithm, final Charset charset) {
 		this.algorithm = algorithm;
 		this.charset = charset;
 	}
@@ -40,7 +40,7 @@ abstract class CrypterBase<A> implements Crypter {
 		return this.algorithm;
 	}
 
-	protected void setAlgorithm(A algorithm) {
+	protected void setAlgorithm(final A algorithm) {
 		this.algorithm = algorithm;
 	}
 
@@ -48,7 +48,7 @@ abstract class CrypterBase<A> implements Crypter {
 		return this.charset;
 	}
 
-	protected void setCharset(Charset charset) {
+	protected void setCharset(final Charset charset) {
 		this.charset = charset;
 	}
 
@@ -56,7 +56,7 @@ abstract class CrypterBase<A> implements Crypter {
 		return this.encryptCipher;
 	}
 
-	public void setEncryptCipher(Cipher encryptCipher) {
+	public void setEncryptCipher(final Cipher encryptCipher) {
 		this.encryptCipher = encryptCipher;
 	}
 
@@ -64,7 +64,7 @@ abstract class CrypterBase<A> implements Crypter {
 		return this.decryptCipher;
 	}
 
-	public void setDecryptCipher(Cipher decryptCipher) {
+	public void setDecryptCipher(final Cipher decryptCipher) {
 		this.decryptCipher = decryptCipher;
 	}
 

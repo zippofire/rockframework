@@ -55,18 +55,18 @@ public class SimpleMailSender {
 		super();
 	}
 
-	public SimpleMailSender(String smtpServer) {
+	public SimpleMailSender(final String smtpServer) {
 		super();
 		this.smtpServer = smtpServer;
 	}
 
-	public SimpleMailSender(String smtpServer, int smtpPort) {
+	public SimpleMailSender(final String smtpServer, final int smtpPort) {
 		super();
 		this.smtpServer = smtpServer;
 		this.smtpPort = smtpPort;
 	}
 
-	public SimpleMailSender(String smtpServer, int smtpPort, String user, String password) {
+	public SimpleMailSender(final String smtpServer, final int smtpPort, final String user, final String password) {
 		super();
 		this.smtpServer = smtpServer;
 		this.smtpPort = smtpPort;
@@ -74,23 +74,23 @@ public class SimpleMailSender {
 		this.password = password;
 	}
 
-	public void send(SimpleMail message) throws MessagingException {
+	public void send(final SimpleMail message) throws MessagingException {
 		this.send(message, this.getSession());
 	}
 
-	public void send(SimpleMail[] messages) throws MessagingException {
+	public void send(final SimpleMail[] messages) throws MessagingException {
 		for (SimpleMail message : messages) {
 			this.send(message, this.getSession());
 		}
 	}
 
-	public void send(Collection<SimpleMail> messages) throws MessagingException {
+	public void send(final Collection<SimpleMail> messages) throws MessagingException {
 		for (SimpleMail message : messages) {
 			this.send(message, this.getSession());
 		}
 	}
 
-	private void send(SimpleMail message, Session session) throws MessagingException {
+	private void send(final SimpleMail message, final Session session) throws MessagingException {
 		MimeMessage mimeMessage = new MimeMessage(session);
 		Multipart body = new MimeMultipart();
 
@@ -174,7 +174,7 @@ public class SimpleMailSender {
 		return Session.getDefaultInstance(properties);
 	}
 
-	private Transport getTransport(Session session) throws MessagingException {
+	private Transport getTransport(final Session session) throws MessagingException {
 		Transport transport = session.getTransport(SimpleMailSender.PROTOCOL);
 		transport.connect(this.smtpServer, this.user, this.password);
 		return transport;
@@ -185,7 +185,7 @@ public class SimpleMailSender {
 		return this.smtpServer;
 	}
 
-	public void setSmtpServer(String smtpServer) {
+	public void setSmtpServer(final String smtpServer) {
 		this.smtpServer = smtpServer;
 	}
 
@@ -193,7 +193,7 @@ public class SimpleMailSender {
 		return this.smtpPort;
 	}
 
-	public void setSmtpPort(int smtpPort) {
+	public void setSmtpPort(final int smtpPort) {
 		this.smtpPort = smtpPort;
 	}
 
@@ -201,7 +201,7 @@ public class SimpleMailSender {
 		return this.user;
 	}
 
-	public void setUser(String user) {
+	public void setUser(final String user) {
 		this.user = user;
 	}
 
@@ -209,7 +209,7 @@ public class SimpleMailSender {
 		return this.password;
 	}
 
-	public void setPassword(String password) {
+	public void setPassword(final String password) {
 		this.password = password;
 	}
 
@@ -217,7 +217,7 @@ public class SimpleMailSender {
 		return this.debug;
 	}
 
-	public void setDebug(boolean debug) {
+	public void setDebug(final boolean debug) {
 		this.debug = debug;
 	}
 

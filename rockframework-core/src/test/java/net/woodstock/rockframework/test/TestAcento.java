@@ -20,7 +20,7 @@ public class TestAcento extends TestCase {
 		list.add("E");
 		Collections.sort(list, new Comparator<String>() {
 
-			public int compare(String s1, String s2) {
+			public int compare(final String s1, final String s2) {
 				Collator collator = Collator.getInstance();
 				return collator.compare(s1, s2);
 			}

@@ -26,7 +26,7 @@ public class Parameter implements Serializable {
 
 	private Type				type;
 
-	public Parameter(Object value, Type type) {
+	public Parameter(final Object value, final Type type) {
 		this.value = value;
 		this.type = type;
 	}
@@ -40,7 +40,7 @@ public class Parameter implements Serializable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof Parameter) {
 			Parameter other = (Parameter) obj;
 			return (this.type.type() == other.getType().type()) && this.value.equals(other.getValue());

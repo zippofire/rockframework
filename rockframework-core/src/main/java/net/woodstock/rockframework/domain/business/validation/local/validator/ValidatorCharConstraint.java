@@ -25,7 +25,7 @@ import net.woodstock.rockframework.utils.ArrayUtils;
 
 public class ValidatorCharConstraint extends AbstractValidator {
 
-	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
+	public ValidationResult validate(final LocalValidationContext context) {
 		try {
 			Character value = (Character) context.getValue();
 			ValidateCharConstraint annotation = (ValidateCharConstraint) context.getAnnotation();
@@ -46,7 +46,7 @@ public class ValidatorCharConstraint extends AbstractValidator {
 		}
 	}
 
-	private String getErrorMessage(ValidateCharConstraint annotation, String name) {
+	private String getErrorMessage(final ValidateCharConstraint annotation, final String name) {
 		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_CONSTRAINT, name, ArrayUtils.toString(annotation.values()));
 	}
 

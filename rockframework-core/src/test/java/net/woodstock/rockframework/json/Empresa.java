@@ -22,7 +22,7 @@ public class Empresa extends IntegerEntity {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(final Integer id) {
 		this.id = id;
 	}
 
@@ -30,7 +30,7 @@ public class Empresa extends IntegerEntity {
 		return this.nome;
 	}
 
-	public void setNome(String nome) {
+	public void setNome(final String nome) {
 		this.nome = nome;
 	}
 
@@ -38,7 +38,7 @@ public class Empresa extends IntegerEntity {
 		return this.pessoas;
 	}
 
-	public void setPessoas(Collection<Pessoa> pessoas) {
+	public void setPessoas(final Collection<Pessoa> pessoas) {
 		this.pessoas = pessoas;
 	}
 

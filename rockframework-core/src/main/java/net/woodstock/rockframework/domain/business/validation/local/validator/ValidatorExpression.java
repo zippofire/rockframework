@@ -32,7 +32,7 @@ public class ValidatorExpression extends AbstractValidator {
 	private static final String	EXPECTED_RESULT_TYPE	= Boolean.class.getCanonicalName();
 
 	@SuppressWarnings("unchecked")
-	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
+	public ValidationResult validate(final LocalValidationContext context) {
 		try {
 			String value = (String) context.getValue();
 			ValidateExpression annotation = (ValidateExpression) context.getAnnotation();
@@ -77,18 +77,18 @@ public class ValidatorExpression extends AbstractValidator {
 		}
 	}
 
-	private String getResultType(Object o) {
+	private String getResultType(final Object o) {
 		if (o == null) {
 			return null;
 		}
 		return o.getClass().getCanonicalName();
 	}
 
-	private String getErrorMessage(String name) {
+	private String getErrorMessage(final String name) {
 		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_INVALID, name);
 	}
 
-	private String getExpressionResultErrorMessage(String name, String expected, String found) {
+	private String getExpressionResultErrorMessage(final String name, final String expected, final String found) {
 		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_EXPRESSION_RESULT, name, expected, found);
 	}
 

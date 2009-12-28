@@ -19,12 +19,12 @@ package net.woodstock.rockframework.conversion.common.converters;
 public class FloatConverter extends NumberConverter<Float> {
 
 	@Override
-	protected Float toNumber(Number n) {
+	protected Float toNumber(final Number n) {
 		return new Float(n.floatValue());
 	}
 
 	@Override
-	protected Float toNumber(String s) {
+	protected Float toNumber(final String s) {
 		return new Float(s);
 	}
 

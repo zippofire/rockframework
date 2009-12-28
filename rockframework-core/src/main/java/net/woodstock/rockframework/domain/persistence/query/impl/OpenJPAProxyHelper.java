@@ -24,7 +24,7 @@ abstract class OpenJPAProxyHelper {
 		//
 	}
 
-	public static boolean isProxy(Object e) {
+	public static boolean isProxy(final Object e) {
 		boolean b = (e instanceof PersistenceCapable);
 		return b;
 	}

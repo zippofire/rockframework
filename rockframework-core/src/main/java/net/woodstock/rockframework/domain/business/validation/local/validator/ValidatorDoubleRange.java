@@ -24,7 +24,7 @@ import net.woodstock.rockframework.domain.business.validation.local.annotation.V
 
 public class ValidatorDoubleRange extends AbstractValidator {
 
-	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
+	public ValidationResult validate(final LocalValidationContext context) {
 		try {
 			Double value = (Double) context.getValue();
 			ValidateDoubleRange annotation = (ValidateDoubleRange) context.getAnnotation();
@@ -43,7 +43,7 @@ public class ValidatorDoubleRange extends AbstractValidator {
 		}
 	}
 
-	private String getErrorMessage(ValidateDoubleRange annotation, String name) {
+	private String getErrorMessage(final ValidateDoubleRange annotation, final String name) {
 		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_RANGE, name, new Double(annotation.min()), new Double(annotation.max()));
 	}
 

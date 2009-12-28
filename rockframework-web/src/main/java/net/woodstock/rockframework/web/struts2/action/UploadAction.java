@@ -32,7 +32,7 @@ public abstract class UploadAction extends BaseAction implements UploadableActio
 		return this.upload;
 	}
 
-	public void setUpload(File upload) {
+	public void setUpload(final File upload) {
 		this.upload = upload;
 	}
 
@@ -40,7 +40,7 @@ public abstract class UploadAction extends BaseAction implements UploadableActio
 		return this.uploadContentType;
 	}
 
-	public void setUploadContentType(String uploadContentType) {
+	public void setUploadContentType(final String uploadContentType) {
 		this.uploadContentType = uploadContentType;
 	}
 
@@ -48,7 +48,7 @@ public abstract class UploadAction extends BaseAction implements UploadableActio
 		return this.uploadFileName;
 	}
 
-	public void setUploadFileName(String uploadFileName) {
+	public void setUploadFileName(final String uploadFileName) {
 		this.uploadFileName = uploadFileName;
 	}
 

@@ -26,7 +26,7 @@ class FieldPropertyDescriptor extends AbstractPropertyDescriptor {
 
 	private Field	field;
 
-	FieldPropertyDescriptor(BeanDescriptor beanDescriptor, Field field) {
+	FieldPropertyDescriptor(final BeanDescriptor beanDescriptor, final Field field) {
 		super();
 		this.setBeanDescriptor(beanDescriptor);
 		this.field = field;
@@ -48,16 +48,15 @@ class FieldPropertyDescriptor extends AbstractPropertyDescriptor {
 				readMethodName = this.getMethodName(BeanDescriptorHelper.IS_METHOD_PREFIX, this.field);
 				readMethod = c.getMethod(readMethodName, new Class[] {});
 			} catch (NoSuchMethodException e) {
-				// this.getLogger().info(e.getMessage(), e);
+				this.getLogger().debug(e.getMessage(), e);
 			}
-		}
-		// Get
-		else {
+			// Get
+		} else {
 			try {
 				readMethodName = this.getMethodName(BeanDescriptorHelper.GET_METHOD_PREFIX, this.field);
 				readMethod = c.getMethod(readMethodName, new Class[] {});
 			} catch (NoSuchMethodException e) {
-				// this.getLogger().info(e.getMessage(), e);
+				this.getLogger().debug(e.getMessage(), e);
 			}
 		}
 		this.setReadMethodName(readMethodName);
@@ -73,7 +72,7 @@ class FieldPropertyDescriptor extends AbstractPropertyDescriptor {
 			writeMethodName = this.getMethodName(BeanDescriptorHelper.SET_METHOD_PREFIX, this.field);
 			writeMethod = c.getMethod(writeMethodName, new Class[] { this.field.getType() });
 		} catch (NoSuchMethodException e) {
-			// e.printStackTrace();
+			this.getLogger().debug(e.getMessage(), e);
 		}
 		this.setWriteMethodName(writeMethodName);
 		this.setWriteMethod(writeMethod);
@@ -92,11 +91,11 @@ class FieldPropertyDescriptor extends AbstractPropertyDescriptor {
 		return this.field.getType();
 	}
 
-	public boolean isAnnotationPresent(Class<? extends Annotation> clazz) {
+	public boolean isAnnotationPresent(final Class<? extends Annotation> clazz) {
 		return this.field.isAnnotationPresent(clazz);
 	}
 
-	public <T extends Annotation> T getAnnotation(Class<T> clazz) {
+	public <T extends Annotation> T getAnnotation(final Class<T> clazz) {
 		return this.field.getAnnotation(clazz);
 	}
 
@@ -104,7 +103,7 @@ class FieldPropertyDescriptor extends AbstractPropertyDescriptor {
 		return this.field.getAnnotations();
 	}
 
-	private String getMethodName(String prefix, Field field) {
+	private String getMethodName(final String prefix, final Field field) {
 		String property = field.getName();
 		return BeanDescriptorHelper.getMethodName(prefix, property);
 	}

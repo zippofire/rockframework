@@ -30,11 +30,11 @@ public abstract class CollectionUtils {
 		//
 	}
 
-	public static <E> Collection<E> toCollection(Enumeration<E> enumeration) {
+	public static <E> Collection<E> toCollection(final Enumeration<E> enumeration) {
 		return CollectionUtils.toList(enumeration);
 	}
 
-	public static <E> Iterator<E> toIterator(Enumeration<E> enumeration) {
+	public static <E> Iterator<E> toIterator(final Enumeration<E> enumeration) {
 		if (enumeration == null) {
 			return null;
 		}
@@ -44,7 +44,7 @@ public abstract class CollectionUtils {
 		return iterator;
 	}
 
-	public static <E> List<E> toList(Enumeration<E> enumeration) {
+	public static <E> List<E> toList(final Enumeration<E> enumeration) {
 		if (enumeration == null) {
 			return null;
 		}
@@ -53,7 +53,7 @@ public abstract class CollectionUtils {
 		return list;
 	}
 
-	public static <E> Set<E> toSet(Enumeration<E> enumeration) {
+	public static <E> Set<E> toSet(final Enumeration<E> enumeration) {
 		if (enumeration == null) {
 			return null;
 		}
@@ -62,7 +62,7 @@ public abstract class CollectionUtils {
 		return set;
 	}
 
-	private static <E> void copyEnumerationToCollection(Enumeration<E> enumeration, Collection<E> collection) {
+	private static <E> void copyEnumerationToCollection(final Enumeration<E> enumeration, final Collection<E> collection) {
 		while (enumeration.hasMoreElements()) {
 			E e = enumeration.nextElement();
 			collection.add(e);

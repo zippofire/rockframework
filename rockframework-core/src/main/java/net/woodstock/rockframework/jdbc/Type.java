@@ -24,7 +24,7 @@ public enum Type {
 
 	private int	type;
 
-	private Type(int type) {
+	private Type(final int type) {
 		this.type = type;
 	}
 

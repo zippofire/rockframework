@@ -32,13 +32,13 @@ public abstract class NetUtils {
 
 	public static final String	IPV4_REGEX	= "\\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b";
 
-	public static int			TIMEOUT		= 3000;
+	public static final int		TIMEOUT		= 3000;
 
 	private NetUtils() {
 		//
 	}
 
-	public static Collection<Integer> scan(InetAddress host, int startPort, int endPort) {
+	public static Collection<Integer> scan(final InetAddress host, final int startPort, final int endPort) {
 		Collection<Integer> list = new LinkedHashSet<Integer>();
 
 		for (int port = startPort; port <= endPort; port++) {
@@ -51,7 +51,7 @@ public abstract class NetUtils {
 				list.add(Integer.valueOf(port));
 				SysLogger.getLogger().debug("Connected on " + host.getHostAddress() + ":" + port);
 			} catch (IOException e) {
-				//
+				SysLogger.getLogger().debug(e.getMessage(), e);
 			}
 			socket = null;
 		}
@@ -59,7 +59,7 @@ public abstract class NetUtils {
 		return list;
 	}
 
-	public static boolean isFromNet(String address, String netAddress) throws UnknownHostException {
+	public static boolean isFromNet(final String address, final String netAddress) throws UnknownHostException {
 		InetAddress hostAddress = InetAddress.getByName(address);
 		InetAddress networkAddress = InetAddress.getByName(netAddress.substring(0, netAddress.indexOf('/')));
 		int mask = Integer.parseInt(netAddress.substring(netAddress.indexOf('/') + 1));
@@ -85,7 +85,7 @@ public abstract class NetUtils {
 		return bufferNetwork.toString().substring(0, mask).equals(bufferAddress.toString().subSequence(0, mask));
 	}
 
-	public static InetAddress toAddress(String address) throws UnknownHostException {
+	public static InetAddress toAddress(final String address) throws UnknownHostException {
 		if (!Pattern.matches(NetUtils.IPV4_REGEX, address)) {
 			throw new IllegalArgumentException("Invalid IPV4 address " + address);
 		}

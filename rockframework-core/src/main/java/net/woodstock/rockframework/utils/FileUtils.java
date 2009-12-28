@@ -27,37 +27,37 @@ public abstract class FileUtils {
 		//
 	}
 
-	public static int getContentLength(String src) throws IOException {
+	public static int getContentLength(final String src) throws IOException {
 		return FileUtils.getContentLength(new File(src));
 	}
 
-	public static int getContentLength(File file) throws IOException {
+	public static int getContentLength(final File file) throws IOException {
 		URLConnection con = file.toURI().toURL().openConnection();
 		return con.getContentLength();
 	}
 
-	public static String getContentType(String src) throws IOException {
+	public static String getContentType(final String src) throws IOException {
 		return FileUtils.getContentType(new File(src));
 	}
 
-	public static String getContentType(File file) throws IOException {
+	public static String getContentType(final File file) throws IOException {
 		URLConnection con = file.toURI().toURL().openConnection();
 		return con.getContentType();
 	}
 
-	public static String getFileName(String src) {
+	public static String getFileName(final String src) {
 		return FileUtils.getFileName(new File(src));
 	}
 
-	public static String getFileName(File file) {
+	public static String getFileName(final File file) {
 		return file.getName();
 	}
 
-	public static String getFileExtension(String src) {
+	public static String getFileExtension(final String src) {
 		return FileUtils.getFileExtension(new File(src));
 	}
 
-	public static String getFileExtension(File file) {
+	public static String getFileExtension(final File file) {
 		String fileName = file.getName();
 		if (fileName.indexOf('.') != -1) {
 			return fileName.substring(fileName.lastIndexOf('.') + 1);
@@ -65,11 +65,11 @@ public abstract class FileUtils {
 		return StringUtils.BLANK;
 	}
 
-	public static int lineCount(String src) throws IOException {
+	public static int lineCount(final String src) throws IOException {
 		return FileUtils.lineCount(new File(src));
 	}
 
-	public static int lineCount(File file) throws IOException {
+	public static int lineCount(final File file) throws IOException {
 		Scanner scanner = new Scanner(file);
 		int lines = 0;
 		while (scanner.hasNextLine()) {
@@ -81,7 +81,7 @@ public abstract class FileUtils {
 		return lines;
 	}
 
-	public static File mkdir(String dir) throws IOException {
+	public static File mkdir(final String dir) throws IOException {
 		File f = new File(dir);
 		if (!f.exists()) {
 			f.mkdir();
@@ -91,11 +91,11 @@ public abstract class FileUtils {
 		return f;
 	}
 
-	public static File mv(String src, String dst) throws IOException {
+	public static File mv(final String src, final String dst) throws IOException {
 		return FileUtils.mv(new File(src), new File(dst));
 	}
 
-	public static File mv(File src, File dst) throws IOException {
+	public static File mv(final File src, final File dst) throws IOException {
 		if (!src.renameTo(dst)) {
 			throw new IOException("File cannot be moved");
 		}
@@ -106,12 +106,12 @@ public abstract class FileUtils {
 		return FileUtils.pwd(".");
 	}
 
-	public static String pwd(String s) {
+	public static String pwd(final String s) {
 		File f = new File(s);
 		return f.getAbsolutePath();
 	}
 
-	public static boolean rm(String file) throws IOException {
+	public static boolean rm(final String file) throws IOException {
 		File f = new File(file);
 		if ((f.exists()) && (f.isFile())) {
 			if (!f.delete()) {
@@ -124,7 +124,7 @@ public abstract class FileUtils {
 		return false;
 	}
 
-	public static boolean rmdir(String dir) throws IOException {
+	public static boolean rmdir(final String dir) throws IOException {
 		File f = new File(dir);
 		if ((f.exists()) && (f.isDirectory())) {
 			if (!f.delete()) {
@@ -137,11 +137,11 @@ public abstract class FileUtils {
 		return false;
 	}
 
-	public static File touch(String file) throws IOException {
+	public static File touch(final String file) throws IOException {
 		return FileUtils.touch(file, false);
 	}
 
-	public static File touch(String file, boolean override) throws IOException {
+	public static File touch(final String file, final boolean override) throws IOException {
 		File f = new File(file);
 		if ((override) && (f.exists())) {
 			f.delete();

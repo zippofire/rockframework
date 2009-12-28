@@ -32,7 +32,7 @@ abstract class AbstractBeanDescriptor implements BeanDescriptor {
 
 	private Collection<PropertyDescriptor>	properties;
 
-	public AbstractBeanDescriptor(Class<?> clazz) {
+	public AbstractBeanDescriptor(final Class<?> clazz) {
 		super();
 		this.type = clazz;
 		this.properties = new LinkedList<PropertyDescriptor>();
@@ -50,7 +50,7 @@ abstract class AbstractBeanDescriptor implements BeanDescriptor {
 		return this.type;
 	}
 
-	public boolean hasProperty(String name) {
+	public boolean hasProperty(final String name) {
 		for (PropertyDescriptor property : this.properties) {
 			if (property.getName().equals(name)) {
 				return true;
@@ -60,7 +60,7 @@ abstract class AbstractBeanDescriptor implements BeanDescriptor {
 	}
 
 	@Override
-	public PropertyDescriptor getProperty(String name) {
+	public PropertyDescriptor getProperty(final String name) {
 		for (PropertyDescriptor property : this.properties) {
 			if (property.getName().equals(name)) {
 				return property;
@@ -74,11 +74,11 @@ abstract class AbstractBeanDescriptor implements BeanDescriptor {
 		return this.properties;
 	}
 
-	public boolean isAnnotationPresent(Class<? extends Annotation> clazz) {
+	public boolean isAnnotationPresent(final Class<? extends Annotation> clazz) {
 		return this.type.isAnnotationPresent(clazz);
 	}
 
-	public <T extends Annotation> T getAnnotation(Class<T> clazz) {
+	public <T extends Annotation> T getAnnotation(final Class<T> clazz) {
 		return this.type.getAnnotation(clazz);
 	}
 

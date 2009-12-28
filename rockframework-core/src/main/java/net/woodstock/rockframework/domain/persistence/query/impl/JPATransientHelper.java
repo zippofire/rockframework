@@ -20,9 +20,13 @@ import javax.persistence.Transient;
 
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 
-abstract class JPATransientHelper {
+final class JPATransientHelper {
 
-	public static boolean isTransient(PropertyDescriptor descriptor) {
+	private JPATransientHelper() {
+		super();
+	}
+
+	public static boolean isTransient(final PropertyDescriptor descriptor) {
 		if (descriptor.isAnnotationPresent(Transient.class)) {
 			return true;
 		}

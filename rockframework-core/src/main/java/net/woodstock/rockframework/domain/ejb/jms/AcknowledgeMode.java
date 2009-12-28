@@ -24,7 +24,7 @@ public enum AcknowledgeMode {
 
 	private int	mode;
 
-	AcknowledgeMode(int mode) {
+	AcknowledgeMode(final int mode) {
 		this.mode = mode;
 	}
 

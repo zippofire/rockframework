@@ -16,25 +16,23 @@
  */
 package net.woodstock.rockframework.domain.persistence.impl;
 
-import net.woodstock.rockframework.domain.persistence.PersistenceException;
-
 import org.hibernate.Session;
 
 public class HibernateRepository extends AbstractHibernateRepository {
 
 	private Session	session;
 
-	public HibernateRepository(Session session) {
+	public HibernateRepository(final Session session) {
 		super();
 		this.session = session;
 	}
 
 	@Override
-	protected Session getSession() throws PersistenceException {
+	protected Session getSession() {
 		return this.session;
 	}
 
-	public void setSession(Session session) {
+	public void setSession(final Session session) {
 		this.session = session;
 	}
 

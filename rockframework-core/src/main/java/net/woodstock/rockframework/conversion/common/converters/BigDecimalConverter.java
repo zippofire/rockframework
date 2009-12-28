@@ -21,12 +21,12 @@ import java.math.BigDecimal;
 public class BigDecimalConverter extends NumberConverter<BigDecimal> {
 
 	@Override
-	protected BigDecimal toNumber(Number n) {
+	protected BigDecimal toNumber(final Number n) {
 		return new BigDecimal(n.toString());
 	}
 
 	@Override
-	protected BigDecimal toNumber(String s) {
+	protected BigDecimal toNumber(final String s) {
 		return new BigDecimal(s);
 	}
 

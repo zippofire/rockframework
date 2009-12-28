@@ -23,16 +23,16 @@ import net.woodstock.rockframework.domain.Entity;
 
 public interface GenericRepository extends Repository {
 
-	void save(Entity<?> e) throws PersistenceException;
+	void save(Entity<?> e);
 
-	void update(Entity<?> e) throws PersistenceException;
+	void update(Entity<?> e);
 
-	void delete(Entity<?> e) throws PersistenceException;
+	void delete(Entity<?> e);
 
-	<E extends Entity<?>> E get(E entity) throws PersistenceException;
+	<E extends Entity<?>> E get(E entity);
 
-	<E extends Entity<?>> Collection<E> listAll(E e, String order) throws PersistenceException;
+	<E extends Entity<?>> Collection<E> listAll(E e, String order);
 
-	<E extends Entity<?>> Collection<E> listByExample(E e, Map<String, Object> options) throws PersistenceException;
+	<E extends Entity<?>> Collection<E> listByExample(E e, Map<String, Object> options);
 
 }

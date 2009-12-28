@@ -30,7 +30,7 @@ public class PostOnlyInterceptor extends BaseInterceptor {
 
 	public static final String	POST_METHOD			= "POST";
 
-	public String intercept(ActionInvocation invocation) throws Exception {
+	public String intercept(final ActionInvocation invocation) throws Exception {
 		HttpServletRequest request = this.getRequest();
 
 		if (!request.getMethod().equalsIgnoreCase(PostOnlyInterceptor.POST_METHOD)) {

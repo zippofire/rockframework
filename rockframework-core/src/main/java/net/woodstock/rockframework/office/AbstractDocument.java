@@ -32,7 +32,7 @@ public abstract class AbstractDocument implements Document {
 		super();
 	}
 
-	public void write(File file) throws IOException {
+	public void write(final File file) throws IOException {
 		FileOutputStream outputStream = new FileOutputStream(file);
 		this.write(outputStream);
 		outputStream.close();

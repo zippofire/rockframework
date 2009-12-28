@@ -34,155 +34,155 @@ public abstract class NumberUtils {
 
 	private static final DecimalFormat	INTEGER_FORMAT			= new DecimalFormat(CoreConfig.getInstance().getValue(NumberUtils.INTEGER_FORMAT_PROPERTY));
 
-	private static final Random			random					= new Random();
+	private static final Random			RANDOM					= new Random();
 
-	public static String format(BigDecimal value) {
+	public static String format(final BigDecimal value) {
 		if (value == null) {
 			return null;
 		}
 		return NumberUtils.DECIMAL_FORMAT.format(value);
 	}
 
-	public static String format(BigDecimal value, String format) {
+	public static String format(final BigDecimal value, final String format) {
 		if (value == null) {
 			return null;
 		}
 		return new DecimalFormat(format).format(value);
 	}
 
-	public static String format(BigInteger value) {
+	public static String format(final BigInteger value) {
 		if (value == null) {
 			return null;
 		}
 		return NumberUtils.INTEGER_FORMAT.format(value);
 	}
 
-	public static String format(BigInteger value, String format) {
+	public static String format(final BigInteger value, final String format) {
 		if (value == null) {
 			return null;
 		}
 		return new DecimalFormat(format).format(value);
 	}
 
-	public static String format(Byte value) {
+	public static String format(final Byte value) {
 		if (value == null) {
 			return null;
 		}
 		return NumberUtils.INTEGER_FORMAT.format(value.byteValue());
 	}
 
-	public static String format(Byte value, String format) {
+	public static String format(final Byte value, final String format) {
 		if (value == null) {
 			return null;
 		}
 		return new DecimalFormat(format).format(value.byteValue());
 	}
 
-	public static String format(double value) {
+	public static String format(final double value) {
 		return NumberUtils.DECIMAL_FORMAT.format(value);
 	}
 
-	public static String format(double value, String format) {
+	public static String format(final double value, final String format) {
 		return new DecimalFormat(format).format(value);
 	}
 
-	public static String format(Double value) {
+	public static String format(final Double value) {
 		if (value == null) {
 			return null;
 		}
 		return NumberUtils.DECIMAL_FORMAT.format(value.doubleValue());
 	}
 
-	public static String format(Double value, String format) {
+	public static String format(final Double value, final String format) {
 		if (value == null) {
 			return null;
 		}
 		return new DecimalFormat(format).format(value.doubleValue());
 	}
 
-	public static String format(Float value) {
+	public static String format(final Float value) {
 		if (value == null) {
 			return null;
 		}
 		return NumberUtils.DECIMAL_FORMAT.format(value.floatValue());
 	}
 
-	public static String format(Float value, String format) {
+	public static String format(final Float value, final String format) {
 		if (value == null) {
 			return null;
 		}
 		return new DecimalFormat(format).format(value.floatValue());
 	}
 
-	public static String format(Integer value) {
+	public static String format(final Integer value) {
 		if (value == null) {
 			return null;
 		}
 		return NumberUtils.INTEGER_FORMAT.format(value.intValue());
 	}
 
-	public static String format(Integer value, String format) {
+	public static String format(final Integer value, final String format) {
 		return new DecimalFormat(format).format(value.intValue());
 	}
 
-	public static String format(long value) {
+	public static String format(final long value) {
 		return NumberUtils.INTEGER_FORMAT.format(value);
 	}
 
-	public static String format(long value, String format) {
+	public static String format(final long value, final String format) {
 		return new DecimalFormat(format).format(value);
 	}
 
-	public static String format(Long value) {
+	public static String format(final Long value) {
 		if (value == null) {
 			return null;
 		}
 		return NumberUtils.INTEGER_FORMAT.format(value.longValue());
 	}
 
-	public static String format(Long value, String format) {
+	public static String format(final Long value, final String format) {
 		if (value == null) {
 			return null;
 		}
 		return new DecimalFormat(format).format(value.longValue());
 	}
 
-	public static String format(Number value) {
+	public static String format(final Number value) {
 		if (value == null) {
 			return null;
 		}
 		return NumberUtils.DECIMAL_FORMAT.format(value.doubleValue());
 	}
 
-	public static String format(Number value, String format) {
+	public static String format(final Number value, final String format) {
 		if (value == null) {
 			return null;
 		}
 		return new DecimalFormat(format).format(value.doubleValue());
 	}
 
-	public static String format(Short value) {
+	public static String format(final Short value) {
 		if (value == null) {
 			return null;
 		}
 		return NumberUtils.INTEGER_FORMAT.format(value.shortValue());
 	}
 
-	public static String format(Short value, String format) {
+	public static String format(final Short value, final String format) {
 		if (value == null) {
 			return null;
 		}
 		return new DecimalFormat(format).format(value.shortValue());
 	}
 
-	public static Number parse(String value) throws ParseException {
+	public static Number parse(final String value) throws ParseException {
 		if (StringUtils.isEmpty(value)) {
 			return null;
 		}
 		return NumberUtils.DECIMAL_FORMAT.parse(value);
 	}
 
-	public static Number parse(String value, String format) throws ParseException {
+	public static Number parse(final String value, final String format) throws ParseException {
 		if (StringUtils.isEmpty(value)) {
 			return null;
 		}
@@ -190,14 +190,14 @@ public abstract class NumberUtils {
 	}
 
 	public static int random() {
-		return NumberUtils.random.nextInt();
+		return NumberUtils.RANDOM.nextInt();
 	}
 
-	public static int random(int max) {
-		return NumberUtils.random.nextInt(max);
+	public static int random(final int max) {
+		return NumberUtils.RANDOM.nextInt(max);
 	}
 
-	public static double root(double value, double root) {
+	public static double root(final double value, final double root) {
 		if (root == 2) {
 			return Math.sqrt(value);
 		}

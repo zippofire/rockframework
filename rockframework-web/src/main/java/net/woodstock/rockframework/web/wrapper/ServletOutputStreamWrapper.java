@@ -33,7 +33,7 @@ public class ServletOutputStreamWrapper extends ServletOutputStream {
 	}
 
 	@Override
-	public void write(int b) {
+	public void write(final int b) {
 		this.outputStream.write(b);
 	}
 

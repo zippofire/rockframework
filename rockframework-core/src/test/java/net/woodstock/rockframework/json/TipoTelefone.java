@@ -14,7 +14,7 @@ public class TipoTelefone extends IntegerEntity {
 		super();
 	}
 
-	public TipoTelefone(Integer id) {
+	public TipoTelefone(final Integer id) {
 		super();
 		this.id = id;
 	}
@@ -23,7 +23,7 @@ public class TipoTelefone extends IntegerEntity {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(final Integer id) {
 		this.id = id;
 	}
 
@@ -31,7 +31,7 @@ public class TipoTelefone extends IntegerEntity {
 		return this.descricao;
 	}
 
-	public void setDescricao(String descricao) {
+	public void setDescricao(final String descricao) {
 		this.descricao = descricao;
 	}
 

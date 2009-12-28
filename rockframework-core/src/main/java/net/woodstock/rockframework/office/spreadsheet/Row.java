@@ -36,7 +36,7 @@ public class Row implements SpreadsheetElement {
 		return this.height;
 	}
 
-	public void setHeight(int height) {
+	public void setHeight(final int height) {
 		this.height = height;
 	}
 
@@ -44,7 +44,7 @@ public class Row implements SpreadsheetElement {
 		return this.cells;
 	}
 
-	public void setCells(List<Cell> cells) {
+	public void setCells(final List<Cell> cells) {
 		this.cells = cells;
 	}
 

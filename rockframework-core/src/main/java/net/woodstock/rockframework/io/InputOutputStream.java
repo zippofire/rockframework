@@ -31,7 +31,7 @@ public class InputOutputStream extends OutputStream {
 	}
 
 	@Override
-	public void write(int b) {
+	public void write(final int b) {
 		this.outputStream.write(b);
 	}
 

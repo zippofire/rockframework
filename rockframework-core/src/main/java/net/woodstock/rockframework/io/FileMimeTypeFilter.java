@@ -28,18 +28,18 @@ public class FileMimeTypeFilter implements FilenameFilter {
 
 	private Collection<String>	types;
 
-	public FileMimeTypeFilter(String... items) {
+	public FileMimeTypeFilter(final String... items) {
 		super();
 		this.types = Arrays.asList(items);
 	}
 
-	public FileMimeTypeFilter(Collection<String> types) {
+	public FileMimeTypeFilter(final Collection<String> types) {
 		super();
 		this.types = types;
 	}
 
 	@Override
-	public boolean accept(File dir, String name) {
+	public boolean accept(final File dir, final String name) {
 		if ((this.types == null) || (this.types.size() == 0)) {
 			return true;
 		}

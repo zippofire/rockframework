@@ -39,7 +39,7 @@ public class EntityDetector {
 		this.provider.addIncludeFilter(new AssignableTypeFilter(Entity.class));
 	}
 
-	public void setBasePackage(String basePackage) {
+	public void setBasePackage(final String basePackage) {
 		this.basePackage = basePackage;
 	}
 

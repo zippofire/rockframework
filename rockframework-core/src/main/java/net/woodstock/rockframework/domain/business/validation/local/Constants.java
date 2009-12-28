@@ -16,53 +16,58 @@
  */
 package net.woodstock.rockframework.domain.business.validation.local;
 
-public interface Constants {
+public final class Constants {
 
-	String	MESSAGE_INVALID_CLASS					= "domain.business.invalid.class";
+	public static final String	MESSAGE_INVALID_CLASS					= "domain.business.invalid.class";
 
-	String	MESSAGE_INVALID_ID						= "domain.business.invalid.id";
+	public static final String	MESSAGE_INVALID_ID						= "domain.business.invalid.id";
 
-	String	MESSAGE_INVALID_OBJECT					= "domain.business.invalid.object";
+	public static final String	MESSAGE_INVALID_OBJECT					= "domain.business.invalid.object";
 
-	String	MESSAGE_VALIDATION_OK					= "domain.business.validation.ok";
+	public static final String	MESSAGE_VALIDATION_OK					= "domain.business.validation.ok";
 
 	// Validators
-	String	MESSAGE_PARAM							= "message";
+	public static final String	MESSAGE_PARAM							= "message";
 
-	String	MESSAGE_ERROR_OPERATION					= "domain.validation.error.operation";
+	public static final String	MESSAGE_ERROR_OPERATION					= "domain.validation.error.operation";
 
-	String	MESSAGE_ERROR_NULL						= "domain.validation.error.null";
+	public static final String	MESSAGE_ERROR_NULL						= "domain.validation.error.null";
 
-	String	MESSAGE_FIELD_ERROR_CONSTRAINT			= "domain.validation.field.error.constraint";
+	public static final String	MESSAGE_FIELD_ERROR_CONSTRAINT			= "domain.validation.field.error.constraint";
 
-	String	MESSAGE_FIELD_ERROR_DATE				= "domain.validation.field.error.date";
+	public static final String	MESSAGE_FIELD_ERROR_DATE				= "domain.validation.field.error.date";
 
-	String	MESSAGE_FIELD_ERROR_DATE_FUTURE			= "domain.validation.field.error.dateFuture";
+	public static final String	MESSAGE_FIELD_ERROR_DATE_FUTURE			= "domain.validation.field.error.dateFuture";
 
-	String	MESSAGE_FIELD_ERROR_DATE_INTERVAL		= "domain.validation.field.error.dateInterval";
+	public static final String	MESSAGE_FIELD_ERROR_DATE_INTERVAL		= "domain.validation.field.error.dateInterval";
 
-	String	MESSAGE_FIELD_ERROR_DATE_PAST			= "domain.validation.field.error.datePast";
+	public static final String	MESSAGE_FIELD_ERROR_DATE_PAST			= "domain.validation.field.error.datePast";
 
-	String	MESSAGE_FIELD_ERROR_EQUALS_FIELD		= "domain.validation.field.error.equals_field";
+	public static final String	MESSAGE_FIELD_ERROR_EQUALS_FIELD		= "domain.validation.field.error.equals_field";
 
-	String	MESSAGE_FIELD_ERROR_EXPRESSION			= "domain.validation.field.error.expression";
+	public static final String	MESSAGE_FIELD_ERROR_EXPRESSION			= "domain.validation.field.error.expression";
 
-	String	MESSAGE_FIELD_ERROR_EXPRESSION_RESULT	= "domain.validation.field.error.expressionResult";
+	public static final String	MESSAGE_FIELD_ERROR_EXPRESSION_RESULT	= "domain.validation.field.error.expressionResult";
 
-	String	MESSAGE_FIELD_ERROR_INVALID				= "domain.validation.field.error.invalid";
+	public static final String	MESSAGE_FIELD_ERROR_INVALID				= "domain.validation.field.error.invalid";
 
-	String	MESSAGE_FIELD_ERROR_INVALID_TYPE		= "domain.validation.field.error.invalidType";
+	public static final String	MESSAGE_FIELD_ERROR_INVALID_TYPE		= "domain.validation.field.error.invalidType";
 
-	String	MESSAGE_FIELD_ERROR_LENGTH				= "domain.validation.field.error.length";
+	public static final String	MESSAGE_FIELD_ERROR_LENGTH				= "domain.validation.field.error.length";
 
-	String	MESSAGE_FIELD_ERROR_NOT_NULL			= "domain.validation.field.error.notNull";
+	public static final String	MESSAGE_FIELD_ERROR_NOT_NULL			= "domain.validation.field.error.notNull";
 
-	String	MESSAGE_FIELD_ERROR_NOT_EMPTY			= "domain.validation.field.error.notEmpty";
+	public static final String	MESSAGE_FIELD_ERROR_NOT_EMPTY			= "domain.validation.field.error.notEmpty";
 
-	String	MESSAGE_FIELD_ERROR_NULL				= "domain.validation.field.error.null";
+	public static final String	MESSAGE_FIELD_ERROR_NULL				= "domain.validation.field.error.null";
 
-	String	MESSAGE_FIELD_ERROR_RANGE				= "domain.validation.field.error.range";
+	public static final String	MESSAGE_FIELD_ERROR_RANGE				= "domain.validation.field.error.range";
 
-	String	MESSAGE_FIELD_ERROR_REGEX				= "domain.validation.field.error.regex";
+	public static final String	MESSAGE_FIELD_ERROR_REGEX				= "domain.validation.field.error.regex";
+	
+	
+	private Constants() {
+		super();
+	}
 
 }

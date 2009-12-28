@@ -22,7 +22,6 @@ import java.util.Map.Entry;
 
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.persistence.GenericRepository;
-import net.woodstock.rockframework.domain.persistence.PersistenceException;
 import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
 import net.woodstock.rockframework.domain.persistence.query.impl.HibernateQueryBuilder;
 
@@ -34,40 +33,41 @@ public abstract class SpringHibernateGenericRepository extends SpringHibernateRe
 		super();
 	}
 
-	public void delete(Entity<?> e) throws PersistenceException {
+	public void delete(final Entity<?> e) {
 		this.getHibernateTemplate().execute(new HibernateDeleteCallback(e));
 	}
 
 	@SuppressWarnings("unchecked")
-	public <E extends Entity<?>> E get(E entity) throws PersistenceException {
+	public <E extends Entity<?>> E get(final E entity) {
 		return (E) this.getHibernateTemplate().get(entity.getClass(), entity.getId());
 	}
 
 	@SuppressWarnings("unchecked")
-	public <E extends Entity<?>> Collection<E> listAll(E e, String order) throws PersistenceException {
+	public <E extends Entity<?>> Collection<E> listAll(final E e, final String order) {
 		String sql = RepositoryHelper.getListAllSql(e.getClass(), order);
 		return this.getHibernateTemplate().find(sql);
 	}
 
 	@SuppressWarnings("unchecked")
-	public <E extends Entity<?>> Collection<E> listByExample(E e, Map<String, Object> options) throws PersistenceException {
-		QueryBuilder builder = new HibernateQueryBuilder();
+	public <E extends Entity<?>> Collection<E> listByExample(final E e, final Map<String, Object> options) {
+		QueryBuilder builder = new HibernateQueryBuilder(this.getSession());
+		builder.setEntity(e);
 		if ((options != null) && (options.size() > 0)) {
 			for (Entry<String, Object> option : options.entrySet()) {
 				builder.setOption(option.getKey(), option.getValue());
 			}
 		}
-		builder.parse(e);
-		Query q = (Query) builder.getQuery(this.getSession());
+		builder.build();
+		Query q = (Query) builder.getQuery();
 		Collection<E> list = q.list();
 		return list;
 	}
 
-	public void save(Entity<?> e) throws PersistenceException {
+	public void save(final Entity<?> e) {
 		this.getHibernateTemplate().save(e);
 	}
 
-	public void update(Entity<?> e) throws PersistenceException {
+	public void update(final Entity<?> e) {
 		this.getHibernateTemplate().execute(new HibernateUpdateCallback(e));
 	}
 

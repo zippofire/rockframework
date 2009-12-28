@@ -29,7 +29,7 @@ import net.woodstock.rockframework.utils.StringUtils;
 public abstract class NumberConverter<T extends Number> extends AbstractTextConverter<T> {
 
 	@Override
-	public T from(ConverterContext context, String s) throws ConverterException {
+	public T from(final ConverterContext context, final String s) {
 		try {
 			if (StringUtils.isEmpty(s)) {
 				return null;
@@ -48,7 +48,7 @@ public abstract class NumberConverter<T extends Number> extends AbstractTextConv
 	}
 
 	@Override
-	public String to(ConverterContext context, Number t) throws ConverterException {
+	public String to(final ConverterContext context, final Number t) {
 		if (t == null) {
 			return StringUtils.BLANK;
 		}

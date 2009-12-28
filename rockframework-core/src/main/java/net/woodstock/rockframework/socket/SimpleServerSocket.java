@@ -33,15 +33,15 @@ public abstract class SimpleServerSocket extends Thread {
 
 	private boolean			run;
 
-	public SimpleServerSocket(int port) throws IOException {
+	public SimpleServerSocket(final int port) throws IOException {
 		this(InetAddress.getLocalHost(), port);
 	}
 
-	public SimpleServerSocket(String address, int port) throws IOException {
+	public SimpleServerSocket(final String address, final int port) throws IOException {
 		this(NetUtils.toAddress(address), port);
 	}
 
-	public SimpleServerSocket(InetAddress address, int port) throws IOException {
+	public SimpleServerSocket(final InetAddress address, final int port) throws IOException {
 		super();
 		this.server = new ServerSocket(port, 0, address);
 		this.run = true;
@@ -63,7 +63,7 @@ public abstract class SimpleServerSocket extends Thread {
 		return this.run;
 	}
 
-	public void setRun(boolean run) {
+	public void setRun(final boolean run) {
 		this.run = run;
 	}
 
@@ -87,7 +87,7 @@ public abstract class SimpleServerSocket extends Thread {
 		return SysLogger.getLogger();
 	}
 
-	protected void initialHandle(Socket s) throws Exception {
+	protected void initialHandle(final Socket s) throws Exception {
 		InetSocketAddress isa = ((InetSocketAddress) s.getRemoteSocketAddress());
 		String address = isa.getAddress().getHostAddress();
 		int port = isa.getPort();

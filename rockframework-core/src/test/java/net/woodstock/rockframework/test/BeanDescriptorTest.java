@@ -69,7 +69,7 @@ public class BeanDescriptorTest extends TestCase {
 		void setValue(Float value);
 	}
 
-	public static abstract class AbstractX implements ITest {
+	public abstract static class AbstractX implements ITest {
 
 		private Integer	id;
 
@@ -83,7 +83,7 @@ public class BeanDescriptorTest extends TestCase {
 			return this.id;
 		}
 
-		public void setId(Integer id) {
+		public void setId(final Integer id) {
 			this.id = id;
 		}
 
@@ -91,7 +91,7 @@ public class BeanDescriptorTest extends TestCase {
 			return this.name;
 		}
 
-		public void setName(String name) {
+		public void setName(final String name) {
 			this.name = name;
 		}
 
@@ -109,15 +109,15 @@ public class BeanDescriptorTest extends TestCase {
 			return this.value;
 		}
 
-		public void setValue(Float value) {
+		public void setValue(final Float value) {
 			this.value = value;
 		}
 
 	}
 
-	public static abstract class AbstractY implements ITest {
+	public abstract static class AbstractY implements ITest {
 
-		protected Map<String, Object>	params;
+		private Map<String, Object>	params;
 
 		public AbstractY() {
 			super();
@@ -128,7 +128,7 @@ public class BeanDescriptorTest extends TestCase {
 			return (Integer) this.params.get("ID");
 		}
 
-		public void setId(Integer id) {
+		public void setId(final Integer id) {
 			this.params.put("ID", id);
 		}
 
@@ -136,8 +136,12 @@ public class BeanDescriptorTest extends TestCase {
 			return (String) this.params.get("NAME");
 		}
 
-		public void setName(String name) {
+		public void setName(final String name) {
 			this.params.put("NAME", name);
+		}
+
+		protected Map<String, Object> getParams() {
+			return this.params;
 		}
 
 	}
@@ -149,11 +153,11 @@ public class BeanDescriptorTest extends TestCase {
 		}
 
 		public Float getValue() {
-			return (Float) this.params.get("VALUE");
+			return (Float) this.getParams().get("VALUE");
 		}
 
-		public void setValue(Float value) {
-			this.params.put("VALUE", value);
+		public void setValue(final Float value) {
+			this.getParams().put("VALUE", value);
 		}
 
 	}

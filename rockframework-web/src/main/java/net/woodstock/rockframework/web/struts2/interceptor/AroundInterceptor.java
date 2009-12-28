@@ -32,7 +32,7 @@ public class AroundInterceptor extends BaseInterceptor {
 		this.listener = new AroundInterceptorListener();
 	}
 
-	public String intercept(ActionInvocation invocation) throws Exception {
+	public String intercept(final ActionInvocation invocation) throws Exception {
 		Object action = invocation.getAction();
 		if (action instanceof AroundAction) {
 			AroundAction a = (AroundAction) action;
@@ -45,7 +45,7 @@ public class AroundInterceptor extends BaseInterceptor {
 
 	class AroundInterceptorListener implements PreResultListener {
 
-		public void beforeResult(ActionInvocation invocation, String resultCode) {
+		public void beforeResult(final ActionInvocation invocation, final String resultCode) {
 			Object action = invocation.getAction();
 			AroundAction a = (AroundAction) action;
 			try {

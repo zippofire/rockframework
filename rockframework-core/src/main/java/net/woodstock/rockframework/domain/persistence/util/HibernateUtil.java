@@ -54,16 +54,16 @@ public abstract class HibernateUtil {
 				HibernateUtil.factory = new Configuration().configure().buildSessionFactory();
 			}
 		}
-		Session s = session.get();
+		Session s = HibernateUtil.session.get();
 		if (s == null) {
 			s = HibernateUtil.factory.openSession();
-			session.set(s);
+			HibernateUtil.session.set(s);
 		}
 		return s;
 	}
 
 	public static void closeSession() {
-		Session s = session.get();
+		Session s = HibernateUtil.session.get();
 		if (s != null) {
 			Transaction t = s.getTransaction();
 			if (t.isActive()) {
@@ -72,7 +72,7 @@ public abstract class HibernateUtil {
 			}
 			s.flush();
 			s.close();
-			session.set(null);
+			HibernateUtil.session.set(null);
 		}
 	}
 

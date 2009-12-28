@@ -46,7 +46,7 @@ public abstract class JasperAction<T> extends BaseAction implements JasperableAc
 		return this.location;
 	}
 
-	public void setLocation(String location) {
+	public void setLocation(final String location) {
 		this.location = location;
 	}
 
@@ -54,7 +54,7 @@ public abstract class JasperAction<T> extends BaseAction implements JasperableAc
 		return this.dataSource;
 	}
 
-	public void setDataSource(T dataSource) {
+	public void setDataSource(final T dataSource) {
 		this.dataSource = dataSource;
 	}
 
@@ -62,7 +62,7 @@ public abstract class JasperAction<T> extends BaseAction implements JasperableAc
 		return this.format;
 	}
 
-	public void setFormat(String format) {
+	public void setFormat(final String format) {
 		this.format = format;
 	}
 
@@ -70,7 +70,7 @@ public abstract class JasperAction<T> extends BaseAction implements JasperableAc
 		return this.name;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -78,7 +78,7 @@ public abstract class JasperAction<T> extends BaseAction implements JasperableAc
 		return this.contentDisposition;
 	}
 
-	public void setContentDisposition(String contentDisposition) {
+	public void setContentDisposition(final String contentDisposition) {
 		this.contentDisposition = contentDisposition;
 	}
 

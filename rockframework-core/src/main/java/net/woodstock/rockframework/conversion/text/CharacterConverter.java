@@ -17,18 +17,17 @@
 package net.woodstock.rockframework.conversion.text;
 
 import net.woodstock.rockframework.conversion.ConverterContext;
-import net.woodstock.rockframework.conversion.ConverterException;
 
 class CharacterConverter extends net.woodstock.rockframework.conversion.common.converters.CharacterConverter {
 
 	@Override
-	public Character from(ConverterContext context, String s) throws ConverterException {
-		s = TextConverterHelper.trim(s);
-		return super.from(context, s);
+	public Character from(final ConverterContext context, final String s) {
+		String ss = TextConverterHelper.trim(s);
+		return super.from(context, ss);
 	}
 
 	@Override
-	public String to(ConverterContext context, Character t) throws ConverterException {
+	public String to(final ConverterContext context, final Character t) {
 		String s = super.to(context, t);
 		int size = TextConverterHelper.getSize(context);
 		return TextConverterHelper.lpad(s, size);

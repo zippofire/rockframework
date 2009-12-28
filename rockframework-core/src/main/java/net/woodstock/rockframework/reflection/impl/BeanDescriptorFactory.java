@@ -21,7 +21,6 @@ import java.util.Map;
 
 import net.woodstock.rockframework.config.CoreConfig;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
-import net.woodstock.rockframework.reflection.ReflectionException;
 import net.woodstock.rockframework.reflection.ReflectionType;
 
 public abstract class BeanDescriptorFactory {
@@ -32,11 +31,11 @@ public abstract class BeanDescriptorFactory {
 
 	public static final ReflectionType		REFLECTION_TYPE				= ReflectionType.valueOf(BeanDescriptorFactory.REFLECTION_TYPE_VALUE);
 
-	private static BeanDescriptorFactory	fieldBeanDescriptorFactory;
+	private static BeanDescriptorFactory	fieldBeanDescriptorFactory	= new FieldBeanDescriptorFactory();
 
-	private static BeanDescriptorFactory	methodBeanDescriptorFactory;
+	private static BeanDescriptorFactory	methodBeanDescriptorFactory	= new MethodBeanDescriptorFactory();
 
-	private static BeanDescriptorFactory	mixedBeanDescriptorFactory;
+	private static BeanDescriptorFactory	mixedBeanDescriptorFactory	= new MixedBeanDescriptorFactory();
 
 	public abstract BeanDescriptor getBeanDescriptor(Class<?> clazz);
 
@@ -44,7 +43,7 @@ public abstract class BeanDescriptorFactory {
 		return BeanDescriptorFactory.getInstance(BeanDescriptorFactory.REFLECTION_TYPE);
 	}
 
-	public static BeanDescriptorFactory getInstance(ReflectionType type) {
+	public static BeanDescriptorFactory getInstance(final ReflectionType type) {
 		if (type == null) {
 			throw new IllegalArgumentException("Type must be not null");
 		}
@@ -61,35 +60,14 @@ public abstract class BeanDescriptorFactory {
 	}
 
 	private static BeanDescriptorFactory getByFieldInstance() {
-		if (BeanDescriptorFactory.fieldBeanDescriptorFactory == null) {
-			synchronized (BeanDescriptorFactory.class) {
-				if (BeanDescriptorFactory.fieldBeanDescriptorFactory == null) {
-					BeanDescriptorFactory.fieldBeanDescriptorFactory = new FieldBeanDescriptorFactory();
-				}
-			}
-		}
 		return BeanDescriptorFactory.fieldBeanDescriptorFactory;
 	}
 
 	private static BeanDescriptorFactory getByMethodInstance() {
-		if (BeanDescriptorFactory.methodBeanDescriptorFactory == null) {
-			synchronized (BeanDescriptorFactory.class) {
-				if (BeanDescriptorFactory.methodBeanDescriptorFactory == null) {
-					BeanDescriptorFactory.methodBeanDescriptorFactory = new MethodBeanDescriptorFactory();
-				}
-			}
-		}
 		return BeanDescriptorFactory.methodBeanDescriptorFactory;
 	}
 
 	private static BeanDescriptorFactory getMixedInstance() {
-		if (BeanDescriptorFactory.mixedBeanDescriptorFactory == null) {
-			synchronized (BeanDescriptorFactory.class) {
-				if (BeanDescriptorFactory.mixedBeanDescriptorFactory == null) {
-					BeanDescriptorFactory.mixedBeanDescriptorFactory = new MixedBeanDescriptorFactory();
-				}
-			}
-		}
 		return BeanDescriptorFactory.mixedBeanDescriptorFactory;
 	}
 
@@ -101,20 +79,20 @@ public abstract class BeanDescriptorFactory {
 			this.cache = new HashMap<Class<?>, BeanDescriptor>();
 		}
 
-		protected void addToCache(Class<?> clazz, BeanDescriptor descriptor) {
+		protected void addToCache(final Class<?> clazz, final BeanDescriptor descriptor) {
 			this.cache.put(clazz, descriptor);
 		}
 
-		protected BeanDescriptor getFromCache(Class<?> clazz) {
+		protected BeanDescriptor getFromCache(final Class<?> clazz) {
 			return this.cache.get(clazz);
 		}
 
-		protected boolean hasOnCache(Class<?> clazz) {
+		protected boolean hasOnCache(final Class<?> clazz) {
 			return this.cache.containsKey(clazz);
 		}
 
 		@Override
-		public BeanDescriptor getBeanDescriptor(Class<?> clazz) throws ReflectionException {
+		public BeanDescriptor getBeanDescriptor(final Class<?> clazz) {
 			if (this.hasOnCache(clazz)) {
 				return this.getFromCache(clazz);
 			}
@@ -130,7 +108,7 @@ public abstract class BeanDescriptorFactory {
 	static class FieldBeanDescriptorFactory extends AbstractBeanDescriptorFactory {
 
 		@Override
-		public BeanDescriptor getBeanDescriptorInternal(Class<?> clazz) throws ReflectionException {
+		public BeanDescriptor getBeanDescriptorInternal(final Class<?> clazz) {
 			return new FieldBeanDescriptor(clazz);
 		}
 
@@ -139,7 +117,7 @@ public abstract class BeanDescriptorFactory {
 	static class MethodBeanDescriptorFactory extends AbstractBeanDescriptorFactory {
 
 		@Override
-		public BeanDescriptor getBeanDescriptorInternal(Class<?> clazz) throws ReflectionException {
+		public BeanDescriptor getBeanDescriptorInternal(final Class<?> clazz) {
 			return new MethodBeanDescriptor(clazz);
 		}
 
@@ -148,7 +126,7 @@ public abstract class BeanDescriptorFactory {
 	static class MixedBeanDescriptorFactory extends AbstractBeanDescriptorFactory {
 
 		@Override
-		public BeanDescriptor getBeanDescriptorInternal(Class<?> clazz) throws ReflectionException {
+		public BeanDescriptor getBeanDescriptorInternal(final Class<?> clazz) {
 			return new MixedBeanDescriptor(clazz);
 		}
 

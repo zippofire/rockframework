@@ -17,18 +17,17 @@
 package net.woodstock.rockframework.conversion.text;
 
 import net.woodstock.rockframework.conversion.ConverterContext;
-import net.woodstock.rockframework.conversion.ConverterException;
 
 class BooleanConverter extends net.woodstock.rockframework.conversion.common.converters.BooleanConverter {
 
 	@Override
-	public Boolean from(ConverterContext context, String s) throws ConverterException {
-		s = TextConverterHelper.trim(s);
-		return super.from(context, s);
+	public Boolean from(final ConverterContext context, final String s) {
+		String ss = TextConverterHelper.trim(s);
+		return super.from(context, ss);
 	}
 
 	@Override
-	public String to(ConverterContext context, Boolean t) throws ConverterException {
+	public String to(final ConverterContext context, final Boolean t) {
 		String s = super.to(context, t);
 		int size = TextConverterHelper.getSize(context);
 		return TextConverterHelper.lpad(s, size);

@@ -26,7 +26,7 @@ public class TipoTelefone implements Serializable {
 		super();
 	}
 
-	public TipoTelefone(Integer id) {
+	public TipoTelefone(final Integer id) {
 		super();
 		this.id = id;
 	}
@@ -35,7 +35,7 @@ public class TipoTelefone implements Serializable {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(final Integer id) {
 		this.id = id;
 	}
 
@@ -43,7 +43,7 @@ public class TipoTelefone implements Serializable {
 		return this.descricao;
 	}
 
-	public void setDescricao(String descricao) {
+	public void setDescricao(final String descricao) {
 		this.descricao = descricao;
 	}
 
@@ -57,7 +57,7 @@ public class TipoTelefone implements Serializable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		}

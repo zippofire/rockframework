@@ -31,7 +31,7 @@ public abstract class Digester {
 		//
 	}
 
-	private static byte[] _digest(String data, Algorithm algorithm) throws NoSuchAlgorithmException {
+	private static byte[] digestInternal(final String data, final Algorithm algorithm) throws NoSuchAlgorithmException {
 		if (!Digester.digesters.containsKey(algorithm.algorithm())) {
 			Digester.digesters.put(algorithm.algorithm(), MessageDigest.getInstance(algorithm.algorithm()));
 		}
@@ -41,26 +41,26 @@ public abstract class Digester {
 		return b;
 	}
 
-	public static String digest(String data) throws NoSuchAlgorithmException {
+	public static String digest(final String data) throws NoSuchAlgorithmException {
 		return Digester.digest(data, Algorithm.DEFAULT);
 	}
 
-	public static String digest(String data, Algorithm algorithm) throws NoSuchAlgorithmException {
-		byte[] b = Digester._digest(data, algorithm);
+	public static String digest(final String data, final Algorithm algorithm) throws NoSuchAlgorithmException {
+		byte[] b = Digester.digestInternal(data, algorithm);
 		return new String(b);
 	}
 
-	public static String digestBase64(String data) throws NoSuchAlgorithmException {
+	public static String digestBase64(final String data) throws NoSuchAlgorithmException {
 		return Digester.digestBase64(data, Algorithm.DEFAULT);
 	}
 
-	public static String digestBase64(String data, Algorithm algorithm) throws NoSuchAlgorithmException {
-		byte[] b = Digester._digest(data, algorithm);
+	public static String digestBase64(final String data, final Algorithm algorithm) throws NoSuchAlgorithmException {
+		byte[] b = Digester.digestInternal(data, algorithm);
 		String str = new String(Base64Utils.toBase64(b));
 		return str;
 	}
 
-	public static boolean isEquals(String d1, String d2) {
+	public static boolean isEquals(final String d1, final String d2) {
 		return MessageDigest.isEqual(d1.getBytes(), d2.getBytes());
 	}
 

@@ -34,7 +34,7 @@ public class LDAPSearchResult {
 
 	private Map<String, String>	attributes;
 
-	public LDAPSearchResult(SearchResult searchResult) throws NamingException {
+	public LDAPSearchResult(final SearchResult searchResult) throws NamingException {
 		super();
 		this.searchResult = searchResult;
 		this.attributes = new TreeMap<String, String>();
@@ -62,7 +62,7 @@ public class LDAPSearchResult {
 		}
 	}
 
-	public String getAttribute(String name) {
+	public String getAttribute(final String name) {
 		return this.attributes.get(name);
 	}
 

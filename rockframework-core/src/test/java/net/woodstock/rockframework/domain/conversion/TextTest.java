@@ -15,13 +15,6 @@ public class TextTest extends TestCase {
 		return foo;
 	}
 
-	private Bar getBar() {
-		Bar bar = new Bar();
-		bar.setId(new Integer(1));
-		bar.setName("Bar");
-		return bar;
-	}
-
 	public void xtestText1() throws Exception {
 		Foo foo = this.getFoo();
 		// foo.setBar(this.getBar());

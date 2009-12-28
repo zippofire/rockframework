@@ -20,23 +20,21 @@ import java.util.Collection;
 import java.util.Map;
 
 import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.domain.business.BusinessException;
-import net.woodstock.rockframework.domain.persistence.PersistenceException;
 
 public interface GenericService extends Service {
 
-	void save(Entity<?> entity) throws ServiceException, BusinessException, PersistenceException;
+	void save(Entity<?> entity);
 
-	void update(Entity<?> entity) throws ServiceException, BusinessException, PersistenceException;
+	void update(Entity<?> entity);
 
-	void delete(Entity<?> entity) throws ServiceException, BusinessException, PersistenceException;
+	void delete(Entity<?> entity);
 
 	// Retrieve
-	<E extends Entity<?>> E get(E entity) throws ServiceException, BusinessException, PersistenceException;
+	<E extends Entity<?>> E get(E entity);
 
 	// List
-	<E extends Entity<?>> Collection<E> listAll(E entity, String order) throws ServiceException, BusinessException, PersistenceException;
+	<E extends Entity<?>> Collection<E> listAll(E entity, String order);
 
-	<E extends Entity<?>> Collection<E> listByExample(E entity, Map<String, Object> options) throws ServiceException, BusinessException, PersistenceException;
+	<E extends Entity<?>> Collection<E> listByExample(E entity, Map<String, Object> options);
 
 }

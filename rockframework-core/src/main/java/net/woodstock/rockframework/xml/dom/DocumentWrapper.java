@@ -47,7 +47,7 @@ abstract class DocumentWrapper implements Cloneable, Comparable<Document>, Docum
 		return this.document;
 	}
 
-	public void setDocument(Document document) {
+	public void setDocument(final Document document) {
 		this.document = document;
 	}
 
@@ -63,7 +63,7 @@ abstract class DocumentWrapper implements Cloneable, Comparable<Document>, Docum
 		return this.document.getDocumentElement();
 	}
 
-	public Element createElement(String tagName) {
+	public Element createElement(final String tagName) {
 		return this.document.createElement(tagName);
 	}
 
@@ -71,51 +71,51 @@ abstract class DocumentWrapper implements Cloneable, Comparable<Document>, Docum
 		return this.document.createDocumentFragment();
 	}
 
-	public Text createTextNode(String data) {
+	public Text createTextNode(final String data) {
 		return this.document.createTextNode(data);
 	}
 
-	public Comment createComment(String data) {
+	public Comment createComment(final String data) {
 		return this.document.createComment(data);
 	}
 
-	public CDATASection createCDATASection(String data) {
+	public CDATASection createCDATASection(final String data) {
 		return this.document.createCDATASection(data);
 	}
 
-	public ProcessingInstruction createProcessingInstruction(String target, String data) {
+	public ProcessingInstruction createProcessingInstruction(final String target, final String data) {
 		return this.document.createProcessingInstruction(target, data);
 	}
 
-	public Attr createAttribute(String name) {
+	public Attr createAttribute(final String name) {
 		return this.document.createAttribute(name);
 	}
 
-	public EntityReference createEntityReference(String name) {
+	public EntityReference createEntityReference(final String name) {
 		return this.document.createEntityReference(name);
 	}
 
-	public NodeList getElementsByTagName(String tagname) {
+	public NodeList getElementsByTagName(final String tagname) {
 		return this.document.getElementsByTagName(tagname);
 	}
 
-	public Node importNode(Node importedNode, boolean deep) {
+	public Node importNode(final Node importedNode, final boolean deep) {
 		return this.document.importNode(importedNode, deep);
 	}
 
-	public Element createElementNS(String namespaceURI, String qualifiedName) {
+	public Element createElementNS(final String namespaceURI, final String qualifiedName) {
 		return this.document.createElementNS(namespaceURI, qualifiedName);
 	}
 
-	public Attr createAttributeNS(String namespaceURI, String qualifiedName) {
+	public Attr createAttributeNS(final String namespaceURI, final String qualifiedName) {
 		return this.document.createAttributeNS(namespaceURI, qualifiedName);
 	}
 
-	public NodeList getElementsByTagNameNS(String namespaceURI, String localName) {
+	public NodeList getElementsByTagNameNS(final String namespaceURI, final String localName) {
 		return this.document.getElementsByTagNameNS(namespaceURI, localName);
 	}
 
-	public Element getElementById(String elementId) {
+	public Element getElementById(final String elementId) {
 		return this.document.getElementById(elementId);
 	}
 
@@ -131,7 +131,7 @@ abstract class DocumentWrapper implements Cloneable, Comparable<Document>, Docum
 		return this.document.getXmlStandalone();
 	}
 
-	public void setXmlStandalone(boolean xmlStandalone) {
+	public void setXmlStandalone(final boolean xmlStandalone) {
 		this.document.setXmlStandalone(xmlStandalone);
 	}
 
@@ -139,7 +139,7 @@ abstract class DocumentWrapper implements Cloneable, Comparable<Document>, Docum
 		return this.document.getXmlVersion();
 	}
 
-	public void setXmlVersion(String xmlVersion) {
+	public void setXmlVersion(final String xmlVersion) {
 		this.document.setXmlVersion(xmlVersion);
 	}
 
@@ -147,7 +147,7 @@ abstract class DocumentWrapper implements Cloneable, Comparable<Document>, Docum
 		return this.document.getStrictErrorChecking();
 	}
 
-	public void setStrictErrorChecking(boolean strictErrorChecking) {
+	public void setStrictErrorChecking(final boolean strictErrorChecking) {
 		this.document.setStrictErrorChecking(strictErrorChecking);
 	}
 
@@ -155,11 +155,11 @@ abstract class DocumentWrapper implements Cloneable, Comparable<Document>, Docum
 		return this.document.getDocumentURI();
 	}
 
-	public void setDocumentURI(String documentURI) {
+	public void setDocumentURI(final String documentURI) {
 		this.document.setDocumentURI(documentURI);
 	}
 
-	public Node adoptNode(Node source) {
+	public Node adoptNode(final Node source) {
 		return this.document.adoptNode(source);
 	}
 
@@ -171,7 +171,7 @@ abstract class DocumentWrapper implements Cloneable, Comparable<Document>, Docum
 		this.document.normalizeDocument();
 	}
 
-	public Node renameNode(Node n, String namespaceURI, String qualifiedName) {
+	public Node renameNode(final Node n, final String namespaceURI, final String qualifiedName) {
 		return this.document.renameNode(n, namespaceURI, qualifiedName);
 	}
 
@@ -183,7 +183,7 @@ abstract class DocumentWrapper implements Cloneable, Comparable<Document>, Docum
 		return this.document.getNodeValue();
 	}
 
-	public void setNodeValue(String nodeValue) {
+	public void setNodeValue(final String nodeValue) {
 		this.document.setNodeValue(nodeValue);
 	}
 
@@ -223,20 +223,20 @@ abstract class DocumentWrapper implements Cloneable, Comparable<Document>, Docum
 		return this.document.getOwnerDocument();
 	}
 
-	public Node insertBefore(Node newChild, Node refChild) {
+	public Node insertBefore(final Node newChild, final Node refChild) {
 
 		return this.document.insertBefore(newChild, refChild);
 	}
 
-	public Node replaceChild(Node newChild, Node oldChild) {
+	public Node replaceChild(final Node newChild, final Node oldChild) {
 		return this.document.replaceChild(newChild, oldChild);
 	}
 
-	public Node removeChild(Node oldChild) {
+	public Node removeChild(final Node oldChild) {
 		return this.document.removeChild(oldChild);
 	}
 
-	public Node appendChild(Node newChild) {
+	public Node appendChild(final Node newChild) {
 		return this.document.appendChild(newChild);
 	}
 
@@ -244,7 +244,7 @@ abstract class DocumentWrapper implements Cloneable, Comparable<Document>, Docum
 		return this.document.hasChildNodes();
 	}
 
-	public Node cloneNode(boolean deep) {
+	public Node cloneNode(final boolean deep) {
 		return this.document.cloneNode(deep);
 	}
 
@@ -252,7 +252,7 @@ abstract class DocumentWrapper implements Cloneable, Comparable<Document>, Docum
 		this.document.normalize();
 	}
 
-	public boolean isSupported(String feature, String version) {
+	public boolean isSupported(final String feature, final String version) {
 		return this.document.isSupported(feature, version);
 	}
 
@@ -264,7 +264,7 @@ abstract class DocumentWrapper implements Cloneable, Comparable<Document>, Docum
 		return this.document.getPrefix();
 	}
 
-	public void setPrefix(String prefix) {
+	public void setPrefix(final String prefix) {
 		this.document.setPrefix(prefix);
 	}
 
@@ -280,7 +280,7 @@ abstract class DocumentWrapper implements Cloneable, Comparable<Document>, Docum
 		return this.document.getBaseURI();
 	}
 
-	public short compareDocumentPosition(Node other) {
+	public short compareDocumentPosition(final Node other) {
 		return this.document.compareDocumentPosition(other);
 	}
 
@@ -288,39 +288,39 @@ abstract class DocumentWrapper implements Cloneable, Comparable<Document>, Docum
 		return this.document.getTextContent();
 	}
 
-	public void setTextContent(String textContent) {
+	public void setTextContent(final String textContent) {
 		this.document.setTextContent(textContent);
 	}
 
-	public boolean isSameNode(Node other) {
+	public boolean isSameNode(final Node other) {
 		return this.document.isSameNode(other);
 	}
 
-	public String lookupPrefix(String namespaceURI) {
+	public String lookupPrefix(final String namespaceURI) {
 		return this.document.lookupPrefix(namespaceURI);
 	}
 
-	public boolean isDefaultNamespace(String namespaceURI) {
+	public boolean isDefaultNamespace(final String namespaceURI) {
 		return this.document.isDefaultNamespace(namespaceURI);
 	}
 
-	public String lookupNamespaceURI(String prefix) {
+	public String lookupNamespaceURI(final String prefix) {
 		return this.document.lookupNamespaceURI(prefix);
 	}
 
-	public boolean isEqualNode(Node arg) {
+	public boolean isEqualNode(final Node arg) {
 		return this.document.isEqualNode(arg);
 	}
 
-	public Object getFeature(String feature, String version) {
+	public Object getFeature(final String feature, final String version) {
 		return this.document.getFeature(feature, version);
 	}
 
-	public Object setUserData(String key, Object data, UserDataHandler handler) {
+	public Object setUserData(final String key, final Object data, final UserDataHandler handler) {
 		return this.document.setUserData(key, data, handler);
 	}
 
-	public Object getUserData(String key) {
+	public Object getUserData(final String key) {
 		return this.document.getUserData(key);
 	}
 

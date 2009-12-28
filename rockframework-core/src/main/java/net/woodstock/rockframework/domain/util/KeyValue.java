@@ -29,11 +29,11 @@ public class KeyValue<K extends Serializable, V extends Serializable> extends En
 		super();
 	}
 
-	public KeyValue(K key, V value) {
+	public KeyValue(final K key, final V value) {
 		super(key, value);
 	}
 
-	public KeyValue(Entry<K, V> entry) {
+	public KeyValue(final Entry<K, V> entry) {
 		super(entry.getKey(), entry.getValue());
 	}
 

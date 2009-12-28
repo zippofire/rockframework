@@ -20,19 +20,23 @@ import java.lang.reflect.Method;
 
 import net.woodstock.rockframework.utils.StringUtils;
 
-abstract class BeanDescriptorHelper {
+final class BeanDescriptorHelper {
 
-	public static String	GET_CLASS_METHOD_NAME	= "getClass";
+	public static final String	GET_CLASS_METHOD_NAME	= "getClass";
 
-	public static String	GET_METHOD_PREFIX		= "get";
+	public static final String	GET_METHOD_PREFIX		= "get";
 
-	public static String	IS_METHOD_PREFIX		= "is";
+	public static final String	IS_METHOD_PREFIX		= "is";
 
-	public static String	SET_METHOD_PREFIX		= "set";
+	public static final String	SET_METHOD_PREFIX		= "set";
 
-	private static String	METHOD_PREFIX_REGEX		= "^(get|is|set)";
+	private static final String	METHOD_PREFIX_REGEX		= "^(get|is|set)";
 
-	public static String getMethodName(String prefix, String property) {
+	private BeanDescriptorHelper() {
+		super();
+	}
+
+	public static String getMethodName(final String prefix, final String property) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(prefix);
 		builder.append(Character.toUpperCase(property.charAt(0)));
@@ -40,7 +44,7 @@ abstract class BeanDescriptorHelper {
 		return builder.toString();
 	}
 
-	public static String getPropertyName(Method method) {
+	public static String getPropertyName(final Method method) {
 		String methodName = method.getName();
 		StringBuilder builder = new StringBuilder();
 		String name = methodName.replaceAll(BeanDescriptorHelper.METHOD_PREFIX_REGEX, StringUtils.BLANK);
@@ -49,7 +53,7 @@ abstract class BeanDescriptorHelper {
 		return builder.toString();
 	}
 
-	public static Class<?> getPropertyType(Method method) {
+	public static Class<?> getPropertyType(final Method method) {
 		if (BeanDescriptorHelper.isGetter(method)) {
 			return method.getReturnType();
 		} else if (BeanDescriptorHelper.isSetter(method)) {
@@ -61,7 +65,7 @@ abstract class BeanDescriptorHelper {
 		return null;
 	}
 
-	public static boolean isGetter(Method method) {
+	public static boolean isGetter(final Method method) {
 		String methodName = method.getName();
 		if (methodName.startsWith(BeanDescriptorHelper.GET_METHOD_PREFIX)) {
 			if (methodName.equals(BeanDescriptorHelper.GET_CLASS_METHOD_NAME)) {
@@ -81,7 +85,7 @@ abstract class BeanDescriptorHelper {
 		return false;
 	}
 
-	public static boolean isSetter(Method method) {
+	public static boolean isSetter(final Method method) {
 		String methodName = method.getName();
 		if (methodName.startsWith(BeanDescriptorHelper.SET_METHOD_PREFIX)) {
 			Class<?>[] parameterTypes = method.getParameterTypes();
@@ -93,7 +97,7 @@ abstract class BeanDescriptorHelper {
 		return false;
 	}
 
-	public static boolean isValidGetterOrSetter(Method method) {
+	public static boolean isValidGetterOrSetter(final Method method) {
 		if (BeanDescriptorHelper.isGetter(method)) {
 			return true;
 		}

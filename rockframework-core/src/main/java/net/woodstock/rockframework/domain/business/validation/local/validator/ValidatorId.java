@@ -22,7 +22,7 @@ import net.woodstock.rockframework.domain.business.validation.local.LocalValidat
 
 public class ValidatorId extends AbstractValidator {
 
-	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
+	public ValidationResult validate(final LocalValidationContext context) {
 		try {
 			// String value = (String) context.getValue();
 			// ValidateId annotation = (ValidateId) context.getAnnotation();

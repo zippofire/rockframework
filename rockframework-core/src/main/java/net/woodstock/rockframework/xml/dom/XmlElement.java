@@ -61,7 +61,7 @@ public class XmlElement extends ElementWrapper {
 		super();
 	}
 
-	protected XmlElement(Element e) {
+	protected XmlElement(final Element e) {
 		super();
 		this.setElement(e);
 	}
@@ -71,36 +71,37 @@ public class XmlElement extends ElementWrapper {
 		return XmlDocument.toXmlDocument(this.getOwnerDocument());
 	}
 
-	public CDATASection addCDATASection(String data) {
+	public CDATASection addCDATASection(final String data) {
 		CDATASection cdata = this.getOwnerDocument().createCDATASection(data);
 		this.appendChild(cdata);
 		return cdata;
 	}
 
-	public Comment addComment(String data) {
+	public Comment addComment(final String data) {
 		Comment c = this.getOwnerDocument().createComment(data);
 		this.appendChild(c);
 		return c;
 	}
 
-	public XmlElement addElement(Element e) {
-		if (e instanceof XmlElement) {
-			e = ((XmlElement) e).getElement();
+	public XmlElement addElement(final Element e) {
+		Element tmp = e;
+		if (tmp instanceof XmlElement) {
+			tmp = ((XmlElement) tmp).getElement();
 		}
 		Document doc = this.getOwnerDocument();
-		Element ee = (Element) doc.importNode(e, true);
+		Element ee = (Element) doc.importNode(tmp, true);
 		this.appendChild(ee);
 		return XmlElement.toXmlElement(ee);
 	}
 
-	public XmlElement addElement(String name) {
+	public XmlElement addElement(final String name) {
 		Document doc = this.getOwnerDocument();
 		Element e = doc.createElement(name);
 		this.appendChild(e);
 		return XmlElement.toXmlElement(e);
 	}
 
-	public XmlElement addElement(String name, Map<String, String> attributes) {
+	public XmlElement addElement(final String name, final Map<String, String> attributes) {
 		Document doc = this.getOwnerDocument();
 		Element e = doc.createElement(name);
 		Set<String> keys = attributes.keySet();
@@ -111,43 +112,43 @@ public class XmlElement extends ElementWrapper {
 		return XmlElement.toXmlElement(e);
 	}
 
-	public XmlElement addElement(String name, boolean data) {
+	public XmlElement addElement(final String name, final boolean data) {
 		return this.addElement(name, Boolean.toString(data));
 	}
 
-	public XmlElement addElement(String name, byte data) {
+	public XmlElement addElement(final String name, final byte data) {
 		return this.addElement(name, Byte.toString(data));
 	}
 
-	public XmlElement addElement(String name, char data) {
+	public XmlElement addElement(final String name, final char data) {
 		return this.addElement(name, Character.toString(data));
 	}
 
-	public XmlElement addElement(String name, Date data) {
+	public XmlElement addElement(final String name, final Date data) {
 		return this.addElement(name, XmlElement.dateFormat.format(data));
 	}
 
-	public XmlElement addElement(String name, double data) {
+	public XmlElement addElement(final String name, final double data) {
 		return this.addElement(name, Double.toString(data));
 	}
 
-	public XmlElement addElement(String name, float data) {
+	public XmlElement addElement(final String name, final float data) {
 		return this.addElement(name, Float.toString(data));
 	}
 
-	public XmlElement addElement(String name, int data) {
+	public XmlElement addElement(final String name, final int data) {
 		return this.addElement(name, Integer.toString(data));
 	}
 
-	public XmlElement addElement(String name, long data) {
+	public XmlElement addElement(final String name, final long data) {
 		return this.addElement(name, Long.toString(data));
 	}
 
-	public XmlElement addElement(String name, short data) {
+	public XmlElement addElement(final String name, final short data) {
 		return this.addElement(name, Short.toString(data));
 	}
 
-	public XmlElement addElement(String name, String data) {
+	public XmlElement addElement(final String name, final String data) {
 		Document doc = this.getOwnerDocument();
 		Element e = doc.createElement(name);
 		Text t = doc.createTextNode(data);
@@ -156,43 +157,43 @@ public class XmlElement extends ElementWrapper {
 		return XmlElement.toXmlElement(e);
 	}
 
-	public XmlElement addElement(String name, boolean data, Map<String, String> attributes) {
+	public XmlElement addElement(final String name, final boolean data, final Map<String, String> attributes) {
 		return this.addElement(name, Boolean.toString(data), attributes);
 	}
 
-	public XmlElement addElement(String name, byte data, Map<String, String> attributes) {
+	public XmlElement addElement(final String name, final byte data, final Map<String, String> attributes) {
 		return this.addElement(name, Byte.toString(data), attributes);
 	}
 
-	public XmlElement addElement(String name, char data, Map<String, String> attributes) {
+	public XmlElement addElement(final String name, final char data, final Map<String, String> attributes) {
 		return this.addElement(name, Character.toString(data), attributes);
 	}
 
-	public XmlElement addElement(String name, Date data, Map<String, String> attributes) {
+	public XmlElement addElement(final String name, final Date data, final Map<String, String> attributes) {
 		return this.addElement(name, XmlElement.dateFormat.format(data), attributes);
 	}
 
-	public XmlElement addElement(String name, double data, Map<String, String> attributes) {
+	public XmlElement addElement(final String name, final double data, final Map<String, String> attributes) {
 		return this.addElement(name, Double.toString(data), attributes);
 	}
 
-	public XmlElement addElement(String name, float data, Map<String, String> attributes) {
+	public XmlElement addElement(final String name, final float data, final Map<String, String> attributes) {
 		return this.addElement(name, Float.toString(data), attributes);
 	}
 
-	public XmlElement addElement(String name, int data, Map<String, String> attributes) {
+	public XmlElement addElement(final String name, final int data, final Map<String, String> attributes) {
 		return this.addElement(name, Integer.toString(data), attributes);
 	}
 
-	public XmlElement addElement(String name, long data, Map<String, String> attributes) {
+	public XmlElement addElement(final String name, final long data, final Map<String, String> attributes) {
 		return this.addElement(name, Long.toString(data), attributes);
 	}
 
-	public XmlElement addElement(String name, short data, Map<String, String> attributes) {
+	public XmlElement addElement(final String name, final short data, final Map<String, String> attributes) {
 		return this.addElement(name, Short.toString(data), attributes);
 	}
 
-	public XmlElement addElement(String name, String data, Map<String, String> attributes) {
+	public XmlElement addElement(final String name, final String data, final Map<String, String> attributes) {
 		Document doc = this.getOwnerDocument();
 		Element e = doc.createElement(name);
 		Set<String> keys = attributes.keySet();
@@ -205,7 +206,7 @@ public class XmlElement extends ElementWrapper {
 		return XmlElement.toXmlElement(e);
 	}
 
-	public void copy(Document d) {
+	public void copy(final Document d) {
 		NodeList list = d.getChildNodes();
 		for (int i = 0; i < list.getLength(); i++) {
 			Node n = list.item(i);
@@ -216,11 +217,11 @@ public class XmlElement extends ElementWrapper {
 		}
 	}
 
-	public void copy(Element e) {
+	public void copy(final Element e) {
 		this.copy((Node) e);
 	}
 
-	public void copy(Node n) {
+	public void copy(final Node n) {
 		NodeList list = n.getChildNodes();
 		Document doc = this.getOwnerDocument();
 		for (int i = 0; i < list.getLength(); i++) {
@@ -234,23 +235,23 @@ public class XmlElement extends ElementWrapper {
 		}
 	}
 
-	public void removeElement(String name) {
+	public void removeElement(final String name) {
 		this.removeElement(this.getElement(name));
 	}
 
-	public void removeElement(Element e) {
+	public void removeElement(final Element e) {
 		this.removeChild(e);
 	}
 
-	public void removeElement(XmlElement e) {
+	public void removeElement(final XmlElement e) {
 		this.removeChild(e.getElement());
 	}
 
-	public boolean hasElement(String name) {
+	public boolean hasElement(final String name) {
 		return this.getElement(name) != null;
 	}
 
-	public XmlElement getElement(String name) {
+	public XmlElement getElement(final String name) {
 		NodeList nodes = this.getElementsByTagName(name);
 		int length = nodes.getLength();
 		for (int i = 0; i < length; i++) {
@@ -273,7 +274,7 @@ public class XmlElement extends ElementWrapper {
 		return list;
 	}
 
-	public List<XmlElement> getElements(String name) {
+	public List<XmlElement> getElements(final String name) {
 		NodeList nodes = this.getElementsByTagName(name);
 		int length = nodes.getLength();
 		List<XmlElement> list = new LinkedList<XmlElement>();
@@ -289,7 +290,7 @@ public class XmlElement extends ElementWrapper {
 		return this.getBooleanNvl(false);
 	}
 
-	public boolean getBooleanNvl(boolean nvl) {
+	public boolean getBooleanNvl(final boolean nvl) {
 		String s = this.getString();
 		if (s == null) {
 			return nvl;
@@ -297,11 +298,11 @@ public class XmlElement extends ElementWrapper {
 		return Boolean.parseBoolean(s);
 	}
 
-	public boolean getBoolean(String name) {
+	public boolean getBoolean(final String name) {
 		return this.getBooleanNvl(name, false);
 	}
 
-	public boolean getBooleanNvl(String name, boolean nvl) {
+	public boolean getBooleanNvl(final String name, final boolean nvl) {
 		return Boolean.parseBoolean(this.getStringNvl(name, Boolean.toString(nvl)));
 	}
 
@@ -309,7 +310,7 @@ public class XmlElement extends ElementWrapper {
 		return this.getByteNvl((byte) 0);
 	}
 
-	public byte getByteNvl(byte nvl) {
+	public byte getByteNvl(final byte nvl) {
 		String s = this.getString();
 		if (s == null) {
 			return nvl;
@@ -317,11 +318,11 @@ public class XmlElement extends ElementWrapper {
 		return Byte.parseByte(s);
 	}
 
-	public byte getByte(String name) {
+	public byte getByte(final String name) {
 		return this.getByteNvl(name, (byte) 0);
 	}
 
-	public byte getByteNvl(String name, byte nvl) {
+	public byte getByteNvl(final String name, final byte nvl) {
 		return Byte.parseByte(this.getStringNvl(name, Byte.toString(nvl)));
 	}
 
@@ -329,7 +330,7 @@ public class XmlElement extends ElementWrapper {
 		return this.getCharNvl('\0');
 	}
 
-	public char getCharNvl(char nvl) {
+	public char getCharNvl(final char nvl) {
 		String s = this.getString();
 		if ((s == null) || (s.length() < 1)) {
 			return nvl;
@@ -337,11 +338,11 @@ public class XmlElement extends ElementWrapper {
 		return s.charAt(0);
 	}
 
-	public char getChar(String name) {
+	public char getChar(final String name) {
 		return this.getCharNvl(name, '\0');
 	}
 
-	public char getCharNvl(String name, char nvl) {
+	public char getCharNvl(final String name, final char nvl) {
 		String s = this.getString(name);
 		if ((s == null) || (s.length() < 1)) {
 			return nvl;
@@ -353,7 +354,7 @@ public class XmlElement extends ElementWrapper {
 		return this.getDateNvl((Date) null);
 	}
 
-	public Date getDateNvl(Date nvl) {
+	public Date getDateNvl(final Date nvl) {
 		String s = this.getString();
 		if (s != null) {
 			try {
@@ -365,11 +366,11 @@ public class XmlElement extends ElementWrapper {
 		return nvl;
 	}
 
-	public Date getDate(String name) {
+	public Date getDate(final String name) {
 		return this.getDateNvl(name, null);
 	}
 
-	public Date getDateNvl(String name, Date nvl) {
+	public Date getDateNvl(final String name, final Date nvl) {
 		String s = this.getString(name);
 		if (s != null) {
 			try {
@@ -385,7 +386,7 @@ public class XmlElement extends ElementWrapper {
 		return this.getDoubleNvl(0);
 	}
 
-	public double getDoubleNvl(double nvl) {
+	public double getDoubleNvl(final double nvl) {
 		String s = this.getString();
 		if (s == null) {
 			return nvl;
@@ -393,11 +394,11 @@ public class XmlElement extends ElementWrapper {
 		return Double.parseDouble(s);
 	}
 
-	public double getDouble(String name) {
+	public double getDouble(final String name) {
 		return this.getDoubleNvl(name, 0);
 	}
 
-	public double getDoubleNvl(String name, double nvl) {
+	public double getDoubleNvl(final String name, final double nvl) {
 		return Double.parseDouble(this.getStringNvl(name, Double.toString(nvl)));
 	}
 
@@ -405,7 +406,7 @@ public class XmlElement extends ElementWrapper {
 		return this.getFloatNvl(0);
 	}
 
-	public float getFloatNvl(float nvl) {
+	public float getFloatNvl(final float nvl) {
 		String s = this.getString();
 		if (s == null) {
 			return nvl;
@@ -413,11 +414,11 @@ public class XmlElement extends ElementWrapper {
 		return Float.parseFloat(s);
 	}
 
-	public float getFloat(String name) {
+	public float getFloat(final String name) {
 		return this.getFloatNvl(name, 0);
 	}
 
-	public float getFloatNvl(String name, float nvl) {
+	public float getFloatNvl(final String name, final float nvl) {
 		return Float.parseFloat(this.getStringNvl(name, Float.toString(nvl)));
 	}
 
@@ -425,7 +426,7 @@ public class XmlElement extends ElementWrapper {
 		return this.getIntNvl(0);
 	}
 
-	public int getIntNvl(int nvl) {
+	public int getIntNvl(final int nvl) {
 		String s = this.getString();
 		if (s == null) {
 			return nvl;
@@ -433,11 +434,11 @@ public class XmlElement extends ElementWrapper {
 		return Integer.parseInt(s);
 	}
 
-	public int getInt(String name) {
+	public int getInt(final String name) {
 		return this.getIntNvl(name, 0);
 	}
 
-	public int getIntNvl(String name, int nvl) {
+	public int getIntNvl(final String name, final int nvl) {
 		return Integer.parseInt(this.getStringNvl(name, Integer.toString(nvl)));
 	}
 
@@ -445,7 +446,7 @@ public class XmlElement extends ElementWrapper {
 		return this.getLongNvl(0);
 	}
 
-	public long getLongNvl(long nvl) {
+	public long getLongNvl(final long nvl) {
 		String s = this.getString();
 		if (s == null) {
 			return nvl;
@@ -453,11 +454,11 @@ public class XmlElement extends ElementWrapper {
 		return Long.parseLong(s);
 	}
 
-	public long getLong(String name) {
+	public long getLong(final String name) {
 		return this.getLongNvl(name, 0);
 	}
 
-	public long getLongNvl(String name, long nvl) {
+	public long getLongNvl(final String name, final long nvl) {
 		return Long.parseLong(this.getStringNvl(name, Long.toString(nvl)));
 	}
 
@@ -465,7 +466,7 @@ public class XmlElement extends ElementWrapper {
 		return this.getShortNvl((short) 0);
 	}
 
-	public short getShortNvl(short nvl) {
+	public short getShortNvl(final short nvl) {
 		String s = this.getString();
 		if (s == null) {
 			return nvl;
@@ -473,11 +474,11 @@ public class XmlElement extends ElementWrapper {
 		return Short.parseShort(s);
 	}
 
-	public short getShort(String name) {
+	public short getShort(final String name) {
 		return this.getShortNvl(name, (short) 0);
 	}
 
-	public short getShortNvl(String name, short nvl) {
+	public short getShortNvl(final String name, final short nvl) {
 		return Short.parseShort(this.getStringNvl(name, Short.toString(nvl)));
 	}
 
@@ -485,7 +486,7 @@ public class XmlElement extends ElementWrapper {
 		return this.getStringNvl(null);
 	}
 
-	public String getStringNvl(String nvl) {
+	public String getStringNvl(final String nvl) {
 		NodeList list = this.getChildNodes();
 
 		StringBuilder builder = new StringBuilder();
@@ -509,16 +510,16 @@ public class XmlElement extends ElementWrapper {
 		return value;
 	}
 
-	public String getString(String name) {
+	public String getString(final String name) {
 		return this.getStringNvl(name, null);
 	}
 
-	public String getStringNvl(String name, String nvl) {
+	public String getStringNvl(final String name, final String nvl) {
 		XmlElement e = this.getElement(name);
 		return e.getStringNvl(nvl);
 	}
 
-	public XmlElement addObject(String name, Serializable object) throws IOException {
+	public XmlElement addObject(final String name, final Serializable object) throws IOException {
 		byte[] bytes = Base64Utils.serialize(object);
 
 		HashMap<String, String> attributes = new HashMap<String, String>();
@@ -544,7 +545,7 @@ public class XmlElement extends ElementWrapper {
 		return o;
 	}
 
-	public Object getObject(String name) throws IOException, ClassNotFoundException {
+	public Object getObject(final String name) throws IOException, ClassNotFoundException {
 		if (StringUtils.isEmpty(this.getString(name))) {
 			return null;
 		}
@@ -552,66 +553,66 @@ public class XmlElement extends ElementWrapper {
 		return o;
 	}
 
-	public void setAttribute(String name, boolean data) {
+	public void setAttribute(final String name, final boolean data) {
 		super.setAttribute(name, Boolean.toString(data));
 	}
 
-	public void setAttribute(String name, byte data) {
+	public void setAttribute(final String name, final byte data) {
 		super.setAttribute(name, Byte.toString(data));
 	}
 
-	public void setAttribute(String name, char data) {
+	public void setAttribute(final String name, final char data) {
 		super.setAttribute(name, Character.toString(data));
 	}
 
-	public void setAttribute(String name, Date data) {
+	public void setAttribute(final String name, final Date data) {
 		super.setAttribute(name, XmlElement.dateFormat.format(data));
 	}
 
-	public void setAttribute(String name, double data) {
+	public void setAttribute(final String name, final double data) {
 		super.setAttribute(name, Double.toString(data));
 	}
 
-	public void setAttribute(String name, float data) {
+	public void setAttribute(final String name, final float data) {
 		super.setAttribute(name, Float.toString(data));
 	}
 
-	public void setAttribute(String name, int data) {
+	public void setAttribute(final String name, final int data) {
 		super.setAttribute(name, Integer.toString(data));
 	}
 
-	public void setAttribute(String name, long data) {
+	public void setAttribute(final String name, final long data) {
 		super.setAttribute(name, Long.toString(data));
 	}
 
-	public void setAttribute(String name, short data) {
+	public void setAttribute(final String name, final short data) {
 		super.setAttribute(name, Short.toString(data));
 	}
 
-	public void write(File file) throws IOException {
+	public void write(final File file) throws IOException {
 		this.write(new FileWriter(file));
 	}
 
-	public void write(OutputStream out) throws IOException {
+	public void write(final OutputStream out) throws IOException {
 		this.write(new OutputStreamWriter(out));
 	}
 
-	public void write(Writer writer) throws IOException {
-		Document doc = XmlDocument.builder.newDocument();
+	public void write(final Writer writer) throws IOException {
+		Document doc = XmlDocument.getDocumentBuilder().newDocument();
 		Node node = doc.importNode(this.getElement(), true);
 		doc.appendChild(node);
 		XmlDocument.toXmlDocument(doc).write(writer);
 	}
 
-	public static Element toElement(XmlElement e) {
+	public static Element toElement(final XmlElement e) {
 		return e.getElement();
 	}
 
-	public static XmlElement toXmlElement(Element e) {
+	public static XmlElement toXmlElement(final Element e) {
 		return new XmlElement(e);
 	}
 
-	public static List<Element> toElementList(List<XmlElement> list) {
+	public static List<Element> toElementList(final List<XmlElement> list) {
 		List<Element> x = new LinkedList<Element>();
 		for (XmlElement e : list) {
 			x.add(XmlElement.toElement(e));
@@ -619,7 +620,7 @@ public class XmlElement extends ElementWrapper {
 		return x;
 	}
 
-	public static List<XmlElement> toXmlElementList(List<Element> list) {
+	public static List<XmlElement> toXmlElementList(final List<Element> list) {
 		List<XmlElement> x = new LinkedList<XmlElement>();
 		for (Element e : list) {
 			x.add(XmlElement.toXmlElement(e));
@@ -628,7 +629,7 @@ public class XmlElement extends ElementWrapper {
 	}
 
 	@Override
-	public int compareTo(Element o) {
+	public int compareTo(final Element o) {
 		if (o == null) {
 			return 0;
 		}
@@ -636,7 +637,7 @@ public class XmlElement extends ElementWrapper {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		}

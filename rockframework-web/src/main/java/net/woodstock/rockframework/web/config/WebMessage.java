@@ -18,25 +18,18 @@ package net.woodstock.rockframework.web.config;
 
 import net.woodstock.rockframework.config.AbstractMessage;
 
-public class WebMessage extends AbstractMessage {
+public final class WebMessage extends AbstractMessage {
 
 	private static final String	WEB_MESSAGES	= "rockframework-web-messages";
 
-	private static WebMessage	webMessage;
+	private static WebMessage	instance		= new WebMessage();
 
 	private WebMessage() {
 		super(WebMessage.WEB_MESSAGES);
 	}
 
 	public static WebMessage getInstance() {
-		if (WebMessage.webMessage == null) {
-			synchronized (WebMessage.class) {
-				if (WebMessage.webMessage == null) {
-					WebMessage.webMessage = new WebMessage();
-				}
-			}
-		}
-		return WebMessage.webMessage;
+		return WebMessage.instance;
 	}
 
 }

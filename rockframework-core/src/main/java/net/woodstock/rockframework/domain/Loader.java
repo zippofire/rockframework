@@ -24,8 +24,8 @@ public interface Loader {
 
 	String	MESSAGE_ERROR_NOT_FOUND			= "domain.loader.exception.notFound";
 
-	<T> T getObject(Class<T> clazz) throws DomainException;
+	<T> T getObject(Class<T> clazz);
 
-	Object getObject(String name) throws DomainException;
+	Object getObject(String name);
 
 }

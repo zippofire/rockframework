@@ -22,15 +22,15 @@ public class BuilderException extends PersistenceException {
 
 	private static final long	serialVersionUID	= -989696877597815292L;
 
-	public BuilderException(String message) {
+	public BuilderException(final String message) {
 		super(message);
 	}
 
-	public BuilderException(Throwable cause) {
+	public BuilderException(final Throwable cause) {
 		super(cause);
 	}
 
-	public BuilderException(String message, Throwable cause) {
+	public BuilderException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 

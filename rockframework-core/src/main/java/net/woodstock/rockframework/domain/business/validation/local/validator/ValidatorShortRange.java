@@ -24,7 +24,7 @@ import net.woodstock.rockframework.domain.business.validation.local.annotation.V
 
 public class ValidatorShortRange extends AbstractValidator {
 
-	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
+	public ValidationResult validate(final LocalValidationContext context) {
 		try {
 			Short value = (Short) context.getValue();
 			ValidateShortRange annotation = (ValidateShortRange) context.getAnnotation();
@@ -43,7 +43,7 @@ public class ValidatorShortRange extends AbstractValidator {
 		}
 	}
 
-	private String getErrorMessage(ValidateShortRange annotation, String name) {
+	private String getErrorMessage(final ValidateShortRange annotation, final String name) {
 		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_RANGE, name, new Short(annotation.min()), new Short(annotation.max()));
 	}
 

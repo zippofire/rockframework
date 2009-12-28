@@ -23,7 +23,7 @@ public class WrappedResult implements StrutsResult {
 
 	private ActionForward	forward;
 
-	public WrappedResult(ActionForward forward) {
+	public WrappedResult(final ActionForward forward) {
 		super();
 		this.forward = forward;
 	}
@@ -32,7 +32,7 @@ public class WrappedResult implements StrutsResult {
 		return this.forward;
 	}
 
-	public ActionForward getForward(ActionMapping mapping) {
+	public ActionForward getForward(final ActionMapping mapping) {
 		return this.forward;
 	}
 

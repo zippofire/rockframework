@@ -39,7 +39,7 @@ public class LocalEntityValidationListener implements ValidationListener {
 	}
 
 	@PreRemove
-	public void preRemove(Entity<?> entity) {
+	public void preRemove(final Entity<?> entity) {
 		Collection<ValidationResult> results = this.validator.validate(entity, Operation.DELETE);
 		for (ValidationResult result : results) {
 			if (result.isError()) {
@@ -49,7 +49,7 @@ public class LocalEntityValidationListener implements ValidationListener {
 	}
 
 	@PrePersist
-	public void preInsert(Entity<?> entity) {
+	public void preInsert(final Entity<?> entity) {
 		Collection<ValidationResult> results = this.validator.validate(entity, Operation.SAVE);
 		for (ValidationResult result : results) {
 			if (result.isError()) {
@@ -59,7 +59,7 @@ public class LocalEntityValidationListener implements ValidationListener {
 	}
 
 	@PreUpdate
-	public void preUpdate(Entity<?> entity) {
+	public void preUpdate(final Entity<?> entity) {
 		Collection<ValidationResult> results = this.validator.validate(entity, Operation.UPDATE);
 		for (ValidationResult result : results) {
 			if (result.isError()) {

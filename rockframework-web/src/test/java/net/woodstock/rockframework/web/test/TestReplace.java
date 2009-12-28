@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import junit.framework.TestCase;
-
 import net.woodstock.rockframework.utils.ClassLoaderUtils;
 import net.woodstock.rockframework.utils.StringUtils;
 

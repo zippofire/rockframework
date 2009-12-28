@@ -32,27 +32,27 @@ public class LDAPFilter implements Serializable {
 
 	private Collection<LDAPRestriction>	restrictions;
 
-	public LDAPFilter(String baseName) {
+	public LDAPFilter(final String baseName) {
 		super();
 		this.baseName = baseName;
 		this.restrictions = new LinkedHashSet<LDAPRestriction>();
 	}
 
-	public LDAPFilter(String baseName, String[] attributes) {
+	public LDAPFilter(final String baseName, final String[] attributes) {
 		super();
 		this.baseName = baseName;
 		this.attributes = attributes;
 		this.restrictions = new LinkedHashSet<LDAPRestriction>();
 	}
 
-	public LDAPFilter(String baseName, int limit) {
+	public LDAPFilter(final String baseName, final int limit) {
 		super();
 		this.baseName = baseName;
 		this.limit = limit;
 		this.restrictions = new LinkedHashSet<LDAPRestriction>();
 	}
 
-	public LDAPFilter(String baseName, String[] attributes, int limit) {
+	public LDAPFilter(final String baseName, final String[] attributes, final int limit) {
 		super();
 		this.baseName = baseName;
 		this.attributes = attributes;
@@ -60,7 +60,7 @@ public class LDAPFilter implements Serializable {
 		this.restrictions = new LinkedHashSet<LDAPRestriction>();
 	}
 
-	public void add(LDAPRestriction restriction) {
+	public void add(final LDAPRestriction restriction) {
 		this.restrictions.add(restriction);
 	}
 
@@ -68,7 +68,7 @@ public class LDAPFilter implements Serializable {
 		return this.baseName;
 	}
 
-	public void setBaseName(String baseName) {
+	public void setBaseName(final String baseName) {
 		this.baseName = baseName;
 	}
 
@@ -76,7 +76,7 @@ public class LDAPFilter implements Serializable {
 		return this.attributes;
 	}
 
-	public void setAttributes(String[] attributes) {
+	public void setAttributes(final String[] attributes) {
 		this.attributes = attributes;
 	}
 
@@ -84,7 +84,7 @@ public class LDAPFilter implements Serializable {
 		return this.limit;
 	}
 
-	public void setLimit(int limit) {
+	public void setLimit(final int limit) {
 		this.limit = limit;
 	}
 
@@ -92,7 +92,7 @@ public class LDAPFilter implements Serializable {
 		return this.restrictions;
 	}
 
-	public void setRestrictions(Collection<LDAPRestriction> restrictions) {
+	public void setRestrictions(final Collection<LDAPRestriction> restrictions) {
 		this.restrictions = restrictions;
 	}
 

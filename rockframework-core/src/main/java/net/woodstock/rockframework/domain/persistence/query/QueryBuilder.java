@@ -18,7 +18,7 @@ package net.woodstock.rockframework.domain.persistence.query;
 
 import net.woodstock.rockframework.domain.Entity;
 
-public interface QueryBuilder {
+public interface QueryBuilder<T> {
 
 	// String OPTION_COLLECTION_MODE = "COLLECTION_MODE";
 
@@ -37,12 +37,17 @@ public interface QueryBuilder {
 
 	String	OPTION_DISABLE_COLLECTION	= "DISABLE_COLLECTION";
 
-	QueryBuilder setOption(String name, Object value);
+	// Builder
+	void build();
+	
+	// Set
+	void setEntity(Entity<?> entity);
+	
+	void setOption(String name, Object value);
 
-	QueryBuilder parse(Entity<?> e) throws BuilderException;
+	// Get
+	String getQueryString();
 
-	String getQueryString() throws BuilderException;
-
-	Object getQuery(Object manager) throws BuilderException;
+	T getQuery();
 
 }

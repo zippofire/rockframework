@@ -21,27 +21,32 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import net.woodstock.rockframework.domain.persistence.query.BuilderException;
 import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
 
-public class JPAQueryBuilder extends EJBQLQueryBuilder {
+public class JPAQueryBuilder extends EJBQLQueryBuilder<Query> {
+
+	private EntityManager	entityManager;
+
+	public JPAQueryBuilder(final EntityManager entityManager) {
+		super();
+		this.entityManager = entityManager;
+	}
 
 	@Override
-	protected Object getQueryLocal(String sql, Object manager) throws BuilderException {
-		EntityManager em = (EntityManager) manager;
-		Query query = em.createQuery(sql);
+	protected Query getQuery(final String sql) {
+		Query query = this.entityManager.createQuery(sql);
 		return query;
 	}
 
 	@Override
-	protected void setQueryParameter(Object query, String name, Object value) throws BuilderException {
+	protected void setQueryParameter(final Object query, final String name, final Object value) {
 		this.getLogger().info("Setting parameter[" + name + "] => " + value);
 		Query q = (Query) query;
 		q.setParameter(name, value);
 	}
 
 	@Override
-	protected void setQueryOptions(Object query, Map<String, Object> options) throws BuilderException {
+	protected void setQueryOptions(final Object query, final Map<String, Object> options) {
 		Query q = (Query) query;
 		if ((options.containsKey(QueryBuilder.OPTION_FIRST_RESULT)) && (options.get(QueryBuilder.OPTION_FIRST_RESULT) instanceof Integer)) {
 			Integer firstResult = (Integer) options.get(QueryBuilder.OPTION_FIRST_RESULT);

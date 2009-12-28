@@ -24,32 +24,32 @@ public class MessageBundle {
 
 	private ResourceBundle	resource;
 
-	protected MessageBundle(String baseName, Locale locale) {
+	protected MessageBundle(final String baseName, final Locale locale) {
 		super();
 		this.resource = ResourceBundle.getBundle(baseName, locale);
 	}
 
-	public String getString(String key) {
+	public String getString(final String key) {
 		String msg = this.resource.getString(key);
 		return msg;
 	}
 
-	public String getString(String key, Object... arguments) {
+	public String getString(final String key, final Object... arguments) {
 		String pattern = this.resource.getString(key);
 		String msg = MessageFormat.format(pattern, arguments);
 		return msg;
 	}
 
-	public Object getObject(String key) {
+	public Object getObject(final String key) {
 		Object obj = this.resource.getObject(key);
 		return obj;
 	}
 
-	public static MessageBundle getBundle(String baseName) {
+	public static MessageBundle getBundle(final String baseName) {
 		return new MessageBundle(baseName, Locale.getDefault());
 	}
 
-	public static MessageBundle getBundle(String baseName, Locale locale) {
+	public static MessageBundle getBundle(final String baseName, final Locale locale) {
 		return new MessageBundle(baseName, locale);
 	}
 

@@ -49,7 +49,7 @@ public class DebugInterceptor extends BaseInterceptor {
 	}
 
 	@SuppressWarnings("unchecked")
-	public String intercept(ActionInvocation invocation) throws Exception {
+	public String intercept(final ActionInvocation invocation) throws Exception {
 		HttpServletRequest request = this.getRequest();
 		ActionProxy proxy = invocation.getProxy();
 
@@ -96,7 +96,7 @@ public class DebugInterceptor extends BaseInterceptor {
 		return s;
 	}
 
-	private void log(String message) {
+	private void log(final String message) {
 		switch (this.level) {
 			case TRACE:
 				this.getLogger().trace(message);
@@ -122,15 +122,15 @@ public class DebugInterceptor extends BaseInterceptor {
 	}
 
 	// Params
-	public void setLevel(String level) {
+	public void setLevel(final String level) {
 		this.level = LogLevel.valueOf(level);
 	}
 
-	public void setPrintParameters(String printParameters) {
+	public void setPrintParameters(final String printParameters) {
 		this.printParameters = Boolean.parseBoolean(printParameters);
 	}
 
-	public void setPrintSession(String printSession) {
+	public void setPrintSession(final String printSession) {
 		this.printSession = Boolean.parseBoolean(printSession);
 	}
 

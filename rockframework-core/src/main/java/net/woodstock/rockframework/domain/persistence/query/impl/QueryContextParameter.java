@@ -38,7 +38,7 @@ class QueryContextParameter implements Serializable {
 		super();
 	}
 
-	public QueryContextParameter(String name, String sqlName, String alias, String sqlAlias, Object value, Operator operator) {
+	public QueryContextParameter(final String name, final String sqlName, final String alias, final String sqlAlias, final Object value, final Operator operator) {
 		super();
 		this.name = name;
 		this.sqlName = sqlName;
@@ -52,7 +52,7 @@ class QueryContextParameter implements Serializable {
 		return this.name;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -60,7 +60,7 @@ class QueryContextParameter implements Serializable {
 		return this.sqlName;
 	}
 
-	public void setSqlName(String sqlName) {
+	public void setSqlName(final String sqlName) {
 		this.sqlName = sqlName;
 	}
 
@@ -68,7 +68,7 @@ class QueryContextParameter implements Serializable {
 		return this.alias;
 	}
 
-	public void setAlias(String alias) {
+	public void setAlias(final String alias) {
 		this.alias = alias;
 	}
 
@@ -76,7 +76,7 @@ class QueryContextParameter implements Serializable {
 		return this.sqlAlias;
 	}
 
-	public void setSqlAlias(String sqlAlias) {
+	public void setSqlAlias(final String sqlAlias) {
 		this.sqlAlias = sqlAlias;
 	}
 
@@ -84,7 +84,7 @@ class QueryContextParameter implements Serializable {
 		return this.value;
 	}
 
-	public void setValue(Object value) {
+	public void setValue(final Object value) {
 		this.value = value;
 	}
 
@@ -92,7 +92,7 @@ class QueryContextParameter implements Serializable {
 		return this.operator;
 	}
 
-	public void setOperator(Operator operator) {
+	public void setOperator(final Operator operator) {
 		this.operator = operator;
 	}
 
@@ -101,7 +101,7 @@ class QueryContextParameter implements Serializable {
 
 		private String	operator;
 
-		private Operator(String operator) {
+		private Operator(final String operator) {
 			this.operator = operator;
 		}
 

@@ -19,18 +19,16 @@ package net.woodstock.rockframework.domain.persistence.query.impl;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.woodstock.rockframework.domain.persistence.query.BuilderException;
-
-public class QueryBuilderAdapter extends EJBQLQueryBuilder {
+public class QueryBuilderAdapter extends EJBQLQueryBuilder<Object> {
 
 	@Override
-	protected Object getQueryLocal(String sql, Object manager) throws BuilderException {
+	protected Object getQuery(final String sql) {
 		this.getLogger().warn("getQueryLocal(" + sql + ")");
 		return null;
 	}
 
 	@Override
-	protected void setQueryOptions(Object query, Map<String, Object> options) throws BuilderException {
+	protected void setQueryOptions(final Object query, final Map<String, Object> options) {
 		StringBuilder builder = new StringBuilder();
 		boolean first = true;
 		builder.append("setQueryOptions(");
@@ -48,7 +46,7 @@ public class QueryBuilderAdapter extends EJBQLQueryBuilder {
 	}
 
 	@Override
-	protected void setQueryParameter(Object query, String name, Object value) throws BuilderException {
+	protected void setQueryParameter(final Object query, final String name, final Object value) {
 		this.getLogger().warn("setQueryParameter[" + name + "] => " + value);
 	}
 

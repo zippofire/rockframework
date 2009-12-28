@@ -28,7 +28,7 @@ public abstract class ErrorUtils {
 		//
 	}
 
-	public static Collection<String> getStackTrace(Throwable t) {
+	public static Collection<String> getStackTrace(final Throwable t) {
 		StackTraceElement[] s = t.getStackTrace();
 		Collection<String> list = new LinkedHashSet<String>();
 		for (StackTraceElement e : s) {
@@ -38,7 +38,7 @@ public abstract class ErrorUtils {
 		return list;
 	}
 
-	public static String getStackTraceString(Throwable t) {
+	public static String getStackTraceString(final Throwable t) {
 		StackTraceElement[] s = t.getStackTrace();
 		StringBuilder buffer = new StringBuilder();
 		for (StackTraceElement e : s) {
@@ -49,7 +49,7 @@ public abstract class ErrorUtils {
 		return buffer.toString();
 	}
 
-	public static void printStackTrace(Throwable t, PrintStream out) {
+	public static void printStackTrace(final Throwable t, final PrintStream out) {
 		String stack = ErrorUtils.getStackTraceString(t);
 		out.println(stack);
 	}

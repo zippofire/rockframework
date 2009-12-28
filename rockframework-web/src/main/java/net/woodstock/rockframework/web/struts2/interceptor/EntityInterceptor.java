@@ -26,6 +26,7 @@ import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.ReflectionType;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
+import net.woodstock.rockframework.sys.SysLogger;
 import net.woodstock.rockframework.utils.StringUtils;
 import ognl.NoSuchPropertyException;
 import ognl.Ognl;
@@ -45,7 +46,7 @@ public class EntityInterceptor extends BaseInterceptor {
 	private static final String	ENTITY_SEPARATOR	= ".";
 
 	@SuppressWarnings("unchecked")
-	public String intercept(ActionInvocation invocation) throws Exception {
+	public String intercept(final ActionInvocation invocation) throws Exception {
 		Object action = invocation.getAction();
 		ActionContext ac = invocation.getInvocationContext();
 		Map<String, Object> parameters = ac.getParameters();
@@ -74,7 +75,7 @@ public class EntityInterceptor extends BaseInterceptor {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void setIdParameter(Object action, String entityName, String value) throws OgnlException {
+	private void setIdParameter(final Object action, final String entityName, final String value) throws OgnlException {
 		try {
 			Object obj = Ognl.getValue(entityName, action);
 			if ((obj != null) && (obj instanceof Entity)) {
@@ -99,15 +100,15 @@ public class EntityInterceptor extends BaseInterceptor {
 				}
 			}
 		} catch (NoSuchPropertyException e) {
-			//
+			SysLogger.getLogger().debug(e.getMessage(), e);
 		}
 	}
 
-	private boolean isIdParameter(String name) {
+	private boolean isIdParameter(final String name) {
 		return Pattern.matches(EntityInterceptor.ENTITY_ID_REGEX, name);
 	}
 
-	private String getEntityName(String name) {
+	private String getEntityName(final String name) {
 		return name.substring(0, name.lastIndexOf(EntityInterceptor.ENTITY_SEPARATOR + EntityInterceptor.ENTITY_ID));
 	}
 }

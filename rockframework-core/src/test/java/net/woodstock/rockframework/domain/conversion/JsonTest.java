@@ -18,7 +18,7 @@ public class JsonTest extends TestCase {
 		return foo;
 	}
 
-	private Bar getBar(Integer id, String name, Foo foo) {
+	private Bar getBar(final Integer id, final String name, final Foo foo) {
 		Bar bar = new Bar();
 		bar.setId(id);
 		bar.setName(name);
@@ -26,7 +26,7 @@ public class JsonTest extends TestCase {
 		return bar;
 	}
 
-	private Baz getBaz(Integer id, String name, Bar bar) {
+	private Baz getBaz(final Integer id, final String name, final Bar bar) {
 		Baz baz = new Baz();
 		baz.setId(id);
 		baz.setName(name);

@@ -20,7 +20,7 @@ public class Telefone extends IntegerEntity {
 		super();
 	}
 
-	public Telefone(Integer id) {
+	public Telefone(final Integer id) {
 		super();
 		this.id = id;
 	}
@@ -29,7 +29,7 @@ public class Telefone extends IntegerEntity {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(final Integer id) {
 		this.id = id;
 	}
 
@@ -37,7 +37,7 @@ public class Telefone extends IntegerEntity {
 		return this.ddd;
 	}
 
-	public void setDdd(String ddd) {
+	public void setDdd(final String ddd) {
 		this.ddd = ddd;
 	}
 
@@ -45,7 +45,7 @@ public class Telefone extends IntegerEntity {
 		return this.numero;
 	}
 
-	public void setNumero(String numero) {
+	public void setNumero(final String numero) {
 		this.numero = numero;
 	}
 
@@ -53,7 +53,7 @@ public class Telefone extends IntegerEntity {
 		return this.tipo;
 	}
 
-	public void setTipo(TipoTelefone tipo) {
+	public void setTipo(final TipoTelefone tipo) {
 		this.tipo = tipo;
 	}
 
@@ -61,7 +61,7 @@ public class Telefone extends IntegerEntity {
 		return this.pessoa;
 	}
 
-	public void setPessoa(Pessoa pessoa) {
+	public void setPessoa(final Pessoa pessoa) {
 		this.pessoa = pessoa;
 	}
 

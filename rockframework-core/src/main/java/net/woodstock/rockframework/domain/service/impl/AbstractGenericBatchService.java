@@ -17,12 +17,9 @@
 package net.woodstock.rockframework.domain.service.impl;
 
 import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.domain.business.BusinessException;
 import net.woodstock.rockframework.domain.business.ValidationException;
 import net.woodstock.rockframework.domain.business.ValidationResult;
-import net.woodstock.rockframework.domain.persistence.PersistenceException;
 import net.woodstock.rockframework.domain.service.GenericBatchService;
-import net.woodstock.rockframework.domain.service.ServiceException;
 
 public class AbstractGenericBatchService extends AbstractGenericService implements GenericBatchService {
 
@@ -31,7 +28,7 @@ public class AbstractGenericBatchService extends AbstractGenericService implemen
 	}
 
 	@Override
-	public void save(Entity<?>... entities) throws ServiceException, BusinessException, PersistenceException {
+	public void save(final Entity<?>... entities) {
 		for (Entity<?> entity : entities) {
 			ValidationResult result = this.getBusiness().validateSave(entity);
 			if (result.isError()) {
@@ -44,7 +41,7 @@ public class AbstractGenericBatchService extends AbstractGenericService implemen
 	}
 
 	@Override
-	public void update(Entity<?>... entities) throws ServiceException, BusinessException, PersistenceException {
+	public void update(final Entity<?>... entities) {
 		for (Entity<?> entity : entities) {
 			ValidationResult result = this.getBusiness().validateUpdate(entity);
 			if (result.isError()) {
@@ -57,7 +54,7 @@ public class AbstractGenericBatchService extends AbstractGenericService implemen
 	}
 
 	@Override
-	public void delete(Entity<?>... entities) throws ServiceException, BusinessException, PersistenceException {
+	public void delete(final Entity<?>... entities) {
 		for (Entity<?> entity : entities) {
 			ValidationResult result = this.getBusiness().validateDelete(entity);
 			if (result.isError()) {

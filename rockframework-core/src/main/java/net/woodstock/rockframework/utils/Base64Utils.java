@@ -37,23 +37,23 @@ public abstract class Base64Utils {
 		//
 	}
 
-	public static byte[] toBase64(byte[] b) {
+	public static byte[] toBase64(final byte[] b) {
 		return Base64Encoder.getInstance().encode(b);
 	}
 
-	public static byte[] fromBase64(byte[] b) {
+	public static byte[] fromBase64(final byte[] b) {
 		return Base64Encoder.getInstance().decode(b);
 	}
 
-	public static String toBase64(String s) {
+	public static String toBase64(final String s) {
 		return Base64Encoder.getInstance().encode(s);
 	}
 
-	public static String fromBase64(String s) {
+	public static String fromBase64(final String s) {
 		return Base64Encoder.getInstance().decode(s);
 	}
 
-	public static byte[] serialize(Object o) throws IOException {
+	public static byte[] serialize(final Object o) throws IOException {
 		if (o == null) {
 			return null;
 		}
@@ -74,24 +74,24 @@ public abstract class Base64Utils {
 		return bytes;
 	}
 
-	public static void serialize(Object o, File file) throws IOException {
+	public static void serialize(final Object o, final File file) throws IOException {
 		Base64Utils.serialize(o, new FileOutputStream(file));
 	}
 
-	public static void serialize(Object o, OutputStream output) throws IOException {
+	public static void serialize(final Object o, final OutputStream output) throws IOException {
 		byte[] bytes = Base64Utils.serialize(o);
 		output.write(bytes);
 		output.close();
 	}
 
-	public static Object unserialize(String object) throws IOException, ClassNotFoundException {
+	public static Object unserialize(final String object) throws IOException, ClassNotFoundException {
 		if (StringUtils.isEmpty(object)) {
 			return null;
 		}
 		return Base64Utils.unserialize(object.getBytes());
 	}
 
-	public static Object unserialize(byte[] bytes) throws IOException, ClassNotFoundException {
+	public static Object unserialize(final byte[] bytes) throws IOException, ClassNotFoundException {
 		byte[] b = Base64Encoder.getInstance().decode(bytes);
 
 		ObjectInputStream input = new ObjectInputStream(new ByteArrayInputStream(b));
@@ -101,11 +101,11 @@ public abstract class Base64Utils {
 		return o;
 	}
 
-	public static Object unserialize(File file) throws IOException, ClassNotFoundException {
+	public static Object unserialize(final File file) throws IOException, ClassNotFoundException {
 		return Base64Utils.unserialize(new FileInputStream(file));
 	}
 
-	public static Object unserialize(InputStream input) throws IOException, ClassNotFoundException {
+	public static Object unserialize(final InputStream input) throws IOException, ClassNotFoundException {
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 
 		int b = -1;

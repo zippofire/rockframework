@@ -34,13 +34,13 @@ import net.woodstock.rockframework.utils.StringUtils;
 
 public class AsyncCrypter extends CrypterBase<AsyncAlgorithm> {
 
-	private static int	DEFAULT_KEY_SIZE	= 1024;
+	private static final int	DEFAULT_KEY_SIZE	= 1024;
 
-	private PrivateKey	privateKey;
+	private PrivateKey			privateKey;
 
-	private PublicKey	publicKey;
+	private PublicKey			publicKey;
 
-	protected AsyncCrypter(PrivateKey privateKey, PublicKey publicKey, AsyncAlgorithm algorithm, Charset charset) {
+	protected AsyncCrypter(final PrivateKey privateKey, final PublicKey publicKey, final AsyncAlgorithm algorithm, final Charset charset) {
 		super(algorithm, charset);
 
 		if (publicKey == null) {
@@ -59,7 +59,7 @@ public class AsyncCrypter extends CrypterBase<AsyncAlgorithm> {
 		return this.publicKey;
 	}
 
-	public String encrypt(String str) {
+	public String encrypt(final String str) {
 		if (this.privateKey == null) {
 			throw new UnsupportedOperationException("Private key not found");
 		}
@@ -76,7 +76,7 @@ public class AsyncCrypter extends CrypterBase<AsyncAlgorithm> {
 		}
 	}
 
-	public String decrypt(String str) {
+	public String decrypt(final String str) {
 		try {
 			if (this.getDecryptCipher() == null) {
 				this.setDecryptCipher(Cipher.getInstance(this.getAlgorithm().algorithm()));
@@ -90,7 +90,7 @@ public class AsyncCrypter extends CrypterBase<AsyncAlgorithm> {
 		}
 	}
 
-	public void savePrivateKey(OutputStream outputStream) {
+	public void savePrivateKey(final OutputStream outputStream) {
 		try {
 			Base64Utils.serialize(this.privateKey, outputStream);
 		} catch (IOException e) {
@@ -98,7 +98,7 @@ public class AsyncCrypter extends CrypterBase<AsyncAlgorithm> {
 		}
 	}
 
-	public void savePublicKey(OutputStream outputStream) {
+	public void savePublicKey(final OutputStream outputStream) {
 		try {
 			Base64Utils.serialize(this.privateKey, outputStream);
 		} catch (IOException e) {
@@ -106,7 +106,7 @@ public class AsyncCrypter extends CrypterBase<AsyncAlgorithm> {
 		}
 	}
 
-	public static AsyncCrypter getInstance(InputStream privateKey, InputStream publicKey) {
+	public static AsyncCrypter getInstance(final InputStream privateKey, final InputStream publicKey) {
 		try {
 			if (publicKey == null) {
 				throw new IllegalArgumentException("PublicKey must be not null");
@@ -130,20 +130,22 @@ public class AsyncCrypter extends CrypterBase<AsyncAlgorithm> {
 		}
 	}
 
-	public static AsyncCrypter newInstance(String seed) {
+	public static AsyncCrypter newInstance(final String seed) {
 		return AsyncCrypter.newInstance(null, null, seed);
 	}
 
-	public static AsyncCrypter newInstance(AsyncAlgorithm algorithm, Charset charset, String seed) {
+	public static AsyncCrypter newInstance(final AsyncAlgorithm algorithm, final Charset charset, final String seed) {
 		try {
-			if (algorithm == null) {
-				algorithm = AsyncAlgorithm.DEFAULT_ASYNC;
+			AsyncAlgorithm a = algorithm;
+			Charset c = charset;
+			if (a == null) {
+				a = AsyncAlgorithm.DEFAULT_ASYNC;
 			}
-			if (charset == null) {
-				charset = Charset.DEFAULT;
+			if (c == null) {
+				c = Charset.DEFAULT;
 			}
 
-			KeyPairGenerator generator = KeyPairGenerator.getInstance(algorithm.algorithm());
+			KeyPairGenerator generator = KeyPairGenerator.getInstance(a.algorithm());
 
 			if (StringUtils.isEmpty(seed)) {
 				SecureRandom random = new SecureRandom(seed.getBytes());
@@ -151,7 +153,7 @@ public class AsyncCrypter extends CrypterBase<AsyncAlgorithm> {
 			}
 
 			KeyPair key = generator.generateKeyPair();
-			return new AsyncCrypter(key.getPrivate(), key.getPublic(), algorithm, charset);
+			return new AsyncCrypter(key.getPrivate(), key.getPublic(), a, c);
 		} catch (Exception e) {
 			throw new CrypterException(e);
 		}

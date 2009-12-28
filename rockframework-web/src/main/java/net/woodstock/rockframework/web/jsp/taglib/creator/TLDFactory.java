@@ -23,15 +23,15 @@ import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
 import net.woodstock.rockframework.xml.dom.XmlDocument;
 import net.woodstock.rockframework.xml.dom.XmlElement;
 
-public abstract class TLDFactory {
+public final class TLDFactory {
 
-	private static TLDFactory	factory;
+	private static TLDFactory	instance	= new TLDFactory();
 
-	TLDFactory() {
+	private TLDFactory() {
 		super();
 	}
 
-	public String create(Class<?> clazz) {
+	public String create(final Class<?> clazz) {
 		String name = clazz.getName();
 		String type = BodyContent.JSP.getName();
 		if (clazz.isAnnotationPresent(TLD.class)) {
@@ -65,16 +65,7 @@ public abstract class TLDFactory {
 	}
 
 	public static TLDFactory getInstance() {
-		if (TLDFactory.factory == null) {
-			synchronized (TLDFactory.class) {
-				if (TLDFactory.factory == null) {
-					TLDFactory.factory = new TLDFactory() {
-						//
-					};
-				}
-			}
-		}
-		return TLDFactory.factory;
+		return TLDFactory.instance;
 	}
 
 }

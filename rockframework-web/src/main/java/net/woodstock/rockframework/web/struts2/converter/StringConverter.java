@@ -22,19 +22,19 @@ public class StringConverter extends SimpleValueConverter<String> {
 
 	private String	pattern;
 
-	public StringConverter(String pattern) {
+	public StringConverter(final String pattern) {
 		super();
 		this.pattern = pattern;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	protected String convertFromString(String s, Class toClass) {
+	protected String convertFromString(final String s, final Class toClass) {
 		return StringUtils.unformat(this.pattern, s);
 	}
 
 	@Override
-	protected String convertToString(String o) {
+	protected String convertToString(final String o) {
 		return StringUtils.format(this.pattern, o);
 	}
 

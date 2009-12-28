@@ -28,7 +28,7 @@ public abstract class SimpleValueConverter<T> extends StrutsTypeConverter {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public final Object convertFromString(Map context, String[] o, Class toClass) {
+	public final Object convertFromString(final Map context, final String[] o, final Class toClass) {
 		if ((o == null) || (o.length != 1)) {
 			super.performFallbackConversion(context, o, toClass);
 		}
@@ -45,7 +45,7 @@ public abstract class SimpleValueConverter<T> extends StrutsTypeConverter {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public final String convertToString(Map map, Object o) {
+	public final String convertToString(final Map map, final Object o) {
 		if (o == null) {
 			return null;
 		}

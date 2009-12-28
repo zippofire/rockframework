@@ -17,18 +17,17 @@
 package net.woodstock.rockframework.conversion.common.converters;
 
 import net.woodstock.rockframework.conversion.ConverterContext;
-import net.woodstock.rockframework.conversion.ConverterException;
 import net.woodstock.rockframework.conversion.common.AbstractTextConverter;
 
 public class StringConverter extends AbstractTextConverter<String> {
 
 	@Override
-	public String from(ConverterContext context, String s) throws ConverterException {
+	public String from(final ConverterContext context, final String s) {
 		return s;
 	}
 
 	@Override
-	public String to(ConverterContext context, String t) throws ConverterException {
+	public String to(final ConverterContext context, final String t) {
 		return t;
 	}
 

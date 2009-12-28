@@ -16,7 +16,6 @@
  */
 package net.woodstock.rockframework.domain.persistence.impl;
 
-import net.woodstock.rockframework.domain.persistence.PersistenceException;
 import net.woodstock.rockframework.domain.persistence.Repository;
 
 import org.hibernate.Session;
@@ -29,6 +28,6 @@ abstract class AbstractHibernateRepository implements Repository {
 		super();
 	}
 
-	protected abstract Session getSession() throws PersistenceException;
+	protected abstract Session getSession();
 
 }

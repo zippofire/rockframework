@@ -30,12 +30,12 @@ public abstract class BaseValidatorForm extends ValidatorForm {
 	private static final long	serialVersionUID	= -8932478661740480652L;
 
 	@Override
-	public final void reset(ActionMapping mapping, ServletRequest request) {
+	public final void reset(final ActionMapping mapping, final ServletRequest request) {
 		this.reset();
 	}
 
 	@Override
-	public final void reset(ActionMapping mapping, HttpServletRequest request) {
+	public final void reset(final ActionMapping mapping, final HttpServletRequest request) {
 		this.reset();
 	}
 

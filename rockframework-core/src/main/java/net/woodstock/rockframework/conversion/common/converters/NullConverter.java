@@ -17,19 +17,18 @@
 package net.woodstock.rockframework.conversion.common.converters;
 
 import net.woodstock.rockframework.conversion.ConverterContext;
-import net.woodstock.rockframework.conversion.ConverterException;
 import net.woodstock.rockframework.conversion.common.AbstractTextConverter;
 import net.woodstock.rockframework.utils.StringUtils;
 
 public class NullConverter extends AbstractTextConverter<Object> {
 
 	@Override
-	public Object from(ConverterContext context, String s) throws ConverterException {
+	public Object from(final ConverterContext context, final String s) {
 		return null;
 	}
 
 	@Override
-	public String to(ConverterContext context, Object t) throws ConverterException {
+	public String to(final ConverterContext context, final Object t) {
 		return StringUtils.BLANK;
 	}
 

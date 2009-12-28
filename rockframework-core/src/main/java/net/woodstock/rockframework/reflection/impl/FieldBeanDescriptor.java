@@ -23,7 +23,7 @@ import net.woodstock.rockframework.reflection.PropertyDescriptor;
 
 class FieldBeanDescriptor extends AbstractBeanDescriptor {
 
-	public FieldBeanDescriptor(Class<?> clazz) {
+	public FieldBeanDescriptor(final Class<?> clazz) {
 		super(clazz);
 	}
 

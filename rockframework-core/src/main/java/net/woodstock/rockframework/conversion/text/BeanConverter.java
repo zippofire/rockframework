@@ -65,7 +65,7 @@ class BeanConverter extends AbstractTextConverter<Object> {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public Object from(ConverterContext context, String s) throws ConverterException {
+	public Object from(final ConverterContext context, final String s) {
 		if (context == null) {
 			throw new IllegalArgumentException("Context must be not null");
 		}
@@ -76,11 +76,13 @@ class BeanConverter extends AbstractTextConverter<Object> {
 			Class<?> clazz = context.getType();
 			Object obj = clazz.newInstance();
 			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance().getBeanDescriptor(clazz);
+			ConverterContext currentContext = context;
 
-			if (!(context instanceof BeanConverterContext)) {
-				context = new BeanConverterContext(context.getParent(), context.getName(), context.getType());
+			if (!(currentContext instanceof BeanConverterContext)) {
+				currentContext = new BeanConverterContext(currentContext.getParent(), currentContext.getName(), currentContext.getType());
 			}
 
+			String fromStr = s;
 			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
 				if (propertyDescriptor.isAnnotationPresent(Ignore.class)) {
 					continue;
@@ -94,9 +96,9 @@ class BeanConverter extends AbstractTextConverter<Object> {
 					throw new ConverterException("Missing @Size in " + beanDescriptor.getName() + "." + propertyDescriptor.getName());
 				}
 				int size = propertyDescriptor.getAnnotation(Size.class).value();
-				String str = s.substring(0, size);
+				String str = fromStr.substring(0, size);
 
-				ConverterContext subContext = new PropertyConverterContext(context, name, type);
+				ConverterContext subContext = new PropertyConverterContext(currentContext, name, type);
 				TextConverter converter = BeanConverter.nullConverter;
 				if (!StringUtils.isEmpty(str)) {
 					converter = this.getConverter(type);
@@ -104,7 +106,7 @@ class BeanConverter extends AbstractTextConverter<Object> {
 				Object value = converter.from(subContext, str);
 				propertyDescriptor.setValue(obj, value);
 
-				s = s.substring(size);
+				fromStr = fromStr.substring(size);
 			}
 			return obj;
 		} catch (ConverterException e) {
@@ -116,7 +118,7 @@ class BeanConverter extends AbstractTextConverter<Object> {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public String to(ConverterContext context, Object t) throws ConverterException {
+	public String to(final ConverterContext context, final Object t) {
 		if (context == null) {
 			throw new IllegalArgumentException("Context must be not null");
 		}
@@ -126,9 +128,10 @@ class BeanConverter extends AbstractTextConverter<Object> {
 		try {
 			StringBuilder builder = new StringBuilder();
 			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance().getBeanDescriptor(t.getClass());
+			ConverterContext currentContext = context;
 
-			if (!(context instanceof BeanConverterContext)) {
-				context = new BeanConverterContext(context.getParent(), context.getName(), t.getClass());
+			if (!(currentContext instanceof BeanConverterContext)) {
+				currentContext = new BeanConverterContext(currentContext.getParent(), currentContext.getName(), t.getClass());
 			}
 
 			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
@@ -141,7 +144,7 @@ class BeanConverter extends AbstractTextConverter<Object> {
 				String name = propertyDescriptor.getName();
 				Class<?> type = propertyDescriptor.getType();
 				Object value = propertyDescriptor.getValue(t);
-				ConverterContext subContext = new PropertyConverterContext(context, name, type);
+				ConverterContext subContext = new PropertyConverterContext(currentContext, name, type);
 				TextConverter converter = BeanConverter.nullConverter;
 				if (value != null) {
 					converter = this.getConverter(value.getClass());
@@ -150,7 +153,7 @@ class BeanConverter extends AbstractTextConverter<Object> {
 				builder.append(s);
 			}
 			String s = builder.toString();
-			int size = TextConverterHelper.getSize(context);
+			int size = TextConverterHelper.getSize(currentContext);
 			return TextConverterHelper.lpad(s, size);
 		} catch (ConverterException e) {
 			throw e;
@@ -160,7 +163,7 @@ class BeanConverter extends AbstractTextConverter<Object> {
 	}
 
 	// Util
-	private TextConverter<?> getConverter(Class<?> clazz) {
+	private TextConverter<?> getConverter(final Class<?> clazz) {
 		for (Entry<Class<?>, TextConverter<?>> entry : BeanConverter.converters.entrySet()) {
 			if (entry.getKey().isAssignableFrom(clazz)) {
 				return entry.getValue();

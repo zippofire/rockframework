@@ -20,7 +20,7 @@ class LDAPRestrictionNotContains extends LDAPRestriction {
 
 	private static final long	serialVersionUID	= 7524499520806772784L;
 
-	public LDAPRestrictionNotContains(String propertyName) {
+	public LDAPRestrictionNotContains(final String propertyName) {
 		super();
 		this.setPropertyName(propertyName);
 	}

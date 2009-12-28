@@ -8,7 +8,7 @@ import net.woodstock.rockframework.utils.ClassUtils;
 
 public class GenericTest extends TestCase {
 
-	private static void print(Object o) throws Exception {
+	private static void print(final Object o) throws Exception {
 		Class<?> clazz = o.getClass();
 		Collection<Class<?>> collection = ClassUtils.getGenericTypes(clazz);
 
@@ -26,13 +26,13 @@ public class GenericTest extends TestCase {
 
 	static class Teste<T> {
 
-		T	value;
+		private T	value;
 
 		public Teste() {
 			super();
 		}
 
-		public Teste(T value) {
+		public Teste(final T value) {
 			this.value = value;
 		}
 
@@ -40,7 +40,7 @@ public class GenericTest extends TestCase {
 			return this.value;
 		}
 
-		public void setValue(T value) {
+		public void setValue(final T value) {
 			this.value = value;
 		}
 	}

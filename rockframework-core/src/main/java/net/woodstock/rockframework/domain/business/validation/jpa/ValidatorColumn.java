@@ -26,7 +26,7 @@ import net.woodstock.rockframework.domain.business.validation.local.validator.Ab
 
 public class ValidatorColumn extends AbstractValidator {
 
-	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
+	public ValidationResult validate(final LocalValidationContext context) {
 		try {
 			Object value = context.getValue();
 			Column annotation = (Column) context.getAnnotation();
@@ -52,11 +52,11 @@ public class ValidatorColumn extends AbstractValidator {
 		}
 	}
 
-	private String getEmptyErrorMessage(LocalValidationContext context) throws ValidationException {
+	private String getEmptyErrorMessage(final LocalValidationContext context) {
 		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_NOT_EMPTY, context.getCanonicalName());
 	}
 
-	private String getLengthErrorMessage(LocalValidationContext context, int length) {
+	private String getLengthErrorMessage(final LocalValidationContext context, final int length) {
 		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_LENGTH, context.getCanonicalName(), new Integer(0), new Integer(length));
 	}
 

@@ -17,15 +17,13 @@
 package net.woodstock.rockframework.domain.service;
 
 import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.domain.business.BusinessException;
-import net.woodstock.rockframework.domain.persistence.PersistenceException;
 
 public interface GenericBatchService extends GenericService {
 
-	void save(Entity<?>... entities) throws ServiceException, BusinessException, PersistenceException;
+	void save(Entity<?>... entities);
 
-	void update(Entity<?>... entities) throws ServiceException, BusinessException, PersistenceException;
+	void update(Entity<?>... entities);
 
-	void delete(Entity<?>... entities) throws ServiceException, BusinessException, PersistenceException;
+	void delete(Entity<?>... entities);
 
 }

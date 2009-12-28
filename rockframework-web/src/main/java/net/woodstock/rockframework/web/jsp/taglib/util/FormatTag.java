@@ -61,7 +61,7 @@ public class FormatTag extends BaseTag {
 		return this.format;
 	}
 
-	public void setFormat(String format) {
+	public void setFormat(final String format) {
 		this.format = format;
 	}
 
@@ -69,7 +69,7 @@ public class FormatTag extends BaseTag {
 		return this.value;
 	}
 
-	public void setValue(Object value) {
+	public void setValue(final Object value) {
 		this.value = value;
 	}
 
@@ -77,7 +77,7 @@ public class FormatTag extends BaseTag {
 		return this.character;
 	}
 
-	public void setCharacter(String character) {
+	public void setCharacter(final String character) {
 		this.character = character;
 	}
 

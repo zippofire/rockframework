@@ -7,7 +7,7 @@ public class ThreadTest extends TestCase {
 
 	public void test1() throws Exception {
 		for (int i = 0; i < 3; i++) {
-			new Thread() {
+			Thread t = new Thread() {
 
 				@Override
 				public void run() {
@@ -20,22 +20,26 @@ public class ThreadTest extends TestCase {
 						}
 					}
 				}
-			}.start();
-
+			};
+			t.start();
 		}
 	}
 
 	public static class ClassX {
 
-		private static final ThreadLocal<Double>	thread	= new ThreadLocal<Double>();
+		private static final ThreadLocal<Double>	THREAD	= new ThreadLocal<Double>();
+
+		protected ClassX() {
+			super();
+		}
 
 		public static Double getDouble() {
-			Double d = ClassX.thread.get();
+			Double d = ClassX.THREAD.get();
 			if (d == null) {
 				d = new Double(Math.random());
-				ClassX.thread.set(d);
+				ClassX.THREAD.set(d);
 			}
-			return ClassX.thread.get();
+			return ClassX.THREAD.get();
 		}
 	}
 

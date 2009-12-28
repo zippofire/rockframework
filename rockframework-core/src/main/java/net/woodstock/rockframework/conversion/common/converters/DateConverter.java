@@ -30,7 +30,7 @@ import net.woodstock.rockframework.utils.StringUtils;
 public class DateConverter extends AbstractTextConverter<Date> {
 
 	@Override
-	public Date from(ConverterContext context, String s) throws ConverterException {
+	public Date from(final ConverterContext context, final String s) {
 		try {
 			if (StringUtils.isEmpty(s)) {
 				return null;
@@ -49,7 +49,7 @@ public class DateConverter extends AbstractTextConverter<Date> {
 	}
 
 	@Override
-	public String to(ConverterContext context, Date t) throws ConverterException {
+	public String to(final ConverterContext context, final Date t) {
 		if (t == null) {
 			return StringUtils.BLANK;
 		}

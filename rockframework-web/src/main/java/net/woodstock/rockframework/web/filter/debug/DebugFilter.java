@@ -28,7 +28,7 @@ import net.woodstock.rockframework.web.filter.HttpFilter;
 public class DebugFilter extends HttpFilter {
 
 	@Override
-	public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+	public void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain) throws IOException, ServletException {
 		chain.doFilter(request, response);
 	}
 

@@ -17,6 +17,7 @@
 package net.woodstock.rockframework.utils;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -29,11 +30,11 @@ public abstract class IOUtils {
 		//
 	}
 
-	public static void copy(InputStream input, OutputStream output) throws IOException {
+	public static void copy(final InputStream input, final OutputStream output) throws IOException {
 		IOUtils.copy(input, output, true);
 	}
 
-	public static void copy(InputStream input, OutputStream output, boolean close) throws IOException {
+	public static void copy(final InputStream input, final OutputStream output, final boolean close) throws IOException {
 		int b = -1;
 		do {
 			b = input.read();
@@ -49,11 +50,11 @@ public abstract class IOUtils {
 		}
 	}
 
-	public static void copy(Reader reader, Writer writer) throws IOException {
+	public static void copy(final Reader reader, final Writer writer) throws IOException {
 		IOUtils.copy(reader, writer, true);
 	}
 
-	public static void copy(Reader reader, Writer writer, boolean close) throws IOException {
+	public static void copy(final Reader reader, final Writer writer, final boolean close) throws IOException {
 		int b = -1;
 		do {
 			b = reader.read();
@@ -69,15 +70,24 @@ public abstract class IOUtils {
 		}
 	}
 
-	public static byte[] toByteArray(InputStream inputStream) throws IOException {
-		byte b[] = new byte[inputStream.available()];
+	public static byte[] toByteArray(final InputStream inputStream) throws IOException {
+		byte[] b = new byte[inputStream.available()];
 		inputStream.read(b);
 		return b;
 	}
 
-	public static InputStream toInputStream(byte[] bytes) {
+	public static InputStream toInputStream(final byte[] bytes) {
 		InputStream inputStream = new ByteArrayInputStream(bytes);
 		return inputStream;
+	}
+
+	public static InputStream toInputStream(final Reader reader) throws IOException {
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		int i = -1;
+		while ((i = reader.read()) != -1) {
+			output.write(i);
+		}
+		return new ByteArrayInputStream(output.toByteArray());
 	}
 
 }

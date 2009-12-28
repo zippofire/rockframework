@@ -24,7 +24,7 @@ public class InitializableInterceptor extends BaseInterceptor {
 
 	private static final long	serialVersionUID	= 1L;
 
-	public String intercept(ActionInvocation invocation) throws Exception {
+	public String intercept(final ActionInvocation invocation) throws Exception {
 		Object action = invocation.getAction();
 		if (action instanceof InitializableAction) {
 			InitializableAction a = (InitializableAction) action;

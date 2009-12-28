@@ -25,7 +25,7 @@ public abstract class BaseDynaForm extends DynaActionForm {
 
 	private static final long	serialVersionUID	= -5299608278184306255L;
 
-	public Byte getByte(String name) {
+	public Byte getByte(final String name) {
 		Object o = this.get(name);
 		if ((o != null) && (!(o instanceof Byte))) {
 			o = new Byte(o.toString());
@@ -33,7 +33,7 @@ public abstract class BaseDynaForm extends DynaActionForm {
 		return (Byte) o;
 	}
 
-	public Character getChar(String name) {
+	public Character getChar(final String name) {
 		Object o = this.get(name);
 		if ((o != null) && (!(o instanceof Character))) {
 			o = new Character(o.toString().charAt(0));
@@ -41,7 +41,7 @@ public abstract class BaseDynaForm extends DynaActionForm {
 		return (Character) o;
 	}
 
-	public Double getDouble(String name) {
+	public Double getDouble(final String name) {
 		Object o = this.get(name);
 		if ((o != null) && (!(o instanceof Double))) {
 			o = new Double(o.toString());
@@ -49,7 +49,7 @@ public abstract class BaseDynaForm extends DynaActionForm {
 		return (Double) o;
 	}
 
-	public Float getFloat(String name) {
+	public Float getFloat(final String name) {
 		Object o = this.get(name);
 		if ((o != null) && (!(o instanceof Float))) {
 			o = new Float(o.toString());
@@ -57,7 +57,7 @@ public abstract class BaseDynaForm extends DynaActionForm {
 		return (Float) o;
 	}
 
-	public Integer getInt(String name) {
+	public Integer getInt(final String name) {
 		Object o = this.get(name);
 		if ((o != null) && (!(o instanceof Integer))) {
 			o = new Integer(o.toString());
@@ -65,7 +65,7 @@ public abstract class BaseDynaForm extends DynaActionForm {
 		return (Integer) o;
 	}
 
-	public Long getLong(String name) {
+	public Long getLong(final String name) {
 		Object o = this.get(name);
 		if ((o != null) && (!(o instanceof Long))) {
 			o = new Long(o.toString());
@@ -73,16 +73,16 @@ public abstract class BaseDynaForm extends DynaActionForm {
 		return (Long) o;
 	}
 
-	public Short getShort(String name) {
+	public Short getShort(final String name) {
 		Object o = this.get(name);
 		if ((o != null) && (!(o instanceof Short))) {
 			o = new Short(o.toString());
 		}
 		return (Short) o;
 	}
-	
+
 	@Override
-	public String getString(String name) {
+	public String getString(final String name) {
 		Object o = this.get(name);
 		if ((o != null) && (!(o instanceof String))) {
 			o = o.toString();

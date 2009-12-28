@@ -42,11 +42,11 @@ public abstract class RequestUtils {
 		//
 	}
 
-	public static String getParameter(HttpServletRequest request, String parameter) {
+	public static String getParameter(final HttpServletRequest request, final String parameter) {
 		return RequestUtils.getParameter(request, parameter, null);
 	}
 
-	public static String getParameter(HttpServletRequest request, String parameter, String nvl) {
+	public static String getParameter(final HttpServletRequest request, final String parameter, final String nvl) {
 		String value = request.getParameter(parameter);
 		if (value == null) {
 			value = nvl;
@@ -54,14 +54,14 @@ public abstract class RequestUtils {
 		return value;
 	}
 
-	public static boolean hasParameter(HttpServletRequest request, String parameter) {
+	public static boolean hasParameter(final HttpServletRequest request, final String parameter) {
 		if (RequestUtils.getParameter(request, parameter) != null) {
 			return true;
 		}
 		return false;
 	}
 
-	public static void printParameters(HttpServletRequest request, OutputStream output) throws IOException {
+	public static void printParameters(final HttpServletRequest request, final OutputStream output) throws IOException {
 		Enumeration<?> e = request.getParameterNames();
 		while (e.hasMoreElements()) {
 			String name = (String) e.nextElement();
@@ -69,7 +69,7 @@ public abstract class RequestUtils {
 		}
 	}
 
-	public static void printParameters(HttpServletRequest request, PrintStream output) {
+	public static void printParameters(final HttpServletRequest request, final PrintStream output) {
 		Enumeration<?> e = request.getParameterNames();
 		while (e.hasMoreElements()) {
 			String name = (String) e.nextElement();
@@ -77,7 +77,7 @@ public abstract class RequestUtils {
 		}
 	}
 
-	public static void printParameters(HttpServletRequest request, Writer writer) throws IOException {
+	public static void printParameters(final HttpServletRequest request, final Writer writer) throws IOException {
 		Enumeration<?> e = request.getParameterNames();
 		while (e.hasMoreElements()) {
 			String name = (String) e.nextElement();
@@ -85,7 +85,7 @@ public abstract class RequestUtils {
 		}
 	}
 
-	public static String getApplicationUrl(HttpServletRequest request) {
+	public static String getApplicationUrl(final HttpServletRequest request) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(request.getScheme());
 		builder.append("://");
@@ -96,7 +96,7 @@ public abstract class RequestUtils {
 		return builder.toString();
 	}
 
-	public static String getRequestUrl(HttpServletRequest request) {
+	public static String getRequestUrl(final HttpServletRequest request) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(RequestUtils.getApplicationUrl(request));
 		builder.append(request.getServletPath());
@@ -104,7 +104,7 @@ public abstract class RequestUtils {
 		return builder.toString();
 	}
 
-	public static String getFullRequestUrl(HttpServletRequest request) {
+	public static String getFullRequestUrl(final HttpServletRequest request) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(RequestUtils.getApplicationUrl(request));
 		builder.append(request.getServletPath());
@@ -117,7 +117,7 @@ public abstract class RequestUtils {
 		return builder.toString();
 	}
 
-	public static String getRequestAddress(HttpServletRequest request) {
+	public static String getRequestAddress(final HttpServletRequest request) {
 		String address = request.getHeader(RequestUtils.HEADER_X_FORWARDED_FOR);
 
 		if (address != null) {

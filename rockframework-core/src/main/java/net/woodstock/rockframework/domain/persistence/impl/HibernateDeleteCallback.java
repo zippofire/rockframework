@@ -33,12 +33,12 @@ public class HibernateDeleteCallback implements HibernateCallback {
 
 	private Entity<?>			entity;
 
-	public HibernateDeleteCallback(Entity<?> entity) {
+	public HibernateDeleteCallback(final Entity<?> entity) {
 		super();
 		this.entity = entity;
 	}
 
-	public Object doInHibernate(Session session) throws HibernateException, SQLException {
+	public Object doInHibernate(final Session session) throws SQLException {
 		try {
 			session.delete(this.entity);
 		} catch (PropertyValueException pve) {

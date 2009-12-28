@@ -20,34 +20,27 @@ import java.text.Collator;
 import java.util.Comparator;
 import java.util.Locale;
 
-public class StringComparator implements Comparator<String> {
+public final class StringComparator implements Comparator<String> {
 
-	private static StringComparator	comparator;
+	private static StringComparator	instance	= new StringComparator(Locale.getDefault());
 
 	private Collator				collator;
 
-	private StringComparator(Locale locale) {
+	private StringComparator(final Locale locale) {
 		super();
 		this.collator = Collator.getInstance(locale);
 	}
 
-	public int compare(String o1, String o2) {
+	public int compare(final String o1, final String o2) {
 		return this.collator.compare(o1, o2);
 	}
 
 	public static StringComparator getInstance() {
-		return StringComparator.getInstance(Locale.getDefault());
+		return StringComparator.instance;
 	}
 
-	public static StringComparator getInstance(Locale locale) {
-		if (StringComparator.comparator == null) {
-			synchronized (StringComparator.class) {
-				if (StringComparator.comparator == null) {
-					StringComparator.comparator = new StringComparator(locale);
-				}
-			}
-		}
-		return StringComparator.comparator;
+	public static StringComparator getInstance(final Locale locale) {
+		return new StringComparator(locale);
 	}
 
 }

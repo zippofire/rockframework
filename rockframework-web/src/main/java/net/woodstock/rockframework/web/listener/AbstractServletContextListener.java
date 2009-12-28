@@ -21,11 +21,11 @@ import javax.servlet.ServletContextListener;
 
 public abstract class AbstractServletContextListener extends BaseListener implements ServletContextListener {
 
-	public void contextDestroyed(ServletContextEvent event) {
+	public void contextDestroyed(final ServletContextEvent event) {
 		this.getLogger().info("Destroying context " + event.getServletContext().getServletContextName());
 	}
 
-	public void contextInitialized(ServletContextEvent event) {
+	public void contextInitialized(final ServletContextEvent event) {
 		this.getLogger().info("Initializing context " + event.getServletContext().getServletContextName());
 	}
 

@@ -26,7 +26,7 @@ public class PropertyConverterContext extends AbstractConverterContext {
 
 	private PropertyDescriptor	propertyDescriptor;
 
-	public PropertyConverterContext(ConverterContext parent, String name, Class<?> type) {
+	public PropertyConverterContext(final ConverterContext parent, final String name, final Class<?> type) {
 		super(parent, name, type);
 		if (!(parent instanceof BeanConverterContext)) {
 			throw new IllegalArgumentException("Parent must be an instance of " + BeanConverterContext.class.getCanonicalName());
@@ -37,7 +37,7 @@ public class PropertyConverterContext extends AbstractConverterContext {
 	}
 
 	@Override
-	public <A extends Annotation> A getAnnotation(Class<A> clazz) {
+	public <A extends Annotation> A getAnnotation(final Class<A> clazz) {
 		return this.propertyDescriptor.getAnnotation(clazz);
 	}
 
@@ -47,7 +47,7 @@ public class PropertyConverterContext extends AbstractConverterContext {
 	}
 
 	@Override
-	public boolean isAnnotationPresent(Class<? extends Annotation> clazz) {
+	public boolean isAnnotationPresent(final Class<? extends Annotation> clazz) {
 		return this.propertyDescriptor.isAnnotationPresent(clazz);
 	}
 

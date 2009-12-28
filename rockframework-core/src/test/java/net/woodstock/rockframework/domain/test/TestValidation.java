@@ -46,7 +46,7 @@ public class TestValidation extends TestCase {
 
 		ClassValidator<Foo> validator = new ClassValidator(Foo.class);
 		if (validator.hasValidationRules()) {
-			InvalidValue values[] = validator.getInvalidValues(foo);
+			InvalidValue[] values = validator.getInvalidValues(foo);
 			for (InvalidValue value : values) {
 				System.out.println("\t" + value.getRootBean().getClass().getSimpleName() + "." + value.getPropertyPath());
 				System.out.println("\t\t" + value.getMessage());

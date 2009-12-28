@@ -24,7 +24,7 @@ public abstract class ColorUtils {
 		//
 	}
 
-	public static Color createColor(String s) {
+	public static Color createColor(final String s) {
 		if (s.startsWith("#")) {
 			return ColorUtils.createColorHTML(s);
 		} else if (s.startsWith("rgb")) {
@@ -34,7 +34,7 @@ public abstract class ColorUtils {
 		return null;
 	}
 
-	public static Color createColorHTML(String s) {
+	public static Color createColorHTML(final String s) {
 		int red = 0;
 		int green = 0;
 		int blue = 0;
@@ -47,12 +47,12 @@ public abstract class ColorUtils {
 		return new Color(red, green, blue);
 	}
 
-	public static Color createColorRGB(String s) {
+	public static Color createColorRGB(final String s) {
 		int red = 0;
 		int green = 0;
 		int blue = 0;
 		if ((s.startsWith("rgb(")) && (s.endsWith(")"))) {
-			String colors[] = s.replaceAll("rgb\\(", StringUtils.BLANK).replaceAll("\\)", StringUtils.BLANK).split(",");
+			String[] colors = s.replaceAll("rgb\\(", StringUtils.BLANK).replaceAll("\\)", StringUtils.BLANK).split(",");
 			if (colors.length == 3) {
 				red = Integer.parseInt(colors[0].trim());
 				green = Integer.parseInt(colors[1].trim());
@@ -62,11 +62,11 @@ public abstract class ColorUtils {
 		return new Color(red, green, blue);
 	}
 
-	public static Color createColorRGB(int red, int green, int blue) {
+	public static Color createColorRGB(final int red, final int green, final int blue) {
 		return new Color(red, green, blue);
 	}
 
-	public static String colorToStringHTML(Color c) {
+	public static String toStringHTML(final Color c) {
 		StringBuilder b = new StringBuilder();
 		b.append("#");
 		b.append(StringUtils.lpad(Integer.toHexString(c.getRed()).toUpperCase(), 2, '0'));
@@ -75,7 +75,7 @@ public abstract class ColorUtils {
 		return b.toString();
 	}
 
-	public static String colorToStringRGB(Color c) {
+	public static String toStringRGB(final Color c) {
 		StringBuilder b = new StringBuilder();
 		b.append("rgb(");
 		b.append(c.getRed());

@@ -30,12 +30,12 @@ public abstract class BaseForm extends ActionForm {
 	private static final long	serialVersionUID	= -5299608278184306255L;
 
 	@Override
-	public final void reset(ActionMapping mapping, ServletRequest request) {
+	public final void reset(final ActionMapping mapping, final ServletRequest request) {
 		this.reset();
 	}
 
 	@Override
-	public final void reset(ActionMapping mapping, HttpServletRequest request) {
+	public final void reset(final ActionMapping mapping, final HttpServletRequest request) {
 		this.reset();
 	}
 

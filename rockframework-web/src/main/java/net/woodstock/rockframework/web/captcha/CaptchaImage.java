@@ -58,7 +58,7 @@ public class CaptchaImage {
 		super();
 	}
 
-	public CaptchaImage(String text) {
+	public CaptchaImage(final String text) {
 		super();
 		this.text = text;
 	}
@@ -68,7 +68,7 @@ public class CaptchaImage {
 		return this.text;
 	}
 
-	public void setText(String text) {
+	public void setText(final String text) {
 		this.text = text;
 	}
 
@@ -102,7 +102,7 @@ public class CaptchaImage {
 		return outputStream.toByteArray();
 	}
 
-	private void drawLines(Graphics2D graphics) {
+	private void drawLines(final Graphics2D graphics) {
 		for (int i = 0; i < CaptchaImage.MAX_DRAW; i++) {
 			graphics.setColor(this.getBackgroundColor());
 			int x1 = NumberUtils.random(this.getWidth());
@@ -113,7 +113,7 @@ public class CaptchaImage {
 		}
 	}
 
-	private void drawOvals(Graphics2D graphics) {
+	private void drawOvals(final Graphics2D graphics) {
 		for (int i = 0; i < CaptchaImage.MAX_DRAW; i++) {
 			graphics.setColor(this.getBackgroundColor());
 			int x = NumberUtils.random(this.getWidth());
@@ -124,7 +124,7 @@ public class CaptchaImage {
 		}
 	}
 
-	private void drawRects(Graphics2D graphics) {
+	private void drawRects(final Graphics2D graphics) {
 		for (int i = 0; i < CaptchaImage.MAX_DRAW; i++) {
 			graphics.setColor(this.getBackgroundColor());
 			int x = NumberUtils.random(this.getWidth());
@@ -135,7 +135,7 @@ public class CaptchaImage {
 		}
 	}
 
-	private void drawText(Graphics2D graphics) {
+	private void drawText(final Graphics2D graphics) {
 		int left = 5;
 		for (char c : this.text.toCharArray()) {
 			String s = new Character(c).toString();

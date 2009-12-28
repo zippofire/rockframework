@@ -22,11 +22,11 @@ public class ServiceException extends DomainException {
 
 	private static final long	serialVersionUID	= 1L;
 
-	public ServiceException(String message) {
+	public ServiceException(final String message) {
 		super(message);
 	}
 
-	public ServiceException(Throwable cause) {
+	public ServiceException(final Throwable cause) {
 		super(cause);
 	}
 

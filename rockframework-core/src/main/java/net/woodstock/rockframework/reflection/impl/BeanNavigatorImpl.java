@@ -47,7 +47,7 @@ class BeanNavigatorImpl implements BeanNavigator {
 
 	private Map<String, BeanNavigator>		beanProperties;
 
-	public BeanNavigatorImpl(BeanDescriptorFactory factory, Object bean, String name, BeanNavigator parent) {
+	public BeanNavigatorImpl(final BeanDescriptorFactory factory, final Object bean, final String name, final BeanNavigator parent) {
 		super();
 		if (bean == null) {
 			throw new IllegalArgumentException("Bean is null");
@@ -99,7 +99,7 @@ class BeanNavigatorImpl implements BeanNavigator {
 	}
 
 	@Override
-	public PropertyNavigator getProperty(String name) {
+	public PropertyNavigator getProperty(final String name) {
 		for (PropertyNavigator property : this.properties) {
 			if (property.getName().equals(name)) {
 				return property;
@@ -109,7 +109,7 @@ class BeanNavigatorImpl implements BeanNavigator {
 	}
 
 	@Override
-	public BeanNavigator getPropertyAsBean(String name) {
+	public BeanNavigator getPropertyAsBean(final String name) {
 		if (this.beanProperties.containsKey(name)) {
 			return this.beanProperties.get(name);
 		}
@@ -132,7 +132,7 @@ class BeanNavigatorImpl implements BeanNavigator {
 	}
 
 	@Override
-	public boolean hasProperty(String name) {
+	public boolean hasProperty(final String name) {
 		for (PropertyNavigator property : this.properties) {
 			if (property.getName().equals(name)) {
 				return true;

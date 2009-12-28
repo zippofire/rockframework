@@ -23,7 +23,7 @@ public class StringResult implements StrutsResult {
 
 	private String	name;
 
-	public StringResult(String name) {
+	public StringResult(final String name) {
 		super();
 		this.name = name;
 	}
@@ -32,7 +32,7 @@ public class StringResult implements StrutsResult {
 		return this.name;
 	}
 
-	public ActionForward getForward(ActionMapping mapping) {
+	public ActionForward getForward(final ActionMapping mapping) {
 		return mapping.findForward(this.name);
 	}
 

@@ -48,11 +48,11 @@ public abstract class DownloadAction extends BaseAction implements DownloadableA
 		return this.inputStream;
 	}
 
-	public void setInputStream(InputStream inputStream) {
+	public void setInputStream(final InputStream inputStream) {
 		this.inputStream = inputStream;
 	}
 
-	public void setInputStream(Reader reader) {
+	public void setInputStream(final Reader reader) {
 		Scanner scanner = new Scanner(reader);
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		while (scanner.hasNextByte()) {
@@ -61,7 +61,7 @@ public abstract class DownloadAction extends BaseAction implements DownloadableA
 		this.inputStream = new ByteArrayInputStream(output.toByteArray());
 	}
 
-	public void setInputStream(File file) throws FileNotFoundException {
+	public void setInputStream(final File file) throws FileNotFoundException {
 		this.inputStream = new FileInputStream(file);
 	}
 
@@ -69,7 +69,7 @@ public abstract class DownloadAction extends BaseAction implements DownloadableA
 		return this.contentType;
 	}
 
-	public void setContentType(String contentType) {
+	public void setContentType(final String contentType) {
 		this.contentType = contentType;
 	}
 
@@ -77,7 +77,7 @@ public abstract class DownloadAction extends BaseAction implements DownloadableA
 		return this.contentDisposition;
 	}
 
-	public void setContentDisposition(String contentDisposition) {
+	public void setContentDisposition(final String contentDisposition) {
 		this.contentDisposition = contentDisposition;
 	}
 

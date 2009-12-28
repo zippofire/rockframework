@@ -41,16 +41,16 @@ public abstract class JPAUtil {
 			String s = CoreConfig.getInstance().getValue(JPAUtil.JPA_PERSISTENCE_UNIT_PROPERTY);
 			JPAUtil.factory = Persistence.createEntityManagerFactory(s);
 		}
-		EntityManager m = manager.get();
+		EntityManager m = JPAUtil.manager.get();
 		if (m == null) {
 			m = JPAUtil.factory.createEntityManager();
-			manager.set(m);
+			JPAUtil.manager.set(m);
 		}
 		return m;
 	}
 
 	public static void closeManager() {
-		EntityManager m = manager.get();
+		EntityManager m = JPAUtil.manager.get();
 		if (m != null) {
 			EntityTransaction t = m.getTransaction();
 			if (t.isActive()) {
@@ -59,7 +59,7 @@ public abstract class JPAUtil {
 			}
 			m.flush();
 			m.close();
-			manager.set(null);
+			JPAUtil.manager.set(null);
 		}
 	}
 

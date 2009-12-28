@@ -20,15 +20,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.domain.persistence.query.BuilderException;
 import net.woodstock.rockframework.domain.persistence.query.LikeMode;
 import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
 
-public abstract class EJBQLQueryBuilder extends AbstractQueryBuilder {
+public abstract class EJBQLQueryBuilder<T> extends AbstractQueryBuilder<T> {
+
+	private boolean				build	= false;
 
 	private Map<String, Object>	options;
 
 	private QueryContext		context;
+
+	private Entity<?>			entity;
 
 	public EJBQLQueryBuilder() {
 		super();
@@ -37,38 +40,43 @@ public abstract class EJBQLQueryBuilder extends AbstractQueryBuilder {
 		this.options.put(QueryBuilder.OPTION_LIKE_MODE, LikeMode.ALL);
 	}
 
-	public QueryBuilder setOption(String name, Object value) {
+	@Override
+	public void setEntity(final Entity<?> entity) {
+		if (this.build) {
+			throw new IllegalStateException("Query alread build");
+		}
+		this.entity = entity;
+	}
+
+	public void setOption(final String name, final Object value) {
+		if (this.build) {
+			throw new IllegalStateException("Query alread build");
+		}
 		this.options.put(name, value);
-		return this;
 	}
 
-	protected Object getOption(String name) {
-		return this.options.get(name);
+	public void build() {
+		if (this.build) {
+			throw new IllegalStateException("Query alread build");
+		}
+		this.context = QueryContextHelper.createQueryContext(this.entity, this.options);
+		this.build = true;
 	}
 
-	protected boolean containsOption(String name) {
-		return this.options.containsKey(name);
-	}
-
-	public QueryBuilder parse(Entity<?> e) throws BuilderException {
-		this.context = QueryContextHelper.createQueryContext(e, this.options);
-		return this;
-	}
-
-	public String getQueryString() throws BuilderException {
-		if (this.context == null) {
-			throw new IllegalStateException("Entity not parsed");
+	public String getQueryString() {
+		if (!this.build) {
+			throw new IllegalStateException("Query not build");
 		}
 		return this.context.getQueryString();
 	}
 
-	public Object getQuery(Object manager) throws BuilderException {
+	public T getQuery() {
 		if (this.context == null) {
-			throw new IllegalStateException("Entity not parsed");
+			throw new IllegalStateException("Query not build");
 		}
 		String sql = this.context.getQueryString();
 
-		Object query = this.getQueryLocal(sql, manager);
+		T query = this.getQuery(sql);
 
 		this.setQueryOptions(query, this.options);
 
@@ -78,10 +86,10 @@ public abstract class EJBQLQueryBuilder extends AbstractQueryBuilder {
 		return query;
 	}
 
-	protected abstract Object getQueryLocal(String sql, Object manager) throws BuilderException;
+	protected abstract T getQuery(String sql);
 
-	protected abstract void setQueryOptions(Object query, Map<String, Object> options) throws BuilderException;
+	protected abstract void setQueryOptions(Object query, Map<String, Object> options);
 
-	protected abstract void setQueryParameter(Object query, String name, Object value) throws BuilderException;
+	protected abstract void setQueryParameter(Object query, String name, Object value);
 
 }

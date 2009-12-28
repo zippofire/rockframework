@@ -53,7 +53,7 @@ public class TestBeanDescriptor extends TestCase {
 			return this.id;
 		}
 
-		public void setId(Integer id) {
+		public void setId(final Integer id) {
 			this.id = id;
 		}
 
@@ -61,7 +61,7 @@ public class TestBeanDescriptor extends TestCase {
 			return this.firstName;
 		}
 
-		public void setFirstName(String firstName) {
+		public void setFirstName(final String firstName) {
 			this.firstName = firstName;
 		}
 
@@ -69,7 +69,7 @@ public class TestBeanDescriptor extends TestCase {
 			return this.lastName;
 		}
 
-		public void setLastName(String lastName) {
+		public void setLastName(final String lastName) {
 			this.lastName = lastName;
 		}
 

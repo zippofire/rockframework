@@ -33,18 +33,18 @@ public class ZipReader {
 
 	private File		file;
 
-	public ZipReader(String fileName) throws IOException {
+	public ZipReader(final String fileName) throws IOException {
 		this(new File(fileName));
 	}
 
-	public ZipReader(File file) throws IOException {
+	public ZipReader(final File file) throws IOException {
 		super();
 		this.file = file;
 		this.files = new LinkedHashSet<String>(0);
 		this.read();
 	}
 
-	public byte[] getBytes(String file) throws IOException {
+	public byte[] getBytes(final String file) throws IOException {
 		if (this.files.contains(file)) {
 			ZipInputStream input = new ZipInputStream(new FileInputStream(this.file));
 			ZipEntry entry = input.getNextEntry();
@@ -70,7 +70,7 @@ public class ZipReader {
 		return new byte[0];
 	}
 
-	public File getFile(String file, File outFile) throws IOException {
+	public File getFile(final String file, final File outFile) throws IOException {
 		if (this.files.contains(file)) {
 			ZipInputStream input = new ZipInputStream(new FileInputStream(this.file));
 			ZipEntry entry = input.getNextEntry();
@@ -94,11 +94,11 @@ public class ZipReader {
 		return outFile;
 	}
 
-	public File getFile(String file, String outFile) throws IOException {
+	public File getFile(final String file, final String outFile) throws IOException {
 		return this.getFile(file, new File(outFile));
 	}
 
-	public void unzipFiles(File outDir, String... files) throws IOException {
+	public void unzipFiles(final File outDir, final String... files) throws IOException {
 		Collection<String> fileList = new LinkedHashSet<String>();
 		for (String file : files) {
 			fileList.add(file);
@@ -122,11 +122,11 @@ public class ZipReader {
 		input.close();
 	}
 
-	public void unzipFiles(String outDir, String... files) throws IOException {
+	public void unzipFiles(final String outDir, final String... files) throws IOException {
 		this.unzipFiles(new File(outDir), files);
 	}
 
-	public void unzipAll(File outDir) throws IOException {
+	public void unzipAll(final File outDir) throws IOException {
 		ZipInputStream input = new ZipInputStream(new FileInputStream(this.file));
 		ZipEntry entry = input.getNextEntry();
 		while (entry != null) {
@@ -144,7 +144,7 @@ public class ZipReader {
 		input.close();
 	}
 
-	public void unzipAll(String outDir) throws IOException {
+	public void unzipAll(final String outDir) throws IOException {
 		this.unzipAll(new File(outDir));
 	}
 

@@ -9,7 +9,7 @@ abstract class TextConverterHelper {
 		//
 	}
 
-	protected static int getSize(ConverterContext context) {
+	protected static int getSize(final ConverterContext context) {
 		if (context.isAnnotationPresent(Size.class)) {
 			return context.getAnnotation(Size.class).value();
 		}
@@ -17,21 +17,21 @@ abstract class TextConverterHelper {
 	}
 
 	// Format
-	protected static String lpad(String s, int size) {
+	protected static String lpad(final String s, final int size) {
 		if (size < 1) {
 			return s;
 		}
 		return StringUtils.lpad(s, size, ' ').substring(0, size);
 	}
 
-	protected static String rpad(String s, int size) {
+	protected static String rpad(final String s, final int size) {
 		if (size < 1) {
 			return s;
 		}
 		return StringUtils.rpad(s, size, ' ').substring(0, size);
 	}
 
-	protected static String trim(String s) {
+	protected static String trim(final String s) {
 		String str = s.trim();
 		if (str.length() == 0) {
 			return null;

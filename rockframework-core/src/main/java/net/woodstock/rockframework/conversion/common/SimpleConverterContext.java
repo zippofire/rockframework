@@ -25,7 +25,7 @@ public class SimpleConverterContext extends AbstractConverterContext {
 	}
 
 	@Override
-	public <A extends Annotation> A getAnnotation(Class<A> clazz) {
+	public <A extends Annotation> A getAnnotation(final Class<A> clazz) {
 		return null;
 	}
 
@@ -35,7 +35,7 @@ public class SimpleConverterContext extends AbstractConverterContext {
 	}
 
 	@Override
-	public boolean isAnnotationPresent(Class<? extends Annotation> clazz) {
+	public boolean isAnnotationPresent(final Class<? extends Annotation> clazz) {
 		return false;
 	}
 

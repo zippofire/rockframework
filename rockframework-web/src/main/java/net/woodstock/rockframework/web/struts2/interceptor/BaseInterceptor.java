@@ -60,15 +60,15 @@ public abstract class BaseInterceptor implements Interceptor {
 		return this.getRequest().getSession();
 	}
 
-	protected Object getRequestAttribute(String name) {
+	protected Object getRequestAttribute(final String name) {
 		return this.getRequest().getAttribute(name);
 	}
 
-	protected String getRequestParameter(String name) {
+	protected String getRequestParameter(final String name) {
 		return this.getRequest().getParameter(name);
 	}
 
-	protected Object getSessionAttribute(String name) {
+	protected Object getSessionAttribute(final String name) {
 		return this.getSession().getAttribute(name);
 	}
 

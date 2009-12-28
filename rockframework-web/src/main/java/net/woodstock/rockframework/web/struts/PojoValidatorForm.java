@@ -28,7 +28,7 @@ public abstract class PojoValidatorForm<T extends Pojo> extends BaseValidatorFor
 		super();
 	}
 
-	public PojoValidatorForm(T pojo) {
+	public PojoValidatorForm(final T pojo) {
 		super();
 		this.pojo = pojo;
 	}
@@ -37,7 +37,7 @@ public abstract class PojoValidatorForm<T extends Pojo> extends BaseValidatorFor
 		return this.pojo;
 	}
 
-	public void setPojo(T pojo) {
+	public void setPojo(final T pojo) {
 		this.pojo = pojo;
 	}
 

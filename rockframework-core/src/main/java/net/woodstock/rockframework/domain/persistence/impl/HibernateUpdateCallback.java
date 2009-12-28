@@ -29,12 +29,12 @@ public class HibernateUpdateCallback implements HibernateCallback {
 
 	private Entity<?>	entity;
 
-	public HibernateUpdateCallback(Entity<?> entity) {
+	public HibernateUpdateCallback(final Entity<?> entity) {
 		super();
 		this.entity = entity;
 	}
 
-	public Object doInHibernate(Session session) throws HibernateException, SQLException {
+	public Object doInHibernate(final Session session) throws SQLException {
 		try {
 			session.update(this.entity);
 		} catch (NonUniqueObjectException nuoe) {

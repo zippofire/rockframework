@@ -18,7 +18,6 @@ package net.woodstock.rockframework.domain.business.impl;
 
 import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.domain.business.BusinessException;
 import net.woodstock.rockframework.domain.business.GenericBusiness;
 import net.woodstock.rockframework.domain.business.ValidationResult;
 import net.woodstock.rockframework.sys.SysLogger;
@@ -40,7 +39,7 @@ abstract class AbstractBusiness implements GenericBusiness {
 	}
 
 	@Override
-	public ValidationResult validateGet(Entity<?> entity) throws BusinessException {
+	public ValidationResult validateGet(final Entity<?> entity) {
 		boolean error = false;
 		String message = CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_OK);
 		if (entity == null) {
@@ -56,12 +55,12 @@ abstract class AbstractBusiness implements GenericBusiness {
 	}
 
 	@Override
-	public ValidationResult validateDelete(Entity<?> entity) throws BusinessException {
+	public ValidationResult validateDelete(final Entity<?> entity) {
 		return this.validateGet(entity);
 	}
 
 	@Override
-	public ValidationResult validateList(Entity<?> entity) throws BusinessException {
+	public ValidationResult validateList(final Entity<?> entity) {
 		boolean error = false;
 		String message = CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_OK);
 		if (entity == null) {

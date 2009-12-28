@@ -30,7 +30,7 @@ public abstract class FormUtils {
 	}
 
 	// Byte
-	public static Byte toByte(String value) {
+	public static Byte toByte(final String value) {
 		if (StringUtils.isEmpty(value)) {
 			return null;
 		}
@@ -41,7 +41,7 @@ public abstract class FormUtils {
 		}
 	}
 
-	public static Byte toByte(String value, String format) {
+	public static Byte toByte(final String value, final String format) {
 		if (StringUtils.isEmpty(value)) {
 			return null;
 		}
@@ -52,14 +52,14 @@ public abstract class FormUtils {
 		}
 	}
 
-	public static String toString(Byte value) {
+	public static String toString(final Byte value) {
 		if (value == null) {
 			return null;
 		}
 		return NumberUtils.format(value);
 	}
 
-	public static String toString(Byte value, String format) {
+	public static String toString(final Byte value, final String format) {
 		if (value == null) {
 			return null;
 		}
@@ -67,7 +67,7 @@ public abstract class FormUtils {
 	}
 
 	// Date
-	public static Date toDate(String value) {
+	public static Date toDate(final String value) {
 		if (StringUtils.isEmpty(value)) {
 			return null;
 		}
@@ -78,7 +78,7 @@ public abstract class FormUtils {
 		}
 	}
 
-	public static Date toDate(String value, String format) {
+	public static Date toDate(final String value, final String format) {
 		if (StringUtils.isEmpty(value)) {
 			return null;
 		}
@@ -89,14 +89,14 @@ public abstract class FormUtils {
 		}
 	}
 
-	public static String toString(Date date) {
+	public static String toString(final Date date) {
 		if (date == null) {
 			return null;
 		}
 		return DateUtils.format(date);
 	}
 
-	public static String toString(Date date, String format) {
+	public static String toString(final Date date, final String format) {
 		if (date == null) {
 			return null;
 		}
@@ -104,7 +104,7 @@ public abstract class FormUtils {
 	}
 
 	// Double
-	public static Double toDouble(String value) {
+	public static Double toDouble(final String value) {
 		if (StringUtils.isEmpty(value)) {
 			return null;
 		}
@@ -115,7 +115,7 @@ public abstract class FormUtils {
 		}
 	}
 
-	public static Double toDouble(String value, String format) {
+	public static Double toDouble(final String value, final String format) {
 		if (StringUtils.isEmpty(value)) {
 			return null;
 		}
@@ -126,14 +126,14 @@ public abstract class FormUtils {
 		}
 	}
 
-	public static String toString(Double value) {
+	public static String toString(final Double value) {
 		if (value == null) {
 			return null;
 		}
 		return NumberUtils.format(value);
 	}
 
-	public static String toString(Double value, String format) {
+	public static String toString(final Double value, final String format) {
 		if (value == null) {
 			return null;
 		}
@@ -141,7 +141,7 @@ public abstract class FormUtils {
 	}
 
 	// Float
-	public static Float toFloat(String value) {
+	public static Float toFloat(final String value) {
 		if (StringUtils.isEmpty(value)) {
 			return null;
 		}
@@ -152,7 +152,7 @@ public abstract class FormUtils {
 		}
 	}
 
-	public static Float toFloat(String value, String format) {
+	public static Float toFloat(final String value, final String format) {
 		if (StringUtils.isEmpty(value)) {
 			return null;
 		}
@@ -163,14 +163,14 @@ public abstract class FormUtils {
 		}
 	}
 
-	public static String toString(Float value) {
+	public static String toString(final Float value) {
 		if (value == null) {
 			return null;
 		}
 		return NumberUtils.format(value);
 	}
 
-	public static String toString(Float value, String format) {
+	public static String toString(final Float value, final String format) {
 		if (value == null) {
 			return null;
 		}
@@ -178,7 +178,7 @@ public abstract class FormUtils {
 	}
 
 	// Integer
-	public static Integer toInteger(String value) {
+	public static Integer toInteger(final String value) {
 		if (StringUtils.isEmpty(value)) {
 			return null;
 		}
@@ -189,7 +189,7 @@ public abstract class FormUtils {
 		}
 	}
 
-	public static Integer toInteger(String value, String format) {
+	public static Integer toInteger(final String value, final String format) {
 		if (StringUtils.isEmpty(value)) {
 			return null;
 		}
@@ -200,14 +200,14 @@ public abstract class FormUtils {
 		}
 	}
 
-	public static String toString(Integer value) {
+	public static String toString(final Integer value) {
 		if (value == null) {
 			return null;
 		}
 		return NumberUtils.format(value);
 	}
 
-	public static String toString(Integer value, String format) {
+	public static String toString(final Integer value, final String format) {
 		if (value == null) {
 			return null;
 		}
@@ -215,7 +215,7 @@ public abstract class FormUtils {
 	}
 
 	// Long
-	public static Long toLong(String value) {
+	public static Long toLong(final String value) {
 		if (StringUtils.isEmpty(value)) {
 			return null;
 		}
@@ -226,7 +226,7 @@ public abstract class FormUtils {
 		}
 	}
 
-	public static Long toLong(String value, String format) {
+	public static Long toLong(final String value, final String format) {
 		if (StringUtils.isEmpty(value)) {
 			return null;
 		}
@@ -237,14 +237,14 @@ public abstract class FormUtils {
 		}
 	}
 
-	public static String toString(Long value) {
+	public static String toString(final Long value) {
 		if (value == null) {
 			return null;
 		}
 		return NumberUtils.format(value);
 	}
 
-	public static String toString(Long value, String format) {
+	public static String toString(final Long value, final String format) {
 		if (value == null) {
 			return null;
 		}
@@ -252,7 +252,7 @@ public abstract class FormUtils {
 	}
 
 	// Short
-	public static Short toShort(String value) {
+	public static Short toShort(final String value) {
 		if (StringUtils.isEmpty(value)) {
 			return null;
 		}
@@ -263,7 +263,7 @@ public abstract class FormUtils {
 		}
 	}
 
-	public static Short toShort(String value, String format) {
+	public static Short toShort(final String value, final String format) {
 		if (StringUtils.isEmpty(value)) {
 			return null;
 		}
@@ -274,14 +274,14 @@ public abstract class FormUtils {
 		}
 	}
 
-	public static String toString(Short value) {
+	public static String toString(final Short value) {
 		if (value == null) {
 			return null;
 		}
 		return NumberUtils.format(value);
 	}
 
-	public static String toString(Short value, String format) {
+	public static String toString(final Short value, final String format) {
 		if (value == null) {
 			return null;
 		}
@@ -289,28 +289,28 @@ public abstract class FormUtils {
 	}
 
 	// String
-	public static String fromText(String value) {
+	public static String fromText(final String value) {
 		if (StringUtils.isEmpty(value)) {
 			return null;
 		}
 		return value;
 	}
 
-	public static String fromText(String value, String format) {
+	public static String fromText(final String value, final String format) {
 		if (StringUtils.isEmpty(value)) {
 			return null;
 		}
 		return StringUtils.unformat(format, value);
 	}
 
-	public static String toText(String value) {
+	public static String toText(final String value) {
 		if (StringUtils.isEmpty(value)) {
 			return null;
 		}
 		return value;
 	}
 
-	public static String toText(String value, String format) {
+	public static String toText(final String value, final String format) {
 		if (StringUtils.isEmpty(value)) {
 			return null;
 		}

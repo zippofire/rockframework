@@ -34,7 +34,7 @@ class SunBase64Encoder extends Base64Encoder {
 	}
 
 	@Override
-	public String decode(String s) {
+	public String decode(final String s) {
 		try {
 			String str = new String(this.decoder.decodeBuffer(s));
 			return str;
@@ -44,7 +44,7 @@ class SunBase64Encoder extends Base64Encoder {
 	}
 
 	@Override
-	public byte[] decode(byte[] b) {
+	public byte[] decode(final byte[] b) {
 		try {
 			String s = new String(b);
 			String str = new String(this.decoder.decodeBuffer(s));
@@ -56,13 +56,13 @@ class SunBase64Encoder extends Base64Encoder {
 	}
 
 	@Override
-	public String encode(String s) {
+	public String encode(final String s) {
 		String str = this.encoder.encode(s.getBytes());
 		return str;
 	}
 
 	@Override
-	public byte[] encode(byte[] b) {
+	public byte[] encode(final byte[] b) {
 		String str = this.encoder.encode(b);
 		byte[] bytes = str.getBytes();
 		return bytes;

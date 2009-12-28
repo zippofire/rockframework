@@ -20,15 +20,15 @@ import junit.framework.TestCase;
 
 public class TypeTest extends TestCase {
 
-	static void print(Integer i) {
+	static void print(final Integer i) {
 		System.out.println("Integer " + i);
 	}
 
-	static void print(String s) {
+	static void print(final String s) {
 		System.out.println("String " + s);
 	}
 
-	static void print(Object o) {
+	static void print(final Object o) {
 		System.out.println("Object " + o);
 	}
 

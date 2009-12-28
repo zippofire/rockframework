@@ -34,7 +34,7 @@ public class Border implements SpreadsheetElement {
 		return this.width;
 	}
 
-	public void setWidth(int width) {
+	public void setWidth(final int width) {
 		this.width = width;
 	}
 
@@ -42,7 +42,7 @@ public class Border implements SpreadsheetElement {
 		return this.color;
 	}
 
-	public void setColor(Color color) {
+	public void setColor(final Color color) {
 		this.color = color;
 	}
 

@@ -27,7 +27,7 @@ public abstract class AbstractEntity<ID extends Serializable> implements Entity<
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (!(obj instanceof Entity)) {
 			return false;
 		}

@@ -23,7 +23,7 @@ import net.woodstock.rockframework.domain.business.validation.local.LocalValidat
 
 public class ValidatorNotNull extends AbstractValidator {
 
-	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
+	public ValidationResult validate(final LocalValidationContext context) {
 		try {
 			Object value = context.getValue();
 			if (value == null) {
@@ -36,7 +36,7 @@ public class ValidatorNotNull extends AbstractValidator {
 		}
 	}
 
-	private String getErrorMessage(LocalValidationContext context) {
+	private String getErrorMessage(final LocalValidationContext context) {
 		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_NOT_NULL, context.getCanonicalName());
 	}
 

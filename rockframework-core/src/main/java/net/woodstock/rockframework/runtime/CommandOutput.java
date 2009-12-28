@@ -41,11 +41,11 @@ public class CommandOutput implements Serializable {
 		return this.err;
 	}
 
-	void addOut(String s) {
+	void addOut(final String s) {
 		this.out.add(s);
 	}
 
-	void addErr(String s) {
+	void addErr(final String s) {
 		this.err.add(s);
 	}
 

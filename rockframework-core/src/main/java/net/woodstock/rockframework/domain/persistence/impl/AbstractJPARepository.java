@@ -18,7 +18,6 @@ package net.woodstock.rockframework.domain.persistence.impl;
 
 import javax.persistence.EntityManager;
 
-import net.woodstock.rockframework.domain.persistence.PersistenceException;
 import net.woodstock.rockframework.domain.persistence.Repository;
 
 abstract class AbstractJPARepository implements Repository {
@@ -27,6 +26,6 @@ abstract class AbstractJPARepository implements Repository {
 		super();
 	}
 
-	protected abstract EntityManager getEntityManager() throws PersistenceException;
+	protected abstract EntityManager getEntityManager();
 
 }

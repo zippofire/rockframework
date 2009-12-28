@@ -50,7 +50,7 @@ public class JsonResult extends BaseResult {
 	private String				root;
 
 	@Override
-	public void execute(ActionInvocation invocation) throws Exception {
+	public void execute(final ActionInvocation invocation) throws Exception {
 		if (StringUtils.isEmpty(this.root)) {
 			throw new IllegalArgumentException("Root must be not empty");
 		}
@@ -79,7 +79,7 @@ public class JsonResult extends BaseResult {
 		writer.write(json);
 	}
 
-	public void setIgnore(String ignore) {
+	public void setIgnore(final String ignore) {
 		if (!StringUtils.isEmpty(ignore)) {
 			String[] ignores = ignore.split(JsonResult.IGNORE_SEPARATOR);
 			this.ignored = new ArrayList<String>();
@@ -91,13 +91,13 @@ public class JsonResult extends BaseResult {
 		}
 	}
 
-	public void setCharset(String charset) {
+	public void setCharset(final String charset) {
 		if (!StringUtils.isEmpty(charset)) {
 			this.charset = charset;
 		}
 	}
 
-	public void setRoot(String root) {
+	public void setRoot(final String root) {
 		this.root = root;
 	}
 

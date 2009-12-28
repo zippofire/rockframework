@@ -24,15 +24,15 @@ public class CrypterException extends RuntimeException {
 		super();
 	}
 
-	public CrypterException(String message) {
+	public CrypterException(final String message) {
 		super(message);
 	}
 
-	public CrypterException(Throwable cause) {
+	public CrypterException(final Throwable cause) {
 		super(cause);
 	}
 
-	public CrypterException(String message, Throwable cause) {
+	public CrypterException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 

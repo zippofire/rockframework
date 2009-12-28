@@ -22,13 +22,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-public class ArrayUtils {
+public final class ArrayUtils {
 
 	private ArrayUtils() {
 		//
 	}
 
-	public static Class<?> getArrayType(Object array) throws ClassNotFoundException {
+	public static Class<?> getArrayType(final Object array) throws ClassNotFoundException {
 		if (array == null) {
 			return null;
 		}
@@ -39,7 +39,7 @@ public class ArrayUtils {
 		return Class.forName(ArrayUtils.getArrayTypeName(array));
 	}
 
-	public static String getArrayTypeName(Object array) {
+	public static String getArrayTypeName(final Object array) {
 		if (array == null) {
 			return null;
 		}
@@ -50,7 +50,7 @@ public class ArrayUtils {
 		return className;
 	}
 
-	public static List<Object> asList(Object array) {
+	public static List<Object> asList(final Object array) {
 		if (array == null) {
 			return null;
 		}
@@ -62,7 +62,7 @@ public class ArrayUtils {
 		return list;
 	}
 
-	public static Set<Object> asSet(Object array) {
+	public static Set<Object> asSet(final Object array) {
 		if (array == null) {
 			return null;
 		}
@@ -74,7 +74,7 @@ public class ArrayUtils {
 		return set;
 	}
 
-	public static String toString(Object array) {
+	public static String toString(final Object array) {
 		if (array == null) {
 			return null;
 		}
@@ -98,7 +98,7 @@ public class ArrayUtils {
 		return builder.toString();
 	}
 
-	public static String toString(String[] array) {
+	public static String toString(final String[] array) {
 		if (array == null) {
 			return null;
 		}
@@ -121,7 +121,7 @@ public class ArrayUtils {
 		return builder.toString();
 	}
 
-	public static String toString(Object[] array) {
+	public static String toString(final Object[] array) {
 		if (array == null) {
 			return null;
 		}

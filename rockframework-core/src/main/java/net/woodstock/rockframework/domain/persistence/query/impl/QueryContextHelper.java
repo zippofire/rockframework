@@ -53,7 +53,7 @@ abstract class QueryContextHelper {
 		//
 	}
 
-	public static QueryContext createQueryContext(Entity<?> e, Map<String, Object> options) throws BuilderException {
+	public static QueryContext createQueryContext(final Entity<?> e, final Map<String, Object> options) {
 		if (e == null) {
 			throw new IllegalArgumentException("Entity must be not null");
 		}
@@ -93,7 +93,7 @@ abstract class QueryContextHelper {
 		}
 	}
 
-	private static void generateQueryString(QueryContext context, Map<String, Object> options) {
+	private static void generateQueryString(final QueryContext context, final Map<String, Object> options) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("SELECT " + context.getAlias() + "\n");
 		builder.append("  FROM " + context.getName() + " AS " + context.getAlias() + "\n");
@@ -125,10 +125,10 @@ abstract class QueryContextHelper {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static void handleValue(QueryContext context, Map<String, Object> options, String name, String alias, Object value, List<Entity<?>> parsed) throws BuilderException {
+	private static void handleValue(final QueryContext context, final Map<String, Object> options, final String name, final String alias, final Object value, final List<Entity<?>> parsed) {
 		try {
-			name = QueryContextHelper.getFieldName(context, name);
-			alias = QueryContextHelper.getFieldAlias(context, alias);
+			String sqlName = QueryContextHelper.getFieldName(context, name);
+			String sqlAlias = QueryContextHelper.getFieldAlias(context, alias);
 			if (value instanceof Entity) {
 				boolean disable = false;
 				if (options.containsKey(QueryBuilder.OPTION_DISABLE_CHILD)) {
@@ -136,7 +136,7 @@ abstract class QueryContextHelper {
 					disable = b.booleanValue();
 				}
 				if (!disable) {
-					QueryContextHelper.handleEntityValue(context, options, name, alias, (Entity<?>) value, parsed);
+					QueryContextHelper.handleEntityValue(context, options, sqlName, sqlAlias, (Entity<?>) value, parsed);
 				}
 			} else if (value instanceof Collection) {
 				boolean disable = false;
@@ -145,12 +145,12 @@ abstract class QueryContextHelper {
 					disable = b.booleanValue();
 				}
 				if (!disable) {
-					QueryContextHelper.handleCollectionValue(context, options, name, alias, (Collection<?>) value, parsed);
+					QueryContextHelper.handleCollectionValue(context, options, sqlName, sqlAlias, (Collection<?>) value, parsed);
 				}
 			} else if (value instanceof String) {
-				QueryContextHelper.handleStringValue(context, options, name, alias, (String) value);
+				QueryContextHelper.handleStringValue(context, options, sqlName, sqlAlias, (String) value);
 			} else {
-				QueryContextHelper.handleCommonValue(context, name, alias, value);
+				QueryContextHelper.handleCommonValue(context, sqlName, sqlAlias, value);
 			}
 		} catch (BuilderException exception) {
 			throw exception;
@@ -159,7 +159,7 @@ abstract class QueryContextHelper {
 		}
 	}
 
-	private static void handleEntityValue(QueryContext context, Map<String, Object> options, String name, String alias, Entity<?> value, List<Entity<?>> parsed) {
+	private static void handleEntityValue(final QueryContext context, final Map<String, Object> options, final String name, final String alias, final Entity<?> value, final List<Entity<?>> parsed) {
 		if (QueryContextHelper.contains(parsed, value)) {
 			SysLogger.getLogger().debug("Entity " + value + " already parsed!!!");
 			return;
@@ -192,7 +192,7 @@ abstract class QueryContextHelper {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static void handleCollectionValue(QueryContext context, Map<String, Object> options, String name, String alias, Collection<?> value, List<Entity<?>> parsed) {
+	private static void handleCollectionValue(final QueryContext context, final Map<String, Object> options, final String name, final String alias, final Collection<?> value, final List<Entity<?>> parsed) {
 		if (value.size() > 0) {
 			QueryContext child = new QueryContext(name, alias, context);
 			child.setJoinNeeded(true);
@@ -225,16 +225,17 @@ abstract class QueryContextHelper {
 		}
 	}
 
-	private static void handleStringValue(QueryContext context, Map<String, Object> options, String name, String alias, String value) {
+	private static void handleStringValue(final QueryContext context, final Map<String, Object> options, final String name, final String alias, final String value) {
 		if (StringUtils.isEmpty(value)) {
 			return;
 		}
 		String sqlName = name;
+		String sqlValue = value;
 		String sqlAlias = alias;
 		if (options.containsKey(QueryBuilder.OPTION_IGNORE_CASE)) {
 			Boolean b = (Boolean) options.get(QueryBuilder.OPTION_IGNORE_CASE);
 			if ((b != null) && (b.booleanValue())) {
-				value = value.toLowerCase();
+				sqlValue = sqlValue.toLowerCase();
 				sqlName = "LOWER(" + name + ")";
 			}
 		}
@@ -244,33 +245,35 @@ abstract class QueryContextHelper {
 			if (likeMode != null) {
 				switch (likeMode) {
 					case ALL:
-						value = "%" + value + "%";
+						sqlValue = "%" + sqlValue + "%";
 						break;
 					case BEGIN:
-						value = "%" + value;
+						sqlValue = "%" + sqlValue;
 						break;
 					case END:
-						value = value + "%";
+						sqlValue = sqlValue + "%";
 						break;
 					case DISABLED:
+						break;
+					default:
 						break;
 				}
 			}
 			if (likeMode == LikeMode.DISABLED) {
-				context.getParameters().add(new QueryContextParameter(name, sqlName, alias, sqlAlias, value, Operator.EQUALS));
+				context.getParameters().add(new QueryContextParameter(name, sqlName, alias, sqlAlias, sqlValue, Operator.EQUALS));
 			} else {
-				context.getParameters().add(new QueryContextParameter(name, sqlName, alias, sqlAlias, value, Operator.LIKE));
+				context.getParameters().add(new QueryContextParameter(name, sqlName, alias, sqlAlias, sqlValue, Operator.LIKE));
 			}
 		} else {
-			context.getParameters().add(new QueryContextParameter(name, sqlName, alias, sqlAlias, value, Operator.EQUALS));
+			context.getParameters().add(new QueryContextParameter(name, sqlName, alias, sqlAlias, sqlValue, Operator.EQUALS));
 		}
 	}
 
-	private static void handleCommonValue(QueryContext context, String name, String alias, Object value) throws BuilderException {
+	private static void handleCommonValue(final QueryContext context, final String name, final String alias, final Object value) {
 		context.getParameters().add(new QueryContextParameter(name, name, alias, alias, value, Operator.EQUALS));
 	}
 
-	private static String getFieldName(QueryContext context, String name) {
+	private static String getFieldName(final QueryContext context, final String name) {
 		StringBuilder builder = new StringBuilder();
 		if ((context.getParent() == null) || (context.isJoinNeeded())) {
 			builder.append(context.getAlias());
@@ -282,7 +285,7 @@ abstract class QueryContextHelper {
 		return builder.toString();
 	}
 
-	private static String getFieldAlias(QueryContext context, String alias) {
+	private static String getFieldAlias(final QueryContext context, final String alias) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(context.getAlias());
 		builder.append(QueryContextHelper.ALIAS_SEPARADOR);
@@ -290,7 +293,7 @@ abstract class QueryContextHelper {
 		return builder.toString();
 	}
 
-	private static boolean contains(List<Entity<?>> list, Entity<?> entity) {
+	private static boolean contains(final List<Entity<?>> list, final Entity<?> entity) {
 		for (Entity<?> e : list) {
 			if (e == entity) {
 				return true;
@@ -299,7 +302,7 @@ abstract class QueryContextHelper {
 		return false;
 	}
 
-	private static boolean isTransient(PropertyDescriptor propertyDescriptor) {
+	private static boolean isTransient(final PropertyDescriptor propertyDescriptor) {
 		if (Modifier.isTransient(propertyDescriptor.getModifiers())) {
 			return true;
 		}
@@ -311,7 +314,7 @@ abstract class QueryContextHelper {
 		}
 	}
 
-	private static boolean isProxy(Object o) {
+	private static boolean isProxy(final Object o) {
 		if (o == null) {
 			return false;
 		}
@@ -321,7 +324,7 @@ abstract class QueryContextHelper {
 			Class.forName(QueryContextHelper.HIBERNATE_PROXY_CLASS);
 			b = HibernateProxyHelper.isProxy(o);
 		} catch (ClassNotFoundException e) {
-			//
+			SysLogger.getLogger().debug(e.getMessage(), e);
 		}
 		// OpenJPA
 		if (!b) {
@@ -329,7 +332,7 @@ abstract class QueryContextHelper {
 				Class.forName(QueryContextHelper.OPENJPA_PROXY_CLASS);
 				b = OpenJPAProxyHelper.isProxy(o);
 			} catch (ClassNotFoundException e) {
-				//
+				SysLogger.getLogger().debug(e.getMessage(), e);
 			}
 		}
 		// EclipseLink

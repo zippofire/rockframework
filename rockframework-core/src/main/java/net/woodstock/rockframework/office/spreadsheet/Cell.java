@@ -71,7 +71,7 @@ public class Cell implements SpreadsheetElement {
 		this.verticalAlignment = Cell.DEFAULT_CERTICAL_ALIGMENT;
 	}
 
-	public Cell(String value) {
+	public Cell(final String value) {
 		this();
 		this.value = value;
 	}
@@ -80,7 +80,7 @@ public class Cell implements SpreadsheetElement {
 		return this.wrap;
 	}
 
-	public void setWrap(boolean wrap) {
+	public void setWrap(final boolean wrap) {
 		this.wrap = wrap;
 	}
 
@@ -88,7 +88,7 @@ public class Cell implements SpreadsheetElement {
 		return this.bold;
 	}
 
-	public void setBold(boolean bold) {
+	public void setBold(final boolean bold) {
 		this.bold = bold;
 	}
 
@@ -96,7 +96,7 @@ public class Cell implements SpreadsheetElement {
 		return this.italic;
 	}
 
-	public void setItalic(boolean italic) {
+	public void setItalic(final boolean italic) {
 		this.italic = italic;
 	}
 
@@ -104,7 +104,7 @@ public class Cell implements SpreadsheetElement {
 		return this.strikeout;
 	}
 
-	public void setStrikeout(boolean strikeout) {
+	public void setStrikeout(final boolean strikeout) {
 		this.strikeout = strikeout;
 	}
 
@@ -112,7 +112,7 @@ public class Cell implements SpreadsheetElement {
 		return this.underline;
 	}
 
-	public void setUnderline(boolean underline) {
+	public void setUnderline(final boolean underline) {
 		this.underline = underline;
 	}
 
@@ -120,7 +120,7 @@ public class Cell implements SpreadsheetElement {
 		return this.font;
 	}
 
-	public void setFont(String font) {
+	public void setFont(final String font) {
 		this.font = font;
 	}
 
@@ -128,7 +128,7 @@ public class Cell implements SpreadsheetElement {
 		return this.fontSize;
 	}
 
-	public void setFontSize(int fontSize) {
+	public void setFontSize(final int fontSize) {
 		this.fontSize = fontSize;
 	}
 
@@ -136,7 +136,7 @@ public class Cell implements SpreadsheetElement {
 		return this.fontColor;
 	}
 
-	public void setFontColor(Color fontColor) {
+	public void setFontColor(final Color fontColor) {
 		this.fontColor = fontColor;
 	}
 
@@ -144,7 +144,7 @@ public class Cell implements SpreadsheetElement {
 		return this.backgroundColor;
 	}
 
-	public void setBackgroundColor(Color backgroundColor) {
+	public void setBackgroundColor(final Color backgroundColor) {
 		this.backgroundColor = backgroundColor;
 	}
 
@@ -152,7 +152,7 @@ public class Cell implements SpreadsheetElement {
 		return this.leftBorder;
 	}
 
-	public void setLeftBorder(Border leftBorder) {
+	public void setLeftBorder(final Border leftBorder) {
 		this.leftBorder = leftBorder;
 	}
 
@@ -160,7 +160,7 @@ public class Cell implements SpreadsheetElement {
 		return this.topBorder;
 	}
 
-	public void setTopBorder(Border topBorder) {
+	public void setTopBorder(final Border topBorder) {
 		this.topBorder = topBorder;
 	}
 
@@ -168,7 +168,7 @@ public class Cell implements SpreadsheetElement {
 		return this.rightBorder;
 	}
 
-	public void setRightBorder(Border rightBorder) {
+	public void setRightBorder(final Border rightBorder) {
 		this.rightBorder = rightBorder;
 	}
 
@@ -176,7 +176,7 @@ public class Cell implements SpreadsheetElement {
 		return this.bottomBorder;
 	}
 
-	public void setBottomBorder(Border bottomBorder) {
+	public void setBottomBorder(final Border bottomBorder) {
 		this.bottomBorder = bottomBorder;
 	}
 
@@ -184,7 +184,7 @@ public class Cell implements SpreadsheetElement {
 		return this.alignment;
 	}
 
-	public void setAlignment(Alignment alignment) {
+	public void setAlignment(final Alignment alignment) {
 		this.alignment = alignment;
 	}
 
@@ -192,7 +192,7 @@ public class Cell implements SpreadsheetElement {
 		return this.verticalAlignment;
 	}
 
-	public void setVerticalAlignment(VerticalAlignment verticalAlignment) {
+	public void setVerticalAlignment(final VerticalAlignment verticalAlignment) {
 		this.verticalAlignment = verticalAlignment;
 	}
 
@@ -200,7 +200,7 @@ public class Cell implements SpreadsheetElement {
 		return this.value;
 	}
 
-	public void setValue(String value) {
+	public void setValue(final String value) {
 		this.value = value;
 	}
 

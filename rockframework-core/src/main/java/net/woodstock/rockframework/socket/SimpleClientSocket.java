@@ -32,7 +32,7 @@ public abstract class SimpleClientSocket extends Thread {
 
 	private Socket	socket;
 
-	public SimpleClientSocket(String host, int port) throws IOException {
+	public SimpleClientSocket(final String host, final int port) throws IOException {
 		this.host = host;
 		this.port = port;
 		this.socket = new Socket(this.host, this.port);

@@ -21,6 +21,9 @@ import java.lang.reflect.Method;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.ReflectionException;
+import net.woodstock.rockframework.sys.SysLogger;
+
+import org.apache.commons.logging.Log;
 
 abstract class AbstractPropertyDescriptor implements PropertyDescriptor {
 
@@ -42,7 +45,7 @@ abstract class AbstractPropertyDescriptor implements PropertyDescriptor {
 		return this.beanDescriptor;
 	}
 
-	public void setBeanDescriptor(BeanDescriptor beanDescriptor) {
+	public void setBeanDescriptor(final BeanDescriptor beanDescriptor) {
 		this.beanDescriptor = beanDescriptor;
 	}
 
@@ -50,7 +53,7 @@ abstract class AbstractPropertyDescriptor implements PropertyDescriptor {
 		return this.readMethod;
 	}
 
-	public void setReadMethod(Method readMethod) {
+	public void setReadMethod(final Method readMethod) {
 		this.readMethod = readMethod;
 	}
 
@@ -58,7 +61,7 @@ abstract class AbstractPropertyDescriptor implements PropertyDescriptor {
 		return this.readMethodName;
 	}
 
-	public void setReadMethodName(String readMethodName) {
+	public void setReadMethodName(final String readMethodName) {
 		this.readMethodName = readMethodName;
 	}
 
@@ -66,7 +69,7 @@ abstract class AbstractPropertyDescriptor implements PropertyDescriptor {
 		return this.writeMethod;
 	}
 
-	public void setWriteMethod(Method writeMethod) {
+	public void setWriteMethod(final Method writeMethod) {
 		this.writeMethod = writeMethod;
 	}
 
@@ -74,12 +77,12 @@ abstract class AbstractPropertyDescriptor implements PropertyDescriptor {
 		return this.writeMethodName;
 	}
 
-	public void setWriteMethodName(String writeMethodName) {
+	public void setWriteMethodName(final String writeMethodName) {
 		this.writeMethodName = writeMethodName;
 	}
 
 	// Getters and Setters
-	public Object getValue(Object o) {
+	public Object getValue(final Object o) {
 		try {
 			if (this.getReadMethod() == null) {
 				throw new NoSuchMethodException(this.beanDescriptor.getType().getCanonicalName() + "." + this.getReadMethodName());
@@ -90,7 +93,7 @@ abstract class AbstractPropertyDescriptor implements PropertyDescriptor {
 		}
 	}
 
-	public void setValue(Object o, Object value) {
+	public void setValue(final Object o, final Object value) {
 		try {
 			if (this.getWriteMethod() == null) {
 				throw new NoSuchMethodException(this.beanDescriptor.getType().getCanonicalName() + "." + this.getWriteMethodName());
@@ -116,6 +119,11 @@ abstract class AbstractPropertyDescriptor implements PropertyDescriptor {
 	@Override
 	public String toString() {
 		return this.getName();
+	}
+
+	// Logger
+	public Log getLogger() {
+		return SysLogger.getLogger();
 	}
 
 }

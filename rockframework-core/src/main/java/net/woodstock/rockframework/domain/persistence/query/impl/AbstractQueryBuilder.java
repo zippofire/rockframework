@@ -21,7 +21,7 @@ import net.woodstock.rockframework.sys.SysLogger;
 
 import org.apache.commons.logging.Log;
 
-abstract class AbstractQueryBuilder implements QueryBuilder {
+abstract class AbstractQueryBuilder<T> implements QueryBuilder<T> {
 
 	protected Log getLogger() {
 		return SysLogger.getLogger();

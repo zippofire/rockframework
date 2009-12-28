@@ -22,7 +22,7 @@ public enum Algorithm {
 
 	private String	algorithm;
 
-	private Algorithm(String algorithm) {
+	private Algorithm(final String algorithm) {
 		this.algorithm = algorithm;
 	}
 

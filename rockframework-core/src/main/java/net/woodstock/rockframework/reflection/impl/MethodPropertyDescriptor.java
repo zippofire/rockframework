@@ -29,7 +29,7 @@ class MethodPropertyDescriptor extends AbstractPropertyDescriptor {
 
 	private int			modifiers;
 
-	MethodPropertyDescriptor(BeanDescriptor beanDescriptor, String name, Class<?> type) {
+	MethodPropertyDescriptor(final BeanDescriptor beanDescriptor, final String name, final Class<?> type) {
 		super();
 		this.setBeanDescriptor(beanDescriptor);
 		this.name = name;
@@ -53,16 +53,15 @@ class MethodPropertyDescriptor extends AbstractPropertyDescriptor {
 				readMethodName = BeanDescriptorHelper.getMethodName(BeanDescriptorHelper.IS_METHOD_PREFIX, this.name);
 				readMethod = c.getMethod(readMethodName, new Class[] {});
 			} catch (NoSuchMethodException e) {
-				// this.getLogger().info(e.getMessage(), e);
+				this.getLogger().debug(e.getMessage(), e);
 			}
-		}
-		// Get
-		else {
+			// Get
+		} else {
 			try {
 				readMethodName = BeanDescriptorHelper.getMethodName(BeanDescriptorHelper.GET_METHOD_PREFIX, this.name);
 				readMethod = c.getMethod(readMethodName, new Class[] {});
 			} catch (NoSuchMethodException e) {
-				// this.getLogger().info(e.getMessage(), e);
+				this.getLogger().debug(e.getMessage(), e);
 			}
 		}
 		this.setReadMethodName(readMethodName);
@@ -81,7 +80,7 @@ class MethodPropertyDescriptor extends AbstractPropertyDescriptor {
 			writeMethodName = BeanDescriptorHelper.getMethodName(BeanDescriptorHelper.SET_METHOD_PREFIX, this.name);
 			writeMethod = c.getMethod(writeMethodName, new Class[] { this.type });
 		} catch (NoSuchMethodException e) {
-			// e.printStackTrace();
+			this.getLogger().debug(e.getMessage(), e);
 		}
 		this.setWriteMethodName(writeMethodName);
 		this.setWriteMethod(writeMethod);
@@ -100,14 +99,14 @@ class MethodPropertyDescriptor extends AbstractPropertyDescriptor {
 		return this.type;
 	}
 
-	public boolean isAnnotationPresent(Class<? extends Annotation> clazz) {
+	public boolean isAnnotationPresent(final Class<? extends Annotation> clazz) {
 		if (this.getReadMethod() != null) {
 			return this.getReadMethod().isAnnotationPresent(clazz);
 		}
 		return this.getWriteMethod().isAnnotationPresent(clazz);
 	}
 
-	public <T extends Annotation> T getAnnotation(Class<T> clazz) {
+	public <T extends Annotation> T getAnnotation(final Class<T> clazz) {
 		if (this.getReadMethod() != null) {
 			return this.getReadMethod().getAnnotation(clazz);
 		}

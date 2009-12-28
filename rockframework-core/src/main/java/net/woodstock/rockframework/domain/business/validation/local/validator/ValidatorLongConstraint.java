@@ -25,7 +25,7 @@ import net.woodstock.rockframework.utils.ArrayUtils;
 
 public class ValidatorLongConstraint extends AbstractValidator {
 
-	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
+	public ValidationResult validate(final LocalValidationContext context) {
 		try {
 			Long value = (Long) context.getValue();
 			ValidateLongConstraint annotation = (ValidateLongConstraint) context.getAnnotation();
@@ -46,7 +46,7 @@ public class ValidatorLongConstraint extends AbstractValidator {
 		}
 	}
 
-	private String getErrorMessage(ValidateLongConstraint annotation, String name) {
+	private String getErrorMessage(final ValidateLongConstraint annotation, final String name) {
 		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_CONSTRAINT, name, ArrayUtils.toString(annotation.values()));
 	}
 

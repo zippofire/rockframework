@@ -23,7 +23,7 @@ import net.woodstock.rockframework.sys.SysLogger;
 
 public class DebugHttpSessionListener implements HttpSessionListener {
 
-	public void sessionCreated(HttpSessionEvent event) {
+	public void sessionCreated(final HttpSessionEvent event) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("\nCreated");
 		builder.append("\nID      : " + event.getSession().getId());
@@ -32,7 +32,7 @@ public class DebugHttpSessionListener implements HttpSessionListener {
 		SysLogger.getLogger().info(builder.toString());
 	}
 
-	public void sessionDestroyed(HttpSessionEvent event) {
+	public void sessionDestroyed(final HttpSessionEvent event) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("\nDestroyed");
 		builder.append("\nID      : " + event.getSession().getId());

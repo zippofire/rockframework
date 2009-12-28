@@ -31,7 +31,7 @@ class PropertyNavigatorImpl implements PropertyNavigator {
 
 	private PropertyDescriptor	propertyDescriptor;
 
-	public PropertyNavigatorImpl(Object bean, BeanNavigator parent, PropertyDescriptor propertyDescriptor) {
+	public PropertyNavigatorImpl(final Object bean, final BeanNavigator parent, final PropertyDescriptor propertyDescriptor) {
 		super();
 		this.bean = bean;
 		this.parent = parent;
@@ -73,7 +73,7 @@ class PropertyNavigatorImpl implements PropertyNavigator {
 	}
 
 	@Override
-	public void setValue(Object value) {
+	public void setValue(final Object value) {
 		if (this.bean == null) {
 			return;
 		}

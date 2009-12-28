@@ -19,12 +19,12 @@ package net.woodstock.rockframework.conversion.common.converters;
 public class ShortConverter extends NumberConverter<Short> {
 
 	@Override
-	protected Short toNumber(Number n) {
+	protected Short toNumber(final Number n) {
 		return new Short(n.shortValue());
 	}
 
 	@Override
-	protected Short toNumber(String s) {
+	protected Short toNumber(final String s) {
 		return new Short(s);
 	}
 

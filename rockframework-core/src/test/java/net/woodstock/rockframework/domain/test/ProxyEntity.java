@@ -25,13 +25,13 @@ import java.lang.reflect.Proxy;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.sys.SysLogger;
 
-public class ProxyEntity<ID extends Serializable> implements Entity<ID>, InvocationHandler {
+public final class ProxyEntity<ID extends Serializable> implements Entity<ID>, InvocationHandler {
 
 	private static final long	serialVersionUID	= 5134816048976402977L;
 
 	private Entity<ID>			entity;
 
-	private ProxyEntity(Entity<ID> entity) {
+	private ProxyEntity(final Entity<ID> entity) {
 		super();
 		this.entity = entity;
 	}
@@ -40,23 +40,23 @@ public class ProxyEntity<ID extends Serializable> implements Entity<ID>, Invocat
 		return this.entity.getId();
 	}
 
-	public void setId(ID id) {
+	public void setId(final ID id) {
 		this.entity.setId(id);
 	}
 
-	public Object invoke(Object proxy, Method method, Object[] args) throws InvocationTargetException, IllegalAccessException {
+	public Object invoke(final Object proxy, final Method method, final Object[] args) throws InvocationTargetException, IllegalAccessException {
 		SysLogger.getLogger().info("Calling method " + method.getName());
 		return method.invoke(this.entity, args);
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <E extends Entity<? extends Serializable>> E newInstance(E entity) {
+	public static <E extends Entity<? extends Serializable>> E newInstance(final E entity) {
 		Object obj = Proxy.newProxyInstance(entity.getClass().getClassLoader(), entity.getClass().getInterfaces(), new ProxyEntity(entity));
 		return (E) obj;
 	}
 
 	@SuppressWarnings("unchecked")
-	public static Object newInstance2(Object obj) {
+	public static Object newInstance2(final Object obj) {
 		return Proxy.newProxyInstance(obj.getClass().getClassLoader(), obj.getClass().getInterfaces(), new ProxyEntity((Entity) obj));
 	}
 

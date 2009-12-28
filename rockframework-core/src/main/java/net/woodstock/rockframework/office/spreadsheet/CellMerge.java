@@ -32,7 +32,7 @@ public class CellMerge<R, C> implements SpreadsheetElement {
 		super();
 	}
 
-	public CellMerge(R firstRow, R lastRow, C firstColumn, C lastColumn) {
+	public CellMerge(final R firstRow, final R lastRow, final C firstColumn, final C lastColumn) {
 		super();
 		this.firstRow = firstRow;
 		this.lastRow = lastRow;
@@ -44,7 +44,7 @@ public class CellMerge<R, C> implements SpreadsheetElement {
 		return this.firstRow;
 	}
 
-	public void setFirstRow(R firstRow) {
+	public void setFirstRow(final R firstRow) {
 		this.firstRow = firstRow;
 	}
 
@@ -52,7 +52,7 @@ public class CellMerge<R, C> implements SpreadsheetElement {
 		return this.lastRow;
 	}
 
-	public void setLastRow(R lastRow) {
+	public void setLastRow(final R lastRow) {
 		this.lastRow = lastRow;
 	}
 
@@ -60,7 +60,7 @@ public class CellMerge<R, C> implements SpreadsheetElement {
 		return this.firstColumn;
 	}
 
-	public void setFirstColumn(C firstColumn) {
+	public void setFirstColumn(final C firstColumn) {
 		this.firstColumn = firstColumn;
 	}
 
@@ -68,7 +68,7 @@ public class CellMerge<R, C> implements SpreadsheetElement {
 		return this.lastColumn;
 	}
 
-	public void setLastColumn(C lastColumn) {
+	public void setLastColumn(final C lastColumn) {
 		this.lastColumn = lastColumn;
 	}
 

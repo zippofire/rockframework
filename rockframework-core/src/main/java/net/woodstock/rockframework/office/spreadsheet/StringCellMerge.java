@@ -24,7 +24,7 @@ public class StringCellMerge extends CellMerge<Integer, String> {
 		super();
 	}
 
-	public StringCellMerge(Integer firstRow, Integer lastRow, String firstColumn, String lastColumn) {
+	public StringCellMerge(final Integer firstRow, final Integer lastRow, final String firstColumn, final String lastColumn) {
 		super(firstRow, lastRow, firstColumn, lastColumn);
 	}
 

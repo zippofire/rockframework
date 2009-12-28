@@ -43,7 +43,7 @@ abstract class JsonConverterHelper {
 		//
 	}
 
-	public static String addEscape(String str) {
+	public static String addEscape(final String str) {
 		if (JsonConverterHelper.replacement == null) {
 			JsonConverterHelper.replacement = new LinkedList<String[]>();
 			JsonConverterHelper.replacement.add(new String[] { "\n", "\\\\n" });
@@ -62,7 +62,7 @@ abstract class JsonConverterHelper {
 		return escapedString;
 	}
 
-	public static TextConverter<?> getConverter(Class<?> clazz) {
+	public static TextConverter<?> getConverter(final Class<?> clazz) {
 		if (JsonConverterHelper.converters == null) {
 			JsonConverterHelper.converters = new HashMap<Class<?>, TextConverter<?>>();
 			JsonConverterHelper.converters.put(BigDecimal.class, new BigDecimalConverter());

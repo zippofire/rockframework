@@ -35,7 +35,7 @@ public class ValidatorDateInterval extends AbstractValidator {
 		this.dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM);
 	}
 
-	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
+	public ValidationResult validate(final LocalValidationContext context) {
 		try {
 			ValidateDateInterval annotation = (ValidateDateInterval) context.getAnnotation();
 			Date value = (Date) context.getValue();
@@ -82,7 +82,7 @@ public class ValidatorDateInterval extends AbstractValidator {
 		}
 	}
 
-	private String getErrorMessage(ValidateDateInterval annotation, Calendar calendar, String name) {
+	private String getErrorMessage(final ValidateDateInterval annotation, final Calendar calendar, final String name) {
 		Calendar pastCalendar = Calendar.getInstance();
 		Calendar futureCalendar = Calendar.getInstance();
 

@@ -20,7 +20,7 @@ public class Bar implements Entity<Integer> {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(final Integer id) {
 		this.id = id;
 	}
 
@@ -28,7 +28,7 @@ public class Bar implements Entity<Integer> {
 		return this.value;
 	}
 
-	public void setValue(String value) {
+	public void setValue(final String value) {
 		this.value = value;
 	}
 
@@ -36,7 +36,7 @@ public class Bar implements Entity<Integer> {
 		return this.baz;
 	}
 
-	public void setBaz(Baz baz) {
+	public void setBaz(final Baz baz) {
 		this.baz = baz;
 	}
 

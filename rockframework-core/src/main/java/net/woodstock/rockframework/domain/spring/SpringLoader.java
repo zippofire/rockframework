@@ -28,15 +28,15 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
-public class SpringLoader implements Loader {
+public final class SpringLoader implements Loader {
 
 	public static final String		APPLICATION_CONFIGURATION		= "applicationContext.xml";
 
 	public static final String		WEBAPPLICATION_CONFIGURATION	= "WEB-INF/applicationContext.xml";
 
-	private static final String[]	configFiles						= { SpringLoader.APPLICATION_CONFIGURATION, SpringLoader.WEBAPPLICATION_CONFIGURATION };
+	private static final String[]	CONFIG_FILES					= { SpringLoader.APPLICATION_CONFIGURATION, SpringLoader.WEBAPPLICATION_CONFIGURATION };
 
-	private static SpringLoader		loader;
+	private static SpringLoader		instance						= new SpringLoader();
 
 	private ApplicationContext		context;
 
@@ -57,10 +57,10 @@ public class SpringLoader implements Loader {
 		return ContextLoader.getCurrentWebApplicationContext();
 	}
 
-	private ApplicationContext getApplicationContext() throws DomainException {
+	private ApplicationContext getApplicationContext() {
 		Collection<String> configs = new LinkedHashSet<String>();
 		ClassLoader classLoader = SpringLoader.class.getClassLoader();
-		for (String config : SpringLoader.configFiles) {
+		for (String config : SpringLoader.CONFIG_FILES) {
 			if (classLoader.getResource(config) != null) {
 				configs.add(config);
 			}
@@ -74,7 +74,7 @@ public class SpringLoader implements Loader {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T getObject(Class<T> clazz) throws DomainException {
+	public <T> T getObject(final Class<T> clazz) {
 		Map<String, Object> map = this.context.getBeansOfType(clazz);
 		if (map.size() == 0) {
 			throw new DomainException(CoreMessage.getInstance().getMessage(Loader.MESSAGE_ERROR_NOT_FOUND, clazz.getCanonicalName()));
@@ -86,18 +86,11 @@ public class SpringLoader implements Loader {
 		return (T) map.values().iterator().next();
 	}
 
-	public Object getObject(String name) throws DomainException {
+	public Object getObject(final String name) {
 		return this.context.getBean(name);
 	}
 
 	public static SpringLoader getInstance() {
-		if (SpringLoader.loader == null) {
-			synchronized (SpringLoader.class) {
-				if (SpringLoader.loader == null) {
-					SpringLoader.loader = new SpringLoader();
-				}
-			}
-		}
-		return SpringLoader.loader;
+		return SpringLoader.instance;
 	}
 }

@@ -17,14 +17,13 @@
 package net.woodstock.rockframework.conversion.common.converters;
 
 import net.woodstock.rockframework.conversion.ConverterContext;
-import net.woodstock.rockframework.conversion.ConverterException;
 import net.woodstock.rockframework.conversion.common.AbstractTextConverter;
 import net.woodstock.rockframework.utils.StringUtils;
 
 public class BooleanConverter extends AbstractTextConverter<Boolean> {
 
 	@Override
-	public Boolean from(ConverterContext context, String s) throws ConverterException {
+	public Boolean from(final ConverterContext context, final String s) {
 		if (StringUtils.isEmpty(s)) {
 			return null;
 		}
@@ -41,7 +40,7 @@ public class BooleanConverter extends AbstractTextConverter<Boolean> {
 	}
 
 	@Override
-	public String to(ConverterContext context, Boolean t) throws ConverterException {
+	public String to(final ConverterContext context, final Boolean t) {
 		if (t == null) {
 			return StringUtils.BLANK;
 		}

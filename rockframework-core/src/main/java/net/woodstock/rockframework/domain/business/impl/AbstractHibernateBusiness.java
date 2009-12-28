@@ -18,7 +18,6 @@ package net.woodstock.rockframework.domain.business.impl;
 
 import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.domain.business.BusinessException;
 import net.woodstock.rockframework.domain.business.ValidationResult;
 
 import org.hibernate.validator.ClassValidator;
@@ -31,10 +30,10 @@ public abstract class AbstractHibernateBusiness extends AbstractBusiness {
 	}
 
 	@SuppressWarnings("unchecked")
-	private ValidationResult validate(Entity<?> entity) throws BusinessException {
+	private ValidationResult validate(final Entity<?> entity) {
 		ClassValidator validator = new ClassValidator(entity.getClass());
 		if (validator.hasValidationRules()) {
-			InvalidValue values[] = validator.getInvalidValues(entity);
+			InvalidValue[] values = validator.getInvalidValues(entity);
 			if ((values != null) && (values.length > 0)) {
 				boolean error = false;
 				String message = values[0].toString();
@@ -45,11 +44,11 @@ public abstract class AbstractHibernateBusiness extends AbstractBusiness {
 	}
 
 	// CRUD
-	public ValidationResult validateSave(Entity<?> entity) throws BusinessException {
+	public ValidationResult validateSave(final Entity<?> entity) {
 		return this.validate(entity);
 	}
 
-	public ValidationResult validateUpdate(Entity<?> entity) throws BusinessException {
+	public ValidationResult validateUpdate(final Entity<?> entity) {
 		return this.validate(entity);
 	}
 

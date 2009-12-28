@@ -21,40 +21,40 @@ import java.util.Locale;
 
 public abstract class FormatUtils {
 
-	public static Locale	BRAZIL	= new Locale("pt", "BR");
+	public static final Locale	BRAZIL	= new Locale("pt", "BR");
 
-	private static Locale	locale	= Locale.getDefault();
+	private static Locale		locale	= Locale.getDefault();
 
 	private FormatUtils() {
 		//
 	}
 
-	public static String formatCurrency(double d) {
+	public static String formatCurrency(final double d) {
 		NumberFormat f = NumberFormat.getCurrencyInstance(FormatUtils.locale);
 		return f.format(d);
 	}
 
-	public static String formatCurrency(long l) {
+	public static String formatCurrency(final long l) {
 		NumberFormat f = NumberFormat.getCurrencyInstance(FormatUtils.locale);
 		return f.format(l);
 	}
 
-	public static String formatInteger(double d) {
+	public static String formatInteger(final double d) {
 		NumberFormat f = NumberFormat.getIntegerInstance(FormatUtils.locale);
 		return f.format(d);
 	}
 
-	public static String formatInteger(long l) {
+	public static String formatInteger(final long l) {
 		NumberFormat f = NumberFormat.getIntegerInstance(FormatUtils.locale);
 		return f.format(l);
 	}
 
-	public static String formatPercent(double d) {
+	public static String formatPercent(final double d) {
 		NumberFormat f = NumberFormat.getPercentInstance(FormatUtils.locale);
 		return f.format(d);
 	}
 
-	public static String formatPercent(long l) {
+	public static String formatPercent(final long l) {
 		NumberFormat f = NumberFormat.getPercentInstance(FormatUtils.locale);
 		return f.format(l);
 	}
@@ -63,7 +63,7 @@ public abstract class FormatUtils {
 		return FormatUtils.locale;
 	}
 
-	public static Locale getLocale(String country) {
+	public static Locale getLocale(final String country) {
 		for (Locale l : Locale.getAvailableLocales()) {
 			if (l.getISO3Country().equals(country)) {
 				return l;
@@ -72,7 +72,7 @@ public abstract class FormatUtils {
 		return FormatUtils.locale;
 	}
 
-	public static Locale getLocale(String country, String language) {
+	public static Locale getLocale(final String country, final String language) {
 		for (Locale l : Locale.getAvailableLocales()) {
 			if ((l.getISO3Country().equals(country)) && (l.getISO3Language().equals(language))) {
 				return l;
@@ -81,15 +81,15 @@ public abstract class FormatUtils {
 		return FormatUtils.locale;
 	}
 
-	public static void setLocale(Locale locale) {
+	public static void setLocale(final Locale locale) {
 		FormatUtils.locale = locale;
 	}
 
-	public static void setLocale(String country) {
+	public static void setLocale(final String country) {
 		FormatUtils.locale = FormatUtils.getLocale(country);
 	}
 
-	public static void setLocale(String country, String language) {
+	public static void setLocale(final String country, final String language) {
 		FormatUtils.locale = FormatUtils.getLocale(country, language);
 	}
 

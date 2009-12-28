@@ -23,7 +23,7 @@ public abstract class SysLogger {
 
 	private static final String	LOG_NAME	= "net.woodstock.rockframework";
 
-	private static Log			log;
+	private static Log			log			= LogFactory.getLog(SysLogger.LOG_NAME);
 
 	private SysLogger() {
 		super();
@@ -40,13 +40,6 @@ public abstract class SysLogger {
 	}
 
 	private static Log getCommonLogger() {
-		if (SysLogger.log == null) {
-			synchronized (SysLogger.class) {
-				if (SysLogger.log == null) {
-					SysLogger.log = LogFactory.getLog(SysLogger.LOG_NAME);
-				}
-			}
-		}
 		return SysLogger.log;
 	}
 }

@@ -30,7 +30,7 @@ public abstract class Command {
 		//
 	}
 
-	public static CommandOutput execute(String[] cmd) throws IOException {
+	public static CommandOutput execute(final String[] cmd) throws IOException {
 		CommandOutput output = new CommandOutput();
 		String line;
 		Runtime runtime = Runtime.getRuntime();
@@ -41,20 +41,20 @@ public abstract class Command {
 		BufferedReader readerInput = new BufferedReader(inputStream);
 		BufferedReader readerError = new BufferedReader(errorStream);
 
-		if ((line = readerInput.readLine()) != null) {
-			do {
-				if (!StringUtils.isEmpty(line)) {
-					output.addOut(line.trim());
-				}
-			} while ((line = readerInput.readLine()) != null);
+		line = readerInput.readLine();
+		while (line != null) {
+			if (!StringUtils.isEmpty(line)) {
+				output.addOut(line.trim());
+			}
+			line = readerInput.readLine();
 		}
 
-		if ((line = readerError.readLine()) != null) {
-			do {
-				if (!StringUtils.isEmpty(line)) {
-					output.addErr(line.trim());
-				}
-			} while ((line = readerError.readLine()) != null);
+		line = readerError.readLine();
+		while (line != null) {
+			if (!StringUtils.isEmpty(line)) {
+				output.addOut(line.trim());
+			}
+			line = readerError.readLine();
 		}
 
 		readerInput.close();
@@ -65,7 +65,7 @@ public abstract class Command {
 		return output;
 	}
 
-	public static CommandOutput execute(String[] cmd, String[] subcmd) throws IOException {
+	public static CommandOutput execute(final String[] cmd, final String[] subcmd) throws IOException {
 		CommandOutput output = new CommandOutput();
 		Runtime runtime = Runtime.getRuntime();
 		Process process = runtime.exec(cmd);

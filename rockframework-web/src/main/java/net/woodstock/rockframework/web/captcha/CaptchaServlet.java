@@ -50,7 +50,7 @@ public class CaptchaServlet extends BaseServlet {
 	}
 
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 		StringBuilder builder = new StringBuilder();
 		for (int i = 0; i < 6; i++) {
 			int index = NumberUtils.random(this.chars.length - 1);
@@ -67,7 +67,7 @@ public class CaptchaServlet extends BaseServlet {
 		response.getOutputStream().write(bytes);
 	}
 
-	public static String getSessionCaptcha(HttpServletRequest request) {
+	public static String getSessionCaptcha(final HttpServletRequest request) {
 		return (String) request.getSession().getAttribute(CaptchaServlet.CAPTCHA_PARAMETER);
 	}
 

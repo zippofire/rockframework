@@ -19,13 +19,13 @@ package net.woodstock.rockframework.conversion.text;
 import net.woodstock.rockframework.conversion.ConverterFactory;
 import net.woodstock.rockframework.conversion.TextConverter;
 
-public class TextConverterFactory implements ConverterFactory<String, Object> {
+public final class TextConverterFactory implements ConverterFactory<String, Object> {
 
-	private static TextConverterFactory	factory;
+	private static TextConverterFactory	instance	= new TextConverterFactory();
 
 	private TextConverter<Object>		converter;
 
-	public TextConverterFactory() {
+	private TextConverterFactory() {
 		super();
 		this.converter = new BeanConverter();
 	}
@@ -35,14 +35,7 @@ public class TextConverterFactory implements ConverterFactory<String, Object> {
 	}
 
 	public static TextConverterFactory getInstance() {
-		if (TextConverterFactory.factory == null) {
-			synchronized (TextConverterFactory.class) {
-				if (TextConverterFactory.factory == null) {
-					TextConverterFactory.factory = new TextConverterFactory();
-				}
-			}
-		}
-		return TextConverterFactory.factory;
+		return TextConverterFactory.instance;
 	}
 
 }

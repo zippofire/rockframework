@@ -38,7 +38,7 @@ abstract class GenericServiceBean extends AbstractService implements GenericServ
 		return this.business;
 	}
 
-	public void setBusiness(GenericBusiness business) {
+	public void setBusiness(final GenericBusiness business) {
 		this.business = business;
 	}
 
@@ -49,7 +49,7 @@ abstract class GenericServiceBean extends AbstractService implements GenericServ
 		return this.repository;
 	}
 
-	public void setRepository(GenericRepository repository) {
+	public void setRepository(final GenericRepository repository) {
 		this.repository = repository;
 	}
 

@@ -67,7 +67,7 @@ public abstract class BaseAction extends ActionSupport implements ServletRequest
 	}
 
 	@SuppressWarnings("unused")
-	public void prepare(HttpServletRequest request) throws Exception {
+	public void prepare(final HttpServletRequest request) throws Exception {
 		//
 	}
 
@@ -83,7 +83,7 @@ public abstract class BaseAction extends ActionSupport implements ServletRequest
 		return this.request;
 	}
 
-	public void setServletRequest(HttpServletRequest request) {
+	public void setServletRequest(final HttpServletRequest request) {
 		this.request = request;
 	}
 
@@ -95,7 +95,7 @@ public abstract class BaseAction extends ActionSupport implements ServletRequest
 		return this.response;
 	}
 
-	public void setServletResponse(HttpServletResponse response) {
+	public void setServletResponse(final HttpServletResponse response) {
 		this.response = response;
 	}
 
@@ -103,23 +103,23 @@ public abstract class BaseAction extends ActionSupport implements ServletRequest
 		return SysLogger.getLogger();
 	}
 
-	protected String getRequestParameter(String name) {
+	protected String getRequestParameter(final String name) {
 		return this.request.getParameter(name);
 	}
 
-	protected Object getRequestAttribute(String name) {
+	protected Object getRequestAttribute(final String name) {
 		return this.request.getAttribute(name);
 	}
 
-	protected Object getSessionAttribute(String name) {
+	protected Object getSessionAttribute(final String name) {
 		return this.request.getSession().getAttribute(name);
 	}
 
-	protected void setRequestAttribute(String name, Object value) {
+	protected void setRequestAttribute(final String name, final Object value) {
 		this.request.setAttribute(name, value);
 	}
 
-	protected void setSessionAttribute(String name, Object value) {
+	protected void setSessionAttribute(final String name, final Object value) {
 		this.request.getSession().setAttribute(name, value);
 	}
 

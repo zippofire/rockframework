@@ -25,7 +25,6 @@ import net.woodstock.rockframework.utils.StringUtils;
 import net.woodstock.rockframework.xml.dom.XmlDocument;
 import net.woodstock.rockframework.xml.dom.XmlElement;
 
-import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
@@ -45,12 +44,12 @@ public class HttpClient implements Serializable {
 		this.client = new org.apache.commons.httpclient.HttpClient();
 	}
 
-	public String openText(String url, Collection<Entry<String, Object>> params) throws HttpException, IOException {
+	public String openText(final String url, final Collection<Entry<String, Object>> params) throws IOException {
 		GetMethod method = this.createGetMethod(url, params);
 		return method.getResponseBodyAsString();
 	}
 
-	public XmlDocument openXml(String url, Collection<Entry<String, Object>> params) throws HttpException, IOException {
+	public XmlDocument openXml(final String url, final Collection<Entry<String, Object>> params) throws IOException {
 		GetMethod method = this.createGetMethod(url, params);
 		int status = this.client.executeMethod(method);
 		if (status == HttpStatus.SC_OK) {
@@ -67,7 +66,7 @@ public class HttpClient implements Serializable {
 		return doc;
 	}
 
-	private GetMethod createGetMethod(String url, Collection<Entry<String, Object>> params) {
+	private GetMethod createGetMethod(final String url, final Collection<Entry<String, Object>> params) {
 		GetMethod method = new GetMethod(url);
 		if ((params != null) && (params.size() > 0)) {
 			HttpMethodParams hps = new HttpMethodParams();

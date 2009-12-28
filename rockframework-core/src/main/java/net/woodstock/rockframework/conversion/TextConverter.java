@@ -16,7 +16,6 @@
  */
 package net.woodstock.rockframework.conversion;
 
-
 public interface TextConverter<T> extends Converter<String, T> {
 	//
 }

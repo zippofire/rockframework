@@ -32,7 +32,7 @@ public class ForwardResult implements StrutsResult {
 
 	private Map<String, Object>	parameters;
 
-	public ForwardResult(String name) {
+	public ForwardResult(final String name) {
 		super();
 		this.name = name;
 		this.parameters = new HashMap<String, Object>();
@@ -46,15 +46,15 @@ public class ForwardResult implements StrutsResult {
 		return this.parameters;
 	}
 
-	public void setParameters(Map<String, Object> parameters) {
+	public void setParameters(final Map<String, Object> parameters) {
 		this.parameters = parameters;
 	}
 
-	public void addParameters(String key, Object value) {
+	public void addParameters(final String key, final Object value) {
 		this.parameters.put(key, value);
 	}
 
-	public ActionForward getForward(ActionMapping mapping) {
+	public ActionForward getForward(final ActionMapping mapping) {
 		ActionRedirect redirect = new ActionRedirect(mapping.findForwardConfig(this.name));
 		for (Entry<String, Object> entry : this.parameters.entrySet()) {
 			String k = entry.getKey();

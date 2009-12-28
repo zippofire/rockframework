@@ -47,7 +47,7 @@ public class ReaderWriter extends Writer {
 	}
 
 	@Override
-	public void write(char[] cbuf, int off, int len) throws IOException {
+	public void write(final char[] cbuf, final int off, final int len) throws IOException {
 		this.writer.write(cbuf, off, len);
 	}
 

@@ -29,7 +29,7 @@ public class RegexRefererFilter extends NoRefererFilter {
 	private String				regex;
 
 	@Override
-	protected boolean validateReferer(HttpServletRequest request) {
+	protected boolean validateReferer(final HttpServletRequest request) {
 		if (this.regex == null) {
 			this.regex = this.getInitParameter(RegexRefererFilter.REGEX_PARAMETER);
 		}

@@ -22,13 +22,13 @@ import java.util.List;
 
 import net.woodstock.rockframework.domain.business.ValidationResult;
 
-public class LocalValidationResult extends ValidationResult {
+public final class LocalValidationResult extends ValidationResult {
 
 	private static final long		serialVersionUID	= 6766952296126588148L;
 
 	private LocalValidationContext	context;
 
-	private LocalValidationResult(LocalValidationContext context, boolean error, String message) {
+	private LocalValidationResult(final LocalValidationContext context, final boolean error, final String message) {
 		super(error, message);
 		this.context = context;
 	}
@@ -54,15 +54,15 @@ public class LocalValidationResult extends ValidationResult {
 	}
 
 	// Static
-	protected static LocalValidationResult getSuccessResult(LocalValidationContext context) {
+	protected static LocalValidationResult getSuccessResult(final LocalValidationContext context) {
 		return new LocalValidationResult(context, false, null);
 	}
 
-	protected static LocalValidationResult getErrorResult(LocalValidationContext context, String message) {
+	protected static LocalValidationResult getErrorResult(final LocalValidationContext context, final String message) {
 		return new LocalValidationResult(context, true, message);
 	}
 
-	public static Collection<ValidationResult> getErrors(Collection<ValidationResult> collection) {
+	public static Collection<ValidationResult> getErrors(final Collection<ValidationResult> collection) {
 		if (collection == null) {
 			return null;
 		}

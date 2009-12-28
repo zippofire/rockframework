@@ -21,11 +21,11 @@ import java.util.Collection;
 
 public class FileExtensionFilter extends AbstractFileRegexFilter {
 
-	public FileExtensionFilter(String... items) {
+	public FileExtensionFilter(final String... items) {
 		this(Arrays.asList(items));
 	}
 
-	public FileExtensionFilter(Collection<String> items) {
+	public FileExtensionFilter(final Collection<String> items) {
 		super();
 		StringBuilder b = new StringBuilder();
 		boolean first = true;

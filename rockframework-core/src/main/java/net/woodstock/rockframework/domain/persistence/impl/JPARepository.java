@@ -18,23 +18,21 @@ package net.woodstock.rockframework.domain.persistence.impl;
 
 import javax.persistence.EntityManager;
 
-import net.woodstock.rockframework.domain.persistence.PersistenceException;
-
 public class JPARepository extends AbstractJPARepository {
 
 	private EntityManager	entityManager;
 
-	public JPARepository(EntityManager entityManager) {
+	public JPARepository(final EntityManager entityManager) {
 		super();
 		this.entityManager = entityManager;
 	}
 
 	@Override
-	protected EntityManager getEntityManager() throws PersistenceException {
+	protected EntityManager getEntityManager() {
 		return this.entityManager;
 	}
 
-	public void setEntityManager(EntityManager entityManager) {
+	public void setEntityManager(final EntityManager entityManager) {
 		this.entityManager = entityManager;
 	}
 

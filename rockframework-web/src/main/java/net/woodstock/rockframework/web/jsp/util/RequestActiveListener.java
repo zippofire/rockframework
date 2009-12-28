@@ -31,7 +31,7 @@ public class RequestActiveListener implements ServletRequestListener {
 	private static Map<Integer, String>	requests	= new HashMap<Integer, String>();
 
 	@Override
-	public void requestInitialized(ServletRequestEvent event) {
+	public void requestInitialized(final ServletRequestEvent event) {
 		HttpServletRequest request = (HttpServletRequest) event.getServletRequest();
 		String address = RequestUtils.getRequestAddress(request);
 		String path = RequestUtils.getFullRequestUrl(request);
@@ -40,7 +40,7 @@ public class RequestActiveListener implements ServletRequestListener {
 	}
 
 	@Override
-	public void requestDestroyed(ServletRequestEvent event) {
+	public void requestDestroyed(final ServletRequestEvent event) {
 		HttpServletRequest request = (HttpServletRequest) event.getServletRequest();
 		RequestActiveListener.requests.remove(new Integer(request.hashCode()));
 	}

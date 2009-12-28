@@ -20,7 +20,7 @@ class LDAPRestrictionContains extends LDAPRestriction {
 
 	private static final long	serialVersionUID	= 4125869948384443018L;
 
-	public LDAPRestrictionContains(String propertyName) {
+	public LDAPRestrictionContains(final String propertyName) {
 		super();
 		this.setPropertyName(propertyName);
 	}

@@ -31,12 +31,12 @@ public abstract class RefererFilter extends HttpFilter {
 
 	protected static final String	REFERER_HEADER_KEY	= "referer";
 
-	protected String getReferer(HttpServletRequest request) {
+	protected String getReferer(final HttpServletRequest request) {
 		return request.getHeader(RefererFilter.REFERER_HEADER_KEY);
 	}
 
 	@Override
-	public final void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+	public final void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain) throws IOException, ServletException {
 		boolean b = this.validateReferer(request);
 		if (!b) {
 			String url = request.getRequestURI();

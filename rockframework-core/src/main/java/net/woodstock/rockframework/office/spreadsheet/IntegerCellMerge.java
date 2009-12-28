@@ -24,11 +24,11 @@ public class IntegerCellMerge extends CellMerge<Integer, Integer> {
 		super();
 	}
 
-	public IntegerCellMerge(Integer firstRow, Integer lastRow, Integer firstColumn, Integer lastColumn) {
+	public IntegerCellMerge(final Integer firstRow, final Integer lastRow, final Integer firstColumn, final Integer lastColumn) {
 		super(firstRow, lastRow, firstColumn, lastColumn);
 	}
 
-	public IntegerCellMerge(int firstRow, int lastRow, int firstColumn, int lastColumn) {
+	public IntegerCellMerge(final int firstRow, final int lastRow, final int firstColumn, final int lastColumn) {
 		super(new Integer(firstRow), new Integer(lastRow), new Integer(firstColumn), new Integer(lastColumn));
 	}
 

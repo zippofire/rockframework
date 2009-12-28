@@ -23,7 +23,7 @@ import net.woodstock.rockframework.sys.SysLogger;
 
 public class DebugServletRequestListener implements ServletRequestListener {
 
-	public void requestDestroyed(ServletRequestEvent event) {
+	public void requestDestroyed(final ServletRequestEvent event) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("\nCreated");
 		builder.append("\nSource  : " + event.getSource().getClass().getCanonicalName());
@@ -31,7 +31,7 @@ public class DebugServletRequestListener implements ServletRequestListener {
 		SysLogger.getLogger().info(builder.toString());
 	}
 
-	public void requestInitialized(ServletRequestEvent event) {
+	public void requestInitialized(final ServletRequestEvent event) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("\nCreated");
 		builder.append("\nSource  : " + event.getSource().getClass().getCanonicalName());

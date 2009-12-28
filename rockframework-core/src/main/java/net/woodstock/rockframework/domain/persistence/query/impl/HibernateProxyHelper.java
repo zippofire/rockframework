@@ -24,7 +24,7 @@ abstract class HibernateProxyHelper {
 		//
 	}
 
-	public static boolean isProxy(Object o) {
+	public static boolean isProxy(final Object o) {
 		boolean b = (o instanceof HibernateProxy);
 		return b;
 	}

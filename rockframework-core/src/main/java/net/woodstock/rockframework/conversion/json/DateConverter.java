@@ -19,17 +19,16 @@ package net.woodstock.rockframework.conversion.json;
 import java.util.Date;
 
 import net.woodstock.rockframework.conversion.ConverterContext;
-import net.woodstock.rockframework.conversion.ConverterException;
 
 class DateConverter extends net.woodstock.rockframework.conversion.common.converters.DateConverter {
 
 	@Override
-	public Date from(ConverterContext context, String s) throws ConverterException {
+	public Date from(final ConverterContext context, final String s) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public String to(ConverterContext context, Date t) throws ConverterException {
+	public String to(final ConverterContext context, final Date t) {
 		if (t == null) {
 			return null;
 		}

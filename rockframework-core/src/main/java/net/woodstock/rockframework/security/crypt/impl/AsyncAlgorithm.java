@@ -22,7 +22,7 @@ public enum AsyncAlgorithm {
 
 	private String	algorithm;
 
-	private AsyncAlgorithm(String algorithm) {
+	private AsyncAlgorithm(final String algorithm) {
 		this.algorithm = algorithm;
 	}
 
@@ -30,7 +30,7 @@ public enum AsyncAlgorithm {
 		return this.algorithm;
 	}
 
-	public static AsyncAlgorithm fromString(String algorithm) {
+	public static AsyncAlgorithm fromString(final String algorithm) {
 		for (AsyncAlgorithm s : AsyncAlgorithm.values()) {
 			if (s.algorithm().equalsIgnoreCase(algorithm)) {
 				return s;

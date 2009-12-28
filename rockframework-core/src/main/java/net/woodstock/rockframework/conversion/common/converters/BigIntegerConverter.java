@@ -21,12 +21,12 @@ import java.math.BigInteger;
 public class BigIntegerConverter extends NumberConverter<BigInteger> {
 
 	@Override
-	protected BigInteger toNumber(Number n) {
+	protected BigInteger toNumber(final Number n) {
 		return new BigInteger(n.toString());
 	}
 
 	@Override
-	protected BigInteger toNumber(String s) {
+	protected BigInteger toNumber(final String s) {
 		return new BigInteger(s);
 	}
 

@@ -23,7 +23,7 @@ public class Foo extends AbstractEntity<Integer> {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(final Integer id) {
 		this.id = id;
 	}
 
@@ -31,7 +31,7 @@ public class Foo extends AbstractEntity<Integer> {
 		return this.date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(final Date date) {
 		this.date = date;
 	}
 

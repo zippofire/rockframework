@@ -20,15 +20,15 @@ public class DomainException extends RuntimeException {
 
 	private static final long	serialVersionUID	= 1L;
 
-	public DomainException(String message) {
+	public DomainException(final String message) {
 		super(message);
 	}
 
-	public DomainException(Throwable cause) {
+	public DomainException(final Throwable cause) {
 		super(cause);
 	}
 
-	public DomainException(String message, Throwable cause) {
+	public DomainException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 

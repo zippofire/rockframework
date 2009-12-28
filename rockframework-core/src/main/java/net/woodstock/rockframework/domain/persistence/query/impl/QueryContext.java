@@ -39,7 +39,7 @@ class QueryContext implements Serializable {
 
 	private String								queryString;
 
-	public QueryContext(String name, String alias, QueryContext parent) {
+	public QueryContext(final String name, final String alias, final QueryContext parent) {
 		super();
 		this.name = name;
 		this.alias = alias;
@@ -52,7 +52,7 @@ class QueryContext implements Serializable {
 		return this.name;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -60,7 +60,7 @@ class QueryContext implements Serializable {
 		return this.alias;
 	}
 
-	public void setAlias(String alias) {
+	public void setAlias(final String alias) {
 		this.alias = alias;
 	}
 
@@ -68,7 +68,7 @@ class QueryContext implements Serializable {
 		return this.parent;
 	}
 
-	public void setParent(QueryContext parent) {
+	public void setParent(final QueryContext parent) {
 		this.parent = parent;
 	}
 
@@ -76,7 +76,7 @@ class QueryContext implements Serializable {
 		return this.joinNeeded;
 	}
 
-	public void setJoinNeeded(boolean joinNeeded) {
+	public void setJoinNeeded(final boolean joinNeeded) {
 		this.joinNeeded = joinNeeded;
 	}
 
@@ -84,7 +84,7 @@ class QueryContext implements Serializable {
 		return this.parameters;
 	}
 
-	public void setParameters(Collection<QueryContextParameter> parameters) {
+	public void setParameters(final Collection<QueryContextParameter> parameters) {
 		this.parameters = parameters;
 	}
 
@@ -92,7 +92,7 @@ class QueryContext implements Serializable {
 		return this.childs;
 	}
 
-	public void setChilds(Collection<QueryContext> childs) {
+	public void setChilds(final Collection<QueryContext> childs) {
 		this.childs = childs;
 	}
 
@@ -100,7 +100,7 @@ class QueryContext implements Serializable {
 		return this.queryString;
 	}
 
-	public void setQueryString(String queryString) {
+	public void setQueryString(final String queryString) {
 		this.queryString = queryString;
 	}
 

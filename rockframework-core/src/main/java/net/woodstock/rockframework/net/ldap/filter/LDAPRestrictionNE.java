@@ -20,7 +20,7 @@ class LDAPRestrictionNE extends LDAPRestriction {
 
 	private static final long	serialVersionUID	= 3753186072275304809L;
 
-	public LDAPRestrictionNE(String propertyName, Object value) {
+	public LDAPRestrictionNE(final String propertyName, final Object value) {
 		super();
 		this.setPropertyName(propertyName);
 		this.setValue(value);

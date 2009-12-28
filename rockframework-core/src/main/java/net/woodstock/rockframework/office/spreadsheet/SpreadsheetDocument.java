@@ -36,7 +36,7 @@ public abstract class SpreadsheetDocument extends AbstractDocument {
 		return this.sheets;
 	}
 
-	public void setSheets(List<Sheet> sheets) {
+	public void setSheets(final List<Sheet> sheets) {
 		this.sheets = sheets;
 	}
 

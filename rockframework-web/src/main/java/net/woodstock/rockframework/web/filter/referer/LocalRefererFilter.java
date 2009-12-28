@@ -25,7 +25,7 @@ public class LocalRefererFilter extends NoRefererFilter {
 	private String	applicationUrl;
 
 	@Override
-	protected boolean validateReferer(HttpServletRequest request) {
+	protected boolean validateReferer(final HttpServletRequest request) {
 		if (this.applicationUrl == null) {
 			this.applicationUrl = RequestUtils.getApplicationUrl(request);
 		}

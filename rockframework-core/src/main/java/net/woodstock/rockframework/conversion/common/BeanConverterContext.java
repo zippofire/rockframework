@@ -26,7 +26,7 @@ public class BeanConverterContext extends AbstractConverterContext {
 
 	private BeanDescriptor	beanDescriptor;
 
-	public BeanConverterContext(ConverterContext parent, String name, Class<?> type) {
+	public BeanConverterContext(final ConverterContext parent, final String name, final Class<?> type) {
 		super(parent, name, type);
 		this.beanDescriptor = BeanDescriptorFactory.getInstance().getBeanDescriptor(type);
 	}
@@ -36,7 +36,7 @@ public class BeanConverterContext extends AbstractConverterContext {
 	}
 
 	@Override
-	public <A extends Annotation> A getAnnotation(Class<A> clazz) {
+	public <A extends Annotation> A getAnnotation(final Class<A> clazz) {
 		return this.beanDescriptor.getAnnotation(clazz);
 	}
 
@@ -46,7 +46,7 @@ public class BeanConverterContext extends AbstractConverterContext {
 	}
 
 	@Override
-	public boolean isAnnotationPresent(Class<? extends Annotation> clazz) {
+	public boolean isAnnotationPresent(final Class<? extends Annotation> clazz) {
 		return this.beanDescriptor.isAnnotationPresent(clazz);
 	}
 

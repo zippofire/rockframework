@@ -24,12 +24,12 @@ import net.woodstock.rockframework.web.listener.BaseListener;
 
 public class RequestAttributeListener extends BaseListener implements ServletRequestListener {
 
-	public void requestInitialized(ServletRequestEvent sre) {
+	public void requestInitialized(final ServletRequestEvent sre) {
 		HttpServletRequest request = (HttpServletRequest) sre.getServletRequest();
 		this.getLogger().info("Initialized request on URL " + request.getRequestURI() + " for client " + request.getRemoteAddr());
 	}
 
-	public void requestDestroyed(ServletRequestEvent sre) {
+	public void requestDestroyed(final ServletRequestEvent sre) {
 		HttpServletRequest request = (HttpServletRequest) sre.getServletRequest();
 		this.getLogger().info("Destroyed request on URL " + request.getRequestURI() + " for client " + request.getRemoteAddr());
 	}

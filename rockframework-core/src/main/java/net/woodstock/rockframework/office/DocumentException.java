@@ -20,15 +20,15 @@ public class DocumentException extends RuntimeException {
 
 	private static final long	serialVersionUID	= 1L;
 
-	public DocumentException(String message) {
+	public DocumentException(final String message) {
 		super(message);
 	}
 
-	public DocumentException(Throwable cause) {
+	public DocumentException(final Throwable cause) {
 		super(cause);
 	}
 
-	public DocumentException(String message, Throwable cause) {
+	public DocumentException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 

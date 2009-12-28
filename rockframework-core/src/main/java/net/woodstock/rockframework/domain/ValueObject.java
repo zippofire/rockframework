@@ -8,7 +8,7 @@ public class ValueObject<T> implements Pojo {
 
 	private T					value;
 
-	public ValueObject(T value) {
+	public ValueObject(final T value) {
 		super();
 		this.value = value;
 	}
@@ -19,7 +19,7 @@ public class ValueObject<T> implements Pojo {
 
 	// Object
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		}

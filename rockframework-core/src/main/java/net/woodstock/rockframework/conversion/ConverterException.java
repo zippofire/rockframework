@@ -20,15 +20,15 @@ public class ConverterException extends RuntimeException {
 
 	private static final long	serialVersionUID	= 1L;
 
-	public ConverterException(String message) {
+	public ConverterException(final String message) {
 		super(message);
 	}
 
-	public ConverterException(Throwable cause) {
+	public ConverterException(final Throwable cause) {
 		super(cause);
 	}
 
-	public ConverterException(String message, Throwable cause) {
+	public ConverterException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 

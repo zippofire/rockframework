@@ -16,7 +16,6 @@
  */
 package net.woodstock.rockframework.domain.business.validation.local;
 
-import net.woodstock.rockframework.domain.business.ValidationException;
 import net.woodstock.rockframework.domain.business.ValidationResult;
 
 public interface Validator {
@@ -25,6 +24,6 @@ public interface Validator {
 
 	String	REGEX_URL_WEB	= "(http|https|ftp|ftps)://[a-zA-Z0-9\\.-_]{2,}\\.[a-zA-Z0-9\\.-_]{2,4}(:[0-9]{2,5})?(/|(/.*)?)";
 
-	ValidationResult validate(LocalValidationContext context) throws ValidationException;
+	ValidationResult validate(LocalValidationContext context);
 
 }

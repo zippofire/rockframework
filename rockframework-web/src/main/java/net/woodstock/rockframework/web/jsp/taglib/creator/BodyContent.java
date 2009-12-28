@@ -21,7 +21,7 @@ public enum BodyContent {
 
 	private String	name;
 
-	private BodyContent(String name) {
+	private BodyContent(final String name) {
 		this.name = name;
 	}
 

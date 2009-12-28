@@ -80,7 +80,7 @@ public class Baz implements Entity<Integer> {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(final Integer id) {
 		this.id = id;
 	}
 
@@ -88,7 +88,7 @@ public class Baz implements Entity<Integer> {
 		return this.name;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -96,7 +96,7 @@ public class Baz implements Entity<Integer> {
 		return this.foo;
 	}
 
-	public void setFoo(Foo foo) {
+	public void setFoo(final Foo foo) {
 		this.foo = foo;
 	}
 
@@ -104,7 +104,7 @@ public class Baz implements Entity<Integer> {
 		return this.bars;
 	}
 
-	public void setBars(Set<Bar> bars) {
+	public void setBars(final Set<Bar> bars) {
 		this.bars = bars;
 	}
 

@@ -27,14 +27,14 @@ public class DateTimeConverter extends SimpleValueConverter<Date> {
 
 	private DateFormat	format;
 
-	public DateTimeConverter(String pattern) {
+	public DateTimeConverter(final String pattern) {
 		super();
 		this.format = new SimpleDateFormat(pattern);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	protected Date convertFromString(String s, Class toClass) {
+	protected Date convertFromString(final String s, final Class toClass) {
 		try {
 			Date d = this.format.parse(s);
 			return d;
@@ -44,7 +44,7 @@ public class DateTimeConverter extends SimpleValueConverter<Date> {
 	}
 
 	@Override
-	protected String convertToString(Date o) {
+	protected String convertToString(final Date o) {
 		String s = this.format.format(o);
 		return s;
 	}

@@ -20,15 +20,15 @@ public class SocketException extends RuntimeException {
 
 	private static final long	serialVersionUID	= 1L;
 
-	public SocketException(String msg) {
+	public SocketException(final String msg) {
 		super(msg);
 	}
 
-	public SocketException(Throwable cause) {
+	public SocketException(final Throwable cause) {
 		super(cause);
 	}
 
-	public SocketException(String msg, Throwable cause) {
+	public SocketException(final String msg, final Throwable cause) {
 		super(msg, cause);
 	}
 

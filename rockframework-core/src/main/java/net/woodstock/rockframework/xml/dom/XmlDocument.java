@@ -51,25 +51,25 @@ import org.xml.sax.SAXException;
 
 public class XmlDocument extends DocumentWrapper {
 
-	private static final long		serialVersionUID	= -3892243357826950608L;
+	private static final long				serialVersionUID	= -3892243357826950608L;
 
-	public static final String		DEFAULT_NS_PREFIX	= XMLConstants.DEFAULT_NS_PREFIX;
+	public static final String				DEFAULT_NS_PREFIX	= XMLConstants.DEFAULT_NS_PREFIX;
 
-	public static final String		XML_NS_PREFIX		= XMLConstants.XML_NS_PREFIX;
+	public static final String				XML_NS_PREFIX		= XMLConstants.XML_NS_PREFIX;
 
-	public static final String		XML_NS_URI			= XMLConstants.XML_NS_URI;
+	public static final String				XML_NS_URI			= XMLConstants.XML_NS_URI;
 
-	static DocumentBuilderFactory	factory;
+	private static DocumentBuilderFactory	factory;
 
-	static DocumentBuilder			builder;
+	private static DocumentBuilder			builder;
 
-	private XmlElement				root;
+	private XmlElement						root;
 
 	protected XmlDocument() {
 		super();
 	}
 
-	public XmlDocument(String name) {
+	public XmlDocument(final String name) {
 		super();
 		Document doc = XmlDocument.builder.newDocument();
 		Element e = doc.createElement(name);
@@ -78,7 +78,7 @@ public class XmlDocument extends DocumentWrapper {
 		this.root = XmlElement.toXmlElement(e);
 	}
 
-	public XmlDocument(Element root) {
+	public XmlDocument(final Element root) {
 		super();
 		Document doc = XmlDocument.builder.newDocument();
 		doc.appendChild(root);
@@ -86,7 +86,7 @@ public class XmlDocument extends DocumentWrapper {
 		this.root = XmlElement.toXmlElement(root);
 	}
 
-	private XmlDocument(Document d) {
+	private XmlDocument(final Document d) {
 		super();
 		NodeList nodes = d.getChildNodes();
 		Element root = null;
@@ -104,56 +104,56 @@ public class XmlDocument extends DocumentWrapper {
 		return this.root;
 	}
 
-	public static XmlDocument read(File file) throws SAXException, IOException {
+	public static XmlDocument read(final File file) throws SAXException, IOException {
 		return XmlDocument.read(new FileReader(file));
 	}
 
-	public static XmlDocument read(InputStream input) throws SAXException, IOException {
+	public static XmlDocument read(final InputStream input) throws SAXException, IOException {
 		return XmlDocument.read(new InputStreamReader(input));
 	}
 
-	public static XmlDocument read(Reader reader) throws SAXException, IOException {
+	public static XmlDocument read(final Reader reader) throws SAXException, IOException {
 		InputSource source = new InputSource(reader);
 		Document document = XmlDocument.builder.parse(source);
 		return new XmlDocument(document);
 	}
 
-	public static XmlDocument read(URL url) throws SAXException, IOException {
+	public static XmlDocument read(final URL url) throws SAXException, IOException {
 		InputStream input = url.openStream();
 		Document document = XmlDocument.builder.parse(input);
 		input.close();
 		return new XmlDocument(document);
 	}
 
-	public void write(File file) throws IOException {
+	public void write(final File file) throws IOException {
 		this.write(new FileWriter(file));
 	}
 
-	public void write(OutputStream out) throws IOException {
+	public void write(final OutputStream out) throws IOException {
 		this.write(new OutputStreamWriter(out));
 	}
 
-	public void write(Writer writer) throws IOException {
+	public void write(final Writer writer) throws IOException {
 		XmlWriter.getInstance().write(this, writer);
 	}
 
-	public boolean validateSchema(File source, String ns) throws SAXException, IOException {
+	public boolean validateSchema(final File source, final String ns) throws SAXException, IOException {
 		return this.validateSchema(new StreamSource(source), ns);
 	}
 
-	public boolean validateSchema(URL source, String ns) throws SAXException, IOException {
+	public boolean validateSchema(final URL source, final String ns) throws SAXException, IOException {
 		return this.validateSchema(source.openStream(), ns);
 	}
 
-	public boolean validateSchema(InputStream source, String ns) throws SAXException, IOException {
+	public boolean validateSchema(final InputStream source, final String ns) throws SAXException, IOException {
 		return this.validateSchema(new StreamSource(source), ns);
 	}
 
-	public boolean validateSchema(Reader source, String ns) throws SAXException, IOException {
+	public boolean validateSchema(final Reader source, final String ns) throws SAXException, IOException {
 		return this.validateSchema(new StreamSource(source), ns);
 	}
 
-	public boolean validateSchema(Source source, String ns) throws SAXException, IOException {
+	public boolean validateSchema(final Source source, final String ns) throws SAXException, IOException {
 		SchemaFactory factory = SchemaFactory.newInstance(ns);
 		Schema schema = factory.newSchema(source);
 		Validator validator = schema.newValidator();
@@ -166,34 +166,34 @@ public class XmlDocument extends DocumentWrapper {
 		return true;
 	}
 
-	public void validateSchemaWithError(File source, String ns) throws SAXException, IOException {
+	public void validateSchemaWithError(final File source, final String ns) throws SAXException, IOException {
 		this.validateSchema(new StreamSource(source), ns);
 	}
 
-	public void validateSchemaWithError(URL source, String ns) throws SAXException, IOException {
+	public void validateSchemaWithError(final URL source, final String ns) throws SAXException, IOException {
 		this.validateSchema(source.openStream(), ns);
 	}
 
-	public void validateSchemaWithError(InputStream source, String ns) throws SAXException, IOException {
+	public void validateSchemaWithError(final InputStream source, final String ns) throws SAXException, IOException {
 		this.validateSchema(new StreamSource(source), ns);
 	}
 
-	public void validateSchemaWithError(Reader source, String ns) throws SAXException, IOException {
+	public void validateSchemaWithError(final Reader source, final String ns) throws SAXException, IOException {
 		this.validateSchema(new StreamSource(source), ns);
 	}
 
-	public void validateSchemaWithError(Source source, String ns) throws SAXException, IOException {
+	public void validateSchemaWithError(final Source source, final String ns) throws SAXException, IOException {
 		SchemaFactory factory = SchemaFactory.newInstance(ns);
 		Schema schema = factory.newSchema(source);
 		Validator validator = schema.newValidator();
 		validator.validate(new DOMSource(this.getDocument()));
 	}
 
-	public static Document toDocument(XmlDocument d) {
+	public static Document toDocument(final XmlDocument d) {
 		return d.getDocument();
 	}
 
-	public static XmlDocument toXmlDocument(Document d) {
+	public static XmlDocument toXmlDocument(final Document d) {
 		return new XmlDocument(d);
 	}
 
@@ -205,7 +205,7 @@ public class XmlDocument extends DocumentWrapper {
 	}
 
 	@Override
-	public int compareTo(Document o) {
+	public int compareTo(final Document o) {
 		if (o == null) {
 			return 0;
 		}
@@ -214,7 +214,7 @@ public class XmlDocument extends DocumentWrapper {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof XmlDocument) {
 			return this.getDocument().equals(((XmlDocument) obj).getDocument());
 		}
@@ -242,6 +242,10 @@ public class XmlDocument extends DocumentWrapper {
 
 	protected Log getLogger() {
 		return SysLogger.getLogger();
+	}
+
+	static DocumentBuilder getDocumentBuilder() {
+		return XmlDocument.builder;
 	}
 
 	static {

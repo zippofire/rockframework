@@ -37,7 +37,7 @@ public class Entry<K, V> implements Map.Entry<K, V>, Serializable {
 		super();
 	}
 
-	public Entry(K key, V value) {
+	public Entry(final K key, final V value) {
 		super();
 		this.key = key;
 		this.value = value;
@@ -47,7 +47,7 @@ public class Entry<K, V> implements Map.Entry<K, V>, Serializable {
 		return this.key;
 	}
 
-	public K setKey(K key) {
+	public K setKey(final K key) {
 		this.key = key;
 		return this.key;
 	}
@@ -56,14 +56,14 @@ public class Entry<K, V> implements Map.Entry<K, V>, Serializable {
 		return this.value;
 	}
 
-	public V setValue(V value) {
+	public V setValue(final V value) {
 		this.value = value;
 		return this.value;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public boolean equals(Object o) {
+	public boolean equals(final Object o) {
 		if (o == null) {
 			return false;
 		}
@@ -71,12 +71,27 @@ public class Entry<K, V> implements Map.Entry<K, V>, Serializable {
 			return false;
 		}
 		Entry<?, ?> e = (Entry<?, ?>) o;
-		return (this.key == null ? e.getKey() == null : this.key.equals(e.getKey())) && (this.value == null ? e.getValue() == null : this.value.equals(e.getValue()));
+		if (((this.key == null) && (e.getKey() != null)) || ((this.key != null) && (e.getKey() == null))) {
+			return false;
+		}
+		if (((this.value == null) && (e.getValue() != null)) || ((this.value != null) && (e.getValue() == null))) {
+			return false;
+		}
+		if (!this.key.equals(e.getKey())) {
+			return false;
+		}
+		if (!this.value.equals(e.getValue())) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public int hashCode() {
-		return (this.key == null ? 0 : this.key.hashCode()) ^ (this.value == null ? 0 : this.value.hashCode());
+		if ((this.key == null) && (this.value == null)) {
+			return super.hashCode();
+		}
+		return this.key.hashCode() ^ this.value.hashCode();
 	}
 
 	@Override

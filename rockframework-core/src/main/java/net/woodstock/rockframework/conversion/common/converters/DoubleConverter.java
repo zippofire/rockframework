@@ -19,12 +19,12 @@ package net.woodstock.rockframework.conversion.common.converters;
 public class DoubleConverter extends NumberConverter<Double> {
 
 	@Override
-	protected Double toNumber(Number n) {
+	protected Double toNumber(final Number n) {
 		return new Double(n.doubleValue());
 	}
 
 	@Override
-	protected Double toNumber(String s) {
+	protected Double toNumber(final String s) {
 		return new Double(s);
 	}
 

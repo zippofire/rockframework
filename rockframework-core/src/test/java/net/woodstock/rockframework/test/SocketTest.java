@@ -10,7 +10,7 @@ import net.woodstock.rockframework.socket.SimpleServerSocket;
 
 public class SocketTest extends TestCase {
 
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		try {
 			new SocketX().start();
 		} catch (IOException e) {
@@ -25,7 +25,7 @@ public class SocketTest extends TestCase {
 		}
 
 		@Override
-		public void handle(Socket s) throws Exception {
+		public void handle(final Socket s) throws Exception {
 			InputStream input = s.getInputStream();
 			ByteArrayOutputStream output = new ByteArrayOutputStream();
 			int i = -1;

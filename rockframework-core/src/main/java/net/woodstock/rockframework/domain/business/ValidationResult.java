@@ -26,13 +26,13 @@ public class ValidationResult implements Serializable {
 
 	private String				message;
 
-	public ValidationResult(boolean error, String message) {
+	public ValidationResult(final boolean error, final String message) {
 		super();
 		this.error = error;
 		this.message = message;
 	}
 
-	public void setError(boolean error) {
+	public void setError(final boolean error) {
 		this.error = error;
 	}
 
@@ -44,7 +44,7 @@ public class ValidationResult implements Serializable {
 		return this.message;
 	}
 
-	public void setMessage(String message) {
+	public void setMessage(final String message) {
 		this.message = message;
 	}
 

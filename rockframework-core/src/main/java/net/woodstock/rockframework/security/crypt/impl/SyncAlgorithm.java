@@ -22,7 +22,7 @@ public enum SyncAlgorithm {
 
 	private String	algorithm;
 
-	private SyncAlgorithm(String algorithm) {
+	private SyncAlgorithm(final String algorithm) {
 		this.algorithm = algorithm;
 	}
 
@@ -30,7 +30,7 @@ public enum SyncAlgorithm {
 		return this.algorithm;
 	}
 
-	public static SyncAlgorithm fromString(String algorithm) {
+	public static SyncAlgorithm fromString(final String algorithm) {
 		for (SyncAlgorithm s : SyncAlgorithm.values()) {
 			if (s.algorithm().equalsIgnoreCase(algorithm)) {
 				return s;

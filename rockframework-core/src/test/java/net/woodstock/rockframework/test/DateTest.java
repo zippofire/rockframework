@@ -20,7 +20,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import junit.framework.TestCase;
-
 import net.woodstock.rockframework.util.Calendar;
 import net.woodstock.rockframework.utils.DateUtils;
 import net.woodstock.rockframework.utils.TimeUtils;

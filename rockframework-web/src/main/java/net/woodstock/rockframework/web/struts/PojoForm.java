@@ -28,7 +28,7 @@ public abstract class PojoForm<T extends Pojo> extends BaseForm {
 		super();
 	}
 
-	public PojoForm(T pojo) {
+	public PojoForm(final T pojo) {
 		super();
 		this.pojo = pojo;
 	}
@@ -37,7 +37,7 @@ public abstract class PojoForm<T extends Pojo> extends BaseForm {
 		return this.pojo;
 	}
 
-	public void setPojo(T pojo) {
+	public void setPojo(final T pojo) {
 		this.pojo = pojo;
 	}
 

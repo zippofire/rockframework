@@ -23,7 +23,7 @@ import net.woodstock.rockframework.sys.SysLogger;
 
 public class DebugServletRequestAttributeListener implements ServletRequestAttributeListener {
 
-	public void attributeAdded(ServletRequestAttributeEvent event) {
+	public void attributeAdded(final ServletRequestAttributeEvent event) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("\nAdded");
 		builder.append("\nSource  : " + event.getSource().getClass().getCanonicalName());
@@ -34,7 +34,7 @@ public class DebugServletRequestAttributeListener implements ServletRequestAttri
 		SysLogger.getLogger().info(builder.toString());
 	}
 
-	public void attributeRemoved(ServletRequestAttributeEvent event) {
+	public void attributeRemoved(final ServletRequestAttributeEvent event) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("\nAdded");
 		builder.append("\nSource  : " + event.getSource().getClass().getCanonicalName());
@@ -45,7 +45,7 @@ public class DebugServletRequestAttributeListener implements ServletRequestAttri
 		SysLogger.getLogger().info(builder.toString());
 	}
 
-	public void attributeReplaced(ServletRequestAttributeEvent event) {
+	public void attributeReplaced(final ServletRequestAttributeEvent event) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("\nAdded");
 		builder.append("\nSource  : " + event.getSource().getClass().getCanonicalName());

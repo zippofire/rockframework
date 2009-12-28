@@ -17,20 +17,19 @@
 package net.woodstock.rockframework.conversion.json;
 
 import net.woodstock.rockframework.conversion.ConverterContext;
-import net.woodstock.rockframework.conversion.ConverterException;
 import net.woodstock.rockframework.conversion.TextConverter;
 import net.woodstock.rockframework.conversion.common.AbstractTextConverter;
 
 public class CommonConverter extends AbstractTextConverter<Object> {
 
 	@Override
-	public Object from(ConverterContext context, String f) throws ConverterException {
+	public Object from(final ConverterContext context, final String f) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public String to(ConverterContext context, Object t) throws ConverterException {
+	public String to(final ConverterContext context, final Object t) {
 		TextConverter converter = JsonConverterHelper.getNullConverter();
 		if (t != null) {
 			converter = JsonConverterHelper.getConverter(t.getClass());

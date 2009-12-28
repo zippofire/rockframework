@@ -19,16 +19,16 @@ public class TestBeanInfo extends TestCase {
 
 		private static final long	serialVersionUID	= 1L;
 
-		protected Integer			id;
+		private Integer			id;
 
-		protected String			nome;
+		private String			nome;
 
 		public Integer getId() {
 			System.out.println("getId");
 			return this.id;
 		}
 
-		public void setId(Integer id) {
+		public void setId(final Integer id) {
 			System.out.println("setId");
 			this.id = id;
 		}
@@ -38,7 +38,7 @@ public class TestBeanInfo extends TestCase {
 			return this.nome;
 		}
 
-		public void setNome(String nome) {
+		public void setNome(final String nome) {
 			System.out.println("setNome");
 			this.nome = nome;
 		}

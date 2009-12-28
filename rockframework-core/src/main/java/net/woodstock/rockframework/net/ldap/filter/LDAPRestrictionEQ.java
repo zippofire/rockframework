@@ -20,7 +20,7 @@ class LDAPRestrictionEQ extends LDAPRestriction {
 
 	private static final long	serialVersionUID	= -6948256925994166639L;
 
-	public LDAPRestrictionEQ(String propertyName, Object value) {
+	public LDAPRestrictionEQ(final String propertyName, final Object value) {
 		super();
 		this.setPropertyName(propertyName);
 		this.setValue(value);

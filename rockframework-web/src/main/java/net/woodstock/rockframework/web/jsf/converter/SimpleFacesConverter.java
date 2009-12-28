@@ -18,14 +18,13 @@ package net.woodstock.rockframework.web.jsf.converter;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.convert.ConverterException;
 
 import net.woodstock.rockframework.utils.StringUtils;
 
 public abstract class SimpleFacesConverter<T> extends FacesConverter {
 
 	@Override
-	public final Object getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException {
+	public final Object getAsObject(final FacesContext context, final UIComponent component, final String value) {
 		if (StringUtils.isEmpty(value)) {
 			return null;
 		}
@@ -37,7 +36,7 @@ public abstract class SimpleFacesConverter<T> extends FacesConverter {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public final String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException {
+	public final String getAsString(final FacesContext context, final UIComponent component, final Object value) {
 		if (value == null) {
 			return null;
 		}
@@ -48,8 +47,8 @@ public abstract class SimpleFacesConverter<T> extends FacesConverter {
 	}
 
 	// Abstract
-	protected abstract T getAsObject(String value) throws ConverterException;
+	protected abstract T getAsObject(String value);
 
-	protected abstract String getAsString(T value) throws ConverterException;
+	protected abstract String getAsString(T value);
 
 }

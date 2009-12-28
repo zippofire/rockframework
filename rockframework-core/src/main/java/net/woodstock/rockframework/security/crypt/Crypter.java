@@ -18,8 +18,8 @@ package net.woodstock.rockframework.security.crypt;
 
 public interface Crypter {
 
-	String encrypt(String str) throws CrypterException;
+	String encrypt(String str);
 
-	String decrypt(String str) throws CrypterException;
+	String decrypt(String str);
 
 }

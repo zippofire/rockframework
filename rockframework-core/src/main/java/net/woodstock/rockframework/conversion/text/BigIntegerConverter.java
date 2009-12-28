@@ -19,18 +19,17 @@ package net.woodstock.rockframework.conversion.text;
 import java.math.BigInteger;
 
 import net.woodstock.rockframework.conversion.ConverterContext;
-import net.woodstock.rockframework.conversion.ConverterException;
 
 class BigIntegerConverter extends net.woodstock.rockframework.conversion.common.converters.BigIntegerConverter {
 
 	@Override
-	public BigInteger from(ConverterContext context, String s) throws ConverterException {
-		s = TextConverterHelper.trim(s);
-		return super.from(context, s);
+	public BigInteger from(final ConverterContext context, final String s) {
+		String ss = TextConverterHelper.trim(s);
+		return super.from(context, ss);
 	}
 
 	@Override
-	public String to(ConverterContext context, Number t) throws ConverterException {
+	public String to(final ConverterContext context, final Number t) {
 		String s = super.to(context, t);
 		int size = TextConverterHelper.getSize(context);
 		return TextConverterHelper.lpad(s, size);

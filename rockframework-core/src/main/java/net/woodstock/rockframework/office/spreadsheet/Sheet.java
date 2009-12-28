@@ -45,7 +45,7 @@ public class Sheet implements SpreadsheetElement {
 
 	private Map<Integer, Integer>	columnsWith;
 
-	public Sheet(String name) {
+	public Sheet(final String name) {
 		super();
 		this.name = name;
 		this.displayGridLines = true;
@@ -62,7 +62,7 @@ public class Sheet implements SpreadsheetElement {
 		return this.displayGridLines;
 	}
 
-	public void setDisplayGridLines(boolean displayGridLines) {
+	public void setDisplayGridLines(final boolean displayGridLines) {
 		this.displayGridLines = displayGridLines;
 	}
 
@@ -70,7 +70,7 @@ public class Sheet implements SpreadsheetElement {
 		return this.printGridLines;
 	}
 
-	public void setPrintGridLines(boolean printGridLines) {
+	public void setPrintGridLines(final boolean printGridLines) {
 		this.printGridLines = printGridLines;
 	}
 
@@ -78,7 +78,7 @@ public class Sheet implements SpreadsheetElement {
 		return this.fitToPage;
 	}
 
-	public void setFitToPage(boolean fitToPage) {
+	public void setFitToPage(final boolean fitToPage) {
 		this.fitToPage = fitToPage;
 	}
 
@@ -86,7 +86,7 @@ public class Sheet implements SpreadsheetElement {
 		return this.horizontallyCenter;
 	}
 
-	public void setHorizontallyCenter(boolean horizontallyCenter) {
+	public void setHorizontallyCenter(final boolean horizontallyCenter) {
 		this.horizontallyCenter = horizontallyCenter;
 	}
 
@@ -94,7 +94,7 @@ public class Sheet implements SpreadsheetElement {
 		return this.landscape;
 	}
 
-	public void setLandscape(boolean landscape) {
+	public void setLandscape(final boolean landscape) {
 		this.landscape = landscape;
 	}
 
@@ -102,7 +102,7 @@ public class Sheet implements SpreadsheetElement {
 		return this.name;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -110,7 +110,7 @@ public class Sheet implements SpreadsheetElement {
 		return this.rows;
 	}
 
-	public void setRows(List<Row> rows) {
+	public void setRows(final List<Row> rows) {
 		this.rows = rows;
 	}
 
@@ -118,7 +118,7 @@ public class Sheet implements SpreadsheetElement {
 		return this.merges;
 	}
 
-	public void setMerges(List<CellMerge<?, ?>> merges) {
+	public void setMerges(final List<CellMerge<?, ?>> merges) {
 		this.merges = merges;
 	}
 
@@ -126,7 +126,7 @@ public class Sheet implements SpreadsheetElement {
 		return this.images;
 	}
 
-	public void setImages(List<Image> images) {
+	public void setImages(final List<Image> images) {
 		this.images = images;
 	}
 
@@ -134,7 +134,7 @@ public class Sheet implements SpreadsheetElement {
 		return this.columnsWith;
 	}
 
-	public void setColumnsWith(Map<Integer, Integer> columnsWith) {
+	public void setColumnsWith(final Map<Integer, Integer> columnsWith) {
 		this.columnsWith = columnsWith;
 	}
 

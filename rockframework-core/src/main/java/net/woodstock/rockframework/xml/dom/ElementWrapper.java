@@ -39,7 +39,7 @@ abstract class ElementWrapper implements Comparable<Element>, Element, Serializa
 		return this.element;
 	}
 
-	public void setElement(Element element) {
+	public void setElement(final Element element) {
 		this.element = element;
 	}
 
@@ -47,63 +47,63 @@ abstract class ElementWrapper implements Comparable<Element>, Element, Serializa
 		return this.element.getTagName();
 	}
 
-	public String getAttribute(String name) {
+	public String getAttribute(final String name) {
 		return this.element.getAttribute(name);
 	}
 
-	public void setAttribute(String name, String value) {
+	public void setAttribute(final String name, final String value) {
 		this.element.setAttribute(name, value);
 	}
 
-	public void removeAttribute(String name) {
+	public void removeAttribute(final String name) {
 		this.element.removeAttribute(name);
 	}
 
-	public Attr getAttributeNode(String name) {
+	public Attr getAttributeNode(final String name) {
 		return this.element.getAttributeNode(name);
 	}
 
-	public Attr setAttributeNode(Attr newAttr) {
+	public Attr setAttributeNode(final Attr newAttr) {
 		return this.element.setAttributeNode(newAttr);
 	}
 
-	public Attr removeAttributeNode(Attr oldAttr) {
+	public Attr removeAttributeNode(final Attr oldAttr) {
 		return this.element.removeAttributeNode(oldAttr);
 	}
 
-	public NodeList getElementsByTagName(String name) {
+	public NodeList getElementsByTagName(final String name) {
 		return this.element.getElementsByTagName(name);
 	}
 
-	public String getAttributeNS(String namespaceURI, String localName) {
+	public String getAttributeNS(final String namespaceURI, final String localName) {
 		return this.element.getAttributeNS(namespaceURI, localName);
 	}
 
-	public void setAttributeNS(String namespaceURI, String qualifiedName, String value) {
+	public void setAttributeNS(final String namespaceURI, final String qualifiedName, final String value) {
 		this.element.setAttributeNS(namespaceURI, qualifiedName, value);
 	}
 
-	public void removeAttributeNS(String namespaceURI, String localName) {
+	public void removeAttributeNS(final String namespaceURI, final String localName) {
 		this.element.removeAttributeNS(namespaceURI, localName);
 	}
 
-	public Attr getAttributeNodeNS(String namespaceURI, String localName) {
+	public Attr getAttributeNodeNS(final String namespaceURI, final String localName) {
 		return this.element.getAttributeNodeNS(namespaceURI, localName);
 	}
 
-	public Attr setAttributeNodeNS(Attr newAttr) {
+	public Attr setAttributeNodeNS(final Attr newAttr) {
 		return this.element.setAttributeNodeNS(newAttr);
 	}
 
-	public NodeList getElementsByTagNameNS(String namespaceURI, String localName) {
+	public NodeList getElementsByTagNameNS(final String namespaceURI, final String localName) {
 		return this.element.getElementsByTagNameNS(namespaceURI, localName);
 	}
 
-	public boolean hasAttribute(String name) {
+	public boolean hasAttribute(final String name) {
 		return this.element.hasAttribute(name);
 	}
 
-	public boolean hasAttributeNS(String namespaceURI, String localName) {
+	public boolean hasAttributeNS(final String namespaceURI, final String localName) {
 		return this.element.hasAttributeNS(namespaceURI, localName);
 	}
 
@@ -111,15 +111,15 @@ abstract class ElementWrapper implements Comparable<Element>, Element, Serializa
 		return this.element.getSchemaTypeInfo();
 	}
 
-	public void setIdAttribute(String name, boolean isId) {
+	public void setIdAttribute(final String name, final boolean isId) {
 		this.element.setIdAttribute(name, isId);
 	}
 
-	public void setIdAttributeNS(String namespaceURI, String localName, boolean isId) {
+	public void setIdAttributeNS(final String namespaceURI, final String localName, final boolean isId) {
 		this.element.setIdAttributeNS(namespaceURI, localName, isId);
 	}
 
-	public void setIdAttributeNode(Attr idAttr, boolean isId) {
+	public void setIdAttributeNode(final Attr idAttr, final boolean isId) {
 		this.element.setIdAttributeNode(idAttr, isId);
 	}
 
@@ -131,7 +131,7 @@ abstract class ElementWrapper implements Comparable<Element>, Element, Serializa
 		return this.element.getNodeValue();
 	}
 
-	public void setNodeValue(String nodeValue) {
+	public void setNodeValue(final String nodeValue) {
 		this.element.setNodeValue(nodeValue);
 	}
 
@@ -171,19 +171,19 @@ abstract class ElementWrapper implements Comparable<Element>, Element, Serializa
 		return this.element.getOwnerDocument();
 	}
 
-	public Node insertBefore(Node newChild, Node refChild) {
+	public Node insertBefore(final Node newChild, final Node refChild) {
 		return this.element.insertBefore(newChild, refChild);
 	}
 
-	public Node replaceChild(Node newChild, Node oldChild) {
+	public Node replaceChild(final Node newChild, final Node oldChild) {
 		return this.element.replaceChild(newChild, oldChild);
 	}
 
-	public Node removeChild(Node oldChild) {
+	public Node removeChild(final Node oldChild) {
 		return this.element.removeChild(oldChild);
 	}
 
-	public Node appendChild(Node newChild) {
+	public Node appendChild(final Node newChild) {
 		return this.element.appendChild(newChild);
 	}
 
@@ -191,7 +191,7 @@ abstract class ElementWrapper implements Comparable<Element>, Element, Serializa
 		return this.element.hasChildNodes();
 	}
 
-	public Node cloneNode(boolean deep) {
+	public Node cloneNode(final boolean deep) {
 		return this.element.cloneNode(deep);
 	}
 
@@ -199,7 +199,7 @@ abstract class ElementWrapper implements Comparable<Element>, Element, Serializa
 		this.element.normalize();
 	}
 
-	public boolean isSupported(String feature, String version) {
+	public boolean isSupported(final String feature, final String version) {
 		return this.element.isSupported(feature, version);
 	}
 
@@ -211,7 +211,7 @@ abstract class ElementWrapper implements Comparable<Element>, Element, Serializa
 		return this.element.getPrefix();
 	}
 
-	public void setPrefix(String prefix) {
+	public void setPrefix(final String prefix) {
 		this.element.setPrefix(prefix);
 	}
 
@@ -227,7 +227,7 @@ abstract class ElementWrapper implements Comparable<Element>, Element, Serializa
 		return this.element.getBaseURI();
 	}
 
-	public short compareDocumentPosition(Node other) {
+	public short compareDocumentPosition(final Node other) {
 		return this.element.compareDocumentPosition(other);
 	}
 
@@ -235,39 +235,39 @@ abstract class ElementWrapper implements Comparable<Element>, Element, Serializa
 		return this.element.getTextContent();
 	}
 
-	public void setTextContent(String textContent) {
+	public void setTextContent(final String textContent) {
 		this.element.setTextContent(textContent);
 	}
 
-	public boolean isSameNode(Node other) {
+	public boolean isSameNode(final Node other) {
 		return this.element.isSameNode(other);
 	}
 
-	public String lookupPrefix(String namespaceURI) {
+	public String lookupPrefix(final String namespaceURI) {
 		return this.element.lookupPrefix(namespaceURI);
 	}
 
-	public boolean isDefaultNamespace(String namespaceURI) {
+	public boolean isDefaultNamespace(final String namespaceURI) {
 		return this.element.isDefaultNamespace(namespaceURI);
 	}
 
-	public String lookupNamespaceURI(String prefix) {
+	public String lookupNamespaceURI(final String prefix) {
 		return this.element.lookupNamespaceURI(prefix);
 	}
 
-	public boolean isEqualNode(Node arg) {
+	public boolean isEqualNode(final Node arg) {
 		return this.element.isEqualNode(arg);
 	}
 
-	public Object getFeature(String feature, String version) {
+	public Object getFeature(final String feature, final String version) {
 		return this.element.getFeature(feature, version);
 	}
 
-	public Object setUserData(String key, Object data, UserDataHandler handler) {
+	public Object setUserData(final String key, final Object data, final UserDataHandler handler) {
 		return this.element.setUserData(key, data, handler);
 	}
 
-	public Object getUserData(String key) {
+	public Object getUserData(final String key) {
 		return this.element.getUserData(key);
 	}
 

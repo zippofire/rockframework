@@ -24,17 +24,14 @@ import java.util.Map.Entry;
 
 public abstract class MimeUtils {
 
-	private static Map<String, Collection<String>>	mimeMap;
+	private static final Map<String, Collection<String>>	MIME_MAP;
 
 	private MimeUtils() {
 		//
 	}
 
-	public static String getMimeType(String extension) {
-		if (MimeUtils.mimeMap == null) {
-			MimeUtils.init();
-		}
-		for (Entry<String, Collection<String>> e : MimeUtils.mimeMap.entrySet()) {
+	public static String getMimeType(final String extension) {
+		for (Entry<String, Collection<String>> e : MimeUtils.MIME_MAP.entrySet()) {
 			if (e.getValue().contains(extension)) {
 				return e.getKey();
 			}
@@ -42,11 +39,8 @@ public abstract class MimeUtils {
 		return null;
 	}
 
-	public static String getExtension(String mimeType) {
-		if (MimeUtils.mimeMap == null) {
-			MimeUtils.init();
-		}
-		for (Entry<String, Collection<String>> e : MimeUtils.mimeMap.entrySet()) {
+	public static String getExtension(final String mimeType) {
+		for (Entry<String, Collection<String>> e : MimeUtils.MIME_MAP.entrySet()) {
 			if (e.getKey().equalsIgnoreCase(mimeType)) {
 				return e.getValue().iterator().next();
 			}
@@ -54,22 +48,22 @@ public abstract class MimeUtils {
 		return null;
 	}
 
-	private static void createMimeMap(String name, String[] extensions) {
+	private static void createMimeMap(final String name, final String[] extensions) {
 		Collection<String> c = new HashSet<String>();
 		for (String s : extensions) {
 			if (!StringUtils.isEmpty(s)) {
 				c.add(s);
 			}
 		}
-		MimeUtils.mimeMap.put(name, c);
+		MimeUtils.MIME_MAP.put(name, c);
 	}
 
-	private static void init() {
+	static {
 		// grep -v ^# /etc/mime.types | \
 		// grep -v ^$ | \
 		// awk '{print "createMimeMap(\StringUtils.BLANK$1"\", new String[]{\StringUtils.BLANK$2"\",
 		// \StringUtils.BLANK$3"\",\StringUtils.BLANK$4"\", \StringUtils.BLANK$5"\"});"}'
-		MimeUtils.mimeMap = new TreeMap<String, Collection<String>>();
+		MIME_MAP = new TreeMap<String, Collection<String>>();
 		MimeUtils.createMimeMap("application/activemessage", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/andrew-inset", new String[] { "ez", StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });
 		MimeUtils.createMimeMap("application/applefile", new String[] { StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK, StringUtils.BLANK });

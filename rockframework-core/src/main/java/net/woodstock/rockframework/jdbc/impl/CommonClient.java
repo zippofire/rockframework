@@ -16,8 +16,6 @@
  */
 package net.woodstock.rockframework.jdbc.impl;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -40,22 +38,23 @@ import net.woodstock.rockframework.jdbc.Client;
 import net.woodstock.rockframework.jdbc.Parameter;
 import net.woodstock.rockframework.jdbc.ParameterList;
 import net.woodstock.rockframework.jdbc.Type;
+import net.woodstock.rockframework.utils.IOUtils;
 
 public class CommonClient implements Client {
 
 	private Connection	connection;
 
-	public CommonClient(Connection connection) {
+	public CommonClient(final Connection connection) {
 		super();
 		this.connection = connection;
 	}
 
 	//
-	public int getType(Type type) {
+	public int getType(final Type type) {
 		return type.type();
 	}
 
-	public Object callFunction(Type outType, String functionName, ParameterList args) throws SQLException {
+	public Object callFunction(final Type outType, final String functionName, final ParameterList args) throws SQLException {
 		CallableStatement cs = this.createFuncionStatement(this.getType(outType), functionName, this.connection, args);
 		cs.execute();
 		Object o = this.getParameter(1, outType, cs);
@@ -63,27 +62,27 @@ public class CommonClient implements Client {
 		return o;
 	}
 
-	public void callProcedure(String procedureName, ParameterList args) throws SQLException {
+	public void callProcedure(final String procedureName, final ParameterList args) throws SQLException {
 		CallableStatement cs = this.createProcedureStatement(procedureName, this.connection, args);
 		cs.execute();
 		cs.close();
 	}
 
 	//
-	public boolean execute(String sql, ParameterList args) throws SQLException {
+	public boolean execute(final String sql, final ParameterList args) throws SQLException {
 		PreparedStatement ps = this.createStatement(sql, this.connection, args);
 		boolean b = ps.execute();
 		ps.close();
 		return b;
 	}
 
-	public ResultSet query(String query, ParameterList args) throws SQLException {
+	public ResultSet query(final String query, final ParameterList args) throws SQLException {
 		PreparedStatement ps = this.createStatement(query, this.connection, args);
 		ResultSet rs = ps.executeQuery();
 		return rs;
 	}
 
-	public int update(String update, ParameterList args) throws SQLException {
+	public int update(final String update, final ParameterList args) throws SQLException {
 		PreparedStatement ps = this.createStatement(update, this.connection, args);
 		int i = ps.executeUpdate();
 		ps.close();
@@ -91,7 +90,7 @@ public class CommonClient implements Client {
 	}
 
 	// Utils
-	private PreparedStatement createStatement(String sql, Connection c, ParameterList args) throws SQLException {
+	private PreparedStatement createStatement(final String sql, final Connection c, final ParameterList args) throws SQLException {
 		PreparedStatement ps = null;
 		ps = c.prepareStatement(sql);
 		if (args != null) {
@@ -100,7 +99,7 @@ public class CommonClient implements Client {
 		return ps;
 	}
 
-	private CallableStatement createFuncionStatement(int outType, String name, Connection c, ParameterList args) throws SQLException {
+	private CallableStatement createFuncionStatement(final int outType, final String name, final Connection c, final ParameterList args) throws SQLException {
 		CallableStatement cs = null;
 		StringBuilder sql = new StringBuilder("{ ? = call " + name + "(");
 		if (args != null) {
@@ -121,7 +120,7 @@ public class CommonClient implements Client {
 		return cs;
 	}
 
-	private CallableStatement createProcedureStatement(String name, Connection c, ParameterList args) throws SQLException {
+	private CallableStatement createProcedureStatement(final String name, final Connection c, final ParameterList args) throws SQLException {
 		CallableStatement cs = null;
 		StringBuilder sql = new StringBuilder("{ call " + name + "(");
 		if (args != null) {
@@ -140,7 +139,7 @@ public class CommonClient implements Client {
 		return cs;
 	}
 
-	private Object getParameter(int index, Type outType, CallableStatement cs) throws SQLException {
+	private Object getParameter(final int index, final Type outType, final CallableStatement cs) throws SQLException {
 		Object o = null;
 		switch (outType) {
 			case ARRAY:
@@ -218,7 +217,7 @@ public class CommonClient implements Client {
 		return o;
 	}
 
-	private void setParameter(int index, PreparedStatement cs, Parameter param) throws SQLException {
+	private void setParameter(final int index, final PreparedStatement cs, final Parameter param) throws SQLException {
 		Object value = param.getValue();
 		Type type = param.getType();
 		if (value == null) {
@@ -240,13 +239,7 @@ public class CommonClient implements Client {
 					if (value instanceof File) {
 						value = new FileInputStream((File) value);
 					} else if (value instanceof Reader) {
-						ByteArrayOutputStream output = new ByteArrayOutputStream();
-						Reader reader = (Reader) value;
-						int i = -1;
-						while ((i = reader.read()) != -1) {
-							output.write(i);
-						}
-						value = new ByteArrayInputStream(output.toByteArray());
+						value = IOUtils.toInputStream((Reader) value);
 					}
 					cs.setBinaryStream(index, (InputStream) value, ((InputStream) value).available());
 				} catch (IOException e) {
@@ -270,13 +263,7 @@ public class CommonClient implements Client {
 					if (value instanceof File) {
 						value = new FileInputStream((File) value);
 					} else if (value instanceof Reader) {
-						ByteArrayOutputStream output = new ByteArrayOutputStream();
-						Reader reader = (Reader) value;
-						int i = -1;
-						while ((i = reader.read()) != -1) {
-							output.write(i);
-						}
-						value = new ByteArrayInputStream(output.toByteArray());
+						value = IOUtils.toInputStream((Reader) value);
 					}
 					int size = ((InputStream) value).available();
 					value = new InputStreamReader((InputStream) value);
@@ -288,8 +275,6 @@ public class CommonClient implements Client {
 			case DATE:
 				if (value instanceof Long) {
 					value = new Date(((Long) value).longValue());
-				} else if (value instanceof String) {
-					value = Date.valueOf((String) value);
 				} else if ((value instanceof java.util.Date) && (!(value instanceof Date))) {
 					value = new Date(((java.util.Date) value).getTime());
 				}
@@ -321,8 +306,7 @@ public class CommonClient implements Client {
 				break;
 			case NUMERIC:
 				if (value instanceof String) {
-					value = Integer.valueOf((String) value);
-					value = new BigDecimal(((Integer) value).intValue());
+					value = new BigDecimal(Double.parseDouble((String) value));
 				} else if (value instanceof Integer) {
 					value = new BigDecimal(((Integer) value).intValue());
 				}
@@ -355,16 +339,12 @@ public class CommonClient implements Client {
 			case TIME:
 				if (value instanceof Long) {
 					value = new Date(((Long) value).longValue());
-				} else if (value instanceof String) {
-					value = Date.valueOf((String) value);
 				}
 				cs.setTime(index, (Time) value);
 				break;
 			case TIMESTAMP:
 				if (value instanceof Long) {
 					value = new Timestamp(((Long) value).longValue());
-				} else if (value instanceof String) {
-					value = Timestamp.valueOf((String) value);
 				} else if ((value instanceof java.util.Date) && (!(value instanceof Timestamp))) {
 					value = new Timestamp(((java.util.Date) value).getTime());
 				}
@@ -388,7 +368,7 @@ public class CommonClient implements Client {
 
 	}
 
-	private void setParameters(int index, PreparedStatement ps, ParameterList args) throws SQLException {
+	private void setParameters(final int index, final PreparedStatement ps, final ParameterList args) throws SQLException {
 		int i = index;
 		if (args != null) {
 			for (Parameter arg : args) {

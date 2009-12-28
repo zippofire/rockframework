@@ -23,7 +23,7 @@ import net.woodstock.rockframework.domain.business.validation.local.validator.Ab
 
 public class ValidatorManyToMany extends AbstractValidator {
 
-	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
+	public ValidationResult validate(final LocalValidationContext context) {
 		try {
 			return context.getSuccessResult();
 		} catch (Exception e) {

@@ -45,13 +45,13 @@ public abstract class StringUtils {
 
 	private static final String	UPERCASE_LETTERS	= "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-	private static final String	LETTERS_DIGITS		= UPERCASE_LETTERS + LOWERCASE_LETTERS + DIGITS;
+	private static final String	LETTERS_DIGITS		= StringUtils.UPERCASE_LETTERS + StringUtils.LOWERCASE_LETTERS + StringUtils.DIGITS;
 
 	private StringUtils() {
 		//
 	}
 
-	public static String camelCase(String s) {
+	public static String camelCase(final String s) {
 		if (s == null) {
 			return null;
 		}
@@ -64,7 +64,7 @@ public abstract class StringUtils {
 		return builder.toString();
 	}
 
-	public static String camelCase(String s, char separator) {
+	public static String camelCase(final String s, final char separator) {
 		if (s == null) {
 			return null;
 		}
@@ -84,7 +84,7 @@ public abstract class StringUtils {
 		return builder.toString();
 	}
 
-	public static String camelCase(String[] array) {
+	public static String camelCase(final String[] array) {
 		if (array == null) {
 			return null;
 		}
@@ -100,7 +100,7 @@ public abstract class StringUtils {
 		return builder.toString();
 	}
 
-	public static String capitalize(String s) {
+	public static String capitalize(final String s) {
 		if (s == null) {
 			return null;
 		}
@@ -124,11 +124,11 @@ public abstract class StringUtils {
 		return b.toString();
 	}
 
-	public static String convertCharset(Charset from, String text) throws CharacterCodingException {
+	public static String convertCharset(final Charset from, final String text) throws CharacterCodingException {
 		return StringUtils.convertCharset(from, Charset.defaultCharset(), text);
 	}
 
-	public static String convertCharset(Charset from, Charset to, String text) throws CharacterCodingException {
+	public static String convertCharset(final Charset from, final Charset to, final String text) throws CharacterCodingException {
 		CharsetDecoder decoderFrom = from.newDecoder();
 		CharsetEncoder encoderTo = to.newEncoder();
 
@@ -146,11 +146,11 @@ public abstract class StringUtils {
 		return builder.toString();
 	}
 
-	public static String format(String format, String value) {
+	public static String format(final String format, final String value) {
 		return StringUtils.format(format, value, StringUtils.DEFAULT_FORMAT_CHAR);
 	}
 
-	public static String format(String format, String value, char c) {
+	public static String format(final String format, final String value, final char c) {
 		if (StringUtils.isEmpty(format)) {
 			return null;
 		}
@@ -177,18 +177,18 @@ public abstract class StringUtils {
 		return s.toString();
 	}
 
-	public static String getString(String s) {
+	public static String getString(final String s) {
 		return StringUtils.getString(s, StringUtils.BLANK);
 	}
 
-	public static String getString(String s, String r) {
+	public static String getString(final String s, final String r) {
 		if (StringUtils.isEmpty(s)) {
 			return r;
 		}
 		return s;
 	}
 
-	public static boolean hasOnlyDigit(String s) {
+	public static boolean hasOnlyDigit(final String s) {
 		if (StringUtils.isEmpty(s)) {
 			return false;
 		}
@@ -200,7 +200,7 @@ public abstract class StringUtils {
 		return true;
 	}
 
-	public static boolean hasOnlyLetter(String s) {
+	public static boolean hasOnlyLetter(final String s) {
 		if (StringUtils.isEmpty(s)) {
 			return false;
 		}
@@ -212,7 +212,7 @@ public abstract class StringUtils {
 		return true;
 	}
 
-	public static boolean hasOnlyLetterOrDigit(String s) {
+	public static boolean hasOnlyLetterOrDigit(final String s) {
 		if (StringUtils.isEmpty(s)) {
 			return false;
 		}
@@ -224,19 +224,19 @@ public abstract class StringUtils {
 		return true;
 	}
 
-	public static boolean isEmpty(String s) {
+	public static boolean isEmpty(final String s) {
 		return ((s == null) || s.trim().equals(StringUtils.BLANK));
 	}
 
-	public static String lpad(double d, int size, char pad) {
+	public static String lpad(final double d, final int size, final char pad) {
 		return StringUtils.lpad(Double.toString(d), size, pad);
 	}
 
-	public static String lpad(long l, int size, char pad) {
+	public static String lpad(final long l, final int size, final char pad) {
 		return StringUtils.lpad(Long.toString(l), size, pad);
 	}
 
-	public static String lpad(String s, int size, char pad) {
+	public static String lpad(final String s, final int size, final char pad) {
 		StringBuilder builder = new StringBuilder();
 		while (builder.length() + s.length() < size) {
 			builder.append(pad);
@@ -245,22 +245,21 @@ public abstract class StringUtils {
 		return builder.toString();
 	}
 
-	public static String random(int size) {
+	public static String random(final int size) {
 		StringBuilder builder = new StringBuilder();
-		int max = LETTERS_DIGITS.length();
-		while (size > 0) {
+		int max = StringUtils.LETTERS_DIGITS.length();
+		for (int i = 0; i < size; i++) {
 			int index = NumberUtils.random(max);
-			builder.append(LETTERS_DIGITS.charAt(index));
-			size--;
+			builder.append(StringUtils.LETTERS_DIGITS.charAt(index));
 		}
 		return builder.toString();
 	}
 
-	public static String replace(InputStream input, Map<String, String> replaces) throws IOException {
+	public static String replace(final InputStream input, final Map<String, String> replaces) throws IOException {
 		return StringUtils.replace(new InputStreamReader(input), replaces);
 	}
 
-	public static String replace(Reader reader, Map<String, String> replaces) throws IOException {
+	public static String replace(final Reader reader, final Map<String, String> replaces) throws IOException {
 		BufferedReader r = new BufferedReader(reader);
 		StringBuilder b = new StringBuilder();
 		String tmp = null;
@@ -271,31 +270,32 @@ public abstract class StringUtils {
 		return StringUtils.replace(b.toString(), replaces);
 	}
 
-	public static String replace(String s, Map<String, String> replaces) {
+	public static String replace(final String s, final Map<String, String> replaces) {
+		String ss = s;
 		if (replaces.size() > 0) {
 			for (Entry<String, String> entry : replaces.entrySet()) {
-				s = s.replaceAll(entry.getKey(), entry.getValue());
+				ss = ss.replaceAll(entry.getKey(), entry.getValue());
 			}
 		}
-		return s;
+		return ss;
 	}
 
-	public static String reverse(String s) {
+	public static String reverse(final String s) {
 		if (s == null) {
 			return null;
 		}
 		return new StringBuilder(s).reverse().toString();
 	}
 
-	public static String rpad(double d, int size, char pad) {
+	public static String rpad(final double d, final int size, final char pad) {
 		return StringUtils.rpad(Double.toString(d), size, pad);
 	}
 
-	public static String rpad(long l, int size, char pad) {
+	public static String rpad(final long l, final int size, final char pad) {
 		return StringUtils.rpad(Long.toString(l), size, pad);
 	}
 
-	public static String rpad(String s, int size, char pad) {
+	public static String rpad(final String s, final int size, final char pad) {
 		StringBuilder builder = new StringBuilder(s);
 		while (builder.length() < size) {
 			builder.append(pad);
@@ -303,14 +303,14 @@ public abstract class StringUtils {
 		return builder.toString();
 	}
 
-	public static String toString(Object o) {
+	public static String toString(final Object o) {
 		if (o == null) {
 			return null;
 		}
 		return o.toString();
 	}
 
-	public static String[] toStringArray(Object[] o) {
+	public static String[] toStringArray(final Object[] o) {
 		int len = o.length;
 		String[] s = new String[len];
 		for (int i = 0; i < len; i++) {
@@ -319,11 +319,11 @@ public abstract class StringUtils {
 		return s;
 	}
 
-	public static String unformat(String format, String value) {
+	public static String unformat(final String format, final String value) {
 		return StringUtils.unformat(format, value, StringUtils.DEFAULT_FORMAT_CHAR);
 	}
 
-	public static String unformat(String format, String value, char c) {
+	public static String unformat(final String format, final String value, final char c) {
 		if (StringUtils.isEmpty(format)) {
 			return null;
 		}
@@ -346,7 +346,7 @@ public abstract class StringUtils {
 		return s.toString();
 	}
 
-	public static String normalize(String s) {
+	public static String normalize(final String s) {
 		return Normalizer.normalize(s, Normalizer.Form.NFD).replaceAll(StringUtils.ACCENT_PATTERN, StringUtils.BLANK);
 	}
 }

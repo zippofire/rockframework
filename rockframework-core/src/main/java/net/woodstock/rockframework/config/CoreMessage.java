@@ -16,25 +16,18 @@
  */
 package net.woodstock.rockframework.config;
 
-public class CoreMessage extends AbstractMessage {
+public final class CoreMessage extends AbstractMessage {
 
 	private static final String	CORE_MESSAGES	= "rockframework-core-messages";
 
-	private static CoreMessage	coreMessage;
+	private static CoreMessage	instance		= new CoreMessage();
 
 	private CoreMessage() {
 		super(CoreMessage.CORE_MESSAGES);
 	}
 
 	public static CoreMessage getInstance() {
-		if (CoreMessage.coreMessage == null) {
-			synchronized (CoreMessage.class) {
-				if (CoreMessage.coreMessage == null) {
-					CoreMessage.coreMessage = new CoreMessage();
-				}
-			}
-		}
-		return CoreMessage.coreMessage;
+		return CoreMessage.instance;
 	}
 
 }

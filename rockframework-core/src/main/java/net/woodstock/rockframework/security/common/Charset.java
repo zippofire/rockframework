@@ -22,7 +22,7 @@ public enum Charset {
 
 	private String	charset;
 
-	private Charset(String charset) {
+	private Charset(final String charset) {
 		this.charset = charset;
 	}
 

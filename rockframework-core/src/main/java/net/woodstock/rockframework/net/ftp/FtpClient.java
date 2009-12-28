@@ -47,7 +47,7 @@ public class FtpClient implements Serializable {
 
 	private transient FTPClient	client;
 
-	public FtpClient(String host, String username, String password) throws IOException {
+	public FtpClient(final String host, final String username, final String password) throws IOException {
 		super();
 		this.host = host;
 		this.username = username;
@@ -83,7 +83,7 @@ public class FtpClient implements Serializable {
 		return false;
 	}
 
-	public boolean cd(String path) throws IOException {
+	public boolean cd(final String path) throws IOException {
 		if (this.client.isConnected()) {
 			return this.client.cwd(path) != FtpClient.ERROR_CODE;
 		}
@@ -105,11 +105,11 @@ public class FtpClient implements Serializable {
 		}
 	}
 
-	public File get(String file) throws IOException {
+	public File get(final String file) throws IOException {
 		return this.get(file, file);
 	}
 
-	public File get(String src, String dst) throws IOException {
+	public File get(final String src, final String dst) throws IOException {
 		if (this.client.isConnected()) {
 			File f = new File(dst);
 			FileOutputStream output = new FileOutputStream(f);
@@ -149,7 +149,7 @@ public class FtpClient implements Serializable {
 		return l;
 	}
 
-	public boolean put(String name) throws IOException {
+	public boolean put(final String name) throws IOException {
 		if (this.client.isConnected()) {
 			boolean put = this.client.storeFile(name, new FileInputStream(name));
 			this.getLogger().debug(this.client.getReplyString().trim());
@@ -158,7 +158,7 @@ public class FtpClient implements Serializable {
 		return false;
 	}
 
-	public boolean put(File f) throws IOException {
+	public boolean put(final File f) throws IOException {
 		if (this.client.isConnected()) {
 			boolean put = this.client.storeFile(f.getName(), new FileInputStream(f));
 			this.getLogger().debug(this.client.getReplyString().trim());
@@ -167,7 +167,7 @@ public class FtpClient implements Serializable {
 		return false;
 	}
 
-	public boolean put(String name, InputStream input) throws IOException {
+	public boolean put(final String name, final InputStream input) throws IOException {
 		if (this.client.isConnected()) {
 			boolean put = this.client.storeFile(name, input);
 			this.getLogger().debug(this.client.getReplyString().trim());
@@ -185,7 +185,7 @@ public class FtpClient implements Serializable {
 		return null;
 	}
 
-	public boolean rm(String name) throws IOException {
+	public boolean rm(final String name) throws IOException {
 		if (this.client.isConnected()) {
 			boolean rm = this.client.deleteFile(name);
 			this.getLogger().debug(this.client.getReplyString().trim());
@@ -198,7 +198,7 @@ public class FtpClient implements Serializable {
 		return this.host;
 	}
 
-	public void setHost(String host) {
+	public void setHost(final String host) {
 		this.host = host;
 	}
 
@@ -206,7 +206,7 @@ public class FtpClient implements Serializable {
 		return this.username;
 	}
 
-	public void setUsername(String username) {
+	public void setUsername(final String username) {
 		this.username = username;
 	}
 
@@ -214,7 +214,7 @@ public class FtpClient implements Serializable {
 		return this.password;
 	}
 
-	public void setPassword(String password) {
+	public void setPassword(final String password) {
 		this.password = password;
 	}
 

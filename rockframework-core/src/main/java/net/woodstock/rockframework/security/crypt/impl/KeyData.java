@@ -15,7 +15,7 @@ public class KeyData implements Serializable {
 
 	private Charset				charset;
 
-	public KeyData(String algorithm, Key key, Charset charset) {
+	public KeyData(final String algorithm, final Key key, final Charset charset) {
 		super();
 		this.algorithm = algorithm;
 		this.key = key;

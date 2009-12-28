@@ -25,7 +25,7 @@ import net.woodstock.rockframework.utils.ArrayUtils;
 
 public class ValidatorByteConstraint extends AbstractValidator {
 
-	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
+	public ValidationResult validate(final LocalValidationContext context) {
 		try {
 			Byte value = (Byte) context.getValue();
 			ValidateByteConstraint annotation = (ValidateByteConstraint) context.getAnnotation();
@@ -46,7 +46,7 @@ public class ValidatorByteConstraint extends AbstractValidator {
 		}
 	}
 
-	private String getErrorMessage(ValidateByteConstraint annotation, String name) {
+	private String getErrorMessage(final ValidateByteConstraint annotation, final String name) {
 		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_CONSTRAINT, name, ArrayUtils.toString(annotation.values()));
 	}
 

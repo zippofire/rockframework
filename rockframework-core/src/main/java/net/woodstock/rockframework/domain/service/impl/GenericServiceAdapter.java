@@ -21,10 +21,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.domain.business.BusinessException;
-import net.woodstock.rockframework.domain.persistence.PersistenceException;
 import net.woodstock.rockframework.domain.service.GenericService;
-import net.woodstock.rockframework.domain.service.ServiceException;
 
 public class GenericServiceAdapter extends AbstractService implements GenericService {
 
@@ -32,33 +29,33 @@ public class GenericServiceAdapter extends AbstractService implements GenericSer
 		super();
 	}
 
-	public void save(Entity<?> e) throws ServiceException, BusinessException, PersistenceException {
+	public void save(final Entity<?> e) {
 		this.getLogger().info("Save: " + e.getClass());
 	}
 
-	public <E extends Entity<?>> E get(E e) throws ServiceException, BusinessException, PersistenceException {
+	public <E extends Entity<?>> E get(final E e) {
 		this.getLogger().info("Retrieve: " + e);
 		return null;
 	}
 
-	public void update(Entity<?> e) throws ServiceException, BusinessException, PersistenceException {
+	public void update(final Entity<?> e) {
 		this.getLogger().info("Update: " + e.getClass());
 	}
 
-	public void delete(Entity<?> e) throws ServiceException, BusinessException, PersistenceException {
+	public void delete(final Entity<?> e) {
 		this.getLogger().info("Delete: " + e.getClass());
 	}
 
-	public <E extends Entity<?>> void delete(Class<E> clazz, Serializable id) throws ServiceException, BusinessException, PersistenceException {
+	public <E extends Entity<?>> void delete(final Class<E> clazz, final Serializable id) {
 		this.getLogger().info("Delete: " + clazz.getCanonicalName() + " " + id);
 	}
 
-	public <E extends Entity<?>> Collection<E> listAll(E e, String order) throws ServiceException, BusinessException, PersistenceException {
+	public <E extends Entity<?>> Collection<E> listAll(final E e, final String order) {
 		this.getLogger().info("Query: " + e + " Order: " + order);
 		return null;
 	}
 
-	public <E extends Entity<?>> Collection<E> listByExample(E e, Map<String, Object> options) throws ServiceException, BusinessException, PersistenceException {
+	public <E extends Entity<?>> Collection<E> listByExample(final E e, final Map<String, Object> options) {
 		this.getLogger().info("Query: " + e + " Options: " + options);
 		return null;
 	}

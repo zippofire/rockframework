@@ -22,15 +22,15 @@ public class PersistenceException extends DomainException {
 
 	private static final long	serialVersionUID	= -6261163004234203188L;
 
-	public PersistenceException(String message) {
+	public PersistenceException(final String message) {
 		super(message);
 	}
 
-	public PersistenceException(Throwable cause) {
+	public PersistenceException(final Throwable cause) {
 		super(cause);
 	}
 
-	public PersistenceException(String message, Throwable cause) {
+	public PersistenceException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 

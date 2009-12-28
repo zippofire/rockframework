@@ -20,7 +20,7 @@ class LDAPRestrictionLike extends LDAPRestriction {
 
 	private static final long	serialVersionUID	= 1359372433669807722L;
 
-	public LDAPRestrictionLike(String propertyName, Object value) {
+	public LDAPRestrictionLike(final String propertyName, final Object value) {
 		super();
 		this.setPropertyName(propertyName);
 		this.setValue(value);

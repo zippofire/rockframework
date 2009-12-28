@@ -22,16 +22,16 @@ public abstract class AbstractMessage {
 
 	private MessageBundle	messages;
 
-	public AbstractMessage(String bundleName) {
+	public AbstractMessage(final String bundleName) {
 		super();
 		this.messages = MessageBundle.getBundle(bundleName);
 	}
 
-	public String getMessage(String key) {
+	public String getMessage(final String key) {
 		return this.messages.getString(key);
 	}
 
-	public String getMessage(String key, Object... arguments) {
+	public String getMessage(final String key, final Object... arguments) {
 		return this.messages.getString(key, arguments);
 	}
 

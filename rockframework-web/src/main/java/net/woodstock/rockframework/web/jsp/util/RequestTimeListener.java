@@ -31,7 +31,7 @@ public class RequestTimeListener implements ServletRequestListener {
 	private static Map<Integer, RequestDebug>	requests	= new HashMap<Integer, RequestDebug>();
 
 	@Override
-	public void requestInitialized(ServletRequestEvent event) {
+	public void requestInitialized(final ServletRequestEvent event) {
 		HttpServletRequest request = (HttpServletRequest) event.getServletRequest();
 		String address = RequestUtils.getRequestAddress(request);
 		String url = RequestUtils.getFullRequestUrl(request);
@@ -39,7 +39,7 @@ public class RequestTimeListener implements ServletRequestListener {
 	}
 
 	@Override
-	public void requestDestroyed(ServletRequestEvent event) {
+	public void requestDestroyed(final ServletRequestEvent event) {
 		HttpServletRequest request = (HttpServletRequest) event.getServletRequest();
 		RequestDebug requestDebug = RequestTimeListener.requests.get(new Integer(request.hashCode()));
 		requestDebug.setEnd(System.currentTimeMillis());
@@ -59,7 +59,7 @@ public class RequestTimeListener implements ServletRequestListener {
 
 		private long	end;
 
-		public RequestDebug(String address, String url) {
+		public RequestDebug(final String address, final String url) {
 			super();
 			this.address = address;
 			this.url = url;
@@ -70,7 +70,7 @@ public class RequestTimeListener implements ServletRequestListener {
 			return this.address;
 		}
 
-		public void setAddress(String address) {
+		public void setAddress(final String address) {
 			this.address = address;
 		}
 
@@ -78,7 +78,7 @@ public class RequestTimeListener implements ServletRequestListener {
 			return this.url;
 		}
 
-		public void setUrl(String url) {
+		public void setUrl(final String url) {
 			this.url = url;
 		}
 
@@ -86,7 +86,7 @@ public class RequestTimeListener implements ServletRequestListener {
 			return this.start;
 		}
 
-		public void setStart(long start) {
+		public void setStart(final long start) {
 			this.start = start;
 		}
 
@@ -94,7 +94,7 @@ public class RequestTimeListener implements ServletRequestListener {
 			return this.end;
 		}
 
-		public void setEnd(long end) {
+		public void setEnd(final long end) {
 			this.end = end;
 		}
 

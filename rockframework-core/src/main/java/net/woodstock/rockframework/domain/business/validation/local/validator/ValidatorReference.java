@@ -28,7 +28,7 @@ import net.woodstock.rockframework.domain.business.validation.local.annotation.V
 public class ValidatorReference extends AbstractValidator {
 
 	@SuppressWarnings("unchecked")
-	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
+	public ValidationResult validate(final LocalValidationContext context) {
 		try {
 			ValidateReference annotation = (ValidateReference) context.getAnnotation();
 			Object value = context.getValue();
@@ -62,11 +62,11 @@ public class ValidatorReference extends AbstractValidator {
 		}
 	}
 
-	private String getNotNullErrorMessage(LocalValidationContext context) {
+	private String getNotNullErrorMessage(final LocalValidationContext context) {
 		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_NOT_NULL, context.getCanonicalName());
 	}
 
-	private String getInvalidTypeErrorMessage(LocalValidationContext context) {
+	private String getInvalidTypeErrorMessage(final LocalValidationContext context) {
 		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_INVALID_TYPE, context.getCanonicalName());
 	}
 

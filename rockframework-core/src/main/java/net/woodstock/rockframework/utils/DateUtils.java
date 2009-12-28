@@ -33,28 +33,28 @@ public abstract class DateUtils {
 		//
 	}
 
-	public static String format(Date date) {
+	public static String format(final Date date) {
 		if (date == null) {
 			return null;
 		}
 		return DateUtils.DATE_FORMAT.format(date);
 	}
 
-	public static String format(Date date, String format) {
+	public static String format(final Date date, final String format) {
 		if (date == null) {
 			return null;
 		}
 		return new SimpleDateFormat(format).format(date);
 	}
 
-	public static Date parse(String date) throws ParseException {
+	public static Date parse(final String date) throws ParseException {
 		if (StringUtils.isEmpty(date)) {
 			return null;
 		}
 		return DateUtils.DATE_FORMAT.parse(date);
 	}
 
-	public static Date parse(String date, String format) throws ParseException {
+	public static Date parse(final String date, final String format) throws ParseException {
 		if (StringUtils.isEmpty(date)) {
 			return null;
 		}

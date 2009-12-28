@@ -22,7 +22,7 @@ public class Bar extends IntegerEntity {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(final Integer id) {
 		this.id = id;
 	}
 
@@ -30,7 +30,7 @@ public class Bar extends IntegerEntity {
 		return this.name;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -38,7 +38,7 @@ public class Bar extends IntegerEntity {
 		return this.foo;
 	}
 
-	public void setFoo(Foo foo) {
+	public void setFoo(final Foo foo) {
 		this.foo = foo;
 	}
 
@@ -46,7 +46,7 @@ public class Bar extends IntegerEntity {
 		return this.baz;
 	}
 
-	public void setBaz(Baz baz) {
+	public void setBaz(final Baz baz) {
 		this.baz = baz;
 	}
 

@@ -26,7 +26,7 @@ public class BufferedServletResponseWrapper extends HttpServletResponseWrapper {
 
 	private ServletOutputStreamWrapper	outputStream;
 
-	public BufferedServletResponseWrapper(HttpServletResponse response) {
+	public BufferedServletResponseWrapper(final HttpServletResponse response) {
 		super(response);
 		this.outputStream = new ServletOutputStreamWrapper();
 	}

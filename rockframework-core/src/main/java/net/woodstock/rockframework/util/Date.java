@@ -24,77 +24,77 @@ public class Date extends java.util.Date {
 		super();
 	}
 
-	public Date(long date) {
+	public Date(final long date) {
 		super(date);
 	}
 
-	public Date(java.util.Date date) {
+	public Date(final java.util.Date date) {
 		super(date.getTime());
 	}
 
-	public void addDays(int days) {
+	public void addDays(final int days) {
 		Calendar c = Calendar.toCalendar(this);
 		c.addDays(days);
 		this.setTime(c.getTime().getTime());
 	}
 
-	public void addHours(int hours) {
+	public void addHours(final int hours) {
 		Calendar c = Calendar.toCalendar(this);
 		c.addHours(hours);
 		this.setTime(c.getTime().getTime());
 	}
 
-	public void addMonths(int months) {
+	public void addMonths(final int months) {
 		Calendar c = Calendar.toCalendar(this);
 		c.addMonths(months);
 		this.setTime(c.getTime().getTime());
 	}
 
-	public void addYears(int years) {
+	public void addYears(final int years) {
 		Calendar c = Calendar.toCalendar(this);
 		c.addYears(years);
 		this.setTime(c.getTime().getTime());
 	}
 
-	public long diffDays(java.util.Date date) {
+	public long diffDays(final java.util.Date date) {
 		Calendar c = Calendar.toCalendar(this);
 		return c.diffDays(Calendar.toCalendar(date));
 	}
 
-	public long diffHours(java.util.Date date) {
+	public long diffHours(final java.util.Date date) {
 		Calendar c = Calendar.toCalendar(this);
 		return c.diffHours(Calendar.toCalendar(date));
 	}
 
-	public long diffMonths(java.util.Date date) {
+	public long diffMonths(final java.util.Date date) {
 		Calendar c = Calendar.toCalendar(this);
 		return c.diffMonths(Calendar.toCalendar(date));
 	}
 
-	public long diffYears(java.util.Date date) {
+	public long diffYears(final java.util.Date date) {
 		Calendar c = Calendar.toCalendar(this);
 		return c.diffYears(Calendar.toCalendar(date));
 	}
 
-	public void removeDays(int days) {
+	public void removeDays(final int days) {
 		Calendar c = Calendar.toCalendar(this);
 		c.removeDays(days);
 		this.setTime(c.getTime().getTime());
 	}
 
-	public void removeHours(int hours) {
+	public void removeHours(final int hours) {
 		Calendar c = Calendar.toCalendar(this);
 		c.removeHours(hours);
 		this.setTime(c.getTime().getTime());
 	}
 
-	public void removeMonths(int months) {
+	public void removeMonths(final int months) {
 		Calendar c = Calendar.toCalendar(this);
 		c.removeMonths(months);
 		this.setTime(c.getTime().getTime());
 	}
 
-	public void removeYears(int years) {
+	public void removeYears(final int years) {
 		Calendar c = Calendar.toCalendar(this);
 		c.removeYears(years);
 		this.setTime(c.getTime().getTime());

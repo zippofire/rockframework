@@ -56,7 +56,7 @@ public class HSSFSpreadsheetDocument extends SpreadsheetDocument {
 		super();
 	}
 
-	public void write(OutputStream outputStream) throws IOException {
+	public void write(final OutputStream outputStream) throws IOException {
 		HSSFWorkbook workbook = new HSSFWorkbook();
 		for (Sheet sheet : this.getSheets()) {
 			this.handleSheet(workbook, sheet);
@@ -64,7 +64,7 @@ public class HSSFSpreadsheetDocument extends SpreadsheetDocument {
 		workbook.write(outputStream);
 	}
 
-	private void handleSheet(HSSFWorkbook workbook, Sheet sheet) {
+	private void handleSheet(final HSSFWorkbook workbook, final Sheet sheet) {
 		HSSFSheet s = workbook.createSheet(sheet.getName());
 		s.setDisplayGridlines(sheet.isDisplayGridLines());
 		s.setPrintGridlines(sheet.isPrintGridLines());
@@ -144,7 +144,7 @@ public class HSSFSpreadsheetDocument extends SpreadsheetDocument {
 		}
 	}
 
-	private void handleRow(HSSFWorkbook workbook, HSSFSheet sheet, Row row, int rowNum) {
+	private void handleRow(final HSSFWorkbook workbook, final HSSFSheet sheet, final Row row, final int rowNum) {
 		HSSFRow r = sheet.createRow(rowNum);
 		r.setHeightInPoints(row.getHeight());
 
@@ -155,7 +155,7 @@ public class HSSFSpreadsheetDocument extends SpreadsheetDocument {
 		}
 	}
 
-	private void handleCell(HSSFWorkbook workbook, HSSFRow row, Cell cell, int cellNum) {
+	private void handleCell(final HSSFWorkbook workbook, final HSSFRow row, final Cell cell, final int cellNum) {
 		HSSFCell c = row.createCell(cellNum);
 
 		HSSFFont font = workbook.createFont();
@@ -215,7 +215,7 @@ public class HSSFSpreadsheetDocument extends SpreadsheetDocument {
 		c.setCellStyle(style);
 	}
 
-	private short getAlignment(Alignment alignment) {
+	private short getAlignment(final Alignment alignment) {
 		switch (alignment) {
 			case CENTER:
 				return HSSFCellStyle.ALIGN_CENTER;
@@ -230,7 +230,7 @@ public class HSSFSpreadsheetDocument extends SpreadsheetDocument {
 		}
 	}
 
-	private short getVerticalAlignment(VerticalAlignment verticalAlignment) {
+	private short getVerticalAlignment(final VerticalAlignment verticalAlignment) {
 		switch (verticalAlignment) {
 			case BOTTOM:
 				return HSSFCellStyle.VERTICAL_BOTTOM;
@@ -243,7 +243,7 @@ public class HSSFSpreadsheetDocument extends SpreadsheetDocument {
 		}
 	}
 
-	private short getColor(HSSFWorkbook workbook, Color color) {
+	private short getColor(final HSSFWorkbook workbook, final Color color) {
 		HSSFColor c = this.getHSSFColor(workbook, color);
 		if (c == null) {
 			return HSSFColor.BLACK.index;
@@ -251,7 +251,7 @@ public class HSSFSpreadsheetDocument extends SpreadsheetDocument {
 		return c.getIndex();
 	}
 
-	private short getBackgroundColor(HSSFWorkbook workbook, Color color) {
+	private short getBackgroundColor(final HSSFWorkbook workbook, final Color color) {
 		HSSFColor c = this.getHSSFColor(workbook, color);
 		if (c == null) {
 			return HSSFColor.WHITE.index;
@@ -259,7 +259,7 @@ public class HSSFSpreadsheetDocument extends SpreadsheetDocument {
 		return c.getIndex();
 	}
 
-	private HSSFColor getHSSFColor(HSSFWorkbook workbook, Color color) {
+	private HSSFColor getHSSFColor(final HSSFWorkbook workbook, final Color color) {
 		byte red = (byte) color.getRed();
 		byte green = (byte) color.getGreen();
 		byte blue = (byte) color.getBlue();

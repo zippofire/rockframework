@@ -31,7 +31,7 @@ import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
 
 public class ValidatorId extends AbstractValidator {
 
-	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
+	public ValidationResult validate(final LocalValidationContext context) {
 		try {
 			Object value = context.getValue();
 			Object parent = context.getParentContext().getValue();
@@ -73,15 +73,15 @@ public class ValidatorId extends AbstractValidator {
 		}
 	}
 
-	private String getEmptyErrorMessage(LocalValidationContext context) throws ValidationException {
+	private String getEmptyErrorMessage(final LocalValidationContext context) {
 		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_NOT_EMPTY, context.getCanonicalName());
 	}
 
-	private String getInvalidTypeErrorMessage(LocalValidationContext context) throws ValidationException {
+	private String getInvalidTypeErrorMessage(final LocalValidationContext context) {
 		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_INVALID_TYPE, context.getCanonicalName());
 	}
 
-	private String getNotEmptyErrorMessage(LocalValidationContext context) {
+	private String getNotEmptyErrorMessage(final LocalValidationContext context) {
 		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_NULL, context.getCanonicalName());
 	}
 

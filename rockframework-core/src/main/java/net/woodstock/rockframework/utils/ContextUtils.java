@@ -31,11 +31,11 @@ public abstract class ContextUtils {
 		//
 	}
 
-	public static Object getContextObject(String name) throws NamingException {
+	public static Object getContextObject(final String name) throws NamingException {
 		return ContextUtils.getContextObject(ContextUtils.c, name);
 	}
 
-	public static Object getContextObject(Context c, String name) throws NamingException {
+	public static Object getContextObject(final Context c, final String name) throws NamingException {
 		Object o = null;
 		if (c == null) {
 			throw new IllegalArgumentException("Context must be not null");
@@ -48,19 +48,19 @@ public abstract class ContextUtils {
 		return o;
 	}
 
-	public static String getContextString(String name) throws NamingException {
+	public static String getContextString(final String name) throws NamingException {
 		return (String) ContextUtils.getContextObject(ContextUtils.c, name);
 	}
 
-	public static String getContextString(Context c, String name) throws NamingException {
+	public static String getContextString(final Context c, final String name) throws NamingException {
 		return (String) ContextUtils.getContextObject(c, name);
 	}
 
-	public static void setContextObject(String name, Object o) throws NamingException {
+	public static void setContextObject(final String name, final Object o) throws NamingException {
 		ContextUtils.setContextObject(ContextUtils.c, name, o);
 	}
 
-	public static void setContextObject(Context c, String name, Object o) throws NamingException {
+	public static void setContextObject(final Context c, final String name, final Object o) throws NamingException {
 		c.addToEnvironment(name, o);
 	}
 

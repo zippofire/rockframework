@@ -20,9 +20,6 @@ import java.util.Collection;
 import java.util.Map;
 
 import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.domain.business.BusinessException;
-import net.woodstock.rockframework.domain.persistence.PersistenceException;
-import net.woodstock.rockframework.domain.service.ServiceException;
 
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,56 +32,56 @@ public abstract class SpringGenericService extends AbstractGenericBatchService {
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public void save(Entity<?> entity) throws ServiceException, BusinessException, PersistenceException {
+	public void save(final Entity<?> entity) {
 		super.save(entity);
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public <E extends Entity<?>> E get(E entity) throws ServiceException, BusinessException, PersistenceException {
+	public <E extends Entity<?>> E get(final E entity) {
 		return super.get(entity);
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public <E extends Entity<?>> Collection<E> listAll(E entity, String order) throws ServiceException, BusinessException, PersistenceException {
+	public <E extends Entity<?>> Collection<E> listAll(final E entity, final String order) {
 		return super.listAll(entity, order);
 	}
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public <E extends Entity<?>> Collection<E> listByExample(E entity, Map<String, Object> options) throws ServiceException, BusinessException, PersistenceException {
+	public <E extends Entity<?>> Collection<E> listByExample(final E entity, final Map<String, Object> options) {
 		return super.listByExample(entity, options);
 	}
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public void update(Entity<?> entity) throws ServiceException, BusinessException, PersistenceException {
+	public void update(final Entity<?> entity) {
 		super.update(entity);
 	}
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public void delete(Entity<?> entity) throws ServiceException, BusinessException, PersistenceException {
+	public void delete(final Entity<?> entity) {
 		super.delete(entity);
 	}
 
 	// Batch
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public void save(Entity<?>... entities) throws ServiceException, BusinessException, PersistenceException {
+	public void save(final Entity<?>... entities) {
 		super.save(entities);
 	}
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public void update(Entity<?>... entities) throws ServiceException, BusinessException, PersistenceException {
+	public void update(final Entity<?>... entities) {
 		super.update(entities);
 	}
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public void delete(Entity<?>... entities) throws ServiceException, BusinessException, PersistenceException {
+	public void delete(final Entity<?>... entities) {
 		super.delete(entities);
 	}
 

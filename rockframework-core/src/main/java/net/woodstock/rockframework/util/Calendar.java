@@ -24,7 +24,7 @@ import java.util.TimeZone;
 
 import net.woodstock.rockframework.utils.StringUtils;
 
-public class Calendar extends GregorianCalendar {
+public final class Calendar extends GregorianCalendar {
 
 	private static final long		serialVersionUID			= -5683383305791225831L;
 
@@ -70,12 +70,12 @@ public class Calendar extends GregorianCalendar {
 
 	private Locale					locale;
 
-	private Calendar(TimeZone tz, Locale l) {
+	private Calendar(final TimeZone tz, final Locale l) {
 		super(tz, l);
 		this.locale = l;
 	}
 
-	private Calendar(Date date, TimeZone tz, Locale l) {
+	private Calendar(final Date date, final TimeZone tz, final Locale l) {
 		this(tz, l);
 		this.setTime(date);
 	}
@@ -85,91 +85,95 @@ public class Calendar extends GregorianCalendar {
 		return this.locale;
 	}
 
-	public void setLocale(Locale locale) {
+	public void setLocale(final Locale locale) {
 		this.locale = locale;
 	}
 
 	// Utils
-	public void addDays(int days) {
+	public void addDays(final int days) {
 		if (days < 0) {
 			this.removeDays(Math.abs(days));
 		} else {
 			int maxDays = this.getActualMaximum(java.util.Calendar.DAY_OF_YEAR);
-			while (days > maxDays) {
+			int currentDays = days;
+			while (currentDays > maxDays) {
 				this.addYears(1);
-				days -= maxDays;
+				currentDays -= maxDays;
 				maxDays = this.getActualMaximum(java.util.Calendar.DAY_OF_YEAR);
 			}
-			if (days + this.get(java.util.Calendar.DAY_OF_YEAR) > maxDays) {
+			if (currentDays + this.get(java.util.Calendar.DAY_OF_YEAR) > maxDays) {
 				this.addYears(1);
-				days = maxDays - days;
-				this.roll(days, java.util.Calendar.DAY_OF_YEAR, false);
+				currentDays = maxDays - currentDays;
+				this.roll(currentDays, java.util.Calendar.DAY_OF_YEAR, false);
 			} else {
-				this.roll(days, java.util.Calendar.DAY_OF_YEAR, true);
+				this.roll(currentDays, java.util.Calendar.DAY_OF_YEAR, true);
 			}
 		}
 	}
 
-	public void addHours(int hours) {
+	public void addHours(final int hours) {
 		if (hours < 0) {
 			this.removeHours(Math.abs(hours));
 		} else {
 			int maxHours = this.getActualMaximum(java.util.Calendar.HOUR_OF_DAY) + 1;
-			while (hours > maxHours) {
+			int currentHours = hours;
+			while (currentHours > maxHours) {
 				this.addDays(1);
-				hours -= maxHours;
+				currentHours -= maxHours;
 				maxHours = this.getActualMaximum(java.util.Calendar.HOUR_OF_DAY) + 1;
 			}
-			if (hours + this.get(java.util.Calendar.HOUR_OF_DAY) > maxHours) {
+			if (currentHours + this.get(java.util.Calendar.HOUR_OF_DAY) > maxHours) {
 				this.addDays(1);
-				hours = maxHours - hours;
-				this.roll(hours, java.util.Calendar.HOUR_OF_DAY, false);
+				currentHours = maxHours - currentHours;
+				this.roll(currentHours, java.util.Calendar.HOUR_OF_DAY, false);
 			} else {
-				this.roll(hours, java.util.Calendar.HOUR_OF_DAY, true);
+				this.roll(currentHours, java.util.Calendar.HOUR_OF_DAY, true);
 			}
 		}
 	}
 
-	public void addMinutes(int minutes) {
+	public void addMinutes(final int minutes) {
 		if (minutes < 0) {
 			this.removeMinutes(Math.abs(minutes));
 		} else {
 			int maxMinutes = this.getActualMaximum(java.util.Calendar.MINUTE) + 1;
-			while (minutes > maxMinutes) {
+			int currentMinutes = minutes;
+			while (currentMinutes > maxMinutes) {
 				this.addHours(1);
-				minutes -= maxMinutes;
+				currentMinutes -= maxMinutes;
 			}
-			if (minutes + this.get(java.util.Calendar.MINUTE) > maxMinutes) {
+			if (currentMinutes + this.get(java.util.Calendar.MINUTE) > maxMinutes) {
 				this.addHours(1);
-				minutes = maxMinutes - minutes;
-				this.roll(minutes, java.util.Calendar.MINUTE, false);
+				currentMinutes = maxMinutes - currentMinutes;
+				this.roll(currentMinutes, java.util.Calendar.MINUTE, false);
 			} else {
-				this.roll(minutes, java.util.Calendar.MINUTE, true);
+				this.roll(currentMinutes, java.util.Calendar.MINUTE, true);
 			}
 		}
 	}
 
-	public void addMonths(int months) {
+	public void addMonths(final int months) {
 		if (months < 0) {
 			this.removeMonths(Math.abs(months));
 		} else {
 			int maxMonths = this.getActualMaximum(java.util.Calendar.MONTH) + 1;
-			while (months > maxMonths) {
+			int currentMonths = months;
+			while (currentMonths > maxMonths) {
 				this.addYears(1);
-				months -= maxMonths;
+				currentMonths -= maxMonths;
 				maxMonths = this.getActualMaximum(java.util.Calendar.MONTH) + 1;
 			}
-			if (months + this.get(java.util.Calendar.MONTH) > maxMonths) {
+			if (currentMonths + this.get(java.util.Calendar.MONTH) > maxMonths) {
 				this.addYears(1);
-				months = maxMonths - months;
-				this.roll(months, java.util.Calendar.MONTH, false);
+				currentMonths = maxMonths - currentMonths;
+				this.roll(currentMonths, java.util.Calendar.MONTH, false);
 			} else {
-				this.roll(months, java.util.Calendar.MONTH, true);
+				this.roll(currentMonths, java.util.Calendar.MONTH, true);
 			}
 		}
 	}
 
-	public void addYears(int years) {
+	public void addYears(final int years) {
 		if (years < 0) {
 			this.removeYears(Math.abs(years));
 		} else {
@@ -177,7 +181,7 @@ public class Calendar extends GregorianCalendar {
 		}
 	}
 
-	public long diffDays(java.util.Calendar calendar) {
+	public long diffDays(final java.util.Calendar calendar) {
 		long diff = 0;
 		java.util.Calendar c = java.util.Calendar.getInstance();
 		c.setTime(calendar.getTime());
@@ -199,7 +203,7 @@ public class Calendar extends GregorianCalendar {
 		return diff;
 	}
 
-	public long diffHours(java.util.Calendar calendar) {
+	public long diffHours(final java.util.Calendar calendar) {
 		long diff = 0;
 		java.util.Calendar c = java.util.Calendar.getInstance();
 		c.setTime(calendar.getTime());
@@ -208,7 +212,7 @@ public class Calendar extends GregorianCalendar {
 		return diff;
 	}
 
-	public long diffMonths(java.util.Calendar calendar) {
+	public long diffMonths(final java.util.Calendar calendar) {
 		long diff = 0;
 		java.util.Calendar c = java.util.Calendar.getInstance();
 		c.setTime(calendar.getTime());
@@ -230,7 +234,7 @@ public class Calendar extends GregorianCalendar {
 		return diff;
 	}
 
-	public long diffYears(java.util.Calendar calendar) {
+	public long diffYears(final java.util.Calendar calendar) {
 		long diff = this.get(java.util.Calendar.YEAR) - calendar.get(java.util.Calendar.YEAR);
 		return diff;
 	}
@@ -283,93 +287,98 @@ public class Calendar extends GregorianCalendar {
 		return this.get(java.util.Calendar.YEAR);
 	}
 
-	public String getFormated(String format) {
+	public String getFormated(final String format) {
+		String date = format;
 		for (String s : Calendar.ALL_FORMAT) {
 			while (format.indexOf(s) != -1) {
 				SimpleDateFormat sdf = new SimpleDateFormat(s.replace("%", StringUtils.BLANK), this.locale);
-				format = format.replace(s, sdf.format(this.getTime()));
+				date = format.replace(s, sdf.format(this.getTime()));
 			}
 		}
-		return format;
+		return date;
 	}
 
-	public void removeDays(int days) {
+	public void removeDays(final int days) {
 		Calendar c = (Calendar) this.clone();
 		c.roll(java.util.Calendar.YEAR, false);
 		int maxDays = c.getActualMaximum(java.util.Calendar.DAY_OF_YEAR);
-		while (days > maxDays) {
+		int currentDays = days;
+		while (currentDays > maxDays) {
 			this.removeYears(1);
-			days -= maxDays;
+			currentDays -= maxDays;
 			c.setTime(this.getTime());
 			c.roll(java.util.Calendar.YEAR, false);
 			maxDays = c.getActualMaximum(java.util.Calendar.DAY_OF_YEAR);
 		}
-		if (days >= this.get(java.util.Calendar.DAY_OF_YEAR)) {
+		if (currentDays >= this.get(java.util.Calendar.DAY_OF_YEAR)) {
 			this.removeYears(1);
-			days = maxDays - days;
-			this.roll(days, java.util.Calendar.DAY_OF_YEAR, true);
+			currentDays = maxDays - currentDays;
+			this.roll(currentDays, java.util.Calendar.DAY_OF_YEAR, true);
 		} else {
-			this.roll(days, java.util.Calendar.DAY_OF_YEAR, false);
+			this.roll(currentDays, java.util.Calendar.DAY_OF_YEAR, false);
 		}
 	}
 
-	public void removeHours(int hours) {
+	public void removeHours(final int hours) {
 		int maxHours = this.getActualMaximum(java.util.Calendar.HOUR_OF_DAY) + 1;
-		while (hours > maxHours) {
+		int currentHours = hours;
+		while (currentHours > maxHours) {
 			this.removeDays(1);
-			hours -= maxHours;
+			currentHours -= maxHours;
 			maxHours = this.getActualMaximum(java.util.Calendar.HOUR_OF_DAY) + 1;
 		}
-		if (hours >= this.get(java.util.Calendar.HOUR_OF_DAY)) {
+		if (currentHours >= this.get(java.util.Calendar.HOUR_OF_DAY)) {
 			this.removeDays(1);
-			hours = maxHours - hours;
-			this.roll(hours, java.util.Calendar.HOUR_OF_DAY, true);
+			currentHours = maxHours - currentHours;
+			this.roll(currentHours, java.util.Calendar.HOUR_OF_DAY, true);
 		} else {
-			this.roll(hours, java.util.Calendar.HOUR_OF_DAY, false);
+			this.roll(currentHours, java.util.Calendar.HOUR_OF_DAY, false);
 		}
 	}
 
-	public void removeMinutes(int minutes) {
+	public void removeMinutes(final int minutes) {
 		int maxMinutes = this.getActualMaximum(java.util.Calendar.MINUTE) + 1;
-		while (minutes > maxMinutes) {
+		int currentMinutes = minutes;
+		while (currentMinutes > maxMinutes) {
 			this.removeHours(1);
-			minutes -= maxMinutes;
+			currentMinutes -= maxMinutes;
 		}
-		if (minutes >= this.get(java.util.Calendar.MINUTE)) {
+		if (currentMinutes >= this.get(java.util.Calendar.MINUTE)) {
 			this.removeHours(1);
-			minutes = maxMinutes - minutes;
-			this.roll(minutes, java.util.Calendar.MINUTE, true);
+			currentMinutes = maxMinutes - currentMinutes;
+			this.roll(currentMinutes, java.util.Calendar.MINUTE, true);
 		} else {
-			this.roll(minutes, java.util.Calendar.MINUTE, false);
+			this.roll(currentMinutes, java.util.Calendar.MINUTE, false);
 		}
 	}
 
-	public void removeMonths(int months) {
+	public void removeMonths(final int months) {
 		Calendar c = (Calendar) this.clone();
 		c.roll(java.util.Calendar.YEAR, false);
 		int maxMonths = c.getActualMaximum(java.util.Calendar.MONTH) + 1;
-		while (months > maxMonths) {
+		int currentMonths = months;
+		while (currentMonths > maxMonths) {
 			this.removeYears(1);
-			months -= maxMonths;
+			currentMonths -= maxMonths;
 			c.setTime(this.getTime());
 			c.roll(java.util.Calendar.YEAR, false);
 			maxMonths = c.getActualMaximum(java.util.Calendar.MONTH) + 1;
 		}
-		if (months >= this.get(java.util.Calendar.MONTH)) {
+		if (currentMonths >= this.get(java.util.Calendar.MONTH)) {
 			this.removeYears(1);
-			months = maxMonths - months;
-			this.roll(months, java.util.Calendar.MONTH, true);
+			currentMonths = maxMonths - currentMonths;
+			this.roll(currentMonths, java.util.Calendar.MONTH, true);
 		} else {
-			this.roll(months, java.util.Calendar.MONTH, false);
+			this.roll(currentMonths, java.util.Calendar.MONTH, false);
 		}
 	}
 
-	public void removeYears(int years) {
+	public void removeYears(final int years) {
 		this.roll(years, java.util.Calendar.YEAR, false);
 	}
 
-	private void roll(int i, int field, boolean up) {
-		for (; i > 0; i--) {
+	private void roll(final int count, final int field, final boolean up) {
+		for (int i = 0; i < count; i++) {
 			this.roll(field, up);
 		}
 	}
@@ -382,16 +391,21 @@ public class Calendar extends GregorianCalendar {
 	}
 
 	@Override
-	public int compareTo(java.util.Calendar anotherCalendar) {
+	public int compareTo(final java.util.Calendar anotherCalendar) {
 		return super.compareTo(anotherCalendar);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (!(obj instanceof java.util.Calendar)) {
 			return false;
 		}
 		return super.equals(obj);
+	}
+
+	@Override
+	public int hashCode() {
+		return super.hashCode();
 	}
 
 	@Override
@@ -404,39 +418,39 @@ public class Calendar extends GregorianCalendar {
 		return new Calendar(TimeZone.getDefault(), Locale.getDefault());
 	}
 
-	public static Calendar getInstance(Locale l) {
+	public static Calendar getInstance(final Locale l) {
 		return new Calendar(TimeZone.getDefault(), l);
 	}
 
-	public static Calendar getInstance(TimeZone tz) {
+	public static Calendar getInstance(final TimeZone tz) {
 		return new Calendar(tz, Locale.getDefault());
 	}
 
-	public static Calendar getInstance(TimeZone tz, Locale l) {
+	public static Calendar getInstance(final TimeZone tz, final Locale l) {
 		return new Calendar(tz, l);
 	}
 
-	public static Calendar toCalendar(java.util.Calendar c) {
+	public static Calendar toCalendar(final java.util.Calendar c) {
 		return new Calendar(c.getTime(), TimeZone.getDefault(), Locale.getDefault());
 	}
 
-	public static Calendar toCalendar(java.util.Calendar c, TimeZone tz, Locale l) {
+	public static Calendar toCalendar(final java.util.Calendar c, final TimeZone tz, final Locale l) {
 		return new Calendar(c.getTime(), tz, l);
 	}
 
-	public static Calendar toCalendar(Date d) {
+	public static Calendar toCalendar(final Date d) {
 		return new Calendar(d, TimeZone.getDefault(), Locale.getDefault());
 	}
 
-	public static Calendar toCalendar(Date d, TimeZone tz, Locale l) {
+	public static Calendar toCalendar(final Date d, final TimeZone tz, final Locale l) {
 		return new Calendar(d, tz, l);
 	}
 
-	public static Calendar toCalendar(long d) {
+	public static Calendar toCalendar(final long d) {
 		return new Calendar(new Date(d), TimeZone.getDefault(), Locale.getDefault());
 	}
 
-	public static Calendar toCalendar(long d, TimeZone tz, Locale l) {
+	public static Calendar toCalendar(final long d, final TimeZone tz, final Locale l) {
 		return new Calendar(new Date(d), tz, l);
 	}
 

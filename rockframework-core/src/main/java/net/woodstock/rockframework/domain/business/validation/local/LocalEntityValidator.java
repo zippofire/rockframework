@@ -34,9 +34,10 @@ import net.woodstock.rockframework.domain.business.validation.Operation;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
+import net.woodstock.rockframework.sys.SysLogger;
 import net.woodstock.rockframework.utils.StringUtils;
 
-public class LocalEntityValidator implements EntityValidator {
+public final class LocalEntityValidator implements EntityValidator {
 
 	public static final String							OPERATION_PARAM							= "operation";
 
@@ -78,7 +79,7 @@ public class LocalEntityValidator implements EntityValidator {
 
 	public static final String							MESSAGE_FIELD_ERROR_REGEX				= "domain.validation.field.error.regex";
 
-	private static LocalEntityValidator					entityValidator;
+	private static LocalEntityValidator					instance								= new LocalEntityValidator();
 
 	private Map<Class<? extends Validator>, Validator>	validators;
 
@@ -87,19 +88,19 @@ public class LocalEntityValidator implements EntityValidator {
 		this.validators = new HashMap<Class<? extends Validator>, Validator>();
 	}
 
-	public Collection<ValidationResult> validate(Entity<?> entity, Operation operation) throws ValidationException {
+	public Collection<ValidationResult> validate(final Entity<?> entity, final Operation operation) {
 		String pojoName = this.getEntityName(entity);
 		LocalValidationContext rootContext = new LocalValidationContext(entity, pojoName, null, operation);
 		return this.validate(rootContext, entity, operation);
 	}
 
-	public Collection<ValidationResult> validate(LocalValidationContext rootContext, Entity<?> entity, Operation operation) throws ValidationException {
+	public Collection<ValidationResult> validate(final LocalValidationContext rootContext, final Entity<?> entity, final Operation operation) {
 		Collection<ValidationResult> results = new LinkedList<ValidationResult>();
 		this.validate(rootContext, entity, operation, results);
 		return results;
 	}
 
-	private void validate(LocalValidationContext parentContext, Entity<?> entity, Operation operation, Collection<ValidationResult> results) {
+	private void validate(final LocalValidationContext parentContext, final Entity<?> entity, final Operation operation, final Collection<ValidationResult> results) {
 		try {
 			if (entity == null) {
 				throw new ValidationException(CoreMessage.getInstance().getMessage(LocalEntityValidator.MESSAGE_ERROR_NULL));
@@ -158,7 +159,7 @@ public class LocalEntityValidator implements EntityValidator {
 	}
 
 	// Utils
-	private String getEntityName(Entity<?> entity) {
+	private String getEntityName(final Entity<?> entity) {
 		if (entity == null) {
 			return null;
 		}
@@ -166,18 +167,15 @@ public class LocalEntityValidator implements EntityValidator {
 		return className;
 	}
 
-	private Validator getValidator(Class<? extends Validator> clazz) throws InstantiationException, IllegalAccessException {
+	private Validator getValidator(final Class<? extends Validator> clazz) throws InstantiationException, IllegalAccessException {
 		if (!this.validators.containsKey(clazz)) {
 			Validator validator = clazz.newInstance();
-			if (validator instanceof InitializableValidator) {
-				((InitializableValidator) validator).init();
-			}
 			this.validators.put(clazz, validator);
 		}
 		return this.validators.get(clazz);
 	}
 
-	private Class<?> getAnnotationClass(Annotation annotation) throws ClassNotFoundException {
+	private Class<?> getAnnotationClass(final Annotation annotation) throws ClassNotFoundException {
 		Class<?> annotationClass = annotation.getClass();
 
 		if (Proxy.class.isAssignableFrom(annotationClass)) {
@@ -190,7 +188,7 @@ public class LocalEntityValidator implements EntityValidator {
 		return annotationClass;
 	}
 
-	private Class<? extends Validator> getValidatorClass(Class<?> annotationClass) {
+	private Class<? extends Validator> getValidatorClass(final Class<?> annotationClass) {
 		Validate bv = annotationClass.getAnnotation(Validate.class);
 
 		Class<? extends Validator> clazz = bv.validator();
@@ -198,7 +196,7 @@ public class LocalEntityValidator implements EntityValidator {
 		return clazz;
 	}
 
-	private Operation[] getOperations(Annotation annotation) throws SecurityException, IllegalAccessException, InvocationTargetException {
+	private Operation[] getOperations(final Annotation annotation) throws IllegalAccessException, InvocationTargetException {
 		try {
 			Method method = annotation.getClass().getMethod(LocalEntityValidator.OPERATION_PARAM, new Class[] {});
 			Operation[] operations = (Operation[]) method.invoke(annotation, new Object[] {});
@@ -208,27 +206,20 @@ public class LocalEntityValidator implements EntityValidator {
 		}
 	}
 
-	private String getMessage(Annotation annotation) throws SecurityException, IllegalAccessException, InvocationTargetException {
+	private String getMessage(final Annotation annotation) throws IllegalAccessException, InvocationTargetException {
 		try {
 			Method m = annotation.getClass().getMethod(LocalEntityValidator.MESSAGE_PARAM, new Class[] {});
 			String message = (String) m.invoke(annotation, new Object[] {});
 			return message;
 		} catch (NoSuchMethodException ee) {
-			//
+			SysLogger.getLogger().debug(ee.getMessage(), ee);
 		}
 		return null;
 	}
 
 	// Instance
 	public static EntityValidator getInstance() {
-		if (LocalEntityValidator.entityValidator == null) {
-			synchronized (LocalEntityValidator.class) {
-				if (LocalEntityValidator.entityValidator == null) {
-					LocalEntityValidator.entityValidator = new LocalEntityValidator();
-				}
-			}
-		}
-		return LocalEntityValidator.entityValidator;
+		return LocalEntityValidator.instance;
 	}
 
 }

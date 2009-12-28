@@ -24,7 +24,7 @@ import net.woodstock.rockframework.domain.business.validation.local.annotation.V
 
 public class ValidatorNumberLength extends AbstractValidator {
 
-	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
+	public ValidationResult validate(final LocalValidationContext context) {
 		try {
 			ValidateNumberLength annotation = (ValidateNumberLength) context.getAnnotation();
 			Number value = (Number) context.getValue();
@@ -45,7 +45,7 @@ public class ValidatorNumberLength extends AbstractValidator {
 		}
 	}
 
-	private String getErrorMessage(ValidateNumberLength annotation, String name) {
+	private String getErrorMessage(final ValidateNumberLength annotation, final String name) {
 		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_LENGTH, name, new Integer(annotation.min()), new Integer(annotation.max()));
 	}
 

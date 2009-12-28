@@ -23,7 +23,7 @@ import net.woodstock.rockframework.utils.StringUtils;
 public class NoRefererFilter extends RefererFilter {
 
 	@Override
-	protected boolean validateReferer(HttpServletRequest request) {
+	protected boolean validateReferer(final HttpServletRequest request) {
 		String referer = this.getReferer(request);
 		if (StringUtils.isEmpty(referer)) {
 			return false;

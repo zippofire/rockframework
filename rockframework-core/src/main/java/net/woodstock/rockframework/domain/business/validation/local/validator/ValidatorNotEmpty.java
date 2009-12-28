@@ -29,7 +29,7 @@ import net.woodstock.rockframework.utils.StringUtils;
 public class ValidatorNotEmpty extends AbstractValidator {
 
 	@SuppressWarnings("unchecked")
-	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
+	public ValidationResult validate(final LocalValidationContext context) {
 		try {
 			Object value = context.getValue();
 			if (value == null) {
@@ -77,7 +77,7 @@ public class ValidatorNotEmpty extends AbstractValidator {
 		}
 	}
 
-	private String getErrorMessage(LocalValidationContext context) {
+	private String getErrorMessage(final LocalValidationContext context) {
 		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_NOT_EMPTY, context.getCanonicalName());
 	}
 

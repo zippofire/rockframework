@@ -26,19 +26,19 @@ public abstract class NumberConverter extends SimpleValueConverter<Number> {
 
 	private NumberFormat	format;
 
-	public NumberConverter(String format) {
+	public NumberConverter(final String format) {
 		super();
 		this.format = new DecimalFormat(format);
 	}
 
-	public NumberConverter(NumberFormat format) {
+	public NumberConverter(final NumberFormat format) {
 		super();
 		this.format = format;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	protected Number convertFromString(String s, Class toClass) {
+	protected Number convertFromString(final String s, final Class toClass) {
 		try {
 			Number n = this.format.parse(s);
 			Constructor<? extends Number> constructor = toClass.getConstructor(new Class[] { String.class });
@@ -49,7 +49,7 @@ public abstract class NumberConverter extends SimpleValueConverter<Number> {
 	}
 
 	@Override
-	protected String convertToString(Number o) {
+	protected String convertToString(final Number o) {
 		String s = this.format.format(o);
 		return s;
 	}

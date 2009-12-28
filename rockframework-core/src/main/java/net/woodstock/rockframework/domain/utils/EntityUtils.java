@@ -39,7 +39,7 @@ public abstract class EntityUtils {
 	}
 
 	// Object
-	public static boolean equals(Entity<?> entity1, Entity<?> entity2) {
+	public static boolean equals(final Entity<?> entity1, final Entity<?> entity2) {
 		if ((entity1 == null) || (entity2 == null)) {
 			return false;
 		}
@@ -87,7 +87,7 @@ public abstract class EntityUtils {
 		return true;
 	}
 
-	public static int hashCode(Entity<?> entity) {
+	public static int hashCode(final Entity<?> entity) {
 		Serializable id = entity.getId();
 
 		if (id != null) {
@@ -117,7 +117,7 @@ public abstract class EntityUtils {
 		return result;
 	}
 
-	public static String toString(Entity<?> e) {
+	public static String toString(final Entity<?> e) {
 		if (e == null) {
 			return null;
 		}
@@ -136,7 +136,7 @@ public abstract class EntityUtils {
 
 	// Aux
 	@SuppressWarnings("unchecked")
-	public static boolean hasNotNullAttribute(Entity<?> e) {
+	public static boolean hasNotNullAttribute(final Entity<?> e) {
 		if (e == null) {
 			return false;
 		}
@@ -176,7 +176,7 @@ public abstract class EntityUtils {
 		return false;
 	}
 
-	private static boolean isValidType(Class<?> clazz) {
+	private static boolean isValidType(final Class<?> clazz) {
 		// Wrappers
 		if (clazz == Boolean.class) {
 			return true;

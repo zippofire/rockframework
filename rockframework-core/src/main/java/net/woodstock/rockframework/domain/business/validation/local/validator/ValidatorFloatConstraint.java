@@ -25,7 +25,7 @@ import net.woodstock.rockframework.utils.ArrayUtils;
 
 public class ValidatorFloatConstraint extends AbstractValidator {
 
-	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
+	public ValidationResult validate(final LocalValidationContext context) {
 		try {
 			Float value = (Float) context.getValue();
 			ValidateFloatConstraint annotation = (ValidateFloatConstraint) context.getAnnotation();
@@ -46,7 +46,7 @@ public class ValidatorFloatConstraint extends AbstractValidator {
 		}
 	}
 
-	private String getErrorMessage(ValidateFloatConstraint annotation, String name) {
+	private String getErrorMessage(final ValidateFloatConstraint annotation, final String name) {
 		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_CONSTRAINT, name, ArrayUtils.toString(annotation.values()));
 	}
 

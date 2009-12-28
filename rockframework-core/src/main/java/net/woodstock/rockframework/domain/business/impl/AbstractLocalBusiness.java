@@ -20,7 +20,6 @@ import java.util.Collection;
 
 import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.domain.business.BusinessException;
 import net.woodstock.rockframework.domain.business.ValidationResult;
 import net.woodstock.rockframework.domain.business.validation.Operation;
 import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
@@ -31,7 +30,7 @@ public abstract class AbstractLocalBusiness extends AbstractBusiness {
 		super();
 	}
 
-	private ValidationResult validate(Entity<?> entity, Operation operation) throws BusinessException {
+	private ValidationResult validate(final Entity<?> entity, final Operation operation) {
 		Collection<ValidationResult> results = LocalEntityValidator.getInstance().validate(entity, operation);
 		for (ValidationResult result : results) {
 			if (result.isError()) {
@@ -42,11 +41,11 @@ public abstract class AbstractLocalBusiness extends AbstractBusiness {
 	}
 
 	// CRUD
-	public ValidationResult validateSave(Entity<?> entity) throws BusinessException {
+	public ValidationResult validateSave(final Entity<?> entity) {
 		return this.validate(entity, Operation.SAVE);
 	}
 
-	public ValidationResult validateUpdate(Entity<?> entity) throws BusinessException {
+	public ValidationResult validateUpdate(final Entity<?> entity) {
 		return this.validate(entity, Operation.UPDATE);
 	}
 

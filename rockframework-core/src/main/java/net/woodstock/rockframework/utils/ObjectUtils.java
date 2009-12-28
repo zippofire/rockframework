@@ -30,7 +30,7 @@ public abstract class ObjectUtils {
 
 	private static final char	PROPERTY_SEPARATOR	= '.';
 
-	public static void copyAttributes(Object from, Object to, Class<?>[] ignoredTypes) {
+	public static void copyAttributes(final Object from, final Object to, final Class<?>[] ignoredTypes) {
 		BeanDescriptor beanDescriptorFrom = BeanDescriptorFactory.getInstance().getBeanDescriptor(from.getClass());
 		BeanDescriptor beanDescriptorTo = BeanDescriptorFactory.getInstance().getBeanDescriptor(to.getClass());
 
@@ -53,7 +53,7 @@ public abstract class ObjectUtils {
 		}
 	}
 
-	public static void copyAttributes(Object from, Object to, String[] ignoredAttributes) {
+	public static void copyAttributes(final Object from, final Object to, final String[] ignoredAttributes) {
 		BeanDescriptor beanDescriptorFrom = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(from.getClass());
 		BeanDescriptor beanDescriptorTo = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(to.getClass());
 
@@ -76,7 +76,7 @@ public abstract class ObjectUtils {
 		}
 	}
 
-	public static boolean equals(Object o1, Object o2) {
+	public static boolean equals(final Object o1, final Object o2) {
 		if ((o1 == null) || (o2 == null)) {
 			return false;
 		}
@@ -105,7 +105,7 @@ public abstract class ObjectUtils {
 		return true;
 	}
 
-	public static int hashCode(Object obj) {
+	public static int hashCode(final Object obj) {
 		int result = 1;
 		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(obj.getClass());
 		Collection<PropertyDescriptor> properties = beanDescriptor.getProperties();
@@ -126,23 +126,24 @@ public abstract class ObjectUtils {
 		//
 	}
 
-	public static Object getObjectAttribute(Object o, String name) throws NoSuchMethodException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
+	public static Object getObjectAttribute(final Object o, final String name) throws NoSuchMethodException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
 		if (o == null) {
 			return null;
 		}
 
 		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(o.getClass());
-		if (name.indexOf(ObjectUtils.PROPERTY_SEPARATOR) != -1) {
-			String fieldName = name.substring(0, name.indexOf(ObjectUtils.PROPERTY_SEPARATOR));
-			name = name.substring(name.indexOf(ObjectUtils.PROPERTY_SEPARATOR) + 1);
+		String currentName = name;
+		if (currentName.indexOf(ObjectUtils.PROPERTY_SEPARATOR) != -1) {
+			String fieldName = currentName.substring(0, currentName.indexOf(ObjectUtils.PROPERTY_SEPARATOR));
+			currentName = currentName.substring(currentName.indexOf(ObjectUtils.PROPERTY_SEPARATOR) + 1);
 
 			PropertyDescriptor propertyDescriptor = beanDescriptor.getProperty(fieldName);
 
 			Object tmp = propertyDescriptor.getValue(o);
-			return ObjectUtils.getObjectAttribute(tmp, name);
+			return ObjectUtils.getObjectAttribute(tmp, currentName);
 		}
 
-		PropertyDescriptor propertyDescriptor = beanDescriptor.getProperty(name);
+		PropertyDescriptor propertyDescriptor = beanDescriptor.getProperty(currentName);
 		return propertyDescriptor.getValue(o);
 	}
 

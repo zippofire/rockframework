@@ -16,13 +16,6 @@ public class XmlTest extends TestCase {
 		return foo;
 	}
 
-	private Bar getBar() {
-		Bar bar = new Bar();
-		bar.setId(new Integer(1));
-		bar.setName("Bar");
-		return bar;
-	}
-
 	public void xtestXml1() throws Exception {
 		Foo foo = this.getFoo();
 		// foo.setBar(this.getBar());

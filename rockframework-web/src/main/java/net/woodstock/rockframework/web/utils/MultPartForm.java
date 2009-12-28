@@ -48,7 +48,7 @@ public class MultPartForm {
 
 	private boolean						multpart;
 
-	public MultPartForm(HttpServletRequest request) throws FileUploadException {
+	public MultPartForm(final HttpServletRequest request) throws FileUploadException {
 		this.parameters = new HashMap<String, String>();
 		this.files = new HashMap<String, FileItem>();
 
@@ -86,32 +86,32 @@ public class MultPartForm {
 		return this.multpart;
 	}
 
-	public String getParameter(String parameter) {
+	public String getParameter(final String parameter) {
 		return this.getParameter(parameter, null);
 	}
 
-	public String getParameter(String parameter, String nvl) {
+	public String getParameter(final String parameter, final String nvl) {
 		if (this.parameters.containsKey(parameter)) {
 			return this.parameters.get(parameter);
 		}
 		return nvl;
 	}
 
-	public FileItem getFileItem(String file) {
+	public FileItem getFileItem(final String file) {
 		if (this.files.containsKey(file)) {
 			return this.files.get(file);
 		}
 		return null;
 	}
 
-	public boolean hasParameter(String parameter) {
+	public boolean hasParameter(final String parameter) {
 		if (this.getParameter(parameter) != null) {
 			return true;
 		}
 		return false;
 	}
 
-	public void writeAll(String dir) throws Exception {
+	public void writeAll(final String dir) throws Exception {
 		Object[] keys = this.files.keySet().toArray();
 		for (Object k : keys) {
 			FileItem item = this.files.get(k);
@@ -120,7 +120,7 @@ public class MultPartForm {
 		}
 	}
 
-	public void write(String field, String dir) throws Exception {
+	public void write(final String field, final String dir) throws Exception {
 		if (this.files.containsKey(field)) {
 			FileItem item = this.files.get(field);
 			String name = item.getName();
@@ -128,14 +128,14 @@ public class MultPartForm {
 		}
 	}
 
-	public void write(String field, String dir, String name) throws Exception {
+	public void write(final String field, final String dir, final String name) throws Exception {
 		if (this.files.containsKey(field)) {
 			FileItem item = this.files.get(field);
 			item.write(new File(dir + File.separator + name));
 		}
 	}
 
-	public static String getParameter(HttpServletRequest request, String parameter) throws FileUploadException {
+	public static String getParameter(final HttpServletRequest request, final String parameter) throws FileUploadException {
 		String value = null;
 		RequestContext requestContext = new ServletRequestContext(request);
 
@@ -155,7 +155,7 @@ public class MultPartForm {
 		return value;
 	}
 
-	public static InputStream getFile(HttpServletRequest request, String parameter) throws FileUploadException, IOException {
+	public static InputStream getFile(final HttpServletRequest request, final String parameter) throws FileUploadException, IOException {
 		InputStream value = null;
 		RequestContext requestContext = new ServletRequestContext(request);
 

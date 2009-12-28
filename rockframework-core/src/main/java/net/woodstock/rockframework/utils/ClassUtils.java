@@ -35,10 +35,10 @@ import java.util.regex.Pattern;
 
 public abstract class ClassUtils {
 
-	private static final Map<Class<?>, Class<?>>	wrappers;
+	private static Map<Class<?>, Class<?>>	wrappers;
 
 	static {
-		wrappers = new HashMap<Class<?>, Class<?>>();
+		ClassUtils.wrappers = new HashMap<Class<?>, Class<?>>();
 		ClassUtils.wrappers.put(boolean.class, Boolean.class);
 		ClassUtils.wrappers.put(byte.class, Byte.class);
 		ClassUtils.wrappers.put(char.class, Character.class);
@@ -53,11 +53,11 @@ public abstract class ClassUtils {
 		//
 	}
 
-	public static boolean isClass(Object o, Class<?>... classes) {
+	public static boolean isClass(final Object o, final Class<?>... classes) {
 		return ClassUtils.isClass(o.getClass(), classes);
 	}
 
-	public static boolean isClass(Class<?> c, Class<?>... classes) {
+	public static boolean isClass(final Class<?> c, final Class<?>... classes) {
 		for (Class<?> clazz : classes) {
 			if (c == clazz) {
 				return true;
@@ -66,15 +66,15 @@ public abstract class ClassUtils {
 		return false;
 	}
 
-	public static boolean isAssignableFrom(Object o, Class<?> c) {
+	public static boolean isAssignableFrom(final Object o, final Class<?> c) {
 		return c.isAssignableFrom(o.getClass());
 	}
 
-	public static boolean isAssignableFrom(Class<?> c, Class<?> cc) {
+	public static boolean isAssignableFrom(final Class<?> c, final Class<?> cc) {
 		return cc.isAssignableFrom(c);
 	}
 
-	public static boolean isPrimitiveClass(String name) {
+	public static boolean isPrimitiveClass(final String name) {
 		for (Entry<Class<?>, Class<?>> entry : ClassUtils.wrappers.entrySet()) {
 			if (name.equals(entry.getKey().getCanonicalName())) {
 				return false;
@@ -83,11 +83,11 @@ public abstract class ClassUtils {
 		return true;
 	}
 
-	public static Class<?> getClass(String name) throws ClassNotFoundException {
+	public static Class<?> getClass(final String name) throws ClassNotFoundException {
 		return ClassUtils.getPrimitiveClass(name);
 	}
 
-	public static Class<?> getPrimitiveClass(String name) throws ClassNotFoundException {
+	public static Class<?> getPrimitiveClass(final String name) throws ClassNotFoundException {
 		for (Entry<Class<?>, Class<?>> entry : ClassUtils.wrappers.entrySet()) {
 			if (name.equals(entry.getKey().getCanonicalName())) {
 				return entry.getKey();
@@ -96,7 +96,7 @@ public abstract class ClassUtils {
 		return Class.forName(name);
 	}
 
-	public static Class<?> getPrimitiveClass(Class<?> c) {
+	public static Class<?> getPrimitiveClass(final Class<?> c) {
 		for (Entry<Class<?>, Class<?>> entry : ClassUtils.wrappers.entrySet()) {
 			if (c.equals(entry.getValue())) {
 				return entry.getKey();
@@ -105,7 +105,7 @@ public abstract class ClassUtils {
 		return c;
 	}
 
-	public static Class<?> getWrapperClass(Class<?> c) {
+	public static Class<?> getWrapperClass(final Class<?> c) {
 		for (Entry<Class<?>, Class<?>> entry : ClassUtils.wrappers.entrySet()) {
 			if (c.equals(entry.getKey())) {
 				return entry.getValue();
@@ -114,7 +114,7 @@ public abstract class ClassUtils {
 		return c;
 	}
 
-	public static Method getMethod(Class<?> c, String methodName, Object... params) throws NoSuchMethodException {
+	public static Method getMethod(final Class<?> c, final String methodName, final Object... params) throws NoSuchMethodException {
 		Class<?>[] paramsTypes = null;
 		if (params != null) {
 			paramsTypes = new Class<?>[params.length];
@@ -131,7 +131,7 @@ public abstract class ClassUtils {
 		return ClassUtils.getMethod(c, methodName, paramsTypes);
 	}
 
-	public static Method getMethod(Class<?> c, String methodName, Class<?>... paramTypes) throws NoSuchMethodException {
+	public static Method getMethod(final Class<?> c, final String methodName, final Class<?>... paramTypes) throws NoSuchMethodException {
 		Class<?> tmp = c;
 		while (tmp != null) {
 			try {
@@ -163,7 +163,7 @@ public abstract class ClassUtils {
 		throw new NoSuchMethodException(methodName);
 	}
 
-	public static boolean isGeneric(Class<?> clazz) {
+	public static boolean isGeneric(final Class<?> clazz) {
 		Type type = clazz.getGenericSuperclass();
 		// Superclass
 		if (type instanceof ParameterizedType) {
@@ -178,33 +178,29 @@ public abstract class ClassUtils {
 		return false;
 	}
 
-	public static Collection<Class<?>> getGenericTypes(Class<?> clazz) throws ClassNotFoundException {
+	public static Collection<Class<?>> getGenericTypes(final Class<?> clazz) throws ClassNotFoundException {
 		Collection<Class<?>> types = new LinkedList<Class<?>>();
 		// Superclass
-		{
-			Type type = clazz.getGenericSuperclass();
-			if (type instanceof ParameterizedType) {
-				ParameterizedType pt = (ParameterizedType) type;
-				for (Type t : pt.getActualTypeArguments()) {
-					String className = t.toString();
-					className = className.substring(className.indexOf(' ') + 1);
-					Class<?> c = Class.forName(className);
-					types.add(c);
-				}
+		Type type = clazz.getGenericSuperclass();
+		if (type instanceof ParameterizedType) {
+			ParameterizedType pt = (ParameterizedType) type;
+			for (Type t : pt.getActualTypeArguments()) {
+				String className = t.toString();
+				className = className.substring(className.indexOf(' ') + 1);
+				Class<?> c = Class.forName(className);
+				types.add(c);
 			}
 		}
 
 		// Interfaces
-		{
-			for (Type t : clazz.getGenericInterfaces()) {
-				if (t instanceof ParameterizedType) {
-					ParameterizedType pt = (ParameterizedType) t;
-					for (Type tt : pt.getActualTypeArguments()) {
-						String className = tt.toString();
-						className = className.substring(className.indexOf(' ') + 1);
-						Class<?> c = Class.forName(className);
-						types.add(c);
-					}
+		for (Type t : clazz.getGenericInterfaces()) {
+			if (t instanceof ParameterizedType) {
+				ParameterizedType pt = (ParameterizedType) t;
+				for (Type tt : pt.getActualTypeArguments()) {
+					String className = tt.toString();
+					className = className.substring(className.indexOf(' ') + 1);
+					Class<?> c = Class.forName(className);
+					types.add(c);
 				}
 			}
 		}
@@ -212,7 +208,7 @@ public abstract class ClassUtils {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static Collection<Class<?>> getGenericType(Field f) throws ClassNotFoundException {
+	public static Collection<Class<?>> getGenericType(final Field f) throws ClassNotFoundException {
 		Collection<Class<?>> types = new LinkedList<Class<?>>();
 
 		Type t = f.getGenericType();
@@ -233,7 +229,7 @@ public abstract class ClassUtils {
 		return types;
 	}
 
-	public static Collection<Class<?>> getClasses(String packageName) throws IOException, ClassNotFoundException {
+	public static Collection<Class<?>> getClasses(final String packageName) throws IOException, ClassNotFoundException {
 		Collection<Class<?>> classes = new LinkedList<Class<?>>();
 		URL url = ClassUtils.class.getClassLoader().getResource(packageName.replaceAll("\\.", "/"));
 		String fileName = url.getFile();

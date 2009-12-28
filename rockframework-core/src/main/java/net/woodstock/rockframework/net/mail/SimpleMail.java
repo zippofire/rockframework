@@ -49,7 +49,7 @@ public class SimpleMail implements Serializable {
 		super();
 	}
 
-	public void addAttach(File attach) {
+	public void addAttach(final File attach) {
 		this.attach.add(attach);
 	}
 
@@ -57,11 +57,11 @@ public class SimpleMail implements Serializable {
 		return this.attach;
 	}
 
-	public void setAttach(Collection<File> attach) {
+	public void setAttach(final Collection<File> attach) {
 		this.attach = attach;
 	}
 
-	public void addBcc(String bcc) {
+	public void addBcc(final String bcc) {
 		this.bcc.add(bcc);
 	}
 
@@ -69,11 +69,11 @@ public class SimpleMail implements Serializable {
 		return this.bcc;
 	}
 
-	public void setBcc(Collection<String> bcc) {
+	public void setBcc(final Collection<String> bcc) {
 		this.bcc = bcc;
 	}
 
-	public void addCc(String cc) {
+	public void addCc(final String cc) {
 		this.cc.add(cc);
 	}
 
@@ -81,7 +81,7 @@ public class SimpleMail implements Serializable {
 		return this.cc;
 	}
 
-	public void setCc(Collection<String> cc) {
+	public void setCc(final Collection<String> cc) {
 		this.cc = cc;
 	}
 
@@ -89,7 +89,7 @@ public class SimpleMail implements Serializable {
 		return this.from;
 	}
 
-	public void setFrom(String from) {
+	public void setFrom(final String from) {
 		this.from = from;
 	}
 
@@ -97,11 +97,11 @@ public class SimpleMail implements Serializable {
 		return this.html;
 	}
 
-	public void setHtml(boolean html) {
+	public void setHtml(final boolean html) {
 		this.html = html;
 	}
 
-	public void addReplyTo(String replyTo) {
+	public void addReplyTo(final String replyTo) {
 		this.replyTo.add(replyTo);
 	}
 
@@ -109,7 +109,7 @@ public class SimpleMail implements Serializable {
 		return this.replyTo;
 	}
 
-	public void setReplyTo(Collection<String> replyTo) {
+	public void setReplyTo(final Collection<String> replyTo) {
 		this.replyTo = replyTo;
 	}
 
@@ -117,7 +117,7 @@ public class SimpleMail implements Serializable {
 		return this.subject;
 	}
 
-	public void setSubject(String subject) {
+	public void setSubject(final String subject) {
 		this.subject = subject;
 	}
 
@@ -125,11 +125,11 @@ public class SimpleMail implements Serializable {
 		return this.text;
 	}
 
-	public void setText(String text) {
+	public void setText(final String text) {
 		this.text = text;
 	}
 
-	public void addTo(String to) {
+	public void addTo(final String to) {
 		this.to.add(to);
 	}
 
@@ -137,7 +137,7 @@ public class SimpleMail implements Serializable {
 		return this.to;
 	}
 
-	public void setTo(Collection<String> to) {
+	public void setTo(final Collection<String> to) {
 		this.to = to;
 	}
 

@@ -26,11 +26,11 @@ public class LocalValidationContext extends ValidationContext {
 
 	private Annotation	annotation;
 
-	protected LocalValidationContext(Object value, String name, Annotation annotation, Operation operation) {
+	protected LocalValidationContext(final Object value, final String name, final Annotation annotation, final Operation operation) {
 		this(value, name, annotation, operation, null);
 	}
 
-	protected LocalValidationContext(Object value, String name, Annotation annotation, Operation operation, LocalValidationContext parentContext) {
+	protected LocalValidationContext(final Object value, final String name, final Annotation annotation, final Operation operation, final LocalValidationContext parentContext) {
 		super(value, name, operation, parentContext);
 		this.annotation = annotation;
 	}
@@ -45,7 +45,7 @@ public class LocalValidationContext extends ValidationContext {
 		return LocalValidationResult.getSuccessResult(this);
 	}
 
-	public ValidationResult getErrorResult(String message) {
+	public ValidationResult getErrorResult(final String message) {
 		return LocalValidationResult.getErrorResult(this, message);
 	}
 

@@ -28,20 +28,20 @@ public class NumberConverter extends SimpleFacesConverter<Number> {
 
 	private Class<? extends Number>	clazz;
 
-	public NumberConverter(String format, Class<? extends Number> clazz) {
+	public NumberConverter(final String format, final Class<? extends Number> clazz) {
 		super();
 		this.format = new DecimalFormat(format);
 		this.clazz = clazz;
 	}
 
-	public NumberConverter(NumberFormat format, Class<? extends Number> clazz) {
+	public NumberConverter(final NumberFormat format, final Class<? extends Number> clazz) {
 		super();
 		this.format = format;
 		this.clazz = clazz;
 	}
 
 	@Override
-	protected Number getAsObject(String value) throws ConverterException {
+	protected Number getAsObject(final String value) {
 		try {
 			Number n = this.format.parse(value);
 			Constructor<? extends Number> constructor = this.clazz.getConstructor(new Class[] { String.class });
@@ -52,7 +52,7 @@ public class NumberConverter extends SimpleFacesConverter<Number> {
 	}
 
 	@Override
-	protected String getAsString(Number value) throws ConverterException {
+	protected String getAsString(final Number value) {
 		String s = this.format.format(value);
 		return s;
 	}

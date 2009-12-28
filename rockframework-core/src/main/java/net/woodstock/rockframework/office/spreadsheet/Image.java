@@ -41,7 +41,7 @@ public class Image implements SpreadsheetElement {
 		super();
 	}
 
-	public Image(byte[] bytes, int row, int column, ImageType type) {
+	public Image(final byte[] bytes, final int row, final int column, final ImageType type) {
 		super();
 		this.bytes = bytes;
 		this.row = row;
@@ -49,7 +49,7 @@ public class Image implements SpreadsheetElement {
 		this.type = type;
 	}
 
-	public Image(InputStream inputStream, int row, int column, ImageType type) throws IOException {
+	public Image(final InputStream inputStream, final int row, final int column, final ImageType type) throws IOException {
 		super();
 		this.bytes = IOUtils.toByteArray(inputStream);
 		this.row = row;
@@ -57,7 +57,7 @@ public class Image implements SpreadsheetElement {
 		this.type = type;
 	}
 
-	public Image(byte[] bytes, int row, int column, ImageType type, int width, int height) {
+	public Image(final byte[] bytes, final int row, final int column, final ImageType type, final int width, final int height) {
 		super();
 		this.bytes = bytes;
 		this.row = row;
@@ -67,7 +67,7 @@ public class Image implements SpreadsheetElement {
 		this.height = height;
 	}
 
-	public Image(InputStream inputStream, int row, int column, ImageType type, int width, int height) throws IOException {
+	public Image(final InputStream inputStream, final int row, final int column, final ImageType type, final int width, final int height) throws IOException {
 		super();
 		this.bytes = IOUtils.toByteArray(inputStream);
 		this.row = row;
@@ -81,7 +81,7 @@ public class Image implements SpreadsheetElement {
 		return this.bytes;
 	}
 
-	public void setBytes(byte[] bytes) {
+	public void setBytes(final byte[] bytes) {
 		this.bytes = bytes;
 	}
 
@@ -89,7 +89,7 @@ public class Image implements SpreadsheetElement {
 		return this.row;
 	}
 
-	public void setRow(int row) {
+	public void setRow(final int row) {
 		this.row = row;
 	}
 
@@ -97,7 +97,7 @@ public class Image implements SpreadsheetElement {
 		return this.column;
 	}
 
-	public void setColumn(int column) {
+	public void setColumn(final int column) {
 		this.column = column;
 	}
 
@@ -105,7 +105,7 @@ public class Image implements SpreadsheetElement {
 		return this.type;
 	}
 
-	public void setType(ImageType type) {
+	public void setType(final ImageType type) {
 		this.type = type;
 	}
 
@@ -113,7 +113,7 @@ public class Image implements SpreadsheetElement {
 		return this.width;
 	}
 
-	public void setWidth(int width) {
+	public void setWidth(final int width) {
 		this.width = width;
 	}
 
@@ -121,7 +121,7 @@ public class Image implements SpreadsheetElement {
 		return this.height;
 	}
 
-	public void setHeight(int height) {
+	public void setHeight(final int height) {
 		this.height = height;
 	}
 

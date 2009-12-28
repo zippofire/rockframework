@@ -17,12 +17,11 @@
 package net.woodstock.rockframework.conversion.json;
 
 import net.woodstock.rockframework.conversion.ConverterContext;
-import net.woodstock.rockframework.conversion.ConverterException;
 
 class StringConverter extends net.woodstock.rockframework.conversion.common.converters.StringConverter {
 
 	@Override
-	public String to(ConverterContext context, String t) throws ConverterException {
+	public String to(final ConverterContext context, final String t) {
 		String s = super.to(context, t);
 		if (s != null) {
 			StringBuilder builder = new StringBuilder();

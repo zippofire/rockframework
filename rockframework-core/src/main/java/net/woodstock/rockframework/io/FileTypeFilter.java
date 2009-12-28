@@ -23,7 +23,7 @@ public class FileTypeFilter implements FileFilter {
 
 	private FileType	type;
 
-	public FileTypeFilter(FileType type) {
+	public FileTypeFilter(final FileType type) {
 		this.type = type;
 	}
 
@@ -31,11 +31,11 @@ public class FileTypeFilter implements FileFilter {
 		return this.type;
 	}
 
-	public void setType(FileType type) {
+	public void setType(final FileType type) {
 		this.type = type;
 	}
 
-	public boolean accept(File pathname) {
+	public boolean accept(final File pathname) {
 		if ((this.type == FileType.FILE) && (pathname.isFile())) {
 			return true;
 		}

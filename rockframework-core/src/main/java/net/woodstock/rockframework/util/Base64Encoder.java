@@ -26,7 +26,7 @@ public abstract class Base64Encoder {
 
 	private static final String		SUN_BASE64		= "sun.misc.BASE64Encoder";
 
-	private static Base64Encoder	encoder;
+	private static Base64Encoder	instance		= Base64Encoder.getAvailableEncoder();
 
 	protected static Log getLogger() {
 		return SysLogger.getLogger();
@@ -41,26 +41,25 @@ public abstract class Base64Encoder {
 	public abstract byte[] decode(byte[] b);
 
 	public static Base64Encoder getInstance() {
-		if (Base64Encoder.encoder == null) {
-			synchronized (Base64Encoder.class) {
-				if (Base64Encoder.encoder == null) {
-					try {
-						Class.forName(Base64Encoder.APACHE_BASE64);
-						Base64Encoder.encoder = new ApacheBase64Encoder();
-						Base64Encoder.getLogger().info("Using Apache Base64");
-					} catch (ClassNotFoundException e) {
-						try {
-							Class.forName(Base64Encoder.SUN_BASE64);
-							Base64Encoder.encoder = new SunBase64Encoder();
-							Base64Encoder.getLogger().info("Using Sun Base64");
-						} catch (ClassNotFoundException ee) {
-							throw new UnsupportedOperationException("No Base64 found");
-						}
-					}
-				}
+		return Base64Encoder.instance;
+	}
+
+	private static Base64Encoder getAvailableEncoder() {
+		try {
+			Class.forName(Base64Encoder.APACHE_BASE64);
+			Base64Encoder encoder = new ApacheBase64Encoder();
+			Base64Encoder.getLogger().info("Using Apache Base64(Commons Codec)");
+			return encoder;
+		} catch (ClassNotFoundException e) {
+			try {
+				Class.forName(Base64Encoder.SUN_BASE64);
+				Base64Encoder encoder = new SunBase64Encoder();
+				Base64Encoder.getLogger().info("Using Sun Base64");
+				return encoder;
+			} catch (ClassNotFoundException ee) {
+				throw new UnsupportedOperationException("No Base64 found");
 			}
 		}
-		return Base64Encoder.encoder;
 	}
 
 }

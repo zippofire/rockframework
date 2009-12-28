@@ -30,7 +30,7 @@ public class Color implements SpreadsheetElement {
 		super();
 	}
 
-	public Color(int red, int green, int blue) {
+	public Color(final int red, final int green, final int blue) {
 		super();
 		this.red = red;
 		this.green = green;
@@ -41,7 +41,7 @@ public class Color implements SpreadsheetElement {
 		return this.red;
 	}
 
-	public void setRed(int red) {
+	public void setRed(final int red) {
 		this.red = red;
 	}
 
@@ -49,7 +49,7 @@ public class Color implements SpreadsheetElement {
 		return this.green;
 	}
 
-	public void setGreen(int green) {
+	public void setGreen(final int green) {
 		this.green = green;
 	}
 
@@ -57,7 +57,7 @@ public class Color implements SpreadsheetElement {
 		return this.blue;
 	}
 
-	public void setBlue(int blue) {
+	public void setBlue(final int blue) {
 		this.blue = blue;
 	}
 

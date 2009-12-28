@@ -34,7 +34,7 @@ public class Bar extends AbstractEntity<Integer> {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(final Integer id) {
 		this.id = id;
 	}
 
@@ -42,7 +42,7 @@ public class Bar extends AbstractEntity<Integer> {
 		return this.value;
 	}
 
-	public void setValue(String value) {
+	public void setValue(final String value) {
 		this.value = value;
 	}
 
@@ -50,7 +50,7 @@ public class Bar extends AbstractEntity<Integer> {
 		return this.foo;
 	}
 
-	public void setFoo(Foo foo) {
+	public void setFoo(final Foo foo) {
 		this.foo = foo;
 	}
 

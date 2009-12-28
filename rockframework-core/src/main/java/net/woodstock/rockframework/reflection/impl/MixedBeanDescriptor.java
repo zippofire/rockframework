@@ -30,7 +30,7 @@ public class MixedBeanDescriptor extends FieldBeanDescriptor {
 
 	private Map<String, PropertyDescriptor>	properties;
 
-	public MixedBeanDescriptor(Class<?> clazz) {
+	public MixedBeanDescriptor(final Class<?> clazz) {
 		super(clazz);
 		this.byMethodBeanDescriptor = BeanDescriptorFactory.getInstance(ReflectionType.METHOD).getBeanDescriptor(clazz);
 	}
@@ -52,7 +52,7 @@ public class MixedBeanDescriptor extends FieldBeanDescriptor {
 	}
 
 	@Override
-	public PropertyDescriptor getProperty(String name) {
+	public PropertyDescriptor getProperty(final String name) {
 		if (this.hasProperty(name)) {
 			return this.getProperty(name);
 		}
@@ -60,7 +60,7 @@ public class MixedBeanDescriptor extends FieldBeanDescriptor {
 	}
 
 	@Override
-	public boolean hasProperty(String name) {
+	public boolean hasProperty(final String name) {
 		if (this.hasProperty(name)) {
 			return true;
 		}

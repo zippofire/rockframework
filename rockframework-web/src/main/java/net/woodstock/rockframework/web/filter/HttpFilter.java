@@ -35,12 +35,12 @@ public abstract class HttpFilter extends BaseFilter {
 	}
 
 	@Override
-	public final void init(FilterConfig filterConfig) {
+	public final void init(final FilterConfig filterConfig) {
 		super.init(filterConfig);
 		this.doInit();
 	}
 
-	public final void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+	public final void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
 		this.doFilter((HttpServletRequest) request, (HttpServletResponse) response, chain);
 	}
 

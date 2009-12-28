@@ -23,11 +23,11 @@ public class SessionCountListener implements HttpSessionListener {
 
 	private static int	count	= 0;
 
-	public void sessionCreated(HttpSessionEvent event) {
+	public void sessionCreated(final HttpSessionEvent event) {
 		SessionCountListener.count++;
 	}
 
-	public void sessionDestroyed(HttpSessionEvent event) {
+	public void sessionDestroyed(final HttpSessionEvent event) {
 		SessionCountListener.count--;
 	}
 

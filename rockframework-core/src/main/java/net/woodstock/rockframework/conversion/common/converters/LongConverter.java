@@ -19,12 +19,12 @@ package net.woodstock.rockframework.conversion.common.converters;
 public class LongConverter extends NumberConverter<Long> {
 
 	@Override
-	protected Long toNumber(Number n) {
+	protected Long toNumber(final Number n) {
 		return new Long(n.longValue());
 	}
 
 	@Override
-	protected Long toNumber(String s) {
+	protected Long toNumber(final String s) {
 		return new Long(s);
 	}
 

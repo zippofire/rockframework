@@ -28,19 +28,19 @@ import net.woodstock.rockframework.conversion.common.PropertyConverterContext;
 @SuppressWarnings("unchecked")
 public class CollectionConverter extends AbstractTextConverter<Collection> {
 
-	private static String	BEGIN_ARRAY			= "[";
+	private static final String	BEGIN_ARRAY			= "[";
 
-	private static String	END_ARRAY			= "]";
+	private static final String	END_ARRAY			= "]";
 
-	private static String	ELEMENT_SEPARATOR	= ", ";
+	private static final String	ELEMENT_SEPARATOR	= ", ";
 
 	@Override
-	public Collection from(ConverterContext context, String s) throws ConverterException {
+	public Collection from(final ConverterContext context, final String s) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public String to(ConverterContext context, Collection t) throws ConverterException {
+	public String to(final ConverterContext context, final Collection t) {
 		if (context == null) {
 			throw new IllegalArgumentException("Context must be not null");
 		}
@@ -50,9 +50,10 @@ public class CollectionConverter extends AbstractTextConverter<Collection> {
 		try {
 			StringBuilder builder = new StringBuilder();
 			boolean first = true;
+			ConverterContext currentContext = context;
 
-			if (!(context instanceof BeanConverterContext)) {
-				context = new BeanConverterContext(context.getParent(), context.getName(), t.getClass());
+			if (!(currentContext instanceof BeanConverterContext)) {
+				currentContext = new BeanConverterContext(currentContext.getParent(), currentContext.getName(), t.getClass());
 			}
 
 			builder.append(CollectionConverter.BEGIN_ARRAY);
@@ -61,10 +62,10 @@ public class CollectionConverter extends AbstractTextConverter<Collection> {
 				if (o != null) {
 					TextConverter converter = JsonConverterHelper.getConverter(o.getClass());
 					ConverterContext subContext = null;
-					if (context.getParent() != null) {
-						subContext = new PropertyConverterContext(context.getParent(), context.getName(), o.getClass());
+					if (currentContext.getParent() != null) {
+						subContext = new PropertyConverterContext(currentContext.getParent(), currentContext.getName(), o.getClass());
 					} else {
-						subContext = new PropertyConverterContext(context, context.getName(), o.getClass());
+						subContext = new PropertyConverterContext(currentContext, currentContext.getName(), o.getClass());
 					}
 
 					String s = (String) converter.to(subContext, o);

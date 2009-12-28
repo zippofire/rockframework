@@ -25,7 +25,7 @@ import net.woodstock.rockframework.domain.business.validation.local.LocalValidat
 
 public class ValidatorDatePast extends AbstractValidator {
 
-	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
+	public ValidationResult validate(final LocalValidationContext context) {
 		try {
 			Date value = (Date) context.getValue();
 			if (value == null) {
@@ -44,7 +44,7 @@ public class ValidatorDatePast extends AbstractValidator {
 		}
 	}
 
-	private String getErrorMessage(String name) {
+	private String getErrorMessage(final String name) {
 		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_DATE_PAST, name);
 	}
 

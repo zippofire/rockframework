@@ -26,7 +26,7 @@ import net.woodstock.rockframework.domain.business.validation.local.annotation.V
 
 public class ValidatorRegex extends AbstractValidator {
 
-	public ValidationResult validate(LocalValidationContext context) throws ValidationException {
+	public ValidationResult validate(final LocalValidationContext context) {
 		try {
 			String value = (String) context.getValue();
 			ValidateRegex annotation = (ValidateRegex) context.getAnnotation();
@@ -47,7 +47,7 @@ public class ValidatorRegex extends AbstractValidator {
 		}
 	}
 
-	private String getErrorMessage(String name) {
+	private String getErrorMessage(final String name) {
 		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_REGEX, name);
 	}
 

@@ -32,7 +32,7 @@ public abstract class BaseFilter implements Filter {
 		this.getLogger().info("Filter: " + this.getClass().getName() + " destroyed");
 	}
 
-	public void init(FilterConfig filterConfig) {
+	public void init(final FilterConfig filterConfig) {
 		this.getLogger().info("Filter: " + this.getClass().getName() + " initialized");
 		this.filterConfig = filterConfig;
 	}
@@ -43,7 +43,7 @@ public abstract class BaseFilter implements Filter {
 	}
 
 	// Parameter
-	protected String getInitParameter(String name) {
+	protected String getInitParameter(final String name) {
 		return this.filterConfig.getInitParameter(name);
 	}
 

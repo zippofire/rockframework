@@ -51,12 +51,12 @@ public abstract class ResponseUtils {
 		//
 	}
 
-	public static void redirect(PageContext context, String url) throws ServletException, IOException {
+	public static void redirect(final PageContext context, final String url) throws ServletException, IOException {
 		RequestDispatcher d = context.getServletContext().getRequestDispatcher(url);
 		d.forward(context.getRequest(), context.getResponse());
 	}
 
-	public static void downloadFile(HttpServletResponse response, String file) throws IOException {
+	public static void downloadFile(final HttpServletResponse response, final String file) throws IOException {
 		File f = new File(file);
 		if (!f.exists()) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -75,7 +75,7 @@ public abstract class ResponseUtils {
 		IOUtils.copy(input, output, true);
 	}
 
-	public static void copyFile(HttpServletResponse response, String file) throws IOException {
+	public static void copyFile(final HttpServletResponse response, final String file) throws IOException {
 		response.setContentType(FileUtils.getContentType(file));
 		response.setContentLength(FileUtils.getContentLength(file));
 
@@ -86,15 +86,15 @@ public abstract class ResponseUtils {
 		IOUtils.copy(input, output, true);
 	}
 
-	public static String getAttachmentContentDisposition(String fileName) {
+	public static String getAttachmentContentDisposition(final String fileName) {
 		return "attachment; filename=\"" + fileName + "\"";
 	}
 
-	public static String getContentType(String extension) {
+	public static String getContentType(final String extension) {
 		return MimeUtils.getMimeType(extension);
 	}
 
-	public static String getContentType(File file) throws IOException {
+	public static String getContentType(final File file) throws IOException {
 		return FileUtils.getContentType(file);
 	}
 

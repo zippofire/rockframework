@@ -35,11 +35,11 @@ abstract class AbstractFileRegexFilter implements FilenameFilter {
 		return this.filter;
 	}
 
-	public void setFilter(String filter) {
+	public void setFilter(final String filter) {
 		this.filter = filter;
 	}
 
-	public boolean accept(File dir, String name) {
+	public boolean accept(final File dir, final String name) {
 		if (StringUtils.isEmpty(this.filter)) {
 			return true;
 		}

@@ -18,7 +18,7 @@ package net.woodstock.rockframework.io;
 
 public class FileRegexFilter extends AbstractFileRegexFilter {
 
-	public FileRegexFilter(String filter) {
+	public FileRegexFilter(final String filter) {
 		super();
 		this.setFilter(filter);
 	}

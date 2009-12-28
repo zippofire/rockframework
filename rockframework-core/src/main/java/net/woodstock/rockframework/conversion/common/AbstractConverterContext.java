@@ -44,7 +44,7 @@ abstract class AbstractConverterContext implements ConverterContext {
 
 	private Collection<String>		ignored;
 
-	public AbstractConverterContext(ConverterContext parent, String name, Class<?> type) {
+	public AbstractConverterContext(final ConverterContext parent, final String name, final Class<?> type) {
 		super();
 		if (StringUtils.isEmpty(name)) {
 			throw new IllegalArgumentException("Name must be not null");
@@ -65,7 +65,7 @@ abstract class AbstractConverterContext implements ConverterContext {
 		return this.parent;
 	}
 
-	public void setParent(ConverterContext parent) {
+	public void setParent(final ConverterContext parent) {
 		this.parent = parent;
 	}
 
@@ -73,7 +73,7 @@ abstract class AbstractConverterContext implements ConverterContext {
 		return this.name;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
@@ -81,7 +81,7 @@ abstract class AbstractConverterContext implements ConverterContext {
 		return this.type;
 	}
 
-	public void setType(Class<?> type) {
+	public void setType(final Class<?> type) {
 		this.type = type;
 	}
 
@@ -89,7 +89,7 @@ abstract class AbstractConverterContext implements ConverterContext {
 		return this.object;
 	}
 
-	public void setObject(Object object) {
+	public void setObject(final Object object) {
 		this.object = object;
 	}
 
@@ -97,7 +97,7 @@ abstract class AbstractConverterContext implements ConverterContext {
 		return this.queue;
 	}
 
-	public void setQueue(Queue<Object> stack) {
+	public void setQueue(final Queue<Object> stack) {
 		this.queue = stack;
 	}
 
@@ -105,13 +105,13 @@ abstract class AbstractConverterContext implements ConverterContext {
 		return this.ignored;
 	}
 
-	public void setIgnored(Collection<String> ignored) {
+	public void setIgnored(final Collection<String> ignored) {
 		this.ignored = ignored;
 	}
 
 	// Stack
 	@Override
-	public boolean isQueued(Object o) {
+	public boolean isQueued(final Object o) {
 		if (this.queue.contains(o)) {
 			return true;
 		}
@@ -128,7 +128,7 @@ abstract class AbstractConverterContext implements ConverterContext {
 		Collection<String> ignoreds = this.getIgnoredRecursive();
 		for (String ignored : ignoreds) {
 			if (Pattern.matches(ignored, canonicalName)) {
-				//this.getLogger().info("Context Ignored: " + canonicalName);
+				// this.getLogger().info("Context Ignored: " + canonicalName);
 				return true;
 			}
 		}

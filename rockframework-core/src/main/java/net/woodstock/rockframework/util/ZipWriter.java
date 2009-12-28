@@ -38,26 +38,26 @@ public class ZipWriter {
 		this.files = new LinkedHashSet<File>(0);
 	}
 
-	public void add(File... files) {
+	public void add(final File... files) {
 		for (File f : files) {
 			this.files.add(f);
 		}
 	}
 
-	public void add(String... files) {
+	public void add(final String... files) {
 		for (String s : files) {
 			File f = new File(s);
 			this.files.add(f);
 		}
 	}
 
-	public void del(File... files) {
+	public void del(final File... files) {
 		for (File f : files) {
 			this.files.remove(f);
 		}
 	}
 
-	public void del(String... files) {
+	public void del(final String... files) {
 		for (String s : files) {
 			for (File d : this.files) {
 				if (d.getName().equals(s)) {
@@ -73,11 +73,11 @@ public class ZipWriter {
 		return list;
 	}
 
-	public void save(String fileName) throws IOException {
+	public void save(final String fileName) throws IOException {
 		this.save(new File(fileName));
 	}
 
-	public void save(File file) throws IOException {
+	public void save(final File file) throws IOException {
 		ZipOutputStream out = new ZipOutputStream(new FileOutputStream(file));
 		for (File f : this.files) {
 			if (f.isDirectory()) {
@@ -92,15 +92,15 @@ public class ZipWriter {
 		out.close();
 	}
 
-	private static void addDir(ZipOutputStream out, File dir) throws IOException {
+	private static void addDir(final ZipOutputStream out, final File dir) throws IOException {
 		ZipWriter.addDir(out, null, dir);
 	}
 
-	private static void addFile(ZipOutputStream out, File file) throws IOException {
+	private static void addFile(final ZipOutputStream out, final File file) throws IOException {
 		ZipWriter.addFile(out, null, file);
 	}
 
-	private static void addDir(ZipOutputStream out, File parent, File dir) throws IOException {
+	private static void addDir(final ZipOutputStream out, final File parent, final File dir) throws IOException {
 		File[] files = dir.listFiles();
 		for (File f : files) {
 			if (f.isDirectory()) {
@@ -114,7 +114,7 @@ public class ZipWriter {
 		}
 	}
 
-	private static void addFile(ZipOutputStream out, File parent, File file) throws IOException {
+	private static void addFile(final ZipOutputStream out, final File parent, final File file) throws IOException {
 		FileInputStream input = new FileInputStream(file);
 		String name = (parent != null ? parent.getName() + ZipWriter.SEPARATOR : StringUtils.BLANK) + file.getName();
 		out.putNextEntry(new ZipEntry(name));

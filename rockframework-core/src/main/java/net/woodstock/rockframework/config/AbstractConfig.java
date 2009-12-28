@@ -16,9 +16,7 @@
  */
 package net.woodstock.rockframework.config;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Properties;
@@ -33,42 +31,46 @@ public abstract class AbstractConfig {
 
 	private Properties	properties;
 
-	public AbstractConfig(String propertiesName) throws URISyntaxException, IOException {
+	public AbstractConfig(final String propertiesName) {
 		super();
 		if (StringUtils.isEmpty(propertiesName)) {
 			throw new IllegalArgumentException("Properties name must be not empty");
 		}
-		this.properties = new Properties();
-		Collection<URL> urls = ClassLoaderUtils.getResources(propertiesName);
-		if (urls != null) {
-			for (URL url : urls) {
-				String s = url.toString();
-				if (s.startsWith(ClassLoaderUtils.JAR_PREFIX)) {
-					InputStream inputStream = ClassLoaderUtils.getInputStream(url, propertiesName);
-					if (inputStream != null) {
-						this.getLogger().info("Load properties " + propertiesName + " from JAR " + url);
-						this.properties.load(inputStream);
+		try {
+			this.properties = new Properties();
+			Collection<URL> urls = ClassLoaderUtils.getResources(propertiesName);
+			if (urls != null) {
+				for (URL url : urls) {
+					String s = url.toString();
+					if (s.startsWith(ClassLoaderUtils.JAR_PREFIX)) {
+						InputStream inputStream = ClassLoaderUtils.getInputStream(url, propertiesName);
+						if (inputStream != null) {
+							this.getLogger().info("Load properties " + propertiesName + " from JAR " + url);
+							this.properties.load(inputStream);
+						}
+					}
+				}
+				for (URL url : urls) {
+					String s = url.toString();
+					if (s.startsWith(ClassLoaderUtils.FILE_PREFIX)) {
+						InputStream inputStream = ClassLoaderUtils.getInputStream(url, propertiesName);
+						if (inputStream != null) {
+							this.getLogger().info("Load properties " + propertiesName + " from FILE " + url);
+							this.properties.load(inputStream);
+						}
 					}
 				}
 			}
-			for (URL url : urls) {
-				String s = url.toString();
-				if (s.startsWith(ClassLoaderUtils.FILE_PREFIX)) {
-					InputStream inputStream = ClassLoaderUtils.getInputStream(url, propertiesName);
-					if (inputStream != null) {
-						this.getLogger().info("Load properties " + propertiesName + " from FILE " + url);
-						this.properties.load(inputStream);
-					}
-				}
-			}
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
 
-	public String getValue(String key) {
+	public String getValue(final String key) {
 		return this.properties.getProperty(key);
 	}
 
-	public String getValue(String key, String defaultValue) {
+	public String getValue(final String key, final String defaultValue) {
 		return this.properties.getProperty(key, defaultValue);
 	}
 

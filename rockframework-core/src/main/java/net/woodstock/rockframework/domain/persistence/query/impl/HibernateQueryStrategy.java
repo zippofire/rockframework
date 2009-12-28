@@ -16,7 +16,6 @@
  */
 package net.woodstock.rockframework.domain.persistence.query.impl;
 
-import net.woodstock.rockframework.domain.persistence.query.BuilderException;
 import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
 import net.woodstock.rockframework.domain.persistence.query.QueryStrategy;
 
@@ -26,19 +25,19 @@ import org.hibernate.transform.DistinctRootEntityResultTransformer;
 
 public class HibernateQueryStrategy implements QueryStrategy {
 
-	public Object getQuery(String sql, Object manager) {
+	public Object getQuery(final String sql, final Object manager) {
 		Session session = (Session) manager;
 		Query query = session.createQuery(sql);
 		query.setResultTransformer(new DistinctRootEntityResultTransformer());
 		return query;
 	}
 
-	public void setParameter(Object query, String name, Object value) {
+	public void setParameter(final Object query, final String name, final Object value) {
 		Query q = (Query) query;
 		q.setParameter(name, value);
 	}
 
-	public void setOption(Object query, String name, Object value) throws BuilderException {
+	public void setOption(final Object query, final String name, final Object value) {
 		if ((name != null) && (value != null)) {
 			Query q = (Query) query;
 			if ((name.equals(QueryBuilder.OPTION_FIRST_RESULT)) && (value instanceof Integer)) {

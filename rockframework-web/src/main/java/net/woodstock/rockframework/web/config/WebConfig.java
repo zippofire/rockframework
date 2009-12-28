@@ -16,35 +16,19 @@
  */
 package net.woodstock.rockframework.web.config;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-
 import net.woodstock.rockframework.config.AbstractConfig;
 
-public class WebConfig extends AbstractConfig {
+public final class WebConfig extends AbstractConfig {
 
 	private static final String	CONFIG_FILE	= "rockframework-web.properties";
 
-	private static WebConfig	config;
+	private static WebConfig	instance	= new WebConfig();
 
-	private WebConfig() throws URISyntaxException, IOException {
+	private WebConfig() {
 		super(WebConfig.CONFIG_FILE);
 	}
 
 	public static WebConfig getInstance() {
-		if (WebConfig.config == null) {
-			synchronized (WebConfig.class) {
-				if (WebConfig.config == null) {
-					try {
-						WebConfig.config = new WebConfig();
-					} catch (URISyntaxException e) {
-						throw new RuntimeException(e);
-					} catch (IOException e) {
-						throw new RuntimeException(e);
-					}
-				}
-			}
-		}
-		return WebConfig.config;
+		return WebConfig.instance;
 	}
 }

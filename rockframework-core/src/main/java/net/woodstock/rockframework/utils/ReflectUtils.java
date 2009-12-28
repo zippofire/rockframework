@@ -29,15 +29,15 @@ public abstract class ReflectUtils {
 		//
 	}
 
-	public static void printClassDeclaration(Object o) {
+	public static void printClassDeclaration(final Object o) {
 		ReflectUtils.printClassDeclaration(o.getClass(), System.out);
 	}
 
-	public static void printClassDeclaration(Object o, PrintStream out) {
+	public static void printClassDeclaration(final Object o, final PrintStream out) {
 		ReflectUtils.printClassDeclaration(o.getClass(), out);
 	}
 
-	public static void printClassDeclaration(Class<?> c, PrintStream out) {
+	public static void printClassDeclaration(final Class<?> c, final PrintStream out) {
 		StringBuilder s = new StringBuilder();
 		int m = c.getModifiers();
 		s.append(Modifier.isPrivate(m) ? "private " : StringUtils.BLANK);
@@ -65,15 +65,15 @@ public abstract class ReflectUtils {
 		out.println(s);
 	}
 
-	public static void printConstructors(Object o) {
+	public static void printConstructors(final Object o) {
 		ReflectUtils.printConstructors(o.getClass(), System.out);
 	}
 
-	public static void printConstructors(Object o, PrintStream out) {
+	public static void printConstructors(final Object o, final PrintStream out) {
 		ReflectUtils.printConstructors(o.getClass(), out);
 	}
 
-	public static void printConstructors(Class<?> c, PrintStream out) {
+	public static void printConstructors(final Class<?> c, final PrintStream out) {
 		Constructor<?>[] con = c.getDeclaredConstructors();
 		for (Constructor<?> t : con) {
 			int m = t.getModifiers();
@@ -97,15 +97,15 @@ public abstract class ReflectUtils {
 		}
 	}
 
-	public static void printFields(Object o) {
+	public static void printFields(final Object o) {
 		ReflectUtils.printFields(o.getClass(), System.out);
 	}
 
-	public static void printFields(Object o, PrintStream out) {
+	public static void printFields(final Object o, final PrintStream out) {
 		ReflectUtils.printFields(o.getClass(), out);
 	}
 
-	public static void printFields(Class<?> c, PrintStream out) {
+	public static void printFields(final Class<?> c, final PrintStream out) {
 		Field[] f = c.getDeclaredFields();
 		for (Field ff : f) {
 			int m = ff.getModifiers();
@@ -125,19 +125,19 @@ public abstract class ReflectUtils {
 		}
 	}
 
-	public static void printHierarchy(Object o) {
+	public static void printHierarchy(final Object o) {
 		ReflectUtils.printHierarchy(o, System.out);
 	}
 
-	public static void printHierarchy(Object o, PrintStream out) {
+	public static void printHierarchy(final Object o, final PrintStream out) {
 		ReflectUtils.printHierarchy(o.getClass(), out);
 	}
 
-	public static void printHierarchy(Class<?> c, PrintStream out) {
+	public static void printHierarchy(final Class<?> c, final PrintStream out) {
 		ReflectUtils.printHierarchy(StringUtils.BLANK, c, out);
 	}
 
-	private static void printHierarchy(String prefix, Class<?> c, PrintStream out) {
+	private static void printHierarchy(final String prefix, final Class<?> c, final PrintStream out) {
 		Class<?> cc = c.getSuperclass();
 		if (cc != Object.class) {
 			ReflectUtils.printHierarchy(prefix + "\t", cc, out);
@@ -147,30 +147,30 @@ public abstract class ReflectUtils {
 		out.println(prefix + c.getName());
 	}
 
-	public static void printInterfaces(Object o) {
+	public static void printInterfaces(final Object o) {
 		ReflectUtils.printInterfaces(o.getClass(), System.out);
 	}
 
-	public static void printInterfaces(Object o, PrintStream out) {
+	public static void printInterfaces(final Object o, final PrintStream out) {
 		ReflectUtils.printInterfaces(o.getClass(), out);
 	}
 
-	public static void printInterfaces(Class<?> c, PrintStream out) {
+	public static void printInterfaces(final Class<?> c, final PrintStream out) {
 		Class<?>[] i = c.getInterfaces();
 		for (Class<?> ii : i) {
 			out.println(ii.getName());
 		}
 	}
 
-	public static void printMethods(Object o) {
+	public static void printMethods(final Object o) {
 		ReflectUtils.printMethods(o.getClass(), System.out);
 	}
 
-	public static void printMethods(Object o, PrintStream out) {
+	public static void printMethods(final Object o, final PrintStream out) {
 		ReflectUtils.printMethods(o.getClass(), out);
 	}
 
-	public static void printMethods(Class<?> c, PrintStream out) {
+	public static void printMethods(final Class<?> c, final PrintStream out) {
 		Method[] m = c.getDeclaredMethods();
 		for (Method mm : m) {
 			StringBuilder s = new StringBuilder();

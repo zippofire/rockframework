@@ -19,12 +19,12 @@ package net.woodstock.rockframework.conversion.common.converters;
 public class IntegerConverter extends NumberConverter<Integer> {
 
 	@Override
-	protected Integer toNumber(Number n) {
+	protected Integer toNumber(final Number n) {
 		return new Integer(n.intValue());
 	}
 
 	@Override
-	protected Integer toNumber(String s) {
+	protected Integer toNumber(final String s) {
 		return new Integer(s);
 	}
 

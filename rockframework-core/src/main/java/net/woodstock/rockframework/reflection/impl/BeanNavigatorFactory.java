@@ -21,11 +21,11 @@ import net.woodstock.rockframework.reflection.ReflectionType;
 
 public abstract class BeanNavigatorFactory {
 
-	private static BeanNavigatorFactory	fieldBeanNavigatorFactory;
+	private static BeanNavigatorFactory	fieldBeanNavigatorFactory	= new FieldBeanNavigatorFactory();
 
-	private static BeanNavigatorFactory	methodBeanNavigatorFactory;
+	private static BeanNavigatorFactory	methodBeanNavigatorFactory	= new MethodBeanNavigatorFactory();
 
-	private static BeanNavigatorFactory	mixedBeanNavigatorFactory;
+	private static BeanNavigatorFactory	mixedBeanNavigatorFactory	= new MixedBeanNavigatorFactory();
 
 	public abstract BeanNavigator getBeanNavigator(Object bean);
 
@@ -33,7 +33,7 @@ public abstract class BeanNavigatorFactory {
 		return BeanNavigatorFactory.getInstance(BeanDescriptorFactory.REFLECTION_TYPE);
 	}
 
-	public static BeanNavigatorFactory getInstance(ReflectionType type) {
+	public static BeanNavigatorFactory getInstance(final ReflectionType type) {
 		if (type == null) {
 			throw new IllegalArgumentException("Type must be not null");
 		}
@@ -50,42 +50,21 @@ public abstract class BeanNavigatorFactory {
 	}
 
 	private static BeanNavigatorFactory getByFieldInstance() {
-		if (BeanNavigatorFactory.fieldBeanNavigatorFactory == null) {
-			synchronized (BeanNavigatorFactory.class) {
-				if (BeanNavigatorFactory.fieldBeanNavigatorFactory == null) {
-					BeanNavigatorFactory.fieldBeanNavigatorFactory = new FieldBeanNavigatorFactory();
-				}
-			}
-		}
 		return BeanNavigatorFactory.fieldBeanNavigatorFactory;
 	}
 
 	private static BeanNavigatorFactory getByMethodInstance() {
-		if (BeanNavigatorFactory.methodBeanNavigatorFactory == null) {
-			synchronized (BeanNavigatorFactory.class) {
-				if (BeanNavigatorFactory.methodBeanNavigatorFactory == null) {
-					BeanNavigatorFactory.methodBeanNavigatorFactory = new MethodBeanNavigatorFactory();
-				}
-			}
-		}
 		return BeanNavigatorFactory.methodBeanNavigatorFactory;
 	}
 
 	private static BeanNavigatorFactory getMixedInstance() {
-		if (BeanNavigatorFactory.mixedBeanNavigatorFactory == null) {
-			synchronized (BeanNavigatorFactory.class) {
-				if (BeanNavigatorFactory.mixedBeanNavigatorFactory == null) {
-					BeanNavigatorFactory.mixedBeanNavigatorFactory = new MixedBeanNavigatorFactory();
-				}
-			}
-		}
 		return BeanNavigatorFactory.mixedBeanNavigatorFactory;
 	}
 
 	static class FieldBeanNavigatorFactory extends BeanNavigatorFactory {
 
 		@Override
-		public BeanNavigator getBeanNavigator(Object bean) {
+		public BeanNavigator getBeanNavigator(final Object bean) {
 			return new BeanNavigatorImpl(BeanDescriptorFactory.getInstance(ReflectionType.FIELD), bean, null, null);
 		}
 
@@ -94,7 +73,7 @@ public abstract class BeanNavigatorFactory {
 	static class MethodBeanNavigatorFactory extends BeanNavigatorFactory {
 
 		@Override
-		public BeanNavigator getBeanNavigator(Object bean) {
+		public BeanNavigator getBeanNavigator(final Object bean) {
 			return new BeanNavigatorImpl(BeanDescriptorFactory.getInstance(ReflectionType.METHOD), bean, null, null);
 		}
 
@@ -103,7 +82,7 @@ public abstract class BeanNavigatorFactory {
 	static class MixedBeanNavigatorFactory extends BeanNavigatorFactory {
 
 		@Override
-		public BeanNavigator getBeanNavigator(Object bean) {
+		public BeanNavigator getBeanNavigator(final Object bean) {
 			return new BeanNavigatorImpl(BeanDescriptorFactory.getInstance(ReflectionType.MIXED), bean, null, null);
 		}
 

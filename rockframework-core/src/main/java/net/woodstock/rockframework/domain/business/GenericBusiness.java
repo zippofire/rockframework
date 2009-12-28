@@ -21,14 +21,14 @@ import net.woodstock.rockframework.domain.Entity;
 public interface GenericBusiness extends Business {
 
 	// Validation With Error
-	ValidationResult validateSave(Entity<?> entity) throws BusinessException;
+	ValidationResult validateSave(Entity<?> entity);
 
-	ValidationResult validateUpdate(Entity<?> entity) throws BusinessException;
+	ValidationResult validateUpdate(Entity<?> entity);
 
-	ValidationResult validateDelete(Entity<?> entity) throws BusinessException;
+	ValidationResult validateDelete(Entity<?> entity);
 
-	ValidationResult validateList(Entity<?> entity) throws BusinessException;
+	ValidationResult validateList(Entity<?> entity);
 
-	ValidationResult validateGet(Entity<?> entity) throws BusinessException;
+	ValidationResult validateGet(Entity<?> entity);
 
 }

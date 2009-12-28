@@ -23,15 +23,15 @@ import net.woodstock.rockframework.web.listener.BaseListener;
 
 public class SessionAttributeListener extends BaseListener implements HttpSessionAttributeListener {
 
-	public void attributeAdded(HttpSessionBindingEvent se) {
+	public void attributeAdded(final HttpSessionBindingEvent se) {
 		this.getLogger().info("Added attribute " + se.getName() + " with value " + se.getValue());
 	}
 
-	public void attributeRemoved(HttpSessionBindingEvent se) {
+	public void attributeRemoved(final HttpSessionBindingEvent se) {
 		this.getLogger().info("Removed attribute " + se.getName());
 	}
 
-	public void attributeReplaced(HttpSessionBindingEvent se) {
+	public void attributeReplaced(final HttpSessionBindingEvent se) {
 		this.getLogger().info("Replaced attribute " + se.getName() + " with value " + se.getValue());
 	}
 
