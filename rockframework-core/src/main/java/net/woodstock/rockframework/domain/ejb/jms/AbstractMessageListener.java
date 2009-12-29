@@ -19,7 +19,7 @@ package net.woodstock.rockframework.domain.ejb.jms;
 import javax.ejb.MessageDrivenContext;
 import javax.jms.MessageListener;
 
-import net.woodstock.rockframework.sys.SysLogger;
+import net.woodstock.rockframework.logging.SysLogger;
 
 import org.apache.commons.logging.Log;
 

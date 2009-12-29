@@ -18,10 +18,10 @@ package net.woodstock.rockframework.reflection.impl;
 
 import java.lang.reflect.Method;
 
+import net.woodstock.rockframework.logging.SysLogger;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.ReflectionException;
-import net.woodstock.rockframework.sys.SysLogger;
 
 import org.apache.commons.logging.Log;
 

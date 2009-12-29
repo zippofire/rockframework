@@ -18,7 +18,7 @@ package net.woodstock.rockframework.web.jsp.taglib;
 
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
-import net.woodstock.rockframework.sys.SysLogger;
+import net.woodstock.rockframework.logging.SysLogger;
 
 import org.apache.commons.logging.Log;
 

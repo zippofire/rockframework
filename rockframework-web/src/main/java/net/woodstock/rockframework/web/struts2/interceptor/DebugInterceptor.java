@@ -23,7 +23,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import net.woodstock.rockframework.sys.LogLevel;
+import net.woodstock.rockframework.logging.LogLevel;
 import net.woodstock.rockframework.utils.ArrayUtils;
 
 import com.opensymphony.xwork2.ActionInvocation;

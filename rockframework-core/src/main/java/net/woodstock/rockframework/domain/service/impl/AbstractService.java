@@ -17,7 +17,7 @@
 package net.woodstock.rockframework.domain.service.impl;
 
 import net.woodstock.rockframework.domain.service.Service;
-import net.woodstock.rockframework.sys.SysLogger;
+import net.woodstock.rockframework.logging.SysLogger;
 
 import org.apache.commons.logging.Log;
 

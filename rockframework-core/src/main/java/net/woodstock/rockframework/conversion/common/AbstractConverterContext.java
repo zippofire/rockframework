@@ -23,7 +23,7 @@ import java.util.Queue;
 import java.util.regex.Pattern;
 
 import net.woodstock.rockframework.conversion.ConverterContext;
-import net.woodstock.rockframework.sys.SysLogger;
+import net.woodstock.rockframework.logging.SysLogger;
 import net.woodstock.rockframework.utils.StringUtils;
 
 import org.apache.commons.logging.Log;

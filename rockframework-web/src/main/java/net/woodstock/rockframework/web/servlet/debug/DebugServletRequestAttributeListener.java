@@ -19,7 +19,7 @@ package net.woodstock.rockframework.web.servlet.debug;
 import javax.servlet.ServletRequestAttributeEvent;
 import javax.servlet.ServletRequestAttributeListener;
 
-import net.woodstock.rockframework.sys.SysLogger;
+import net.woodstock.rockframework.logging.SysLogger;
 
 public class DebugServletRequestAttributeListener implements ServletRequestAttributeListener {
 

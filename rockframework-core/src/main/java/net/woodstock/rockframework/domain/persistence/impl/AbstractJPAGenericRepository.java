@@ -25,7 +25,6 @@ import javax.persistence.Query;
 
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.persistence.GenericRepository;
-import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
 import net.woodstock.rockframework.domain.persistence.query.impl.JPAQueryBuilder;
 
 abstract class AbstractJPAGenericRepository extends AbstractJPARepository implements GenericRepository {
@@ -58,7 +57,7 @@ abstract class AbstractJPAGenericRepository extends AbstractJPARepository implem
 
 	@SuppressWarnings("unchecked")
 	public <E extends Entity<?>> Collection<E> listByExample(final E e, final Map<String, Object> options) {
-		QueryBuilder builder = new JPAQueryBuilder(this.getEntityManager());
+		JPAQueryBuilder builder = new JPAQueryBuilder(this.getEntityManager());
 		builder.setEntity(e);
 		if ((options != null) && (options.size() > 0)) {
 			for (Entry<String, Object> option : options.entrySet()) {
@@ -66,7 +65,7 @@ abstract class AbstractJPAGenericRepository extends AbstractJPARepository implem
 			}
 		}
 		builder.build();
-		Query q = (Query) builder.getQuery();
+		Query q = builder.getQuery();
 		Collection<E> list = q.getResultList();
 		return list;
 	}

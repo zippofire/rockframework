@@ -1,27 +1,24 @@
 package net.woodstock.rockframework.jpa.test;
 
+import java.io.InputStream;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 import junit.framework.TestCase;
-import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
-import net.woodstock.rockframework.domain.persistence.query.impl.HibernateQueryBuilder;
+import net.woodstock.rockframework.domain.persistence.query.impl.JPAQueryBuilder;
 import net.woodstock.rockframework.test.jpa.Email;
 import net.woodstock.rockframework.test.jpa.Endereco;
 import net.woodstock.rockframework.test.jpa.Pessoa;
 import net.woodstock.rockframework.test.jpa.Telefone;
+import net.woodstock.rockframework.utils.IOUtils;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.AnnotationConfiguration;
-
-public class EntityTest extends TestCase {
+public class JPAEntityTest extends TestCase {
 
 	private EntityManagerFactory	entityManagerfactory;
-
-	private SessionFactory			sessionFactory;
 
 	private EntityManagerFactory getEntityManagerFactory() {
 		if (this.entityManagerfactory == null) {
@@ -34,19 +31,6 @@ public class EntityTest extends TestCase {
 		EntityManagerFactory factory = this.getEntityManagerFactory();
 		EntityManager manager = factory.createEntityManager();
 		return manager;
-	}
-
-	private SessionFactory getSessionFactory() {
-		if (this.sessionFactory == null) {
-			this.sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-		}
-		return this.sessionFactory;
-	}
-
-	private Session getSession() {
-		SessionFactory factory = this.getSessionFactory();
-		Session session = factory.openSession();
-		return session;
 	}
 
 	public void xtest1() throws Exception {
@@ -64,46 +48,64 @@ public class EntityTest extends TestCase {
 		manager.close();
 	}
 
+	//@SuppressWarnings("unchecked")
 	public void xtest2() throws Exception {
 		EntityManager manager = this.getEntityManager();
 		Email email = manager.find(Email.class, new Integer(4));
-		Pessoa pessoa = email.getPessoa();
-		Endereco endereco = pessoa.getEnderecos().iterator().next();
-		Telefone telefone = pessoa.getTelefones().iterator().next();
 
-		this.printClass(pessoa);
-		this.printClass(email);
-		this.printClass(endereco);
-		this.printClass(telefone);
+		JPAQueryBuilder builder = new JPAQueryBuilder(manager);
+		builder.setEntity(email);
+		builder.build();
+		
+		System.out.println(builder.getQueryString());
+		
+		// Query query = builder.getQuery();
+		// List<Email> emails = query.getResultList();
+
+		// for (Email e : emails) {
+		// System.out.println(e.getDescricao());
+		// }
+
+		// manager.close();
+	}
+
+	@SuppressWarnings("unchecked")
+	public void xtest3() throws Exception {
+		EntityManager manager = this.getEntityManager();
+		Email email = new Email();
+		email.setPessoa(new Pessoa(new Integer(8)));
+
+		JPAQueryBuilder builder = new JPAQueryBuilder(manager);
+		builder.setEntity(email);
+		builder.build();
+
+		System.out.println(builder.getQueryString());
+
+		Query query = builder.getQuery();
+		List<Email> emails = query.getResultList();
+
+		for (Email e : emails) {
+			System.out.println(e.getDescricao());
+		}
 
 		manager.close();
 	}
 
-	public void xtest3() throws Exception {
-		Session session = this.getSession();
-		Email email = (Email) session.get(Email.class, new Integer(4));
-		Pessoa pessoa = email.getPessoa();
-		Endereco endereco = pessoa.getEnderecos().iterator().next();
-		Telefone telefone = pessoa.getTelefones().iterator().next();
-
-		this.printClass(pessoa);
-		this.printClass(email);
-		this.printClass(endereco);
-		this.printClass(telefone);
-
-		session.close();
-	}
-
+	@SuppressWarnings("unchecked")
 	public void test4() throws Exception {
-		Session session = this.getSession();
-		Email email = (Email) session.get(Email.class, new Integer(4));
+		InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("Email.hql");
+		String sql = IOUtils.toString(inputStream);
+		EntityManager manager = this.getEntityManager();
 
-		QueryBuilder builder = new HibernateQueryBuilder();
-		builder.parse(email);
-		Query query = (Query) builder.getQuery(session);
-		query.list();
+		Query query = manager.createQuery(sql);
 
-		session.close();
+		List<Email> emails = query.getResultList();
+
+		for (Email e : emails) {
+			System.out.println(e.getDescricao());
+		}
+
+		manager.close();
 	}
 
 	private void printClass(Object o) {

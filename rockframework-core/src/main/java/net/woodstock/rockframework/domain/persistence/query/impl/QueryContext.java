@@ -25,6 +25,8 @@ class QueryContext implements Serializable {
 
 	private static final long					serialVersionUID	= 6837306971039414604L;
 
+	private String								realName;
+
 	private String								name;
 
 	private String								alias;
@@ -39,13 +41,22 @@ class QueryContext implements Serializable {
 
 	private String								queryString;
 
-	public QueryContext(final String name, final String alias, final QueryContext parent) {
+	public QueryContext(final String realName, final String name, final String alias, final QueryContext parent) {
 		super();
+		this.realName = realName;
 		this.name = name;
 		this.alias = alias;
 		this.parent = parent;
 		this.parameters = new LinkedList<QueryContextParameter>();
 		this.childs = new LinkedList<QueryContext>();
+	}
+
+	public String getRealName() {
+		return this.realName;
+	}
+
+	public void setRealName(final String realName) {
+		this.realName = realName;
 	}
 
 	public String getName() {

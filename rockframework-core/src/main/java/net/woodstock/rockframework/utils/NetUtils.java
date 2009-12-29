@@ -26,7 +26,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.regex.Pattern;
 
-import net.woodstock.rockframework.sys.SysLogger;
+import net.woodstock.rockframework.logging.SysLogger;
 
 public abstract class NetUtils {
 

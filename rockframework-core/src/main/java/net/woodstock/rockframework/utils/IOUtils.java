@@ -76,6 +76,10 @@ public abstract class IOUtils {
 		return b;
 	}
 
+	public static String toString(final InputStream inputStream) throws IOException {
+		return new String(IOUtils.toByteArray(inputStream));
+	}
+
 	public static InputStream toInputStream(final byte[] bytes) {
 		InputStream inputStream = new ByteArrayInputStream(bytes);
 		return inputStream;

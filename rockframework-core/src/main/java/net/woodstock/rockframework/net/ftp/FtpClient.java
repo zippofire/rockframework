@@ -26,7 +26,7 @@ import java.net.SocketException;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 
-import net.woodstock.rockframework.sys.SysLogger;
+import net.woodstock.rockframework.logging.SysLogger;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.net.ftp.FTP;

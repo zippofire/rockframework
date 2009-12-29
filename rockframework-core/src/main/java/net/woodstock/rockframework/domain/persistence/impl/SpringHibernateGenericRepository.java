@@ -22,7 +22,6 @@ import java.util.Map.Entry;
 
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.persistence.GenericRepository;
-import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
 import net.woodstock.rockframework.domain.persistence.query.impl.HibernateQueryBuilder;
 
 import org.hibernate.Query;
@@ -50,7 +49,7 @@ public abstract class SpringHibernateGenericRepository extends SpringHibernateRe
 
 	@SuppressWarnings("unchecked")
 	public <E extends Entity<?>> Collection<E> listByExample(final E e, final Map<String, Object> options) {
-		QueryBuilder builder = new HibernateQueryBuilder(this.getSession());
+		HibernateQueryBuilder builder = new HibernateQueryBuilder(this.getSession());
 		builder.setEntity(e);
 		if ((options != null) && (options.size() > 0)) {
 			for (Entry<String, Object> option : options.entrySet()) {
@@ -58,7 +57,7 @@ public abstract class SpringHibernateGenericRepository extends SpringHibernateRe
 			}
 		}
 		builder.build();
-		Query q = (Query) builder.getQuery();
+		Query q = builder.getQuery();
 		Collection<E> list = q.list();
 		return list;
 	}

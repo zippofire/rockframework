@@ -23,7 +23,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.sys.SysLogger;
+import net.woodstock.rockframework.logging.SysLogger;
 
 public final class ProxyEntity<ID extends Serializable> implements Entity<ID>, InvocationHandler {
 

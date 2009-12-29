@@ -22,7 +22,7 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import net.woodstock.rockframework.sys.SysLogger;
+import net.woodstock.rockframework.logging.SysLogger;
 import net.woodstock.rockframework.utils.NetUtils;
 
 import org.apache.commons.logging.Log;

@@ -14,19 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.persistence.query.impl;
+package net.woodstock.rockframework.domain;
 
-import org.hibernate.proxy.HibernateProxy;
+public class ConfigurationNotFoundException extends ConfigurationException {
 
-abstract class HibernateProxyHelper {
+	private static final long	serialVersionUID	= 1L;
 
-	private HibernateProxyHelper() {
-		//
+	public ConfigurationNotFoundException(final String message) {
+		super(message);
 	}
 
-	public static boolean isProxy(final Object o) {
-		boolean b = (o instanceof HibernateProxy);
-		return b;
+	public ConfigurationNotFoundException(final Throwable cause) {
+		super(cause);
+	}
+
+	public ConfigurationNotFoundException(final String message, final Throwable cause) {
+		super(message, cause);
 	}
 
 }

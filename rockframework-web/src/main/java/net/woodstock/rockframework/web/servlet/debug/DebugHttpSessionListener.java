@@ -19,7 +19,7 @@ package net.woodstock.rockframework.web.servlet.debug;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
-import net.woodstock.rockframework.sys.SysLogger;
+import net.woodstock.rockframework.logging.SysLogger;
 
 public class DebugHttpSessionListener implements HttpSessionListener {
 

@@ -17,7 +17,7 @@
 package net.woodstock.rockframework.conversion.common;
 
 import net.woodstock.rockframework.conversion.TextConverter;
-import net.woodstock.rockframework.sys.SysLogger;
+import net.woodstock.rockframework.logging.SysLogger;
 
 import org.apache.commons.logging.Log;
 

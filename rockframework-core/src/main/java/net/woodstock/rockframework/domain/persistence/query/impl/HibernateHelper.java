@@ -16,16 +16,16 @@
  */
 package net.woodstock.rockframework.domain.persistence.query.impl;
 
-import org.apache.openjpa.enhance.PersistenceCapable;
+import org.hibernate.proxy.HibernateProxy;
 
-abstract class OpenJPAProxyHelper {
+abstract class HibernateHelper {
 
-	private OpenJPAProxyHelper() {
+	private HibernateHelper() {
 		//
 	}
 
-	public static boolean isProxy(final Object e) {
-		boolean b = (e instanceof PersistenceCapable);
+	public static boolean isProxy(final Object o) {
+		boolean b = (o instanceof HibernateProxy);
 		return b;
 	}
 

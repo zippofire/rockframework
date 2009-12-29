@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.woodstock.rockframework.sys.SysLogger;
+import net.woodstock.rockframework.logging.SysLogger;
 import net.woodstock.rockframework.utils.Base64Utils;
 import net.woodstock.rockframework.utils.StringUtils;
 

@@ -18,7 +18,7 @@ package net.woodstock.rockframework.domain.business.validation.local.validator;
 
 import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.business.validation.local.Validator;
-import net.woodstock.rockframework.sys.SysLogger;
+import net.woodstock.rockframework.logging.SysLogger;
 
 import org.apache.commons.logging.Log;
 

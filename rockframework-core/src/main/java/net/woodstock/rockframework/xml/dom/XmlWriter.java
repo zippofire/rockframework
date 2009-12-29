@@ -19,7 +19,7 @@ package net.woodstock.rockframework.xml.dom;
 import java.io.IOException;
 import java.io.Writer;
 
-import net.woodstock.rockframework.sys.SysLogger;
+import net.woodstock.rockframework.logging.SysLogger;
 
 import org.apache.commons.logging.Log;
 import org.w3c.dom.Document;

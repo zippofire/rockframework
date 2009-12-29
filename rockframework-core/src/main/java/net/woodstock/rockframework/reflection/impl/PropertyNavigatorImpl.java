@@ -16,10 +16,10 @@
  */
 package net.woodstock.rockframework.reflection.impl;
 
+import net.woodstock.rockframework.logging.SysLogger;
 import net.woodstock.rockframework.reflection.BeanNavigator;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.PropertyNavigator;
-import net.woodstock.rockframework.sys.SysLogger;
 
 import org.apache.commons.logging.Log;
 

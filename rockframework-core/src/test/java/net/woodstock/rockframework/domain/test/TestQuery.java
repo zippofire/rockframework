@@ -44,10 +44,11 @@ public class TestQuery extends TestCase {
 	public void test1() throws Exception {
 		Bar bar = this.getBar();
 
-		QueryBuilder builder = new QueryBuilderAdapter();
+		QueryBuilderAdapter builder = new QueryBuilderAdapter();
+		builder.setEntity(bar);
 		builder.setOption(QueryBuilder.OPTION_LIKE_MODE, LikeMode.ALL);
 		builder.setOption(QueryBuilder.OPTION_IGNORE_CASE, Boolean.TRUE);
-		builder.parse(bar);
+		builder.build();
 
 		String s = builder.getQueryString();
 		System.out.println(s);
@@ -58,10 +59,11 @@ public class TestQuery extends TestCase {
 	public void test2() throws Exception {
 		Foo foo = this.getFoo();
 
-		QueryBuilder builder = new QueryBuilderAdapter();
+		QueryBuilderAdapter builder = new QueryBuilderAdapter();
+		builder.setEntity(foo);
 		builder.setOption(QueryBuilder.OPTION_LIKE_MODE, LikeMode.ALL);
 		builder.setOption(QueryBuilder.OPTION_IGNORE_CASE, Boolean.TRUE);
-		builder.parse(foo);
+		builder.build();
 
 		String s = builder.getQueryString();
 		System.out.println(s);
@@ -72,10 +74,11 @@ public class TestQuery extends TestCase {
 	public void test3() throws Exception {
 		Baz baz = this.getBaz();
 
-		QueryBuilder builder = new QueryBuilderAdapter();
+		QueryBuilderAdapter builder = new QueryBuilderAdapter();
+		builder.setEntity(baz);
 		builder.setOption(QueryBuilder.OPTION_LIKE_MODE, LikeMode.ALL);
 		builder.setOption(QueryBuilder.OPTION_IGNORE_CASE, Boolean.TRUE);
-		builder.parse(baz);
+		builder.build();
 
 		String s = builder.getQueryString();
 		System.out.println(s);

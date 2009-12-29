@@ -22,7 +22,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 import net.woodstock.rockframework.config.CoreConfig;
-import net.woodstock.rockframework.sys.SysLogger;
+import net.woodstock.rockframework.logging.SysLogger;
 
 public abstract class JPAUtil {
 

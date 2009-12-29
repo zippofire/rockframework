@@ -17,7 +17,7 @@
 package net.woodstock.rockframework.domain.persistence.util;
 
 import net.woodstock.rockframework.config.CoreConfig;
-import net.woodstock.rockframework.sys.SysLogger;
+import net.woodstock.rockframework.logging.SysLogger;
 import net.woodstock.rockframework.utils.StringUtils;
 
 import org.hibernate.Session;

@@ -24,7 +24,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.woodstock.rockframework.sys.SysLogger;
+import net.woodstock.rockframework.logging.SysLogger;
 import net.woodstock.rockframework.utils.ClassUtils;
 
 import org.apache.commons.logging.Log;

@@ -28,11 +28,11 @@ import net.woodstock.rockframework.domain.persistence.query.LikeMode;
 import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
 import net.woodstock.rockframework.domain.persistence.query.impl.QueryContextParameter.Operator;
 import net.woodstock.rockframework.domain.utils.EntityUtils;
+import net.woodstock.rockframework.logging.SysLogger;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.ReflectionType;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
-import net.woodstock.rockframework.sys.SysLogger;
 import net.woodstock.rockframework.utils.StringUtils;
 
 abstract class QueryContextHelper {
@@ -40,6 +40,8 @@ abstract class QueryContextHelper {
 	private static final String	HIBERNATE_PROXY_CLASS	= "org.hibernate.proxy.HibernateProxy";
 
 	private static final String	OPENJPA_PROXY_CLASS		= "org.apache.openjpa.enhance.PersistenceCapable";
+
+	private static final String	JPA_ENTITY_CLASS		= "javax.persistence.Entity";
 
 	private static final String	JPA_TRANSIENT_CLASS		= "javax.persistence.Transient";
 
@@ -62,13 +64,11 @@ abstract class QueryContextHelper {
 		}
 		try {
 			Class<?> clazz = e.getClass();
-			String className = clazz.getCanonicalName();
-
-			QueryContext context = new QueryContext(className, QueryContextHelper.ROOT_ALIAS, null);
-
 			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(clazz);
-
+			String entityName = QueryContextHelper.getEntityName(beanDescriptor);
+			QueryContext context = new QueryContext(entityName, entityName, QueryContextHelper.ROOT_ALIAS, null);
 			List<Entity<?>> parsed = new ArrayList<Entity<?>>();
+
 			parsed.add(e);
 
 			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
@@ -81,7 +81,7 @@ abstract class QueryContextHelper {
 				boolean isTransient = QueryContextHelper.isTransient(propertyDescriptor);
 
 				if ((value != null) && (!isTransient)) {
-					QueryContextHelper.handleValue(context, options, name, alias, value, parsed);
+					QueryContextHelper.handleValue(context, options, name, name, alias, value, parsed);
 				}
 			}
 			QueryContextHelper.generateQueryString(context, options);
@@ -100,7 +100,7 @@ abstract class QueryContextHelper {
 		boolean where = true;
 		for (QueryContext child : context.getChildsRecursive()) {
 			if ((child.hasParametersRecursive()) && (child.isJoinNeeded())) {
-				builder.append("       JOIN " + child.getName() + " AS " + child.getAlias() + "\n");
+				builder.append("      INNER JOIN " + child.getName() + " AS " + child.getAlias() + "\n");
 			}
 		}
 		for (QueryContextParameter parameter : context.getParametersRecursive()) {
@@ -125,7 +125,7 @@ abstract class QueryContextHelper {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static void handleValue(final QueryContext context, final Map<String, Object> options, final String name, final String alias, final Object value, final List<Entity<?>> parsed) {
+	private static void handleValue(final QueryContext context, final Map<String, Object> options, final String realName, final String name, final String alias, final Object value, final List<Entity<?>> parsed) {
 		try {
 			String sqlName = QueryContextHelper.getFieldName(context, name);
 			String sqlAlias = QueryContextHelper.getFieldAlias(context, alias);
@@ -136,7 +136,7 @@ abstract class QueryContextHelper {
 					disable = b.booleanValue();
 				}
 				if (!disable) {
-					QueryContextHelper.handleEntityValue(context, options, sqlName, sqlAlias, (Entity<?>) value, parsed);
+					QueryContextHelper.handleEntityValue(context, options, name, sqlName, sqlAlias, (Entity<?>) value, parsed);
 				}
 			} else if (value instanceof Collection) {
 				boolean disable = false;
@@ -145,7 +145,7 @@ abstract class QueryContextHelper {
 					disable = b.booleanValue();
 				}
 				if (!disable) {
-					QueryContextHelper.handleCollectionValue(context, options, sqlName, sqlAlias, (Collection<?>) value, parsed);
+					QueryContextHelper.handleCollectionValue(context, options, realName, sqlName, sqlAlias, (Collection<?>) value, parsed);
 				}
 			} else if (value instanceof String) {
 				QueryContextHelper.handleStringValue(context, options, sqlName, sqlAlias, (String) value);
@@ -159,21 +159,25 @@ abstract class QueryContextHelper {
 		}
 	}
 
-	private static void handleEntityValue(final QueryContext context, final Map<String, Object> options, final String name, final String alias, final Entity<?> value, final List<Entity<?>> parsed) {
+	private static void handleEntityValue(final QueryContext context, final Map<String, Object> options, final String realName, final String name, final String alias, final Entity<?> value, final List<Entity<?>> parsed) {
 		if (QueryContextHelper.contains(parsed, value)) {
 			SysLogger.getLogger().debug("Entity " + value + " already parsed!!!");
 			return;
 		}
 		if (QueryContextHelper.isProxy(value)) {
-			throw new IllegalArgumentException("Proxy classes cannot be parsed[" + value.getClass().getCanonicalName() + "]");
+			// throw new IllegalArgumentException("Proxy classes cannot be parsed[" +
+			// value.getClass().getCanonicalName() + "]");
+			SysLogger.getLogger().warn("Child proxy classes cannot will be parsed[" + context.getName() + "." + realName + "]");
+			return;
 		}
 
 		parsed.add(value);
 
 		if (EntityUtils.hasNotNullAttribute(value)) {
 			Class<?> clazz = value.getClass();
-			QueryContext child = new QueryContext(name, alias, context);
+			QueryContext child = new QueryContext(realName, name, alias, context);
 			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(clazz);
+			child.setJoinNeeded(true);
 			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
 				if (!propertyDescriptor.isReadable()) {
 					continue;
@@ -184,7 +188,7 @@ abstract class QueryContextHelper {
 				boolean isTransient = QueryContextHelper.isTransient(propertyDescriptor);
 
 				if ((childValue != null) && (!isTransient)) {
-					QueryContextHelper.handleValue(child, options, childName, childAlias, childValue, parsed);
+					QueryContextHelper.handleValue(child, options, childName, childName, childAlias, childValue, parsed);
 				}
 			}
 			context.getChilds().add(child);
@@ -192,9 +196,9 @@ abstract class QueryContextHelper {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static void handleCollectionValue(final QueryContext context, final Map<String, Object> options, final String name, final String alias, final Collection<?> value, final List<Entity<?>> parsed) {
+	private static void handleCollectionValue(final QueryContext context, final Map<String, Object> options, final String realName, final String name, final String alias, final Collection<?> value, final List<Entity<?>> parsed) {
 		if (value.size() > 0) {
-			QueryContext child = new QueryContext(name, alias, context);
+			QueryContext child = new QueryContext(realName, name, alias, context);
 			child.setJoinNeeded(true);
 			int index = 0;
 			for (Object o : value) {
@@ -215,7 +219,7 @@ abstract class QueryContextHelper {
 						String childAlias = propertyDescriptor.getName() + QueryContextHelper.ALIAS_SEPARADOR + index;
 						Object childValue = propertyDescriptor.getValue(o);
 						if (childValue != null) {
-							QueryContextHelper.handleValue(child, options, childName, childAlias, childValue, parsed);
+							QueryContextHelper.handleValue(child, options, childName, childName, childAlias, childValue, parsed);
 						}
 					}
 				}
@@ -273,6 +277,15 @@ abstract class QueryContextHelper {
 		context.getParameters().add(new QueryContextParameter(name, name, alias, alias, value, Operator.EQUALS));
 	}
 
+	private static String getEntityName(final BeanDescriptor beanDescriptor) {
+		try {
+			Class.forName(QueryContextHelper.JPA_ENTITY_CLASS);
+			return JPAHelper.getEntityName(beanDescriptor);
+		} catch (ClassNotFoundException e) {
+			return beanDescriptor.getType().getCanonicalName();
+		}
+	}
+
 	private static String getFieldName(final QueryContext context, final String name) {
 		StringBuilder builder = new StringBuilder();
 		if ((context.getParent() == null) || (context.isJoinNeeded())) {
@@ -308,7 +321,7 @@ abstract class QueryContextHelper {
 		}
 		try {
 			Class.forName(QueryContextHelper.JPA_TRANSIENT_CLASS);
-			return JPATransientHelper.isTransient(propertyDescriptor);
+			return JPAHelper.isTransient(propertyDescriptor);
 		} catch (ClassNotFoundException e) {
 			return false;
 		}
@@ -322,7 +335,7 @@ abstract class QueryContextHelper {
 		// Hibernate
 		try {
 			Class.forName(QueryContextHelper.HIBERNATE_PROXY_CLASS);
-			b = HibernateProxyHelper.isProxy(o);
+			b = HibernateHelper.isProxy(o);
 		} catch (ClassNotFoundException e) {
 			SysLogger.getLogger().debug(e.getMessage(), e);
 		}
@@ -330,7 +343,7 @@ abstract class QueryContextHelper {
 		if (!b) {
 			try {
 				Class.forName(QueryContextHelper.OPENJPA_PROXY_CLASS);
-				b = OpenJPAProxyHelper.isProxy(o);
+				b = OpenJPAHelper.isProxy(o);
 			} catch (ClassNotFoundException e) {
 				SysLogger.getLogger().debug(e.getMessage(), e);
 			}

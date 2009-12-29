@@ -31,10 +31,10 @@ import net.woodstock.rockframework.domain.business.ValidationException;
 import net.woodstock.rockframework.domain.business.ValidationResult;
 import net.woodstock.rockframework.domain.business.validation.EntityValidator;
 import net.woodstock.rockframework.domain.business.validation.Operation;
+import net.woodstock.rockframework.logging.SysLogger;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
-import net.woodstock.rockframework.sys.SysLogger;
 import net.woodstock.rockframework.utils.StringUtils;
 
 public final class LocalEntityValidator implements EntityValidator {

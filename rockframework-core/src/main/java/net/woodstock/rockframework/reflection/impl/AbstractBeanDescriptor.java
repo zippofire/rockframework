@@ -20,9 +20,9 @@ import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import net.woodstock.rockframework.logging.SysLogger;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
-import net.woodstock.rockframework.sys.SysLogger;
 
 import org.apache.commons.logging.Log;
 

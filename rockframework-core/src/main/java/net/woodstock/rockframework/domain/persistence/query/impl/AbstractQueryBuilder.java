@@ -17,7 +17,7 @@
 package net.woodstock.rockframework.domain.persistence.query.impl;
 
 import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
-import net.woodstock.rockframework.sys.SysLogger;
+import net.woodstock.rockframework.logging.SysLogger;
 
 import org.apache.commons.logging.Log;
 

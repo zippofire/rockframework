@@ -18,12 +18,6 @@ package net.woodstock.rockframework.domain;
 
 public interface Loader {
 
-	String	MESSAGE_ERROR_CONFIG_NOT_FOUND	= "domain.loader.exception.configNotFound";
-
-	String	MESSAGE_ERROR_MANY_FOUND		= "domain.loader.exception.manyFound";
-
-	String	MESSAGE_ERROR_NOT_FOUND			= "domain.loader.exception.notFound";
-
 	<T> T getObject(Class<T> clazz);
 
 	Object getObject(String name);

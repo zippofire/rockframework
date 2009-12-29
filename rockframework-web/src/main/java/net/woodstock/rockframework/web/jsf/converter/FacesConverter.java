@@ -18,7 +18,7 @@ package net.woodstock.rockframework.web.jsf.converter;
 
 import javax.faces.convert.Converter;
 
-import net.woodstock.rockframework.sys.SysLogger;
+import net.woodstock.rockframework.logging.SysLogger;
 
 import org.apache.commons.logging.Log;
 

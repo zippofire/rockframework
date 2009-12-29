@@ -19,5 +19,16 @@ package net.woodstock.rockframework.domain.util;
 public abstract class IntegerEntity extends AbstractEntity<Integer> {
 
 	private static final long	serialVersionUID	= 3668875982128584578L;
+	
+	
+	public IntegerEntity() {
+		super();
+	}
+	
+	public IntegerEntity(final Integer id) {
+		super();
+		this.setId(id);
+	}
+	
 
 }

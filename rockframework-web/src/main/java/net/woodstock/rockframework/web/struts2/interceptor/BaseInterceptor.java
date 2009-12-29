@@ -19,7 +19,7 @@ package net.woodstock.rockframework.web.struts2.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import net.woodstock.rockframework.sys.SysLogger;
+import net.woodstock.rockframework.logging.SysLogger;
 import net.woodstock.rockframework.utils.StringUtils;
 
 import org.apache.commons.logging.Log;

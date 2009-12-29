@@ -14,17 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.web.listener;
+package net.woodstock.rockframework.domain;
 
-import net.woodstock.rockframework.logging.SysLogger;
+public class InitializationException extends DomainException {
 
-import org.apache.commons.logging.Log;
+	private static final long	serialVersionUID	= 1L;
 
-public abstract class BaseListener {
+	public InitializationException(final String message) {
+		super(message);
+	}
 
-	// Logger
-	protected Log getLogger() {
-		return SysLogger.getLogger();
+	public InitializationException(final Throwable cause) {
+		super(cause);
+	}
+
+	public InitializationException(final String message, final Throwable cause) {
+		super(message, cause);
 	}
 
 }

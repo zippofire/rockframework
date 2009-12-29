@@ -16,7 +16,7 @@
  */
 package net.woodstock.rockframework.web.struts;
 
-import net.woodstock.rockframework.sys.SysLogger;
+import net.woodstock.rockframework.logging.SysLogger;
 
 import org.apache.commons.logging.Log;
 import org.apache.struts.action.DynaActionForm;

@@ -24,7 +24,7 @@ import net.woodstock.rockframework.domain.Entity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-public abstract class SpringGenericService extends AbstractGenericBatchService {
+public abstract class SpringGenericService extends AbstractGenericService {
 
 	public SpringGenericService() {
 		super();
@@ -64,25 +64,6 @@ public abstract class SpringGenericService extends AbstractGenericBatchService {
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public void delete(final Entity<?> entity) {
 		super.delete(entity);
-	}
-
-	// Batch
-	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public void save(final Entity<?>... entities) {
-		super.save(entities);
-	}
-
-	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public void update(final Entity<?>... entities) {
-		super.update(entities);
-	}
-
-	@Override
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-	public void delete(final Entity<?>... entities) {
-		super.delete(entities);
 	}
 
 }

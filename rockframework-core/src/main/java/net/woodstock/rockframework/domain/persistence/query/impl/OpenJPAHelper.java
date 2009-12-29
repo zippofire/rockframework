@@ -14,16 +14,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.service;
+package net.woodstock.rockframework.domain.persistence.query.impl;
 
-import net.woodstock.rockframework.domain.Entity;
+import org.apache.openjpa.enhance.PersistenceCapable;
 
-public interface GenericBatchService extends GenericService {
+abstract class OpenJPAHelper {
 
-	void save(Entity<?>... entities);
+	private OpenJPAHelper() {
+		//
+	}
 
-	void update(Entity<?>... entities);
-
-	void delete(Entity<?>... entities);
+	public static boolean isProxy(final Object e) {
+		boolean b = (e instanceof PersistenceCapable);
+		return b;
+	}
 
 }

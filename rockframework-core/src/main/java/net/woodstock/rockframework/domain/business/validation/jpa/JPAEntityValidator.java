@@ -38,10 +38,10 @@ import net.woodstock.rockframework.domain.business.validation.Operation;
 import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
 import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
 import net.woodstock.rockframework.domain.business.validation.local.Validator;
+import net.woodstock.rockframework.logging.SysLogger;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
-import net.woodstock.rockframework.sys.SysLogger;
 import net.woodstock.rockframework.utils.StringUtils;
 
 public final class JPAEntityValidator implements EntityValidator {

@@ -16,13 +16,13 @@
  */
 package net.woodstock.rockframework.domain.spring;
 
-import java.util.Collection;
-import java.util.LinkedHashSet;
 import java.util.Map;
 
-import net.woodstock.rockframework.config.CoreMessage;
-import net.woodstock.rockframework.domain.DomainException;
+import net.woodstock.rockframework.domain.ConfigurationNotFoundException;
 import net.woodstock.rockframework.domain.Loader;
+import net.woodstock.rockframework.domain.ObjectNotFoundException;
+import net.woodstock.rockframework.domain.TooManyObjectsException;
+import net.woodstock.rockframework.utils.StringUtils;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -30,15 +30,11 @@ import org.springframework.web.context.ContextLoader;
 
 public final class SpringLoader implements Loader {
 
-	public static final String		APPLICATION_CONFIGURATION		= "applicationContext.xml";
+	public static final String	APPLICATION_CONFIGURATION	= "applicationContext.xml";
 
-	public static final String		WEBAPPLICATION_CONFIGURATION	= "WEB-INF/applicationContext.xml";
+	private static SpringLoader	instance					= new SpringLoader();
 
-	private static final String[]	CONFIG_FILES					= { SpringLoader.APPLICATION_CONFIGURATION, SpringLoader.WEBAPPLICATION_CONFIGURATION };
-
-	private static SpringLoader		instance						= new SpringLoader();
-
-	private ApplicationContext		context;
+	private ApplicationContext	context;
 
 	private SpringLoader() {
 		super();
@@ -58,35 +54,34 @@ public final class SpringLoader implements Loader {
 	}
 
 	private ApplicationContext getApplicationContext() {
-		Collection<String> configs = new LinkedHashSet<String>();
 		ClassLoader classLoader = SpringLoader.class.getClassLoader();
-		for (String config : SpringLoader.CONFIG_FILES) {
-			if (classLoader.getResource(config) != null) {
-				configs.add(config);
-			}
+		if (classLoader.getResource(SpringLoader.APPLICATION_CONFIGURATION) == null) {
+			throw new ConfigurationNotFoundException("File " + SpringLoader.APPLICATION_CONFIGURATION + " not found");
 		}
 
-		if (configs.size() == 0) {
-			throw new DomainException(CoreMessage.getInstance().getMessage(Loader.MESSAGE_ERROR_CONFIG_NOT_FOUND));
-		}
-
-		return new ClassPathXmlApplicationContext(configs.toArray(new String[configs.size()]));
+		return new ClassPathXmlApplicationContext(new String[] { SpringLoader.APPLICATION_CONFIGURATION });
 	}
 
 	@SuppressWarnings("unchecked")
 	public <T> T getObject(final Class<T> clazz) {
+		if (clazz == null) {
+			throw new IllegalArgumentException("Class must be not null");
+		}
 		Map<String, Object> map = this.context.getBeansOfType(clazz);
 		if (map.size() == 0) {
-			throw new DomainException(CoreMessage.getInstance().getMessage(Loader.MESSAGE_ERROR_NOT_FOUND, clazz.getCanonicalName()));
+			throw new ObjectNotFoundException("Object not found for type " + clazz.getCanonicalName());
 		}
 		if (map.size() > 1) {
-			throw new DomainException(CoreMessage.getInstance().getMessage(Loader.MESSAGE_ERROR_MANY_FOUND, clazz.getCanonicalName()));
+			throw new TooManyObjectsException("To many objects found for type " + clazz.getCanonicalName());
 		}
 
 		return (T) map.values().iterator().next();
 	}
 
 	public Object getObject(final String name) {
+		if (StringUtils.isEmpty(name)) {
+			throw new IllegalArgumentException("Name must be not empty");
+		}
 		return this.context.getBean(name);
 	}
 

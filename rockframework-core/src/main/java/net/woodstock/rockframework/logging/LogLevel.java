@@ -14,20 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.spring;
+package net.woodstock.rockframework.logging;
 
-public enum ScopeType {
-
-	PROTOTYPE("prototype"), SINGLETON("singleton");
-
-	private String	type;
-
-	private ScopeType(final String type) {
-		this.type = type;
-	}
-
-	public String getType() {
-		return this.type;
-	}
-
+public enum LogLevel {
+	TRACE, DEBUG, INFO, WARN, ERROR, FATAL;
 }

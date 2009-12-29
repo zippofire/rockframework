@@ -22,11 +22,11 @@ import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 import net.woodstock.rockframework.domain.Entity;
+import net.woodstock.rockframework.logging.SysLogger;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.ReflectionType;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
-import net.woodstock.rockframework.sys.SysLogger;
 import net.woodstock.rockframework.utils.StringUtils;
 import ognl.NoSuchPropertyException;
 import ognl.Ognl;

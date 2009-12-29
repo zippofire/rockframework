@@ -16,13 +16,16 @@
  */
 package net.woodstock.rockframework.domain.persistence.query.impl;
 
+import javax.persistence.Entity;
 import javax.persistence.Transient;
 
+import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
+import net.woodstock.rockframework.utils.StringUtils;
 
-final class JPATransientHelper {
+final class JPAHelper {
 
-	private JPATransientHelper() {
+	private JPAHelper() {
 		super();
 	}
 
@@ -31,6 +34,18 @@ final class JPATransientHelper {
 			return true;
 		}
 		return false;
+	}
+
+	public static String getEntityName(final BeanDescriptor beanDescriptor) {
+		if (beanDescriptor.isAnnotationPresent(Entity.class)) {
+			Entity annotation = beanDescriptor.getAnnotation(Entity.class);
+			String name = annotation.name();
+			if (StringUtils.isEmpty(name)) {
+				name = beanDescriptor.getType().getSimpleName();
+			}
+			return name;
+		}
+		return beanDescriptor.getType().getCanonicalName();
 	}
 
 }

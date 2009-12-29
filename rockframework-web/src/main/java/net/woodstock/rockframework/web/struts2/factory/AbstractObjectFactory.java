@@ -1,6 +1,6 @@
 package net.woodstock.rockframework.web.struts2.factory;
 
-import net.woodstock.rockframework.sys.SysLogger;
+import net.woodstock.rockframework.logging.SysLogger;
 
 import org.apache.commons.logging.Log;
 

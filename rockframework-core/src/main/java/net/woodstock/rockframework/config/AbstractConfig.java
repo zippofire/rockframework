@@ -21,11 +21,8 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.Properties;
 
-import net.woodstock.rockframework.sys.SysLogger;
 import net.woodstock.rockframework.utils.ClassLoaderUtils;
 import net.woodstock.rockframework.utils.StringUtils;
-
-import org.apache.commons.logging.Log;
 
 public abstract class AbstractConfig {
 
@@ -45,7 +42,8 @@ public abstract class AbstractConfig {
 					if (s.startsWith(ClassLoaderUtils.JAR_PREFIX)) {
 						InputStream inputStream = ClassLoaderUtils.getInputStream(url, propertiesName);
 						if (inputStream != null) {
-							this.getLogger().info("Load properties " + propertiesName + " from JAR " + url);
+							// this.getLogger().info("Load properties " + propertiesName + " from JAR " +
+							// url);
 							this.properties.load(inputStream);
 						}
 					}
@@ -55,7 +53,8 @@ public abstract class AbstractConfig {
 					if (s.startsWith(ClassLoaderUtils.FILE_PREFIX)) {
 						InputStream inputStream = ClassLoaderUtils.getInputStream(url, propertiesName);
 						if (inputStream != null) {
-							this.getLogger().info("Load properties " + propertiesName + " from FILE " + url);
+							// this.getLogger().info("Load properties " + propertiesName + " from FILE " +
+							// url);
 							this.properties.load(inputStream);
 						}
 					}
@@ -72,11 +71,6 @@ public abstract class AbstractConfig {
 
 	public String getValue(final String key, final String defaultValue) {
 		return this.properties.getProperty(key, defaultValue);
-	}
-
-	// Logger
-	protected Log getLogger() {
-		return SysLogger.getLogger();
 	}
 
 }
