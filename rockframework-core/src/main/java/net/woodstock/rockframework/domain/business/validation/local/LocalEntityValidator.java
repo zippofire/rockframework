@@ -106,12 +106,12 @@ public final class LocalEntityValidator implements EntityValidator {
 				throw new ValidationException(CoreMessage.getInstance().getMessage(LocalEntityValidator.MESSAGE_ERROR_NULL));
 			}
 
-			if (operation == Operation.LIST) {
-				return;
+			if (operation == null) {
+				throw new ValidationException(CoreMessage.getInstance().getMessage(LocalEntityValidator.MESSAGE_ERROR_NULL));
 			}
 
-			if (operation == Operation.ALL) {
-				throw new ValidationException(CoreMessage.getInstance().getMessage(LocalEntityValidator.MESSAGE_ERROR_NULL));
+			if (operation == Operation.LIST) {
+				return;
 			}
 
 			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance().getBeanDescriptor(entity.getClass());

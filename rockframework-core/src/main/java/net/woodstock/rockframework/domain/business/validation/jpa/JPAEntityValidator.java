@@ -82,7 +82,7 @@ public final class JPAEntityValidator implements EntityValidator {
 				throw new ValidationException(CoreMessage.getInstance().getMessage(LocalEntityValidator.MESSAGE_ERROR_NULL));
 			}
 
-			if ((operation == null) || (operation == Operation.ALL)) {
+			if (operation == null) {
 				throw new ValidationException(CoreMessage.getInstance().getMessage(LocalEntityValidator.MESSAGE_ERROR_NULL));
 			}
 

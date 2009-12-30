@@ -71,7 +71,7 @@ public class JsonResult extends BaseResult {
 			json = JsonConverterFactory.getInstance().getConverter().to(context, rootObject);
 		} else {
 			this.getLogger().warn("Root object is empty");
-			json = "";
+			json = StringUtils.BLANK;
 		}
 
 		response.setContentType(JsonResult.JSON_CONTENT_TYPE);

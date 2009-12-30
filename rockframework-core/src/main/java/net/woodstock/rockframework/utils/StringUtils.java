@@ -225,7 +225,13 @@ public abstract class StringUtils {
 	}
 
 	public static boolean isEmpty(final String s) {
-		return ((s == null) || s.trim().equals(StringUtils.BLANK));
+		if (s == null) {
+			return true;
+		}
+		if (s.trim().length() == 0) {
+			return true;
+		}
+		return false;
 	}
 
 	public static String lpad(final double d, final int size, final char pad) {

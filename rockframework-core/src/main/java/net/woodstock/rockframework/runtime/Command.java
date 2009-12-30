@@ -17,31 +17,73 @@
 package net.woodstock.rockframework.runtime;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 
 import net.woodstock.rockframework.utils.StringUtils;
 
-public abstract class Command {
+public class Command implements Serializable {
 
-	private Command() {
-		//
+	private static final long	serialVersionUID	= 3461506172311705253L;
+
+	private String				command;
+
+	private List<String>		subCommands;
+
+	public Command(final String command) {
+		this(command, null);
 	}
 
-	public static CommandOutput execute(final String[] cmd) throws IOException {
-		CommandOutput output = new CommandOutput();
-		String line;
+	public Command(final String command, final List<String> subCommands) {
+		super();
+		this.command = command;
+		this.subCommands = subCommands;
+	}
+
+	public String getCommand() {
+		return this.command;
+	}
+
+	public void setCommand(final String command) {
+		this.command = command;
+	}
+
+	public List<String> getSubCommands() {
+		return this.subCommands;
+	}
+
+	public void setSubCommands(final List<String> subCommands) {
+		this.subCommands = subCommands;
+	}
+
+	public Output execute() throws IOException {
+		if (StringUtils.isEmpty(this.command)) {
+			throw new IllegalStateException("Command must be not empty");
+		}
+		Output output = new Output();
 		Runtime runtime = Runtime.getRuntime();
-		Process process = runtime.exec(cmd);
+		Process process = runtime.exec(this.command);
+
+		if ((this.subCommands != null) && (this.subCommands.size() > 0)) {
+			OutputStreamWriter writer = new OutputStreamWriter(process.getOutputStream());
+			for (String sc : this.subCommands) {
+				if (!StringUtils.isEmpty(sc)) {
+					writer.write(sc);
+				}
+			}
+			writer.close();
+		}
 
 		InputStreamReader errorStream = new InputStreamReader(process.getErrorStream());
 		InputStreamReader inputStream = new InputStreamReader(process.getInputStream());
 		BufferedReader readerInput = new BufferedReader(inputStream);
 		BufferedReader readerError = new BufferedReader(errorStream);
 
-		line = readerInput.readLine();
+		String line = readerInput.readLine();
 		while (line != null) {
 			if (!StringUtils.isEmpty(line)) {
 				output.addOut(line.trim());
@@ -52,7 +94,7 @@ public abstract class Command {
 		line = readerError.readLine();
 		while (line != null) {
 			if (!StringUtils.isEmpty(line)) {
-				output.addOut(line.trim());
+				output.addErr(line.trim());
 			}
 			line = readerError.readLine();
 		}
@@ -65,40 +107,35 @@ public abstract class Command {
 		return output;
 	}
 
-	public static CommandOutput execute(final String[] cmd, final String[] subcmd) throws IOException {
-		CommandOutput output = new CommandOutput();
-		Runtime runtime = Runtime.getRuntime();
-		Process process = runtime.exec(cmd);
+	public class Output implements Serializable {
 
-		OutputStreamWriter outputStream = new OutputStreamWriter(process.getOutputStream());
-		BufferedWriter writer = new BufferedWriter(outputStream);
-		for (String sc : subcmd) {
-			if (!StringUtils.isEmpty(sc)) {
-				writer.write(sc);
-			}
-		}
-		writer.close();
-		outputStream.close();
+		private static final long	serialVersionUID	= -2039121423679516050L;
 
-		InputStreamReader errorStream = new InputStreamReader(process.getErrorStream());
-		InputStreamReader inputStream = new InputStreamReader(process.getInputStream());
-		BufferedReader readerInput = new BufferedReader(inputStream);
-		BufferedReader readerError = new BufferedReader(errorStream);
+		private List<String>		out;
 
-		String line;
-		while ((line = readerInput.readLine()) != null) {
-			output.addOut(line.trim());
-		}
-		while ((line = readerError.readLine()) != null) {
-			output.addErr(line.trim());
+		private List<String>		err;
+
+		public Output() {
+			this.out = new LinkedList<String>();
+			this.err = new LinkedList<String>();
 		}
 
-		readerInput.close();
-		readerError.close();
-		inputStream.close();
-		errorStream.close();
+		public List<String> getOut() {
+			return this.out;
+		}
 
-		return output;
+		public List<String> getErr() {
+			return this.err;
+		}
+
+		void addOut(final String s) {
+			this.out.add(s);
+		}
+
+		void addErr(final String s) {
+			this.err.add(s);
+		}
+
 	}
 
 }
