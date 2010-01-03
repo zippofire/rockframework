@@ -1,11 +1,11 @@
-package net.woodstoc.rockframework.test.struts2.action;
+package net.woodstock.rockframework.test.struts2.action;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-import net.woodstoc.rockframework.test.struts2.entity.Bar;
-import net.woodstoc.rockframework.test.struts2.entity.Baz;
-import net.woodstoc.rockframework.test.struts2.entity.Foo;
+import net.woodstock.rockframework.test.struts2.entity.Bar;
+import net.woodstock.rockframework.test.struts2.entity.Baz;
+import net.woodstock.rockframework.test.struts2.entity.Foo;
 import net.woodstock.rockframework.util.Date;
 import net.woodstock.rockframework.web.struts2.action.BaseAction;
 import net.woodstock.rockframework.web.struts2.spring.Action;

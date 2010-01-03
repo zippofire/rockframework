@@ -1,4 +1,4 @@
-package net.woodstoc.rockframework.test.struts2.entity;
+package net.woodstock.rockframework.test.struts2.entity;
 
 import java.util.Collection;
 import java.util.Date;

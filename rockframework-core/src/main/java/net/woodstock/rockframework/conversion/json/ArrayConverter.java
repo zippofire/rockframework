@@ -41,7 +41,7 @@ public class ArrayConverter extends AbstractTextConverter<Object> {
 			throw new IllegalArgumentException("Object must be not null");
 		}
 
-		List<Object> list = ArrayUtils.asList(t);
+		List<Object> list = ArrayUtils.toList(t);
 		TextConverter converter = JsonConverterHelper.getConverter(Collection.class);
 		return (String) converter.to(context, list);
 	}

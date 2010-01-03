@@ -1,11 +1,11 @@
-package net.woodstoc.rockframework.test.struts2.action;
+package net.woodstock.rockframework.test.struts2.action;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.context.annotation.Scope;
 
-import net.woodstoc.rockframework.test.struts2.entity.ListItem;
+import net.woodstock.rockframework.test.struts2.entity.ListItem;
 import net.woodstock.rockframework.web.struts2.action.BaseAction;
 import net.woodstock.rockframework.web.struts2.spring.Action;
 

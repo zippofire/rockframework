@@ -50,9 +50,12 @@ public final class ArrayUtils {
 		return className;
 	}
 
-	public static List<Object> asList(final Object array) {
+	public static List<Object> toList(final Object array) {
 		if (array == null) {
 			return null;
+		}
+		if (!array.getClass().isArray()) {
+			throw new IllegalArgumentException("Object is not an array[" + array.getClass().getCanonicalName() + "]");
 		}
 		List<Object> list = new LinkedList<Object>();
 		for (int i = 0; i < Array.getLength(array); i++) {
@@ -62,9 +65,23 @@ public final class ArrayUtils {
 		return list;
 	}
 
-	public static Set<Object> asSet(final Object array) {
+	public static <T> List<T> toList(final T[] array) {
 		if (array == null) {
 			return null;
+		}
+		List<T> list = new LinkedList<T>();
+		for (T t : array) {
+			list.add(t);
+		}
+		return list;
+	}
+
+	public static Set<Object> toSet(final Object array) {
+		if (array == null) {
+			return null;
+		}
+		if (!array.getClass().isArray()) {
+			throw new IllegalArgumentException("Object is not an array[" + array.getClass().getCanonicalName() + "]");
 		}
 		Set<Object> set = new LinkedHashSet<Object>();
 		for (int i = 0; i < Array.getLength(array); i++) {
@@ -74,9 +91,23 @@ public final class ArrayUtils {
 		return set;
 	}
 
+	public static <T> Set<T> toSet(final T[] array) {
+		if (array == null) {
+			return null;
+		}
+		Set<T> list = new LinkedHashSet<T>();
+		for (T t : array) {
+			list.add(t);
+		}
+		return list;
+	}
+
 	public static String toString(final Object array) {
 		if (array == null) {
 			return null;
+		}
+		if (!array.getClass().isArray()) {
+			throw new IllegalArgumentException("Object is not an array[" + array.getClass().getCanonicalName() + "]");
 		}
 
 		boolean first = true;

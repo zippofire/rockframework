@@ -1,8 +1,8 @@
 package net.woodstoc.rockframework.test.struts2;
 
 import junit.framework.TestCase;
-import net.woodstoc.rockframework.test.struts2.action.TestAction;
 import net.woodstock.rockframework.domain.spring.SpringLoader;
+import net.woodstock.rockframework.test.struts2.action.TestAction;
 
 public class TestSpring extends TestCase {
 
