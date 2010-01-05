@@ -1,8 +1,9 @@
 package net.woodstock.rockframework.test.domain.test4;
 
 import junit.framework.TestCase;
+
 import net.woodstock.rockframework.domain.business.GenericBusiness;
-import net.woodstock.rockframework.domain.business.impl.AbstractLocalBusiness;
+import net.woodstock.rockframework.domain.business.impl.AbstractJPABusiness;
 import net.woodstock.rockframework.utils.DateUtils;
 
 public class TestFoo extends TestCase {
@@ -11,7 +12,7 @@ public class TestFoo extends TestCase {
 		Foo foo = new Foo();
 		foo.setDate(DateUtils.parse("00/00/0000", "dd/MM/yyyy"));
 
-		GenericBusiness business = new AbstractLocalBusiness() {
+		GenericBusiness business = new AbstractJPABusiness() {
 			//
 		};
 		business.validateSave(foo);

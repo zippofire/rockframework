@@ -23,8 +23,8 @@ import org.apache.commons.logging.Log;
 
 public abstract class AbstractTextConverter<T> implements TextConverter<T> {
 
-	public Log getLogger() {
-		return SysLogger.getLogger();
+	public Log getLog() {
+		return SysLogger.getLog();
 	}
 
 }

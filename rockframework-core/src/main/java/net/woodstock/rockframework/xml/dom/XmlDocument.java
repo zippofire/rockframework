@@ -160,7 +160,7 @@ public class XmlDocument extends DocumentWrapper {
 		try {
 			validator.validate(new DOMSource(this.getDocument()));
 		} catch (SAXException e) {
-			this.getLogger().warn(e.getMessage(), e);
+			this.getLog().warn(e.getMessage(), e);
 			return false;
 		}
 		return true;
@@ -240,8 +240,8 @@ public class XmlDocument extends DocumentWrapper {
 		}
 	}
 
-	protected Log getLogger() {
-		return SysLogger.getLogger();
+	protected Log getLog() {
+		return SysLogger.getLog();
 	}
 
 	static DocumentBuilder getDocumentBuilder() {

@@ -90,8 +90,8 @@ public abstract class BaseDynaForm extends DynaActionForm {
 		return (String) o;
 	}
 
-	protected Log getLogger() {
-		return SysLogger.getLogger();
+	protected Log getLog() {
+		return SysLogger.getLog();
 	}
 
 }

@@ -43,7 +43,7 @@ public abstract class ContextUtils {
 		try {
 			o = c.lookup(name);
 		} catch (NoInitialContextException e) {
-			SysLogger.getLogger().warn(e.getMessage(), e);
+			SysLogger.getLog().warn(e.getMessage(), e);
 		}
 		return o;
 	}

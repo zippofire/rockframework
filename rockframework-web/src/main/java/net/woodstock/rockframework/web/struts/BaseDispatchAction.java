@@ -89,7 +89,7 @@ public abstract class BaseDispatchAction extends DispatchAction {
 		return BaseDispatchAction.currentMapping.get();
 	}
 
-	protected Log getLogger() {
-		return SysLogger.getLogger();
+	protected Log getLog() {
+		return SysLogger.getLog();
 	}
 }

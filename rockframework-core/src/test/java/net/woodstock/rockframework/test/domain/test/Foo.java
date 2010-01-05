@@ -5,20 +5,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.domain.business.validation.Operation;
-import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateIntRange;
-import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateLength;
-import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateNotEmpty;
-import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateNotNull;
-import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateNull;
-import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateReference;
-
 import org.hibernate.validator.Length;
 import org.hibernate.validator.Max;
 import org.hibernate.validator.Min;
 import org.hibernate.validator.NotNull;
 import org.hibernate.validator.Valid;
+
+import net.woodstock.rockframework.domain.Entity;
 
 @XmlRootElement(name = "foo")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -30,10 +23,6 @@ public class Foo implements Entity<Integer> {
 	@NotNull
 	@Min(value = 0)
 	@Max(value = 10)
-	// Rockapi
-	@ValidateNull(operation = { Operation.SAVE })
-	@ValidateNotNull(operation = { Operation.GET, Operation.UPDATE, Operation.DELETE })
-	@ValidateIntRange(min = 0, max = 10)
 	// Xml
 	@XmlElement(name = "id")
 	private Integer				id;
@@ -41,9 +30,6 @@ public class Foo implements Entity<Integer> {
 	// Hibernate
 	@NotNull
 	@Length(min = 5, max = 50)
-	// Rockapi
-	@ValidateNotEmpty(operation = { Operation.SAVE, Operation.UPDATE })
-	@ValidateLength(min = 5, max = 50)
 	// Xml
 	@XmlElement(name = "name")
 	private String				name;
@@ -51,9 +37,6 @@ public class Foo implements Entity<Integer> {
 	// Hibernate
 	@NotNull
 	@Valid
-	// Rockapi
-	@ValidateNotNull(operation = { Operation.SAVE, Operation.UPDATE })
-	@ValidateReference(operation = { Operation.SAVE, Operation.UPDATE })
 	// Xml
 	@XmlElement(name = "bar")
 	private Bar					bar;

@@ -2,9 +2,9 @@ package net.woodstock.rockframework.test.domain.conversion;
 
 import java.util.Collection;
 
-import net.woodstock.rockframework.domain.util.IntegerEntity;
+import net.woodstock.rockframework.domain.Entity;
 
-public class Foo extends IntegerEntity {
+public class Foo implements Entity<Integer> {
 
 	private static final long	serialVersionUID	= 1L;
 

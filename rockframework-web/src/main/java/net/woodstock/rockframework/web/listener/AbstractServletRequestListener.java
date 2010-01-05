@@ -32,12 +32,12 @@ public abstract class AbstractServletRequestListener extends BaseListener implem
 
 	@SuppressWarnings("unused")
 	public void requestDestroyed(final ServletRequestEvent event, final HttpServletRequest request) {
-		this.getLogger().info("Destroying request");
+		this.getLog().info("Destroying request");
 	}
 
 	@SuppressWarnings("unused")
 	public void requestInitialized(final ServletRequestEvent event, final HttpServletRequest request) {
-		this.getLogger().info("Initializing request");
+		this.getLog().info("Initializing request");
 	}
 
 }

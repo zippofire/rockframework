@@ -14,7 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.business;
+package net.woodstock.rockframework.domain.business.validation;
+
+import net.woodstock.rockframework.domain.business.BusinessException;
 
 public class ValidationException extends BusinessException {
 

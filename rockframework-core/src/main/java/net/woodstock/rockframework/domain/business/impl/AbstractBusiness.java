@@ -19,7 +19,7 @@ package net.woodstock.rockframework.domain.business.impl;
 import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.GenericBusiness;
-import net.woodstock.rockframework.domain.business.ValidationResult;
+import net.woodstock.rockframework.domain.business.validation.ValidationResult;
 import net.woodstock.rockframework.logging.SysLogger;
 
 import org.apache.commons.logging.Log;
@@ -71,8 +71,8 @@ abstract class AbstractBusiness implements GenericBusiness {
 	}
 
 	// Logger
-	protected Log getLogger() {
-		return SysLogger.getLogger();
+	protected Log getLog() {
+		return SysLogger.getLog();
 	}
 
 }

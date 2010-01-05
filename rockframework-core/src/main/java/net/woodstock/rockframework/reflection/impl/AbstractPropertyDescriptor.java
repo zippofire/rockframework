@@ -122,8 +122,8 @@ abstract class AbstractPropertyDescriptor implements PropertyDescriptor {
 	}
 
 	// Logger
-	public Log getLogger() {
-		return SysLogger.getLogger();
+	public Log getLog() {
+		return SysLogger.getLog();
 	}
 
 }

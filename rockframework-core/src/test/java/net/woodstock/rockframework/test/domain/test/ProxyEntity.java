@@ -45,7 +45,7 @@ public final class ProxyEntity<ID extends Serializable> implements Entity<ID>, I
 	}
 
 	public Object invoke(final Object proxy, final Method method, final Object[] args) throws InvocationTargetException, IllegalAccessException {
-		SysLogger.getLogger().info("Calling method " + method.getName());
+		SysLogger.getLog().info("Calling method " + method.getName());
 		return method.invoke(this.entity, args);
 	}
 

@@ -28,7 +28,7 @@ public abstract class AbstractService implements Service {
 	}
 
 	protected Log getLogger() {
-		return SysLogger.getLogger();
+		return SysLogger.getLog();
 	}
 
 }

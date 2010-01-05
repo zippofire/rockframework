@@ -39,7 +39,7 @@ public abstract class SimpleValueConverter<T> extends StrutsTypeConverter {
 		}
 
 		T t = this.convertFromString(o[0], toClass);
-		this.getLogger().info("From String [" + s + " => " + t + "]");
+		this.getLog().info("From String [" + s + " => " + t + "]");
 		return t;
 	}
 
@@ -51,12 +51,12 @@ public abstract class SimpleValueConverter<T> extends StrutsTypeConverter {
 		}
 		T t = (T) o;
 		String s = this.convertToString(t);
-		this.getLogger().info("To String [" + t + " => " + s + "]");
+		this.getLog().info("To String [" + t + " => " + s + "]");
 		return s;
 	}
 
-	protected Log getLogger() {
-		return SysLogger.getLogger();
+	protected Log getLog() {
+		return SysLogger.getLog();
 	}
 
 	@SuppressWarnings("unchecked")

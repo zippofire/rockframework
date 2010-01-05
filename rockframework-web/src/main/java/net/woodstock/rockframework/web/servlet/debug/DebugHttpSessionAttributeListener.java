@@ -32,7 +32,7 @@ public class DebugHttpSessionAttributeListener implements HttpSessionAttributeLi
 		builder.append("\nName    : " + event.getName());
 		builder.append("\nValue   : " + event.getValue());
 		builder.append("\nClass   : " + event.getValue().getClass().getCanonicalName());
-		SysLogger.getLogger().info(builder.toString());
+		SysLogger.getLog().info(builder.toString());
 	}
 
 	public void attributeRemoved(final HttpSessionBindingEvent event) {
@@ -44,7 +44,7 @@ public class DebugHttpSessionAttributeListener implements HttpSessionAttributeLi
 		builder.append("\nName    : " + event.getName());
 		builder.append("\nValue   : " + event.getValue());
 		builder.append("\nClass   : " + event.getValue().getClass().getCanonicalName());
-		SysLogger.getLogger().info(builder.toString());
+		SysLogger.getLog().info(builder.toString());
 	}
 
 	public void attributeReplaced(final HttpSessionBindingEvent event) {
@@ -56,7 +56,7 @@ public class DebugHttpSessionAttributeListener implements HttpSessionAttributeLi
 		builder.append("\nName    : " + event.getName());
 		builder.append("\nValue   : " + event.getValue());
 		builder.append("\nClass   : " + event.getValue().getClass().getCanonicalName());
-		SysLogger.getLogger().info(builder.toString());
+		SysLogger.getLog().info(builder.toString());
 	}
 
 }

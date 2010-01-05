@@ -10,8 +10,8 @@ public class AbstractObjectFactory extends ObjectFactory {
 
 	private static final long	serialVersionUID	= -9220498994278571801L;
 
-	protected Log getLogger() {
-		return SysLogger.getLogger();
+	protected Log getLog() {
+		return SysLogger.getLog();
 	}
 
 }

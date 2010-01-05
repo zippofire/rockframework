@@ -23,8 +23,8 @@ import org.apache.commons.logging.Log;
 public abstract class BaseListener {
 
 	// Logger
-	protected Log getLogger() {
-		return SysLogger.getLogger();
+	protected Log getLog() {
+		return SysLogger.getLog();
 	}
 
 }

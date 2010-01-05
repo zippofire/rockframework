@@ -35,8 +35,8 @@ public abstract class AbstractMessageListener implements MessageListener {
 		this.context = context;
 	}
 
-	protected Log getLogger() {
-		return SysLogger.getLogger();
+	protected Log getLog() {
+		return SysLogger.getLog();
 	}
 
 }

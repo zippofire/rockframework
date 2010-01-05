@@ -7,9 +7,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import net.woodstock.rockframework.domain.util.AbstractEntity;
+import net.woodstock.rockframework.domain.Entity;
 
-public class Foo extends AbstractEntity<Integer> {
+public class Foo implements Entity<Integer> {
 
 	private static final long	serialVersionUID	= 1L;
 

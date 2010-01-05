@@ -17,8 +17,6 @@
 package net.woodstock.rockframework.domain.business.validation.jpa;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -31,63 +29,59 @@ import javax.persistence.OneToOne;
 
 import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.domain.business.ValidationException;
-import net.woodstock.rockframework.domain.business.ValidationResult;
 import net.woodstock.rockframework.domain.business.validation.EntityValidator;
-import net.woodstock.rockframework.domain.business.validation.Operation;
-import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
-import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
-import net.woodstock.rockframework.domain.business.validation.local.Validator;
-import net.woodstock.rockframework.logging.SysLogger;
+import net.woodstock.rockframework.domain.business.validation.ValidationException;
+import net.woodstock.rockframework.domain.business.validation.ValidationResult;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
-import net.woodstock.rockframework.utils.StringUtils;
 
 public final class JPAEntityValidator implements EntityValidator {
 
-	private static ValidatorColumn		validatorColumn		= new ValidatorColumn();
+	public static final String			MESSAGE_ERROR_NULL					= "domain.validation.error.null";
 
-	private static ValidatorId			validatorId			= new ValidatorId();
+	public static final String			MESSAGE_FIELD_ERROR_INVALID_TYPE	= "domain.validation.field.error.invalidType";
 
-	private static ValidatorManyToMany	validatorManyToMany	= new ValidatorManyToMany();
+	public static final String			MESSAGE_FIELD_ERROR_LENGTH			= "domain.validation.field.error.length";
 
-	private static ValidatorManyToOne	validatorManyToOne	= new ValidatorManyToOne();
+	public static final String			MESSAGE_FIELD_ERROR_NOT_EMPTY		= "domain.validation.field.error.notEmpty";
 
-	private static ValidatorOneToMany	validatorOneToMany	= new ValidatorOneToMany();
+	public static final String			MESSAGE_FIELD_ERROR_NULL			= "domain.validation.field.error.null";
 
-	private static ValidatorOneToOne	validatorOneToOne	= new ValidatorOneToOne();
+	private static ValidatorColumn		validatorColumn						= new ValidatorColumn();
 
-	private static JPAEntityValidator	instance			= new JPAEntityValidator();
+	private static ValidatorId			validatorId							= new ValidatorId();
+
+	private static ValidatorManyToMany	validatorManyToMany					= new ValidatorManyToMany();
+
+	private static ValidatorManyToOne	validatorManyToOne					= new ValidatorManyToOne();
+
+	private static ValidatorOneToMany	validatorOneToMany					= new ValidatorOneToMany();
+
+	private static ValidatorOneToOne	validatorOneToOne					= new ValidatorOneToOne();
+
+	private static JPAEntityValidator	instance							= new JPAEntityValidator();
 
 	private JPAEntityValidator() {
 		super();
 	}
 
-	public Collection<ValidationResult> validate(final Entity<?> entity, final Operation operation) {
+	public Collection<ValidationResult> validate(final Entity<?> entity) {
 		String entityName = this.getEntityName(entity);
-		LocalValidationContext rootContext = new JPAValidationContext(entity, entityName, null, operation);
-		return this.validate(rootContext, entity, operation);
+		JPAValidationContext rootContext = new JPAValidationContext(entity, entityName, null);
+		return this.validate(rootContext, entity);
 	}
 
-	public Collection<ValidationResult> validate(final LocalValidationContext rootContext, final Entity<?> entity, final Operation operation) {
+	public Collection<ValidationResult> validate(final JPAValidationContext rootContext, final Entity<?> entity) {
 		Collection<ValidationResult> results = new LinkedList<ValidationResult>();
-		this.validate(rootContext, entity, operation, results);
+		this.validate(rootContext, entity, results);
 		return results;
 	}
 
-	private void validate(final LocalValidationContext parentContext, final Entity<?> entity, final Operation operation, final Collection<ValidationResult> results) {
+	private void validate(final JPAValidationContext parentContext, final Entity<?> entity, final Collection<ValidationResult> results) {
 		try {
 			if (entity == null) {
-				throw new ValidationException(CoreMessage.getInstance().getMessage(LocalEntityValidator.MESSAGE_ERROR_NULL));
-			}
-
-			if (operation == null) {
-				throw new ValidationException(CoreMessage.getInstance().getMessage(LocalEntityValidator.MESSAGE_ERROR_NULL));
-			}
-
-			if (operation == Operation.LIST) {
-				return;
+				throw new ValidationException(CoreMessage.getInstance().getMessage(JPAEntityValidator.MESSAGE_ERROR_NULL));
 			}
 
 			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance().getBeanDescriptor(entity.getClass());
@@ -95,49 +89,35 @@ public final class JPAEntityValidator implements EntityValidator {
 				for (Annotation annotation : propertyDescriptor.getAnnotations()) {
 					Validator validator = null;
 					boolean validate = false;
-					if (operation == Operation.GET) {
-						if (annotation instanceof Id) {
-							validate = true;
-							validator = JPAEntityValidator.validatorId;
-						}
-					} else {
-						if (annotation instanceof Id) {
-							validate = true;
-							validator = JPAEntityValidator.validatorId;
-						} else if (annotation instanceof Column) {
-							validate = true;
-							validator = JPAEntityValidator.validatorColumn;
-						} else if (annotation instanceof OneToOne) {
-							validate = true;
-							validator = JPAEntityValidator.validatorOneToOne;
-						} else if (annotation instanceof OneToMany) {
-							validate = true;
-							validator = JPAEntityValidator.validatorOneToMany;
-						} else if (annotation instanceof ManyToOne) {
-							validate = true;
-							validator = JPAEntityValidator.validatorManyToOne;
-						} else if (annotation instanceof ManyToMany) {
-							validate = true;
-							validator = JPAEntityValidator.validatorManyToMany;
-						}
+					if (annotation instanceof Id) {
+						// FIXME
+						validate = false;
+						validator = JPAEntityValidator.validatorId;
+					} else if (annotation instanceof Column) {
+						validate = true;
+						validator = JPAEntityValidator.validatorColumn;
+					} else if (annotation instanceof OneToOne) {
+						validate = true;
+						validator = JPAEntityValidator.validatorOneToOne;
+					} else if (annotation instanceof OneToMany) {
+						validate = true;
+						validator = JPAEntityValidator.validatorOneToMany;
+					} else if (annotation instanceof ManyToOne) {
+						validate = true;
+						validator = JPAEntityValidator.validatorManyToOne;
+					} else if (annotation instanceof ManyToMany) {
+						validate = true;
+						validator = JPAEntityValidator.validatorManyToMany;
 					}
 
 					if (validate) {
 						Object value = propertyDescriptor.getValue(entity);
 						String name = propertyDescriptor.getName();
 
-						LocalValidationContext context = new JPAValidationContext(value, name, annotation, operation, parentContext);
+						JPAValidationContext context = new JPAValidationContext(value, name, annotation, parentContext);
 						ValidationResult result = validator.validate(context);
 
 						results.add(result);
-
-						if (result.isError()) {
-							String msg = this.getMessage(annotation);
-
-							if (!StringUtils.isEmpty(msg)) {
-								result.setMessage(msg);
-							}
-						}
 					}
 				}
 			}
@@ -155,19 +135,8 @@ public final class JPAEntityValidator implements EntityValidator {
 		return className;
 	}
 
-	private String getMessage(final Annotation annotation) throws IllegalAccessException, InvocationTargetException {
-		try {
-			Method m = annotation.getClass().getMethod(LocalEntityValidator.MESSAGE_PARAM, new Class[] {});
-			String message = (String) m.invoke(annotation, new Object[] {});
-			return message;
-		} catch (NoSuchMethodException ee) {
-			SysLogger.getLogger().debug(ee.getMessage(), ee);
-		}
-		return null;
-	}
-
 	// Instance
-	public static EntityValidator getInstance() {
+	public static JPAEntityValidator getInstance() {
 		return JPAEntityValidator.instance;
 	}
 }

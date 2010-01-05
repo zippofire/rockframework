@@ -41,8 +41,8 @@ public abstract class BaseForm extends ActionForm {
 
 	public abstract void reset();
 
-	protected Log getLogger() {
-		return SysLogger.getLogger();
+	protected Log getLog() {
+		return SysLogger.getLog();
 	}
 
 }

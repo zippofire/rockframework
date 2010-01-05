@@ -51,8 +51,8 @@ public abstract class ManagedBean implements Serializable {
 	}
 
 	// Logger
-	protected Log getLogger() {
-		return SysLogger.getLogger();
+	protected Log getLog() {
+		return SysLogger.getLog();
 	}
 
 	// Faces

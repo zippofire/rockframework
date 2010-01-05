@@ -26,8 +26,8 @@ public abstract class BaseResult implements Result {
 
 	private static final long	serialVersionUID	= 285064071343072720L;
 
-	protected Log getLogger() {
-		return SysLogger.getLogger();
+	protected Log getLog() {
+		return SysLogger.getLog();
 	}
 
 }

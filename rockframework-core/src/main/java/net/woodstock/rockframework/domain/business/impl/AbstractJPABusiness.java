@@ -20,8 +20,7 @@ import java.util.Collection;
 
 import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.domain.business.ValidationResult;
-import net.woodstock.rockframework.domain.business.validation.Operation;
+import net.woodstock.rockframework.domain.business.validation.ValidationResult;
 import net.woodstock.rockframework.domain.business.validation.jpa.JPAEntityValidator;
 
 public abstract class AbstractJPABusiness extends AbstractBusiness {
@@ -30,8 +29,8 @@ public abstract class AbstractJPABusiness extends AbstractBusiness {
 		super();
 	}
 
-	private ValidationResult validate(final Entity<?> entity, final Operation operation) {
-		Collection<ValidationResult> results = JPAEntityValidator.getInstance().validate(entity, operation);
+	private ValidationResult validate(final Entity<?> entity) {
+		Collection<ValidationResult> results = JPAEntityValidator.getInstance().validate(entity);
 		for (ValidationResult result : results) {
 			if (result.isError()) {
 				return result;
@@ -42,11 +41,11 @@ public abstract class AbstractJPABusiness extends AbstractBusiness {
 
 	// CRUD
 	public ValidationResult validateSave(final Entity<?> entity) {
-		return this.validate(entity, Operation.SAVE);
+		return this.validate(entity);
 	}
 
 	public ValidationResult validateUpdate(final Entity<?> entity) {
-		return this.validate(entity, Operation.UPDATE);
+		return this.validate(entity);
 	}
 
 }

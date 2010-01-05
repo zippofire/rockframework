@@ -360,7 +360,7 @@ public class XmlElement extends ElementWrapper {
 			try {
 				return XmlElement.dateFormat.parse(s);
 			} catch (ParseException e) {
-				this.getLogger().warn(e.getMessage(), e);
+				this.getLog().warn(e.getMessage(), e);
 			}
 		}
 		return nvl;
@@ -376,7 +376,7 @@ public class XmlElement extends ElementWrapper {
 			try {
 				return XmlElement.dateFormat.parse(s);
 			} catch (ParseException e) {
-				this.getLogger().warn(e.getMessage(), e);
+				this.getLog().warn(e.getMessage(), e);
 			}
 		}
 		return nvl;
@@ -666,8 +666,8 @@ public class XmlElement extends ElementWrapper {
 		}
 	}
 
-	protected Log getLogger() {
-		return SysLogger.getLogger();
+	protected Log getLog() {
+		return SysLogger.getLog();
 	}
 
 	static {

@@ -72,8 +72,8 @@ public abstract class BaseAction<F extends ActionForm> extends Action {
 		return BaseAction.currentMapping.get();
 	}
 
-	protected Log getLogger() {
-		return SysLogger.getLogger();
+	protected Log getLog() {
+		return SysLogger.getLog();
 	}
 
 	protected abstract StrutsResult execute(F form, HttpServletRequest request, HttpServletResponse response) throws Exception;

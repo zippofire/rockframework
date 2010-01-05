@@ -57,18 +57,18 @@ public class CharsetFilter extends HttpFilter {
 	public void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain) throws IOException, ServletException {
 		BufferedServletResponseWrapper responseWrapper = new BufferedServletResponseWrapper(response);
 
-		this.getLogger().debug("Filtering " + request.getRequestURI());
-		this.getLogger().debug("Send request to next chain");
+		this.getLog().debug("Filtering " + request.getRequestURI());
+		this.getLog().debug("Send request to next chain");
 		chain.doFilter(request, responseWrapper);
 
-		this.getLogger().debug("Getting response content");
+		this.getLog().debug("Getting response content");
 		ServletOutputStreamWrapper wrapper = responseWrapper.getOutputStreamWrapper();
 
-		this.getLogger().debug("Convert from charset " + this.charsetFrom.displayName() + " to " + this.charsetTo.displayName());
+		this.getLog().debug("Convert from charset " + this.charsetFrom.displayName() + " to " + this.charsetTo.displayName());
 		String text = wrapper.getOutputText();
 		String content = StringUtils.convertCharset(this.charsetFrom, this.charsetTo, text);
 
-		this.getLogger().debug("Writing text to output");
+		this.getLog().debug("Writing text to output");
 		response.getOutputStream().write(content.getBytes());
 	}
 }

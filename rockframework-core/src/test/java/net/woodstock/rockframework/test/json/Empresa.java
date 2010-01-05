@@ -2,9 +2,9 @@ package net.woodstock.rockframework.test.json;
 
 import java.util.Collection;
 
-import net.woodstock.rockframework.domain.util.IntegerEntity;
+import net.woodstock.rockframework.domain.Entity;
 
-public class Empresa extends IntegerEntity {
+public class Empresa implements Entity<Integer> {
 
 	private static final long	serialVersionUID	= 1L;
 

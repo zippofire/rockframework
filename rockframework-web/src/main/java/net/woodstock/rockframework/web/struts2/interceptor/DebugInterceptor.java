@@ -99,22 +99,22 @@ public class DebugInterceptor extends BaseInterceptor {
 	private void log(final String message) {
 		switch (this.level) {
 			case TRACE:
-				this.getLogger().trace(message);
+				this.getLog().trace(message);
 				break;
 			case DEBUG:
-				this.getLogger().debug(message);
+				this.getLog().debug(message);
 				break;
 			case INFO:
-				this.getLogger().info(message);
+				this.getLog().info(message);
 				break;
 			case WARN:
-				this.getLogger().warn(message);
+				this.getLog().warn(message);
 				break;
 			case ERROR:
-				this.getLogger().error(message);
+				this.getLog().error(message);
 				break;
 			case FATAL:
-				this.getLogger().fatal(message);
+				this.getLog().fatal(message);
 				break;
 			default:
 				break;

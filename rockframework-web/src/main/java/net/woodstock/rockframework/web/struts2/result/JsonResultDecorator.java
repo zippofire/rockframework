@@ -21,11 +21,11 @@ public class JsonResultDecorator extends JsonResult {
 	private static final long	serialVersionUID	= -4062915662969337725L;
 
 	public void setNoCache(final String noCache) {
-		this.getLogger().warn("Property[noCache] not used. Value = " + noCache);
+		this.getLog().warn("Property[noCache] not used. Value = " + noCache);
 	}
 
 	public void setExcludeProperties(final String excludeProperties) {
-		this.getLogger().warn("Property[excludeProperties] not used. Use 'ignore'.");
+		this.getLog().warn("Property[excludeProperties] not used. Use 'ignore'.");
 		super.setIgnore(excludeProperties);
 	}
 

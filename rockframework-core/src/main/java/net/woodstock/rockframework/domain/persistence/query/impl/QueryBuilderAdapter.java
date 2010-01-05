@@ -23,7 +23,7 @@ public class QueryBuilderAdapter extends EJBQLQueryBuilder<Object> {
 
 	@Override
 	protected Object getQuery(final String sql) {
-		this.getLogger().warn("getQueryLocal(" + sql + ")");
+		this.getLog().warn("getQueryLocal(" + sql + ")");
 		return null;
 	}
 
@@ -42,12 +42,12 @@ public class QueryBuilderAdapter extends EJBQLQueryBuilder<Object> {
 			}
 		}
 		builder.append(")");
-		this.getLogger().warn(builder.toString());
+		this.getLog().warn(builder.toString());
 	}
 
 	@Override
 	protected void setQueryParameter(final Object query, final String name, final Object value) {
-		this.getLogger().warn("setQueryParameter[" + name + "] => " + value);
+		this.getLog().warn("setQueryParameter[" + name + "] => " + value);
 	}
 
 }

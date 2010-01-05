@@ -29,11 +29,11 @@ public abstract class BaseFilter implements Filter {
 	private FilterConfig	filterConfig;
 
 	public void destroy() {
-		this.getLogger().info("Filter: " + this.getClass().getName() + " destroyed");
+		this.getLog().info("Filter: " + this.getClass().getName() + " destroyed");
 	}
 
 	public void init(final FilterConfig filterConfig) {
-		this.getLogger().info("Filter: " + this.getClass().getName() + " initialized");
+		this.getLog().info("Filter: " + this.getClass().getName() + " initialized");
 		this.filterConfig = filterConfig;
 	}
 
@@ -53,7 +53,7 @@ public abstract class BaseFilter implements Filter {
 	}
 
 	// Logger
-	protected Log getLogger() {
-		return SysLogger.getLogger();
+	protected Log getLog() {
+		return SysLogger.getLog();
 	}
 }

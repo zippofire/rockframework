@@ -84,7 +84,7 @@ public abstract class SimpleServerSocket extends Thread {
 	}
 
 	protected Log getLogger() {
-		return SysLogger.getLogger();
+		return SysLogger.getLog();
 	}
 
 	protected void initialHandle(final Socket s) throws Exception {

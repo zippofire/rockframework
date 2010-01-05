@@ -67,7 +67,7 @@ public abstract class HibernateUtil {
 		if (s != null) {
 			Transaction t = s.getTransaction();
 			if (t.isActive()) {
-				SysLogger.getLogger().warn("Session contains an active transaction, commiting transaction");
+				SysLogger.getLog().warn("Session contains an active transaction, commiting transaction");
 				t.commit();
 			}
 			s.flush();

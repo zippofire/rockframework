@@ -50,7 +50,7 @@ public class FormatTag extends BaseTag {
 		try {
 			formated = StringUtils.format(this.format, value, character);
 		} catch (ArrayIndexOutOfBoundsException e) {
-			this.getLogger().warn(e.getMessage(), e);
+			this.getLog().warn(e.getMessage(), e);
 			formated = FormatTag.ERROR_VALUE;
 		}
 

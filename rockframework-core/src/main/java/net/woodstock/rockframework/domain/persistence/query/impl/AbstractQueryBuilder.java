@@ -23,8 +23,8 @@ import org.apache.commons.logging.Log;
 
 abstract class AbstractQueryBuilder<T> implements QueryBuilder<T> {
 
-	protected Log getLogger() {
-		return SysLogger.getLogger();
+	protected Log getLog() {
+		return SysLogger.getLog();
 	}
 
 }

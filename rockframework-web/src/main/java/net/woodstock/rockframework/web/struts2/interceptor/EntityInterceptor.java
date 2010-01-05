@@ -90,17 +90,17 @@ public class EntityInterceptor extends BaseInterceptor {
 					Constructor<?> contructor = clazz.getConstructor(new Class[] { String.class });
 					Object fieldValue = contructor.newInstance(new Object[] { value });
 
-					this.getLogger().info("Setting entity ID " + entityName + "[" + fieldValue + "]");
+					this.getLog().info("Setting entity ID " + entityName + "[" + fieldValue + "]");
 					propertyDescriptor.setValue(entity, fieldValue);
 				} catch (NoSuchMethodException e) {
-					this.getLogger().warn("Could not find constructor " + entity.getClass().getCanonicalName() + "(String). Parameter not setted");
+					this.getLog().warn("Could not find constructor " + entity.getClass().getCanonicalName() + "(String). Parameter not setted");
 				} catch (Exception e) {
-					this.getLogger().warn("Error in constructor " + entity.getClass().getCanonicalName() + "(String)");
-					this.getLogger().warn(e.getMessage(), e);
+					this.getLog().warn("Error in constructor " + entity.getClass().getCanonicalName() + "(String)");
+					this.getLog().warn(e.getMessage(), e);
 				}
 			}
 		} catch (NoSuchPropertyException e) {
-			SysLogger.getLogger().debug(e.getMessage(), e);
+			SysLogger.getLog().debug(e.getMessage(), e);
 		}
 	}
 

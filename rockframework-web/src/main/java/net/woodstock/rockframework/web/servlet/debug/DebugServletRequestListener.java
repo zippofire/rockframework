@@ -28,7 +28,7 @@ public class DebugServletRequestListener implements ServletRequestListener {
 		builder.append("\nCreated");
 		builder.append("\nSource  : " + event.getSource().getClass().getCanonicalName());
 		builder.append("\nContext : " + event.getServletContext().getServletContextName());
-		SysLogger.getLogger().info(builder.toString());
+		SysLogger.getLog().info(builder.toString());
 	}
 
 	public void requestInitialized(final ServletRequestEvent event) {
@@ -36,7 +36,7 @@ public class DebugServletRequestListener implements ServletRequestListener {
 		builder.append("\nCreated");
 		builder.append("\nSource  : " + event.getSource().getClass().getCanonicalName());
 		builder.append("\nContext : " + event.getServletContext().getServletContextName());
-		SysLogger.getLogger().info(builder.toString());
+		SysLogger.getLog().info(builder.toString());
 	}
 
 }

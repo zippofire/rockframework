@@ -31,7 +31,7 @@ public class DebugServletRequestAttributeListener implements ServletRequestAttri
 		builder.append("\nName    : " + event.getName());
 		builder.append("\nValue   : " + event.getValue());
 		builder.append("\nClass   : " + event.getValue().getClass().getCanonicalName());
-		SysLogger.getLogger().info(builder.toString());
+		SysLogger.getLog().info(builder.toString());
 	}
 
 	public void attributeRemoved(final ServletRequestAttributeEvent event) {
@@ -42,7 +42,7 @@ public class DebugServletRequestAttributeListener implements ServletRequestAttri
 		builder.append("\nName    : " + event.getName());
 		builder.append("\nValue   : " + event.getValue());
 		builder.append("\nClass   : " + event.getValue().getClass().getCanonicalName());
-		SysLogger.getLogger().info(builder.toString());
+		SysLogger.getLog().info(builder.toString());
 	}
 
 	public void attributeReplaced(final ServletRequestAttributeEvent event) {
@@ -53,7 +53,7 @@ public class DebugServletRequestAttributeListener implements ServletRequestAttri
 		builder.append("\nName    : " + event.getName());
 		builder.append("\nValue   : " + event.getValue());
 		builder.append("\nClass   : " + event.getValue().getClass().getCanonicalName());
-		SysLogger.getLogger().info(builder.toString());
+		SysLogger.getLog().info(builder.toString());
 	}
 
 }

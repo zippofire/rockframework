@@ -49,9 +49,9 @@ public abstract class NetUtils {
 				socket.connect(address);
 				socket.close();
 				list.add(Integer.valueOf(port));
-				SysLogger.getLogger().debug("Connected on " + host.getHostAddress() + ":" + port);
+				SysLogger.getLog().debug("Connected on " + host.getHostAddress() + ":" + port);
 			} catch (IOException e) {
-				SysLogger.getLogger().debug(e.getMessage(), e);
+				SysLogger.getLog().debug(e.getMessage(), e);
 			}
 			socket = null;
 		}

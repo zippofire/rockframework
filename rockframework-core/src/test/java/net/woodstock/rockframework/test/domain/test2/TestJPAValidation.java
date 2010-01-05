@@ -1,8 +1,10 @@
 package net.woodstock.rockframework.test.domain.test2;
 
 import junit.framework.TestCase;
+
 import net.woodstock.rockframework.domain.business.GenericBusiness;
 import net.woodstock.rockframework.domain.business.impl.AbstractJPABusiness;
+import net.woodstock.rockframework.domain.business.validation.ValidationResult;
 
 public class TestJPAValidation extends TestCase {
 
@@ -30,7 +32,8 @@ public class TestJPAValidation extends TestCase {
 	public void test1() throws Exception {
 		GenericBusiness business = this.getBusiness();
 		Bar bar = this.getBar();
-		business.validateSave(bar);
+		ValidationResult result = business.validateSave(bar);
+		System.out.println(result.getMessage());
 	}
 
 }

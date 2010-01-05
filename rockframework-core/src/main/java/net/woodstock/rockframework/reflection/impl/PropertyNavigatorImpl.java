@@ -16,12 +16,9 @@
  */
 package net.woodstock.rockframework.reflection.impl;
 
-import net.woodstock.rockframework.logging.SysLogger;
 import net.woodstock.rockframework.reflection.BeanNavigator;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.PropertyNavigator;
-
-import org.apache.commons.logging.Log;
 
 class PropertyNavigatorImpl implements PropertyNavigator {
 
@@ -78,11 +75,6 @@ class PropertyNavigatorImpl implements PropertyNavigator {
 			return;
 		}
 		this.propertyDescriptor.setValue(this.bean, value);
-	}
-
-	// Logger
-	protected Log getLogger() {
-		return SysLogger.getLogger();
 	}
 
 	// Object

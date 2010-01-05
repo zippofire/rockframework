@@ -32,7 +32,7 @@ public class SpringObjectFactory extends AbstractObjectFactory {
 		try {
 			return SpringLoader.getInstance().getObject(clazz);
 		} catch (DomainException e) {
-			this.getLogger().warn("Class " + clazz + " not found in Spring Context");
+			this.getLog().warn("Class " + clazz + " not found in Spring Context");
 			return clazz.newInstance();
 		}
 	}

@@ -17,6 +17,7 @@
 package net.woodstock.rockframework.domain.business;
 
 import net.woodstock.rockframework.domain.Entity;
+import net.woodstock.rockframework.domain.business.validation.ValidationResult;
 
 public interface GenericBusiness extends Business {
 

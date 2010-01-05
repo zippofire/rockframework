@@ -37,7 +37,7 @@ public abstract class SysLogger {
 		super();
 	}
 
-	public static Log getLogger() {
+	public static Log getLog() {
 		if (SysLogger.LOG_SHARED) {
 			return SysLogger.log;
 		}

@@ -28,7 +28,7 @@ public abstract class GenericMessageListener<T extends Message> extends Abstract
 			T sm = (T) message;
 			this.onLocalMessage(sm);
 		} catch (Exception e) {
-			this.getLogger().warn(e.getMessage(), e);
+			this.getLog().warn(e.getMessage(), e);
 			this.getContext().setRollbackOnly();
 		}
 	}

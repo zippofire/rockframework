@@ -87,9 +87,9 @@ abstract class AbstractBeanDescriptor implements BeanDescriptor {
 		return this.type.getAnnotations();
 	}
 
-	// Logger
-	protected Log getLogger() {
-		return SysLogger.getLogger();
+	// Log
+	protected Log getLog() {
+		return SysLogger.getLog();
 	}
 
 	// Object

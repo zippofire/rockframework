@@ -16,18 +16,17 @@
  */
 package net.woodstock.rockframework.domain.business.validation.jpa;
 
-import net.woodstock.rockframework.domain.business.ValidationException;
-import net.woodstock.rockframework.domain.business.ValidationResult;
-import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
-import net.woodstock.rockframework.domain.business.validation.local.validator.AbstractValidator;
+import net.woodstock.rockframework.domain.business.validation.ValidationException;
+import net.woodstock.rockframework.domain.business.validation.ValidationResult;
 
-public class ValidatorManyToMany extends AbstractValidator {
+public class ValidatorManyToMany extends Validator {
 
-	public ValidationResult validate(final LocalValidationContext context) {
+	@Override
+	public ValidationResult validate(final JPAValidationContext context) {
 		try {
 			return context.getSuccessResult();
 		} catch (Exception e) {
-			this.getLogger().info(e.getMessage(), e);
+			this.getLog().info(e.getMessage(), e);
 			throw new ValidationException(e);
 		}
 	}

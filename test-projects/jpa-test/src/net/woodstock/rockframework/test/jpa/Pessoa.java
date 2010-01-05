@@ -12,11 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import net.woodstock.rockframework.domain.util.IntegerEntity;
-
 @Entity
 @Table(name = "TB_PESSOA")
-public class Pessoa extends IntegerEntity {
+public class Pessoa implements net.woodstock.rockframework.domain.Entity<Integer> {
 
 	private static final long	serialVersionUID	= 1L;
 

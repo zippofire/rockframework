@@ -10,11 +10,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import net.woodstock.rockframework.domain.util.IntegerEntity;
-
 @Entity
 @Table(name = "TB_TELEFONE")
-public class Telefone extends IntegerEntity {
+public class Telefone implements net.woodstock.rockframework.domain.Entity<Integer> {
 
 	private static final long	serialVersionUID	= 1L;
 

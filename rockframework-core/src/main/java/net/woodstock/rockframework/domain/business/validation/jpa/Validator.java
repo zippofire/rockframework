@@ -16,18 +16,33 @@
  */
 package net.woodstock.rockframework.domain.business.validation.jpa;
 
-import net.woodstock.rockframework.domain.business.validation.ValidationException;
+import org.apache.commons.logging.Log;
+
+import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.business.validation.ValidationResult;
+import net.woodstock.rockframework.logging.SysLogger;
 
-public class ValidatorOneToMany extends Validator {
+abstract class Validator {
 
-	@Override
-	public ValidationResult validate(final JPAValidationContext context) {
-		try {
-			return context.getSuccessResult();
-		} catch (Exception e) {
-			this.getLog().info(e.getMessage(), e);
-			throw new ValidationException(e);
-		}
+	public static final String	REGEX_EMAIL		= "[a-zA-Z0-9\\.-_]{2,}@[a-zA-Z0-9\\.-]{2,}\\.[a-zA-Z0-9\\.-]{2,4}";
+
+	public static final String	REGEX_URL_WEB	= "(http|https|ftp|ftps)://[a-zA-Z0-9\\.-_]{2,}\\.[a-zA-Z0-9\\.-_]{2,4}(:[0-9]{2,5})?(/|(/.*)?)";
+
+	public Validator() {
+		super();
+		this.getLog().info("Initializing validator " + this.getClass().getCanonicalName());
 	}
+
+	// Utils
+	protected Log getLog() {
+		return SysLogger.getLog();
+	}
+
+	protected String getMessage(final String message, final Object... args) {
+		return CoreMessage.getInstance().getMessage(message, args);
+	}
+
+	// Validate
+	public abstract ValidationResult validate(JPAValidationContext context);
+
 }

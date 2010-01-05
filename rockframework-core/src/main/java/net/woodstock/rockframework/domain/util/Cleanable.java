@@ -14,19 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.web.jsf.converter;
+package net.woodstock.rockframework.domain.util;
 
-import javax.faces.convert.Converter;
+public interface Cleanable {
 
-import net.woodstock.rockframework.logging.SysLogger;
-
-import org.apache.commons.logging.Log;
-
-public abstract class FacesConverter implements Converter {
-
-	// Logger
-	protected Log getLog() {
-		return SysLogger.getLog();
-	}
+	void clean();
 
 }

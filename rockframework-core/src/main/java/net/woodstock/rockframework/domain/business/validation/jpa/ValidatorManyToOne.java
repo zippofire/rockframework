@@ -16,26 +16,20 @@
  */
 package net.woodstock.rockframework.domain.business.validation.jpa;
 
-import java.util.Collection;
-
 import javax.persistence.ManyToOne;
 
 import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.domain.business.ValidationException;
-import net.woodstock.rockframework.domain.business.ValidationResult;
-import net.woodstock.rockframework.domain.business.validation.Operation;
-import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
-import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
-import net.woodstock.rockframework.domain.business.validation.local.validator.AbstractValidator;
+import net.woodstock.rockframework.domain.business.validation.ValidationException;
+import net.woodstock.rockframework.domain.business.validation.ValidationResult;
 
-public class ValidatorManyToOne extends AbstractValidator {
+public class ValidatorManyToOne extends Validator {
 
+	@Override
 	@SuppressWarnings("unchecked")
-	public ValidationResult validate(final LocalValidationContext context) {
+	public ValidationResult validate(final JPAValidationContext context) {
 		try {
 			Object value = context.getValue();
 			ManyToOne annotation = (ManyToOne) context.getAnnotation();
-			Operation operation = context.getOperation();
 
 			if (value == null) {
 				if (annotation.optional()) {
@@ -48,32 +42,26 @@ public class ValidatorManyToOne extends AbstractValidator {
 				return context.getErrorResult(this.getInvalidTypeErrorMessage(context));
 			}
 
-			if ((operation == Operation.SAVE) || (operation == Operation.UPDATE)) {
-				Entity<?> e = (Entity<?>) value;
+			Entity<?> e = (Entity<?>) value;
 
-				JPAEntityValidator entityValidator = (JPAEntityValidator) JPAEntityValidator.getInstance();
-
-				Collection<ValidationResult> results = entityValidator.validate(context, e, Operation.GET);
-				for (ValidationResult result : results) {
-					if (result.isError()) {
-						return context.getErrorResult(result.getMessage());
-					}
-				}
+			if (e.getId() == null) {
+				JPAValidationContext c = new JPAValidationContext(null, "id", context.getAnnotation(), context);
+				return c.getErrorResult(this.getEmptyErrorMessage(c));
 			}
 
 			return context.getSuccessResult();
 		} catch (Exception e) {
-			this.getLogger().info(e.getMessage(), e);
+			this.getLog().info(e.getMessage(), e);
 			throw new ValidationException(e);
 		}
 	}
 
-	private String getEmptyErrorMessage(final LocalValidationContext context) {
-		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_NOT_EMPTY, context.getCanonicalName());
+	private String getEmptyErrorMessage(final JPAValidationContext context) {
+		return this.getMessage(JPAEntityValidator.MESSAGE_FIELD_ERROR_NOT_EMPTY, context.getCanonicalName());
 	}
 
-	private String getInvalidTypeErrorMessage(final LocalValidationContext context) {
-		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_INVALID_TYPE, context.getCanonicalName());
+	private String getInvalidTypeErrorMessage(final JPAValidationContext context) {
+		return this.getMessage(JPAEntityValidator.MESSAGE_FIELD_ERROR_INVALID_TYPE, context.getCanonicalName());
 	}
 
 }

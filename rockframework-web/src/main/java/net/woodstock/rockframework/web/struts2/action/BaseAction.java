@@ -99,8 +99,8 @@ public abstract class BaseAction extends ActionSupport implements ServletRequest
 		this.response = response;
 	}
 
-	protected Log getLogger() {
-		return SysLogger.getLogger();
+	protected Log getLog() {
+		return SysLogger.getLog();
 	}
 
 	protected String getRequestParameter(final String name) {

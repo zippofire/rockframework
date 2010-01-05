@@ -10,33 +10,22 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import net.woodstock.rockframework.domain.business.validation.Operation;
-import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateLength;
-import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateNotNull;
-import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateNull;
-import net.woodstock.rockframework.domain.business.validation.local.annotation.ValidateReference;
-import net.woodstock.rockframework.domain.util.IntegerEntity;
-
 @Entity
 @Table(name = "TB_EMAIL")
-public class Email extends IntegerEntity {
+public class Email implements net.woodstock.rockframework.domain.Entity<Integer> {
 
 	private static final long	serialVersionUID	= 1L;
 
 	@Id
 	@Column(name = "ID_EMAIL")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@ValidateNotNull(operation = { Operation.GET, Operation.DELETE, Operation.UPDATE })
-	@ValidateNull(operation = { Operation.SAVE })
 	private Integer				id;
 
 	@Column(name = "DSC_EMAIL", nullable = false, length = 200)
-	@ValidateLength(min = 10, max = 200)
 	private String				descricao;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "ID_PESSOA", referencedColumnName = "ID_PESSOA", nullable = false)
-	@ValidateReference(operation = { Operation.SAVE, Operation.UPDATE }, referenceOperaton = Operation.GET)
 	private Pessoa				pessoa;
 
 	public Email() {

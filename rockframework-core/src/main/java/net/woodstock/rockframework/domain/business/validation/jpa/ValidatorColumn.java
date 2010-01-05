@@ -18,15 +18,13 @@ package net.woodstock.rockframework.domain.business.validation.jpa;
 
 import javax.persistence.Column;
 
-import net.woodstock.rockframework.domain.business.ValidationException;
-import net.woodstock.rockframework.domain.business.ValidationResult;
-import net.woodstock.rockframework.domain.business.validation.local.LocalEntityValidator;
-import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
-import net.woodstock.rockframework.domain.business.validation.local.validator.AbstractValidator;
+import net.woodstock.rockframework.domain.business.validation.ValidationException;
+import net.woodstock.rockframework.domain.business.validation.ValidationResult;
 
-public class ValidatorColumn extends AbstractValidator {
+public class ValidatorColumn extends Validator {
 
-	public ValidationResult validate(final LocalValidationContext context) {
+	@Override
+	public ValidationResult validate(final JPAValidationContext context) {
 		try {
 			Object value = context.getValue();
 			Column annotation = (Column) context.getAnnotation();
@@ -47,17 +45,17 @@ public class ValidatorColumn extends AbstractValidator {
 
 			return context.getSuccessResult();
 		} catch (Exception e) {
-			this.getLogger().info(e.getMessage(), e);
+			this.getLog().info(e.getMessage(), e);
 			throw new ValidationException(e);
 		}
 	}
 
-	private String getEmptyErrorMessage(final LocalValidationContext context) {
-		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_NOT_EMPTY, context.getCanonicalName());
+	private String getEmptyErrorMessage(final JPAValidationContext context) {
+		return this.getMessage(JPAEntityValidator.MESSAGE_FIELD_ERROR_NOT_EMPTY, context.getCanonicalName());
 	}
 
-	private String getLengthErrorMessage(final LocalValidationContext context, final int length) {
-		return this.getMessage(LocalEntityValidator.MESSAGE_FIELD_ERROR_LENGTH, context.getCanonicalName(), new Integer(0), new Integer(length));
+	private String getLengthErrorMessage(final JPAValidationContext context, final int length) {
+		return this.getMessage(JPAEntityValidator.MESSAGE_FIELD_ERROR_LENGTH, context.getCanonicalName(), new Integer(0), new Integer(length));
 	}
 
 }

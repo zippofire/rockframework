@@ -41,7 +41,7 @@ public abstract class RefererFilter extends HttpFilter {
 		if (!b) {
 			String url = request.getRequestURI();
 			String referer = this.getReferer(request);
-			this.getLogger().info("Invalid referer for URL: " + url + " referer: " + referer);
+			this.getLog().info("Invalid referer for URL: " + url + " referer: " + referer);
 			response.setStatus(RefererFilter.BAD_REQUEST);
 			return;
 		}

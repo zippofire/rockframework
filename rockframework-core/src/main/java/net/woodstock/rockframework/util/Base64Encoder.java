@@ -16,9 +16,9 @@
  */
 package net.woodstock.rockframework.util;
 
-import net.woodstock.rockframework.logging.SysLogger;
-
 import org.apache.commons.logging.Log;
+
+import net.woodstock.rockframework.logging.SysLogger;
 
 public abstract class Base64Encoder {
 
@@ -28,8 +28,8 @@ public abstract class Base64Encoder {
 
 	private static Base64Encoder	instance		= Base64Encoder.getAvailableEncoder();
 
-	protected static Log getLogger() {
-		return SysLogger.getLogger();
+	protected static Log getLog() {
+		return SysLogger.getLog();
 	}
 
 	public abstract String encode(String s);
@@ -48,13 +48,13 @@ public abstract class Base64Encoder {
 		try {
 			Class.forName(Base64Encoder.APACHE_BASE64);
 			Base64Encoder encoder = new ApacheBase64Encoder();
-			Base64Encoder.getLogger().info("Using Apache Base64(Commons Codec)");
+			Base64Encoder.getLog().info("Using Apache Base64(Commons Codec)");
 			return encoder;
 		} catch (ClassNotFoundException e) {
 			try {
 				Class.forName(Base64Encoder.SUN_BASE64);
 				Base64Encoder encoder = new SunBase64Encoder();
-				Base64Encoder.getLogger().info("Using Sun Base64");
+				Base64Encoder.getLog().info("Using Sun Base64");
 				return encoder;
 			} catch (ClassNotFoundException ee) {
 				throw new UnsupportedOperationException("No Base64 found");

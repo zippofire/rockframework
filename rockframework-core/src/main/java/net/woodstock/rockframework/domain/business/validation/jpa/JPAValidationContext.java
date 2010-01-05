@@ -18,17 +18,74 @@ package net.woodstock.rockframework.domain.business.validation.jpa;
 
 import java.lang.annotation.Annotation;
 
-import net.woodstock.rockframework.domain.business.validation.Operation;
-import net.woodstock.rockframework.domain.business.validation.local.LocalValidationContext;
+import net.woodstock.rockframework.utils.StringUtils;
 
-public class JPAValidationContext extends LocalValidationContext {
+public class JPAValidationContext {
 
-	public JPAValidationContext(final Object value, final String name, final Annotation annotation, final Operation operation, final LocalValidationContext parentContext) {
-		super(value, name, annotation, operation, parentContext);
+	private static final char		NAME_SEPARATOR	= '.';
+
+	private Object					value;
+
+	private String					name;
+
+	private Annotation				annotation;
+
+	private JPAValidationContext	parentContext;
+
+	protected JPAValidationContext(final Object value, final String name, final Annotation annotation) {
+		this(value, name, annotation, null);
 	}
 
-	public JPAValidationContext(final Object value, final String name, final Annotation annotation, final Operation operation) {
-		super(value, name, annotation, operation);
+	protected JPAValidationContext(final Object value, final String name, final Annotation annotation, final JPAValidationContext parentContext) {
+		super();
+		this.value = value;
+		this.name = name;
+		this.annotation = annotation;
+		this.parentContext = parentContext;
+	}
+
+	// Getters and Setters
+	public Object getValue() {
+		return this.value;
+	}
+
+	public String getName() {
+		if (StringUtils.isEmpty(this.name)) {
+			return StringUtils.BLANK;
+		}
+		return this.name;
+	}
+
+	public Annotation getAnnotation() {
+		return this.annotation;
+	}
+
+	public JPAValidationContext getParentContext() {
+		return this.parentContext;
+	}
+
+	// Others
+	public String getCanonicalName() {
+		StringBuilder builder = new StringBuilder();
+		if (this.parentContext != null) {
+			String parentName = this.parentContext.getCanonicalName();
+			if (!StringUtils.isEmpty(parentName)) {
+				builder.append(parentName);
+				builder.append(JPAValidationContext.NAME_SEPARATOR);
+			}
+		}
+		if (!StringUtils.isEmpty(this.name)) {
+			builder.append(this.name);
+		}
+		return builder.toString();
+	}
+
+	public JPAValidationResult getSuccessResult() {
+		return new JPAValidationResult(this.getCanonicalName(), this.getAnnotation(), false, null);
+	}
+
+	public JPAValidationResult getErrorResult(final String message) {
+		return new JPAValidationResult(this.getCanonicalName(), this.getAnnotation(), true, message);
 	}
 
 }

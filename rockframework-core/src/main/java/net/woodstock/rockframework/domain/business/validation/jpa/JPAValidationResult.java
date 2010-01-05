@@ -16,18 +16,38 @@
  */
 package net.woodstock.rockframework.domain.business.validation.jpa;
 
-import net.woodstock.rockframework.domain.business.validation.ValidationException;
+import java.lang.annotation.Annotation;
+
 import net.woodstock.rockframework.domain.business.validation.ValidationResult;
 
-public class ValidatorOneToMany extends Validator {
+public class JPAValidationResult extends ValidationResult {
+
+	private static final long	serialVersionUID	= -8774606852333629295L;
+
+	private String				name;
+
+	private Annotation			annotation;
+
+	JPAValidationResult(final String name, final Annotation annotation, final boolean error, final String message) {
+		super(error, message);
+		this.name = name;
+		this.annotation = annotation;
+	}
 
 	@Override
-	public ValidationResult validate(final JPAValidationContext context) {
-		try {
-			return context.getSuccessResult();
-		} catch (Exception e) {
-			this.getLog().info(e.getMessage(), e);
-			throw new ValidationException(e);
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(this.name);
+		builder.append("\n\tAnnotation: ");
+		builder.append(this.annotation);
+		builder.append("\n\tStatus    : ");
+		if (this.isError()) {
+			builder.append("ERROR ");
+			builder.append(this.getMessage());
+		} else {
+			builder.append("SUCCESS");
 		}
+		return builder.toString();
 	}
+
 }

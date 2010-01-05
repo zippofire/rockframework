@@ -1,8 +1,8 @@
 package net.woodstock.rockframework.test.domain.conversion;
 
-import net.woodstock.rockframework.domain.util.IntegerEntity;
+import net.woodstock.rockframework.domain.Entity;
 
-public class Baz extends IntegerEntity {
+public class Baz implements Entity<Integer> {
 
 	private static final long	serialVersionUID	= 1L;
 

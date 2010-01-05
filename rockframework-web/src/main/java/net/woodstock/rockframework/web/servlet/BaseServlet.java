@@ -45,8 +45,8 @@ public abstract class BaseServlet extends HttpServlet {
 	}
 
 	// Logger
-	protected Log getLogger() {
-		return SysLogger.getLogger();
+	protected Log getLog() {
+		return SysLogger.getLog();
 	}
 
 }

@@ -41,8 +41,8 @@ public abstract class BaseValidatorForm extends ValidatorForm {
 
 	public abstract void reset();
 
-	protected Log getLogger() {
-		return SysLogger.getLogger();
+	protected Log getLog() {
+		return SysLogger.getLog();
 	}
 
 }

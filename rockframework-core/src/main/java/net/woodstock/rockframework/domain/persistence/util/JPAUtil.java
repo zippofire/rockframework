@@ -54,7 +54,7 @@ public abstract class JPAUtil {
 		if (m != null) {
 			EntityTransaction t = m.getTransaction();
 			if (t.isActive()) {
-				SysLogger.getLogger().warn("EntityManager contains an active transaction, commiting transaction");
+				SysLogger.getLog().warn("EntityManager contains an active transaction, commiting transaction");
 				t.commit();
 			}
 			m.flush();

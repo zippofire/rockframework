@@ -161,13 +161,13 @@ abstract class QueryContextHelper {
 
 	private static void handleEntityValue(final QueryContext context, final Map<String, Object> options, final String realName, final String name, final String alias, final Entity<?> value, final List<Entity<?>> parsed) {
 		if (QueryContextHelper.contains(parsed, value)) {
-			SysLogger.getLogger().debug("Entity " + value + " already parsed!!!");
+			SysLogger.getLog().debug("Entity " + value + " already parsed!!!");
 			return;
 		}
 		if (QueryContextHelper.isProxy(value)) {
 			// throw new IllegalArgumentException("Proxy classes cannot be parsed[" +
 			// value.getClass().getCanonicalName() + "]");
-			SysLogger.getLogger().warn("Child proxy classes cannot will be parsed[" + context.getName() + "." + realName + "]");
+			SysLogger.getLog().warn("Child proxy classes cannot will be parsed[" + context.getName() + "." + realName + "]");
 			return;
 		}
 
@@ -204,7 +204,7 @@ abstract class QueryContextHelper {
 			for (Object o : value) {
 				if (o instanceof Entity) {
 					if (QueryContextHelper.contains(parsed, (Entity<?>) o)) {
-						SysLogger.getLogger().debug("Entity " + value + " already parsed!!!");
+						SysLogger.getLog().debug("Entity " + value + " already parsed!!!");
 						continue;
 					}
 					parsed.add((Entity<?>) o);
@@ -337,7 +337,7 @@ abstract class QueryContextHelper {
 			Class.forName(QueryContextHelper.HIBERNATE_PROXY_CLASS);
 			b = HibernateHelper.isProxy(o);
 		} catch (ClassNotFoundException e) {
-			SysLogger.getLogger().debug(e.getMessage(), e);
+			SysLogger.getLog().debug(e.getMessage(), e);
 		}
 		// OpenJPA
 		if (!b) {
@@ -345,7 +345,7 @@ abstract class QueryContextHelper {
 				Class.forName(QueryContextHelper.OPENJPA_PROXY_CLASS);
 				b = OpenJPAHelper.isProxy(o);
 			} catch (ClassNotFoundException e) {
-				SysLogger.getLogger().debug(e.getMessage(), e);
+				SysLogger.getLog().debug(e.getMessage(), e);
 			}
 		}
 		// EclipseLink

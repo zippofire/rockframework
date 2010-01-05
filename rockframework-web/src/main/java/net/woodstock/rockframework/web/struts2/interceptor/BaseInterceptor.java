@@ -37,15 +37,15 @@ public abstract class BaseInterceptor implements Interceptor {
 	}
 
 	public void destroy() {
-		this.getLogger().debug("Destroying " + this.getClass().getCanonicalName());
+		this.getLog().debug("Destroying " + this.getClass().getCanonicalName());
 	}
 
 	public void init() {
-		this.getLogger().debug("Initing " + this.getClass().getCanonicalName());
+		this.getLog().debug("Initing " + this.getClass().getCanonicalName());
 	}
 
-	public Log getLogger() {
-		return SysLogger.getLogger();
+	public Log getLog() {
+		return SysLogger.getLog();
 	}
 
 	protected String getActionName() {

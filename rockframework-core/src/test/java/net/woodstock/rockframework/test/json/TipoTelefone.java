@@ -1,8 +1,8 @@
 package net.woodstock.rockframework.test.json;
 
-import net.woodstock.rockframework.domain.util.IntegerEntity;
+import net.woodstock.rockframework.domain.Entity;
 
-public class TipoTelefone extends IntegerEntity {
+public class TipoTelefone implements Entity<Integer> {
 
 	private static final long	serialVersionUID	= -2850519769437585071L;
 

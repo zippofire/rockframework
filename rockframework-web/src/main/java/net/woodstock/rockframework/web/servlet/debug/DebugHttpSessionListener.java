@@ -29,7 +29,7 @@ public class DebugHttpSessionListener implements HttpSessionListener {
 		builder.append("\nID      : " + event.getSession().getId());
 		builder.append("\nSource  : " + event.getSource().getClass().getCanonicalName());
 		builder.append("\nContext : " + event.getSession().getServletContext().getServletContextName());
-		SysLogger.getLogger().info(builder.toString());
+		SysLogger.getLog().info(builder.toString());
 	}
 
 	public void sessionDestroyed(final HttpSessionEvent event) {
@@ -38,7 +38,7 @@ public class DebugHttpSessionListener implements HttpSessionListener {
 		builder.append("\nID      : " + event.getSession().getId());
 		builder.append("\nSource  : " + event.getSource().getClass().getCanonicalName());
 		builder.append("\nContext : " + event.getSession().getServletContext().getServletContextName());
-		SysLogger.getLogger().info(builder.toString());
+		SysLogger.getLog().info(builder.toString());
 	}
 
 }

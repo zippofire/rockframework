@@ -28,8 +28,8 @@ public abstract class BaseTag extends SimpleTagSupport {
 		super();
 	}
 
-	protected Log getLogger() {
-		return SysLogger.getLogger();
+	protected Log getLog() {
+		return SysLogger.getLog();
 	}
 
 }

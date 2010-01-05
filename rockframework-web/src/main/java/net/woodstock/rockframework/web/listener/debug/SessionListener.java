@@ -27,14 +27,14 @@ public class SessionListener extends BaseListener implements HttpSessionListener
 
 	public void sessionCreated(final HttpSessionEvent se) {
 		SessionListener.count++;
-		this.getLogger().info("Created session for class " + se.getSource().getClass().getName());
-		this.getLogger().info("Active sessions " + SessionListener.count);
+		this.getLog().info("Created session for class " + se.getSource().getClass().getName());
+		this.getLog().info("Active sessions " + SessionListener.count);
 	}
 
 	public void sessionDestroyed(final HttpSessionEvent se) {
 		SessionListener.count--;
-		this.getLogger().info("Destroyed session for class " + se.getSource().getClass().getName());
-		this.getLogger().info("Active sessions " + SessionListener.count);
+		this.getLog().info("Destroyed session for class " + se.getSource().getClass().getName());
+		this.getLog().info("Active sessions " + SessionListener.count);
 	}
 
 	public static int getSessionCount() {

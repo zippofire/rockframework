@@ -63,20 +63,20 @@ public abstract class SimpleClientSocket extends Thread {
 			try {
 				this.handle(this.socket);
 			} catch (Exception e) {
-				this.getLogger().warn(e.getMessage(), e);
+				this.getLog().warn(e.getMessage(), e);
 				try {
 					if (!this.socket.isClosed()) {
 						this.socket.close();
 					}
 				} catch (IOException ee) {
-					this.getLogger().error(ee.getMessage(), ee);
+					this.getLog().error(ee.getMessage(), ee);
 				}
 			}
 		}
 	}
 
-	protected Log getLogger() {
-		return SysLogger.getLogger();
+	protected Log getLog() {
+		return SysLogger.getLog();
 	}
 
 	public abstract void handle(Socket s) throws Exception;

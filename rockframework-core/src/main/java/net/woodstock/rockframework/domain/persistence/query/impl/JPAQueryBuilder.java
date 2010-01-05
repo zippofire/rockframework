@@ -40,7 +40,7 @@ public class JPAQueryBuilder extends EJBQLQueryBuilder<Query> {
 
 	@Override
 	protected void setQueryParameter(final Object query, final String name, final Object value) {
-		this.getLogger().debug("Setting parameter[" + name + "] => " + value);
+		this.getLog().debug("Setting parameter[" + name + "] => " + value);
 		Query q = (Query) query;
 		q.setParameter(name, value);
 	}
