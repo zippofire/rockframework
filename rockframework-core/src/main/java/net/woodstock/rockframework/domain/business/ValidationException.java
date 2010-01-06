@@ -16,18 +16,20 @@
  */
 package net.woodstock.rockframework.domain.business;
 
-import net.woodstock.rockframework.domain.Entity;
+public class ValidationException extends BusinessException {
 
-public interface GenericBusiness extends Business {
+	private static final long	serialVersionUID	= 1L;
 
-	ValidationResult validateSave(Entity<?> entity);
+	public ValidationException(final String message) {
+		super(message);
+	}
 
-	ValidationResult validateUpdate(Entity<?> entity);
+	public ValidationException(final Throwable cause) {
+		super(cause);
+	}
 
-	ValidationResult validateDelete(Entity<?> entity);
-
-	ValidationResult validateList(Entity<?> entity);
-
-	ValidationResult validateGet(Entity<?> entity);
+	public ValidationException(final String message, final Throwable cause) {
+		super(message, cause);
+	}
 
 }

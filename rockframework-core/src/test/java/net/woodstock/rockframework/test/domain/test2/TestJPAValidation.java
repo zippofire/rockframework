@@ -3,8 +3,8 @@ package net.woodstock.rockframework.test.domain.test2;
 import junit.framework.TestCase;
 
 import net.woodstock.rockframework.domain.business.GenericBusiness;
+import net.woodstock.rockframework.domain.business.ValidationResult;
 import net.woodstock.rockframework.domain.business.impl.AbstractJPABusiness;
-import net.woodstock.rockframework.domain.business.validation.ValidationResult;
 
 public class TestJPAValidation extends TestCase {
 

@@ -36,7 +36,7 @@ public abstract class JPAUtil {
 		//
 	}
 
-	public static EntityManager getManager() {
+	public static EntityManager getEntityManager() {
 		if (JPAUtil.factory == null) {
 			String s = CoreConfig.getInstance().getValue(JPAUtil.JPA_PERSISTENCE_UNIT_PROPERTY);
 			JPAUtil.factory = Persistence.createEntityManagerFactory(s);
@@ -49,7 +49,7 @@ public abstract class JPAUtil {
 		return m;
 	}
 
-	public static void closeManager() {
+	public static void closeEntityManager() {
 		EntityManager m = JPAUtil.manager.get();
 		if (m != null) {
 			EntityTransaction t = m.getTransaction();

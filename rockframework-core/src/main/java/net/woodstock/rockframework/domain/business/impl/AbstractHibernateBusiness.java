@@ -16,12 +16,12 @@
  */
 package net.woodstock.rockframework.domain.business.impl;
 
-import net.woodstock.rockframework.config.CoreMessage;
-import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.domain.business.validation.ValidationResult;
-
 import org.hibernate.validator.ClassValidator;
 import org.hibernate.validator.InvalidValue;
+
+import net.woodstock.rockframework.config.CoreMessage;
+import net.woodstock.rockframework.domain.Entity;
+import net.woodstock.rockframework.domain.business.ValidationResult;
 
 public abstract class AbstractHibernateBusiness extends AbstractBusiness {
 

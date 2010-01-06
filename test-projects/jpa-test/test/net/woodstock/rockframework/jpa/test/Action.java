@@ -1,9 +1,10 @@
 package net.woodstock.rockframework.jpa.test;
 
 import junit.framework.TestCase;
+
 import net.woodstock.rockframework.domain.business.GenericBusiness;
+import net.woodstock.rockframework.domain.business.ValidationResult;
 import net.woodstock.rockframework.domain.business.impl.AbstractJPABusiness;
-import net.woodstock.rockframework.domain.business.validation.ValidationResult;
 import net.woodstock.rockframework.test.jpa.Email;
 import net.woodstock.rockframework.test.jpa.Pessoa;
 
