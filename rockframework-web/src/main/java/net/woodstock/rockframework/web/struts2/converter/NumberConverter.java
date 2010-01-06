@@ -20,8 +20,6 @@ import java.lang.reflect.Constructor;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
-import com.opensymphony.xwork2.util.TypeConversionException;
-
 public abstract class NumberConverter extends SimpleValueConverter<Number> {
 
 	private NumberFormat	format;
@@ -44,7 +42,8 @@ public abstract class NumberConverter extends SimpleValueConverter<Number> {
 			Constructor<? extends Number> constructor = toClass.getConstructor(new Class[] { String.class });
 			return constructor.newInstance(new Object[] { n.toString() });
 		} catch (Exception e) {
-			throw new TypeConversionException(e);
+			this.getLog().warn(e.getMessage(), e);
+			return null;
 		}
 	}
 

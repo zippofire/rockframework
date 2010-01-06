@@ -21,8 +21,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.opensymphony.xwork2.util.TypeConversionException;
-
 public class DateTimeConverter extends SimpleValueConverter<Date> {
 
 	private DateFormat	format;
@@ -39,7 +37,8 @@ public class DateTimeConverter extends SimpleValueConverter<Date> {
 			Date d = this.format.parse(s);
 			return d;
 		} catch (ParseException e) {
-			throw new TypeConversionException(e);
+			this.getLog().warn(e.getMessage(), e);
+			return null;
 		}
 	}
 

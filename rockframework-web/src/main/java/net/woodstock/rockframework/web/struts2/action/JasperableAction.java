@@ -26,8 +26,6 @@ public interface JasperableAction<T> {
 
 	String	FORMAT_PDF	= JasperReportConstants.FORMAT_PDF;
 
-	String	FORMAT_RTF	= JasperReportConstants.FORMAT_RTF;
-
 	String	FORMAT_XLS	= JasperReportConstants.FORMAT_XLS;
 
 	String	FORMAT_XML	= JasperReportConstants.FORMAT_XML;
