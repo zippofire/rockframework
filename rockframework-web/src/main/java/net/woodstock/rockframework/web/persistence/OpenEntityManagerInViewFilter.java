@@ -23,14 +23,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.woodstock.rockframework.domain.persistence.util.HibernateUtil;
+import net.woodstock.rockframework.domain.persistence.util.JPAUtil;
 import net.woodstock.rockframework.web.filter.HttpFilter;
 
-public class HibernateOpenSessionViewFilter extends HttpFilter {
+public class OpenEntityManagerInViewFilter extends HttpFilter {
 
 	@Override
 	public void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain) throws IOException, ServletException {
-		HibernateUtil.getSession();
+		JPAUtil.getEntityManager();
 		try {
 			chain.doFilter(request, response);
 		} catch (IOException e) {
@@ -40,7 +40,7 @@ public class HibernateOpenSessionViewFilter extends HttpFilter {
 		} catch (Exception e) {
 			throw new ServletException(e);
 		} finally {
-			HibernateUtil.closeSession();
+			JPAUtil.closeEntityManager();
 		}
 	}
 

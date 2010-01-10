@@ -111,6 +111,7 @@
 			<groupId>net.woodstock.rockframework</groupId>
 			<artifactId>rockframework-core</artifactId>
 			<version>${project.version}</version>
+			<scope>compile</scope>
 			<optional>false</optional>
 		</dependency>
 	</dependencies>
