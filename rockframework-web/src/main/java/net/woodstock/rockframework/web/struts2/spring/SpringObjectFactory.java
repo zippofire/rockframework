@@ -19,7 +19,7 @@ package net.woodstock.rockframework.web.struts2.spring;
 import java.util.Map;
 
 import net.woodstock.rockframework.domain.DomainException;
-import net.woodstock.rockframework.domain.spring.SpringLoader;
+import net.woodstock.rockframework.domain.spring.ContextHelper;
 import net.woodstock.rockframework.web.struts2.factory.AbstractObjectFactory;
 
 public class SpringObjectFactory extends AbstractObjectFactory {
@@ -30,7 +30,7 @@ public class SpringObjectFactory extends AbstractObjectFactory {
 	@SuppressWarnings("unchecked")
 	public Object buildBean(final Class clazz, final Map extraContext) throws Exception {
 		try {
-			return SpringLoader.getInstance().getObject(clazz);
+			return ContextHelper.getInstance().getObject(clazz);
 		} catch (DomainException e) {
 			this.getLog().warn("Class " + clazz + " not found in Spring Context");
 			return clazz.newInstance();

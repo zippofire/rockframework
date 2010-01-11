@@ -16,27 +16,27 @@
  */
 package net.woodstock.rockframework.domain.spring;
 
+import java.util.Collection;
 import java.util.Map;
-
-import net.woodstock.rockframework.domain.ConfigurationNotFoundException;
-import net.woodstock.rockframework.domain.Loader;
-import net.woodstock.rockframework.domain.ObjectNotFoundException;
-import net.woodstock.rockframework.domain.TooManyObjectsException;
-import net.woodstock.rockframework.utils.StringUtils;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
-public final class SpringLoader implements Loader {
+import net.woodstock.rockframework.domain.ConfigurationNotFoundException;
+import net.woodstock.rockframework.domain.ObjectNotFoundException;
+import net.woodstock.rockframework.domain.TooManyObjectsException;
+import net.woodstock.rockframework.utils.StringUtils;
 
-	public static final String	APPLICATION_CONFIGURATION	= "applicationContext.xml";
+public final class ContextHelper {
 
-	private static SpringLoader	instance					= new SpringLoader();
+	public static final String		APPLICATION_CONFIGURATION	= "applicationContext.xml";
 
-	private ApplicationContext	context;
+	private static ContextHelper	instance					= new ContextHelper();
 
-	private SpringLoader() {
+	private ApplicationContext		context;
+
+	private ContextHelper() {
 		super();
 		if (this.isWebApplication()) {
 			this.context = this.getWebApplicationContext();
@@ -54,12 +54,12 @@ public final class SpringLoader implements Loader {
 	}
 
 	private ApplicationContext getApplicationContext() {
-		ClassLoader classLoader = SpringLoader.class.getClassLoader();
-		if (classLoader.getResource(SpringLoader.APPLICATION_CONFIGURATION) == null) {
-			throw new ConfigurationNotFoundException("File " + SpringLoader.APPLICATION_CONFIGURATION + " not found");
+		ClassLoader classLoader = ContextHelper.class.getClassLoader();
+		if (classLoader.getResource(ContextHelper.APPLICATION_CONFIGURATION) == null) {
+			throw new ConfigurationNotFoundException("File " + ContextHelper.APPLICATION_CONFIGURATION + " not found");
 		}
 
-		return new ClassPathXmlApplicationContext(new String[] { SpringLoader.APPLICATION_CONFIGURATION });
+		return new ClassPathXmlApplicationContext(new String[] { ContextHelper.APPLICATION_CONFIGURATION });
 	}
 
 	@SuppressWarnings("unchecked")
@@ -78,6 +78,16 @@ public final class SpringLoader implements Loader {
 		return (T) map.values().iterator().next();
 	}
 
+	@SuppressWarnings("unchecked")
+	public <T> Collection<T> getObjects(final Class<T> clazz) {
+		if (clazz == null) {
+			throw new IllegalArgumentException("Class must be not null");
+		}
+		Map<String, Object> map = this.context.getBeansOfType(clazz);
+
+		return (Collection<T>) map.values();
+	}
+
 	public Object getObject(final String name) {
 		if (StringUtils.isEmpty(name)) {
 			throw new IllegalArgumentException("Name must be not empty");
@@ -85,7 +95,7 @@ public final class SpringLoader implements Loader {
 		return this.context.getBean(name);
 	}
 
-	public static SpringLoader getInstance() {
-		return SpringLoader.instance;
+	public static ContextHelper getInstance() {
+		return ContextHelper.instance;
 	}
 }
