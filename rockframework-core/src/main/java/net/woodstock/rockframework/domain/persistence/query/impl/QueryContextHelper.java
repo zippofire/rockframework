@@ -119,7 +119,7 @@ abstract class QueryContextHelper {
 		}
 		if (options.containsKey(QueryBuilder.OPTION_ORDER_BY)) {
 			String order = options.get(QueryBuilder.OPTION_ORDER_BY).toString();
-			builder.append(" ORDER BY " + order + "\n");
+			builder.append(" ORDER BY " + context.getAlias() + QueryContextHelper.OBJECT_SEPARATOR + order + "\n");
 		}
 		context.setQueryString(builder.toString().trim());
 	}

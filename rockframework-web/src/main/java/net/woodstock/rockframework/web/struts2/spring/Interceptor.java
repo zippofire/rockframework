@@ -16,25 +16,22 @@
  */
 package net.woodstock.rockframework.web.struts2.spring;
 
-import java.util.Map;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import net.woodstock.rockframework.domain.DomainException;
-import net.woodstock.rockframework.domain.spring.ContextHelper;
-import net.woodstock.rockframework.web.struts2.factory.AbstractObjectFactory;
+import net.woodstock.rockframework.utils.StringUtils;
 
-public class SpringObjectFactory extends AbstractObjectFactory {
+import org.springframework.stereotype.Component;
 
-	private static final long	serialVersionUID	= -3223027211302424826L;
+@Target({ ElementType.TYPE })
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Component
+public @interface Interceptor {
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public Object buildBean(final Class clazz, final Map extraContext) throws Exception {
-		try {
-			return ContextHelper.getInstance().getObject(clazz);
-		} catch (DomainException e) {
-			this.getLog().info("Class " + clazz + " not found in Spring Context");
-			return clazz.newInstance();
-		}
-	}
+	String value() default StringUtils.BLANK;
 
 }

@@ -12,7 +12,6 @@
 		<!-- Maven -->
 		<gpg.passphrase>rockframework</gpg.passphrase>
 		<!-- Libs -->
-		<junit.version>3.8.2</junit.version>
 		<test />
 	</properties>
 	<mailingLists>
