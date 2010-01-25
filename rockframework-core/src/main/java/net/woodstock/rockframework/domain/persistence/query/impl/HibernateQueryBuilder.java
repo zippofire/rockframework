@@ -18,6 +18,7 @@ package net.woodstock.rockframework.domain.persistence.query.impl;
 
 import java.util.Map;
 
+import net.woodstock.rockframework.domain.persistence.query.CacheMode;
 import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
 
 import org.hibernate.Query;
@@ -57,6 +58,13 @@ public class HibernateQueryBuilder extends EJBQLQueryBuilder<Query> {
 		if ((options.containsKey(QueryBuilder.OPTION_MAX_RESULT)) && (options.get(QueryBuilder.OPTION_MAX_RESULT) instanceof Integer)) {
 			Integer maxResult = (Integer) options.get(QueryBuilder.OPTION_MAX_RESULT);
 			q.setMaxResults(maxResult.intValue());
+		}
+		if ((options.containsKey(QueryBuilder.OPTION_CACHE_MODE)) && (options.get(QueryBuilder.OPTION_CACHE_MODE) instanceof CacheMode)) {
+			CacheMode cacheMode = (CacheMode) options.get(QueryBuilder.OPTION_CACHE_MODE);
+			if (cacheMode == CacheMode.ENABLED) {
+				q.setCacheable(true);
+				q.setCacheMode(org.hibernate.CacheMode.NORMAL);
+			}
 		}
 	}
 
