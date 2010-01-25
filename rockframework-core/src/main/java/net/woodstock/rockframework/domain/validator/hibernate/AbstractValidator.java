@@ -14,28 +14,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.web.struts2.converter;
+package net.woodstock.rockframework.domain.validator.hibernate;
 
-import net.woodstock.rockframework.utils.StringUtils;
+import java.lang.annotation.Annotation;
 
-public class StringConverter extends SimpleValueConverter<String> {
+import net.woodstock.rockframework.logging.SysLogger;
 
-	private String	pattern;
+import org.apache.commons.logging.Log;
+import org.hibernate.validator.Validator;
 
-	public StringConverter(final String pattern) {
-		super();
-		this.pattern = pattern;
+public abstract class AbstractValidator<A extends Annotation> implements Validator<A> {
+
+	private A	annotation;
+
+	public final void initialize(final A annotation) {
+		this.annotation = annotation;
+		this.initialize();
 	}
 
-	@Override
-	@SuppressWarnings("unchecked")
-	protected String convertFromString(final String s, final Class toClass) {
-		return StringUtils.unformat(this.pattern, s);
+	public void initialize() {
+		//
 	}
 
-	@Override
-	protected String convertToString(final String o) {
-		return StringUtils.format(this.pattern, o);
+	public A getAnnotation() {
+		return this.annotation;
+	}
+
+	protected Log getLog() {
+		return SysLogger.getLog();
 	}
 
 }

@@ -76,10 +76,15 @@ public abstract class ResponseUtils {
 	}
 
 	public static void copyFile(final HttpServletResponse response, final String file) throws IOException {
-		response.setContentType(FileUtils.getContentType(file));
-		response.setContentLength(FileUtils.getContentLength(file));
+		File f = new File(file);
+		if (!f.exists()) {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+		}
 
-		response.setHeader("Content-Length", Integer.toString(FileUtils.getContentLength(file)));
+		response.setContentType(FileUtils.getContentType(f));
+		response.setContentLength(FileUtils.getContentLength(f));
+
+		response.setHeader("Content-Length", Integer.toString(FileUtils.getContentLength(f)));
 
 		InputStream input = new FileInputStream(file);
 		OutputStream output = response.getOutputStream();

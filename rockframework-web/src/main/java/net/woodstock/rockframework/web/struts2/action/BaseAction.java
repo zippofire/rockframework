@@ -62,7 +62,7 @@ public abstract class BaseAction extends ActionSupport implements ServletRequest
 
 	private HttpServletResponse	response;
 
-	public void prepare() throws Exception {
+	public final void prepare() throws Exception {
 		this.prepare(this.getServletRequest());
 	}
 

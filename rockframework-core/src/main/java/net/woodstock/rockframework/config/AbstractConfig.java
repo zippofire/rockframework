@@ -42,8 +42,6 @@ public abstract class AbstractConfig {
 					if (s.startsWith(ClassLoaderUtils.JAR_PREFIX)) {
 						InputStream inputStream = ClassLoaderUtils.getInputStream(url, propertiesName);
 						if (inputStream != null) {
-							// this.getLogger().info("Load properties " + propertiesName + " from JAR " +
-							// url);
 							this.properties.load(inputStream);
 						}
 					}
@@ -53,8 +51,6 @@ public abstract class AbstractConfig {
 					if (s.startsWith(ClassLoaderUtils.FILE_PREFIX)) {
 						InputStream inputStream = ClassLoaderUtils.getInputStream(url, propertiesName);
 						if (inputStream != null) {
-							// this.getLogger().info("Load properties " + propertiesName + " from FILE " +
-							// url);
 							this.properties.load(inputStream);
 						}
 					}

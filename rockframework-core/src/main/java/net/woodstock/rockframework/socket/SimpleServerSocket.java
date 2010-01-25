@@ -74,16 +74,16 @@ public abstract class SimpleServerSocket extends Thread {
 
 		while (this.run) {
 			try {
-				this.getLogger().info("Wait for connections on " + address + ":" + port);
+				this.getLog().info("Wait for connections on " + address + ":" + port);
 				this.initialHandle(this.server.accept());
 			} catch (Exception e) {
 				e.printStackTrace();
-				this.getLogger().error(e.getMessage(), e);
+				this.getLog().error(e.getMessage(), e);
 			}
 		}
 	}
 
-	protected Log getLogger() {
+	protected Log getLog() {
 		return SysLogger.getLog();
 	}
 
@@ -92,7 +92,7 @@ public abstract class SimpleServerSocket extends Thread {
 		String address = isa.getAddress().getHostAddress();
 		int port = isa.getPort();
 
-		this.getLogger().info("Connection accepted from host " + address + ":" + port);
+		this.getLog().info("Connection accepted from host " + address + ":" + port);
 		this.handle(s);
 	}
 

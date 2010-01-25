@@ -14,18 +14,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.web.struts2.converter;
+package net.woodstock.rockframework.collection;
 
-import net.woodstock.rockframework.web.config.WebConfig;
+import java.util.Iterator;
 
-public class DecimalConverter extends NumberConverter {
+class ImmutableIterator<E> implements Iterator<E> {
 
-	private static final String	DECIMAL_FORMAT_PROPERTY	= "struts2.converter.decimal";
+	private Iterator<E>	iterator;
 
-	private static final String	DECIMAL_FORMAT			= WebConfig.getInstance().getValue(DecimalConverter.DECIMAL_FORMAT_PROPERTY);
+	public ImmutableIterator(final Iterator<E> iterator) {
+		super();
+		this.iterator = iterator;
+	}
 
-	public DecimalConverter() {
-		super(DecimalConverter.DECIMAL_FORMAT);
+	public boolean hasNext() {
+		return this.iterator.hasNext();
+	}
+
+	public E next() {
+		return this.iterator.next();
+	}
+
+	public void remove() {
+		throw new UnsupportedOperationException();
 	}
 
 }

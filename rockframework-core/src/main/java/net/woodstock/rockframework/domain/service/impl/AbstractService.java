@@ -27,7 +27,7 @@ public abstract class AbstractService implements Service {
 		super();
 	}
 
-	protected Log getLogger() {
+	protected Log getLog() {
 		return SysLogger.getLog();
 	}
 

@@ -14,18 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.web.struts2.converter;
+package net.woodstock.rockframework.domain.validator.hibernate;
 
-import net.woodstock.rockframework.web.config.WebConfig;
+import net.woodstock.rockframework.domain.Entity;
 
-public class DateConverter extends DateTimeConverter {
+public class ReferenceValidator extends AbstractValidator<Reference> {
 
-	private static final String	DATE_FORMAT_PROPERTY	= "struts2.converter.date";
-
-	private static final String	DATE_FORMAT				= WebConfig.getInstance().getValue(DateConverter.DATE_FORMAT_PROPERTY);
-
-	public DateConverter() {
-		super(DateConverter.DATE_FORMAT);
+	@Override
+	@SuppressWarnings("unchecked")
+	public boolean isValid(final Object o) {
+		if (o == null) {
+			return true;
+		}
+		if (o instanceof Entity) {
+			Entity e = (Entity) o;
+			Object id = e.getId();
+			if (id != null) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

@@ -14,18 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.web.struts2.converter;
+package net.woodstock.rockframework.domain.validator.hibernate;
 
-import net.woodstock.rockframework.web.config.WebConfig;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public class MoneyConverter extends NumberConverter {
+import org.hibernate.validator.ValidatorClass;
 
-	private static final String	MONEY_FORMAT_PROPERTY	= "struts2.converter.money";
+@Target({ ElementType.FIELD, ElementType.METHOD })
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@ValidatorClass(ReferenceValidator.class)
+public @interface Reference {
 
-	private static final String	MONEY_FORMAT			= WebConfig.getInstance().getValue(MoneyConverter.MONEY_FORMAT_PROPERTY);
-
-	public MoneyConverter() {
-		super(MoneyConverter.MONEY_FORMAT);
-	}
-
+	String message() default "{validator.notEmpty}";
 }

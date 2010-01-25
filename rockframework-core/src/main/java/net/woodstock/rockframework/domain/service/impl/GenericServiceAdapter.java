@@ -30,33 +30,33 @@ public class GenericServiceAdapter extends AbstractService implements GenericSer
 	}
 
 	public void save(final Entity<?> e) {
-		this.getLogger().info("Save: " + e.getClass());
+		this.getLog().info("Save: " + e.getClass());
 	}
 
 	public <E extends Entity<?>> E get(final E e) {
-		this.getLogger().info("Retrieve: " + e);
+		this.getLog().info("Retrieve: " + e);
 		return null;
 	}
 
 	public void update(final Entity<?> e) {
-		this.getLogger().info("Update: " + e.getClass());
+		this.getLog().info("Update: " + e.getClass());
 	}
 
 	public void delete(final Entity<?> e) {
-		this.getLogger().info("Delete: " + e.getClass());
+		this.getLog().info("Delete: " + e.getClass());
 	}
 
 	public <E extends Entity<?>> void delete(final Class<E> clazz, final Serializable id) {
-		this.getLogger().info("Delete: " + clazz.getCanonicalName() + " " + id);
+		this.getLog().info("Delete: " + clazz.getCanonicalName() + " " + id);
 	}
 
 	public <E extends Entity<?>> Collection<E> listAll(final E e, final String order) {
-		this.getLogger().info("Query: " + e + " Order: " + order);
+		this.getLog().info("Query: " + e + " Order: " + order);
 		return null;
 	}
 
 	public <E extends Entity<?>> Collection<E> listByExample(final E e, final Map<String, Object> options) {
-		this.getLogger().info("Query: " + e + " Options: " + options);
+		this.getLog().info("Query: " + e + " Options: " + options);
 		return null;
 	}
 

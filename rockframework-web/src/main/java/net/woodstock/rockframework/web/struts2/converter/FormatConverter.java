@@ -16,16 +16,26 @@
  */
 package net.woodstock.rockframework.web.struts2.converter;
 
-import net.woodstock.rockframework.web.config.WebConfig;
+import net.woodstock.rockframework.utils.StringUtils;
 
-public class TimeConverter extends DateTimeConverter {
+public class FormatConverter extends SimpleValueConverter<String> {
 
-	private static final String	TIME_FORMAT_PROPERTY	= "struts2.converter.time";
+	private String	pattern;
 
-	private static final String	TIME_FORMAT				= WebConfig.getInstance().getValue(TimeConverter.TIME_FORMAT_PROPERTY);
+	public FormatConverter(final String pattern) {
+		super();
+		this.pattern = pattern;
+	}
 
-	public TimeConverter() {
-		super(TimeConverter.TIME_FORMAT);
+	@Override
+	@SuppressWarnings("unchecked")
+	protected String convertFromString(final String s, final Class toClass) {
+		return StringUtils.unformat(this.pattern, s);
+	}
+
+	@Override
+	protected String convertToString(final String o) {
+		return StringUtils.format(this.pattern, o);
 	}
 
 }
