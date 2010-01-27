@@ -47,9 +47,9 @@ abstract class AbstractJPAGenericRepository extends AbstractJPARepository implem
 	}
 
 	@SuppressWarnings("unchecked")
-	public <E extends Entity<?>> Collection<E> listAll(final E e, final String order) {
+	public <E extends Entity<?>> Collection<E> listAll(final E e, final Map<String, Object> options) {
 		EntityManager m = this.getEntityManager();
-		String sql = RepositoryHelper.getListAllSql(e.getClass(), order);
+		String sql = RepositoryHelper.getListAllSql(e.getClass(), options);
 		Query q = m.createQuery(sql);
 		Collection<E> list = q.getResultList();
 		return list;

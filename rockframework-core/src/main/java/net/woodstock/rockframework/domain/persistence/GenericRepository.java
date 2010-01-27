@@ -31,7 +31,7 @@ public interface GenericRepository extends Repository {
 
 	<E extends Entity<?>> E get(E entity);
 
-	<E extends Entity<?>> Collection<E> listAll(E e, String order);
+	<E extends Entity<?>> Collection<E> listAll(E e, Map<String, Object> options);
 
 	<E extends Entity<?>> Collection<E> listByExample(E e, Map<String, Object> options);
 

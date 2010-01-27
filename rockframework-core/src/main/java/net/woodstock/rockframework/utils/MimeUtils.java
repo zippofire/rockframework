@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
-public abstract class MimeUtils {
+abstract class MimeUtils {
 
 	private static final Map<String, Collection<String>>	MIME_MAP;
 

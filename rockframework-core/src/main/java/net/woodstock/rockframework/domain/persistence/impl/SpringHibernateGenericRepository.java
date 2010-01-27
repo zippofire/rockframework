@@ -22,9 +22,12 @@ import java.util.Map.Entry;
 
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.persistence.GenericRepository;
+import net.woodstock.rockframework.domain.persistence.query.CacheMode;
+import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
 import net.woodstock.rockframework.domain.persistence.query.impl.HibernateQueryBuilder;
 
 import org.hibernate.Query;
+import org.hibernate.Session;
 
 public abstract class SpringHibernateGenericRepository extends SpringHibernateRepository implements GenericRepository {
 
@@ -42,9 +45,21 @@ public abstract class SpringHibernateGenericRepository extends SpringHibernateRe
 	}
 
 	@SuppressWarnings("unchecked")
-	public <E extends Entity<?>> Collection<E> listAll(final E e, final String order) {
-		String sql = RepositoryHelper.getListAllSql(e.getClass(), order);
-		return this.getHibernateTemplate().find(sql);
+	public <E extends Entity<?>> Collection<E> listAll(final E e, final Map<String, Object> options) {
+		Session s = this.getSession();
+		String sql = RepositoryHelper.getListAllSql(e.getClass(), options);
+		Query q = s.createQuery(sql);
+
+		if ((options.containsKey(QueryBuilder.OPTION_CACHE_MODE)) && (options.get(QueryBuilder.OPTION_CACHE_MODE) instanceof CacheMode)) {
+			CacheMode cacheMode = (CacheMode) options.get(QueryBuilder.OPTION_CACHE_MODE);
+			if (cacheMode == CacheMode.ENABLED) {
+				q.setCacheable(true);
+				q.setCacheMode(org.hibernate.CacheMode.NORMAL);
+			}
+		}
+
+		Collection<E> list = q.list();
+		return list;
 	}
 
 	@SuppressWarnings("unchecked")

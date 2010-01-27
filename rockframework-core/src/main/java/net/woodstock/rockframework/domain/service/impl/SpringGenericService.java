@@ -44,8 +44,8 @@ public abstract class SpringGenericService extends AbstractGenericService {
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public <E extends Entity<?>> Collection<E> listAll(final E entity, final String order) {
-		return super.listAll(entity, order);
+	public <E extends Entity<?>> Collection<E> listAll(final E entity, final Map<String, Object> options) {
+		return super.listAll(entity, options);
 	}
 
 	@Override

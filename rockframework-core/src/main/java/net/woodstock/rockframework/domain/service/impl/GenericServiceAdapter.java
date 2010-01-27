@@ -50,8 +50,8 @@ public class GenericServiceAdapter extends AbstractService implements GenericSer
 		this.getLog().info("Delete: " + clazz.getCanonicalName() + " " + id);
 	}
 
-	public <E extends Entity<?>> Collection<E> listAll(final E e, final String order) {
-		this.getLog().info("Query: " + e + " Order: " + order);
+	public <E extends Entity<?>> Collection<E> listAll(final E e, final Map<String, Object> options) {
+		this.getLog().info("Query: " + e + " Options: " + options);
 		return null;
 	}
 

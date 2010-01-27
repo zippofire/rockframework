@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.Serializable;
 
 import net.woodstock.rockframework.utils.FileUtils;
-import net.woodstock.rockframework.utils.MimeUtils;
 import net.woodstock.rockframework.utils.StringUtils;
 
 public class FileInfo implements Serializable {
@@ -35,7 +34,7 @@ public class FileInfo implements Serializable {
 		index = this.name.indexOf(FileUtils.EXTENSION_SEPARATOR);
 		if (index != -1) {
 			this.extension = this.name.substring(index + 1);
-			this.mimeType = MimeUtils.getMimeType(this.extension);
+			this.mimeType = FileUtils.getMimeType(this.extension);
 		}
 	}
 
@@ -50,7 +49,7 @@ public class FileInfo implements Serializable {
 		int index = this.name.indexOf(FileUtils.EXTENSION_SEPARATOR);
 		if (index != -1) {
 			this.extension = this.name.substring(index + 1);
-			this.mimeType = MimeUtils.getMimeType(this.extension);
+			this.mimeType = FileUtils.getMimeType(this.extension);
 		}
 	}
 

@@ -66,13 +66,13 @@ public abstract class AbstractGenericService extends GenericServiceBean {
 		}
 	}
 
-	public <E extends Entity<?>> Collection<E> listAll(final E entity, final String order) {
+	public <E extends Entity<?>> Collection<E> listAll(final E entity, final Map<String, Object> options) {
 		try {
 			ValidationResult result = this.getBusiness().validateList(entity);
 			if (result.isError()) {
 				throw new ValidationException(result.getMessage());
 			}
-			return this.getRepository().listAll(entity, order);
+			return this.getRepository().listAll(entity, options);
 		} catch (PersistenceException e) {
 			throw e;
 		} catch (BusinessException e) {

@@ -29,7 +29,6 @@ import javax.servlet.jsp.PageContext;
 
 import net.woodstock.rockframework.utils.FileUtils;
 import net.woodstock.rockframework.utils.IOUtils;
-import net.woodstock.rockframework.utils.MimeUtils;
 
 public abstract class ResponseUtils {
 
@@ -93,14 +92,6 @@ public abstract class ResponseUtils {
 
 	public static String getAttachmentContentDisposition(final String fileName) {
 		return "attachment; filename=\"" + fileName + "\"";
-	}
-
-	public static String getContentType(final String extension) {
-		return MimeUtils.getMimeType(extension);
-	}
-
-	public static String getContentType(final File file) throws IOException {
-		return FileUtils.getContentType(file);
 	}
 
 }

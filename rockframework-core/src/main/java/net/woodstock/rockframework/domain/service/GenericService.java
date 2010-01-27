@@ -33,7 +33,7 @@ public interface GenericService extends Service {
 	<E extends Entity<?>> E get(E entity);
 
 	// List
-	<E extends Entity<?>> Collection<E> listAll(E entity, String order);
+	<E extends Entity<?>> Collection<E> listAll(E entity, Map<String, Object> options);
 
 	<E extends Entity<?>> Collection<E> listByExample(E entity, Map<String, Object> options);
 

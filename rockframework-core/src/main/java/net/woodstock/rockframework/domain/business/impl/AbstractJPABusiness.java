@@ -168,7 +168,7 @@ public abstract class AbstractJPABusiness extends AbstractBusiness {
 
 		Entity<?> e = (Entity<?>) value;
 
-		if (e.getId() == null) {
+		if ((e.getId() == null) && (!manyToOne.optional())) {
 			return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractJPABusiness.MESSAGE_NOT_EMPTY, name));
 		}
 
@@ -193,7 +193,7 @@ public abstract class AbstractJPABusiness extends AbstractBusiness {
 
 		Entity<?> e = (Entity<?>) value;
 
-		if (e.getId() == null) {
+		if ((e.getId() == null) && (!oneToOne.optional())) {
 			return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractJPABusiness.MESSAGE_NOT_EMPTY, name));
 		}
 

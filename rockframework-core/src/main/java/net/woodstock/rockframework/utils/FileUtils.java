@@ -83,4 +83,13 @@ public abstract class FileUtils {
 		return null;
 	}
 
+	// Delegate Mime
+	public static String getMimeType(final String extension) {
+		return MimeUtils.getMimeType(extension);
+	}
+
+	public static String getExtension(final String mimeType) {
+		return MimeUtils.getExtension(mimeType);
+	}
+
 }
