@@ -16,28 +16,36 @@
  */
 package net.woodstock.rockframework.domain.business.impl;
 
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+
 import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.ValidationResult;
 
-import org.hibernate.validator.ClassValidator;
-import org.hibernate.validator.InvalidValue;
-
 @SuppressWarnings("unchecked")
-public abstract class AbstractHibernateBusiness extends AbstractBusiness {
+public abstract class AbstractJEEBusiness extends AbstractBusiness {
 
-	public AbstractHibernateBusiness() {
+	private static Validator	validator;
+
+	public AbstractJEEBusiness() {
 		super();
+		if (AbstractJEEBusiness.validator == null) {
+			ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+			AbstractJEEBusiness.validator = factory.getValidator();
+		}
 	}
 
 	private ValidationResult validate(final Entity entity) {
-		ClassValidator validator = new ClassValidator(entity.getClass());
-		if (validator.hasValidationRules()) {
-			InvalidValue[] values = validator.getInvalidValues(entity);
-			if ((values != null) && (values.length > 0)) {
-				String message = values[0].toString();
-				new ValidationResult(true, message);
-			}
+		Set<ConstraintViolation<Entity>> constraintViolations = validator.validate(entity);
+		if (constraintViolations.size() > 0) {
+			ConstraintViolation<Entity> violation = constraintViolations.iterator().next();
+			String message = violation.getMessage();
+			new ValidationResult(true, message);
 		}
 		return new ValidationResult(false, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_OK));
 	}

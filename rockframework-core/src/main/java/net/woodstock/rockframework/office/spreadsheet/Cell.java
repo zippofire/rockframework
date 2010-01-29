@@ -60,7 +60,9 @@ public class Cell implements SpreadsheetElement {
 
 	private VerticalAlignment				verticalAlignment;
 
-	private String							value;
+	private Object							value;
+
+	private CellType						type;
 
 	public Cell() {
 		super();
@@ -71,9 +73,14 @@ public class Cell implements SpreadsheetElement {
 		this.verticalAlignment = Cell.DEFAULT_CERTICAL_ALIGMENT;
 	}
 
-	public Cell(final String value) {
+	public Cell(final Object value) {
+		this(value, CellType.TEXT);
+	}
+
+	public Cell(final Object value, final CellType type) {
 		this();
 		this.value = value;
+		this.type = type;
 	}
 
 	public boolean isWrap() {
@@ -196,12 +203,20 @@ public class Cell implements SpreadsheetElement {
 		this.verticalAlignment = verticalAlignment;
 	}
 
-	public String getValue() {
+	public Object getValue() {
 		return this.value;
 	}
 
-	public void setValue(final String value) {
+	public void setValue(final Object value) {
 		this.value = value;
+	}
+
+	public CellType getType() {
+		return this.type;
+	}
+
+	public void setType(final CellType type) {
+		this.type = type;
 	}
 
 }

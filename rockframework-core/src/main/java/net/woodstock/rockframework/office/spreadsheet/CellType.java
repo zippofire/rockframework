@@ -16,28 +16,9 @@
  */
 package net.woodstock.rockframework.office.spreadsheet;
 
-import java.util.LinkedList;
-import java.util.List;
 
-import net.woodstock.rockframework.office.Document;
-
-public class SpreadsheetDocument implements Document {
-
-	private static final long	serialVersionUID	= 6813958886966892724L;
-
-	private List<Sheet>			sheets;
-
-	public SpreadsheetDocument() {
-		super();
-		this.sheets = new LinkedList<Sheet>();
-	}
-
-	public List<Sheet> getSheets() {
-		return this.sheets;
-	}
-
-	public void setSheets(final List<Sheet> sheets) {
-		this.sheets = sheets;
-	}
-
+public enum CellType {
+	
+	BLANK, BOOLEAN, FORMULA, NUMERIC, TEXT;
+	
 }

@@ -16,12 +16,8 @@
  */
 package net.woodstock.rockframework.office;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.io.Serializable;
 
 public interface Document extends Serializable {
-
-	void write(OutputStream outputStream) throws IOException;
-
+	//
 }

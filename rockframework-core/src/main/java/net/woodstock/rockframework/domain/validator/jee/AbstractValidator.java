@@ -14,30 +14,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.office.spreadsheet;
+package net.woodstock.rockframework.domain.validator.jee;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.lang.annotation.Annotation;
 
-import net.woodstock.rockframework.office.Document;
+import javax.validation.ConstraintValidator;
 
-public class SpreadsheetDocument implements Document {
+import net.woodstock.rockframework.logging.SysLogger;
 
-	private static final long	serialVersionUID	= 6813958886966892724L;
+import org.apache.commons.logging.Log;
 
-	private List<Sheet>			sheets;
+public abstract class AbstractValidator<A extends Annotation, T> implements ConstraintValidator<A, T> {
 
-	public SpreadsheetDocument() {
-		super();
-		this.sheets = new LinkedList<Sheet>();
+	private A	annotation;
+
+	public final void initialize(final A annotation) {
+		this.annotation = annotation;
+		this.initialize();
 	}
 
-	public List<Sheet> getSheets() {
-		return this.sheets;
+	public void initialize() {
+		//
 	}
 
-	public void setSheets(final List<Sheet> sheets) {
-		this.sheets = sheets;
+	public A getAnnotation() {
+		return this.annotation;
+	}
+
+	protected Log getLog() {
+		return SysLogger.getLog();
 	}
 
 }

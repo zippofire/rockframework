@@ -18,6 +18,7 @@ package net.woodstock.rockframework.office.spreadsheet.poi;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.util.Map.Entry;
 
 import net.woodstock.rockframework.office.DocumentException;
@@ -30,6 +31,7 @@ import net.woodstock.rockframework.office.spreadsheet.IntegerCellMerge;
 import net.woodstock.rockframework.office.spreadsheet.Row;
 import net.woodstock.rockframework.office.spreadsheet.Sheet;
 import net.woodstock.rockframework.office.spreadsheet.SpreadsheetDocument;
+import net.woodstock.rockframework.office.spreadsheet.SpreadsheetDocumentWriter;
 import net.woodstock.rockframework.office.spreadsheet.VerticalAlignment;
 import net.woodstock.rockframework.office.spreadsheet.Image.ImageType;
 
@@ -45,20 +47,23 @@ import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.CellRangeAddress;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.util.CellRangeAddress;
 
-public class HSSFSpreadsheetDocument extends SpreadsheetDocument {
+public final class HSSFSpreadsheetDocumentWriter implements SpreadsheetDocumentWriter {
 
-	private static final long	serialVersionUID	= 1374393143817935260L;
+	private static SpreadsheetDocumentWriter	instance	= new HSSFSpreadsheetDocumentWriter();
 
-	public HSSFSpreadsheetDocument() {
+	private HSSFSpreadsheetDocumentWriter() {
 		super();
 	}
 
-	public void write(final OutputStream outputStream) throws IOException {
+	@Override
+	public void write(final SpreadsheetDocument document, final OutputStream outputStream) throws IOException {
 		HSSFWorkbook workbook = new HSSFWorkbook();
-		for (Sheet sheet : this.getSheets()) {
+		for (Sheet sheet : document.getSheets()) {
 			this.handleSheet(workbook, sheet);
 		}
 		workbook.write(outputStream);
@@ -164,7 +169,7 @@ public class HSSFSpreadsheetDocument extends SpreadsheetDocument {
 		font.setFontHeightInPoints((short) cell.getFontSize());
 
 		if (cell.isBold()) {
-			font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+			font.setBoldweight(Font.BOLDWEIGHT_BOLD);
 		}
 
 		if (cell.isItalic()) {
@@ -176,7 +181,7 @@ public class HSSFSpreadsheetDocument extends SpreadsheetDocument {
 		}
 
 		if (cell.isUnderline()) {
-			font.setUnderline(HSSFFont.U_SINGLE);
+			font.setUnderline(Font.U_SINGLE);
 		}
 
 		HSSFCellStyle style = workbook.createCellStyle();
@@ -207,39 +212,99 @@ public class HSSFSpreadsheetDocument extends SpreadsheetDocument {
 
 		if (cell.getBackgroundColor() != null) {
 			style.setFillForegroundColor(this.getBackgroundColor(workbook, cell.getBackgroundColor()));
-			style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+			style.setFillPattern(CellStyle.SOLID_FOREGROUND);
 		}
 
-		HSSFRichTextString string = new HSSFRichTextString(cell.getValue());
-		c.setCellValue(string);
+		switch (cell.getType()) {
+			case BLANK:
+				c.setCellType(org.apache.poi.ss.usermodel.Cell.CELL_TYPE_BLANK);
+				c.setCellValue("");
+				break;
+			case BOOLEAN:
+				if (cell.getValue() != null) {
+					Object value = cell.getValue();
+					Boolean bool = null;
+					if (value instanceof Boolean) {
+						bool = (Boolean) cell.getValue();
+					} else {
+						bool = Boolean.valueOf(value.toString());
+					}
+					c.setCellType(org.apache.poi.ss.usermodel.Cell.CELL_TYPE_BOOLEAN);
+					c.setCellValue(bool.booleanValue());
+				} else {
+					c.setCellType(org.apache.poi.ss.usermodel.Cell.CELL_TYPE_BOOLEAN);
+					c.setCellValue("");
+				}
+				break;
+			case FORMULA:
+				if (cell.getValue() != null) {
+					String formula = cell.getValue().toString();
+					c.setCellType(org.apache.poi.ss.usermodel.Cell.CELL_TYPE_FORMULA);
+					c.setCellValue(formula);
+				} else {
+					c.setCellType(org.apache.poi.ss.usermodel.Cell.CELL_TYPE_FORMULA);
+					c.setCellValue("");
+				}
+				break;
+			case NUMERIC:
+				if (cell.getValue() != null) {
+					Object value = cell.getValue();
+					Number number = null;
+					if (value instanceof Number) {
+						number = (Number) cell.getValue();
+					} else {
+						number = new BigDecimal(value.toString());
+					}
+					c.setCellType(org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC);
+					c.setCellValue(number.doubleValue());
+				} else {
+					c.setCellType(org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC);
+					c.setCellValue("");
+				}
+				break;
+			case TEXT:
+				if (cell.getValue() != null) {
+					HSSFRichTextString value = new HSSFRichTextString(cell.getValue().toString());
+					c.setCellValue(value);
+				} else {
+					c.setCellType(org.apache.poi.ss.usermodel.Cell.CELL_TYPE_STRING);
+					c.setCellValue("");
+				}
+				break;
+			default:
+				c.setCellType(org.apache.poi.ss.usermodel.Cell.CELL_TYPE_STRING);
+				c.setCellValue("");
+				break;
+		}
+
 		c.setCellStyle(style);
 	}
 
 	private short getAlignment(final Alignment alignment) {
 		switch (alignment) {
 			case CENTER:
-				return HSSFCellStyle.ALIGN_CENTER;
+				return CellStyle.ALIGN_CENTER;
 			case JUSTIFY:
-				return HSSFCellStyle.ALIGN_JUSTIFY;
+				return CellStyle.ALIGN_JUSTIFY;
 			case LEFT:
-				return HSSFCellStyle.ALIGN_LEFT;
+				return CellStyle.ALIGN_LEFT;
 			case RIGHT:
-				return HSSFCellStyle.ALIGN_RIGHT;
+				return CellStyle.ALIGN_RIGHT;
 			default:
-				return HSSFCellStyle.ALIGN_LEFT;
+				return CellStyle.ALIGN_LEFT;
 		}
 	}
 
 	private short getVerticalAlignment(final VerticalAlignment verticalAlignment) {
 		switch (verticalAlignment) {
 			case BOTTOM:
-				return HSSFCellStyle.VERTICAL_BOTTOM;
+				return CellStyle.VERTICAL_BOTTOM;
 			case MIDDLE:
-				return HSSFCellStyle.VERTICAL_CENTER;
+				return CellStyle.VERTICAL_CENTER;
 			case TOP:
-				return HSSFCellStyle.VERTICAL_TOP;
+				return CellStyle.VERTICAL_TOP;
 			default:
-				return HSSFCellStyle.VERTICAL_TOP;
+				return CellStyle.VERTICAL_TOP;
 		}
 	}
 
@@ -276,4 +341,8 @@ public class HSSFSpreadsheetDocument extends SpreadsheetDocument {
 		return c;
 	}
 
+	// Instance
+	public static SpreadsheetDocumentWriter getInstance() {
+		return HSSFSpreadsheetDocumentWriter.instance;
+	}
 }

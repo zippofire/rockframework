@@ -67,7 +67,7 @@ abstract class AbstractHibernateGenericRepository extends AbstractHibernateRepos
 		String sql = RepositoryHelper.getListAllSql(e.getClass(), options);
 		Query q = s.createQuery(sql);
 
-		if ((options.containsKey(QueryBuilder.OPTION_CACHE_MODE)) && (options.get(QueryBuilder.OPTION_CACHE_MODE) instanceof CacheMode)) {
+		if ((options != null) && (options.containsKey(QueryBuilder.OPTION_CACHE_MODE)) && (options.get(QueryBuilder.OPTION_CACHE_MODE) instanceof CacheMode)) {
 			CacheMode cacheMode = (CacheMode) options.get(QueryBuilder.OPTION_CACHE_MODE);
 			if (cacheMode == CacheMode.ENABLED) {
 				q.setCacheable(true);

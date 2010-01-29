@@ -34,6 +34,7 @@ import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
 
+@SuppressWarnings("unchecked")
 public abstract class AbstractJPABusiness extends AbstractBusiness {
 
 	private static final String	MESSAGE_INVALID_TYPE	= "domain.business.validation.field.error.invalidType";
@@ -51,15 +52,15 @@ public abstract class AbstractJPABusiness extends AbstractBusiness {
 	}
 
 	// CRUD
-	public ValidationResult validateSave(final Entity<?> entity) {
+	public ValidationResult validateSave(final Entity entity) {
 		return this.validateSaveOrUpdate(entity, true);
 	}
 
-	public ValidationResult validateUpdate(final Entity<?> entity) {
+	public ValidationResult validateUpdate(final Entity entity) {
 		return this.validateSaveOrUpdate(entity, false);
 	}
 
-	private ValidationResult validateSaveOrUpdate(final Entity<?> entity, final boolean save) {
+	private ValidationResult validateSaveOrUpdate(final Entity entity, final boolean save) {
 		if (entity == null) {
 			throw new ValidationException(CoreMessage.getInstance().getMessage(""));
 		}
@@ -103,7 +104,7 @@ public abstract class AbstractJPABusiness extends AbstractBusiness {
 		return new ValidationResult(false, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_OK));
 	}
 
-	private ValidationResult validateId(final Entity<?> entity, final PropertyDescriptor propertyDescriptor, final boolean save) {
+	private ValidationResult validateId(final Entity entity, final PropertyDescriptor propertyDescriptor, final boolean save) {
 		String name = propertyDescriptor.getName();
 		Object value = propertyDescriptor.getValue(entity);
 
@@ -126,7 +127,7 @@ public abstract class AbstractJPABusiness extends AbstractBusiness {
 		return null;
 	}
 
-	private ValidationResult validateColumn(final Entity<?> entity, final PropertyDescriptor propertyDescriptor, final Column column) {
+	private ValidationResult validateColumn(final Entity entity, final PropertyDescriptor propertyDescriptor, final Column column) {
 		String name = propertyDescriptor.getName();
 		Object value = propertyDescriptor.getValue(entity);
 
@@ -150,8 +151,7 @@ public abstract class AbstractJPABusiness extends AbstractBusiness {
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
-	private ValidationResult validateManyToOne(final Entity<?> entity, final PropertyDescriptor propertyDescriptor, final ManyToOne manyToOne) {
+	private ValidationResult validateManyToOne(final Entity entity, final PropertyDescriptor propertyDescriptor, final ManyToOne manyToOne) {
 		String name = propertyDescriptor.getName();
 		Object value = propertyDescriptor.getValue(entity);
 
@@ -175,8 +175,7 @@ public abstract class AbstractJPABusiness extends AbstractBusiness {
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
-	private ValidationResult validateOneToOne(final Entity<?> entity, final PropertyDescriptor propertyDescriptor, final OneToOne oneToOne) {
+	private ValidationResult validateOneToOne(final Entity entity, final PropertyDescriptor propertyDescriptor, final OneToOne oneToOne) {
 		String name = propertyDescriptor.getName();
 		Object value = propertyDescriptor.getValue(entity);
 

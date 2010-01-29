@@ -12,8 +12,9 @@ import net.woodstock.rockframework.office.spreadsheet.IntegerCellMerge;
 import net.woodstock.rockframework.office.spreadsheet.Row;
 import net.woodstock.rockframework.office.spreadsheet.Sheet;
 import net.woodstock.rockframework.office.spreadsheet.SpreadsheetDocument;
+import net.woodstock.rockframework.office.spreadsheet.SpreadsheetDocumentWriter;
 import net.woodstock.rockframework.office.spreadsheet.Image.ImageType;
-import net.woodstock.rockframework.office.spreadsheet.poi.HSSFSpreadsheetDocument;
+import net.woodstock.rockframework.office.spreadsheet.poi.HSSFSpreadsheetDocumentWriter;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -92,7 +93,7 @@ public class Test1 extends TestCase {
 	}
 
 	public void test2() throws Exception {
-		SpreadsheetDocument document = new HSSFSpreadsheetDocument();
+		SpreadsheetDocument document = new SpreadsheetDocument();
 
 		Sheet sheet = new Sheet("Planilha 1");
 		sheet.setLandscape(true);
@@ -132,7 +133,9 @@ public class Test1 extends TestCase {
 		document.getSheets().add(sheet);
 
 		FileOutputStream fos = new FileOutputStream("D:/teste2.xls");
-		document.write(fos);
+		SpreadsheetDocumentWriter writer = HSSFSpreadsheetDocumentWriter.getInstance();
+
+		writer.write(document, fos);
 		fos.close();
 	}
 

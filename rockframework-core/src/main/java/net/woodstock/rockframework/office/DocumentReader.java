@@ -14,30 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.office.spreadsheet;
+package net.woodstock.rockframework.office;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.io.IOException;
+import java.io.InputStream;
 
-import net.woodstock.rockframework.office.Document;
+public interface DocumentReader<T extends Document> {
 
-public class SpreadsheetDocument implements Document {
-
-	private static final long	serialVersionUID	= 6813958886966892724L;
-
-	private List<Sheet>			sheets;
-
-	public SpreadsheetDocument() {
-		super();
-		this.sheets = new LinkedList<Sheet>();
-	}
-
-	public List<Sheet> getSheets() {
-		return this.sheets;
-	}
-
-	public void setSheets(final List<Sheet> sheets) {
-		this.sheets = sheets;
-	}
+	T read(InputStream inputStream) throws IOException;
 
 }

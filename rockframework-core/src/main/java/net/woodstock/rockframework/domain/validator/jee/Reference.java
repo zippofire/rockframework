@@ -14,30 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.office.spreadsheet;
+package net.woodstock.rockframework.domain.validator.jee;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import net.woodstock.rockframework.office.Document;
+import javax.validation.Constraint;
 
-public class SpreadsheetDocument implements Document {
+@Target({ ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE })
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = ReferenceValidator.class)
+@Documented
+public @interface Reference {
 
-	private static final long	serialVersionUID	= 6813958886966892724L;
-
-	private List<Sheet>			sheets;
-
-	public SpreadsheetDocument() {
-		super();
-		this.sheets = new LinkedList<Sheet>();
-	}
-
-	public List<Sheet> getSheets() {
-		return this.sheets;
-	}
-
-	public void setSheets(final List<Sheet> sheets) {
-		this.sheets = sheets;
-	}
-
+	String message() default "{javax.validation.constraints.NotNull.message}";
 }

@@ -16,14 +16,15 @@
  */
 package net.woodstock.rockframework.domain.business.impl;
 
-import org.apache.commons.logging.Log;
-
 import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.GenericBusiness;
 import net.woodstock.rockframework.domain.business.ValidationResult;
 import net.woodstock.rockframework.logging.SysLogger;
 
+import org.apache.commons.logging.Log;
+
+@SuppressWarnings("unchecked")
 abstract class AbstractBusiness implements GenericBusiness {
 
 	protected static final String	MESSAGE_INVALID_CLASS	= "domain.business.invalid.class";
@@ -39,7 +40,7 @@ abstract class AbstractBusiness implements GenericBusiness {
 	}
 
 	@Override
-	public ValidationResult validateGet(final Entity<?> entity) {
+	public ValidationResult validateGet(final Entity entity) {
 		boolean error = false;
 		String message = CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_OK);
 		if (entity == null) {
@@ -55,12 +56,12 @@ abstract class AbstractBusiness implements GenericBusiness {
 	}
 
 	@Override
-	public ValidationResult validateDelete(final Entity<?> entity) {
+	public ValidationResult validateDelete(final Entity entity) {
 		return this.validateGet(entity);
 	}
 
 	@Override
-	public ValidationResult validateList(final Entity<?> entity) {
+	public ValidationResult validateList(final Entity entity) {
 		boolean error = false;
 		String message = CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_OK);
 		if (entity == null) {
