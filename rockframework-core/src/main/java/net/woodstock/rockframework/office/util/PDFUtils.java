@@ -18,6 +18,8 @@ package net.woodstock.rockframework.office.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedList;
+import java.util.List;
 
 import net.woodstock.rockframework.io.InputOutputStream;
 
@@ -33,7 +35,7 @@ public abstract class PDFUtils {
 		//
 	}
 
-	public static InputStream split(final InputStream source, final int start, final int end) throws IOException, DocumentException {
+	public static InputStream cut(final InputStream source, final int start, final int end) throws IOException, DocumentException {
 		if (source == null) {
 			throw new IllegalArgumentException("Source document must be not null");
 		}
@@ -44,7 +46,7 @@ public abstract class PDFUtils {
 		int pageCount = reader.getNumberOfPages();
 
 		if (start > pageCount) {
-			throw new IllegalArgumentException("Start page greater than document page count");
+			throw new IllegalArgumentException("Start page must be less than document size");
 		}
 
 		int endPage = end;
@@ -93,5 +95,43 @@ public abstract class PDFUtils {
 
 		System.out.println("Retornando");
 		return outputStream.getInputStream();
+	}
+
+	public static InputStream[] split(final InputStream source, final int size) throws IOException, DocumentException {
+		if (source == null) {
+			throw new IllegalArgumentException("Source document must be not null");
+		}
+		if (size <= 0) {
+			throw new IllegalArgumentException("Size must be greater than zero");
+		}
+		PdfReader reader = new PdfReader(source);
+		int pageCount = reader.getNumberOfPages();
+		List<InputStream> list = new LinkedList<InputStream>();
+
+		Document document = null;
+		InputOutputStream outputStream = null;
+		PdfCopy writer = null;
+		for (int i = 1; i <= pageCount; i++) {
+			if ((document == null) || (i % size == 0)) {
+				if (document != null) {
+					document.close();
+					writer.close();
+					list.add(outputStream.getInputStream());
+				}
+				document = new Document(reader.getPageSizeWithRotation(1));
+				outputStream = new InputOutputStream();
+				writer = new PdfCopy(document, outputStream);
+			}
+			PdfImportedPage page = writer.getImportedPage(reader, i);
+			writer.addPage(page);
+		}
+
+		if (document != null) {
+			document.close();
+			writer.close();
+			list.add(outputStream.getInputStream());
+		}
+
+		return list.toArray(new InputStream[list.size()]);
 	}
 }

@@ -12,7 +12,7 @@ public class TestPDF extends TestCase {
 
 	public void xtest1() throws Exception {
 		InputStream input = new FileInputStream("C:/Documentos/j931_01.pdf");
-		InputStream tmp = PDFUtils.split(input, 3, 8);
+		InputStream tmp = PDFUtils.cut(input, 3, 8);
 
 		FileOutputStream output = new FileOutputStream("C:/temp/split.pdf");
 		IOUtils.copy(tmp, output);
@@ -21,11 +21,11 @@ public class TestPDF extends TestCase {
 		tmp.close();
 		output.close();
 	}
-	
+
 	public void test2() throws Exception {
 		InputStream input1 = new FileInputStream("C:/Documentos/j931_01.pdf");
 		InputStream input2 = new FileInputStream("C:/Documentos/j931_02.pdf");
-		InputStream tmp = PDFUtils.merge(new InputStream[]{input1, input2});
+		InputStream tmp = PDFUtils.merge(new InputStream[] { input1, input2 });
 
 		FileOutputStream output = new FileOutputStream("C:/temp/split.pdf");
 		IOUtils.copy(tmp, output);
