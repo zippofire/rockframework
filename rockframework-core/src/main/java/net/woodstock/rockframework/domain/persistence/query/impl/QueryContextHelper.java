@@ -17,17 +17,17 @@
 package net.woodstock.rockframework.domain.persistence.query.impl;
 
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.persistence.query.BuilderException;
 import net.woodstock.rockframework.domain.persistence.query.LikeMode;
 import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
 import net.woodstock.rockframework.domain.persistence.query.impl.QueryContextParameter.Operator;
-import net.woodstock.rockframework.domain.utils.EntityUtils;
 import net.woodstock.rockframework.logging.SysLogger;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
@@ -35,6 +35,7 @@ import net.woodstock.rockframework.reflection.ReflectionType;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
 import net.woodstock.rockframework.utils.StringUtils;
 
+@SuppressWarnings("unchecked")
 abstract class QueryContextHelper {
 
 	private static final String	HIBERNATE_PROXY_CLASS	= "org.hibernate.proxy.HibernateProxy";
@@ -55,7 +56,7 @@ abstract class QueryContextHelper {
 		//
 	}
 
-	public static QueryContext createQueryContext(final Entity<?> e, final Map<String, Object> options) {
+	public static QueryContext createQueryContext(final Entity e, final Map<String, Object> options) {
 		if (e == null) {
 			throw new IllegalArgumentException("Entity must be not null");
 		}
@@ -67,7 +68,7 @@ abstract class QueryContextHelper {
 			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(clazz);
 			String entityName = QueryContextHelper.getEntityName(beanDescriptor);
 			QueryContext context = new QueryContext(entityName, entityName, QueryContextHelper.ROOT_ALIAS, null);
-			List<Entity<?>> parsed = new ArrayList<Entity<?>>();
+			Queue<Entity> parsed = new LinkedList<Entity>();
 
 			parsed.add(e);
 
@@ -124,8 +125,7 @@ abstract class QueryContextHelper {
 		context.setQueryString(builder.toString().trim());
 	}
 
-	@SuppressWarnings("unchecked")
-	private static void handleValue(final QueryContext context, final Map<String, Object> options, final String realName, final String name, final String alias, final Object value, final List<Entity<?>> parsed) {
+	private static void handleValue(final QueryContext context, final Map<String, Object> options, final String realName, final String name, final String alias, final Object value, final Queue<Entity> parsed) {
 		try {
 			String sqlName = QueryContextHelper.getFieldName(context, name);
 			String sqlAlias = QueryContextHelper.getFieldAlias(context, alias);
@@ -136,7 +136,7 @@ abstract class QueryContextHelper {
 					disable = b.booleanValue();
 				}
 				if (!disable) {
-					QueryContextHelper.handleEntityValue(context, options, name, sqlName, sqlAlias, (Entity<?>) value, parsed);
+					QueryContextHelper.handleEntityValue(context, options, name, sqlName, sqlAlias, (Entity) value, parsed);
 				}
 			} else if (value instanceof Collection) {
 				boolean disable = false;
@@ -145,7 +145,7 @@ abstract class QueryContextHelper {
 					disable = b.booleanValue();
 				}
 				if (!disable) {
-					QueryContextHelper.handleCollectionValue(context, options, realName, sqlName, sqlAlias, (Collection<?>) value, parsed);
+					QueryContextHelper.handleCollectionValue(context, options, realName, sqlName, sqlAlias, (Collection) value, parsed);
 				}
 			} else if (value instanceof String) {
 				QueryContextHelper.handleStringValue(context, options, sqlName, sqlAlias, (String) value);
@@ -159,7 +159,7 @@ abstract class QueryContextHelper {
 		}
 	}
 
-	private static void handleEntityValue(final QueryContext context, final Map<String, Object> options, final String realName, final String name, final String alias, final Entity<?> value, final List<Entity<?>> parsed) {
+	private static void handleEntityValue(final QueryContext context, final Map<String, Object> options, final String realName, final String name, final String alias, final Entity value, final Queue<Entity> parsed) {
 		if (QueryContextHelper.contains(parsed, value)) {
 			SysLogger.getLog().debug("Entity " + value + " already parsed!!!");
 			return;
@@ -173,7 +173,7 @@ abstract class QueryContextHelper {
 
 		parsed.add(value);
 
-		if (EntityUtils.hasNotNullAttribute(value)) {
+		if (QueryContextHelper.hasNotNullAttribute(value, new LinkedList<Entity>())) {
 			Class<?> clazz = value.getClass();
 			QueryContext child = new QueryContext(realName, name, alias, context);
 			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(clazz);
@@ -195,19 +195,18 @@ abstract class QueryContextHelper {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	private static void handleCollectionValue(final QueryContext context, final Map<String, Object> options, final String realName, final String name, final String alias, final Collection<?> value, final List<Entity<?>> parsed) {
+	private static void handleCollectionValue(final QueryContext context, final Map<String, Object> options, final String realName, final String name, final String alias, final Collection value, final Queue<Entity> parsed) {
 		if (value.size() > 0) {
 			QueryContext child = new QueryContext(realName, name, alias, context);
 			child.setJoinNeeded(true);
 			int index = 0;
 			for (Object o : value) {
 				if (o instanceof Entity) {
-					if (QueryContextHelper.contains(parsed, (Entity<?>) o)) {
+					if (QueryContextHelper.contains(parsed, (Entity) o)) {
 						SysLogger.getLog().debug("Entity " + value + " already parsed!!!");
 						continue;
 					}
-					parsed.add((Entity<?>) o);
+					parsed.add((Entity) o);
 
 					Class<?> clazz = o.getClass();
 					BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(clazz);
@@ -306,8 +305,8 @@ abstract class QueryContextHelper {
 		return builder.toString();
 	}
 
-	private static boolean contains(final List<Entity<?>> list, final Entity<?> entity) {
-		for (Entity<?> e : list) {
+	private static boolean contains(final Queue<Entity> list, final Entity entity) {
+		for (Entity e : list) {
 			if (e == entity) {
 				return true;
 			}
@@ -351,5 +350,104 @@ abstract class QueryContextHelper {
 		// EclipseLink
 		// TopLink
 		return b;
+	}
+
+	private static boolean hasNotNullAttribute(final Entity e, final Queue<Entity> queue) {
+		if (e == null) {
+			return false;
+		}
+
+		for (Entity ee : queue) {
+			if (e == ee) {
+				return false;
+			}
+		}
+
+		queue.add(e);
+
+		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance().getBeanDescriptor(e.getClass());
+		for (PropertyDescriptor property : beanDescriptor.getProperties()) {
+			if (!property.isReadable()) {
+				continue;
+			}
+			Object tmp = property.getValue(e);
+			if (tmp != null) {
+				if (QueryContextHelper.isSimpleType(property.getType())) {
+					return true;
+				}
+				if (tmp instanceof Entity) {
+					Entity ee = (Entity) tmp;
+
+					boolean b = QueryContextHelper.hasNotNullAttribute(ee, queue);
+					if (b) {
+						return true;
+					}
+				}
+				if (tmp instanceof Collection) {
+					Collection collection = (Collection) tmp;
+					if (collection.size() > 0) {
+						for (Object o : collection) {
+							if (o instanceof Entity) {
+								Entity ee = (Entity) o;
+								boolean b = QueryContextHelper.hasNotNullAttribute(ee, queue);
+								if (b) {
+									return true;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	private static boolean isSimpleType(final Class<?> clazz) {
+		// Wrappers
+		if (clazz == Boolean.class) {
+			return true;
+		}
+		if (clazz == Byte.class) {
+			return true;
+		}
+		if (clazz == Character.class) {
+			return true;
+		}
+		if (clazz == Double.class) {
+			return true;
+		}
+		if (clazz == Float.class) {
+			return true;
+		}
+		if (clazz == Integer.class) {
+			return true;
+		}
+		if (clazz == Long.class) {
+			return true;
+		}
+		if (clazz == Short.class) {
+			return true;
+		}
+		// String
+		if (clazz == String.class) {
+			return true;
+		}
+		// Number
+		if (Number.class.isAssignableFrom(clazz)) {
+			return true;
+		}
+		// Date
+		if (Date.class.isAssignableFrom(clazz)) {
+			return true;
+		}
+		// Primitives
+		if (clazz.isEnum()) {
+			return true;
+		}
+		if (clazz.isPrimitive()) {
+			return true;
+		}
+		return false;
 	}
 }

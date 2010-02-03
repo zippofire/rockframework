@@ -16,7 +16,6 @@
  */
 package net.woodstock.rockframework.domain.utils;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 
@@ -26,6 +25,7 @@ import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
 import net.woodstock.rockframework.utils.ObjectUtils;
 
+@SuppressWarnings("unchecked")
 public abstract class EntityUtils {
 
 	private static final String	UNDEFINED_ID	= "undefined";
@@ -39,7 +39,7 @@ public abstract class EntityUtils {
 	}
 
 	// Object
-	public static boolean equals(final Entity<?> entity1, final Entity<?> entity2) {
+	public static boolean equals(final Entity entity1, final Entity entity2) {
 		if ((entity1 == null) || (entity2 == null)) {
 			return false;
 		}
@@ -47,8 +47,8 @@ public abstract class EntityUtils {
 			return false;
 		}
 
-		Object id1 = ((Entity<?>) entity1).getId();
-		Object id2 = ((Entity<?>) entity2).getId();
+		Object id1 = entity1.getId();
+		Object id2 = entity2.getId();
 
 		if (id1 != null) {
 			if (id2 == null) {
@@ -87,8 +87,8 @@ public abstract class EntityUtils {
 		return true;
 	}
 
-	public static int hashCode(final Entity<?> entity) {
-		Serializable id = entity.getId();
+	public static int hashCode(final Entity entity) {
+		Object id = entity.getId();
 
 		if (id != null) {
 			return id.hashCode();
@@ -117,7 +117,7 @@ public abstract class EntityUtils {
 		return result;
 	}
 
-	public static String toString(final Entity<?> e) {
+	public static String toString(final Entity e) {
 		if (e == null) {
 			return null;
 		}
@@ -132,48 +132,6 @@ public abstract class EntityUtils {
 		}
 		builder.append(EntityUtils.END_ID);
 		return builder.toString();
-	}
-
-	// Aux
-	@SuppressWarnings("unchecked")
-	public static boolean hasNotNullAttribute(final Entity<?> e) {
-		if (e == null) {
-			return false;
-		}
-
-		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance().getBeanDescriptor(e.getClass());
-		for (PropertyDescriptor property : beanDescriptor.getProperties()) {
-			if (!property.isReadable()) {
-				continue;
-			}
-			Object tmp = property.getValue(e);
-			if (tmp != null) {
-				if (EntityUtils.isValidType(property.getType())) {
-					return true;
-				}
-				if (tmp instanceof Entity) {
-					boolean b = EntityUtils.hasNotNullAttribute(e);
-					if (b) {
-						return true;
-					}
-				}
-				if (tmp instanceof Collection) {
-					Collection<?> collection = (Collection<?>) tmp;
-					if (collection.size() > 0) {
-						for (Object o : collection) {
-							if (o instanceof Entity) {
-								boolean b = EntityUtils.hasNotNullAttribute((Entity) o);
-								if (b) {
-									return true;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
-		return false;
 	}
 
 	private static boolean isValidType(final Class<?> clazz) {
@@ -222,14 +180,6 @@ public abstract class EntityUtils {
 			return true;
 		}
 
-		// Entity
-		// if (Entity.class.isAssignableFrom(clazz)) {
-		// return true;
-		// }
-		// Collection
-		// if(Collection.class.isAssignableFrom(clazz)) {
-		// return true;
-		// }
 		return false;
 	}
 
