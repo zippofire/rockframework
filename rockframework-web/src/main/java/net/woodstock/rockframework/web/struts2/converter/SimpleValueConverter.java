@@ -35,7 +35,7 @@ public abstract class SimpleValueConverter<T> extends StrutsTypeConverter {
 
 		String s = o[0];
 		if (StringUtils.isEmpty(s)) {
-			super.performFallbackConversion(context, o, toClass);
+			return super.performFallbackConversion(context, o, toClass);
 		}
 
 		T t = this.convertFromString(o[0], toClass);

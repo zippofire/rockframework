@@ -5,43 +5,27 @@
 <struts>
 
 	<package name="rockframework-default" extends="struts-default" abstract="true">
-		<result-types>
-            <result-type name="rockframework-json" class="net.woodstock.rockframework.web.struts2.result.JsonResult"/>
-        </result-types>
 		<interceptors>
-			<interceptor name="entity" class="net.woodstock.rockframework.web.struts2.interceptor.EntityInterceptor" />
 			<interceptor name="around" class="net.woodstock.rockframework.web.struts2.interceptor.AroundInterceptor" />
-			<interceptor-stack name="entityStack">
+			<interceptor-stack name="aroundStack">
 				<interceptor-ref name="defaultStack" />
-				<interceptor-ref name="entity" />
 				<interceptor-ref name="around" />
 			</interceptor-stack>
 		</interceptors>
 
-		<default-interceptor-ref name="entityStack" />
-	</package>
-	
-	<package name="rockframework-json-default" extends="rockframework-default" abstract="true">
-		<result-types>
-            <result-type name="json" class="net.woodstock.rockframework.web.struts2.result.JsonResultDecorator"/>
-        </result-types>
+		<default-interceptor-ref name="aroundStack" />
 	</package>
 	
 	<package name="rockframework-tiles-default" extends="tiles-default" abstract="true">
-		<result-types>
-            <result-type name="rockframework-json" class="net.woodstock.rockframework.web.struts2.result.JsonResult"/>
-        </result-types>
 		<interceptors>
-			<interceptor name="entity" class="net.woodstock.rockframework.web.struts2.interceptor.EntityInterceptor" />
 			<interceptor name="around" class="net.woodstock.rockframework.web.struts2.interceptor.AroundInterceptor" />
-			<interceptor-stack name="entityStack">
+			<interceptor-stack name="aroundStack">
 				<interceptor-ref name="defaultStack" />
-				<interceptor-ref name="entity" />
 				<interceptor-ref name="around" />
 			</interceptor-stack>
 		</interceptors>
 
-		<default-interceptor-ref name="entityStack" />
+		<default-interceptor-ref name="aroundStack" />
 	</package>
 
 </struts>
