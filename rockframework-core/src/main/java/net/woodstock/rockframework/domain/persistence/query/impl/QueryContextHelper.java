@@ -165,15 +165,13 @@ abstract class QueryContextHelper {
 			return;
 		}
 		if (QueryContextHelper.isProxy(value)) {
-			// throw new IllegalArgumentException("Proxy classes cannot be parsed[" +
-			// value.getClass().getCanonicalName() + "]");
 			SysLogger.getLog().warn("Child proxy classes cannot will be parsed[" + context.getName() + "." + realName + "]");
 			return;
 		}
 
 		parsed.add(value);
 
-		if (QueryContextHelper.hasNotNullAttribute(value, new LinkedList<Entity>())) {
+		if (QueryContextHelper.hasNotNullAttribute(value)) {
 			Class<?> clazz = value.getClass();
 			QueryContext child = new QueryContext(realName, name, alias, context);
 			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(clazz);
@@ -348,22 +346,16 @@ abstract class QueryContextHelper {
 			}
 		}
 		// EclipseLink
+		// ???
 		// TopLink
+		// ???
 		return b;
 	}
 
-	private static boolean hasNotNullAttribute(final Entity e, final Queue<Entity> queue) {
+	private static boolean hasNotNullAttribute(final Entity e) {
 		if (e == null) {
 			return false;
 		}
-
-		for (Entity ee : queue) {
-			if (e == ee) {
-				return false;
-			}
-		}
-
-		queue.add(e);
 
 		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance().getBeanDescriptor(e.getClass());
 		for (PropertyDescriptor property : beanDescriptor.getProperties()) {
@@ -371,39 +363,15 @@ abstract class QueryContextHelper {
 				continue;
 			}
 			Object tmp = property.getValue(e);
-			if (tmp != null) {
-				if (QueryContextHelper.isSimpleType(property.getType())) {
-					return true;
-				}
-				if (tmp instanceof Entity) {
-					Entity ee = (Entity) tmp;
-
-					boolean b = QueryContextHelper.hasNotNullAttribute(ee, queue);
-					if (b) {
-						return true;
-					}
-				}
-				if (tmp instanceof Collection) {
-					Collection collection = (Collection) tmp;
-					if (collection.size() > 0) {
-						for (Object o : collection) {
-							if (o instanceof Entity) {
-								Entity ee = (Entity) o;
-								boolean b = QueryContextHelper.hasNotNullAttribute(ee, queue);
-								if (b) {
-									return true;
-								}
-							}
-						}
-					}
-				}
+			if ((tmp != null) && (QueryContextHelper.isValidType(property.getType()))) {
+				return true;
 			}
 		}
 
 		return false;
 	}
 
-	private static boolean isSimpleType(final Class<?> clazz) {
+	private static boolean isValidType(final Class<?> clazz) {
 		// Wrappers
 		if (clazz == Boolean.class) {
 			return true;
@@ -446,6 +414,14 @@ abstract class QueryContextHelper {
 			return true;
 		}
 		if (clazz.isPrimitive()) {
+			return true;
+		}
+		// Entity
+		if (Entity.class.isAssignableFrom(clazz)) {
+			return true;
+		}
+		// Collection
+		if (Collection.class.isAssignableFrom(clazz)) {
 			return true;
 		}
 		return false;

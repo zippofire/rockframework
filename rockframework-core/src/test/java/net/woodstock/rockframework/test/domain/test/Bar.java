@@ -5,12 +5,12 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import net.woodstock.rockframework.domain.Entity;
+
 import org.hibernate.validator.Length;
 import org.hibernate.validator.Max;
 import org.hibernate.validator.Min;
 import org.hibernate.validator.NotNull;
-
-import net.woodstock.rockframework.domain.Entity;
 
 @XmlRootElement(name = "bar")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -34,6 +34,8 @@ public class Bar implements Entity<Integer> {
 	private String				value;
 
 	private Baz					baz;
+
+	private Foo					foo;
 
 	public Bar() {
 		super();
@@ -61,6 +63,14 @@ public class Bar implements Entity<Integer> {
 
 	public void setBaz(final Baz baz) {
 		this.baz = baz;
+	}
+
+	public Foo getFoo() {
+		return this.foo;
+	}
+
+	public void setFoo(final Foo foo) {
+		this.foo = foo;
 	}
 
 }
