@@ -27,7 +27,7 @@ public class XmlTest extends TestCase {
 		System.out.println(e);
 	}
 
-	public void testXml2() throws Exception {
+	public void xtestXml2() throws Exception {
 		Foo foo1 = this.getFoo();
 		// foo1.setBar(this.getBar());
 
