@@ -1,19 +1,23 @@
-package net.woodstock.rockframework.test.struts2.entity;
+package net.woodstock.rockapi.entity;
 
 import net.woodstock.rockframework.domain.Entity;
 
-public class ListItem implements Entity<Integer> {
+public class People implements Entity<Integer> {
 
-	private static final long	serialVersionUID	= -6111184164689839730L;
+	private static final long	serialVersionUID	= -8519467447112623801L;
 
 	private Integer				id;
 
 	private String				name;
 
-	private Boolean				status;
-
-	public ListItem() {
+	public People() {
 		super();
+	}
+
+	public People(Integer id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
 	}
 
 	public Integer getId() {
@@ -32,12 +36,9 @@ public class ListItem implements Entity<Integer> {
 		this.name = name;
 	}
 
-	public Boolean getStatus() {
-		return this.status;
-	}
-
-	public void setStatus(Boolean status) {
-		this.status = status;
+	@Override
+	public String toString() {
+		return this.name;
 	}
 
 }

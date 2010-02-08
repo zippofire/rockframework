@@ -27,7 +27,7 @@ public class FooMB extends ManagedBean {
 	public String delete() {
 		// Integer id = new Integer(this.getRequest().getParameter("foo.id"));
 		// this.foo.setId(id);
-		this.getLogger().info("Edit foo.id: " + this.foo.getId());
+		this.getLog().info("Edit foo.id: " + this.foo.getId());
 		this.fooRepository.delete(this.foo);
 		this.foos = this.fooRepository.list();
 		return ManagedBean.SUCCESS;
@@ -36,13 +36,13 @@ public class FooMB extends ManagedBean {
 	public String edit() {
 		// Integer id = new Integer(this.getRequest().getParameter("foo.id"));
 		// this.foo.setId(id);
-		this.getLogger().info("Edit foo.id: " + this.foo.getId());
+		this.getLog().info("Edit foo.id: " + this.foo.getId());
 		this.foo = this.fooRepository.get(this.foo);
 		return ManagedBean.SUCCESS;
 	}
 
 	public String list() {
-		this.getLogger().info("List");
+		this.getLog().info("List");
 		this.foos = this.fooRepository.list();
 		return ManagedBean.SUCCESS;
 	}

@@ -1,27 +1,38 @@
 package net.woodstock.rockapi.ejb.test;
 
-import java.io.InputStream;
-import java.util.Properties;
-
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
-import net.woodstock.rockapi.ejb.Calculator;
+import junit.framework.TestCase;
 
-public class TestEJB {
+public class TestEJB extends TestCase {
 
-	public static void main(String[] args) {
-		try {
-			Properties properties = new Properties();
-			InputStream inputStream = TestEJB.class.getClassLoader().getResourceAsStream(
-					"ejb-client-login.properties");
-			properties.load(inputStream);
-			Context context = new InitialContext(properties);
-			Calculator calculator = (Calculator) context.lookup("Calculator/remote");
-			System.out.println(calculator.sum(new Integer(1), new Integer(2)));
-		} catch (Exception e) {
-			e.printStackTrace();
+	private static final boolean	USE_EAR					= true;
+
+	private static final String		EAR_NAME				= "ear-test";
+
+	protected static final String	CLIENT_PROPERTY			= "ejb-client.properties";
+
+	protected static final String	CLIENT_PROPERTY_LOGIN	= "ejb-client-login.properties";
+
+	private String getName(String name) {
+		if (TestEJB.USE_EAR) {
+			name = TestEJB.EAR_NAME + "/" + name;
 		}
+		return name;
+	}
+
+	protected Object lookup(String name) throws Exception {
+		// Properties properties = new Properties();
+		// InputStream inputStream = TestEJB.class.getClassLoader().getResourceAsStream(CLIENT_PROPERTY);
+		// properties.load(inputStream);
+		// Context context = new InitialContext(properties);
+
+		// Use jndi.properties
+		Context context = new InitialContext();
+
+		name = this.getName(name);
+		return context.lookup(name);
 	}
 
 }
