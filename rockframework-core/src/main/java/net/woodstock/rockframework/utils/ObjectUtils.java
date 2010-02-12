@@ -22,7 +22,7 @@ import java.util.Collection;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.ReflectionType;
-import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
+import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactoryImpl;
 
 public abstract class ObjectUtils {
 
@@ -31,8 +31,8 @@ public abstract class ObjectUtils {
 	private static final char	PROPERTY_SEPARATOR	= '.';
 
 	public static void copyAttributes(final Object from, final Object to, final Class<?>[] ignoredTypes) {
-		BeanDescriptor beanDescriptorFrom = BeanDescriptorFactory.getInstance().getBeanDescriptor(from.getClass());
-		BeanDescriptor beanDescriptorTo = BeanDescriptorFactory.getInstance().getBeanDescriptor(to.getClass());
+		BeanDescriptor beanDescriptorFrom = BeanDescriptorFactoryImpl.getInstance().getBeanDescriptor(from.getClass());
+		BeanDescriptor beanDescriptorTo = BeanDescriptorFactoryImpl.getInstance().getBeanDescriptor(to.getClass());
 
 		outer: for (PropertyDescriptor propertyDescriptor : beanDescriptorFrom.getProperties()) {
 			if (beanDescriptorTo.hasProperty(propertyDescriptor.getName())) {
@@ -54,8 +54,8 @@ public abstract class ObjectUtils {
 	}
 
 	public static void copyAttributes(final Object from, final Object to, final String[] ignoredAttributes) {
-		BeanDescriptor beanDescriptorFrom = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(from.getClass());
-		BeanDescriptor beanDescriptorTo = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(to.getClass());
+		BeanDescriptor beanDescriptorFrom = BeanDescriptorFactoryImpl.getInstance(ReflectionType.FIELD).getBeanDescriptor(from.getClass());
+		BeanDescriptor beanDescriptorTo = BeanDescriptorFactoryImpl.getInstance(ReflectionType.FIELD).getBeanDescriptor(to.getClass());
 
 		outer: for (PropertyDescriptor propertyDescriptor : beanDescriptorFrom.getProperties()) {
 			if (beanDescriptorTo.hasProperty(propertyDescriptor.getName())) {
@@ -84,7 +84,7 @@ public abstract class ObjectUtils {
 			return false;
 		}
 
-		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(o1.getClass());
+		BeanDescriptor beanDescriptor = BeanDescriptorFactoryImpl.getInstance(ReflectionType.FIELD).getBeanDescriptor(o1.getClass());
 		Collection<PropertyDescriptor> properties = beanDescriptor.getProperties();
 
 		for (PropertyDescriptor property : properties) {
@@ -107,7 +107,7 @@ public abstract class ObjectUtils {
 
 	public static int hashCode(final Object obj) {
 		int result = 1;
-		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(obj.getClass());
+		BeanDescriptor beanDescriptor = BeanDescriptorFactoryImpl.getInstance(ReflectionType.FIELD).getBeanDescriptor(obj.getClass());
 		Collection<PropertyDescriptor> properties = beanDescriptor.getProperties();
 
 		for (PropertyDescriptor property : properties) {
@@ -131,7 +131,7 @@ public abstract class ObjectUtils {
 			return null;
 		}
 
-		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(o.getClass());
+		BeanDescriptor beanDescriptor = BeanDescriptorFactoryImpl.getInstance(ReflectionType.FIELD).getBeanDescriptor(o.getClass());
 		String currentName = name;
 		if (currentName.indexOf(ObjectUtils.PROPERTY_SEPARATOR) != -1) {
 			String fieldName = currentName.substring(0, currentName.indexOf(ObjectUtils.PROPERTY_SEPARATOR));

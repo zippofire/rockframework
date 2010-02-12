@@ -19,7 +19,7 @@ package net.woodstock.rockframework.web.jsp.taglib.creator;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.ReflectionType;
-import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
+import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactoryImpl;
 import net.woodstock.rockframework.xml.dom.XmlDocument;
 import net.woodstock.rockframework.xml.dom.XmlElement;
 
@@ -46,7 +46,7 @@ public final class TLDFactory {
 		root.addElement("body-content", type);
 		root.addElement("tag-class", clazz.getCanonicalName());
 
-		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(clazz);
+		BeanDescriptor beanDescriptor = BeanDescriptorFactoryImpl.getInstance(ReflectionType.FIELD).getBeanDescriptor(clazz);
 
 		for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
 			if (!propertyDescriptor.isAnnotationPresent(TLDAttribute.class)) {

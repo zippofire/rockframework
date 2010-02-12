@@ -22,6 +22,7 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import net.woodstock.rockframework.reflection.BeanDescriptor;
+import net.woodstock.rockframework.reflection.BeanDescriptorFactory;
 import net.woodstock.rockframework.reflection.BeanNavigator;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.PropertyNavigator;

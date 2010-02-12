@@ -20,7 +20,7 @@ import java.lang.annotation.Annotation;
 
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
-import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
+import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactoryImpl;
 
 public class BeanConverterContext extends AbstractConverterContext {
 
@@ -28,7 +28,7 @@ public class BeanConverterContext extends AbstractConverterContext {
 
 	public BeanConverterContext(final ConverterContext parent, final String name, final Class<?> type) {
 		super(parent, name, type);
-		this.beanDescriptor = BeanDescriptorFactory.getInstance().getBeanDescriptor(type);
+		this.beanDescriptor = BeanDescriptorFactoryImpl.getInstance().getBeanDescriptor(type);
 	}
 
 	public BeanDescriptor getBeanDescriptor() {

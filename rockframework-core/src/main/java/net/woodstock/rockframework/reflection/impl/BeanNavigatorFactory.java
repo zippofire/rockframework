@@ -30,7 +30,7 @@ public abstract class BeanNavigatorFactory {
 	public abstract BeanNavigator getBeanNavigator(Object bean);
 
 	public static BeanNavigatorFactory getInstance() {
-		return BeanNavigatorFactory.getInstance(BeanDescriptorFactory.REFLECTION_TYPE);
+		return BeanNavigatorFactory.getInstance(BeanDescriptorFactoryImpl.REFLECTION_TYPE);
 	}
 
 	public static BeanNavigatorFactory getInstance(final ReflectionType type) {
@@ -65,7 +65,7 @@ public abstract class BeanNavigatorFactory {
 
 		@Override
 		public BeanNavigator getBeanNavigator(final Object bean) {
-			return new BeanNavigatorImpl(BeanDescriptorFactory.getInstance(ReflectionType.FIELD), bean, null, null);
+			return new BeanNavigatorImpl(BeanDescriptorFactoryImpl.getInstance(ReflectionType.FIELD), bean, null, null);
 		}
 
 	}
@@ -74,7 +74,7 @@ public abstract class BeanNavigatorFactory {
 
 		@Override
 		public BeanNavigator getBeanNavigator(final Object bean) {
-			return new BeanNavigatorImpl(BeanDescriptorFactory.getInstance(ReflectionType.METHOD), bean, null, null);
+			return new BeanNavigatorImpl(BeanDescriptorFactoryImpl.getInstance(ReflectionType.METHOD), bean, null, null);
 		}
 
 	}
@@ -83,7 +83,7 @@ public abstract class BeanNavigatorFactory {
 
 		@Override
 		public BeanNavigator getBeanNavigator(final Object bean) {
-			return new BeanNavigatorImpl(BeanDescriptorFactory.getInstance(ReflectionType.MIXED), bean, null, null);
+			return new BeanNavigatorImpl(BeanDescriptorFactoryImpl.getInstance(ReflectionType.MIXED), bean, null, null);
 		}
 
 	}

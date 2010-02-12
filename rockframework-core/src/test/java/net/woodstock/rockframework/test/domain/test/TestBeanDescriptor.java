@@ -4,13 +4,13 @@ import junit.framework.TestCase;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.ReflectionType;
-import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
+import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactoryImpl;
 
 public class TestBeanDescriptor extends TestCase {
 
 	public void xtest1() throws Exception {
 		X x = new X();
-		BeanDescriptor bean = BeanDescriptorFactory.getInstance(ReflectionType.METHOD).getBeanDescriptor(x.getClass());
+		BeanDescriptor bean = BeanDescriptorFactoryImpl.getInstance(ReflectionType.METHOD).getBeanDescriptor(x.getClass());
 
 		bean.getProperty("id").setValue(x, new Integer(1));
 		bean.getProperty("firstName").setValue(x, "Lourival");
@@ -26,7 +26,7 @@ public class TestBeanDescriptor extends TestCase {
 	public void test2() throws Exception {
 		X x = new X();
 
-		BeanDescriptor bean = BeanDescriptorFactory.getInstance().getBeanDescriptor(x.getClass());
+		BeanDescriptor bean = BeanDescriptorFactoryImpl.getInstance().getBeanDescriptor(x.getClass());
 
 		bean.getProperty("id").setValue(x, new Integer(1));
 		bean.getProperty("firstName").setValue(x, "Lourival");

@@ -32,7 +32,7 @@ import net.woodstock.rockframework.logging.SysLogger;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.ReflectionType;
-import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactory;
+import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactoryImpl;
 import net.woodstock.rockframework.utils.StringUtils;
 
 @SuppressWarnings("unchecked")
@@ -65,7 +65,7 @@ abstract class QueryContextHelper {
 		}
 		try {
 			Class<?> clazz = e.getClass();
-			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(clazz);
+			BeanDescriptor beanDescriptor = BeanDescriptorFactoryImpl.getInstance(ReflectionType.FIELD).getBeanDescriptor(clazz);
 			String entityName = QueryContextHelper.getEntityName(beanDescriptor);
 			QueryContext context = new QueryContext(entityName, entityName, QueryContextHelper.ROOT_ALIAS, null);
 			Queue<Entity> parsed = new LinkedList<Entity>();
@@ -174,7 +174,7 @@ abstract class QueryContextHelper {
 		if (QueryContextHelper.hasNotNullAttribute(value)) {
 			Class<?> clazz = value.getClass();
 			QueryContext child = new QueryContext(realName, name, alias, context);
-			BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(clazz);
+			BeanDescriptor beanDescriptor = BeanDescriptorFactoryImpl.getInstance(ReflectionType.FIELD).getBeanDescriptor(clazz);
 			child.setJoinNeeded(true);
 			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
 				if (!propertyDescriptor.isReadable()) {
@@ -207,7 +207,7 @@ abstract class QueryContextHelper {
 					parsed.add((Entity) o);
 
 					Class<?> clazz = o.getClass();
-					BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance(ReflectionType.FIELD).getBeanDescriptor(clazz);
+					BeanDescriptor beanDescriptor = BeanDescriptorFactoryImpl.getInstance(ReflectionType.FIELD).getBeanDescriptor(clazz);
 					for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
 						if (!propertyDescriptor.isReadable()) {
 							continue;
@@ -357,7 +357,7 @@ abstract class QueryContextHelper {
 			return false;
 		}
 
-		BeanDescriptor beanDescriptor = BeanDescriptorFactory.getInstance().getBeanDescriptor(e.getClass());
+		BeanDescriptor beanDescriptor = BeanDescriptorFactoryImpl.getInstance().getBeanDescriptor(e.getClass());
 		for (PropertyDescriptor property : beanDescriptor.getProperties()) {
 			if (!property.isReadable()) {
 				continue;

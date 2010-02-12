@@ -16,55 +16,33 @@
  */
 package net.woodstock.rockframework.reflection.impl;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.ReflectionType;
 
-public class MixedBeanDescriptor extends FieldBeanDescriptor {
+class MixedBeanDescriptor extends AbstractBeanDescriptor {
 
-	private BeanDescriptor					byMethodBeanDescriptor;
+	private BeanDescriptor	byFieldBeanDescriptor;
 
-	private Map<String, PropertyDescriptor>	properties;
+	private BeanDescriptor	byMethodBeanDescriptor;
 
 	public MixedBeanDescriptor(final Class<?> clazz) {
 		super(clazz);
-		this.byMethodBeanDescriptor = BeanDescriptorFactory.getInstance(ReflectionType.METHOD).getBeanDescriptor(clazz);
 	}
 
 	@Override
-	public Collection<PropertyDescriptor> getProperties() {
-		if (this.properties == null) {
-			this.properties = new HashMap<String, PropertyDescriptor>();
-			for (PropertyDescriptor property : super.getProperties()) {
-				this.properties.put(property.getName(), property);
+	public void init() {
+		this.byFieldBeanDescriptor = BeanDescriptorFactoryImpl.getInstance(ReflectionType.FIELD).getBeanDescriptor(this.getType());
+		this.byMethodBeanDescriptor = BeanDescriptorFactoryImpl.getInstance(ReflectionType.METHOD).getBeanDescriptor(this.getType());
+
+		for (PropertyDescriptor property : this.byFieldBeanDescriptor.getProperties()) {
+			this.getProperties().add(property);
+		}
+		for (PropertyDescriptor property : this.byMethodBeanDescriptor.getProperties()) {
+			if (!this.hasProperty(property.getName())) {
+				this.getProperties().add(property);
 			}
-			for (PropertyDescriptor property : this.byMethodBeanDescriptor.getProperties()) {
-				if (!this.properties.containsKey(property.getName())) {
-					this.properties.put(property.getName(), property);
-				}
-			}
 		}
-		return this.properties.values();
-	}
-
-	@Override
-	public PropertyDescriptor getProperty(final String name) {
-		if (this.hasProperty(name)) {
-			return this.getProperty(name);
-		}
-		return this.byMethodBeanDescriptor.getProperty(name);
-	}
-
-	@Override
-	public boolean hasProperty(final String name) {
-		if (this.hasProperty(name)) {
-			return true;
-		}
-		return this.byMethodBeanDescriptor.hasProperty(name);
 	}
 
 }

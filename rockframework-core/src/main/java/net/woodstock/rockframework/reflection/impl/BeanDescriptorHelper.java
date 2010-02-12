@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
 
 import net.woodstock.rockframework.utils.StringUtils;
 
-final class BeanDescriptorHelper {
+abstract class BeanDescriptorHelper {
 
 	public static final String	GET_CLASS_METHOD_NAME	= "getClass";
 
