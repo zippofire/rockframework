@@ -18,17 +18,17 @@ package net.woodstock.rockframework.net.http;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Collection;
-
-import net.woodstock.rockframework.util.Entry;
-import net.woodstock.rockframework.utils.StringUtils;
-import net.woodstock.rockframework.xml.dom.XmlDocument;
-import net.woodstock.rockframework.xml.dom.XmlElement;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.xml.sax.SAXException;
+
+import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.xml.dom.XmlDocument;
+import net.woodstock.rockframework.xml.dom.XmlElement;
 
 public class HttpClient implements Serializable {
 
@@ -44,12 +44,12 @@ public class HttpClient implements Serializable {
 		this.client = new org.apache.commons.httpclient.HttpClient();
 	}
 
-	public String openText(final String url, final Collection<Entry<String, Object>> params) throws IOException {
+	public String openText(final String url, final Map<String, Object> params) throws IOException {
 		GetMethod method = this.createGetMethod(url, params);
 		return method.getResponseBodyAsString();
 	}
 
-	public XmlDocument openXml(final String url, final Collection<Entry<String, Object>> params) throws IOException {
+	public XmlDocument openXml(final String url, final Map<String, Object> params) throws IOException {
 		GetMethod method = this.createGetMethod(url, params);
 		int status = this.client.executeMethod(method);
 		if (status == HttpStatus.SC_OK) {
@@ -66,11 +66,11 @@ public class HttpClient implements Serializable {
 		return doc;
 	}
 
-	private GetMethod createGetMethod(final String url, final Collection<Entry<String, Object>> params) {
+	private GetMethod createGetMethod(final String url, final Map<String, Object> params) {
 		GetMethod method = new GetMethod(url);
 		if ((params != null) && (params.size() > 0)) {
 			HttpMethodParams hps = new HttpMethodParams();
-			for (Entry<String, ? extends Object> p : params) {
+			for (Entry<String, Object> p : params.entrySet()) {
 				String key = p.getKey();
 				Object value = p.getValue();
 				String valueStr = value == null ? StringUtils.BLANK : value.toString();

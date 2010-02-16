@@ -16,9 +16,9 @@
  */
 package net.woodstock.rockframework.domain.business;
 
-import java.io.Serializable;
+import net.woodstock.rockframework.domain.Pojo;
 
-public class ValidationResult implements Serializable {
+public class ValidationResult implements Pojo {
 
 	private static final long	serialVersionUID	= 6766952296126588148L;
 
@@ -46,11 +46,6 @@ public class ValidationResult implements Serializable {
 
 	public void setMessage(final String message) {
 		this.message = message;
-	}
-
-	// Others
-	public boolean isSuccess() {
-		return !this.error;
 	}
 
 }
