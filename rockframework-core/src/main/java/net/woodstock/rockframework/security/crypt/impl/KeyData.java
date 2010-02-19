@@ -3,8 +3,6 @@ package net.woodstock.rockframework.security.crypt.impl;
 import java.io.Serializable;
 import java.security.Key;
 
-import net.woodstock.rockframework.security.common.Charset;
-
 public class KeyData implements Serializable {
 
 	private static final long	serialVersionUID	= -2115977775361614829L;
@@ -13,13 +11,10 @@ public class KeyData implements Serializable {
 
 	private Key					key;
 
-	private Charset				charset;
-
-	public KeyData(final String algorithm, final Key key, final Charset charset) {
+	public KeyData(final String algorithm, final Key key) {
 		super();
 		this.algorithm = algorithm;
 		this.key = key;
-		this.charset = charset;
 	}
 
 	public String getAlgorithm() {
@@ -28,10 +23,6 @@ public class KeyData implements Serializable {
 
 	public Key getKey() {
 		return this.key;
-	}
-
-	public Charset getCharset() {
-		return this.charset;
 	}
 
 }

@@ -27,12 +27,11 @@ import java.security.SecureRandom;
 
 import javax.crypto.Cipher;
 
-import net.woodstock.rockframework.security.common.Charset;
 import net.woodstock.rockframework.security.crypt.CrypterException;
 import net.woodstock.rockframework.utils.Base64Utils;
 import net.woodstock.rockframework.utils.StringUtils;
 
-public class AsyncCrypter extends CrypterBase<AsyncAlgorithm> {
+public class AsyncCrypter extends CrypterBase {
 
 	private static final int	DEFAULT_KEY_SIZE	= 1024;
 
@@ -40,8 +39,52 @@ public class AsyncCrypter extends CrypterBase<AsyncAlgorithm> {
 
 	private PublicKey			publicKey;
 
-	protected AsyncCrypter(final PrivateKey privateKey, final PublicKey publicKey, final AsyncAlgorithm algorithm, final Charset charset) {
-		super(algorithm, charset);
+	public AsyncCrypter(final Algorithm algorithm, final String seed) {
+		try {
+			Algorithm a = algorithm;
+			if (a == null) {
+				a = Algorithm.DEFAULT_ASYNC;
+			}
+
+			KeyPairGenerator generator = KeyPairGenerator.getInstance(a.algorithm());
+
+			if (!StringUtils.isEmpty(seed)) {
+				SecureRandom random = new SecureRandom(seed.getBytes());
+				generator.initialize(AsyncCrypter.DEFAULT_KEY_SIZE, random);
+			}
+
+			KeyPair key = generator.generateKeyPair();
+			this.init(key.getPrivate(), key.getPublic(), a);
+		} catch (Exception e) {
+			throw new CrypterException(e);
+		}
+	}
+
+	public AsyncCrypter(final InputStream privateKey, final InputStream publicKey) {
+		try {
+			if (publicKey == null) {
+				throw new IllegalArgumentException("PublicKey must be not null");
+			}
+
+			KeyData publicData = (KeyData) Base64Utils.unserialize(publicKey);
+
+			PrivateKey pik = null;
+			PublicKey puk = (PublicKey) publicData.getKey();
+			Algorithm algorithm = Algorithm.fromString(publicData.getAlgorithm());
+
+			if (privateKey != null) {
+				KeyData privateData = (KeyData) Base64Utils.unserialize(publicKey);
+				pik = (PrivateKey) privateData.getKey();
+			}
+
+			this.init(pik, puk, algorithm);
+		} catch (Exception e) {
+			throw new CrypterException(e);
+		}
+	}
+
+	private void init(final PrivateKey privateKey, final PublicKey publicKey, final Algorithm algorithm) {
+		this.setAlgorithm(algorithm.algorithm());
 
 		if (publicKey == null) {
 			throw new IllegalArgumentException("Public key must be not null");
@@ -65,12 +108,12 @@ public class AsyncCrypter extends CrypterBase<AsyncAlgorithm> {
 		}
 		try {
 			if (this.getEncryptCipher() == null) {
-				this.setEncryptCipher(Cipher.getInstance(this.getAlgorithm().algorithm()));
+				this.setEncryptCipher(Cipher.getInstance(this.getAlgorithm()));
 				this.getEncryptCipher().init(Cipher.ENCRYPT_MODE, this.privateKey);
 			}
-			byte[] bytes = str.getBytes(this.getCharset().charset());
+			byte[] bytes = str.getBytes();
 			byte[] enc = this.getEncryptCipher().doFinal(bytes);
-			return new String(Base64Utils.toBase64(enc));
+			return new String(enc);
 		} catch (Exception e) {
 			throw new CrypterException(e);
 		}
@@ -79,12 +122,11 @@ public class AsyncCrypter extends CrypterBase<AsyncAlgorithm> {
 	public String decrypt(final String str) {
 		try {
 			if (this.getDecryptCipher() == null) {
-				this.setDecryptCipher(Cipher.getInstance(this.getAlgorithm().algorithm()));
+				this.setDecryptCipher(Cipher.getInstance(this.getAlgorithm()));
 				this.getDecryptCipher().init(Cipher.DECRYPT_MODE, this.publicKey);
 			}
-			byte[] dec = Base64Utils.fromBase64(str.getBytes());
-			byte[] bytes = this.getDecryptCipher().doFinal(dec);
-			return new String(bytes, this.getCharset().charset());
+			byte[] bytes = this.getDecryptCipher().doFinal(str.getBytes());
+			return new String(bytes);
 		} catch (Exception e) {
 			throw new CrypterException(e);
 		}
@@ -106,57 +148,29 @@ public class AsyncCrypter extends CrypterBase<AsyncAlgorithm> {
 		}
 	}
 
-	public static AsyncCrypter getInstance(final InputStream privateKey, final InputStream publicKey) {
-		try {
-			if (publicKey == null) {
-				throw new IllegalArgumentException("PublicKey must be not null");
-			}
+	public static enum Algorithm {
 
-			KeyData publicData = (KeyData) Base64Utils.unserialize(publicKey);
+		DEFAULT_ASYNC("RSA"), DSA("DSA"), DIFFIE_HELLMAN("DiffieHellman"), RSA("RSA");
 
-			PrivateKey pik = null;
-			PublicKey puk = (PublicKey) publicData.getKey();
-			AsyncAlgorithm algorithm = AsyncAlgorithm.fromString(publicData.getAlgorithm());
-			Charset charset = publicData.getCharset();
+		private String	algorithm;
 
-			if (privateKey != null) {
-				KeyData privateData = (KeyData) Base64Utils.unserialize(publicKey);
-				pik = (PrivateKey) privateData.getKey();
-			}
-
-			return new AsyncCrypter(pik, puk, algorithm, charset);
-		} catch (Exception e) {
-			throw new CrypterException(e);
+		private Algorithm(final String algorithm) {
+			this.algorithm = algorithm;
 		}
-	}
 
-	public static AsyncCrypter newInstance(final String seed) {
-		return AsyncCrypter.newInstance(null, null, seed);
-	}
-
-	public static AsyncCrypter newInstance(final AsyncAlgorithm algorithm, final Charset charset, final String seed) {
-		try {
-			AsyncAlgorithm a = algorithm;
-			Charset c = charset;
-			if (a == null) {
-				a = AsyncAlgorithm.DEFAULT_ASYNC;
-			}
-			if (c == null) {
-				c = Charset.DEFAULT;
-			}
-
-			KeyPairGenerator generator = KeyPairGenerator.getInstance(a.algorithm());
-
-			if (StringUtils.isEmpty(seed)) {
-				SecureRandom random = new SecureRandom(seed.getBytes());
-				generator.initialize(AsyncCrypter.DEFAULT_KEY_SIZE, random);
-			}
-
-			KeyPair key = generator.generateKeyPair();
-			return new AsyncCrypter(key.getPrivate(), key.getPublic(), a, c);
-		} catch (Exception e) {
-			throw new CrypterException(e);
+		public String algorithm() {
+			return this.algorithm;
 		}
+
+		public static Algorithm fromString(final String algorithm) {
+			for (Algorithm s : Algorithm.values()) {
+				if (s.algorithm().equalsIgnoreCase(algorithm)) {
+					return s;
+				}
+			}
+			return null;
+		}
+
 	}
 
 }

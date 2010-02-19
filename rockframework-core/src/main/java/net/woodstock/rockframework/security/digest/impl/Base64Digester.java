@@ -14,29 +14,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.security.crypt.impl;
+package net.woodstock.rockframework.security.digest.impl;
 
-public enum AsyncAlgorithm {
+import net.woodstock.rockframework.security.digest.Digester;
+import net.woodstock.rockframework.utils.Base64Utils;
 
-	DEFAULT_ASYNC("RSA"), DSA("DSA"), DIFFIE_HELLMAN("DiffieHellman"), RSA("RSA");
+public final class Base64Digester implements Digester {
 
-	private String	algorithm;
+	private Digester	digester;
 
-	private AsyncAlgorithm(final String algorithm) {
-		this.algorithm = algorithm;
+	private Base64Digester(final Digester digester) {
+		super();
+		this.digester = digester;
 	}
 
-	public String algorithm() {
-		return this.algorithm;
-	}
-
-	public static AsyncAlgorithm fromString(final String algorithm) {
-		for (AsyncAlgorithm s : AsyncAlgorithm.values()) {
-			if (s.algorithm().equalsIgnoreCase(algorithm)) {
-				return s;
-			}
-		}
-		return null;
+	@Override
+	public String digest(final String data) {
+		String digest = this.digester.digest(data);
+		digest = new String(Base64Utils.toBase64(digest));
+		return digest;
 	}
 
 }

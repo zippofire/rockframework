@@ -18,38 +18,22 @@ package net.woodstock.rockframework.security.crypt.impl;
 
 import javax.crypto.Cipher;
 
-import net.woodstock.rockframework.security.common.Charset;
 import net.woodstock.rockframework.security.crypt.Crypter;
 
-abstract class CrypterBase<A> implements Crypter {
+abstract class CrypterBase implements Crypter {
 
-	private A		algorithm;
-
-	private Charset	charset;
+	private String	algorithm;
 
 	private Cipher	encryptCipher;
 
 	private Cipher	decryptCipher;
 
-	protected CrypterBase(final A algorithm, final Charset charset) {
-		this.algorithm = algorithm;
-		this.charset = charset;
-	}
-
-	public A getAlgorithm() {
+	public String getAlgorithm() {
 		return this.algorithm;
 	}
 
-	protected void setAlgorithm(final A algorithm) {
+	protected void setAlgorithm(final String algorithm) {
 		this.algorithm = algorithm;
-	}
-
-	public Charset getCharset() {
-		return this.charset;
-	}
-
-	protected void setCharset(final Charset charset) {
-		this.charset = charset;
 	}
 
 	public Cipher getEncryptCipher() {

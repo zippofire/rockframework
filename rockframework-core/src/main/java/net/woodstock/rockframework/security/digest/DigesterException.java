@@ -16,18 +16,22 @@
  */
 package net.woodstock.rockframework.security.digest;
 
-public enum Algorithm {
+import net.woodstock.rockframework.security.SecurityException;
 
-	DEFAULT("SHA-1"), MD2("MD2"), MD5("MD5"), SHA_1("SHA-1"), SHA_256("SHA-256"), SHA_384("SHA-384,"), SHA_512("SHA-512");
+public class DigesterException extends SecurityException {
 
-	private String	algorithm;
+	private static final long	serialVersionUID	= 1L;
 
-	private Algorithm(final String algorithm) {
-		this.algorithm = algorithm;
+	public DigesterException(final String message) {
+		super(message);
 	}
 
-	public String algorithm() {
-		return this.algorithm;
+	public DigesterException(final Throwable cause) {
+		super(cause);
+	}
+
+	public DigesterException(final String message, final Throwable cause) {
+		super(message, cause);
 	}
 
 }

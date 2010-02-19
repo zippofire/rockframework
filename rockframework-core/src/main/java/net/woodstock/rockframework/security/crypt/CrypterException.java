@@ -16,13 +16,11 @@
  */
 package net.woodstock.rockframework.security.crypt;
 
-public class CrypterException extends RuntimeException {
+import net.woodstock.rockframework.security.SecurityException;
+
+public class CrypterException extends SecurityException {
 
 	private static final long	serialVersionUID	= 1L;
-
-	public CrypterException() {
-		super();
-	}
 
 	public CrypterException(final String message) {
 		super(message);

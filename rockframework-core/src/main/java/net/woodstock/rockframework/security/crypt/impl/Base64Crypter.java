@@ -16,27 +16,30 @@
  */
 package net.woodstock.rockframework.security.crypt.impl;
 
-public enum SyncAlgorithm {
+import net.woodstock.rockframework.security.crypt.Crypter;
+import net.woodstock.rockframework.utils.Base64Utils;
 
-	AES("AES"), BLOWFISH("Blowfish"), DEFAULT_SYNC("DESede"), DESAES("DESAES"), DES("DES"), DESEDE("DESede"), MD5("HmacMD5"), SHA1("HmacSHA1");
+public class Base64Crypter implements Crypter {
 
-	private String	algorithm;
+	private Crypter	crypter;
 
-	private SyncAlgorithm(final String algorithm) {
-		this.algorithm = algorithm;
+	public Base64Crypter(final Crypter crypter) {
+		super();
+		this.crypter = crypter;
 	}
 
-	public String algorithm() {
-		return this.algorithm;
+	@Override
+	public String decrypt(final String str) {
+		String b64 = Base64Utils.fromBase64(str);
+		String dec = this.crypter.decrypt(b64);
+		return dec;
 	}
 
-	public static SyncAlgorithm fromString(final String algorithm) {
-		for (SyncAlgorithm s : SyncAlgorithm.values()) {
-			if (s.algorithm().equalsIgnoreCase(algorithm)) {
-				return s;
-			}
-		}
-		return null;
+	@Override
+	public String encrypt(final String str) {
+		String enc = this.crypter.encrypt(str);
+		String b64 = Base64Utils.toBase64(enc);
+		return b64;
 	}
 
 }
