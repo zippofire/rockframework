@@ -16,9 +16,6 @@
  */
 package net.woodstock.rockframework.web.struts;
 
-import net.woodstock.rockframework.web.config.WebLog;
-
-import org.apache.commons.logging.Log;
 import org.apache.struts.action.DynaActionForm;
 
 public abstract class BaseDynaForm extends DynaActionForm {
@@ -88,10 +85,6 @@ public abstract class BaseDynaForm extends DynaActionForm {
 			o = o.toString();
 		}
 		return (String) o;
-	}
-
-	protected Log getLog() {
-		return WebLog.getInstance().getLog();
 	}
 
 }

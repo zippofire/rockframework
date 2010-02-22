@@ -18,9 +18,9 @@ package net.woodstock.rockframework.web.tomcat;
 
 import java.util.List;
 
-import org.apache.catalina.realm.GenericPrincipal;
-
 import net.woodstock.rockframework.utils.ArrayUtils;
+
+import org.apache.catalina.realm.GenericPrincipal;
 
 public class SimplePrincipal extends GenericPrincipal {
 

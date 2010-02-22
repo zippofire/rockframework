@@ -25,9 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.woodstock.rockframework.utils.ClassUtils;
-import net.woodstock.rockframework.web.config.WebLog;
 
-import org.apache.commons.logging.Log;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -87,9 +85,5 @@ public abstract class BaseDispatchAction extends DispatchAction {
 
 	protected ActionMapping getMapping() {
 		return BaseDispatchAction.currentMapping.get();
-	}
-
-	protected Log getLog() {
-		return WebLog.getInstance().getLog();
 	}
 }

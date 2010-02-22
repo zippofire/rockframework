@@ -41,7 +41,7 @@ public abstract class AbstractJEEBusiness extends AbstractBusiness {
 	}
 
 	private ValidationResult validate(final Entity entity) {
-		Set<ConstraintViolation<Entity>> constraintViolations = validator.validate(entity);
+		Set<ConstraintViolation<Entity>> constraintViolations = AbstractJEEBusiness.validator.validate(entity);
 		if (constraintViolations.size() > 0) {
 			ConstraintViolation<Entity> violation = constraintViolations.iterator().next();
 			String message = violation.getMessage();

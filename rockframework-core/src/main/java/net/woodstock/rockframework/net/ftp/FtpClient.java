@@ -28,7 +28,6 @@ import java.util.LinkedHashSet;
 
 import net.woodstock.rockframework.config.CoreLog;
 
-import org.apache.commons.logging.Log;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
@@ -54,10 +53,6 @@ public class FtpClient implements Serializable {
 		this.password = password;
 		this.client = new FTPClient();
 		this.connect();
-	}
-
-	protected Log getLog() {
-		return CoreLog.getInstance().getLog();
 	}
 
 	public void active() {
@@ -96,7 +91,7 @@ public class FtpClient implements Serializable {
 		if (!this.client.login(this.username, this.password)) {
 			throw new SocketException(this.client.getReplyString());
 		}
-		this.getLog().debug(this.client.getReplyString().trim());
+		CoreLog.getInstance().getLog().debug(this.client.getReplyString().trim());
 	}
 
 	public void disconnect() throws IOException {
@@ -115,7 +110,7 @@ public class FtpClient implements Serializable {
 			FileOutputStream output = new FileOutputStream(f);
 			this.client.retrieveFile(src, output);
 			output.close();
-			this.getLog().debug(this.client.getReplyString().trim());
+			CoreLog.getInstance().getLog().debug(this.client.getReplyString().trim());
 			return f;
 		}
 		return null;
@@ -141,7 +136,7 @@ public class FtpClient implements Serializable {
 		Collection<String> l = new LinkedHashSet<String>();
 		if (this.client.isConnected()) {
 			FTPFile[] ls = this.client.listFiles();
-			this.getLog().debug(this.client.getReplyString().trim());
+			CoreLog.getInstance().getLog().debug(this.client.getReplyString().trim());
 			for (FTPFile f : ls) {
 				l.add(f.getName());
 			}
@@ -152,7 +147,7 @@ public class FtpClient implements Serializable {
 	public boolean put(final String name) throws IOException {
 		if (this.client.isConnected()) {
 			boolean put = this.client.storeFile(name, new FileInputStream(name));
-			this.getLog().debug(this.client.getReplyString().trim());
+			CoreLog.getInstance().getLog().debug(this.client.getReplyString().trim());
 			return put;
 		}
 		return false;
@@ -161,7 +156,7 @@ public class FtpClient implements Serializable {
 	public boolean put(final File f) throws IOException {
 		if (this.client.isConnected()) {
 			boolean put = this.client.storeFile(f.getName(), new FileInputStream(f));
-			this.getLog().debug(this.client.getReplyString().trim());
+			CoreLog.getInstance().getLog().debug(this.client.getReplyString().trim());
 			return put;
 		}
 		return false;
@@ -170,7 +165,7 @@ public class FtpClient implements Serializable {
 	public boolean put(final String name, final InputStream input) throws IOException {
 		if (this.client.isConnected()) {
 			boolean put = this.client.storeFile(name, input);
-			this.getLog().debug(this.client.getReplyString().trim());
+			CoreLog.getInstance().getLog().debug(this.client.getReplyString().trim());
 			return put;
 		}
 		return false;
@@ -179,7 +174,7 @@ public class FtpClient implements Serializable {
 	public String pwd() throws IOException {
 		if (this.client.isConnected()) {
 			String pwd = this.client.printWorkingDirectory();
-			this.getLog().debug(this.client.getReplyString().trim());
+			CoreLog.getInstance().getLog().debug(this.client.getReplyString().trim());
 			return pwd;
 		}
 		return null;
@@ -188,7 +183,7 @@ public class FtpClient implements Serializable {
 	public boolean rm(final String name) throws IOException {
 		if (this.client.isConnected()) {
 			boolean rm = this.client.deleteFile(name);
-			this.getLog().debug(this.client.getReplyString().trim());
+			CoreLog.getInstance().getLog().debug(this.client.getReplyString().trim());
 			return rm;
 		}
 		return false;

@@ -24,10 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import net.woodstock.rockframework.web.config.WebLog;
-
-import org.apache.commons.logging.Log;
-
 public abstract class ManagedBean implements Serializable {
 
 	private static final long	serialVersionUID	= 184189110204186026L;
@@ -48,11 +44,6 @@ public abstract class ManagedBean implements Serializable {
 
 	public ManagedBean() {
 		super();
-	}
-
-	// Logger
-	protected Log getLog() {
-		return WebLog.getInstance().getLog();
 	}
 
 	// Faces

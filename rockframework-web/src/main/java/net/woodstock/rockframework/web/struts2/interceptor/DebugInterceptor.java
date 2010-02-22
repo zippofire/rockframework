@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import net.woodstock.rockframework.utils.ArrayUtils;
+import net.woodstock.rockframework.web.config.WebLog;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.ActionProxy;
@@ -97,17 +98,17 @@ public class DebugInterceptor extends BaseInterceptor {
 
 	private void log(final String message) {
 		if (this.level.equals("TRACE")) {
-			this.getLog().trace(message);
+			WebLog.getInstance().getLog().trace(message);
 		} else if (this.level.equals("DEBUG")) {
-			this.getLog().debug(message);
+			WebLog.getInstance().getLog().debug(message);
 		} else if (this.level.equals("INFO")) {
-			this.getLog().info(message);
+			WebLog.getInstance().getLog().info(message);
 		} else if (this.level.equals("WARN")) {
-			this.getLog().warn(message);
+			WebLog.getInstance().getLog().warn(message);
 		} else if (this.level.equals("ERROR")) {
-			this.getLog().error(message);
+			WebLog.getInstance().getLog().error(message);
 		} else if (this.level.equals("FATAL")) {
-			this.getLog().fatal(message);
+			WebLog.getInstance().getLog().fatal(message);
 		}
 	}
 

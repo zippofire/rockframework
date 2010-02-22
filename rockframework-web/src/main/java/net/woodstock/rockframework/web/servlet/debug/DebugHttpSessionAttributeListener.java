@@ -19,7 +19,9 @@ package net.woodstock.rockframework.web.servlet.debug;
 import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;
 
-public class DebugHttpSessionAttributeListener extends AbstractDebugListener implements HttpSessionAttributeListener {
+import net.woodstock.rockframework.web.config.WebLog;
+
+public class DebugHttpSessionAttributeListener implements HttpSessionAttributeListener {
 
 	public void attributeAdded(final HttpSessionBindingEvent event) {
 		StringBuilder builder = new StringBuilder();
@@ -30,7 +32,7 @@ public class DebugHttpSessionAttributeListener extends AbstractDebugListener imp
 		builder.append("\nName    : " + event.getName());
 		builder.append("\nValue   : " + event.getValue());
 		builder.append("\nClass   : " + event.getValue().getClass().getCanonicalName());
-		this.getLog().info(builder.toString());
+		WebLog.getInstance().getLog().info(builder.toString());
 	}
 
 	public void attributeRemoved(final HttpSessionBindingEvent event) {
@@ -42,7 +44,7 @@ public class DebugHttpSessionAttributeListener extends AbstractDebugListener imp
 		builder.append("\nName    : " + event.getName());
 		builder.append("\nValue   : " + event.getValue());
 		builder.append("\nClass   : " + event.getValue().getClass().getCanonicalName());
-		this.getLog().info(builder.toString());
+		WebLog.getInstance().getLog().info(builder.toString());
 	}
 
 	public void attributeReplaced(final HttpSessionBindingEvent event) {
@@ -54,7 +56,7 @@ public class DebugHttpSessionAttributeListener extends AbstractDebugListener imp
 		builder.append("\nName    : " + event.getName());
 		builder.append("\nValue   : " + event.getValue());
 		builder.append("\nClass   : " + event.getValue().getClass().getCanonicalName());
-		this.getLog().info(builder.toString());
+		WebLog.getInstance().getLog().info(builder.toString());
 	}
 
 }

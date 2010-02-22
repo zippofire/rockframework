@@ -16,15 +16,8 @@
  */
 package net.woodstock.rockframework.conversion.common;
 
-import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.conversion.Converter;
 
-import org.apache.commons.logging.Log;
-
 public abstract class AbstractConverter<F, T> implements Converter<F, T> {
-
-	protected Log getLog() {
-		return CoreLog.getInstance().getLog();
-	}
-
+	//
 }

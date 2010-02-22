@@ -16,9 +16,6 @@
  */
 package net.woodstock.rockframework.web.wicket;
 
-import net.woodstock.rockframework.web.config.WebLog;
-
-import org.apache.commons.logging.Log;
 import org.apache.wicket.Application;
 import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.WebApplication;
@@ -34,11 +31,6 @@ public abstract class AbstractApplication extends WebApplication {
 
 	@Override
 	public abstract String getConfigurationType();
-
-	// Log
-	protected Log getLog() {
-		return WebLog.getInstance().getLog();
-	}
 
 	public static enum ConfigurationType {
 		DEPLOYMENT(Application.DEPLOYMENT), DEVELOPMENT(Application.DEVELOPMENT);

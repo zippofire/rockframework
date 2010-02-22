@@ -19,9 +19,6 @@ package net.woodstock.rockframework.web.struts;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
-import net.woodstock.rockframework.web.config.WebLog;
-
-import org.apache.commons.logging.Log;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 
@@ -39,10 +36,8 @@ public abstract class BaseForm extends ActionForm {
 		this.reset();
 	}
 
-	public abstract void reset();
-
-	protected Log getLog() {
-		return WebLog.getInstance().getLog();
+	public void reset() {
+		//
 	}
 
 }

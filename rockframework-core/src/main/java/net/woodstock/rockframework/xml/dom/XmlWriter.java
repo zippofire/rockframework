@@ -21,7 +21,6 @@ import java.io.Writer;
 
 import net.woodstock.rockframework.config.CoreLog;
 
-import org.apache.commons.logging.Log;
 import org.w3c.dom.Document;
 
 abstract class XmlWriter {
@@ -34,10 +33,6 @@ abstract class XmlWriter {
 
 	private static XmlWriter		instance				= XmlWriter.getAvailable();
 
-	protected static Log getLog() {
-		return CoreLog.getInstance().getLog();
-	}
-
 	public abstract void write(Document document, Writer writer) throws IOException;
 
 	public static XmlWriter getInstance() {
@@ -48,13 +43,13 @@ abstract class XmlWriter {
 		try {
 			Class.forName(XmlWriter.APACHE_XML_SERIALIZER);
 			XmlWriter xmlWriter = new ApacheXmlWriter();
-			XmlWriter.getLog().info("Using Apache XML serializer(Xerces)");
+			CoreLog.getInstance().getLog().info("Using Apache XML serializer(Xerces)");
 			return xmlWriter;
 		} catch (ClassNotFoundException e) {
 			try {
 				Class.forName(XmlWriter.SUN_XML_SERIALIZER);
 				XmlWriter xmlWriter = new SunXmlWriter();
-				XmlWriter.getLog().info("Using Sun XML serializer");
+				CoreLog.getInstance().getLog().info("Using Sun XML serializer");
 				return xmlWriter;
 			} catch (ClassNotFoundException ee) {
 				throw new UnsupportedOperationException("No XML serializer found");

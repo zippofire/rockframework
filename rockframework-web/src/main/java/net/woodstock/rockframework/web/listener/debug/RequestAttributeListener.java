@@ -20,18 +20,19 @@ import javax.servlet.ServletRequestEvent;
 import javax.servlet.ServletRequestListener;
 import javax.servlet.http.HttpServletRequest;
 
+import net.woodstock.rockframework.web.config.WebLog;
 import net.woodstock.rockframework.web.listener.BaseListener;
 
 public class RequestAttributeListener extends BaseListener implements ServletRequestListener {
 
 	public void requestInitialized(final ServletRequestEvent sre) {
 		HttpServletRequest request = (HttpServletRequest) sre.getServletRequest();
-		this.getLog().info("Initialized request on URL " + request.getRequestURI() + " for client " + request.getRemoteAddr());
+		WebLog.getInstance().getLog().info("Initialized request on URL " + request.getRequestURI() + " for client " + request.getRemoteAddr());
 	}
 
 	public void requestDestroyed(final ServletRequestEvent sre) {
 		HttpServletRequest request = (HttpServletRequest) sre.getServletRequest();
-		this.getLog().info("Destroyed request on URL " + request.getRequestURI() + " for client " + request.getRemoteAddr());
+		WebLog.getInstance().getLog().info("Destroyed request on URL " + request.getRequestURI() + " for client " + request.getRemoteAddr());
 	}
 
 }

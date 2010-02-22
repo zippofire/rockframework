@@ -18,6 +18,7 @@ package net.woodstock.rockframework.domain.persistence.query.impl;
 
 import java.util.Map;
 
+import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.domain.persistence.query.CacheMode;
 import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
 
@@ -43,7 +44,7 @@ public class HibernateQueryBuilder extends EJBQLQueryBuilder<Query> {
 
 	@Override
 	protected void setQueryParameter(final Object query, final String name, final Object value) {
-		this.getLog().debug("Setting parameter[" + name + "] => " + value);
+		CoreLog.getInstance().getLog().debug("Setting parameter[" + name + "] => " + value);
 		Query q = (Query) query;
 		q.setParameter(name, value);
 	}

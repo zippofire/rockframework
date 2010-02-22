@@ -18,12 +18,9 @@ package net.woodstock.rockframework.reflection.impl;
 
 import java.lang.reflect.Method;
 
-import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.ReflectionException;
-
-import org.apache.commons.logging.Log;
 
 abstract class AbstractPropertyDescriptor implements PropertyDescriptor {
 
@@ -119,11 +116,6 @@ abstract class AbstractPropertyDescriptor implements PropertyDescriptor {
 	@Override
 	public String toString() {
 		return this.getName();
-	}
-
-	// Logger
-	public Log getLog() {
-		return CoreLog.getInstance().getLog();
 	}
 
 }

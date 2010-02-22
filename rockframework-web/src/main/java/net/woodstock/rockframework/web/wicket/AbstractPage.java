@@ -16,9 +16,6 @@
  */
 package net.woodstock.rockframework.web.wicket;
 
-import net.woodstock.rockframework.web.config.WebLog;
-
-import org.apache.commons.logging.Log;
 import org.apache.wicket.IPageMap;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebPage;
@@ -48,11 +45,6 @@ public class AbstractPage extends WebPage {
 
 	public AbstractPage(final PageParameters parameters) {
 		super(parameters);
-	}
-
-	// Log
-	protected Log getLog() {
-		return WebLog.getInstance().getLog();
 	}
 
 }

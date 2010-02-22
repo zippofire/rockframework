@@ -20,10 +20,6 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
-import net.woodstock.rockframework.web.config.WebLog;
-
-import org.apache.commons.logging.Log;
-
 public abstract class BaseServlet extends HttpServlet {
 
 	private static final long	serialVersionUID	= -5677220024908433472L;
@@ -42,11 +38,6 @@ public abstract class BaseServlet extends HttpServlet {
 	@SuppressWarnings("unused")
 	public void doInit() throws ServletException {
 		//
-	}
-
-	// Logger
-	protected Log getLog() {
-		return WebLog.getInstance().getLog();
 	}
 
 }

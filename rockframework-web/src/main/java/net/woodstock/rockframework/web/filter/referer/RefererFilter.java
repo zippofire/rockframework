@@ -23,6 +23,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.woodstock.rockframework.web.config.WebLog;
 import net.woodstock.rockframework.web.filter.HttpFilter;
 
 public abstract class RefererFilter extends HttpFilter {
@@ -41,7 +42,7 @@ public abstract class RefererFilter extends HttpFilter {
 		if (!b) {
 			String url = request.getRequestURI();
 			String referer = this.getReferer(request);
-			this.getLog().info("Invalid referer for URL: " + url + " referer: " + referer);
+			WebLog.getInstance().getLog().info("Invalid referer for URL: " + url + " referer: " + referer);
 			response.setStatus(RefererFilter.BAD_REQUEST);
 			return;
 		}

@@ -19,11 +19,13 @@ package net.woodstock.rockframework.domain.persistence.query.impl;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.woodstock.rockframework.config.CoreLog;
+
 public class QueryBuilderAdapter extends EJBQLQueryBuilder<Object> {
 
 	@Override
 	protected Object getQuery(final String sql) {
-		this.getLog().warn("getQueryLocal(" + sql + ")");
+		CoreLog.getInstance().getLog().warn("getQueryLocal(" + sql + ")");
 		return null;
 	}
 
@@ -42,12 +44,12 @@ public class QueryBuilderAdapter extends EJBQLQueryBuilder<Object> {
 			}
 		}
 		builder.append(")");
-		this.getLog().warn(builder.toString());
+		CoreLog.getInstance().getLog().warn(builder.toString());
 	}
 
 	@Override
 	protected void setQueryParameter(final Object query, final String name, final Object value) {
-		this.getLog().warn("setQueryParameter[" + name + "] => " + value);
+		CoreLog.getInstance().getLog().warn("setQueryParameter[" + name + "] => " + value);
 	}
 
 }

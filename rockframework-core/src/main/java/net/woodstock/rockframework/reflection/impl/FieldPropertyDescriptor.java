@@ -20,6 +20,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 
 class FieldPropertyDescriptor extends AbstractPropertyDescriptor {
@@ -48,7 +49,7 @@ class FieldPropertyDescriptor extends AbstractPropertyDescriptor {
 				readMethodName = this.getMethodName(BeanDescriptorHelper.IS_METHOD_PREFIX, this.field);
 				readMethod = c.getMethod(readMethodName, new Class[] {});
 			} catch (NoSuchMethodException e) {
-				this.getLog().debug(e.getMessage(), e);
+				CoreLog.getInstance().getLog().debug(e.getMessage(), e);
 			}
 			// Get
 		} else {
@@ -56,7 +57,7 @@ class FieldPropertyDescriptor extends AbstractPropertyDescriptor {
 				readMethodName = this.getMethodName(BeanDescriptorHelper.GET_METHOD_PREFIX, this.field);
 				readMethod = c.getMethod(readMethodName, new Class[] {});
 			} catch (NoSuchMethodException e) {
-				this.getLog().debug(e.getMessage(), e);
+				CoreLog.getInstance().getLog().debug(e.getMessage(), e);
 			}
 		}
 		this.setReadMethodName(readMethodName);
@@ -72,7 +73,7 @@ class FieldPropertyDescriptor extends AbstractPropertyDescriptor {
 			writeMethodName = this.getMethodName(BeanDescriptorHelper.SET_METHOD_PREFIX, this.field);
 			writeMethod = c.getMethod(writeMethodName, new Class[] { this.field.getType() });
 		} catch (NoSuchMethodException e) {
-			this.getLog().debug(e.getMessage(), e);
+			CoreLog.getInstance().getLog().debug(e.getMessage(), e);
 		}
 		this.setWriteMethodName(writeMethodName);
 		this.setWriteMethod(writeMethod);

@@ -21,9 +21,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.woodstock.rockframework.web.config.WebLog;
-
-import org.apache.commons.logging.Log;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -70,10 +67,6 @@ public abstract class BaseAction<F extends ActionForm> extends Action {
 
 	protected ActionMapping getMapping() {
 		return BaseAction.currentMapping.get();
-	}
-
-	protected Log getLog() {
-		return WebLog.getInstance().getLog();
 	}
 
 	protected abstract StrutsResult execute(F form, HttpServletRequest request, HttpServletResponse response) throws Exception;

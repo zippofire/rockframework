@@ -16,15 +16,8 @@
  */
 package net.woodstock.rockframework.domain.persistence.query.impl;
 
-import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
 
-import org.apache.commons.logging.Log;
-
 abstract class AbstractQueryBuilder<T> implements QueryBuilder<T> {
-
-	protected Log getLog() {
-		return CoreLog.getInstance().getLog();
-	}
-
+	//
 }

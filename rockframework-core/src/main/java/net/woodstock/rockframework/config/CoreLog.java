@@ -23,7 +23,7 @@ public final class CoreLog extends AbstractLog {
 	private static CoreLog		instance	= new CoreLog();
 
 	private CoreLog() {
-		super(LOG_NAME);
+		super(CoreLog.LOG_NAME);
 	}
 
 	public static CoreLog getInstance() {

@@ -21,6 +21,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import net.woodstock.rockframework.web.config.WebLog;
+
 public class DateTimeConverter extends SimpleValueConverter<Date> {
 
 	private DateFormat	format;
@@ -37,7 +39,7 @@ public class DateTimeConverter extends SimpleValueConverter<Date> {
 			Date d = this.format.parse(s);
 			return d;
 		} catch (ParseException e) {
-			this.getLog().warn(e.getMessage(), e);
+			WebLog.getInstance().getLog().warn(e.getMessage(), e);
 			return null;
 		}
 	}

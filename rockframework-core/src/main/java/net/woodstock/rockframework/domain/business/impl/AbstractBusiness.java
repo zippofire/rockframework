@@ -16,13 +16,10 @@
  */
 package net.woodstock.rockframework.domain.business.impl;
 
-import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.GenericBusiness;
 import net.woodstock.rockframework.domain.business.ValidationResult;
-
-import org.apache.commons.logging.Log;
 
 @SuppressWarnings("unchecked")
 abstract class AbstractBusiness implements GenericBusiness {
@@ -69,11 +66,6 @@ abstract class AbstractBusiness implements GenericBusiness {
 			message = CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_INVALID_OBJECT, entity);
 		}
 		return new ValidationResult(error, message);
-	}
-
-	// Logger
-	protected Log getLog() {
-		return CoreLog.getInstance().getLog();
 	}
 
 }

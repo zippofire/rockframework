@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.Writer;
 
 import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.web.config.WebLog;
 import net.woodstock.rockframework.web.jsp.taglib.BaseTag;
 
 public class FormatTag extends BaseTag {
@@ -50,7 +51,7 @@ public class FormatTag extends BaseTag {
 		try {
 			formated = StringUtils.format(this.format, value, character);
 		} catch (ArrayIndexOutOfBoundsException e) {
-			this.getLog().warn(e.getMessage(), e);
+			WebLog.getInstance().getLog().warn(e.getMessage(), e);
 			formated = FormatTag.ERROR_VALUE;
 		}
 

@@ -20,10 +20,6 @@ import java.lang.annotation.Annotation;
 
 import javax.validation.ConstraintValidator;
 
-import net.woodstock.rockframework.config.CoreLog;
-
-import org.apache.commons.logging.Log;
-
 public abstract class AbstractValidator<A extends Annotation, T> implements ConstraintValidator<A, T> {
 
 	private A	annotation;
@@ -39,10 +35,6 @@ public abstract class AbstractValidator<A extends Annotation, T> implements Cons
 
 	public A getAnnotation() {
 		return this.annotation;
-	}
-
-	protected Log getLog() {
-		return CoreLog.getInstance().getLog();
 	}
 
 }

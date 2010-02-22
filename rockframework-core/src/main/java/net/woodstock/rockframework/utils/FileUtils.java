@@ -66,7 +66,7 @@ public abstract class FileUtils {
 		if (StringUtils.isEmpty(src)) {
 			return null;
 		}
-		String fileName = getFileName(src);
+		String fileName = FileUtils.getFileName(src);
 		if (fileName != null) {
 			if (fileName.indexOf('.') != -1) {
 				return fileName.substring(fileName.lastIndexOf('.') + 1);

@@ -19,6 +19,8 @@ package net.woodstock.rockframework.domain.ejb.jms;
 import javax.jms.JMSException;
 import javax.jms.Message;
 
+import net.woodstock.rockframework.config.CoreLog;
+
 public abstract class GenericMessageListener<T extends Message> extends AbstractMessageListener {
 
 	@Override
@@ -28,7 +30,7 @@ public abstract class GenericMessageListener<T extends Message> extends Abstract
 			T sm = (T) message;
 			this.onLocalMessage(sm);
 		} catch (Exception e) {
-			this.getLog().warn(e.getMessage(), e);
+			CoreLog.getInstance().getLog().warn(e.getMessage(), e);
 			this.getContext().setRollbackOnly();
 		}
 	}

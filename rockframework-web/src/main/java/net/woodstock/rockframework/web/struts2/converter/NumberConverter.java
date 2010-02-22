@@ -20,6 +20,8 @@ import java.lang.reflect.Constructor;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
+import net.woodstock.rockframework.web.config.WebLog;
+
 public abstract class NumberConverter extends SimpleValueConverter<Number> {
 
 	private NumberFormat	format;
@@ -42,7 +44,7 @@ public abstract class NumberConverter extends SimpleValueConverter<Number> {
 			Constructor<? extends Number> constructor = toClass.getConstructor(new Class[] { String.class });
 			return constructor.newInstance(new Object[] { n.toString() });
 		} catch (Exception e) {
-			this.getLog().warn(e.getMessage(), e);
+			WebLog.getInstance().getLog().warn(e.getMessage(), e);
 			return null;
 		}
 	}

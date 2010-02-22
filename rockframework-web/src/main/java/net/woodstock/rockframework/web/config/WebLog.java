@@ -25,7 +25,7 @@ public final class WebLog extends AbstractLog {
 	private static WebLog		instance	= new WebLog();
 
 	private WebLog() {
-		super(LOG_NAME);
+		super(WebLog.LOG_NAME);
 	}
 
 	public static WebLog getInstance() {

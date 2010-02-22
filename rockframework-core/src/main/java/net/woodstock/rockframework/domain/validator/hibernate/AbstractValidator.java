@@ -18,9 +18,6 @@ package net.woodstock.rockframework.domain.validator.hibernate;
 
 import java.lang.annotation.Annotation;
 
-import net.woodstock.rockframework.config.CoreLog;
-
-import org.apache.commons.logging.Log;
 import org.hibernate.validator.Validator;
 
 public abstract class AbstractValidator<A extends Annotation> implements Validator<A> {
@@ -38,10 +35,6 @@ public abstract class AbstractValidator<A extends Annotation> implements Validat
 
 	public A getAnnotation() {
 		return this.annotation;
-	}
-
-	protected Log getLog() {
-		return CoreLog.getInstance().getLog();
 	}
 
 }

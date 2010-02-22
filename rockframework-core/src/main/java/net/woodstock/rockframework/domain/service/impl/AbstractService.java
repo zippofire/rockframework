@@ -16,19 +16,12 @@
  */
 package net.woodstock.rockframework.domain.service.impl;
 
-import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.domain.service.Service;
-
-import org.apache.commons.logging.Log;
 
 public abstract class AbstractService implements Service {
 
 	public AbstractService() {
 		super();
-	}
-
-	protected Log getLog() {
-		return CoreLog.getInstance().getLog();
 	}
 
 }

@@ -27,6 +27,7 @@ import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.ReflectionType;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactoryImpl;
 import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.web.config.WebLog;
 import ognl.NoSuchPropertyException;
 import ognl.Ognl;
 import ognl.OgnlException;
@@ -89,17 +90,17 @@ public class EntityInterceptor extends BaseInterceptor {
 					Constructor<?> contructor = clazz.getConstructor(new Class[] { String.class });
 					Object fieldValue = contructor.newInstance(new Object[] { value });
 
-					this.getLog().info("Setting entity ID " + entityName + "[" + fieldValue + "]");
+					WebLog.getInstance().getLog().info("Setting entity ID " + entityName + "[" + fieldValue + "]");
 					propertyDescriptor.setValue(entity, fieldValue);
 				} catch (NoSuchMethodException e) {
-					this.getLog().warn("Could not find constructor " + entity.getClass().getCanonicalName() + "(String). Parameter not setted");
+					WebLog.getInstance().getLog().warn("Could not find constructor " + entity.getClass().getCanonicalName() + "(String). Parameter not setted");
 				} catch (Exception e) {
-					this.getLog().warn("Error in constructor " + entity.getClass().getCanonicalName() + "(String)");
-					this.getLog().warn(e.getMessage(), e);
+					WebLog.getInstance().getLog().warn("Error in constructor " + entity.getClass().getCanonicalName() + "(String)");
+					WebLog.getInstance().getLog().warn(e.getMessage(), e);
 				}
 			}
 		} catch (NoSuchPropertyException e) {
-			this.getLog().debug(e.getMessage(), e);
+			WebLog.getInstance().getLog().debug(e.getMessage(), e);
 		}
 	}
 

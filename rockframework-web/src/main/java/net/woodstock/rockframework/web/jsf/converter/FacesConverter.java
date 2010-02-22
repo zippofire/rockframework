@@ -18,15 +18,6 @@ package net.woodstock.rockframework.web.jsf.converter;
 
 import javax.faces.convert.Converter;
 
-import net.woodstock.rockframework.web.config.WebLog;
-
-import org.apache.commons.logging.Log;
-
 public abstract class FacesConverter implements Converter {
-
-	// Logger
-	protected Log getLog() {
-		return WebLog.getInstance().getLog();
-	}
-
+	//
 }

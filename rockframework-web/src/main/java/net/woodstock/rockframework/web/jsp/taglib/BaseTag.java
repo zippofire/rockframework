@@ -18,18 +18,6 @@ package net.woodstock.rockframework.web.jsp.taglib;
 
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
-import net.woodstock.rockframework.web.config.WebLog;
-
-import org.apache.commons.logging.Log;
-
 public abstract class BaseTag extends SimpleTagSupport {
-
-	public BaseTag() {
-		super();
-	}
-
-	protected Log getLog() {
-		return WebLog.getInstance().getLog();
-	}
-
+	//
 }

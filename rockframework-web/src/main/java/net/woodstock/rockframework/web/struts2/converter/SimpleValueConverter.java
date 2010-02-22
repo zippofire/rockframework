@@ -21,7 +21,6 @@ import java.util.Map;
 import net.woodstock.rockframework.utils.StringUtils;
 import net.woodstock.rockframework.web.config.WebLog;
 
-import org.apache.commons.logging.Log;
 import org.apache.struts2.util.StrutsTypeConverter;
 
 public abstract class SimpleValueConverter<T> extends StrutsTypeConverter {
@@ -39,7 +38,7 @@ public abstract class SimpleValueConverter<T> extends StrutsTypeConverter {
 		}
 
 		T t = this.convertFromString(o[0], toClass);
-		this.getLog().info("From String [" + s + " => " + t + "]");
+		WebLog.getInstance().getLog().info("From String [" + s + " => " + t + "]");
 		return t;
 	}
 
@@ -51,12 +50,8 @@ public abstract class SimpleValueConverter<T> extends StrutsTypeConverter {
 		}
 		T t = (T) o;
 		String s = this.convertToString(t);
-		this.getLog().info("To String [" + t + " => " + s + "]");
+		WebLog.getInstance().getLog().info("To String [" + t + " => " + s + "]");
 		return s;
-	}
-
-	protected Log getLog() {
-		return WebLog.getInstance().getLog();
 	}
 
 	@SuppressWarnings("unchecked")

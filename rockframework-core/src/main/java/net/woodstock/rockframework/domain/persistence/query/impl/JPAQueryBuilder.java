@@ -21,6 +21,7 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
 
 public class JPAQueryBuilder extends EJBQLQueryBuilder<Query> {
@@ -40,7 +41,7 @@ public class JPAQueryBuilder extends EJBQLQueryBuilder<Query> {
 
 	@Override
 	protected void setQueryParameter(final Object query, final String name, final Object value) {
-		this.getLog().debug("Setting parameter[" + name + "] => " + value);
+		CoreLog.getInstance().getLog().debug("Setting parameter[" + name + "] => " + value);
 		Query q = (Query) query;
 		q.setParameter(name, value);
 	}

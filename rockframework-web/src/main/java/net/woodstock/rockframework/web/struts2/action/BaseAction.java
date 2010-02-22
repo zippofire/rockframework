@@ -21,10 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import net.woodstock.rockframework.utils.StringUtils;
-import net.woodstock.rockframework.web.config.WebLog;
 import net.woodstock.rockframework.web.struts2.interceptor.PostOnlyInterceptor;
 
-import org.apache.commons.logging.Log;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 
@@ -97,10 +95,6 @@ public abstract class BaseAction extends ActionSupport implements ServletRequest
 
 	public void setServletResponse(final HttpServletResponse response) {
 		this.response = response;
-	}
-
-	protected Log getLog() {
-		return WebLog.getInstance().getLog();
 	}
 
 	protected String getRequestParameter(final String name) {

@@ -16,15 +16,6 @@
  */
 package net.woodstock.rockframework.web.listener;
 
-import net.woodstock.rockframework.web.config.WebLog;
-
-import org.apache.commons.logging.Log;
-
 public abstract class BaseListener {
-
-	// Logger
-	protected Log getLog() {
-		return WebLog.getInstance().getLog();
-	}
-
+	//
 }

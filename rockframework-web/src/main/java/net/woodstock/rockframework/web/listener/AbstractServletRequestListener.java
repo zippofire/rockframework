@@ -20,6 +20,8 @@ import javax.servlet.ServletRequestEvent;
 import javax.servlet.ServletRequestListener;
 import javax.servlet.http.HttpServletRequest;
 
+import net.woodstock.rockframework.web.config.WebLog;
+
 public abstract class AbstractServletRequestListener extends BaseListener implements ServletRequestListener {
 
 	public final void requestDestroyed(final ServletRequestEvent event) {
@@ -32,12 +34,12 @@ public abstract class AbstractServletRequestListener extends BaseListener implem
 
 	@SuppressWarnings("unused")
 	public void requestDestroyed(final ServletRequestEvent event, final HttpServletRequest request) {
-		this.getLog().info("Destroying request");
+		WebLog.getInstance().getLog().info("Destroying request");
 	}
 
 	@SuppressWarnings("unused")
 	public void requestInitialized(final ServletRequestEvent event, final HttpServletRequest request) {
-		this.getLog().info("Initializing request");
+		WebLog.getInstance().getLog().info("Initializing request");
 	}
 
 }

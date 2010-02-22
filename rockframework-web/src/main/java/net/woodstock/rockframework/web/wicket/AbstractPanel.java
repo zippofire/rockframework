@@ -16,9 +16,6 @@
  */
 package net.woodstock.rockframework.web.wicket;
 
-import net.woodstock.rockframework.web.config.WebLog;
-
-import org.apache.commons.logging.Log;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 
@@ -32,10 +29,6 @@ public class AbstractPanel extends Panel {
 
 	public AbstractPanel(final String id) {
 		super(id);
-	}
-
-	protected Log getLog() {
-		return WebLog.getInstance().getLog();
 	}
 
 }

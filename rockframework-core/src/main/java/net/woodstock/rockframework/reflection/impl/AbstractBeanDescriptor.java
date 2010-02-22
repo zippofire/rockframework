@@ -20,11 +20,8 @@ import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
-
-import org.apache.commons.logging.Log;
 
 abstract class AbstractBeanDescriptor implements BeanDescriptor {
 
@@ -85,11 +82,6 @@ abstract class AbstractBeanDescriptor implements BeanDescriptor {
 	@Override
 	public Annotation[] getAnnotations() {
 		return this.type.getAnnotations();
-	}
-
-	// Log
-	protected Log getLog() {
-		return CoreLog.getInstance().getLog();
 	}
 
 	// Object

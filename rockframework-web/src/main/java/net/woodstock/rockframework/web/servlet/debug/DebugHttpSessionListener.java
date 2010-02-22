@@ -19,7 +19,9 @@ package net.woodstock.rockframework.web.servlet.debug;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
-public class DebugHttpSessionListener extends AbstractDebugListener implements HttpSessionListener {
+import net.woodstock.rockframework.web.config.WebLog;
+
+public class DebugHttpSessionListener implements HttpSessionListener {
 
 	public void sessionCreated(final HttpSessionEvent event) {
 		StringBuilder builder = new StringBuilder();
@@ -27,7 +29,7 @@ public class DebugHttpSessionListener extends AbstractDebugListener implements H
 		builder.append("\nID      : " + event.getSession().getId());
 		builder.append("\nSource  : " + event.getSource().getClass().getCanonicalName());
 		builder.append("\nContext : " + event.getSession().getServletContext().getServletContextName());
-		this.getLog().info(builder.toString());
+		WebLog.getInstance().getLog().info(builder.toString());
 	}
 
 	public void sessionDestroyed(final HttpSessionEvent event) {
@@ -36,7 +38,7 @@ public class DebugHttpSessionListener extends AbstractDebugListener implements H
 		builder.append("\nID      : " + event.getSession().getId());
 		builder.append("\nSource  : " + event.getSource().getClass().getCanonicalName());
 		builder.append("\nContext : " + event.getSession().getServletContext().getServletContextName());
-		this.getLog().info(builder.toString());
+		WebLog.getInstance().getLog().info(builder.toString());
 	}
 
 }

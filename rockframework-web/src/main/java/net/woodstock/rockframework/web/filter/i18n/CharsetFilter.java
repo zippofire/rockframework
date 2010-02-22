@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.web.config.WebLog;
 import net.woodstock.rockframework.web.filter.HttpFilter;
 import net.woodstock.rockframework.web.wrapper.BufferedServletResponseWrapper;
 import net.woodstock.rockframework.web.wrapper.ServletOutputStreamWrapper;
@@ -57,18 +58,18 @@ public class CharsetFilter extends HttpFilter {
 	public void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain) throws IOException, ServletException {
 		BufferedServletResponseWrapper responseWrapper = new BufferedServletResponseWrapper(response);
 
-		this.getLog().debug("Filtering " + request.getRequestURI());
-		this.getLog().debug("Send request to next chain");
+		WebLog.getInstance().getLog().debug("Filtering " + request.getRequestURI());
+		WebLog.getInstance().getLog().debug("Send request to next chain");
 		chain.doFilter(request, responseWrapper);
 
-		this.getLog().debug("Getting response content");
+		WebLog.getInstance().getLog().debug("Getting response content");
 		ServletOutputStreamWrapper wrapper = responseWrapper.getOutputStreamWrapper();
 
-		this.getLog().debug("Convert from charset " + this.charsetFrom.displayName() + " to " + this.charsetTo.displayName());
+		WebLog.getInstance().getLog().debug("Convert from charset " + this.charsetFrom.displayName() + " to " + this.charsetTo.displayName());
 		String text = wrapper.getOutputText();
 		String content = StringUtils.convertCharset(this.charsetFrom, this.charsetTo, text);
 
-		this.getLog().debug("Writing text to output");
+		WebLog.getInstance().getLog().debug("Writing text to output");
 		response.getOutputStream().write(content.getBytes());
 	}
 }

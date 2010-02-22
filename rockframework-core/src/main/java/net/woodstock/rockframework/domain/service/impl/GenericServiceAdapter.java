@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 
+import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.service.GenericService;
 
@@ -30,33 +31,33 @@ public class GenericServiceAdapter extends AbstractService implements GenericSer
 	}
 
 	public void save(final Entity<?> e) {
-		this.getLog().info("Save: " + e.getClass());
+		CoreLog.getInstance().getLog().info("Save: " + e.getClass());
 	}
 
 	public <E extends Entity<?>> E get(final E e) {
-		this.getLog().info("Retrieve: " + e);
+		CoreLog.getInstance().getLog().info("Retrieve: " + e);
 		return null;
 	}
 
 	public void update(final Entity<?> e) {
-		this.getLog().info("Update: " + e.getClass());
+		CoreLog.getInstance().getLog().info("Update: " + e.getClass());
 	}
 
 	public void delete(final Entity<?> e) {
-		this.getLog().info("Delete: " + e.getClass());
+		CoreLog.getInstance().getLog().info("Delete: " + e.getClass());
 	}
 
 	public <E extends Entity<?>> void delete(final Class<E> clazz, final Serializable id) {
-		this.getLog().info("Delete: " + clazz.getCanonicalName() + " " + id);
+		CoreLog.getInstance().getLog().info("Delete: " + clazz.getCanonicalName() + " " + id);
 	}
 
 	public <E extends Entity<?>> Collection<E> listAll(final E e, final Map<String, Object> options) {
-		this.getLog().info("Query: " + e + " Options: " + options);
+		CoreLog.getInstance().getLog().info("Query: " + e + " Options: " + options);
 		return null;
 	}
 
 	public <E extends Entity<?>> Collection<E> listByExample(final E e, final Map<String, Object> options) {
-		this.getLog().info("Query: " + e + " Options: " + options);
+		CoreLog.getInstance().getLog().info("Query: " + e + " Options: " + options);
 		return null;
 	}
 

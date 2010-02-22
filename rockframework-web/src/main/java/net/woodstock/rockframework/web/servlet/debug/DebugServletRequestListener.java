@@ -19,14 +19,16 @@ package net.woodstock.rockframework.web.servlet.debug;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.ServletRequestListener;
 
-public class DebugServletRequestListener extends AbstractDebugListener implements ServletRequestListener {
+import net.woodstock.rockframework.web.config.WebLog;
+
+public class DebugServletRequestListener implements ServletRequestListener {
 
 	public void requestDestroyed(final ServletRequestEvent event) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("\nCreated");
 		builder.append("\nSource  : " + event.getSource().getClass().getCanonicalName());
 		builder.append("\nContext : " + event.getServletContext().getServletContextName());
-		this.getLog().info(builder.toString());
+		WebLog.getInstance().getLog().info(builder.toString());
 	}
 
 	public void requestInitialized(final ServletRequestEvent event) {
@@ -34,7 +36,7 @@ public class DebugServletRequestListener extends AbstractDebugListener implement
 		builder.append("\nCreated");
 		builder.append("\nSource  : " + event.getSource().getClass().getCanonicalName());
 		builder.append("\nContext : " + event.getServletContext().getServletContextName());
-		this.getLog().info(builder.toString());
+		WebLog.getInstance().getLog().info(builder.toString());
 	}
 
 }

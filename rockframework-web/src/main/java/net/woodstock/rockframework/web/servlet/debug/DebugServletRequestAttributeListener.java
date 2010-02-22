@@ -19,7 +19,9 @@ package net.woodstock.rockframework.web.servlet.debug;
 import javax.servlet.ServletRequestAttributeEvent;
 import javax.servlet.ServletRequestAttributeListener;
 
-public class DebugServletRequestAttributeListener extends AbstractDebugListener implements ServletRequestAttributeListener {
+import net.woodstock.rockframework.web.config.WebLog;
+
+public class DebugServletRequestAttributeListener implements ServletRequestAttributeListener {
 
 	public void attributeAdded(final ServletRequestAttributeEvent event) {
 		StringBuilder builder = new StringBuilder();
@@ -29,7 +31,7 @@ public class DebugServletRequestAttributeListener extends AbstractDebugListener 
 		builder.append("\nName    : " + event.getName());
 		builder.append("\nValue   : " + event.getValue());
 		builder.append("\nClass   : " + event.getValue().getClass().getCanonicalName());
-		this.getLog().info(builder.toString());
+		WebLog.getInstance().getLog().info(builder.toString());
 	}
 
 	public void attributeRemoved(final ServletRequestAttributeEvent event) {
@@ -40,7 +42,7 @@ public class DebugServletRequestAttributeListener extends AbstractDebugListener 
 		builder.append("\nName    : " + event.getName());
 		builder.append("\nValue   : " + event.getValue());
 		builder.append("\nClass   : " + event.getValue().getClass().getCanonicalName());
-		this.getLog().info(builder.toString());
+		WebLog.getInstance().getLog().info(builder.toString());
 	}
 
 	public void attributeReplaced(final ServletRequestAttributeEvent event) {
@@ -51,7 +53,7 @@ public class DebugServletRequestAttributeListener extends AbstractDebugListener 
 		builder.append("\nName    : " + event.getName());
 		builder.append("\nValue   : " + event.getValue());
 		builder.append("\nClass   : " + event.getValue().getClass().getCanonicalName());
-		this.getLog().info(builder.toString());
+		WebLog.getInstance().getLog().info(builder.toString());
 	}
 
 }

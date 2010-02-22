@@ -22,7 +22,6 @@ import javax.servlet.http.HttpSession;
 import net.woodstock.rockframework.utils.StringUtils;
 import net.woodstock.rockframework.web.config.WebLog;
 
-import org.apache.commons.logging.Log;
 import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -37,15 +36,11 @@ public abstract class BaseInterceptor implements Interceptor {
 	}
 
 	public void destroy() {
-		this.getLog().debug("Destroying " + this.getClass().getCanonicalName());
+		WebLog.getInstance().getLog().debug("Destroying " + this.getClass().getCanonicalName());
 	}
 
 	public void init() {
-		this.getLog().debug("Initing " + this.getClass().getCanonicalName());
-	}
-
-	public Log getLog() {
-		return WebLog.getInstance().getLog();
+		WebLog.getInstance().getLog().debug("Initing " + this.getClass().getCanonicalName());
 	}
 
 	protected String getActionName() {

@@ -16,9 +16,6 @@
  */
 package net.woodstock.rockframework.web.wicket;
 
-import net.woodstock.rockframework.web.config.WebLog;
-
-import org.apache.commons.logging.Log;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.IModel;
@@ -33,10 +30,6 @@ public class AbstractFragment extends Fragment {
 
 	public AbstractFragment(final String id, final String markupId, final MarkupContainer markupProvider) {
 		super(id, markupId, markupProvider);
-	}
-
-	protected Log getLog() {
-		return WebLog.getInstance().getLog();
 	}
 
 }

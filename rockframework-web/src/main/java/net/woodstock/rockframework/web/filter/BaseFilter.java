@@ -22,18 +22,16 @@ import javax.servlet.ServletContext;
 
 import net.woodstock.rockframework.web.config.WebLog;
 
-import org.apache.commons.logging.Log;
-
 public abstract class BaseFilter implements Filter {
 
 	private FilterConfig	filterConfig;
 
 	public void destroy() {
-		this.getLog().info("Filter: " + this.getClass().getName() + " destroyed");
+		WebLog.getInstance().getLog().info("Filter: " + this.getClass().getName() + " destroyed");
 	}
 
 	public void init(final FilterConfig filterConfig) {
-		this.getLog().info("Filter: " + this.getClass().getName() + " initialized");
+		WebLog.getInstance().getLog().info("Filter: " + this.getClass().getName() + " initialized");
 		this.filterConfig = filterConfig;
 	}
 
@@ -50,10 +48,5 @@ public abstract class BaseFilter implements Filter {
 	// Context
 	protected ServletContext getServletContext() {
 		return this.filterConfig.getServletContext();
-	}
-
-	// Logger
-	protected Log getLog() {
-		return WebLog.getInstance().getLog();
 	}
 }

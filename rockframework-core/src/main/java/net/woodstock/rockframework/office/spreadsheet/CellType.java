@@ -16,9 +16,8 @@
  */
 package net.woodstock.rockframework.office.spreadsheet;
 
-
 public enum CellType {
-	
+
 	BLANK, BOOLEAN, FORMULA, NUMERIC, TEXT;
-	
+
 }

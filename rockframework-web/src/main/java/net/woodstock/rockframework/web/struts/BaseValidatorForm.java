@@ -19,9 +19,6 @@ package net.woodstock.rockframework.web.struts;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
-import net.woodstock.rockframework.web.config.WebLog;
-
-import org.apache.commons.logging.Log;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.validator.ValidatorForm;
 
@@ -39,10 +36,8 @@ public abstract class BaseValidatorForm extends ValidatorForm {
 		this.reset();
 	}
 
-	public abstract void reset();
-
-	protected Log getLog() {
-		return WebLog.getInstance().getLog();
+	public void reset() {
+		//
 	}
 
 }

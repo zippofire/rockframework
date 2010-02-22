@@ -19,6 +19,7 @@ package net.woodstock.rockframework.web.listener.debug;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+import net.woodstock.rockframework.web.config.WebLog;
 import net.woodstock.rockframework.web.listener.BaseListener;
 
 public class SessionListener extends BaseListener implements HttpSessionListener {
@@ -27,14 +28,14 @@ public class SessionListener extends BaseListener implements HttpSessionListener
 
 	public void sessionCreated(final HttpSessionEvent se) {
 		SessionListener.count++;
-		this.getLog().info("Created session for class " + se.getSource().getClass().getName());
-		this.getLog().info("Active sessions " + SessionListener.count);
+		WebLog.getInstance().getLog().info("Created session for class " + se.getSource().getClass().getName());
+		WebLog.getInstance().getLog().info("Active sessions " + SessionListener.count);
 	}
 
 	public void sessionDestroyed(final HttpSessionEvent se) {
 		SessionListener.count--;
-		this.getLog().info("Destroyed session for class " + se.getSource().getClass().getName());
-		this.getLog().info("Active sessions " + SessionListener.count);
+		WebLog.getInstance().getLog().info("Destroyed session for class " + se.getSource().getClass().getName());
+		WebLog.getInstance().getLog().info("Active sessions " + SessionListener.count);
 	}
 
 	public static int getSessionCount() {

@@ -19,20 +19,21 @@ package net.woodstock.rockframework.web.listener.debug;
 import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;
 
+import net.woodstock.rockframework.web.config.WebLog;
 import net.woodstock.rockframework.web.listener.BaseListener;
 
 public class SessionAttributeListener extends BaseListener implements HttpSessionAttributeListener {
 
 	public void attributeAdded(final HttpSessionBindingEvent se) {
-		this.getLog().info("Added attribute " + se.getName() + " with value " + se.getValue());
+		WebLog.getInstance().getLog().info("Added attribute " + se.getName() + " with value " + se.getValue());
 	}
 
 	public void attributeRemoved(final HttpSessionBindingEvent se) {
-		this.getLog().info("Removed attribute " + se.getName());
+		WebLog.getInstance().getLog().info("Removed attribute " + se.getName());
 	}
 
 	public void attributeReplaced(final HttpSessionBindingEvent se) {
-		this.getLog().info("Replaced attribute " + se.getName() + " with value " + se.getValue());
+		WebLog.getInstance().getLog().info("Replaced attribute " + se.getName() + " with value " + se.getValue());
 	}
 
 }

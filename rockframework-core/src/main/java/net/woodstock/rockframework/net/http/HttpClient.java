@@ -21,14 +21,14 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.xml.dom.XmlDocument;
+import net.woodstock.rockframework.xml.dom.XmlElement;
+
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.xml.sax.SAXException;
-
-import net.woodstock.rockframework.utils.StringUtils;
-import net.woodstock.rockframework.xml.dom.XmlDocument;
-import net.woodstock.rockframework.xml.dom.XmlElement;
 
 public class HttpClient implements Serializable {
 

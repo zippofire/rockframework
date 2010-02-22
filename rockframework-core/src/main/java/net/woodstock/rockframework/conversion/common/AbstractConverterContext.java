@@ -22,11 +22,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.regex.Pattern;
 
-import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.utils.StringUtils;
-
-import org.apache.commons.logging.Log;
 
 abstract class AbstractConverterContext implements ConverterContext {
 
@@ -161,11 +158,6 @@ abstract class AbstractConverterContext implements ConverterContext {
 	@Override
 	public String toString() {
 		return this.getCanonicalName();
-	}
-
-	// Logger
-	protected Log getLog() {
-		return CoreLog.getInstance().getLog();
 	}
 
 }

@@ -18,8 +18,6 @@ package net.woodstock.rockframework.util;
 
 import net.woodstock.rockframework.config.CoreLog;
 
-import org.apache.commons.logging.Log;
-
 public abstract class Base64Encoder {
 
 	private static final String		APACHE_BASE64	= "org.apache.commons.codec.binary.Base64";
@@ -27,10 +25,6 @@ public abstract class Base64Encoder {
 	private static final String		SUN_BASE64		= "sun.misc.BASE64Encoder";
 
 	private static Base64Encoder	instance		= Base64Encoder.getAvailableEncoder();
-
-	protected static Log getLog() {
-		return CoreLog.getInstance().getLog();
-	}
 
 	public abstract String encode(String s);
 
@@ -48,13 +42,13 @@ public abstract class Base64Encoder {
 		try {
 			Class.forName(Base64Encoder.APACHE_BASE64);
 			Base64Encoder encoder = new ApacheBase64Encoder();
-			Base64Encoder.getLog().info("Using Apache Base64(Commons Codec)");
+			CoreLog.getInstance().getLog().info("Using Apache Base64(Commons Codec)");
 			return encoder;
 		} catch (ClassNotFoundException e) {
 			try {
 				Class.forName(Base64Encoder.SUN_BASE64);
 				Base64Encoder encoder = new SunBase64Encoder();
-				Base64Encoder.getLog().info("Using Sun Base64");
+				CoreLog.getInstance().getLog().info("Using Sun Base64");
 				return encoder;
 			} catch (ClassNotFoundException ee) {
 				throw new UnsupportedOperationException("No Base64 found");

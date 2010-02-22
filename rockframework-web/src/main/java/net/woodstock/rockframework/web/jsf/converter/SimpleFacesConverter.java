@@ -20,6 +20,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.web.config.WebLog;
 
 public abstract class SimpleFacesConverter<T> extends FacesConverter {
 
@@ -30,7 +31,7 @@ public abstract class SimpleFacesConverter<T> extends FacesConverter {
 		}
 
 		T t = this.getAsObject(value);
-		this.getLog().info("From String [" + value + " => " + t + "]");
+		WebLog.getInstance().getLog().info("From String [" + value + " => " + t + "]");
 		return t;
 	}
 
@@ -42,7 +43,7 @@ public abstract class SimpleFacesConverter<T> extends FacesConverter {
 		}
 		T t = (T) value;
 		String s = this.getAsString(t);
-		this.getLog().info("To String [" + t + " => " + s + "]");
+		WebLog.getInstance().getLog().info("To String [" + t + " => " + s + "]");
 		return s;
 	}
 

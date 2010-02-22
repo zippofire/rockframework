@@ -23,8 +23,6 @@ import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.BeanDescriptorFactory;
 
-import org.apache.commons.logging.Log;
-
 abstract class AbstractBeanDescriptorFactory implements BeanDescriptorFactory {
 
 	private Map<Class<?>, BeanDescriptor>	cache;
@@ -51,17 +49,13 @@ abstract class AbstractBeanDescriptorFactory implements BeanDescriptorFactory {
 			throw new IllegalArgumentException("Type must be not null");
 		}
 		if (this.hasOnCache(clazz)) {
-			this.getLog().info("Class " + clazz.getSimpleName() + " exists on cache");
+			CoreLog.getInstance().getLog().info("Class " + clazz.getSimpleName() + " exists on cache");
 			return this.getFromCache(clazz);
 		}
 		BeanDescriptor descriptor = this.getBeanDescriptorInternal(clazz);
-		this.getLog().info("Adding class " + clazz.getSimpleName() + " to cache");
+		CoreLog.getInstance().getLog().info("Adding class " + clazz.getSimpleName() + " to cache");
 		this.addToCache(clazz, descriptor);
 		return descriptor;
-	}
-
-	protected Log getLog() {
-		return CoreLog.getInstance().getLog();
 	}
 
 	protected abstract BeanDescriptor getBeanDescriptorInternal(Class<?> clazz);
