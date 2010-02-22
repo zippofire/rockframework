@@ -18,8 +18,8 @@ package net.woodstock.rockframework.web.struts2.converter;
 
 import java.util.Map;
 
-import net.woodstock.rockframework.logging.SysLogger;
 import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.web.config.WebLog;
 
 import org.apache.commons.logging.Log;
 import org.apache.struts2.util.StrutsTypeConverter;
@@ -56,7 +56,7 @@ public abstract class SimpleValueConverter<T> extends StrutsTypeConverter {
 	}
 
 	protected Log getLog() {
-		return SysLogger.getLog();
+		return WebLog.getInstance().getLog();
 	}
 
 	@SuppressWarnings("unchecked")

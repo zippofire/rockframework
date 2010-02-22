@@ -23,7 +23,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.logging.SysLogger;
+import net.woodstock.rockframework.utils.LogUtils;
 
 public final class ProxyEntity<ID extends Serializable> implements Entity<ID>, InvocationHandler {
 
@@ -45,7 +45,7 @@ public final class ProxyEntity<ID extends Serializable> implements Entity<ID>, I
 	}
 
 	public Object invoke(final Object proxy, final Method method, final Object[] args) throws InvocationTargetException, IllegalAccessException {
-		SysLogger.getLog().info("Calling method " + method.getName());
+		LogUtils.getSharedLog().info("Calling method " + method.getName());
 		return method.invoke(this.entity, args);
 	}
 

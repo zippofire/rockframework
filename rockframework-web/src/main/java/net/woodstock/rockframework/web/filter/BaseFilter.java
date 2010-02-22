@@ -20,7 +20,7 @@ import javax.servlet.Filter;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletContext;
 
-import net.woodstock.rockframework.logging.SysLogger;
+import net.woodstock.rockframework.web.config.WebLog;
 
 import org.apache.commons.logging.Log;
 
@@ -54,6 +54,6 @@ public abstract class BaseFilter implements Filter {
 
 	// Logger
 	protected Log getLog() {
-		return SysLogger.getLog();
+		return WebLog.getInstance().getLog();
 	}
 }

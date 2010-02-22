@@ -33,11 +33,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.woodstock.rockframework.logging.SysLogger;
 import net.woodstock.rockframework.utils.Base64Utils;
 import net.woodstock.rockframework.utils.StringUtils;
 
-import org.apache.commons.logging.Log;
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.CharacterData;
@@ -350,36 +348,28 @@ public class XmlElement extends ElementWrapper {
 		return s.charAt(0);
 	}
 
-	public Date getDate() {
+	public Date getDate() throws ParseException {
 		return this.getDateNvl((Date) null);
 	}
 
-	public Date getDateNvl(final Date nvl) {
+	public Date getDateNvl(final Date nvl) throws ParseException {
 		String s = this.getString();
-		if (s != null) {
-			try {
-				return XmlElement.dateFormat.parse(s);
-			} catch (ParseException e) {
-				this.getLog().warn(e.getMessage(), e);
-			}
+		if (StringUtils.isEmpty(s)) {
+			return nvl;
 		}
-		return nvl;
+		return XmlElement.dateFormat.parse(s);
 	}
 
-	public Date getDate(final String name) {
+	public Date getDate(final String name) throws ParseException {
 		return this.getDateNvl(name, null);
 	}
 
-	public Date getDateNvl(final String name, final Date nvl) {
+	public Date getDateNvl(final String name, final Date nvl) throws ParseException {
 		String s = this.getString(name);
-		if (s != null) {
-			try {
-				return XmlElement.dateFormat.parse(s);
-			} catch (ParseException e) {
-				this.getLog().warn(e.getMessage(), e);
-			}
+		if (StringUtils.isEmpty(s)) {
+			return nvl;
 		}
-		return nvl;
+		return XmlElement.dateFormat.parse(s);
 	}
 
 	public double getDouble() {
@@ -664,10 +654,6 @@ public class XmlElement extends ElementWrapper {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	protected Log getLog() {
-		return SysLogger.getLog();
 	}
 
 	static {

@@ -23,7 +23,6 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import net.woodstock.rockframework.logging.LogLevel;
 import net.woodstock.rockframework.utils.ArrayUtils;
 
 import com.opensymphony.xwork2.ActionInvocation;
@@ -35,7 +34,7 @@ public class DebugInterceptor extends BaseInterceptor {
 
 	private static final String	NEW_LINE			= "\n";
 
-	private LogLevel			level;
+	private String				level;
 
 	private boolean				printParameters;
 
@@ -43,7 +42,7 @@ public class DebugInterceptor extends BaseInterceptor {
 
 	public DebugInterceptor() {
 		super();
-		this.level = LogLevel.INFO;
+		this.level = "INFO";
 		this.printParameters = true;
 		this.printSession = true;
 	}
@@ -97,33 +96,24 @@ public class DebugInterceptor extends BaseInterceptor {
 	}
 
 	private void log(final String message) {
-		switch (this.level) {
-			case TRACE:
-				this.getLog().trace(message);
-				break;
-			case DEBUG:
-				this.getLog().debug(message);
-				break;
-			case INFO:
-				this.getLog().info(message);
-				break;
-			case WARN:
-				this.getLog().warn(message);
-				break;
-			case ERROR:
-				this.getLog().error(message);
-				break;
-			case FATAL:
-				this.getLog().fatal(message);
-				break;
-			default:
-				break;
+		if (this.level.equals("TRACE")) {
+			this.getLog().trace(message);
+		} else if (this.level.equals("DEBUG")) {
+			this.getLog().debug(message);
+		} else if (this.level.equals("INFO")) {
+			this.getLog().info(message);
+		} else if (this.level.equals("WARN")) {
+			this.getLog().warn(message);
+		} else if (this.level.equals("ERROR")) {
+			this.getLog().error(message);
+		} else if (this.level.equals("FATAL")) {
+			this.getLog().fatal(message);
 		}
 	}
 
 	// Params
 	public void setLevel(final String level) {
-		this.level = LogLevel.valueOf(level);
+		this.level = level;
 	}
 
 	public void setPrintParameters(final String printParameters) {

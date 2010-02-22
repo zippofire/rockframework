@@ -40,9 +40,6 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
-import net.woodstock.rockframework.logging.SysLogger;
-
-import org.apache.commons.logging.Log;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -137,52 +134,23 @@ public class XmlDocument extends DocumentWrapper {
 		XmlWriter.getInstance().write(this, writer);
 	}
 
-	public boolean validateSchema(final File source, final String ns) throws SAXException, IOException {
-		return this.validateSchema(new StreamSource(source), ns);
-	}
-
-	public boolean validateSchema(final URL source, final String ns) throws SAXException, IOException {
-		return this.validateSchema(source.openStream(), ns);
-	}
-
-	public boolean validateSchema(final InputStream source, final String ns) throws SAXException, IOException {
-		return this.validateSchema(new StreamSource(source), ns);
-	}
-
-	public boolean validateSchema(final Reader source, final String ns) throws SAXException, IOException {
-		return this.validateSchema(new StreamSource(source), ns);
-	}
-
-	public boolean validateSchema(final Source source, final String ns) throws SAXException, IOException {
-		SchemaFactory factory = SchemaFactory.newInstance(ns);
-		Schema schema = factory.newSchema(source);
-		Validator validator = schema.newValidator();
-		try {
-			validator.validate(new DOMSource(this.getDocument()));
-		} catch (SAXException e) {
-			this.getLog().warn(e.getMessage(), e);
-			return false;
-		}
-		return true;
-	}
-
-	public void validateSchemaWithError(final File source, final String ns) throws SAXException, IOException {
+	public void validateSchema(final File source, final String ns) throws SAXException, IOException {
 		this.validateSchema(new StreamSource(source), ns);
 	}
 
-	public void validateSchemaWithError(final URL source, final String ns) throws SAXException, IOException {
+	public void validateSchema(final URL source, final String ns) throws SAXException, IOException {
 		this.validateSchema(source.openStream(), ns);
 	}
 
-	public void validateSchemaWithError(final InputStream source, final String ns) throws SAXException, IOException {
+	public void validateSchema(final InputStream source, final String ns) throws SAXException, IOException {
 		this.validateSchema(new StreamSource(source), ns);
 	}
 
-	public void validateSchemaWithError(final Reader source, final String ns) throws SAXException, IOException {
+	public void validateSchema(final Reader source, final String ns) throws SAXException, IOException {
 		this.validateSchema(new StreamSource(source), ns);
 	}
 
-	public void validateSchemaWithError(final Source source, final String ns) throws SAXException, IOException {
+	public void validateSchema(final Source source, final String ns) throws SAXException, IOException {
 		SchemaFactory factory = SchemaFactory.newInstance(ns);
 		Schema schema = factory.newSchema(source);
 		Validator validator = schema.newValidator();
@@ -238,10 +206,6 @@ public class XmlDocument extends DocumentWrapper {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	protected Log getLog() {
-		return SysLogger.getLog();
 	}
 
 	static DocumentBuilder getDocumentBuilder() {

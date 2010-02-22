@@ -20,7 +20,7 @@ import java.lang.annotation.Annotation;
 
 import javax.validation.ConstraintValidator;
 
-import net.woodstock.rockframework.logging.SysLogger;
+import net.woodstock.rockframework.config.CoreLog;
 
 import org.apache.commons.logging.Log;
 
@@ -42,7 +42,7 @@ public abstract class AbstractValidator<A extends Annotation, T> implements Cons
 	}
 
 	protected Log getLog() {
-		return SysLogger.getLog();
+		return CoreLog.getInstance().getLog();
 	}
 
 }

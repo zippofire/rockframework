@@ -16,9 +16,9 @@
  */
 package net.woodstock.rockframework.util;
 
-import org.apache.commons.logging.Log;
+import net.woodstock.rockframework.config.CoreLog;
 
-import net.woodstock.rockframework.logging.SysLogger;
+import org.apache.commons.logging.Log;
 
 public abstract class Base64Encoder {
 
@@ -29,7 +29,7 @@ public abstract class Base64Encoder {
 	private static Base64Encoder	instance		= Base64Encoder.getAvailableEncoder();
 
 	protected static Log getLog() {
-		return SysLogger.getLog();
+		return CoreLog.getInstance().getLog();
 	}
 
 	public abstract String encode(String s);

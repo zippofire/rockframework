@@ -21,7 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import net.woodstock.rockframework.logging.SysLogger;
+import net.woodstock.rockframework.utils.LogUtils;
 
 public final class ProxyObject implements InvocationHandler {
 
@@ -35,7 +35,7 @@ public final class ProxyObject implements InvocationHandler {
 	}
 
 	public Object invoke(final Object proxy, final Method method, final Object[] args) throws InvocationTargetException, IllegalAccessException {
-		SysLogger.getLog().info("Calling method " + method.getName());
+		LogUtils.getSharedLog().info("Calling method " + method.getName());
 		return method.invoke(this.object, args);
 	}
 

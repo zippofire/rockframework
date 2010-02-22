@@ -19,8 +19,8 @@ package net.woodstock.rockframework.web.struts2.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import net.woodstock.rockframework.logging.SysLogger;
 import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.web.config.WebLog;
 
 import org.apache.commons.logging.Log;
 import org.apache.struts2.ServletActionContext;
@@ -45,7 +45,7 @@ public abstract class BaseInterceptor implements Interceptor {
 	}
 
 	public Log getLog() {
-		return SysLogger.getLog();
+		return WebLog.getInstance().getLog();
 	}
 
 	protected String getActionName() {

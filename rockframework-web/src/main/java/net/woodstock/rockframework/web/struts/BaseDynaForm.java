@@ -16,7 +16,7 @@
  */
 package net.woodstock.rockframework.web.struts;
 
-import net.woodstock.rockframework.logging.SysLogger;
+import net.woodstock.rockframework.web.config.WebLog;
 
 import org.apache.commons.logging.Log;
 import org.apache.struts.action.DynaActionForm;
@@ -91,7 +91,7 @@ public abstract class BaseDynaForm extends DynaActionForm {
 	}
 
 	protected Log getLog() {
-		return SysLogger.getLog();
+		return WebLog.getInstance().getLog();
 	}
 
 }

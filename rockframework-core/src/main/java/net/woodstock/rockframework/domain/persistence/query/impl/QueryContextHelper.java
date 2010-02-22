@@ -23,12 +23,12 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
+import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.persistence.query.BuilderException;
 import net.woodstock.rockframework.domain.persistence.query.LikeMode;
 import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
 import net.woodstock.rockframework.domain.persistence.query.impl.QueryContextParameter.Operator;
-import net.woodstock.rockframework.logging.SysLogger;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.ReflectionType;
@@ -161,11 +161,11 @@ abstract class QueryContextHelper {
 
 	private static void handleEntityValue(final QueryContext context, final Map<String, Object> options, final String realName, final String name, final String alias, final Entity value, final Queue<Entity> parsed) {
 		if (QueryContextHelper.contains(parsed, value)) {
-			SysLogger.getLog().debug("Entity " + value + " already parsed!!!");
+			CoreLog.getInstance().getLog().debug("Entity " + value + " already parsed!!!");
 			return;
 		}
 		if (QueryContextHelper.isProxy(value)) {
-			SysLogger.getLog().warn("Child proxy classes cannot will be parsed[" + context.getName() + "." + realName + "]");
+			CoreLog.getInstance().getLog().warn("Child proxy classes cannot will be parsed[" + context.getName() + "." + realName + "]");
 			return;
 		}
 
@@ -201,7 +201,7 @@ abstract class QueryContextHelper {
 			for (Object o : value) {
 				if (o instanceof Entity) {
 					if (QueryContextHelper.contains(parsed, (Entity) o)) {
-						SysLogger.getLog().debug("Entity " + value + " already parsed!!!");
+						CoreLog.getInstance().getLog().debug("Entity " + value + " already parsed!!!");
 						continue;
 					}
 					parsed.add((Entity) o);
@@ -320,6 +320,7 @@ abstract class QueryContextHelper {
 			Class.forName(QueryContextHelper.JPA_TRANSIENT_CLASS);
 			return JPAHelper.isTransient(propertyDescriptor);
 		} catch (ClassNotFoundException e) {
+			CoreLog.getInstance().getLog().debug(e.getMessage(), e);
 			return false;
 		}
 	}
@@ -334,7 +335,7 @@ abstract class QueryContextHelper {
 			Class.forName(QueryContextHelper.HIBERNATE_PROXY_CLASS);
 			b = HibernateHelper.isProxy(o);
 		} catch (ClassNotFoundException e) {
-			SysLogger.getLog().debug(e.getMessage(), e);
+			CoreLog.getInstance().getLog().debug(e.getMessage(), e);
 		}
 		// OpenJPA
 		if (!b) {
@@ -342,7 +343,7 @@ abstract class QueryContextHelper {
 				Class.forName(QueryContextHelper.OPENJPA_PROXY_CLASS);
 				b = OpenJPAHelper.isProxy(o);
 			} catch (ClassNotFoundException e) {
-				SysLogger.getLog().debug(e.getMessage(), e);
+				CoreLog.getInstance().getLog().debug(e.getMessage(), e);
 			}
 		}
 		// EclipseLink

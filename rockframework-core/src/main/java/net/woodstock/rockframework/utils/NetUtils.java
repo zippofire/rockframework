@@ -16,47 +16,16 @@
  */
 package net.woodstock.rockframework.utils;
 
-import java.io.IOException;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketAddress;
 import java.net.UnknownHostException;
-import java.util.Collection;
-import java.util.LinkedHashSet;
 import java.util.regex.Pattern;
-
-import net.woodstock.rockframework.logging.SysLogger;
 
 public abstract class NetUtils {
 
 	public static final String	IPV4_REGEX	= "\\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b";
 
-	public static final int		TIMEOUT		= 3000;
-
 	private NetUtils() {
 		//
-	}
-
-	public static Collection<Integer> scan(final InetAddress host, final int startPort, final int endPort) {
-		Collection<Integer> list = new LinkedHashSet<Integer>();
-
-		for (int port = startPort; port <= endPort; port++) {
-			Socket socket = new Socket();
-			SocketAddress address = new InetSocketAddress(host, port);
-			try {
-				socket.setSoTimeout(NetUtils.TIMEOUT);
-				socket.connect(address);
-				socket.close();
-				list.add(Integer.valueOf(port));
-				SysLogger.getLog().debug("Connected on " + host.getHostAddress() + ":" + port);
-			} catch (IOException e) {
-				SysLogger.getLog().debug(e.getMessage(), e);
-			}
-			socket = null;
-		}
-
-		return list;
 	}
 
 	public static boolean isFromNet(final String address, final String netAddress) throws UnknownHostException {

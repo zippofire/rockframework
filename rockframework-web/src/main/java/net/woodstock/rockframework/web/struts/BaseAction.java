@@ -21,7 +21,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.woodstock.rockframework.logging.SysLogger;
+import net.woodstock.rockframework.web.config.WebLog;
 
 import org.apache.commons.logging.Log;
 import org.apache.struts.action.Action;
@@ -73,7 +73,7 @@ public abstract class BaseAction<F extends ActionForm> extends Action {
 	}
 
 	protected Log getLog() {
-		return SysLogger.getLog();
+		return WebLog.getInstance().getLog();
 	}
 
 	protected abstract StrutsResult execute(F form, HttpServletRequest request, HttpServletResponse response) throws Exception;

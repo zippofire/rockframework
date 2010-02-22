@@ -24,8 +24,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.woodstock.rockframework.logging.SysLogger;
 import net.woodstock.rockframework.utils.ClassUtils;
+import net.woodstock.rockframework.web.config.WebLog;
 
 import org.apache.commons.logging.Log;
 import org.apache.struts.action.ActionForm;
@@ -90,6 +90,6 @@ public abstract class BaseDispatchAction extends DispatchAction {
 	}
 
 	protected Log getLog() {
-		return SysLogger.getLog();
+		return WebLog.getInstance().getLog();
 	}
 }

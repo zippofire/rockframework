@@ -22,7 +22,6 @@ import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.logging.SysLogger;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.ReflectionType;
@@ -100,7 +99,7 @@ public class EntityInterceptor extends BaseInterceptor {
 				}
 			}
 		} catch (NoSuchPropertyException e) {
-			SysLogger.getLog().debug(e.getMessage(), e);
+			this.getLog().debug(e.getMessage(), e);
 		}
 	}
 

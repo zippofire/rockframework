@@ -14,22 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.test;
+package net.woodstock.rockframework.web.servlet.debug;
 
-import java.net.InetAddress;
-import java.util.Collection;
+import net.woodstock.rockframework.web.config.WebLog;
 
-import junit.framework.TestCase;
-import net.woodstock.rockframework.utils.NetUtils;
+import org.apache.commons.logging.Log;
 
-public class PortTest extends TestCase {
+abstract class AbstractDebugListener {
 
-	public void test1() throws Exception {
-		Collection<Integer> ports = NetUtils.scan(InetAddress.getByName("rock.woodstock.net"), 1, 1024);
-
-		for (Integer port : ports) {
-			System.out.println(port);
-		}
+	protected Log getLog() {
+		return WebLog.getInstance().getLog();
 	}
 
 }

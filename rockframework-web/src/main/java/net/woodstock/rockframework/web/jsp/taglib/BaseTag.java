@@ -18,7 +18,7 @@ package net.woodstock.rockframework.web.jsp.taglib;
 
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
-import net.woodstock.rockframework.logging.SysLogger;
+import net.woodstock.rockframework.web.config.WebLog;
 
 import org.apache.commons.logging.Log;
 
@@ -29,7 +29,7 @@ public abstract class BaseTag extends SimpleTagSupport {
 	}
 
 	protected Log getLog() {
-		return SysLogger.getLog();
+		return WebLog.getInstance().getLog();
 	}
 
 }

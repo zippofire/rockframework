@@ -20,8 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import net.woodstock.rockframework.logging.SysLogger;
 import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.web.config.WebLog;
 import net.woodstock.rockframework.web.struts2.interceptor.PostOnlyInterceptor;
 
 import org.apache.commons.logging.Log;
@@ -100,7 +100,7 @@ public abstract class BaseAction extends ActionSupport implements ServletRequest
 	}
 
 	protected Log getLog() {
-		return SysLogger.getLog();
+		return WebLog.getInstance().getLog();
 	}
 
 	protected String getRequestParameter(final String name) {

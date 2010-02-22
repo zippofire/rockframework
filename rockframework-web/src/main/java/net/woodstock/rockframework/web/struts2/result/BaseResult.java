@@ -16,7 +16,7 @@
  */
 package net.woodstock.rockframework.web.struts2.result;
 
-import net.woodstock.rockframework.logging.SysLogger;
+import net.woodstock.rockframework.web.config.WebLog;
 
 import org.apache.commons.logging.Log;
 
@@ -27,7 +27,7 @@ public abstract class BaseResult implements Result {
 	private static final long	serialVersionUID	= 285064071343072720L;
 
 	protected Log getLog() {
-		return SysLogger.getLog();
+		return WebLog.getInstance().getLog();
 	}
 
 }

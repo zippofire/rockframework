@@ -17,7 +17,7 @@
 package net.woodstock.rockframework.domain.persistence.util;
 
 import net.woodstock.rockframework.config.CoreConfig;
-import net.woodstock.rockframework.logging.SysLogger;
+import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.utils.StringUtils;
 
 import org.hibernate.Session;
@@ -67,7 +67,7 @@ public abstract class HibernateUtil {
 		if (s != null) {
 			Transaction t = s.getTransaction();
 			if (t.isActive()) {
-				SysLogger.getLog().warn("Session contains an active transaction, commiting transaction");
+				CoreLog.getInstance().getLog().warn("Session contains an active transaction, commiting transaction");
 				t.commit();
 			}
 			s.flush();

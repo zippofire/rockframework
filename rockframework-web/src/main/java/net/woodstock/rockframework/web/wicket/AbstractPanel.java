@@ -14,8 +14,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.logging;
+package net.woodstock.rockframework.web.wicket;
 
-public enum LogLevel {
-	TRACE, DEBUG, INFO, WARN, ERROR, FATAL;
+import net.woodstock.rockframework.web.config.WebLog;
+
+import org.apache.commons.logging.Log;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
+
+public class AbstractPanel extends Panel {
+
+	private static final long	serialVersionUID	= 3292253766011511213L;
+
+	public AbstractPanel(final String id, final IModel<?> model) {
+		super(id, model);
+	}
+
+	public AbstractPanel(final String id) {
+		super(id);
+	}
+
+	protected Log getLog() {
+		return WebLog.getInstance().getLog();
+	}
+
 }

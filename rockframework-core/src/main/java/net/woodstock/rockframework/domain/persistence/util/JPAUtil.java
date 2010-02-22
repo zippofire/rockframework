@@ -22,7 +22,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 import net.woodstock.rockframework.config.CoreConfig;
-import net.woodstock.rockframework.logging.SysLogger;
+import net.woodstock.rockframework.config.CoreLog;
 
 public abstract class JPAUtil {
 
@@ -54,7 +54,7 @@ public abstract class JPAUtil {
 		if (m != null) {
 			EntityTransaction t = m.getTransaction();
 			if (t.isActive()) {
-				SysLogger.getLog().warn("EntityManager contains an active transaction, commiting transaction");
+				CoreLog.getInstance().getLog().warn("EntityManager contains an active transaction, commiting transaction");
 				t.commit();
 			}
 			m.flush();

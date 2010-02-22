@@ -16,8 +16,8 @@
  */
 package net.woodstock.rockframework.domain.service.impl;
 
+import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.domain.service.Service;
-import net.woodstock.rockframework.logging.SysLogger;
 
 import org.apache.commons.logging.Log;
 
@@ -28,7 +28,7 @@ public abstract class AbstractService implements Service {
 	}
 
 	protected Log getLog() {
-		return SysLogger.getLog();
+		return CoreLog.getInstance().getLog();
 	}
 
 }

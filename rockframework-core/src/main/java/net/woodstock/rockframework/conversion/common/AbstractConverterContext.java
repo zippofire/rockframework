@@ -22,8 +22,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.regex.Pattern;
 
+import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.conversion.ConverterContext;
-import net.woodstock.rockframework.logging.SysLogger;
 import net.woodstock.rockframework.utils.StringUtils;
 
 import org.apache.commons.logging.Log;
@@ -128,7 +128,6 @@ abstract class AbstractConverterContext implements ConverterContext {
 		Collection<String> ignoreds = this.getIgnoredRecursive();
 		for (String ignored : ignoreds) {
 			if (Pattern.matches(ignored, canonicalName)) {
-				// this.getLog().info("Context Ignored: " + canonicalName);
 				return true;
 			}
 		}
@@ -165,8 +164,8 @@ abstract class AbstractConverterContext implements ConverterContext {
 	}
 
 	// Logger
-	public Log getLog() {
-		return SysLogger.getLog();
+	protected Log getLog() {
+		return CoreLog.getInstance().getLog();
 	}
 
 }

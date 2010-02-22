@@ -26,7 +26,7 @@ import java.net.SocketException;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 
-import net.woodstock.rockframework.logging.SysLogger;
+import net.woodstock.rockframework.config.CoreLog;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.net.ftp.FTP;
@@ -57,7 +57,7 @@ public class FtpClient implements Serializable {
 	}
 
 	protected Log getLog() {
-		return SysLogger.getLog();
+		return CoreLog.getInstance().getLog();
 	}
 
 	public void active() {

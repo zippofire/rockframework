@@ -19,7 +19,7 @@ package net.woodstock.rockframework.domain.ejb.jms;
 import javax.ejb.MessageDrivenContext;
 import javax.jms.MessageListener;
 
-import net.woodstock.rockframework.logging.SysLogger;
+import net.woodstock.rockframework.config.CoreLog;
 
 import org.apache.commons.logging.Log;
 
@@ -36,7 +36,7 @@ public abstract class AbstractMessageListener implements MessageListener {
 	}
 
 	protected Log getLog() {
-		return SysLogger.getLog();
+		return CoreLog.getInstance().getLog();
 	}
 
 }

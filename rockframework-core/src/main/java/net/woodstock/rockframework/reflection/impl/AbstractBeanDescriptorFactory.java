@@ -19,7 +19,7 @@ package net.woodstock.rockframework.reflection.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.woodstock.rockframework.logging.SysLogger;
+import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.BeanDescriptorFactory;
 
@@ -61,7 +61,7 @@ abstract class AbstractBeanDescriptorFactory implements BeanDescriptorFactory {
 	}
 
 	protected Log getLog() {
-		return SysLogger.getLog();
+		return CoreLog.getInstance().getLog();
 	}
 
 	protected abstract BeanDescriptor getBeanDescriptorInternal(Class<?> clazz);
