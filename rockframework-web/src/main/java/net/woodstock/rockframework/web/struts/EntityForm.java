@@ -16,28 +16,30 @@
  */
 package net.woodstock.rockframework.web.struts;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
+import net.woodstock.rockframework.domain.Entity;
 
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.validator.ValidatorForm;
+@SuppressWarnings("unchecked")
+public abstract class EntityForm<T extends Entity> extends BaseForm {
 
-public abstract class BaseValidatorForm extends ValidatorForm {
+	private static final long	serialVersionUID	= 1958924234447552120L;
 
-	private static final long	serialVersionUID	= -8932478661740480652L;
+	private T					entity;
 
-	@Override
-	public final void reset(final ActionMapping mapping, final ServletRequest request) {
-		this.reset();
+	public EntityForm() {
+		super();
 	}
 
-	@Override
-	public final void reset(final ActionMapping mapping, final HttpServletRequest request) {
-		this.reset();
+	public EntityForm(final T entity) {
+		super();
+		this.entity = entity;
 	}
 
-	public void reset() {
-		//
+	public T getEntity() {
+		return this.entity;
+	}
+
+	public void setEntity(final T entity) {
+		this.entity = entity;
 	}
 
 }

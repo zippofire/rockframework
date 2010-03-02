@@ -28,23 +28,13 @@ import org.apache.struts.action.ActionMapping;
 
 public abstract class BaseAction<F extends ActionForm> extends Action {
 
-	public static final String					ERROR			= "error";
+	private static ThreadLocal<ActionMapping>		currentMapping	= new ThreadLocal<ActionMapping>();
 
-	public static final String					INDEX			= "index";
+	private static ThreadLocal<ActionForm>			currentForm		= new ThreadLocal<ActionForm>();
 
-	public static final String					INPUT			= "input";
+	private static ThreadLocal<HttpServletRequest>	currentRequest	= new ThreadLocal<HttpServletRequest>();
 
-	public static final String					LOGIN			= "login";
-
-	public static final String					LOGOUT			= "logout";
-
-	public static final String					NO_ACCESS		= "no-access";
-
-	public static final String					NO_LOGIN		= "no-login";
-
-	public static final String					SUCCESS			= "success";
-
-	private static ThreadLocal<ActionMapping>	currentMapping	= new ThreadLocal<ActionMapping>();
+	private static ThreadLocal<HttpServletResponse>	currentResponse	= new ThreadLocal<HttpServletResponse>();
 
 	@Override
 	public final ActionForward execute(final ActionMapping mapping, final ActionForm form, final ServletRequest request, final ServletResponse response) throws Exception {
@@ -58,17 +48,32 @@ public abstract class BaseAction<F extends ActionForm> extends Action {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public final ActionForward execute(final ActionMapping mapping, final ActionForm form, final HttpServletRequest request, final HttpServletResponse response) throws Exception {
 		BaseAction.currentMapping.set(mapping);
-		StrutsResult result = this.execute((F) form, request, response);
-		return result.getForward(mapping);
+		BaseAction.currentForm.set(form);
+		BaseAction.currentRequest.set(request);
+		BaseAction.currentResponse.set(response);
+		ActionForward forward = this.execute();
+		return forward;
 	}
 
 	protected ActionMapping getMapping() {
 		return BaseAction.currentMapping.get();
 	}
 
-	protected abstract StrutsResult execute(F form, HttpServletRequest request, HttpServletResponse response) throws Exception;
+	@SuppressWarnings("unchecked")
+	protected F getForm() {
+		return (F) BaseAction.currentForm.get();
+	}
+
+	protected HttpServletRequest getRequest() {
+		return BaseAction.currentRequest.get();
+	}
+
+	protected HttpServletResponse getResponse() {
+		return BaseAction.currentResponse.get();
+	}
+
+	protected abstract ActionForward execute() throws Exception;
 
 }

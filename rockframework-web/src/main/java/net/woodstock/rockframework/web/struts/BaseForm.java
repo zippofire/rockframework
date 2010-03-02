@@ -19,10 +19,10 @@ package net.woodstock.rockframework.web.struts;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.validator.ValidatorForm;
 
-public abstract class BaseForm extends ActionForm {
+public abstract class BaseForm extends ValidatorForm {
 
 	private static final long	serialVersionUID	= -5299608278184306255L;
 

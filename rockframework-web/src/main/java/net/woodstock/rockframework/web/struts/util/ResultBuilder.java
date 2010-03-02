@@ -14,26 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.web.struts;
+package net.woodstock.rockframework.web.struts.util;
 
 import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
 
-public class StringResult implements StrutsResult {
+public interface ResultBuilder {
 
-	private String	name;
-
-	public StringResult(final String name) {
-		super();
-		this.name = name;
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public ActionForward getForward(final ActionMapping mapping) {
-		return mapping.findForward(this.name);
-	}
+	ActionForward build();
 
 }

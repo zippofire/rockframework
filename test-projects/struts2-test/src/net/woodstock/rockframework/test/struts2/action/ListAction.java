@@ -3,11 +3,11 @@ package net.woodstock.rockframework.test.struts2.action;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.context.annotation.Scope;
-
 import net.woodstock.rockframework.test.struts2.entity.ListItem;
 import net.woodstock.rockframework.web.struts2.action.BaseAction;
 import net.woodstock.rockframework.web.struts2.spring.Action;
+
+import org.springframework.context.annotation.Scope;
 
 @Action
 @Scope(value = "prototype")
@@ -31,7 +31,7 @@ public class ListAction extends BaseAction {
 			item.setStatus(new Boolean(i % 2 == 0));
 			this.items.add(item);
 		}
-		return BaseAction.SUCCESS;
+		return net.woodstock.rockframework.web.struts2.Constants.SUCCESS;
 	}
 
 	public String update() throws Exception {
@@ -39,7 +39,7 @@ public class ListAction extends BaseAction {
 			System.out.println("ID: " + item.getId() + " Name: " + item.getName() + " Status: " + item.getStatus());
 		}
 
-		return BaseAction.SUCCESS;
+		return net.woodstock.rockframework.web.struts2.Constants.SUCCESS;
 	}
 
 	public List<ListItem> getItems() {

@@ -16,7 +16,7 @@ public class TestAction extends BaseAction {
 
 	@Override
 	public String execute() throws Exception {
-		return BaseAction.SUCCESS;
+		return net.woodstock.rockframework.web.struts2.Constants.SUCCESS;
 	}
 
 	public Foo getFoo() {

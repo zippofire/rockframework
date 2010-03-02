@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="mc-report" default="compile" basedir=".">
+<project name="ejb-test" default="compile" basedir=".">
 
 	<property environment="env" />
 

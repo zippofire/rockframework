@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.web.struts;
+package net.woodstock.rockframework.web.struts.util;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,44 +26,50 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionRedirect;
 
-public class ForwardResult implements StrutsResult {
+public class ForwardResultBuilder implements ResultBuilder {
+
+	private ActionMapping		mapping;
 
 	private String				name;
 
 	private Map<String, Object>	parameters;
 
-	public ForwardResult(final String name) {
+	public ForwardResultBuilder(final ActionMapping mapping) {
 		super();
-		this.name = name;
+		if (mapping == null) {
+			throw new IllegalArgumentException("Mapping must be not null");
+		}
+		this.mapping = mapping;
 		this.parameters = new HashMap<String, Object>();
 	}
 
-	public String getName() {
-		return this.name;
+	public ForwardResultBuilder name(final String name) {
+		this.name = name;
+		return this;
 	}
 
-	public Map<String, Object> getParameters() {
-		return this.parameters;
+	public ForwardResultBuilder parameter(final String name, final Object value) {
+		this.parameters.put(name, value);
+		return this;
 	}
 
-	public void setParameters(final Map<String, Object> parameters) {
-		this.parameters = parameters;
-	}
-
-	public void addParameters(final String key, final Object value) {
-		this.parameters.put(key, value);
-	}
-
-	public ActionForward getForward(final ActionMapping mapping) {
-		ActionRedirect redirect = new ActionRedirect(mapping.findForwardConfig(this.name));
-		for (Entry<String, Object> entry : this.parameters.entrySet()) {
-			String k = entry.getKey();
-			String v = StringUtils.BLANK;
-			if (entry.getValue() != null) {
-				v = entry.getValue().toString();
-			}
-			redirect.addParameter(k, v);
+	public ActionForward build() {
+		if (StringUtils.isEmpty(this.name)) {
+			throw new IllegalStateException("Name must be not empty");
 		}
+
+		ActionRedirect redirect = new ActionRedirect(this.mapping.findForwardConfig(this.name));
+		if ((this.parameters != null) && (this.parameters.size() > 0)) {
+			for (Entry<String, Object> entry : this.parameters.entrySet()) {
+				String k = entry.getKey();
+				String v = StringUtils.BLANK;
+				if (entry.getValue() != null) {
+					v = entry.getValue().toString();
+				}
+				redirect.addParameter(k, v);
+			}
+		}
+
 		return redirect;
 	}
 

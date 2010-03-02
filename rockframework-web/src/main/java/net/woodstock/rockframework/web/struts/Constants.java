@@ -16,24 +16,26 @@
  */
 package net.woodstock.rockframework.web.struts;
 
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
+public abstract class Constants {
 
-public class WrappedResult implements StrutsResult {
+	public static final String	ERROR		= "error";
 
-	private ActionForward	forward;
+	public static final String	INDEX		= "index";
 
-	public WrappedResult(final ActionForward forward) {
-		super();
-		this.forward = forward;
-	}
+	public static final String	INPUT		= "input";
 
-	public ActionForward getForward() {
-		return this.forward;
-	}
+	public static final String	LOGIN		= "login";
 
-	public ActionForward getForward(final ActionMapping mapping) {
-		return this.forward;
+	public static final String	LOGOUT		= "logout";
+
+	public static final String	NO_ACCESS	= "no-access";
+
+	public static final String	NO_LOGIN	= "no-login";
+
+	public static final String	SUCCESS		= "success";
+
+	private Constants() {
+		// 
 	}
 
 }

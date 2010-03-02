@@ -21,40 +21,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import net.woodstock.rockframework.utils.StringUtils;
-import net.woodstock.rockframework.web.struts2.interceptor.PostOnlyInterceptor;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 
-import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
 
 public abstract class BaseAction extends ActionSupport implements ServletRequestAware, ServletResponseAware, Preparable {
 
 	private static final long	serialVersionUID	= 655502050649662609L;
-
-	public static final String	ERROR				= Action.ERROR;
-
-	public static final String	INDEX				= "index";
-
-	public static final String	INPUT				= Action.INPUT;
-
-	public static final String	INVALID_METHOD		= PostOnlyInterceptor.INVALID_METHOD;
-
-	public static final String	LOGIN				= Action.LOGIN;
-
-	public static final String	LOGOUT				= "logout";
-
-	public static final String	NONE				= Action.NONE;
-
-	public static final String	NO_ACCESS			= "no-access";
-
-	public static final String	NO_LOGIN			= "no-login";
-
-	public static final String	REDIRECT			= "redirect";
-
-	public static final String	SUCCESS				= Action.SUCCESS;
 
 	private HttpServletRequest	request;
 

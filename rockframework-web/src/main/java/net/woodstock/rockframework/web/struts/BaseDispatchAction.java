@@ -33,7 +33,13 @@ import org.apache.struts.actions.DispatchAction;
 
 public abstract class BaseDispatchAction extends DispatchAction {
 
-	private static ThreadLocal<ActionMapping>	currentMapping	= new ThreadLocal<ActionMapping>();
+	private static ThreadLocal<ActionMapping>		currentMapping	= new ThreadLocal<ActionMapping>();
+
+	private static ThreadLocal<ActionForm>			currentForm		= new ThreadLocal<ActionForm>();
+
+	private static ThreadLocal<HttpServletRequest>	currentRequest	= new ThreadLocal<HttpServletRequest>();
+
+	private static ThreadLocal<HttpServletResponse>	currentResponse	= new ThreadLocal<HttpServletResponse>();
 
 	@Override
 	public final ActionForward execute(final ActionMapping mapping, final ActionForm form, final ServletRequest request, final ServletResponse response) throws Exception {
@@ -53,27 +59,22 @@ public abstract class BaseDispatchAction extends DispatchAction {
 
 	@Override
 	protected final ActionForward unspecified(final ActionMapping mapping, final ActionForm form, final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-		return mapping.findForward(BaseAction.INPUT);
+		return mapping.findForward(Constants.INPUT);
 	}
 
 	@Override
 	protected ActionForward dispatchMethod(final ActionMapping mapping, final ActionForm form, final HttpServletRequest request, final HttpServletResponse response, final String name) throws Exception {
 		try {
 			BaseDispatchAction.currentMapping.set(mapping);
+			BaseDispatchAction.currentForm.set(form);
+			BaseDispatchAction.currentRequest.set(request);
+			BaseDispatchAction.currentResponse.set(response);
 
-			Class<?> formClass = ActionForm.class;
+			Method m = ClassUtils.getMethod(this.getClass(), name, new Class<?>[] {});
 
-			if (form != null) {
-				formClass = formClass.getClass();
-			}
+			ActionForward forward = (ActionForward) m.invoke(this);
 
-			Class<?>[] methodTypes = new Class<?>[] { formClass, HttpServletRequest.class, HttpServletResponse.class };
-
-			Method m = ClassUtils.getMethod(this.getClass(), name, methodTypes);
-
-			StrutsResult result = (StrutsResult) m.invoke(this, form, request, response);
-
-			return result.getForward(mapping);
+			return forward;
 		} catch (InvocationTargetException e) {
 			Throwable throwable = e.getCause();
 			if ((throwable != null) && (throwable instanceof Exception)) {
@@ -85,5 +86,17 @@ public abstract class BaseDispatchAction extends DispatchAction {
 
 	protected ActionMapping getMapping() {
 		return BaseDispatchAction.currentMapping.get();
+	}
+
+	protected ActionForm getForm() {
+		return BaseDispatchAction.currentForm.get();
+	}
+
+	protected HttpServletRequest getRequest() {
+		return BaseDispatchAction.currentRequest.get();
+	}
+
+	protected HttpServletResponse getResponse() {
+		return BaseDispatchAction.currentResponse.get();
 	}
 }

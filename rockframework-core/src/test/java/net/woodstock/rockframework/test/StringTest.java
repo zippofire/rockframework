@@ -24,8 +24,14 @@ public class StringTest extends TestCase {
 		System.out.println(Base64Utils.toBase64("37893432349"));
 	}
 
-	public void test2() throws Exception {
+	public void xtest2() throws Exception {
 		System.out.println(StringUtils.random(10000));
+	}
+
+	public void test3() throws Exception {
+		String s = "12345678";
+		s = s.substring(0, 5) + "-" + s.substring(5);
+		System.out.println(s);
 	}
 
 }
