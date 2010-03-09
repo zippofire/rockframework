@@ -14,28 +14,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.web.struts2.converter;
+package net.woodstock.rockframework.collection;
 
-import net.woodstock.rockframework.utils.StringUtils;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.Iterator;
 
-public abstract class FormatConverter extends SimpleValueConverter<String> {
+public class SimpleEnumeration<E> implements Enumeration<E> {
 
-	private String	pattern;
+	private Iterator<E>	iterator;
 
-	public FormatConverter(final String pattern) {
+	public SimpleEnumeration(final Iterator<E> iterator) {
 		super();
-		this.pattern = pattern;
+		this.iterator = iterator;
+	}
+
+	public SimpleEnumeration(final Collection<E> collection) {
+		super();
+		Iterator<E> iterator = collection.iterator();
+		this.iterator = iterator;
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	protected String convertFromString(final String s, final Class toClass) {
-		return StringUtils.unformat(this.pattern, s);
+	public boolean hasMoreElements() {
+		return this.iterator.hasNext();
 	}
 
 	@Override
-	protected String convertToString(final String o) {
-		return StringUtils.format(this.pattern, o);
+	public E nextElement() {
+		return this.iterator.next();
 	}
 
 }

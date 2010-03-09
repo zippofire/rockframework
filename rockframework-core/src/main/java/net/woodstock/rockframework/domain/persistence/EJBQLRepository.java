@@ -14,21 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.reflection;
+package net.woodstock.rockframework.domain.persistence;
 
-public interface PropertyNavigator {
-
-	String getCanonicalName();
-
-	String getName();
-
-	BeanNavigator getParent();
-
-	Class<?> getType();
-
-	// Get/Set Value
-	Object getValue();
-
-	void setValue(Object value);
-
+public interface EJBQLRepository extends SQLRepository {
+	//
 }

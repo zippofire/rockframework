@@ -177,17 +177,6 @@ public abstract class StringUtils {
 		return s.toString();
 	}
 
-	public static String getString(final String s) {
-		return StringUtils.getString(s, StringUtils.BLANK);
-	}
-
-	public static String getString(final String s, final String r) {
-		if (StringUtils.isEmpty(s)) {
-			return r;
-		}
-		return s;
-	}
-
 	public static boolean hasOnlyDigit(final String s) {
 		if (StringUtils.isEmpty(s)) {
 			return false;
@@ -232,14 +221,6 @@ public abstract class StringUtils {
 			return true;
 		}
 		return false;
-	}
-
-	public static String lpad(final double d, final int size, final char pad) {
-		return StringUtils.lpad(Double.toString(d), size, pad);
-	}
-
-	public static String lpad(final long l, final int size, final char pad) {
-		return StringUtils.lpad(Long.toString(l), size, pad);
 	}
 
 	public static String lpad(final String s, final int size, final char pad) {
@@ -293,36 +274,12 @@ public abstract class StringUtils {
 		return new StringBuilder(s).reverse().toString();
 	}
 
-	public static String rpad(final double d, final int size, final char pad) {
-		return StringUtils.rpad(Double.toString(d), size, pad);
-	}
-
-	public static String rpad(final long l, final int size, final char pad) {
-		return StringUtils.rpad(Long.toString(l), size, pad);
-	}
-
 	public static String rpad(final String s, final int size, final char pad) {
 		StringBuilder builder = new StringBuilder(s);
 		while (builder.length() < size) {
 			builder.append(pad);
 		}
 		return builder.toString();
-	}
-
-	public static String toString(final Object o) {
-		if (o == null) {
-			return null;
-		}
-		return o.toString();
-	}
-
-	public static String[] toStringArray(final Object[] o) {
-		int len = o.length;
-		String[] s = new String[len];
-		for (int i = 0; i < len; i++) {
-			s[i] = o[i].toString();
-		}
-		return s;
 	}
 
 	public static String unformat(final String format, final String value) {

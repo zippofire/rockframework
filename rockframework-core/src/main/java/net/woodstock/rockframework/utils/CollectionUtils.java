@@ -24,6 +24,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import net.woodstock.rockframework.collection.SimpleEnumeration;
+
 public abstract class CollectionUtils {
 
 	private CollectionUtils() {
@@ -60,6 +62,15 @@ public abstract class CollectionUtils {
 		Set<E> set = new LinkedHashSet<E>();
 		CollectionUtils.copyEnumerationToCollection(enumeration, set);
 		return set;
+	}
+
+	public static <E> Enumeration<E> toEnumeration(final Collection<E> collection) {
+		if (collection == null) {
+			return null;
+		}
+		Iterator<E> iterator = collection.iterator();
+		Enumeration<E> enumeration = new SimpleEnumeration<E>(iterator);
+		return enumeration;
 	}
 
 	private static <E> void copyEnumerationToCollection(final Enumeration<E> enumeration, final Collection<E> collection) {

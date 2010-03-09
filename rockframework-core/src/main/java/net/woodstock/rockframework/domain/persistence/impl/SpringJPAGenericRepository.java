@@ -48,7 +48,7 @@ public abstract class SpringJPAGenericRepository extends SpringJPARepository imp
 
 	@SuppressWarnings("unchecked")
 	public <E extends Entity<?>> Collection<E> listAll(final E e, final Map<String, Object> options) {
-		String sql = RepositoryHelper.getListAllSql(e.getClass(), options);
+		String sql = RepositoryHelper.getListAllSql(e.getClass(), options, false);
 		return this.getJpaTemplate().find(sql);
 	}
 

@@ -16,24 +16,10 @@
  */
 package net.woodstock.rockframework.domain.persistence.impl;
 
-import org.hibernate.Session;
+public class HibernateGenericRepository extends AbstractHibernateGenericRepository {
 
-public abstract class HibernateGenericRepository extends AbstractHibernateGenericRepository {
-
-	private Session	session;
-
-	public HibernateGenericRepository(final Session session) {
+	public HibernateGenericRepository() {
 		super();
-		this.session = session;
-	}
-
-	@Override
-	protected Session getSession() {
-		return this.session;
-	}
-
-	public void setSession(final Session session) {
-		this.session = session;
 	}
 
 }

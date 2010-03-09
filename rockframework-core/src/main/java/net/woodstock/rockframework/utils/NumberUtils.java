@@ -19,6 +19,7 @@ package net.woodstock.rockframework.utils;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.util.Random;
 
@@ -26,15 +27,21 @@ import net.woodstock.rockframework.config.CoreConfig;
 
 public abstract class NumberUtils {
 
-	private static final String			DECIMAL_FORMAT_PROPERTY	= "format.decimal";
+	private static final String					DECIMAL_FORMAT_PROPERTY	= "format.decimal";
 
-	private static final String			INTEGER_FORMAT_PROPERTY	= "format.integer";
+	private static final String					INTEGER_FORMAT_PROPERTY	= "format.integer";
 
-	private static final DecimalFormat	DECIMAL_FORMAT			= new DecimalFormat(CoreConfig.getInstance().getValue(NumberUtils.DECIMAL_FORMAT_PROPERTY));
+	private static final String					DECIMAL_FORMAT_PATTERN	= CoreConfig.getInstance().getValue(NumberUtils.DECIMAL_FORMAT_PROPERTY);
 
-	private static final DecimalFormat	INTEGER_FORMAT			= new DecimalFormat(CoreConfig.getInstance().getValue(NumberUtils.INTEGER_FORMAT_PROPERTY));
+	private static final String					INTEGER_FORMAT_PATTERN	= CoreConfig.getInstance().getValue(NumberUtils.INTEGER_FORMAT_PROPERTY);
 
-	private static final Random			RANDOM					= new Random();
+	private static final DecimalFormatSymbols	DECIMAL_FORMAT_SYMBOLS	= new DecimalFormatSymbols(LocaleUtils.getLocale());
+
+	private static final DecimalFormat			DECIMAL_FORMAT			= new DecimalFormat(NumberUtils.DECIMAL_FORMAT_PATTERN, NumberUtils.DECIMAL_FORMAT_SYMBOLS);
+
+	private static final DecimalFormat			INTEGER_FORMAT			= new DecimalFormat(NumberUtils.INTEGER_FORMAT_PATTERN, NumberUtils.DECIMAL_FORMAT_SYMBOLS);
+
+	private static final Random					RANDOM					= new Random();
 
 	public static String format(final BigDecimal value) {
 		if (value == null) {

@@ -1,4 +1,9 @@
-package net.woodstock.rockframework.test.domain.test;
+package net.woodstock.rockframework.test.domain.reflection;
+
+import java.lang.annotation.Annotation;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
 
 import junit.framework.TestCase;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
@@ -23,7 +28,7 @@ public class TestBeanDescriptor extends TestCase {
 		bean.getProperty("fullName").setValue(x, "Lourival Sabino");
 	}
 
-	public void test2() throws Exception {
+	public void xtest2() throws Exception {
 		X x = new X();
 
 		BeanDescriptor bean = BeanDescriptorFactoryImpl.getInstance().getBeanDescriptor(x.getClass());
@@ -37,8 +42,18 @@ public class TestBeanDescriptor extends TestCase {
 		}
 	}
 
+	public void test3() throws Exception {
+		BeanDescriptor bean = BeanDescriptorFactoryImpl.getInstance(ReflectionType.MIXED).getBeanDescriptor(X.class);
+		PropertyDescriptor property = bean.getProperty("id");
+		Annotation[] annotations = property.getAnnotations();
+		for (Annotation annotation : annotations) {
+			System.out.println(annotation);
+		}
+	}
+
 	public static class X {
 
+		@Id
 		private Integer	id;
 
 		private String	firstName;
@@ -49,6 +64,7 @@ public class TestBeanDescriptor extends TestCase {
 			super();
 		}
 
+		@Column
 		public Integer getId() {
 			return this.id;
 		}

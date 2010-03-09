@@ -14,31 +14,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.util;
+package net.woodstock.rockframework.utils;
 
-import java.text.Collator;
-import java.util.Comparator;
 import java.util.Locale;
 
-import net.woodstock.rockframework.utils.LocaleUtils;
+import net.woodstock.rockframework.config.CoreConfig;
 
-public final class StringComparator implements Comparator<String> {
+public abstract class LocaleUtils {
 
-	private static StringComparator	instance	= new StringComparator(LocaleUtils.getLocale());
+	private static final String	LOCALE_COUNTRY_PROPERTY		= "locale.country";
 
-	private Collator				collator;
+	private static final String	LOCALE_LANGUAGE_PROPERTY	= "locale.language";
 
-	private StringComparator(final Locale locale) {
-		super();
-		this.collator = Collator.getInstance(locale);
+	private static final String	LOCALE_COUNTRY				= CoreConfig.getInstance().getValue(LocaleUtils.LOCALE_COUNTRY_PROPERTY);
+
+	private static final String	LOCALE_LANGUAGE				= CoreConfig.getInstance().getValue(LocaleUtils.LOCALE_LANGUAGE_PROPERTY);
+
+	private static final Locale	LOCALE						= new Locale(LocaleUtils.LOCALE_LANGUAGE, LocaleUtils.LOCALE_COUNTRY);
+
+	private LocaleUtils() {
+		//
 	}
 
-	public int compare(final String o1, final String o2) {
-		return this.collator.compare(o1, o2);
-	}
-
-	public static StringComparator getInstance() {
-		return StringComparator.instance;
+	public static Locale getLocale() {
+		return LocaleUtils.LOCALE;
 	}
 
 }

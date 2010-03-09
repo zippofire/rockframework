@@ -17,25 +17,15 @@
 package net.woodstock.rockframework.test;
 
 import junit.framework.TestCase;
-import net.woodstock.rockframework.util.Calendar;
+import net.woodstock.rockframework.utils.NumberUtils;
 
 public class LocaleTest extends TestCase {
 
-	public LocaleTest() {
-		super();
-
-		Calendar c = Calendar.getInstance();
-
-		System.out.println(c.getFormated("Brasilia %D/%M/%Y, agora sao %h:%m:%s"));
-
-		c.addHours(48);
-
-		System.out.println(c.getFormated("Brasilia %D/%M/%Y, agora sao %h:%m:%s"));
-
-	}
-
 	public void test1() throws Exception {
-		new LocaleTest();
+		// en US 999,999,999
+		// pt BR 999.999.999
+		int n = 999999999;
+		System.out.println(NumberUtils.format(n));
 	}
 
 }

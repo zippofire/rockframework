@@ -42,6 +42,11 @@ abstract class AbstractHibernateGenericRepository extends AbstractHibernateRepos
 
 	public void delete(final Entity<?> e) {
 		Session s = this.getSession();
+
+		if (this.isTransationEnabled()) {
+			s.getTransaction().begin();
+		}
+
 		try {
 			s.delete(e);
 		} catch (PropertyValueException pve) {
@@ -51,7 +56,14 @@ abstract class AbstractHibernateGenericRepository extends AbstractHibernateRepos
 			Entity<?> tmp = (Entity<?>) s.get(e.getClass(), e.getId());
 			s.delete(tmp);
 		}
-		s.flush();
+
+		if (this.isTransationEnabled()) {
+			s.getTransaction().commit();
+		}
+
+		if (this.isFlushEnabled()) {
+			s.flush();
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -64,7 +76,7 @@ abstract class AbstractHibernateGenericRepository extends AbstractHibernateRepos
 	@SuppressWarnings("unchecked")
 	public <E extends Entity<?>> Collection<E> listAll(final E e, final Map<String, Object> options) {
 		Session s = this.getSession();
-		String sql = RepositoryHelper.getListAllSql(e.getClass(), options);
+		String sql = RepositoryHelper.getListAllSql(e.getClass(), options, true);
 		Query q = s.createQuery(sql);
 
 		if ((options != null) && (options.containsKey(QueryBuilder.OPTION_CACHE_MODE)) && (options.get(QueryBuilder.OPTION_CACHE_MODE) instanceof CacheMode)) {
@@ -96,12 +108,29 @@ abstract class AbstractHibernateGenericRepository extends AbstractHibernateRepos
 
 	public void save(final Entity<?> e) {
 		Session s = this.getSession();
+
+		if (this.isTransationEnabled()) {
+			s.getTransaction().begin();
+		}
+
 		s.save(e);
-		s.flush();
+
+		if (this.isTransationEnabled()) {
+			s.getTransaction().commit();
+		}
+
+		if (this.isFlushEnabled()) {
+			s.flush();
+		}
 	}
 
 	public void update(final Entity<?> e) {
 		Session s = this.getSession();
+
+		if (this.isTransationEnabled()) {
+			s.getTransaction().begin();
+		}
+
 		try {
 			s.update(e);
 		} catch (NonUniqueObjectException nuoe) {
@@ -111,7 +140,14 @@ abstract class AbstractHibernateGenericRepository extends AbstractHibernateRepos
 				s.merge(e);
 			}
 		}
-		s.flush();
+
+		if (this.isTransationEnabled()) {
+			s.getTransaction().commit();
+		}
+
+		if (this.isFlushEnabled()) {
+			s.flush();
+		}
 	}
 
 }

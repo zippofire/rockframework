@@ -17,6 +17,7 @@
 package net.woodstock.rockframework.web.filter.i18n;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 
 import javax.servlet.FilterChain;
@@ -24,11 +25,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.woodstock.rockframework.utils.IOUtils;
 import net.woodstock.rockframework.utils.StringUtils;
 import net.woodstock.rockframework.web.config.WebLog;
 import net.woodstock.rockframework.web.filter.HttpFilter;
-import net.woodstock.rockframework.web.wrapper.BufferedServletResponseWrapper;
-import net.woodstock.rockframework.web.wrapper.ServletOutputStreamWrapper;
+import net.woodstock.rockframework.web.util.CachedHttpServletResponse;
+import net.woodstock.rockframework.web.util.CachedServletOutputStream;
 
 public class CharsetFilter extends HttpFilter {
 
@@ -56,17 +58,18 @@ public class CharsetFilter extends HttpFilter {
 
 	@Override
 	public void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain) throws IOException, ServletException {
-		BufferedServletResponseWrapper responseWrapper = new BufferedServletResponseWrapper(response);
+		CachedHttpServletResponse responseWrapper = new CachedHttpServletResponse(response);
 
 		WebLog.getInstance().getLog().debug("Filtering " + request.getRequestURI());
 		WebLog.getInstance().getLog().debug("Send request to next chain");
 		chain.doFilter(request, responseWrapper);
 
 		WebLog.getInstance().getLog().debug("Getting response content");
-		ServletOutputStreamWrapper wrapper = responseWrapper.getOutputStreamWrapper();
+		CachedServletOutputStream wrapper = (CachedServletOutputStream) responseWrapper.getOutputStream();
 
 		WebLog.getInstance().getLog().debug("Convert from charset " + this.charsetFrom.displayName() + " to " + this.charsetTo.displayName());
-		String text = wrapper.getOutputText();
+		InputStream cache = wrapper.getCache();
+		String text = IOUtils.toString(cache);
 		String content = StringUtils.convertCharset(this.charsetFrom, this.charsetTo, text);
 
 		WebLog.getInstance().getLog().debug("Writing text to output");

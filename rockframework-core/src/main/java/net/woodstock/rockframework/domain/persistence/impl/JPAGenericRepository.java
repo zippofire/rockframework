@@ -16,24 +16,10 @@
  */
 package net.woodstock.rockframework.domain.persistence.impl;
 
-import javax.persistence.EntityManager;
+public class JPAGenericRepository extends AbstractJPAGenericRepository {
 
-public abstract class JPAGenericRepository extends AbstractJPAGenericRepository {
-
-	private EntityManager	entityManager;
-
-	public JPAGenericRepository(final EntityManager entityManager) {
+	public JPAGenericRepository() {
 		super();
-		this.entityManager = entityManager;
-	}
-
-	@Override
-	protected EntityManager getEntityManager() {
-		return this.entityManager;
-	}
-
-	public void setEntityManager(final EntityManager entityManager) {
-		this.entityManager = entityManager;
 	}
 
 }

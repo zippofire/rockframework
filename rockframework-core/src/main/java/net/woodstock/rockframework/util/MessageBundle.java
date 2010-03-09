@@ -20,9 +20,16 @@ import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import net.woodstock.rockframework.utils.LocaleUtils;
+
 public class MessageBundle {
 
 	private ResourceBundle	resource;
+
+	protected MessageBundle(final String baseName) {
+		super();
+		this.resource = ResourceBundle.getBundle(baseName, LocaleUtils.getLocale());
+	}
 
 	protected MessageBundle(final String baseName, final Locale locale) {
 		super();

@@ -35,8 +35,20 @@ abstract class AbstractJPAGenericRepository extends AbstractJPARepository implem
 
 	public void delete(final Entity<?> e) {
 		EntityManager m = this.getEntityManager();
+
+		if (this.isTransationEnabled()) {
+			m.getTransaction().begin();
+		}
+
 		m.remove(e);
-		m.flush();
+
+		if (this.isTransationEnabled()) {
+			m.getTransaction().commit();
+		}
+
+		if (this.isFlushEnabled()) {
+			m.flush();
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -49,7 +61,7 @@ abstract class AbstractJPAGenericRepository extends AbstractJPARepository implem
 	@SuppressWarnings("unchecked")
 	public <E extends Entity<?>> Collection<E> listAll(final E e, final Map<String, Object> options) {
 		EntityManager m = this.getEntityManager();
-		String sql = RepositoryHelper.getListAllSql(e.getClass(), options);
+		String sql = RepositoryHelper.getListAllSql(e.getClass(), options, false);
 		Query q = m.createQuery(sql);
 		Collection<E> list = q.getResultList();
 		return list;
@@ -72,13 +84,38 @@ abstract class AbstractJPAGenericRepository extends AbstractJPARepository implem
 
 	public void save(final Entity<?> e) {
 		EntityManager m = this.getEntityManager();
+
+		if (this.isTransationEnabled()) {
+			m.getTransaction().begin();
+		}
+
 		m.persist(e);
+
+		if (this.isTransationEnabled()) {
+			m.getTransaction().commit();
+		}
+
+		if (this.isFlushEnabled()) {
+			m.flush();
+		}
 	}
 
 	public void update(final Entity<?> e) {
 		EntityManager m = this.getEntityManager();
+
+		if (this.isTransationEnabled()) {
+			m.getTransaction().begin();
+		}
+
 		m.merge(e);
-		m.flush();
+
+		if (this.isTransationEnabled()) {
+			m.getTransaction().commit();
+		}
+
+		if (this.isFlushEnabled()) {
+			m.flush();
+		}
 	}
 
 }

@@ -14,29 +14,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.reflection;
+package net.woodstock.rockframework.domain.persistence;
 
 import java.util.Collection;
+import java.util.Map;
 
-public interface BeanNavigator {
+public interface SQLRepository extends Repository {
 
-	String getCanonicalName();
+	Object getSingle(String sql, Map<String, Object> parameters);
 
-	String getName();
+	@SuppressWarnings("unchecked")
+	Collection getCollection(String sql, Map<String, Object> parameters);
 
-	Object getBean();
-
-	BeanNavigator getParent();
-
-	Class<?> getType();
-
-	// Property
-	PropertyNavigator getProperty(String name);
-
-	BeanNavigator getPropertyAsBean(String name);
-
-	boolean hasProperty(String name);
-
-	Collection<PropertyNavigator> getProperties();
+	void executeUpdate(String sql, Map<String, Object> parameters);
 
 }

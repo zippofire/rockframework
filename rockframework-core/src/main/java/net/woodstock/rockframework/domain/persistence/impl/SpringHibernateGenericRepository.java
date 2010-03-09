@@ -47,7 +47,7 @@ public abstract class SpringHibernateGenericRepository extends SpringHibernateRe
 	@SuppressWarnings("unchecked")
 	public <E extends Entity<?>> Collection<E> listAll(final E e, final Map<String, Object> options) {
 		Session s = this.getSession();
-		String sql = RepositoryHelper.getListAllSql(e.getClass(), options);
+		String sql = RepositoryHelper.getListAllSql(e.getClass(), options, true);
 		Query q = s.createQuery(sql);
 
 		if ((options != null) && (options.containsKey(QueryBuilder.OPTION_CACHE_MODE)) && (options.get(QueryBuilder.OPTION_CACHE_MODE) instanceof CacheMode)) {

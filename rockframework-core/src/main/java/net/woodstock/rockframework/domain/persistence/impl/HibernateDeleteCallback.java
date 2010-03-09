@@ -49,7 +49,7 @@ public class HibernateDeleteCallback implements HibernateCallback {
 			session.delete(e);
 		} catch (HibernateException he) {
 			if (he.getMessage().startsWith(AbstractHibernateRepository.MSG_ERROR_TWO_SESSION)) {
-				String sql = RepositoryHelper.getDeleteSql(this.entity);
+				String sql = RepositoryHelper.getDeleteSql(this.entity.getClass(), true);
 				Query query = session.createQuery(sql);
 				query.setParameter(HibernateDeleteCallback.ID_ATTRIBUTE, this.entity.getId());
 				query.executeUpdate();

@@ -27,7 +27,9 @@ public abstract class DateUtils {
 
 	private static final String		DATE_FORMAT_PROPERTY	= "format.date";
 
-	private static final DateFormat	DATE_FORMAT				= new SimpleDateFormat(CoreConfig.getInstance().getValue(DateUtils.DATE_FORMAT_PROPERTY));
+	private static final String		DATE_FORMAT_PATTERN		= CoreConfig.getInstance().getValue(DateUtils.DATE_FORMAT_PROPERTY);
+
+	private static final DateFormat	DATE_FORMAT				= new SimpleDateFormat(DateUtils.DATE_FORMAT_PATTERN, LocaleUtils.getLocale());
 
 	private DateUtils() {
 		//

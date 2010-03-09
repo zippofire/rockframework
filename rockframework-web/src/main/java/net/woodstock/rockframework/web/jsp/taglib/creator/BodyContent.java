@@ -17,7 +17,7 @@
 package net.woodstock.rockframework.web.jsp.taglib.creator;
 
 public enum BodyContent {
-	EMPTY("empty"), JSP("JSP"), SCRIPTLESS("scriptless"), TAGDEPENDENT("tagdependent");
+	EMPTY("empty"), JSP("JSP"), SCRIPTLESS("scriptless"), TAG_DEPENDENT("tagdependent");
 
 	private String	name;
 

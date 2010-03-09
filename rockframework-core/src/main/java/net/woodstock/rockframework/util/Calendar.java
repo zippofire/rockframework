@@ -22,6 +22,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import net.woodstock.rockframework.utils.LocaleUtils;
 import net.woodstock.rockframework.utils.StringUtils;
 
 public final class Calendar extends GregorianCalendar {
@@ -415,7 +416,7 @@ public final class Calendar extends GregorianCalendar {
 
 	// Instance
 	public static Calendar getInstance() {
-		return new Calendar(TimeZone.getDefault(), Locale.getDefault());
+		return new Calendar(TimeZone.getDefault(), LocaleUtils.getLocale());
 	}
 
 	public static Calendar getInstance(final Locale l) {
@@ -431,7 +432,7 @@ public final class Calendar extends GregorianCalendar {
 	}
 
 	public static Calendar toCalendar(final java.util.Calendar c) {
-		return new Calendar(c.getTime(), TimeZone.getDefault(), Locale.getDefault());
+		return new Calendar(c.getTime(), TimeZone.getDefault(), LocaleUtils.getLocale());
 	}
 
 	public static Calendar toCalendar(final java.util.Calendar c, final TimeZone tz, final Locale l) {
@@ -439,7 +440,7 @@ public final class Calendar extends GregorianCalendar {
 	}
 
 	public static Calendar toCalendar(final Date d) {
-		return new Calendar(d, TimeZone.getDefault(), Locale.getDefault());
+		return new Calendar(d, TimeZone.getDefault(), LocaleUtils.getLocale());
 	}
 
 	public static Calendar toCalendar(final Date d, final TimeZone tz, final Locale l) {
@@ -447,7 +448,7 @@ public final class Calendar extends GregorianCalendar {
 	}
 
 	public static Calendar toCalendar(final long d) {
-		return new Calendar(new Date(d), TimeZone.getDefault(), Locale.getDefault());
+		return new Calendar(new Date(d), TimeZone.getDefault(), LocaleUtils.getLocale());
 	}
 
 	public static Calendar toCalendar(final long d, final TimeZone tz, final Locale l) {

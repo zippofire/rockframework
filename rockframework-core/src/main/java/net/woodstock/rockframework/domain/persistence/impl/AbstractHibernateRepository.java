@@ -19,15 +19,51 @@ package net.woodstock.rockframework.domain.persistence.impl;
 import net.woodstock.rockframework.domain.persistence.Repository;
 
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 abstract class AbstractHibernateRepository implements Repository {
 
 	public static final String	MSG_ERROR_TWO_SESSION	= "Illegal attempt to associate a collection with two open sessions";
 
+	private SessionFactory		sessionFactory;
+
+	private boolean				transationEnabled;
+
+	private boolean				flushEnabled;
+
 	public AbstractHibernateRepository() {
 		super();
 	}
 
-	protected abstract Session getSession();
+	public SessionFactory getSessionFactory() {
+		return this.sessionFactory;
+	}
+
+	public void setSessionFactory(final SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+
+	public boolean isTransationEnabled() {
+		return this.transationEnabled;
+	}
+
+	public void setTransationEnabled(final boolean transationEnabled) {
+		this.transationEnabled = transationEnabled;
+	}
+
+	public boolean isFlushEnabled() {
+		return this.flushEnabled;
+	}
+
+	public void setFlushEnabled(final boolean flushEnabled) {
+		this.flushEnabled = flushEnabled;
+	}
+
+	protected Session getSession() {
+		if (this.sessionFactory == null) {
+			throw new IllegalStateException("Session Factory is null");
+		}
+		return this.sessionFactory.openSession();
+	}
 
 }

@@ -14,28 +14,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.web.struts2.converter;
+package net.woodstock.rockframework.web.util;
 
-import net.woodstock.rockframework.utils.StringUtils;
+import java.io.InputStream;
 
-public abstract class FormatConverter extends SimpleValueConverter<String> {
+import javax.servlet.ServletOutputStream;
 
-	private String	pattern;
+import net.woodstock.rockframework.io.InputOutputStream;
 
-	public FormatConverter(final String pattern) {
+public class CachedServletOutputStream extends ServletOutputStream {
+
+	private InputOutputStream	outputStream;
+
+	public CachedServletOutputStream() {
 		super();
-		this.pattern = pattern;
+		this.outputStream = new InputOutputStream();
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	protected String convertFromString(final String s, final Class toClass) {
-		return StringUtils.unformat(this.pattern, s);
+	public void write(final int b) {
+		this.outputStream.write(b);
 	}
 
-	@Override
-	protected String convertToString(final String o) {
-		return StringUtils.format(this.pattern, o);
+	// Cache
+	public InputStream getCache() {
+		return this.outputStream.getInputStream();
 	}
 
 }

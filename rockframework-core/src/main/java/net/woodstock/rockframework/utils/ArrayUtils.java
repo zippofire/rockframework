@@ -119,29 +119,6 @@ public final class ArrayUtils {
 			if (!first) {
 				builder.append(",");
 			}
-			builder.append(o.toString());
-			if (first) {
-				first = false;
-			}
-		}
-		builder.append("]");
-
-		return builder.toString();
-	}
-
-	public static String toString(final String[] array) {
-		if (array == null) {
-			return null;
-		}
-
-		boolean first = true;
-		StringBuilder builder = new StringBuilder();
-
-		builder.append("[");
-		for (Object o : array) {
-			if (!first) {
-				builder.append(",");
-			}
 			builder.append(o);
 			if (first) {
 				first = false;
@@ -165,7 +142,7 @@ public final class ArrayUtils {
 			if (!first) {
 				builder.append(",");
 			}
-			builder.append(o.toString());
+			builder.append(o);
 			if (first) {
 				first = false;
 			}
@@ -173,6 +150,41 @@ public final class ArrayUtils {
 		builder.append("]");
 
 		return builder.toString();
+	}
+
+	public static String[] toStringArray(final Object array) {
+		if (array == null) {
+			return null;
+		}
+		if (!array.getClass().isArray()) {
+			throw new IllegalArgumentException("Object is not an array[" + array.getClass().getCanonicalName() + "]");
+		}
+
+		int len = Array.getLength(array);
+		String[] s = new String[len];
+		for (int i = 0; i < len; i++) {
+			Object o = Array.get(array, i);
+			if (o != null) {
+				s[i] = o.toString();
+			} else {
+				s[i] = null;
+			}
+		}
+		return s;
+	}
+
+	public static String[] toStringArray(final Object[] array) {
+		int len = array.length;
+		String[] s = new String[len];
+		for (int i = 0; i < len; i++) {
+			Object o = s[i];
+			if (o != null) {
+				s[i] = o.toString();
+			} else {
+				s[i] = null;
+			}
+		}
+		return s;
 	}
 
 }
