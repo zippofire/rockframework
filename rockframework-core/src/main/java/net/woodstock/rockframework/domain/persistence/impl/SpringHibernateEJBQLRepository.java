@@ -21,9 +21,9 @@ import java.util.Map;
 
 import net.woodstock.rockframework.domain.persistence.EJBQLRepository;
 
-public class HibernateEJBQLRepository extends AbstractHibernateRepository implements EJBQLRepository {
+public class SpringHibernateEJBQLRepository extends SpringHibernateRepository implements EJBQLRepository {
 
-	public HibernateEJBQLRepository() {
+	public SpringHibernateEJBQLRepository() {
 		super();
 	}
 

@@ -18,13 +18,9 @@ package net.woodstock.rockframework.domain.persistence.impl;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.persistence.Query;
 
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.persistence.GenericRepository;
-import net.woodstock.rockframework.domain.persistence.query.impl.JPAQueryBuilder;
 
 public abstract class SpringJPAGenericRepository extends SpringJPARepository implements GenericRepository {
 
@@ -41,30 +37,12 @@ public abstract class SpringJPAGenericRepository extends SpringJPARepository imp
 		return (E) this.getJpaTemplate().find(entity.getClass(), entity.getId());
 	}
 
-	@SuppressWarnings("unchecked")
-	public <E extends Entity<?>> Collection<E> listAll(final Class<E> clazz) {
-		return this.getJpaTemplate().find("SELECT o FROM " + clazz.getCanonicalName() + " AS o");
-	}
-
-	@SuppressWarnings("unchecked")
 	public <E extends Entity<?>> Collection<E> listAll(final E e, final Map<String, Object> options) {
-		String sql = RepositoryHelper.getListAllSql(e.getClass(), options, false);
-		return this.getJpaTemplate().find(sql);
+		return new CommonJPAGenericRepository(this.getJpaTemplate().getEntityManager()).listAll(e, options);
 	}
 
-	@SuppressWarnings("unchecked")
 	public <E extends Entity<?>> Collection<E> listByExample(final E e, final Map<String, Object> options) {
-		JPAQueryBuilder builder = new JPAQueryBuilder(this.getJpaTemplate().getEntityManager());
-		builder.setEntity(e);
-		if ((options != null) && (options.size() > 0)) {
-			for (Entry<String, Object> option : options.entrySet()) {
-				builder.setOption(option.getKey(), option.getValue());
-			}
-		}
-		builder.build();
-		Query q = builder.getQuery();
-		Collection<E> list = q.getResultList();
-		return list;
+		return new CommonJPAGenericRepository(this.getJpaTemplate().getEntityManager()).listByExample(e, options);
 	}
 
 	public void save(final Entity<?> e) {

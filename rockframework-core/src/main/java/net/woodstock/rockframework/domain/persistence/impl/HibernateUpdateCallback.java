@@ -20,8 +20,6 @@ import java.sql.SQLException;
 
 import net.woodstock.rockframework.domain.Entity;
 
-import org.hibernate.HibernateException;
-import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
 
@@ -35,15 +33,7 @@ public class HibernateUpdateCallback implements HibernateCallback {
 	}
 
 	public Object doInHibernate(final Session session) throws SQLException {
-		try {
-			session.update(this.entity);
-		} catch (NonUniqueObjectException nuoe) {
-			session.merge(this.entity);
-		} catch (HibernateException he) {
-			if (he.getMessage().startsWith(AbstractHibernateRepository.MSG_ERROR_TWO_SESSION)) {
-				session.merge(this.entity);
-			}
-		}
+		new CommonHibernateGenericRepository(session).update(this.entity);
 		return null;
 	}
 

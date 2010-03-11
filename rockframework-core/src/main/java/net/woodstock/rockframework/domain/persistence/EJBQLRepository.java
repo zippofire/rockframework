@@ -16,6 +16,6 @@
  */
 package net.woodstock.rockframework.domain.persistence;
 
-public interface EJBQLRepository extends SQLRepository {
+public interface EJBQLRepository extends SQLEJBQLRepository {
 	//
 }

@@ -32,52 +32,48 @@ import org.hibernate.PropertyValueException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-abstract class AbstractHibernateGenericRepository extends AbstractHibernateRepository implements GenericRepository {
+class CommonHibernateGenericRepository implements GenericRepository {
 
-	public static final String	MSG_ERROR_TWO_SESSION	= "Illegal attempt to associate a collection with two open sessions";
+	private static final String	MSG_ERROR_TWO_SESSION	= "Illegal attempt to associate a collection with two open sessions";
 
-	public AbstractHibernateGenericRepository() {
+	private static final String	ID_ATTRIBUTE			= "id";
+
+	private Session				session;
+
+	public CommonHibernateGenericRepository(final Session session) {
 		super();
+		this.session = session;
 	}
 
 	public void delete(final Entity<?> e) {
-		Session s = this.getSession();
-
-		if (this.isTransationEnabled()) {
-			s.getTransaction().begin();
-		}
-
 		try {
-			s.delete(e);
+			this.session.delete(e);
 		} catch (PropertyValueException pve) {
-			s.refresh(e);
-			s.delete(e);
+			this.session.refresh(e);
+			this.session.delete(e);
 		} catch (NonUniqueObjectException nuoe) {
-			Entity<?> tmp = (Entity<?>) s.get(e.getClass(), e.getId());
-			s.delete(tmp);
-		}
-
-		if (this.isTransationEnabled()) {
-			s.getTransaction().commit();
-		}
-
-		if (this.isFlushEnabled()) {
-			s.flush();
+			Entity<?> tmp = (Entity<?>) this.session.get(e.getClass(), e.getId());
+			this.session.delete(tmp);
+		} catch (HibernateException he) {
+			if (he.getMessage().startsWith(CommonHibernateGenericRepository.MSG_ERROR_TWO_SESSION)) {
+				String sql = RepositoryHelper.getDeleteSql(e.getClass(), true);
+				Query query = this.session.createQuery(sql);
+				query.setParameter(CommonHibernateGenericRepository.ID_ATTRIBUTE, e.getId());
+				query.executeUpdate();
+			}
 		}
 	}
 
 	@SuppressWarnings("unchecked")
 	public <E extends Entity<?>> E get(final E entity) {
-		Session s = this.getSession();
-		E e = (E) s.get(entity.getClass(), entity.getId());
+		E e = (E) this.session.get(entity.getClass(), entity.getId());
 		return e;
 	}
 
 	@SuppressWarnings("unchecked")
 	public <E extends Entity<?>> Collection<E> listAll(final E e, final Map<String, Object> options) {
-		Session s = this.getSession();
 		String sql = RepositoryHelper.getListAllSql(e.getClass(), options, true);
-		Query q = s.createQuery(sql);
+		Query q = this.session.createQuery(sql);
 
 		if ((options != null) && (options.containsKey(QueryBuilder.OPTION_CACHE_MODE)) && (options.get(QueryBuilder.OPTION_CACHE_MODE) instanceof CacheMode)) {
 			CacheMode cacheMode = (CacheMode) options.get(QueryBuilder.OPTION_CACHE_MODE);
@@ -93,7 +89,7 @@ abstract class AbstractHibernateGenericRepository extends AbstractHibernateRepos
 
 	@SuppressWarnings("unchecked")
 	public <E extends Entity<?>> Collection<E> listByExample(final E e, final Map<String, Object> options) {
-		HibernateQueryBuilder builder = new HibernateQueryBuilder(this.getSession());
+		HibernateQueryBuilder builder = new HibernateQueryBuilder(this.session);
 		builder.setEntity(e);
 		if ((options != null) && (options.size() > 0)) {
 			for (Entry<String, Object> option : options.entrySet()) {
@@ -107,46 +103,18 @@ abstract class AbstractHibernateGenericRepository extends AbstractHibernateRepos
 	}
 
 	public void save(final Entity<?> e) {
-		Session s = this.getSession();
-
-		if (this.isTransationEnabled()) {
-			s.getTransaction().begin();
-		}
-
-		s.save(e);
-
-		if (this.isTransationEnabled()) {
-			s.getTransaction().commit();
-		}
-
-		if (this.isFlushEnabled()) {
-			s.flush();
-		}
+		this.session.save(e);
 	}
 
 	public void update(final Entity<?> e) {
-		Session s = this.getSession();
-
-		if (this.isTransationEnabled()) {
-			s.getTransaction().begin();
-		}
-
 		try {
-			s.update(e);
+			this.session.update(e);
 		} catch (NonUniqueObjectException nuoe) {
-			s.merge(e);
+			this.session.merge(e);
 		} catch (HibernateException he) {
-			if (he.getMessage().startsWith(AbstractHibernateGenericRepository.MSG_ERROR_TWO_SESSION)) {
-				s.merge(e);
+			if (he.getMessage().startsWith(CommonHibernateGenericRepository.MSG_ERROR_TWO_SESSION)) {
+				this.session.merge(e);
 			}
-		}
-
-		if (this.isTransationEnabled()) {
-			s.getTransaction().commit();
-		}
-
-		if (this.isFlushEnabled()) {
-			s.flush();
 		}
 	}
 

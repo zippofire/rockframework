@@ -17,30 +17,58 @@
 package net.woodstock.rockframework.domain.persistence.impl;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import net.woodstock.rockframework.domain.persistence.EJBQLRepository;
 
-public class HibernateEJBQLRepository extends AbstractHibernateRepository implements EJBQLRepository {
+class CommonJPAEJBQLRepository implements EJBQLRepository {
 
-	public HibernateEJBQLRepository() {
+	private EntityManager	entityManager;
+
+	public CommonJPAEJBQLRepository(final EntityManager entityManager) {
 		super();
+		this.entityManager = entityManager;
 	}
 
 	@Override
 	public void executeUpdate(final String sql, final Map<String, Object> parameters) {
-		new CommonHibernateEJBQLRepository(this.getSession()).executeUpdate(sql, parameters);
+		Query query = this.getQuery(sql, parameters);
+		query.executeUpdate();
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public Collection getCollection(final String sql, final Map<String, Object> parameters) {
-		return new CommonHibernateEJBQLRepository(this.getSession()).getCollection(sql, parameters);
+		Query query = this.getQuery(sql, parameters);
+		List list = query.getResultList();
+		return list;
 	}
 
 	@Override
 	public Object getSingle(final String sql, final Map<String, Object> parameters) {
-		return new CommonHibernateEJBQLRepository(this.getSession()).getSingle(sql, parameters);
+		Query query = this.getQuery(sql, parameters);
+		Object obj = query.getSingleResult();
+		return obj;
+	}
+
+	private Query getQuery(final String sql, final Map<String, Object> parameters) {
+		EntityManager entityManager = this.entityManager;
+		Query query = entityManager.createQuery(sql);
+
+		if ((parameters != null) && (parameters.size() > 0)) {
+			for (Entry<String, Object> entry : parameters.entrySet()) {
+				String name = entry.getKey();
+				Object value = entry.getValue();
+				query.setParameter(name, value);
+			}
+		}
+
+		return query;
 	}
 
 }

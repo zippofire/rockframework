@@ -27,49 +27,36 @@ import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.persistence.GenericRepository;
 import net.woodstock.rockframework.domain.persistence.query.impl.JPAQueryBuilder;
 
-abstract class AbstractJPAGenericRepository extends AbstractJPARepository implements GenericRepository {
+class CommonJPAGenericRepository implements GenericRepository {
 
-	public AbstractJPAGenericRepository() {
+	private EntityManager	entityManager;
+
+	public CommonJPAGenericRepository(final EntityManager entityManager) {
 		super();
+		this.entityManager = entityManager;
 	}
 
 	public void delete(final Entity<?> e) {
-		EntityManager m = this.getEntityManager();
-
-		if (this.isTransationEnabled()) {
-			m.getTransaction().begin();
-		}
-
-		m.remove(e);
-
-		if (this.isTransationEnabled()) {
-			m.getTransaction().commit();
-		}
-
-		if (this.isFlushEnabled()) {
-			m.flush();
-		}
+		this.entityManager.remove(e);
 	}
 
 	@SuppressWarnings("unchecked")
 	public <E extends Entity<?>> E get(final E entity) {
-		EntityManager m = this.getEntityManager();
-		E e = (E) m.find(entity.getClass(), entity.getId());
+		E e = (E) this.entityManager.find(entity.getClass(), entity.getId());
 		return e;
 	}
 
 	@SuppressWarnings("unchecked")
 	public <E extends Entity<?>> Collection<E> listAll(final E e, final Map<String, Object> options) {
-		EntityManager m = this.getEntityManager();
 		String sql = RepositoryHelper.getListAllSql(e.getClass(), options, false);
-		Query q = m.createQuery(sql);
+		Query q = this.entityManager.createQuery(sql);
 		Collection<E> list = q.getResultList();
 		return list;
 	}
 
 	@SuppressWarnings("unchecked")
 	public <E extends Entity<?>> Collection<E> listByExample(final E e, final Map<String, Object> options) {
-		JPAQueryBuilder builder = new JPAQueryBuilder(this.getEntityManager());
+		JPAQueryBuilder builder = new JPAQueryBuilder(this.entityManager);
 		builder.setEntity(e);
 		if ((options != null) && (options.size() > 0)) {
 			for (Entry<String, Object> option : options.entrySet()) {
@@ -83,39 +70,11 @@ abstract class AbstractJPAGenericRepository extends AbstractJPARepository implem
 	}
 
 	public void save(final Entity<?> e) {
-		EntityManager m = this.getEntityManager();
-
-		if (this.isTransationEnabled()) {
-			m.getTransaction().begin();
-		}
-
-		m.persist(e);
-
-		if (this.isTransationEnabled()) {
-			m.getTransaction().commit();
-		}
-
-		if (this.isFlushEnabled()) {
-			m.flush();
-		}
+		this.entityManager.persist(e);
 	}
 
 	public void update(final Entity<?> e) {
-		EntityManager m = this.getEntityManager();
-
-		if (this.isTransationEnabled()) {
-			m.getTransaction().begin();
-		}
-
-		m.merge(e);
-
-		if (this.isTransationEnabled()) {
-			m.getTransaction().commit();
-		}
-
-		if (this.isFlushEnabled()) {
-			m.flush();
-		}
+		this.entityManager.merge(e);
 	}
 
 }

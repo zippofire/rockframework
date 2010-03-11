@@ -20,18 +20,12 @@ import java.sql.SQLException;
 
 import net.woodstock.rockframework.domain.Entity;
 
-import org.hibernate.HibernateException;
-import org.hibernate.NonUniqueObjectException;
-import org.hibernate.PropertyValueException;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
 
 public class HibernateDeleteCallback implements HibernateCallback {
 
-	private static final String	ID_ATTRIBUTE	= "id";
-
-	private Entity<?>			entity;
+	private Entity<?>	entity;
 
 	public HibernateDeleteCallback(final Entity<?> entity) {
 		super();
@@ -39,22 +33,7 @@ public class HibernateDeleteCallback implements HibernateCallback {
 	}
 
 	public Object doInHibernate(final Session session) throws SQLException {
-		try {
-			session.delete(this.entity);
-		} catch (PropertyValueException pve) {
-			session.refresh(this.entity);
-			session.delete(this.entity);
-		} catch (NonUniqueObjectException nuoe) {
-			Entity<?> e = (Entity<?>) session.get(this.entity.getClass(), this.entity.getId());
-			session.delete(e);
-		} catch (HibernateException he) {
-			if (he.getMessage().startsWith(AbstractHibernateRepository.MSG_ERROR_TWO_SESSION)) {
-				String sql = RepositoryHelper.getDeleteSql(this.entity.getClass(), true);
-				Query query = session.createQuery(sql);
-				query.setParameter(HibernateDeleteCallback.ID_ATTRIBUTE, this.entity.getId());
-				query.executeUpdate();
-			}
-		}
+		new CommonHibernateGenericRepository(session).delete(this.entity);
 		return null;
 	}
 

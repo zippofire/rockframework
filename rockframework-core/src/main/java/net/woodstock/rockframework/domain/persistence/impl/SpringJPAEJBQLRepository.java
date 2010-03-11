@@ -21,26 +21,26 @@ import java.util.Map;
 
 import net.woodstock.rockframework.domain.persistence.EJBQLRepository;
 
-public class HibernateEJBQLRepository extends AbstractHibernateRepository implements EJBQLRepository {
+public class SpringJPAEJBQLRepository extends SpringJPARepository implements EJBQLRepository {
 
-	public HibernateEJBQLRepository() {
+	public SpringJPAEJBQLRepository() {
 		super();
 	}
 
 	@Override
 	public void executeUpdate(final String sql, final Map<String, Object> parameters) {
-		new CommonHibernateEJBQLRepository(this.getSession()).executeUpdate(sql, parameters);
+		new CommonJPAEJBQLRepository(this.getJpaTemplate().getEntityManager()).executeUpdate(sql, parameters);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public Collection getCollection(final String sql, final Map<String, Object> parameters) {
-		return new CommonHibernateEJBQLRepository(this.getSession()).getCollection(sql, parameters);
+		return new CommonJPAEJBQLRepository(this.getJpaTemplate().getEntityManager()).getCollection(sql, parameters);
 	}
 
 	@Override
 	public Object getSingle(final String sql, final Map<String, Object> parameters) {
-		return new CommonHibernateEJBQLRepository(this.getSession()).getSingle(sql, parameters);
+		return new CommonJPAEJBQLRepository(this.getJpaTemplate().getEntityManager()).getSingle(sql, parameters);
 	}
 
 }

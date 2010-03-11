@@ -19,15 +19,9 @@ package net.woodstock.rockframework.domain.persistence.impl;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-import net.woodstock.rockframework.domain.persistence.Repository;
-
-abstract class AbstractJPARepository implements Repository {
+abstract class AbstractJPARepository extends AbstractRepository {
 
 	private EntityManagerFactory	entityManagerFactory;
-
-	private boolean					transationEnabled;
-
-	private boolean					flushEnabled;
 
 	public AbstractJPARepository() {
 		super();
@@ -39,22 +33,6 @@ abstract class AbstractJPARepository implements Repository {
 
 	public void setEntityManagerFactory(final EntityManagerFactory entityManagerFactory) {
 		this.entityManagerFactory = entityManagerFactory;
-	}
-
-	public boolean isTransationEnabled() {
-		return this.transationEnabled;
-	}
-
-	public void setTransationEnabled(final boolean transationEnabled) {
-		this.transationEnabled = transationEnabled;
-	}
-
-	public boolean isFlushEnabled() {
-		return this.flushEnabled;
-	}
-
-	public void setFlushEnabled(final boolean flushEnabled) {
-		this.flushEnabled = flushEnabled;
 	}
 
 	protected EntityManager getEntityManager() {

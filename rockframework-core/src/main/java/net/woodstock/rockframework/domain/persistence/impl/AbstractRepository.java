@@ -14,8 +14,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.persistence;
+package net.woodstock.rockframework.domain.persistence.impl;
 
-public interface SQLRepository extends SQLEJBQLRepository {
-	//
+import net.woodstock.rockframework.domain.persistence.Repository;
+
+abstract class AbstractRepository implements Repository {
+
+	private boolean	transationEnabled;
+
+	private boolean	flushEnabled;
+
+	public AbstractRepository() {
+		super();
+	}
+
+	public boolean isTransationEnabled() {
+		return this.transationEnabled;
+	}
+
+	public void setTransationEnabled(final boolean transationEnabled) {
+		this.transationEnabled = transationEnabled;
+	}
+
+	public boolean isFlushEnabled() {
+		return this.flushEnabled;
+	}
+
+	public void setFlushEnabled(final boolean flushEnabled) {
+		this.flushEnabled = flushEnabled;
+	}
+
 }

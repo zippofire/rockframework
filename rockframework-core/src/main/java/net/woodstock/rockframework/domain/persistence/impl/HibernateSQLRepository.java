@@ -19,28 +19,30 @@ package net.woodstock.rockframework.domain.persistence.impl;
 import java.util.Collection;
 import java.util.Map;
 
-import net.woodstock.rockframework.domain.persistence.EJBQLRepository;
+import net.woodstock.rockframework.domain.persistence.SQLRepository;
 
-public class HibernateEJBQLRepository extends AbstractHibernateRepository implements EJBQLRepository {
+public class HibernateSQLRepository extends AbstractHibernateRepository implements SQLRepository {
 
-	public HibernateEJBQLRepository() {
+	public static final String	TARGET_ENTITY_PARAMETER	= CommonHibernateSQLRepository.TARGET_ENTITY_PARAMETER;
+
+	public HibernateSQLRepository() {
 		super();
 	}
 
 	@Override
 	public void executeUpdate(final String sql, final Map<String, Object> parameters) {
-		new CommonHibernateEJBQLRepository(this.getSession()).executeUpdate(sql, parameters);
+		new CommonHibernateSQLRepository(this.getSession()).executeUpdate(sql, parameters);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public Collection getCollection(final String sql, final Map<String, Object> parameters) {
-		return new CommonHibernateEJBQLRepository(this.getSession()).getCollection(sql, parameters);
+		return new CommonHibernateSQLRepository(this.getSession()).getCollection(sql, parameters);
 	}
 
 	@Override
 	public Object getSingle(final String sql, final Map<String, Object> parameters) {
-		return new CommonHibernateEJBQLRepository(this.getSession()).getSingle(sql, parameters);
+		return new CommonHibernateSQLRepository(this.getSession()).getSingle(sql, parameters);
 	}
 
 }

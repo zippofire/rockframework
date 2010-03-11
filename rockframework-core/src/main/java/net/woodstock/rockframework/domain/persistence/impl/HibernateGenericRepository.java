@@ -16,10 +16,84 @@
  */
 package net.woodstock.rockframework.domain.persistence.impl;
 
-public class HibernateGenericRepository extends AbstractHibernateGenericRepository {
+import java.util.Collection;
+import java.util.Map;
+
+import net.woodstock.rockframework.domain.Entity;
+import net.woodstock.rockframework.domain.persistence.GenericRepository;
+
+import org.hibernate.Session;
+
+public class HibernateGenericRepository extends AbstractHibernateRepository implements GenericRepository {
 
 	public HibernateGenericRepository() {
 		super();
+	}
+
+	public void delete(final Entity<?> e) {
+		Session s = this.getSession();
+
+		if (this.isTransationEnabled()) {
+			s.getTransaction().begin();
+		}
+
+		new CommonHibernateGenericRepository(s).delete(e);
+
+		if (this.isTransationEnabled()) {
+			s.getTransaction().commit();
+		}
+
+		if (this.isFlushEnabled()) {
+			s.flush();
+		}
+	}
+
+	public <E extends Entity<?>> E get(final E entity) {
+		return new CommonHibernateGenericRepository(this.getSession()).get(entity);
+	}
+
+	public <E extends Entity<?>> Collection<E> listAll(final E e, final Map<String, Object> options) {
+		return new CommonHibernateGenericRepository(this.getSession()).listAll(e, options);
+	}
+
+	public <E extends Entity<?>> Collection<E> listByExample(final E e, final Map<String, Object> options) {
+		return new CommonHibernateGenericRepository(this.getSession()).listByExample(e, options);
+	}
+
+	public void save(final Entity<?> e) {
+		Session s = this.getSession();
+
+		if (this.isTransationEnabled()) {
+			s.getTransaction().begin();
+		}
+
+		new CommonHibernateGenericRepository(this.getSession()).save(e);
+
+		if (this.isTransationEnabled()) {
+			s.getTransaction().commit();
+		}
+
+		if (this.isFlushEnabled()) {
+			s.flush();
+		}
+	}
+
+	public void update(final Entity<?> e) {
+		Session s = this.getSession();
+
+		if (this.isTransationEnabled()) {
+			s.getTransaction().begin();
+		}
+
+		new CommonHibernateGenericRepository(this.getSession()).update(e);
+
+		if (this.isTransationEnabled()) {
+			s.getTransaction().commit();
+		}
+
+		if (this.isFlushEnabled()) {
+			s.flush();
+		}
 	}
 
 }

@@ -32,6 +32,7 @@ public class ReferenceValidator extends AbstractValidator<Reference> {
 			if (id != null) {
 				return true;
 			}
+			return false;
 		}
 		return false;
 	}

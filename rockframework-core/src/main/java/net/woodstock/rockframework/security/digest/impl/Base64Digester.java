@@ -19,11 +19,11 @@ package net.woodstock.rockframework.security.digest.impl;
 import net.woodstock.rockframework.security.digest.Digester;
 import net.woodstock.rockframework.utils.Base64Utils;
 
-public final class Base64Digester implements Digester {
+public class Base64Digester implements Digester {
 
 	private Digester	digester;
 
-	private Base64Digester(final Digester digester) {
+	public Base64Digester(final Digester digester) {
 		super();
 		this.digester = digester;
 	}
