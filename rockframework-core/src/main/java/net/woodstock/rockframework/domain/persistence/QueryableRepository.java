@@ -19,7 +19,7 @@ package net.woodstock.rockframework.domain.persistence;
 import java.util.Collection;
 import java.util.Map;
 
-interface SQLEJBQLRepository extends Repository {
+interface QueryableRepository extends Repository {
 
 	Object getSingle(String sql, Map<String, Object> parameters);
 
