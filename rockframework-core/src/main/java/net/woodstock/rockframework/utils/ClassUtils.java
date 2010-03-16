@@ -237,7 +237,7 @@ public abstract class ClassUtils {
 		Pattern classPattern = Pattern.compile(packageName.replaceAll("\\.", "\\\\.") + "\\." + "[a-zA-Z1-9_$]+\\.class");
 		if (jarPattern.matcher(fileName).find()) {
 			fileName = fileName.substring(0, fileName.indexOf('!'));
-			fileName = fileName.replace("file:/", StringUtils.BLANK);
+			fileName = fileName.replace("file:/", "");
 			fileName = fileName.replaceAll("%20", " ");
 			File file = new File(fileName);
 			JarFile jar = new JarFile(file);
@@ -254,7 +254,7 @@ public abstract class ClassUtils {
 				}
 			}
 		} else {
-			fileName = fileName.replace("file:/", StringUtils.BLANK);
+			fileName = fileName.replace("file:/", "");
 			fileName = fileName.replaceAll("%20", " ");
 			File directory = new File(fileName);
 			if (directory.isDirectory()) {

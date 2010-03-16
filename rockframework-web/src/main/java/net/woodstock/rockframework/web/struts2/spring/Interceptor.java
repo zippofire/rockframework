@@ -22,8 +22,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import net.woodstock.rockframework.utils.StringUtils;
-
 import org.springframework.stereotype.Component;
 
 @Target({ ElementType.TYPE })
@@ -32,6 +30,6 @@ import org.springframework.stereotype.Component;
 @Component
 public @interface Interceptor {
 
-	String value() default StringUtils.BLANK;
+	String value() default "";
 
 }

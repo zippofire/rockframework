@@ -20,26 +20,25 @@ import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
 import net.woodstock.rockframework.web.config.WebLog;
-import net.woodstock.rockframework.web.listener.BaseListener;
 
-public class SessionListener extends BaseListener implements HttpSessionListener {
+public class SessionListener implements HttpSessionListener {
 
-	private static int	count;
-
-	public void sessionCreated(final HttpSessionEvent se) {
-		SessionListener.count++;
-		WebLog.getInstance().getLog().info("Created session for class " + se.getSource().getClass().getName());
-		WebLog.getInstance().getLog().info("Active sessions " + SessionListener.count);
+	public void sessionCreated(final HttpSessionEvent event) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("\nCreated");
+		builder.append("\nID      : " + event.getSession().getId());
+		builder.append("\nSource  : " + event.getSource().getClass().getCanonicalName());
+		builder.append("\nContext : " + event.getSession().getServletContext().getServletContextName());
+		WebLog.getInstance().getLog().info(builder.toString());
 	}
 
-	public void sessionDestroyed(final HttpSessionEvent se) {
-		SessionListener.count--;
-		WebLog.getInstance().getLog().info("Destroyed session for class " + se.getSource().getClass().getName());
-		WebLog.getInstance().getLog().info("Active sessions " + SessionListener.count);
-	}
-
-	public static int getSessionCount() {
-		return SessionListener.count;
+	public void sessionDestroyed(final HttpSessionEvent event) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("\nDestroyed");
+		builder.append("\nID      : " + event.getSession().getId());
+		builder.append("\nSource  : " + event.getSource().getClass().getCanonicalName());
+		builder.append("\nContext : " + event.getSession().getServletContext().getServletContextName());
+		WebLog.getInstance().getLog().info(builder.toString());
 	}
 
 }

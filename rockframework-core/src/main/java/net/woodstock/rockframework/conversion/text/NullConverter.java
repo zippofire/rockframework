@@ -18,7 +18,6 @@ package net.woodstock.rockframework.conversion.text;
 
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.conversion.common.AbstractTextConverter;
-import net.woodstock.rockframework.utils.StringUtils;
 
 class NullConverter extends AbstractTextConverter<Object> {
 
@@ -29,7 +28,7 @@ class NullConverter extends AbstractTextConverter<Object> {
 
 	@Override
 	public String to(final ConverterContext context, final Object t) {
-		String s = StringUtils.BLANK;
+		String s = "";
 		int size = TextConverterHelper.getSize(context);
 		return TextConverterHelper.lpad(s, size);
 	}

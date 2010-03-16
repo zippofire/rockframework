@@ -20,20 +20,43 @@ import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;
 
 import net.woodstock.rockframework.web.config.WebLog;
-import net.woodstock.rockframework.web.listener.BaseListener;
 
-public class SessionAttributeListener extends BaseListener implements HttpSessionAttributeListener {
+public class SessionAttributeListener implements HttpSessionAttributeListener {
 
-	public void attributeAdded(final HttpSessionBindingEvent se) {
-		WebLog.getInstance().getLog().info("Added attribute " + se.getName() + " with value " + se.getValue());
+	public void attributeAdded(final HttpSessionBindingEvent event) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("\nAdded");
+		builder.append("\nID      : " + event.getSession().getId());
+		builder.append("\nSource  : " + event.getSource().getClass().getCanonicalName());
+		builder.append("\nContext : " + event.getSession().getServletContext().getServletContextName());
+		builder.append("\nName    : " + event.getName());
+		builder.append("\nValue   : " + event.getValue());
+		builder.append("\nClass   : " + event.getValue().getClass().getCanonicalName());
+		WebLog.getInstance().getLog().info(builder.toString());
 	}
 
-	public void attributeRemoved(final HttpSessionBindingEvent se) {
-		WebLog.getInstance().getLog().info("Removed attribute " + se.getName());
+	public void attributeRemoved(final HttpSessionBindingEvent event) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("\nRemoved");
+		builder.append("\nID      : " + event.getSession().getId());
+		builder.append("\nSource  : " + event.getSource().getClass().getCanonicalName());
+		builder.append("\nContext : " + event.getSession().getServletContext().getServletContextName());
+		builder.append("\nName    : " + event.getName());
+		builder.append("\nValue   : " + event.getValue());
+		builder.append("\nClass   : " + event.getValue().getClass().getCanonicalName());
+		WebLog.getInstance().getLog().info(builder.toString());
 	}
 
-	public void attributeReplaced(final HttpSessionBindingEvent se) {
-		WebLog.getInstance().getLog().info("Replaced attribute " + se.getName() + " with value " + se.getValue());
+	public void attributeReplaced(final HttpSessionBindingEvent event) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("\nReplaced");
+		builder.append("\nID      : " + event.getSession().getId());
+		builder.append("\nSource  : " + event.getSource().getClass().getCanonicalName());
+		builder.append("\nContext : " + event.getSession().getServletContext().getServletContextName());
+		builder.append("\nName    : " + event.getName());
+		builder.append("\nValue   : " + event.getValue());
+		builder.append("\nClass   : " + event.getValue().getClass().getCanonicalName());
+		WebLog.getInstance().getLog().info(builder.toString());
 	}
 
 }

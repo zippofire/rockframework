@@ -33,7 +33,7 @@ public class CharacterConverter extends AbstractTextConverter<Character> {
 	@Override
 	public String to(final ConverterContext context, final Character t) {
 		if (t == null) {
-			return StringUtils.BLANK;
+			return "";
 		}
 		return t.toString();
 	}

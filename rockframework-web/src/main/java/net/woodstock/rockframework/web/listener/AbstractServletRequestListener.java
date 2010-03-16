@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.woodstock.rockframework.web.config.WebLog;
 
-public abstract class AbstractServletRequestListener extends BaseListener implements ServletRequestListener {
+public abstract class AbstractServletRequestListener implements ServletRequestListener {
 
 	public final void requestDestroyed(final ServletRequestEvent event) {
 		this.requestDestroyed(event, (HttpServletRequest) event.getServletRequest());

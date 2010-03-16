@@ -18,7 +18,7 @@ package net.woodstock.rockframework.web.struts2.converter;
 
 import net.woodstock.rockframework.utils.StringUtils;
 
-public abstract class FormatConverter extends SimpleValueConverter<String> {
+public abstract class FormatConverter extends TypeConverter<String> {
 
 	private String	pattern;
 

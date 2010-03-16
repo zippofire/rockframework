@@ -16,8 +16,6 @@
  */
 package net.woodstock.rockframework.web.struts2;
 
-import net.woodstock.rockframework.web.struts2.interceptor.PostOnlyInterceptor;
-
 import com.opensymphony.xwork2.Action;
 
 public abstract class Constants {
@@ -28,7 +26,9 @@ public abstract class Constants {
 
 	public static final String	INPUT			= Action.INPUT;
 
-	public static final String	INVALID_METHOD	= PostOnlyInterceptor.INVALID_METHOD;
+	public static final String	INVALID_METHOD	= "invalid-method";
+
+	public static final String	INVALID_REFERER	= "invalid-referer";
 
 	public static final String	LOGIN			= Action.LOGIN;
 
@@ -39,6 +39,8 @@ public abstract class Constants {
 	public static final String	NO_ACCESS		= "no-access";
 
 	public static final String	NO_LOGIN		= "no-login";
+
+	public static final String	NO_REFERER		= "no-referer";
 
 	public static final String	REDIRECT		= "redirect";
 

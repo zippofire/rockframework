@@ -19,15 +19,11 @@ package net.woodstock.rockframework.web.struts;
 import net.woodstock.rockframework.domain.Entity;
 
 @SuppressWarnings("unchecked")
-public abstract class EntityForm<T extends Entity> extends BaseForm {
+public abstract class EntityForm<T extends Entity> extends ActionForm {
 
 	private static final long	serialVersionUID	= 1958924234447552120L;
 
 	private T					entity;
-
-	public EntityForm() {
-		super();
-	}
 
 	public EntityForm(final T entity) {
 		super();
@@ -36,10 +32,6 @@ public abstract class EntityForm<T extends Entity> extends BaseForm {
 
 	public T getEntity() {
 		return this.entity;
-	}
-
-	public void setEntity(final T entity) {
-		this.entity = entity;
 	}
 
 }

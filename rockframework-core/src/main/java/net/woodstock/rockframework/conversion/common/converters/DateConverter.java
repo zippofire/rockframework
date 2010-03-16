@@ -51,7 +51,7 @@ public class DateConverter extends AbstractTextConverter<Date> {
 	@Override
 	public String to(final ConverterContext context, final Date t) {
 		if (t == null) {
-			return StringUtils.BLANK;
+			return "";
 		}
 		DateFormat dateFormat = null;
 		if ((context != null) && (context.isAnnotationPresent(Format.class))) {

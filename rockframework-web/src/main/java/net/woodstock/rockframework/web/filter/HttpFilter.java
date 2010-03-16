@@ -26,7 +26,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public abstract class HttpFilter extends BaseFilter {
+public abstract class HttpFilter extends AbstractFilter {
 
 	@Override
 	public final void destroy() {

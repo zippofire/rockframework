@@ -33,8 +33,6 @@ import java.util.Map.Entry;
 
 public abstract class StringUtils {
 
-	public static final String	BLANK				= "";
-
 	public static final char	DEFAULT_FORMAT_CHAR	= '#';
 
 	private static final String	ACCENT_PATTERN		= "[^\\p{ASCII}]";
@@ -310,6 +308,6 @@ public abstract class StringUtils {
 	}
 
 	public static String normalize(final String s) {
-		return Normalizer.normalize(s, Normalizer.Form.NFD).replaceAll(StringUtils.ACCENT_PATTERN, StringUtils.BLANK);
+		return Normalizer.normalize(s, Normalizer.Form.NFD).replaceAll(StringUtils.ACCENT_PATTERN, "");
 	}
 }

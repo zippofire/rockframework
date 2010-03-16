@@ -18,8 +18,6 @@ package net.woodstock.rockframework.reflection.impl;
 
 import java.lang.reflect.Method;
 
-import net.woodstock.rockframework.utils.StringUtils;
-
 abstract class BeanDescriptorHelper {
 
 	public static final String	GET_CLASS_METHOD_NAME	= "getClass";
@@ -47,7 +45,7 @@ abstract class BeanDescriptorHelper {
 	public static String getPropertyName(final Method method) {
 		String methodName = method.getName();
 		StringBuilder builder = new StringBuilder();
-		String name = methodName.replaceAll(BeanDescriptorHelper.METHOD_PREFIX_REGEX, StringUtils.BLANK);
+		String name = methodName.replaceAll(BeanDescriptorHelper.METHOD_PREFIX_REGEX, "");
 		builder.append(Character.toLowerCase(name.charAt(0)));
 		builder.append(name.substring(1));
 		return builder.toString();

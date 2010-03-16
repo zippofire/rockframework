@@ -21,32 +21,39 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 
-import net.woodstock.rockframework.utils.StringUtils;
-
 public class SimpleMail implements Serializable {
 
 	private static final long	serialVersionUID	= -7704634381340126487L;
 
-	private String				text				= StringUtils.BLANK;
+	private String				text;
 
-	private String				subject				= StringUtils.BLANK;
+	private String				subject;
 
-	private String				from				= StringUtils.BLANK;
+	private String				from;
 
-	private boolean				html				= false;
+	private boolean				html;
 
-	private Collection<String>	replyTo				= new LinkedHashSet<String>();
+	private Collection<String>	replyTo;
 
-	private Collection<String>	to					= new LinkedHashSet<String>();
+	private Collection<String>	to;
 
-	private Collection<String>	bcc					= new LinkedHashSet<String>();
+	private Collection<String>	bcc;
 
-	private Collection<String>	cc					= new LinkedHashSet<String>();
+	private Collection<String>	cc;
 
-	private Collection<File>	attach				= new LinkedHashSet<File>();
+	private Collection<File>	attach;
 
 	public SimpleMail() {
 		super();
+		this.text = "";
+		this.subject = "";
+		this.from = "";
+		this.html = false;
+		this.replyTo = new LinkedHashSet<String>();
+		this.to = new LinkedHashSet<String>();
+		this.bcc = new LinkedHashSet<String>();
+		this.cc = new LinkedHashSet<String>();
+		this.attach = new LinkedHashSet<File>();
 	}
 
 	public void addAttach(final File attach) {

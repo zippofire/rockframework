@@ -23,7 +23,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import net.woodstock.rockframework.utils.LocaleUtils;
-import net.woodstock.rockframework.utils.StringUtils;
 
 public final class Calendar extends GregorianCalendar {
 
@@ -292,7 +291,7 @@ public final class Calendar extends GregorianCalendar {
 		String date = format;
 		for (String s : Calendar.ALL_FORMAT) {
 			while (format.indexOf(s) != -1) {
-				SimpleDateFormat sdf = new SimpleDateFormat(s.replace("%", StringUtils.BLANK), this.locale);
+				SimpleDateFormat sdf = new SimpleDateFormat(s.replace("%", ""), this.locale);
 				date = format.replace(s, sdf.format(this.getTime()));
 			}
 		}

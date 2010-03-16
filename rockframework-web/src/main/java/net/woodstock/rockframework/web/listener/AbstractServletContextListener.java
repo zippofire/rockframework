@@ -21,7 +21,7 @@ import javax.servlet.ServletContextListener;
 
 import net.woodstock.rockframework.web.config.WebLog;
 
-public abstract class AbstractServletContextListener extends BaseListener implements ServletContextListener {
+public abstract class AbstractServletContextListener implements ServletContextListener {
 
 	public void contextDestroyed(final ServletContextEvent event) {
 		WebLog.getInstance().getLog().info("Destroying context " + event.getServletContext().getServletContextName());

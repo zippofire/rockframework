@@ -16,23 +16,44 @@
  */
 package net.woodstock.rockframework.web.listener.debug;
 
-import javax.servlet.ServletRequestEvent;
-import javax.servlet.ServletRequestListener;
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.ServletRequestAttributeEvent;
+import javax.servlet.ServletRequestAttributeListener;
 
 import net.woodstock.rockframework.web.config.WebLog;
-import net.woodstock.rockframework.web.listener.BaseListener;
 
-public class RequestAttributeListener extends BaseListener implements ServletRequestListener {
+public class RequestAttributeListener implements ServletRequestAttributeListener {
 
-	public void requestInitialized(final ServletRequestEvent sre) {
-		HttpServletRequest request = (HttpServletRequest) sre.getServletRequest();
-		WebLog.getInstance().getLog().info("Initialized request on URL " + request.getRequestURI() + " for client " + request.getRemoteAddr());
+	public void attributeAdded(final ServletRequestAttributeEvent event) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("\nAdded");
+		builder.append("\nSource  : " + event.getSource().getClass().getCanonicalName());
+		builder.append("\nContext : " + event.getServletContext().getServletContextName());
+		builder.append("\nName    : " + event.getName());
+		builder.append("\nValue   : " + event.getValue());
+		builder.append("\nClass   : " + event.getValue().getClass().getCanonicalName());
+		WebLog.getInstance().getLog().info(builder.toString());
 	}
 
-	public void requestDestroyed(final ServletRequestEvent sre) {
-		HttpServletRequest request = (HttpServletRequest) sre.getServletRequest();
-		WebLog.getInstance().getLog().info("Destroyed request on URL " + request.getRequestURI() + " for client " + request.getRemoteAddr());
+	public void attributeRemoved(final ServletRequestAttributeEvent event) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("\nAdded");
+		builder.append("\nSource  : " + event.getSource().getClass().getCanonicalName());
+		builder.append("\nContext : " + event.getServletContext().getServletContextName());
+		builder.append("\nName    : " + event.getName());
+		builder.append("\nValue   : " + event.getValue());
+		builder.append("\nClass   : " + event.getValue().getClass().getCanonicalName());
+		WebLog.getInstance().getLog().info(builder.toString());
+	}
+
+	public void attributeReplaced(final ServletRequestAttributeEvent event) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("\nAdded");
+		builder.append("\nSource  : " + event.getSource().getClass().getCanonicalName());
+		builder.append("\nContext : " + event.getServletContext().getServletContextName());
+		builder.append("\nName    : " + event.getName());
+		builder.append("\nValue   : " + event.getValue());
+		builder.append("\nClass   : " + event.getValue().getClass().getCanonicalName());
+		WebLog.getInstance().getLog().info(builder.toString());
 	}
 
 }

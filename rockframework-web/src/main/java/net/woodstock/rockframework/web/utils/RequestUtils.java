@@ -16,12 +16,6 @@
  */
 package net.woodstock.rockframework.web.utils;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.io.Writer;
-import java.util.Enumeration;
-
 import javax.servlet.http.HttpServletRequest;
 
 public abstract class RequestUtils {
@@ -34,55 +28,14 @@ public abstract class RequestUtils {
 
 	public static final String	HEADER_ACCEPT_LANGUAGE	= "accept-language";
 
+	public static final String	HEADER_REFERER			= "referer";
+
 	public static final String	HEADER_USER_AGENT		= "user-agent";
 
 	public static final String	HEADER_X_FORWARDED_FOR	= "X-Forwarded-For";
 
 	private RequestUtils() {
 		//
-	}
-
-	public static String getParameter(final HttpServletRequest request, final String parameter) {
-		return RequestUtils.getParameter(request, parameter, null);
-	}
-
-	public static String getParameter(final HttpServletRequest request, final String parameter, final String nvl) {
-		String value = request.getParameter(parameter);
-		if (value == null) {
-			value = nvl;
-		}
-		return value;
-	}
-
-	public static boolean hasParameter(final HttpServletRequest request, final String parameter) {
-		if (RequestUtils.getParameter(request, parameter) != null) {
-			return true;
-		}
-		return false;
-	}
-
-	public static void printParameters(final HttpServletRequest request, final OutputStream output) throws IOException {
-		Enumeration<?> e = request.getParameterNames();
-		while (e.hasMoreElements()) {
-			String name = (String) e.nextElement();
-			output.write((name + " = " + request.getParameter(name) + "\n").getBytes());
-		}
-	}
-
-	public static void printParameters(final HttpServletRequest request, final PrintStream output) {
-		Enumeration<?> e = request.getParameterNames();
-		while (e.hasMoreElements()) {
-			String name = (String) e.nextElement();
-			output.print(name + " = " + request.getParameter(name) + "\n");
-		}
-	}
-
-	public static void printParameters(final HttpServletRequest request, final Writer writer) throws IOException {
-		Enumeration<?> e = request.getParameterNames();
-		while (e.hasMoreElements()) {
-			String name = (String) e.nextElement();
-			writer.write(name + " = " + request.getParameter(name) + "\n");
-		}
 	}
 
 	public static String getApplicationUrl(final HttpServletRequest request) {
@@ -128,6 +81,14 @@ public abstract class RequestUtils {
 		}
 
 		return request.getRemoteAddr();
+	}
+
+	public static String getMethod(final HttpServletRequest request) {
+		return request.getMethod();
+	}
+
+	public static String getReferer(final HttpServletRequest request) {
+		return request.getHeader(RequestUtils.HEADER_REFERER);
 	}
 
 }

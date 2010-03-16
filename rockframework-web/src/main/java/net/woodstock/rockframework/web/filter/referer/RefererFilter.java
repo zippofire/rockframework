@@ -25,23 +25,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.woodstock.rockframework.web.config.WebLog;
 import net.woodstock.rockframework.web.filter.HttpFilter;
+import net.woodstock.rockframework.web.utils.RequestUtils;
 
 public abstract class RefererFilter extends HttpFilter {
 
-	protected static final int		BAD_REQUEST			= HttpServletResponse.SC_BAD_REQUEST;
-
-	protected static final String	REFERER_HEADER_KEY	= "referer";
-
-	protected String getReferer(final HttpServletRequest request) {
-		return request.getHeader(RefererFilter.REFERER_HEADER_KEY);
-	}
+	protected static final int	BAD_REQUEST	= HttpServletResponse.SC_BAD_REQUEST;
 
 	@Override
 	public final void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain) throws IOException, ServletException {
 		boolean b = this.validateReferer(request);
 		if (!b) {
 			String url = request.getRequestURI();
-			String referer = this.getReferer(request);
+			String referer = RequestUtils.getReferer(request);
 			WebLog.getInstance().getLog().info("Invalid referer for URL: " + url + " referer: " + referer);
 			response.setStatus(RefererFilter.BAD_REQUEST);
 			return;

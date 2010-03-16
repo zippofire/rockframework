@@ -46,7 +46,7 @@ public class FormatTag extends BaseTag {
 		String value = this.value.toString();
 		char character = this.character.charAt(0);
 		Writer writer = this.getJspContext().getOut();
-		String formated = StringUtils.BLANK;
+		String formated = "";
 
 		try {
 			formated = StringUtils.format(this.format, value, character);

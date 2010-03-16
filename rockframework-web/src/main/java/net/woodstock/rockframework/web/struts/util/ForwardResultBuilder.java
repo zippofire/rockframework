@@ -62,7 +62,7 @@ public class ForwardResultBuilder implements ResultBuilder {
 		if ((this.parameters != null) && (this.parameters.size() > 0)) {
 			for (Entry<String, Object> entry : this.parameters.entrySet()) {
 				String k = entry.getKey();
-				String v = StringUtils.BLANK;
+				String v = "";
 				if (entry.getValue() != null) {
 					v = entry.getValue().toString();
 				}

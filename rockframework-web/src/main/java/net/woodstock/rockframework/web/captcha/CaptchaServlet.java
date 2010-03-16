@@ -23,9 +23,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.woodstock.rockframework.utils.NumberUtils;
-import net.woodstock.rockframework.web.servlet.BaseServlet;
+import net.woodstock.rockframework.web.servlet.AbstractHttpServlet;
 
-public class CaptchaServlet extends BaseServlet {
+public class CaptchaServlet extends AbstractHttpServlet {
 
 	private static final long	serialVersionUID		= 1L;
 

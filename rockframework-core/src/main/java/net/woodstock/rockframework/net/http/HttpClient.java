@@ -21,7 +21,6 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.woodstock.rockframework.utils.StringUtils;
 import net.woodstock.rockframework.xml.dom.XmlDocument;
 import net.woodstock.rockframework.xml.dom.XmlElement;
 
@@ -73,7 +72,7 @@ public class HttpClient implements Serializable {
 			for (Entry<String, Object> p : params.entrySet()) {
 				String key = p.getKey();
 				Object value = p.getValue();
-				String valueStr = value == null ? StringUtils.BLANK : value.toString();
+				String valueStr = value == null ? "" : value.toString();
 				hps.setParameter(key, valueStr);
 			}
 			method.setParams(hps);

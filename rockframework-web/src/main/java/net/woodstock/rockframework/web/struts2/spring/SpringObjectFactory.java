@@ -21,9 +21,10 @@ import java.util.Map;
 import net.woodstock.rockframework.domain.DomainException;
 import net.woodstock.rockframework.domain.spring.ContextHelper;
 import net.woodstock.rockframework.web.config.WebLog;
-import net.woodstock.rockframework.web.struts2.factory.AbstractObjectFactory;
 
-public class SpringObjectFactory extends AbstractObjectFactory {
+import com.opensymphony.xwork2.ObjectFactory;
+
+public class SpringObjectFactory extends ObjectFactory {
 
 	private static final long	serialVersionUID	= -3223027211302424826L;
 
@@ -34,7 +35,7 @@ public class SpringObjectFactory extends AbstractObjectFactory {
 			return ContextHelper.getInstance().getObject(clazz);
 		} catch (DomainException e) {
 			WebLog.getInstance().getLog().info("Class " + clazz + " not found in Spring Context");
-			return clazz.newInstance();
+			return super.buildBean(clazz, extraContext);
 		}
 	}
 

@@ -50,7 +50,7 @@ public abstract class NumberConverter<T extends Number> extends AbstractTextConv
 	@Override
 	public String to(final ConverterContext context, final Number t) {
 		if (t == null) {
-			return StringUtils.BLANK;
+			return "";
 		}
 		if ((context != null) && (context.isAnnotationPresent(Format.class))) {
 			Format format = context.getAnnotation(Format.class);

@@ -30,7 +30,7 @@ public class LocalRefererFilter extends NoRefererFilter {
 			this.applicationUrl = RequestUtils.getApplicationUrl(request);
 		}
 		if (super.validateReferer(request)) {
-			String referer = this.getReferer(request);
+			String referer = RequestUtils.getReferer(request);
 			if (referer.startsWith(this.applicationUrl)) {
 				return true;
 			}

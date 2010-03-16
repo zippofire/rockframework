@@ -42,7 +42,7 @@ public class BooleanConverter extends AbstractTextConverter<Boolean> {
 	@Override
 	public String to(final ConverterContext context, final Boolean t) {
 		if (t == null) {
-			return StringUtils.BLANK;
+			return "";
 		}
 		if ((context != null) && (context.isAnnotationPresent(BooleanFormat.class))) {
 			BooleanFormat format = context.getAnnotation(BooleanFormat.class);

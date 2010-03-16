@@ -19,12 +19,13 @@ package net.woodstock.rockframework.web.filter.referer;
 import javax.servlet.http.HttpServletRequest;
 
 import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.web.utils.RequestUtils;
 
 public class NoRefererFilter extends RefererFilter {
 
 	@Override
 	protected boolean validateReferer(final HttpServletRequest request) {
-		String referer = this.getReferer(request);
+		String referer = RequestUtils.getReferer(request);
 		if (StringUtils.isEmpty(referer)) {
 			return false;
 		}

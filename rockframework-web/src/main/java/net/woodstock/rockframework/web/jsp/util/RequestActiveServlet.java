@@ -22,9 +22,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.woodstock.rockframework.web.servlet.BaseServlet;
+import net.woodstock.rockframework.web.servlet.AbstractHttpServlet;
 
-public class RequestActiveServlet extends BaseServlet {
+public class RequestActiveServlet extends AbstractHttpServlet {
 
 	private static final long	serialVersionUID	= 1186351388097961933L;
 

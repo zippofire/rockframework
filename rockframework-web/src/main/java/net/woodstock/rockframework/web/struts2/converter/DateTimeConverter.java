@@ -23,7 +23,7 @@ import java.util.Date;
 
 import net.woodstock.rockframework.web.config.WebLog;
 
-public class DateTimeConverter extends SimpleValueConverter<Date> {
+public class DateTimeConverter extends TypeConverter<Date> {
 
 	private DateFormat	format;
 

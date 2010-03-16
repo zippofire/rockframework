@@ -22,7 +22,7 @@ import java.text.NumberFormat;
 
 import net.woodstock.rockframework.web.config.WebLog;
 
-public abstract class NumberConverter extends SimpleValueConverter<Number> {
+public abstract class NumberConverter extends TypeConverter<Number> {
 
 	private NumberFormat	format;
 

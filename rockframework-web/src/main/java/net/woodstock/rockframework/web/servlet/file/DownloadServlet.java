@@ -23,18 +23,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.woodstock.rockframework.utils.StringUtils;
-import net.woodstock.rockframework.web.servlet.BaseServlet;
+import net.woodstock.rockframework.web.servlet.AbstractHttpServlet;
 import net.woodstock.rockframework.web.utils.ResponseUtils;
 
-public class DownloadServlet extends BaseServlet {
+public class DownloadServlet extends AbstractHttpServlet {
 
-	private static final long	serialVersionUID		= -2921885361697687087L;
+	private static final long	serialVersionUID	= -2921885361697687087L;
 
-	public static final String	CHROOT_CONTEXT_PARAM	= "chroot";
+	public static final String	ROOT_PARAM			= "root";
 
-	public static final String	PATH_PARAM				= "path";
+	public static final String	PATH_PARAM			= "path";
 
-	private String				chroot;
+	private String				root;
 
 	public DownloadServlet() {
 		super();
@@ -51,8 +51,8 @@ public class DownloadServlet extends BaseServlet {
 	}
 
 	private void doAll(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-		this.chroot = this.getServletConfig().getInitParameter(DownloadServlet.CHROOT_CONTEXT_PARAM);
-		if (StringUtils.isEmpty(this.chroot)) {
+		this.root = this.getServletConfig().getInitParameter(DownloadServlet.ROOT_PARAM);
+		if (StringUtils.isEmpty(this.root)) {
 			throw new ServletException("Invalid root directory");
 		}
 
@@ -60,7 +60,7 @@ public class DownloadServlet extends BaseServlet {
 		if (StringUtils.isEmpty(path)) {
 			throw new ServletException("Invalid path");
 		}
-		path = this.chroot + path;
+		path = this.root + path;
 		ResponseUtils.downloadFile(response, path);
 	}
 
