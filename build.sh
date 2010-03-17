@@ -1,0 +1,1 @@
+mvn clean source:jar javadoc:jar jar:jar install:install

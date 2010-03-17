@@ -18,10 +18,10 @@ package net.woodstock.rockframework.utils;
 
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import net.woodstock.rockframework.config.CoreConfig;
+import net.woodstock.rockframework.util.DateFormatFactory;
 
 public abstract class DateUtils {
 
@@ -29,7 +29,7 @@ public abstract class DateUtils {
 
 	private static final String		DATE_FORMAT_PATTERN		= CoreConfig.getInstance().getValue(DateUtils.DATE_FORMAT_PROPERTY);
 
-	private static final DateFormat	DATE_FORMAT				= new SimpleDateFormat(DateUtils.DATE_FORMAT_PATTERN, LocaleUtils.getLocale());
+	private static final DateFormat	DATE_FORMAT				= DateFormatFactory.getInstance().getFormat(DateUtils.DATE_FORMAT_PATTERN, LocaleUtils.getLocale());
 
 	private DateUtils() {
 		//
@@ -46,7 +46,8 @@ public abstract class DateUtils {
 		if (date == null) {
 			return null;
 		}
-		return new SimpleDateFormat(format).format(date);
+		DateFormat df = DateFormatFactory.getInstance().getFormat(format);
+		return df.format(date);
 	}
 
 	public static Date parse(final String date) throws ParseException {
@@ -60,7 +61,8 @@ public abstract class DateUtils {
 		if (StringUtils.isEmpty(date)) {
 			return null;
 		}
-		return new SimpleDateFormat(format).parse(date);
+		DateFormat df = DateFormatFactory.getInstance().getFormat(format);
+		return df.parse(date);
 	}
 
 }

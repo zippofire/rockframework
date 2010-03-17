@@ -1,8 +1,8 @@
 package net.woodstoc.rockframework.test.struts;
 
-import net.woodstock.rockframework.web.struts.BaseForm;
+import net.woodstock.rockframework.web.struts.ActionForm;
 
-public class PeopleForm extends BaseForm {
+public class PeopleForm extends ActionForm {
 
 	private static final long	serialVersionUID	= 1L;
 

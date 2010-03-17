@@ -1,6 +1,6 @@
 package net.woodstoc.rockframework.jsf.test.mb;
 
-import net.woodstock.rockframework.web.jsf.controler.ManagedBean;
+import net.woodstock.rockframework.web.jsf.ManagedBean;
 
 public class IndexMB extends ManagedBean {
 

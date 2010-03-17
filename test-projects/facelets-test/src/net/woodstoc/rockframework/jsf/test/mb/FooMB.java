@@ -4,7 +4,8 @@ import java.util.List;
 
 import net.woodstoc.rockframework.jsf.test.entity.Foo;
 import net.woodstoc.rockframework.jsf.test.persistence.FooRepository;
-import net.woodstock.rockframework.web.jsf.controler.ManagedBean;
+import net.woodstock.rockframework.web.jsf.Constants;
+import net.woodstock.rockframework.web.jsf.ManagedBean;
 
 public class FooMB extends ManagedBean {
 
@@ -30,7 +31,7 @@ public class FooMB extends ManagedBean {
 		System.out.println("Edit foo.id: " + this.foo.getId());
 		this.fooRepository.delete(this.foo);
 		this.foos = this.fooRepository.list();
-		return ManagedBean.SUCCESS;
+		return Constants.SUCCESS;
 	}
 
 	public String edit() {
@@ -38,26 +39,26 @@ public class FooMB extends ManagedBean {
 		// this.foo.setId(id);
 		System.out.println("Edit foo.id: " + this.foo.getId());
 		this.foo = this.fooRepository.get(this.foo);
-		return ManagedBean.SUCCESS;
+		return Constants.SUCCESS;
 	}
 
 	public String list() {
 		System.out.println("List");
 		this.foos = this.fooRepository.list();
-		return ManagedBean.SUCCESS;
+		return Constants.SUCCESS;
 	}
 
 	public String save() {
 		this.fooRepository.save(this.foo);
 		this.foo = new Foo();
 		this.message = "Success!!!";
-		return ManagedBean.SUCCESS;
+		return Constants.SUCCESS;
 	}
 
 	public String update() {
 		this.fooRepository.update(this.foo);
 		this.message = "Success!!!";
-		return ManagedBean.SUCCESS;
+		return Constants.SUCCESS;
 	}
 
 	// Getters

@@ -1,11 +1,11 @@
 package net.woodstoc.rockframework.test.struts;
 
-import net.woodstock.rockframework.web.struts.BaseAction;
 import net.woodstock.rockframework.web.struts.Constants;
+import net.woodstock.rockframework.web.struts.SimpleAction;
 
 import org.apache.struts.action.ActionForward;
 
-public class PeopleAction extends BaseAction<PeopleForm> {
+public class PeopleAction extends SimpleAction<PeopleForm> {
 
 	@Override
 	protected ActionForward execute() throws Exception {
@@ -15,6 +15,5 @@ public class PeopleAction extends BaseAction<PeopleForm> {
 		System.out.println(form.getPeople().getStatus());
 		return this.getMapping().findForward(Constants.SUCCESS);
 	}
-	
 
 }

@@ -7,14 +7,13 @@ import net.woodstock.rockframework.test.struts2.entity.Bar;
 import net.woodstock.rockframework.test.struts2.entity.Baz;
 import net.woodstock.rockframework.test.struts2.entity.Foo;
 import net.woodstock.rockframework.util.Date;
-import net.woodstock.rockframework.web.struts2.action.BaseAction;
-import net.woodstock.rockframework.web.struts2.spring.Action;
+import net.woodstock.rockframework.web.struts2.Action;
 
 import org.springframework.context.annotation.Scope;
 
-@Action
+@net.woodstock.rockframework.web.struts2.spring.Action
 @Scope(value = "prototype")
-public class JsonAction extends BaseAction {
+public class JsonAction extends Action {
 
 	private static final long	serialVersionUID	= 1L;
 

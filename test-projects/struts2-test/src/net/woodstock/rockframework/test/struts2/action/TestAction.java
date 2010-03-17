@@ -1,14 +1,13 @@
 package net.woodstock.rockframework.test.struts2.action;
 
 import net.woodstock.rockframework.test.struts2.entity.Foo;
-import net.woodstock.rockframework.web.struts2.action.BaseAction;
-import net.woodstock.rockframework.web.struts2.spring.Action;
+import net.woodstock.rockframework.web.struts2.Action;
 
 import org.springframework.context.annotation.Scope;
 
-@Action
+@net.woodstock.rockframework.web.struts2.spring.Action
 @Scope(value = "prototype")
-public class TestAction extends BaseAction {
+public class TestAction extends Action {
 
 	private static final long	serialVersionUID	= 1L;
 

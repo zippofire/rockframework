@@ -47,7 +47,7 @@ public final class ContextHelper {
 		}
 	}
 
-	private boolean isWebApplication() {
+	private synchronized boolean isWebApplication() {
 		try {
 			Class.forName(ContextHelper.WEB_CONTEXT_LOADER_CLASS);
 			return WebContextHelper.isWebApplication();
@@ -57,11 +57,11 @@ public final class ContextHelper {
 		}
 	}
 
-	private ApplicationContext getWebApplicationContext() {
+	private synchronized ApplicationContext getWebApplicationContext() {
 		return WebContextHelper.getWebApplicationContext();
 	}
 
-	private ApplicationContext getApplicationContext() {
+	private synchronized ApplicationContext getApplicationContext() {
 		ClassLoader classLoader = ContextHelper.class.getClassLoader();
 		if (classLoader.getResource(ContextHelper.APPLICATION_CONFIGURATION) == null) {
 			throw new ConfigurationNotFoundException("File " + ContextHelper.APPLICATION_CONFIGURATION + " not found");

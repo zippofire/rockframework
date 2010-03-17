@@ -16,6 +16,8 @@
  */
 package net.woodstock.rockframework.test;
 
+import java.util.Locale;
+
 import junit.framework.TestCase;
 import net.woodstock.rockframework.utils.NumberUtils;
 
@@ -26,6 +28,10 @@ public class LocaleTest extends TestCase {
 		// pt BR 999.999.999
 		int n = 999999999;
 		System.out.println(NumberUtils.format(n));
+	}
+
+	public void xtest2() throws Exception {
+		System.out.println(Locale.getDefault());
 	}
 
 }
