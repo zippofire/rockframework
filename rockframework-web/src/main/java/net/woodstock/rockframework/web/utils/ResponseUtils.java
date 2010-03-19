@@ -61,12 +61,10 @@ public abstract class ResponseUtils {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		}
 
-		response.setContentType(FileUtils.getContentType(f));
-		response.setContentLength(FileUtils.getContentLength(f));
+		response.setContentType(ResponseUtils.DOWNLOAD_CONTENT_TYPE);
+		response.setContentLength(FileUtils.getSize(f));
 
-		response.setHeader("Content-type", ResponseUtils.DOWNLOAD_CONTENT_TYPE);
-		response.setHeader("Content-Disposition", ResponseUtils.getAttachmentContentDisposition(FileUtils.getFileName(f)));
-		response.setHeader("Content-Length", Integer.toString(FileUtils.getContentLength(f)));
+		response.setHeader("Content-Disposition", ResponseUtils.getAttachmentContentDisposition(FileUtils.getName(f)));
 
 		InputStream input = new FileInputStream(f);
 		OutputStream output = response.getOutputStream();
@@ -80,10 +78,8 @@ public abstract class ResponseUtils {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		}
 
-		response.setContentType(FileUtils.getContentType(f));
-		response.setContentLength(FileUtils.getContentLength(f));
-
-		response.setHeader("Content-Length", Integer.toString(FileUtils.getContentLength(f)));
+		response.setContentType(FileUtils.getType(f));
+		response.setContentLength(FileUtils.getSize(f));
 
 		InputStream input = new FileInputStream(file);
 		OutputStream output = response.getOutputStream();

@@ -22,27 +22,17 @@ import java.net.URLConnection;
 
 public abstract class FileUtils {
 
-	public static final char	UNIX_FILE_SEPARATOR		= '/';
+	private static final char	UNIX_FILE_SEPARATOR		= '/';
 
-	public static final char	WINDOWS_FILE_SEPARATOR	= '\\';
+	private static final char	WINDOWS_FILE_SEPARATOR	= '\\';
 
-	public static final char	EXTENSION_SEPARATOR		= '.';
+	private static final char	EXTENSION_SEPARATOR		= '.';
 
 	private FileUtils() {
 		//
 	}
 
-	public static int getContentLength(final File file) throws IOException {
-		URLConnection con = file.toURI().toURL().openConnection();
-		return con.getContentLength();
-	}
-
-	public static String getContentType(final File file) throws IOException {
-		URLConnection con = file.toURI().toURL().openConnection();
-		return con.getContentType();
-	}
-
-	public static String getFileName(final String src) {
+	public static String getName(final String src) {
 		if (StringUtils.isEmpty(src)) {
 			return null;
 		}
@@ -58,37 +48,94 @@ public abstract class FileUtils {
 		return src;
 	}
 
-	public static String getFileName(final File file) {
+	public static String getName(final File file) {
+		if (file == null) {
+			return null;
+		}
 		return file.getName();
 	}
 
-	public static String getFileExtension(final String src) {
+	public static String getExtension(final String src) {
 		if (StringUtils.isEmpty(src)) {
 			return null;
 		}
-		String fileName = FileUtils.getFileName(src);
-		if (fileName != null) {
-			if (fileName.indexOf('.') != -1) {
-				return fileName.substring(fileName.lastIndexOf('.') + 1);
-			}
+		String fileName = FileUtils.getName(src);
+		if ((fileName != null) && (fileName.indexOf(FileUtils.EXTENSION_SEPARATOR) != -1)) {
+			return fileName.substring(fileName.lastIndexOf(FileUtils.EXTENSION_SEPARATOR) + 1);
 		}
 		return null;
 	}
 
-	public static String getFileExtension(final File file) {
+	public static String getExtension(final File file) {
+		if (file == null) {
+			return null;
+		}
 		String fileName = file.getName();
-		if (fileName.indexOf('.') != -1) {
-			return fileName.substring(fileName.lastIndexOf('.') + 1);
+		if (fileName.indexOf(FileUtils.EXTENSION_SEPARATOR) != -1) {
+			return fileName.substring(fileName.lastIndexOf(FileUtils.EXTENSION_SEPARATOR) + 1);
 		}
 		return null;
+	}
+
+	public static String getParentPath(final File file) {
+		if (file == null) {
+			return null;
+		}
+		return file.getParent();
+	}
+
+	public static String getParentPath(final String src) {
+		if (StringUtils.isEmpty(src)) {
+			return null;
+		}
+		if (src.indexOf(FileUtils.UNIX_FILE_SEPARATOR) != -1) {
+			int index = src.lastIndexOf(FileUtils.UNIX_FILE_SEPARATOR);
+			String path = src.substring(0, index);
+			return path;
+		} else if (src.indexOf(FileUtils.WINDOWS_FILE_SEPARATOR) != -1) {
+			int index = src.lastIndexOf(FileUtils.WINDOWS_FILE_SEPARATOR);
+			String path = src.substring(0, index);
+			return path;
+		}
+		return src;
+	}
+
+	public static String getPath(final File file) {
+		if (file == null) {
+			return null;
+		}
+		return file.getAbsolutePath();
+	}
+
+	public static String getPath(final String src) {
+		if (StringUtils.isEmpty(src)) {
+			return null;
+		}
+		return src;
+	}
+
+	public static int getSize(final File file) throws IOException {
+		if (file == null) {
+			return -1;
+		}
+		URLConnection con = file.toURI().toURL().openConnection();
+		return con.getContentLength();
+	}
+
+	public static String getType(final File file) throws IOException {
+		if (file == null) {
+			return null;
+		}
+		URLConnection con = file.toURI().toURL().openConnection();
+		return con.getContentType();
 	}
 
 	// Delegate Mime
-	public static String getMimeType(final String extension) {
+	public static String getTypeByExtension(final String extension) {
 		return MimeUtils.getMimeType(extension);
 	}
 
-	public static String getExtension(final String mimeType) {
+	public static String getExtensionByType(final String mimeType) {
 		return MimeUtils.getExtension(mimeType);
 	}
 
