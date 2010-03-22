@@ -16,6 +16,7 @@
  */
 package net.woodstock.rockframework.conversion.json;
 
+import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.conversion.ConverterException;
 import net.woodstock.rockframework.conversion.Ignore;
@@ -44,26 +45,26 @@ class BeanConverter extends AbstractTextConverter<Object> {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public String to(final ConverterContext context, final Object t) {
+	public String to(final ConverterContext context, final Object object) {
 		if (context == null) {
-			throw new IllegalArgumentException("Context must be not null");
+			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Context"));
 		}
-		if (t == null) {
-			throw new IllegalArgumentException("Object must be not null");
+		if (object == null) {
+			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Object"));
 		}
 
 		try {
 			ConverterContext currentContext = context;
 			StringBuilder builder = new StringBuilder();
-			BeanDescriptor beanDescriptor = BeanDescriptorFactoryImpl.getInstance().getBeanDescriptor(t.getClass());
+			BeanDescriptor beanDescriptor = BeanDescriptorFactoryImpl.getInstance().getBeanDescriptor(object.getClass());
 			boolean first = true;
 
 			if (!(context instanceof BeanConverterContext)) {
-				currentContext = new BeanConverterContext(context.getParent(), context.getName(), t.getClass());
+				currentContext = new BeanConverterContext(context.getParent(), context.getName(), object.getClass());
 			}
 
-			if ((!currentContext.isQueued(t)) && (!currentContext.isIgnored())) {
-				currentContext.getQueue().add(t);
+			if ((!currentContext.isQueued(object)) && (!currentContext.isIgnored())) {
+				currentContext.getQueue().add(object);
 
 				builder.append(BeanConverter.BEGIN_OBJECT);
 
@@ -76,7 +77,7 @@ class BeanConverter extends AbstractTextConverter<Object> {
 					}
 					String name = propertyDescriptor.getName();
 					Class<?> type = propertyDescriptor.getType();
-					Object value = propertyDescriptor.getValue(t);
+					Object value = propertyDescriptor.getValue(object);
 					ConverterContext subContext = new PropertyConverterContext(currentContext, name, type);
 					TextConverter converter = JsonConverterHelper.getNullConverter();
 
@@ -106,7 +107,7 @@ class BeanConverter extends AbstractTextConverter<Object> {
 				return s;
 			}
 			TextConverter converter = JsonConverterHelper.getNullConverter();
-			return (String) converter.to(currentContext, t);
+			return (String) converter.to(currentContext, object);
 		} catch (ConverterException e) {
 			throw e;
 		} catch (Exception e) {

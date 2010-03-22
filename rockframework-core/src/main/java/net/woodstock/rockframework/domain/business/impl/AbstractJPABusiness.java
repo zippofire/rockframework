@@ -37,16 +37,6 @@ import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactoryImpl;
 @SuppressWarnings("unchecked")
 public abstract class AbstractJPABusiness extends AbstractBusiness {
 
-	private static final String	MESSAGE_INVALID_TYPE	= "domain.business.validation.field.error.invalidType";
-
-	private static final String	MESSAGE_LENGTH			= "domain.business.validation.field.error.length";
-
-	private static final String	MESSAGE_NOT_EMPTY		= "domain.business.validation.field.error.notEmpty";
-
-	private static final String	MESSAGE_NOT_NULL		= "domain.business.validation.field.error.notNull";
-
-	private static final String	MESSAGE_NULL			= "domain.business.validation.field.error.null";
-
 	public AbstractJPABusiness() {
 		super();
 	}
@@ -113,15 +103,15 @@ public abstract class AbstractJPABusiness extends AbstractBusiness {
 				if (propertyDescriptor.isAnnotationPresent(GeneratedValue.class)) {
 					return null;
 				}
-				return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractJPABusiness.MESSAGE_NOT_NULL, name));
+				return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NOT_NULL, name));
 			}
 
 			if (propertyDescriptor.isAnnotationPresent(GeneratedValue.class)) {
-				return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractJPABusiness.MESSAGE_NULL, name));
+				return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NULL, name));
 			}
 		} else {
 			if (value == null) {
-				return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractJPABusiness.MESSAGE_NOT_NULL, name));
+				return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NOT_NULL, name));
 			}
 		}
 		return null;
@@ -135,13 +125,13 @@ public abstract class AbstractJPABusiness extends AbstractBusiness {
 			if (column.nullable()) {
 				return null;
 			}
-			return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractJPABusiness.MESSAGE_NOT_NULL, name));
+			return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NOT_NULL, name));
 		}
 
 		if (value instanceof String) {
 			int length = ((String) value).length();
 			if (length > column.length()) {
-				return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractJPABusiness.MESSAGE_LENGTH, name, new Integer(0), new Integer(column.length())));
+				return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_LENGTH, name, new Integer(0), new Integer(column.length())));
 			}
 		}
 		return null;
@@ -159,17 +149,17 @@ public abstract class AbstractJPABusiness extends AbstractBusiness {
 			if (manyToOne.optional()) {
 				return null;
 			}
-			return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractJPABusiness.MESSAGE_NOT_NULL, name));
+			return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NOT_NULL, name));
 		}
 
 		if (!(value instanceof Entity)) {
-			return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractJPABusiness.MESSAGE_INVALID_TYPE, name));
+			return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_INVALID_TYPE, name));
 		}
 
 		Entity<?> e = (Entity<?>) value;
 
 		if ((e.getId() == null) && (!manyToOne.optional())) {
-			return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractJPABusiness.MESSAGE_NOT_EMPTY, name));
+			return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NOT_EMPTY, name));
 		}
 
 		return null;
@@ -183,17 +173,17 @@ public abstract class AbstractJPABusiness extends AbstractBusiness {
 			if (oneToOne.optional()) {
 				return null;
 			}
-			return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractJPABusiness.MESSAGE_NOT_NULL, name));
+			return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NOT_NULL, name));
 		}
 
 		if (!(value instanceof Entity)) {
-			return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractJPABusiness.MESSAGE_INVALID_TYPE, name));
+			return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_INVALID_TYPE, name));
 		}
 
 		Entity<?> e = (Entity<?>) value;
 
 		if ((e.getId() == null) && (!oneToOne.optional())) {
-			return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractJPABusiness.MESSAGE_NOT_EMPTY, name));
+			return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NOT_EMPTY, name));
 		}
 
 		return null;

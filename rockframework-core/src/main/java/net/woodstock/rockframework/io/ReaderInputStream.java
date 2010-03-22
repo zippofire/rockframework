@@ -16,26 +16,32 @@
  */
 package net.woodstock.rockframework.io;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.Reader;
 
-public class InputOutputStream extends OutputStream {
+import net.woodstock.rockframework.config.CoreMessage;
 
-	private ByteArrayOutputStream	outputStream;
+public class ReaderInputStream extends InputStream {
 
-	public InputOutputStream() {
+	private Reader	reader;
+
+	public ReaderInputStream(final Reader reader) {
 		super();
-		this.outputStream = new ByteArrayOutputStream();
+		if (reader == null) {
+			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Reader"));
+		}
+		this.reader = reader;
 	}
 
 	@Override
-	public void write(final int b) {
-		this.outputStream.write(b);
+	public int available() throws IOException {
+		throw new UnsupportedOperationException();
 	}
 
-	public InputStream getInputStream() {
-		return new ByteArrayInputStream(this.outputStream.toByteArray());
+	@Override
+	public int read() throws IOException {
+		return this.reader.read();
 	}
+
 }

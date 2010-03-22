@@ -31,7 +31,7 @@ public abstract class AbstractConfig {
 	public AbstractConfig(final String propertiesName) {
 		super();
 		if (StringUtils.isEmpty(propertiesName)) {
-			throw new IllegalArgumentException("Properties name must be not empty");
+			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_EMPTY, "Properties name"));
 		}
 		try {
 			this.properties = new Properties();

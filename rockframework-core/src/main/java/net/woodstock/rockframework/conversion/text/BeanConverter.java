@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.conversion.ConverterException;
 import net.woodstock.rockframework.conversion.Ignore;
@@ -67,10 +68,10 @@ class BeanConverter extends AbstractTextConverter<Object> {
 	@SuppressWarnings("unchecked")
 	public Object from(final ConverterContext context, final String s) {
 		if (context == null) {
-			throw new IllegalArgumentException("Context must be not null");
+			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Context"));
 		}
-		if (context.getType() == null) {
-			throw new IllegalArgumentException("Type must be not null");
+		if (StringUtils.isEmpty(s)) {
+			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_EMPTY, "Text"));
 		}
 		try {
 			Class<?> clazz = context.getType();
@@ -120,10 +121,10 @@ class BeanConverter extends AbstractTextConverter<Object> {
 	@SuppressWarnings("unchecked")
 	public String to(final ConverterContext context, final Object t) {
 		if (context == null) {
-			throw new IllegalArgumentException("Context must be not null");
+			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Context"));
 		}
 		if (t == null) {
-			throw new IllegalArgumentException("Object must be not null");
+			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Object"));
 		}
 		try {
 			StringBuilder builder = new StringBuilder();

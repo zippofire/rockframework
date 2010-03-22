@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 
+import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.io.InputOutputStream;
 
 import com.lowagie.text.Document;
@@ -37,7 +38,7 @@ public abstract class PDFUtils {
 
 	public static InputStream cut(final InputStream source, final int start, final int end) throws IOException, DocumentException {
 		if (source == null) {
-			throw new IllegalArgumentException("Source document must be not null");
+			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Source"));
 		}
 		PdfReader reader = new PdfReader(source);
 		Document document = new Document(reader.getPageSizeWithRotation(1));
@@ -69,10 +70,10 @@ public abstract class PDFUtils {
 
 	public static InputStream merge(final InputStream[] sources) throws IOException, DocumentException {
 		if (sources == null) {
-			throw new IllegalArgumentException("Source documents must be not null");
+			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Sources"));
 		}
 		if (sources.length == 0) {
-			throw new IllegalArgumentException("Source documents must be not empty");
+			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_EMPTY, "Sources"));
 		}
 
 		Document document = new Document();
@@ -99,7 +100,7 @@ public abstract class PDFUtils {
 
 	public static InputStream[] split(final InputStream source, final int size) throws IOException, DocumentException {
 		if (source == null) {
-			throw new IllegalArgumentException("Source document must be not null");
+			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Source"));
 		}
 		if (size <= 0) {
 			throw new IllegalArgumentException("Size must be greater than zero");

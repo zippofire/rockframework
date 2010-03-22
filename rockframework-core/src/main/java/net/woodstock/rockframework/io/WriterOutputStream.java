@@ -14,12 +14,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.web.jsp.util;
+package net.woodstock.rockframework.io;
 
-public abstract class FormUtils {
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.Writer;
 
-	private FormUtils() {
-		//
+import net.woodstock.rockframework.config.CoreMessage;
+
+public class WriterOutputStream extends OutputStream {
+
+	private Writer	writer;
+
+	public WriterOutputStream(final Writer writer) {
+		super();
+		if (writer == null) {
+			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Writer"));
+		}
+		this.writer = writer;
+	}
+
+	@Override
+	public void write(final int b) throws IOException {
+		this.writer.write(b);
 	}
 
 }

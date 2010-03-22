@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.woodstock.rockframework.config.CoreLog;
+import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.BeanDescriptorFactory;
 
@@ -46,7 +47,7 @@ abstract class AbstractBeanDescriptorFactory implements BeanDescriptorFactory {
 	@Override
 	public final BeanDescriptor getBeanDescriptor(final Class<?> clazz) {
 		if (clazz == null) {
-			throw new IllegalArgumentException("Type must be not null");
+			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Class"));
 		}
 		if (this.hasOnCache(clazz)) {
 			CoreLog.getInstance().getLog().info("Class " + clazz.getSimpleName() + " exists on cache");

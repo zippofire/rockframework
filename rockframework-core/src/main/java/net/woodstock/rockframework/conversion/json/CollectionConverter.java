@@ -18,6 +18,7 @@ package net.woodstock.rockframework.conversion.json;
 
 import java.util.Collection;
 
+import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.conversion.ConverterException;
 import net.woodstock.rockframework.conversion.TextConverter;
@@ -40,12 +41,12 @@ public class CollectionConverter extends AbstractTextConverter<Collection> {
 	}
 
 	@Override
-	public String to(final ConverterContext context, final Collection t) {
+	public String to(final ConverterContext context, final Collection collection) {
 		if (context == null) {
-			throw new IllegalArgumentException("Context must be not null");
+			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "context"));
 		}
-		if (t == null) {
-			throw new IllegalArgumentException("Object must be not null");
+		if (collection == null) {
+			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Collection"));
 		}
 		try {
 			StringBuilder builder = new StringBuilder();
@@ -53,12 +54,12 @@ public class CollectionConverter extends AbstractTextConverter<Collection> {
 			ConverterContext currentContext = context;
 
 			if (!(currentContext instanceof BeanConverterContext)) {
-				currentContext = new BeanConverterContext(currentContext.getParent(), currentContext.getName(), t.getClass());
+				currentContext = new BeanConverterContext(currentContext.getParent(), currentContext.getName(), collection.getClass());
 			}
 
 			builder.append(CollectionConverter.BEGIN_ARRAY);
 
-			for (Object o : t) {
+			for (Object o : collection) {
 				if (o != null) {
 					TextConverter converter = JsonConverterHelper.getConverter(o.getClass());
 					ConverterContext subContext = null;

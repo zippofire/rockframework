@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Queue;
 
 import net.woodstock.rockframework.config.CoreLog;
+import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.persistence.query.BuilderException;
 import net.woodstock.rockframework.domain.persistence.query.LikeMode;
@@ -58,7 +59,7 @@ abstract class QueryContextHelper {
 
 	public static QueryContext createQueryContext(final Entity e, final Map<String, Object> options) {
 		if (e == null) {
-			throw new IllegalArgumentException("Entity must be not null");
+			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Entity"));
 		}
 		if (QueryContextHelper.isProxy(e)) {
 			throw new IllegalArgumentException("Proxy classes cannot be parsed[" + e.getClass().getCanonicalName() + "]");

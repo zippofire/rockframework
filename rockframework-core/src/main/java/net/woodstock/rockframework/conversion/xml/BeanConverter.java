@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.conversion.Converter;
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.conversion.ConverterException;
@@ -83,12 +84,12 @@ class BeanConverter extends AbstractConverter<XmlElement, Object> {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public Object from(final ConverterContext context, final XmlElement f) {
+	public Object from(final ConverterContext context, final XmlElement xmlElement) {
 		if (context == null) {
-			throw new IllegalArgumentException("Context must be not null");
+			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Context"));
 		}
-		if (context.getType() == null) {
-			throw new IllegalArgumentException("Type must be not null");
+		if (xmlElement == null) {
+			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Element"));
 		}
 		try {
 			Class<?> clazz = context.getType();
@@ -111,8 +112,8 @@ class BeanConverter extends AbstractConverter<XmlElement, Object> {
 				Class<?> type = propertyDescriptor.getType();
 				ConverterContext subContext = new PropertyConverterContext(currentContext, name, type);
 				String elementName = this.getElementName(name);
-				if (f.hasElement(elementName)) {
-					XmlElement e = f.getElement(elementName);
+				if (xmlElement.hasElement(elementName)) {
+					XmlElement e = xmlElement.getElement(elementName);
 					Converter converter = this.getConverter(type);
 					Object value = null;
 					if (e.hasAttribute(BeanConverter.CLASS_ATTRIBUTE)) {
@@ -133,23 +134,23 @@ class BeanConverter extends AbstractConverter<XmlElement, Object> {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public XmlElement to(final ConverterContext context, final Object t) {
+	public XmlElement to(final ConverterContext context, final Object object) {
 		if (context == null) {
-			throw new IllegalArgumentException("Context must be not null");
+			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Context"));
 		}
-		if (t == null) {
-			throw new IllegalArgumentException("Object must be not null");
+		if (object == null) {
+			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Object"));
 		}
 
 		try {
-			BeanDescriptor beanDescriptor = BeanDescriptorFactoryImpl.getInstance().getBeanDescriptor(t.getClass());
+			BeanDescriptor beanDescriptor = BeanDescriptorFactoryImpl.getInstance().getBeanDescriptor(object.getClass());
 			XmlDocument document = new XmlDocument(this.getElementName(beanDescriptor.getName()));
 			XmlElement root = document.getRoot();
 			root.setAttribute(BeanConverter.CLASS_ATTRIBUTE, beanDescriptor.getType().getCanonicalName());
 			ConverterContext currentContext = context;
 
 			if (!(currentContext instanceof BeanConverterContext)) {
-				currentContext = new BeanConverterContext(currentContext.getParent(), currentContext.getName(), t.getClass());
+				currentContext = new BeanConverterContext(currentContext.getParent(), currentContext.getName(), object.getClass());
 			}
 
 			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
@@ -161,7 +162,7 @@ class BeanConverter extends AbstractConverter<XmlElement, Object> {
 				}
 				String name = propertyDescriptor.getName();
 				Class<?> type = propertyDescriptor.getType();
-				Object value = propertyDescriptor.getValue(t);
+				Object value = propertyDescriptor.getValue(object);
 				ConverterContext subContext = new PropertyConverterContext(currentContext, name, type);
 				Converter converter = BeanConverter.nullConverter;
 				if (value != null) {

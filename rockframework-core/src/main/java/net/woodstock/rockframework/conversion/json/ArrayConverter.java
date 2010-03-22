@@ -19,6 +19,7 @@ package net.woodstock.rockframework.conversion.json;
 import java.util.Collection;
 import java.util.List;
 
+import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.conversion.TextConverter;
 import net.woodstock.rockframework.conversion.common.AbstractTextConverter;
@@ -33,15 +34,15 @@ public class ArrayConverter extends AbstractTextConverter<Object> {
 	}
 
 	@Override
-	public String to(final ConverterContext context, final Object t) {
+	public String to(final ConverterContext context, final Object object) {
 		if (context == null) {
-			throw new IllegalArgumentException("Context must be not null");
+			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Context"));
 		}
-		if (t == null) {
-			throw new IllegalArgumentException("Object must be not null");
+		if (object == null) {
+			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Object"));
 		}
 
-		List<Object> list = ArrayUtils.toList(t);
+		List<Object> list = ArrayUtils.toList(object);
 		TextConverter converter = JsonConverterHelper.getConverter(Collection.class);
 		return (String) converter.to(context, list);
 	}

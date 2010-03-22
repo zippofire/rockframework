@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.utils.StringUtils;
 
 import org.apache.struts.action.ActionForward;
@@ -37,7 +38,7 @@ public class ForwardResultBuilder implements ResultBuilder {
 	public ForwardResultBuilder(final ActionMapping mapping) {
 		super();
 		if (mapping == null) {
-			throw new IllegalArgumentException("Mapping must be not null");
+			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Mapping"));
 		}
 		this.mapping = mapping;
 		this.parameters = new HashMap<String, Object>();
@@ -55,7 +56,7 @@ public class ForwardResultBuilder implements ResultBuilder {
 
 	public ActionForward build() {
 		if (StringUtils.isEmpty(this.name)) {
-			throw new IllegalStateException("Name must be not empty");
+			throw new IllegalStateException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_EMPTY, "Name"));
 		}
 
 		ActionRedirect redirect = new ActionRedirect(this.mapping.findForwardConfig(this.name));

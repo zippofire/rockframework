@@ -24,6 +24,7 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
+import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.utils.StringUtils;
 
 public class Command implements Serializable {
@@ -62,7 +63,7 @@ public class Command implements Serializable {
 
 	public Output execute() throws IOException {
 		if (StringUtils.isEmpty(this.command)) {
-			throw new IllegalStateException("Command must be not empty");
+			throw new IllegalStateException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_EMPTY, "Command"));
 		}
 		Output output = new Output();
 		Runtime runtime = Runtime.getRuntime();

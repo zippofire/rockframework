@@ -17,6 +17,7 @@
 package net.woodstock.rockframework.reflection.impl;
 
 import net.woodstock.rockframework.config.CoreConfig;
+import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.BeanDescriptorFactory;
 import net.woodstock.rockframework.reflection.ReflectionType;
@@ -43,7 +44,7 @@ public abstract class BeanDescriptorFactoryImpl implements BeanDescriptorFactory
 
 	public static BeanDescriptorFactory getInstance(final ReflectionType type) {
 		if (type == null) {
-			throw new IllegalArgumentException("Type must be not null");
+			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Type"));
 		}
 		switch (type) {
 			case FIELD:
@@ -53,7 +54,7 @@ public abstract class BeanDescriptorFactoryImpl implements BeanDescriptorFactory
 			case MIXED:
 				return BeanDescriptorFactoryImpl.mixedBeanDescriptorFactory;
 			default:
-				throw new IllegalArgumentException("Invalid reflection type " + type);
+				return null;
 		}
 	}
 

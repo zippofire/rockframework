@@ -24,13 +24,25 @@ import net.woodstock.rockframework.domain.business.ValidationResult;
 @SuppressWarnings("unchecked")
 abstract class AbstractBusiness implements GenericBusiness {
 
-	protected static final String	MESSAGE_INVALID_CLASS	= "domain.business.invalid.class";
+	protected static final String	MESSAGE_INVALID_CLASS					= "domain.business.invalid.class";
 
-	protected static final String	MESSAGE_INVALID_ID		= "domain.business.invalid.id";
+	protected static final String	MESSAGE_INVALID_ID						= "domain.business.invalid.id";
 
-	protected static final String	MESSAGE_INVALID_OBJECT	= "domain.business.invalid.object";
+	protected static final String	MESSAGE_INVALID_OBJECT					= "domain.business.invalid.object";
 
-	protected static final String	MESSAGE_VALIDATION_OK	= "domain.business.validation.ok";
+	protected static final String	MESSAGE_VALIDATION_OK					= "domain.business.validation.ok";
+
+	protected static final String	MESSAGE_VALIDATION_ERROR_INVALID		= "domain.business.validation.error.invalid";
+
+	protected static final String	MESSAGE_VALIDATION_ERROR_INVALID_TYPE	= "domain.business.validation.error.invalidType";
+
+	protected static final String	MESSAGE_VALIDATION_ERROR_LENGTH			= "domain.business.validation.error.length";
+
+	protected static final String	MESSAGE_VALIDATION_ERROR_NOT_EMPTY		= "domain.business.validation.error.notEmpty";
+
+	protected static final String	MESSAGE_VALIDATION_ERROR_NOT_NULL		= "domain.business.validation.error.notNull";
+
+	protected static final String	MESSAGE_VALIDATION_ERROR_NULL			= "domain.business.validation.error.null";
 
 	public AbstractBusiness() {
 		super();

@@ -17,33 +17,28 @@
 package net.woodstock.rockframework.io;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.Writer;
 
 public class ReaderWriter extends Writer {
 
-	private InputOutputStream	inputStream;
-
-	private OutputStreamWriter	writer;
+	private StringWriter	writer;
 
 	public ReaderWriter() {
 		super();
-		this.inputStream = new InputOutputStream();
-		this.writer = new OutputStreamWriter(this.inputStream);
+		this.writer = new StringWriter();
 	}
 
 	@Override
 	public void close() throws IOException {
-		this.writer.close();
-		this.writer = new OutputStreamWriter(this.inputStream);
+		//
 	}
 
 	@Override
 	public void flush() throws IOException {
-		this.writer.close();
+		//
 	}
 
 	@Override
@@ -51,14 +46,8 @@ public class ReaderWriter extends Writer {
 		this.writer.write(cbuf, off, len);
 	}
 
-	public synchronized InputStream getInputStream() throws IOException {
-		this.close();
-		return this.inputStream.getInputStream();
-	}
-
-	public synchronized Reader getReader() throws IOException {
-		this.close();
-		return new InputStreamReader(this.inputStream.getInputStream());
+	public Reader getReader() {
+		return new StringReader(this.writer.getBuffer().toString());
 	}
 
 }
