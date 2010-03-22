@@ -1,1 +1,1 @@
-mvn clean source:jar javadoc:jar jar:jar pmd:pmd jxr:jxr install:install
+mvn clean compiler:compile resources:resources javadoc:javadoc jar:jar source:jar javadoc:jar install:install

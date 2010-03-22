@@ -92,9 +92,6 @@
 	</reporting>
 	<build>
 		<defaultGoal>install</defaultGoal>
-		<filters>
-			<filter>src/main/filters/filter.properties</filter>
-		</filters>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
