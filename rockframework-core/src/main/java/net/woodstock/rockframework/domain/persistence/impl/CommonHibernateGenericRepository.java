@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.woodstock.rockframework.config.CoreConfig;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.persistence.GenericRepository;
 import net.woodstock.rockframework.domain.persistence.query.CacheMode;
@@ -28,17 +29,22 @@ import net.woodstock.rockframework.domain.persistence.query.impl.HibernateQueryB
 
 import org.hibernate.HibernateException;
 import org.hibernate.NonUniqueObjectException;
+import org.hibernate.ObjectNotFoundException;
 import org.hibernate.PropertyValueException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
 class CommonHibernateGenericRepository implements GenericRepository {
 
-	private static final String	MSG_ERROR_TWO_SESSION	= "Illegal attempt to associate a collection with two open sessions";
+	private static final String		PROPERTY_GET_TYPE		= "hibernate.getType";
 
-	private static final String	ID_ATTRIBUTE			= "id";
+	private static final GetType	GET_TYPE				= GetType.valueOf(CoreConfig.getInstance().getValue(CommonHibernateGenericRepository.PROPERTY_GET_TYPE));
 
-	private Session				session;
+	private static final String		MSG_ERROR_TWO_SESSION	= "Illegal attempt to associate a collection with two open sessions";
+
+	private static final String		ID_ATTRIBUTE			= "id";
+
+	private Session					session;
 
 	public CommonHibernateGenericRepository(final Session session) {
 		super();
@@ -66,6 +72,14 @@ class CommonHibernateGenericRepository implements GenericRepository {
 
 	@SuppressWarnings("unchecked")
 	public <E extends Entity<?>> E get(final E entity) {
+		if (CommonHibernateGenericRepository.GET_TYPE == GetType.LOAD) {
+			try {
+				E e = (E) this.session.load(entity.getClass(), entity.getId());
+				return e;
+			} catch (ObjectNotFoundException e) {
+				return null;
+			}
+		}
 		E e = (E) this.session.get(entity.getClass(), entity.getId());
 		return e;
 	}
@@ -116,6 +130,10 @@ class CommonHibernateGenericRepository implements GenericRepository {
 				this.session.merge(e);
 			}
 		}
+	}
+
+	public static enum GetType {
+		GET, LOAD;
 	}
 
 }

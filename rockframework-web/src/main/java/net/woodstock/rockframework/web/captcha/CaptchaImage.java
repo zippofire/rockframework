@@ -146,8 +146,6 @@ public class CaptchaImage {
 			int height = (int) rectangle.getHeight();
 			int top = Math.abs((height - CaptchaImage.HEIGHT));
 
-			System.out.println("Height: " + height + " Top: " + top + " Char: " + s);
-
 			graphics.setColor(this.getFontColor());
 			textLayout.draw(graphics, left, top);
 			left += 20;
