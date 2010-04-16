@@ -423,7 +423,7 @@ public final class Calendar extends GregorianCalendar {
 	}
 
 	public static Calendar getInstance(final TimeZone tz) {
-		return new Calendar(tz, Locale.getDefault());
+		return new Calendar(tz, LocaleUtils.getLocale());
 	}
 
 	public static Calendar getInstance(final TimeZone tz, final Locale l) {

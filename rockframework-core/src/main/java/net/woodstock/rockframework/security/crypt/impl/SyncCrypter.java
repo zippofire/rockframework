@@ -28,6 +28,7 @@ import javax.crypto.SecretKey;
 import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.security.crypt.CrypterException;
 import net.woodstock.rockframework.utils.Base64Utils;
+import net.woodstock.rockframework.utils.LocaleUtils;
 import net.woodstock.rockframework.utils.StringUtils;
 
 public class SyncCrypter extends CrypterBase {
@@ -45,7 +46,7 @@ public class SyncCrypter extends CrypterBase {
 			KeyGenerator generator = KeyGenerator.getInstance(a.algorithm());
 
 			if (!StringUtils.isEmpty(seed)) {
-				SecureRandom random = new SecureRandom(seed.getBytes());
+				SecureRandom random = new SecureRandom(seed.getBytes(LocaleUtils.getCharset()));
 				generator.init(random);
 			}
 
@@ -86,9 +87,9 @@ public class SyncCrypter extends CrypterBase {
 				this.setEncryptCipher(Cipher.getInstance(this.getAlgorithm()));
 				this.getEncryptCipher().init(Cipher.ENCRYPT_MODE, this.key);
 			}
-			byte[] bytes = str.getBytes();
+			byte[] bytes = str.getBytes(LocaleUtils.getCharset());
 			byte[] enc = this.getEncryptCipher().doFinal(bytes);
-			return new String(enc);
+			return new String(enc, LocaleUtils.getCharset());
 		} catch (Exception e) {
 			throw new CrypterException(e);
 		}
@@ -100,8 +101,8 @@ public class SyncCrypter extends CrypterBase {
 				this.setDecryptCipher(Cipher.getInstance(this.getAlgorithm()));
 				this.getDecryptCipher().init(Cipher.DECRYPT_MODE, this.key);
 			}
-			byte[] bytes = this.getDecryptCipher().doFinal(str.getBytes());
-			return new String(bytes);
+			byte[] bytes = this.getDecryptCipher().doFinal(str.getBytes(LocaleUtils.getCharset()));
+			return new String(bytes, LocaleUtils.getCharset());
 		} catch (Exception e) {
 			throw new CrypterException(e);
 		}

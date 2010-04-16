@@ -66,6 +66,8 @@ class CommonHibernateGenericRepository implements GenericRepository {
 				Query query = this.session.createQuery(sql);
 				query.setParameter(CommonHibernateGenericRepository.ID_ATTRIBUTE, e.getId());
 				query.executeUpdate();
+			} else {
+				throw he;
 			}
 		}
 	}
@@ -128,6 +130,8 @@ class CommonHibernateGenericRepository implements GenericRepository {
 		} catch (HibernateException he) {
 			if (he.getMessage().startsWith(CommonHibernateGenericRepository.MSG_ERROR_TWO_SESSION)) {
 				this.session.merge(e);
+			} else {
+				throw he;
 			}
 		}
 	}

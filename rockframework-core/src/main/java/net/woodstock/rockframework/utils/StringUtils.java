@@ -130,7 +130,7 @@ public abstract class StringUtils {
 		CharsetDecoder decoderFrom = from.newDecoder();
 		CharsetEncoder encoderTo = to.newEncoder();
 
-		CharBuffer charBufferFrom = decoderFrom.decode(ByteBuffer.wrap(text.getBytes()));
+		CharBuffer charBufferFrom = decoderFrom.decode(ByteBuffer.wrap(text.getBytes(from)));
 		String tmp = charBufferFrom.toString();
 
 		StringBuilder builder = new StringBuilder();

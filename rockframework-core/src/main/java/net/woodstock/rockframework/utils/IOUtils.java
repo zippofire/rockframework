@@ -77,7 +77,7 @@ public abstract class IOUtils {
 	}
 
 	public static String toString(final InputStream inputStream) throws IOException {
-		return new String(IOUtils.toByteArray(inputStream));
+		return new String(IOUtils.toByteArray(inputStream), LocaleUtils.getCharset());
 	}
 
 	public static InputStream toInputStream(final byte[] bytes) {

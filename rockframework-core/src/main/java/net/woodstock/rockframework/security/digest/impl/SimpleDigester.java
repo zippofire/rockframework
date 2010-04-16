@@ -21,6 +21,7 @@ import java.security.NoSuchAlgorithmException;
 
 import net.woodstock.rockframework.security.digest.Digester;
 import net.woodstock.rockframework.security.digest.DigesterException;
+import net.woodstock.rockframework.utils.LocaleUtils;
 
 public class SimpleDigester implements Digester {
 
@@ -36,14 +37,14 @@ public class SimpleDigester implements Digester {
 	}
 
 	private synchronized byte[] digestInternal(final String data) {
-		byte[] b = this.digest.digest(data.getBytes());
+		byte[] b = this.digest.digest(data.getBytes(LocaleUtils.getCharset()));
 		this.digest.reset();
 		return b;
 	}
 
 	public String digest(final String data) {
 		byte[] b = this.digestInternal(data);
-		return new String(b);
+		return new String(b, LocaleUtils.getCharset());
 	}
 
 	public static enum Algorithm {

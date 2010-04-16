@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.Set;
 
 import net.woodstock.rockframework.utils.Base64Utils;
+import net.woodstock.rockframework.utils.LocaleUtils;
 import net.woodstock.rockframework.utils.StringUtils;
 
 import org.w3c.dom.Attr;
@@ -524,14 +525,14 @@ public class XmlElement extends ElementWrapper {
 
 		attributes.put(XmlElement.CLASS_ATTRIBUTE, className);
 
-		return this.addElement(name, new String(bytes), attributes);
+		return this.addElement(name, new String(bytes, LocaleUtils.getCharset()), attributes);
 	}
 
 	public Object getObject() throws IOException, ClassNotFoundException {
 		if (StringUtils.isEmpty(this.getString())) {
 			return null;
 		}
-		Object o = Base64Utils.unserialize(this.getString().getBytes());
+		Object o = Base64Utils.unserialize(this.getString());
 		return o;
 	}
 
@@ -539,7 +540,7 @@ public class XmlElement extends ElementWrapper {
 		if (StringUtils.isEmpty(this.getString(name))) {
 			return null;
 		}
-		Object o = Base64Utils.unserialize(this.getString(name).getBytes());
+		Object o = Base64Utils.unserialize(this.getString(name));
 		return o;
 	}
 

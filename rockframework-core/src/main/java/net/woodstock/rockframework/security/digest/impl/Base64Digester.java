@@ -31,7 +31,7 @@ public class Base64Digester implements Digester {
 	@Override
 	public String digest(final String data) {
 		String digest = this.digester.digest(data);
-		digest = new String(Base64Utils.toBase64(digest));
+		digest = Base64Utils.toBase64(digest);
 		return digest;
 	}
 

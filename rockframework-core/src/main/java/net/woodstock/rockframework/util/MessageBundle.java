@@ -53,7 +53,7 @@ public class MessageBundle {
 	}
 
 	public static MessageBundle getBundle(final String baseName) {
-		return new MessageBundle(baseName, Locale.getDefault());
+		return new MessageBundle(baseName, LocaleUtils.getLocale());
 	}
 
 	public static MessageBundle getBundle(final String baseName, final Locale locale) {

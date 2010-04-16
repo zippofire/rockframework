@@ -16,28 +16,50 @@
  */
 package net.woodstock.rockframework.utils;
 
+import java.nio.charset.Charset;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import net.woodstock.rockframework.config.CoreConfig;
 
 public abstract class LocaleUtils {
 
-	private static final String	LOCALE_COUNTRY_PROPERTY		= "locale.country";
+	private static final String		LOCALE_CHARSET_PROPERTY		= "locale.charset";
 
-	private static final String	LOCALE_LANGUAGE_PROPERTY	= "locale.language";
+	private static final String		LOCALE_COUNTRY_PROPERTY		= "locale.country";
 
-	private static final String	LOCALE_COUNTRY				= CoreConfig.getInstance().getValue(LocaleUtils.LOCALE_COUNTRY_PROPERTY);
+	private static final String		LOCALE_LANGUAGE_PROPERTY	= "locale.language";
 
-	private static final String	LOCALE_LANGUAGE				= CoreConfig.getInstance().getValue(LocaleUtils.LOCALE_LANGUAGE_PROPERTY);
+	private static final String		LOCALE_TIMEZONE_PROPERTY	= "locale.timezone";
 
-	private static final Locale	LOCALE						= new Locale(LocaleUtils.LOCALE_LANGUAGE, LocaleUtils.LOCALE_COUNTRY);
+	private static final String		LOCALE_CHARSET				= CoreConfig.getInstance().getValue(LocaleUtils.LOCALE_CHARSET_PROPERTY);
+
+	private static final String		LOCALE_COUNTRY				= CoreConfig.getInstance().getValue(LocaleUtils.LOCALE_COUNTRY_PROPERTY);
+
+	private static final String		LOCALE_LANGUAGE				= CoreConfig.getInstance().getValue(LocaleUtils.LOCALE_LANGUAGE_PROPERTY);
+
+	private static final String		LOCALE_TIMEZONE				= CoreConfig.getInstance().getValue(LocaleUtils.LOCALE_TIMEZONE_PROPERTY);
+
+	private static final Charset	CHARSET						= Charset.forName(LocaleUtils.LOCALE_CHARSET);
+
+	private static final Locale		LOCALE						= new Locale(LocaleUtils.LOCALE_LANGUAGE, LocaleUtils.LOCALE_COUNTRY);
+
+	private static final TimeZone	TIMEZONE					= TimeZone.getTimeZone(LocaleUtils.LOCALE_TIMEZONE);
 
 	private LocaleUtils() {
 		//
 	}
 
+	public static Charset getCharset() {
+		return LocaleUtils.CHARSET;
+	}
+
 	public static Locale getLocale() {
 		return LocaleUtils.LOCALE;
+	}
+
+	public static TimeZone getTimezone() {
+		return LocaleUtils.TIMEZONE;
 	}
 
 }

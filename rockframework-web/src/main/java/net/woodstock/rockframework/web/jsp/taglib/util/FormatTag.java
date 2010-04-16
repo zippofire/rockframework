@@ -51,7 +51,8 @@ public class FormatTag extends BaseTag {
 		try {
 			formated = StringUtils.format(this.format, value, character);
 		} catch (ArrayIndexOutOfBoundsException e) {
-			WebLog.getInstance().getLog().warn(e.getMessage(), e);
+			WebLog.getInstance().getLog().warn("Error formating '" + value + "'  with mask '" + this.format + "'");
+			// WebLog.getInstance().getLog().warn(e.getMessage(), e);
 			formated = FormatTag.ERROR_VALUE;
 		}
 

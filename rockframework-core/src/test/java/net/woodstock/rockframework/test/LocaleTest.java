@@ -19,11 +19,12 @@ package net.woodstock.rockframework.test;
 import java.util.Locale;
 
 import junit.framework.TestCase;
+import net.woodstock.rockframework.utils.LocaleUtils;
 import net.woodstock.rockframework.utils.NumberUtils;
 
 public class LocaleTest extends TestCase {
 
-	public void test1() throws Exception {
+	public void xtest1() throws Exception {
 		// en US 999,999,999
 		// pt BR 999.999.999
 		int n = 999999999;
@@ -32,6 +33,10 @@ public class LocaleTest extends TestCase {
 
 	public void xtest2() throws Exception {
 		System.out.println(Locale.getDefault());
+	}
+
+	public void test3() {
+		System.out.println(LocaleUtils.getTimezone());
 	}
 
 }

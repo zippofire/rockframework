@@ -88,7 +88,7 @@ public abstract class Base64Utils {
 		if (StringUtils.isEmpty(object)) {
 			return null;
 		}
-		return Base64Utils.unserialize(object.getBytes());
+		return Base64Utils.unserialize(object.getBytes(LocaleUtils.getCharset()));
 	}
 
 	public static Object unserialize(final byte[] bytes) throws IOException, ClassNotFoundException {

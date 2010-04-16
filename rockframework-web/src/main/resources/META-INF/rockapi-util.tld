@@ -46,5 +46,13 @@
             <required>false</required>
         </attribute>
     </tag>
+    
+    <tag>
+        <name>stackTrace</name>
+        <tag-class>
+            net.woodstock.rockframework.web.jsp.taglib.util.StackTraceTag
+        </tag-class>
+        <body-content>empty</body-content>
+    </tag>
 
 </taglib>
