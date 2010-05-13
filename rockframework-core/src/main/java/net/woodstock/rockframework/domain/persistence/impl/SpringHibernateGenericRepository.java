@@ -21,9 +21,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import net.woodstock.rockframework.domain.Entity;
+import net.woodstock.rockframework.domain.persistence.Constants;
 import net.woodstock.rockframework.domain.persistence.GenericRepository;
 import net.woodstock.rockframework.domain.persistence.query.CacheMode;
-import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
 import net.woodstock.rockframework.domain.persistence.query.impl.HibernateQueryBuilder;
 
 import org.hibernate.Query;
@@ -50,8 +50,8 @@ public abstract class SpringHibernateGenericRepository extends SpringHibernateRe
 		String sql = RepositoryHelper.getListAllSql(e.getClass(), options, true);
 		Query q = s.createQuery(sql);
 
-		if ((options != null) && (options.containsKey(QueryBuilder.OPTION_CACHE_MODE)) && (options.get(QueryBuilder.OPTION_CACHE_MODE) instanceof CacheMode)) {
-			CacheMode cacheMode = (CacheMode) options.get(QueryBuilder.OPTION_CACHE_MODE);
+		if ((options != null) && (options.containsKey(Constants.OPTION_CACHE_MODE)) && (options.get(Constants.OPTION_CACHE_MODE) instanceof CacheMode)) {
+			CacheMode cacheMode = (CacheMode) options.get(Constants.OPTION_CACHE_MODE);
 			if (cacheMode == CacheMode.ENABLED) {
 				q.setCacheable(true);
 				q.setCacheMode(org.hibernate.CacheMode.NORMAL);

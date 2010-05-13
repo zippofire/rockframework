@@ -22,7 +22,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import net.woodstock.rockframework.config.CoreLog;
-import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
+import net.woodstock.rockframework.domain.persistence.Constants;
 
 public class JPAQueryBuilder extends EJBQLQueryBuilder<Query> {
 
@@ -49,12 +49,12 @@ public class JPAQueryBuilder extends EJBQLQueryBuilder<Query> {
 	@Override
 	protected void setQueryOptions(final Object query, final Map<String, Object> options) {
 		Query q = (Query) query;
-		if ((options.containsKey(QueryBuilder.OPTION_FIRST_RESULT)) && (options.get(QueryBuilder.OPTION_FIRST_RESULT) instanceof Integer)) {
-			Integer firstResult = (Integer) options.get(QueryBuilder.OPTION_FIRST_RESULT);
+		if ((options.containsKey(Constants.OPTION_FIRST_RESULT)) && (options.get(Constants.OPTION_FIRST_RESULT) instanceof Integer)) {
+			Integer firstResult = (Integer) options.get(Constants.OPTION_FIRST_RESULT);
 			q.setFirstResult(firstResult.intValue());
 		}
-		if ((options.containsKey(QueryBuilder.OPTION_MAX_RESULT)) && (options.get(QueryBuilder.OPTION_MAX_RESULT) instanceof Integer)) {
-			Integer maxResult = (Integer) options.get(QueryBuilder.OPTION_MAX_RESULT);
+		if ((options.containsKey(Constants.OPTION_MAX_RESULT)) && (options.get(Constants.OPTION_MAX_RESULT) instanceof Integer)) {
+			Integer maxResult = (Integer) options.get(Constants.OPTION_MAX_RESULT);
 			q.setMaxResults(maxResult.intValue());
 		}
 	}

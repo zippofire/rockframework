@@ -26,9 +26,9 @@ import java.util.Queue;
 import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
+import net.woodstock.rockframework.domain.persistence.Constants;
 import net.woodstock.rockframework.domain.persistence.query.BuilderException;
 import net.woodstock.rockframework.domain.persistence.query.LikeMode;
-import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
 import net.woodstock.rockframework.domain.persistence.query.impl.QueryContextParameter.Operator;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
@@ -51,7 +51,11 @@ abstract class QueryContextHelper {
 
 	private static final String	ALIAS_SEPARADOR			= "_";
 
+	private static final String	LINE_SEPARATOR			= "\n";
+
 	private static final String	OBJECT_SEPARATOR		= ".";
+
+	private static final String	ORDER_SEPARATOR			= ",";
 
 	private QueryContextHelper() {
 		//
@@ -97,12 +101,12 @@ abstract class QueryContextHelper {
 
 	private static void generateQueryString(final QueryContext context, final Map<String, Object> options) {
 		StringBuilder builder = new StringBuilder();
-		builder.append("SELECT " + context.getAlias() + "\n");
-		builder.append("  FROM " + context.getName() + " AS " + context.getAlias() + "\n");
+		builder.append("SELECT " + context.getAlias() + QueryContextHelper.LINE_SEPARATOR);
+		builder.append("  FROM " + context.getName() + " AS " + context.getAlias() + QueryContextHelper.LINE_SEPARATOR);
 		boolean where = true;
 		for (QueryContext child : context.getChildsRecursive()) {
 			if ((child.hasParametersRecursive()) && (child.isJoinNeeded())) {
-				builder.append("      INNER JOIN " + child.getName() + " AS " + child.getAlias() + "\n");
+				builder.append("      INNER JOIN " + child.getName() + " AS " + child.getAlias() + QueryContextHelper.LINE_SEPARATOR);
 			}
 		}
 		for (QueryContextParameter parameter : context.getParametersRecursive()) {
@@ -117,11 +121,27 @@ abstract class QueryContextHelper {
 			builder.append(parameter.getOperator().getOperator());
 			builder.append(" :");
 			builder.append(parameter.getSqlAlias());
-			builder.append("\n");
+			builder.append(QueryContextHelper.LINE_SEPARATOR);
 		}
-		if (options.containsKey(QueryBuilder.OPTION_ORDER_BY)) {
-			String order = options.get(QueryBuilder.OPTION_ORDER_BY).toString();
-			builder.append(" ORDER BY " + context.getAlias() + QueryContextHelper.OBJECT_SEPARATOR + order + "\n");
+		if (options.containsKey(Constants.OPTION_ORDER_BY)) {
+			Object order = options.get(Constants.OPTION_ORDER_BY);
+
+			if ((order != null) && (!StringUtils.isEmpty(order.toString()))) {
+				String[] orders = order.toString().split(QueryContextHelper.ORDER_SEPARATOR);
+				if (orders.length > 0) {
+					for (int index = 0; index < orders.length; index++) {
+						if (index == 0) {
+							builder.append(" ORDER BY " + context.getAlias() + QueryContextHelper.OBJECT_SEPARATOR + orders[index].trim());
+						} else {
+							builder.append("          " + context.getAlias() + QueryContextHelper.OBJECT_SEPARATOR + orders[index].trim());
+						}
+						if ((index + 1) < orders.length) {
+							builder.append(QueryContextHelper.ORDER_SEPARATOR);
+						}
+						builder.append(QueryContextHelper.LINE_SEPARATOR);
+					}
+				}
+			}
 		}
 		context.setQueryString(builder.toString().trim());
 	}
@@ -132,8 +152,8 @@ abstract class QueryContextHelper {
 			String sqlAlias = QueryContextHelper.getFieldAlias(context, alias);
 			if (value instanceof Entity) {
 				boolean disable = false;
-				if (options.containsKey(QueryBuilder.OPTION_DISABLE_CHILD)) {
-					Boolean b = (Boolean) options.get(QueryBuilder.OPTION_DISABLE_CHILD);
+				if (options.containsKey(Constants.OPTION_DISABLE_CHILD)) {
+					Boolean b = (Boolean) options.get(Constants.OPTION_DISABLE_CHILD);
 					disable = b.booleanValue();
 				}
 				if (!disable) {
@@ -141,8 +161,8 @@ abstract class QueryContextHelper {
 				}
 			} else if (value instanceof Collection) {
 				boolean disable = false;
-				if (options.containsKey(QueryBuilder.OPTION_DISABLE_COLLECTION)) {
-					Boolean b = (Boolean) options.get(QueryBuilder.OPTION_DISABLE_COLLECTION);
+				if (options.containsKey(Constants.OPTION_DISABLE_COLLECTION)) {
+					Boolean b = (Boolean) options.get(Constants.OPTION_DISABLE_COLLECTION);
 					disable = b.booleanValue();
 				}
 				if (!disable) {
@@ -234,16 +254,16 @@ abstract class QueryContextHelper {
 		String sqlName = name;
 		String sqlValue = value;
 		String sqlAlias = alias;
-		if (options.containsKey(QueryBuilder.OPTION_IGNORE_CASE)) {
-			Boolean b = (Boolean) options.get(QueryBuilder.OPTION_IGNORE_CASE);
+		if (options.containsKey(Constants.OPTION_IGNORE_CASE)) {
+			Boolean b = (Boolean) options.get(Constants.OPTION_IGNORE_CASE);
 			if ((b != null) && (b.booleanValue())) {
 				sqlValue = sqlValue.toLowerCase();
 				sqlName = "LOWER(" + name + ")";
 			}
 		}
 
-		if ((options.containsKey(QueryBuilder.OPTION_LIKE_MODE)) && (options.get(QueryBuilder.OPTION_LIKE_MODE) instanceof LikeMode)) {
-			LikeMode likeMode = (LikeMode) options.get(QueryBuilder.OPTION_LIKE_MODE);
+		if ((options.containsKey(Constants.OPTION_LIKE_MODE)) && (options.get(Constants.OPTION_LIKE_MODE) instanceof LikeMode)) {
+			LikeMode likeMode = (LikeMode) options.get(Constants.OPTION_LIKE_MODE);
 			if (likeMode != null) {
 				switch (likeMode) {
 					case ALL:

@@ -24,6 +24,7 @@ import java.util.Map.Entry;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import net.woodstock.rockframework.domain.persistence.Constants;
 import net.woodstock.rockframework.domain.persistence.EJBQLRepository;
 
 class CommonJPAEJBQLRepository implements EJBQLRepository {
@@ -56,11 +57,30 @@ class CommonJPAEJBQLRepository implements EJBQLRepository {
 		return obj;
 	}
 
+	protected boolean isValidParameter(final String name) {
+		if (name.equals(Constants.OPTION_FIRST_RESULT)) {
+			return false;
+		}
+		if (name.equals(Constants.OPTION_MAX_RESULT)) {
+			return false;
+		}
+		return true;
+	}
+
 	private Query getQuery(final String sql, final Map<String, Object> parameters) {
 		EntityManager entityManager = this.entityManager;
 		Query query = entityManager.createQuery(sql);
 
 		if ((parameters != null) && (parameters.size() > 0)) {
+			if (parameters.containsKey(Constants.OPTION_FIRST_RESULT)) {
+				Integer firstResult = (Integer) parameters.get(Constants.OPTION_FIRST_RESULT);
+				query.setFirstResult(firstResult.intValue());
+			}
+			if (parameters.containsKey(Constants.OPTION_MAX_RESULT)) {
+				Integer maxResult = (Integer) parameters.get(Constants.OPTION_MAX_RESULT);
+				query.setMaxResults(maxResult.intValue());
+			}
+
 			for (Entry<String, Object> entry : parameters.entrySet()) {
 				String name = entry.getKey();
 				Object value = entry.getValue();

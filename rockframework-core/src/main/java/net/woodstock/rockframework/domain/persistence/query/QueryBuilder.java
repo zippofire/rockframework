@@ -20,25 +20,6 @@ import net.woodstock.rockframework.domain.Entity;
 
 public interface QueryBuilder<T> {
 
-	// String OPTION_COLLECTION_MODE = "COLLECTION_MODE";
-
-	String	OPTION_FIRST_RESULT			= "FIRST_RESULT";
-
-	String	OPTION_IGNORE_CASE			= "IGNORE_CASE";
-
-	String	OPTION_LIKE_MODE			= "LIKE_MODE";
-
-	String	OPTION_MAX_RESULT			= "MAX_RESULT";
-
-	String	OPTION_ORDER_BY				= "ORDER_BY";
-
-	// Disable
-	String	OPTION_DISABLE_CHILD		= "DISABLE_CHILDS";
-
-	String	OPTION_DISABLE_COLLECTION	= "DISABLE_COLLECTION";
-
-	String	OPTION_CACHE_MODE			= "CACHE_MODE";
-
 	// Builder
 	void build();
 

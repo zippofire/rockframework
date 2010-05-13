@@ -20,8 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.woodstock.rockframework.domain.Entity;
+import net.woodstock.rockframework.domain.persistence.Constants;
 import net.woodstock.rockframework.domain.persistence.query.LikeMode;
-import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
 
 public abstract class EJBQLQueryBuilder<T> extends AbstractQueryBuilder<T> {
 
@@ -36,8 +36,8 @@ public abstract class EJBQLQueryBuilder<T> extends AbstractQueryBuilder<T> {
 	public EJBQLQueryBuilder() {
 		super();
 		this.options = new HashMap<String, Object>();
-		this.options.put(QueryBuilder.OPTION_IGNORE_CASE, Boolean.TRUE);
-		this.options.put(QueryBuilder.OPTION_LIKE_MODE, LikeMode.ALL);
+		this.options.put(Constants.OPTION_IGNORE_CASE, Boolean.TRUE);
+		this.options.put(Constants.OPTION_LIKE_MODE, LikeMode.ALL);
 	}
 
 	@Override

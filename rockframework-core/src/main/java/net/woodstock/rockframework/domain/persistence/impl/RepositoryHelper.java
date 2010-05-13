@@ -2,7 +2,7 @@ package net.woodstock.rockframework.domain.persistence.impl;
 
 import java.util.Map;
 
-import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
+import net.woodstock.rockframework.domain.persistence.Constants;
 import net.woodstock.rockframework.utils.StringUtils;
 
 abstract class RepositoryHelper {
@@ -20,8 +20,8 @@ abstract class RepositoryHelper {
 			builder.append(clazz.getSimpleName());
 		}
 		builder.append(" AS o");
-		if ((options != null) && (options.containsKey(QueryBuilder.OPTION_ORDER_BY))) {
-			String order = (String) options.get(QueryBuilder.OPTION_ORDER_BY);
+		if ((options != null) && (options.containsKey(Constants.OPTION_ORDER_BY))) {
+			String order = (String) options.get(Constants.OPTION_ORDER_BY);
 			if (!StringUtils.isEmpty(order)) {
 				builder.append(" ORDER BY ");
 				builder.append(order);
