@@ -18,7 +18,8 @@ package net.woodstock.rockframework.utils;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.regex.Pattern;
+
+import net.woodstock.rockframework.util.Assert;
 
 public abstract class NetUtils {
 
@@ -32,9 +33,9 @@ public abstract class NetUtils {
 		InetAddress hostAddress = InetAddress.getByName(address);
 		InetAddress networkAddress = InetAddress.getByName(netAddress.substring(0, netAddress.indexOf('/')));
 		int mask = Integer.parseInt(netAddress.substring(netAddress.indexOf('/') + 1));
-		if (mask > 31) {
-			throw new IllegalArgumentException("Invalid network mask '" + mask + "'");
-		}
+
+		Assert.lessThan(mask, 32, "mask");
+
 		StringBuilder bufferAddress = new StringBuilder();
 		StringBuilder bufferNetwork = new StringBuilder();
 		for (byte b : hostAddress.getAddress()) {
@@ -55,9 +56,8 @@ public abstract class NetUtils {
 	}
 
 	public static InetAddress toAddress(final String address) throws UnknownHostException {
-		if (!Pattern.matches(NetUtils.IPV4_REGEX, address)) {
-			throw new IllegalArgumentException("Invalid IPV4 address " + address);
-		}
+		Assert.validRegex(address, NetUtils.IPV4_REGEX, "address");
+
 		String[] array = address.split("\\.");
 		byte b0 = (byte) Integer.parseInt(array[0]);
 		byte b1 = (byte) Integer.parseInt(array[1]);

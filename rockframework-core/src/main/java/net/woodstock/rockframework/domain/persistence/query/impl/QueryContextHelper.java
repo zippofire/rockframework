@@ -24,16 +24,16 @@ import java.util.Map;
 import java.util.Queue;
 
 import net.woodstock.rockframework.config.CoreLog;
-import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.domain.persistence.Constants;
 import net.woodstock.rockframework.domain.persistence.query.BuilderException;
 import net.woodstock.rockframework.domain.persistence.query.LikeMode;
 import net.woodstock.rockframework.domain.persistence.query.impl.QueryContextParameter.Operator;
+import net.woodstock.rockframework.domain.persistence.util.Constants;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.ReflectionType;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactoryImpl;
+import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.utils.StringUtils;
 
 @SuppressWarnings("unchecked")
@@ -61,21 +61,17 @@ abstract class QueryContextHelper {
 		//
 	}
 
-	public static QueryContext createQueryContext(final Entity e, final Map<String, Object> options) {
-		if (e == null) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Entity"));
-		}
-		if (QueryContextHelper.isProxy(e)) {
-			throw new IllegalArgumentException("Proxy classes cannot be parsed[" + e.getClass().getCanonicalName() + "]");
-		}
+	public static QueryContext createQueryContext(final Entity entity, final Map<String, Object> options) {
+		Assert.notNull(entity, "entity");
+
 		try {
-			Class<?> clazz = e.getClass();
+			Class<?> clazz = entity.getClass();
 			BeanDescriptor beanDescriptor = BeanDescriptorFactoryImpl.getInstance(ReflectionType.FIELD).getBeanDescriptor(clazz);
 			String entityName = QueryContextHelper.getEntityName(beanDescriptor);
 			QueryContext context = new QueryContext(entityName, entityName, QueryContextHelper.ROOT_ALIAS, null);
 			Queue<Entity> parsed = new LinkedList<Entity>();
 
-			parsed.add(e);
+			parsed.add(entity);
 
 			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
 				if (!propertyDescriptor.isReadable()) {
@@ -83,7 +79,7 @@ abstract class QueryContextHelper {
 				}
 				String name = propertyDescriptor.getName();
 				String alias = name;
-				Object value = propertyDescriptor.getValue(e);
+				Object value = propertyDescriptor.getValue(entity);
 				boolean isTransient = QueryContextHelper.isTransient(propertyDescriptor);
 
 				if ((value != null) && (!isTransient)) {

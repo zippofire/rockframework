@@ -20,7 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 
-import net.woodstock.rockframework.config.CoreMessage;
+import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.utils.FileUtils;
 import net.woodstock.rockframework.utils.StringUtils;
 
@@ -42,9 +42,8 @@ public class FileInfo implements Serializable, Comparable<FileInfo> {
 
 	public FileInfo(final String src) {
 		super();
-		if (StringUtils.isEmpty(src)) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_EMPTY, "Source"));
-		}
+		Assert.notEmpty(src, "src");
+
 		this.name = FileUtils.getName(src);
 		this.path = FileUtils.getPath(src);
 		this.parent = FileUtils.getParentPath(src);
@@ -57,12 +56,9 @@ public class FileInfo implements Serializable, Comparable<FileInfo> {
 
 	public FileInfo(final File file) throws IOException {
 		super();
-		if (file == null) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "File"));
-		}
-		if ((file.exists()) && (file.isDirectory())) {
-			throw new IllegalArgumentException("File could not be a directory");
-		}
+		Assert.notNull(file, "file");
+		Assert.isFile(file, "file");
+
 		this.name = FileUtils.getName(file);
 		this.path = FileUtils.getPath(file);
 		this.parent = FileUtils.getParentPath(file);

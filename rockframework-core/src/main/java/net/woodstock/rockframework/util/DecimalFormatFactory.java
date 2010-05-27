@@ -20,9 +20,6 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
-import net.woodstock.rockframework.config.CoreMessage;
-import net.woodstock.rockframework.utils.StringUtils;
-
 public final class DecimalFormatFactory extends FormatFactory<DecimalFormat> {
 
 	private static DecimalFormatFactory	instance	= new DecimalFormatFactory();
@@ -33,12 +30,8 @@ public final class DecimalFormatFactory extends FormatFactory<DecimalFormat> {
 
 	@Override
 	public DecimalFormat getFormat(final String pattern, final Locale locale) {
-		if (StringUtils.isEmpty(pattern)) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_EMPTY, "Pattern"));
-		}
-		if (locale == null) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Locale"));
-		}
+		Assert.notEmpty(pattern, "pattern");
+		Assert.notNull(locale, "locale");
 
 		if (this.containsOnCache(pattern, locale)) {
 			return this.getFromCache(pattern, locale);

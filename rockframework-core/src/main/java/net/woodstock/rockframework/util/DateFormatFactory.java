@@ -20,9 +20,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-import net.woodstock.rockframework.config.CoreMessage;
-import net.woodstock.rockframework.utils.StringUtils;
-
 public final class DateFormatFactory extends FormatFactory<DateFormat> {
 
 	private static DateFormatFactory	instance	= new DateFormatFactory();
@@ -33,12 +30,8 @@ public final class DateFormatFactory extends FormatFactory<DateFormat> {
 
 	@Override
 	public DateFormat getFormat(final String pattern, final Locale locale) {
-		if (StringUtils.isEmpty(pattern)) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_EMPTY, "Pattern"));
-		}
-		if (locale == null) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Locale"));
-		}
+		Assert.notEmpty(pattern, "pattern");
+		Assert.notNull(locale, "locale");
 
 		if (this.containsOnCache(pattern, locale)) {
 			return this.getFromCache(pattern, locale);

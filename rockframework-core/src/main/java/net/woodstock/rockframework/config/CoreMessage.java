@@ -18,15 +18,9 @@ package net.woodstock.rockframework.config;
 
 public final class CoreMessage extends AbstractMessage {
 
-	public static final String	MESSAGE_NOT_EMPTY	= "error.notEmpty";
+	private static final String	CORE_MESSAGES	= "rockframework-core-messages";
 
-	public static final String	MESSAGE_NOT_FOUND	= "error.notFound";
-
-	public static final String	MESSAGE_NOT_NULL	= "error.notNull";
-
-	private static final String	CORE_MESSAGES		= "rockframework-core-messages";
-
-	private static CoreMessage	instance			= new CoreMessage();
+	private static CoreMessage	instance		= new CoreMessage();
 
 	private CoreMessage() {
 		super(CoreMessage.CORE_MESSAGES);

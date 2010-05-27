@@ -14,18 +14,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.persistence;
+package net.woodstock.rockframework.web.struts2.converter;
 
-import java.util.Collection;
-import java.util.Map;
+import net.woodstock.rockframework.web.config.WebConfig;
 
-public interface QueryableRepository extends Repository {
+public class DateConverter extends DateTimeConverter {
 
-	Object getSingle(String sql, Map<String, Object> parameters);
+	private static final String	DATE_FORMAT_PROPERTY	= "format.date";
 
-	@SuppressWarnings("unchecked")
-	Collection getCollection(String sql, Map<String, Object> parameters);
+	private static final String	DATE_FORMAT_PATTERN		= WebConfig.getInstance().getValue(DateConverter.DATE_FORMAT_PROPERTY);
 
-	void executeUpdate(String sql, Map<String, Object> parameters);
+	public DateConverter(final String pattern) {
+		super(DateConverter.DATE_FORMAT_PATTERN);
+	}
 
 }

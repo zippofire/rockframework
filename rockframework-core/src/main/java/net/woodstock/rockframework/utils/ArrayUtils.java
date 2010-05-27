@@ -22,6 +22,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import net.woodstock.rockframework.util.Assert;
+
 public final class ArrayUtils {
 
 	private ArrayUtils() {
@@ -54,9 +56,9 @@ public final class ArrayUtils {
 		if (array == null) {
 			return null;
 		}
-		if (!array.getClass().isArray()) {
-			throw new IllegalArgumentException("Object is not an array[" + array.getClass().getCanonicalName() + "]");
-		}
+
+		Assert.isArray(array, "array");
+
 		List<Object> list = new LinkedList<Object>();
 		for (int i = 0; i < Array.getLength(array); i++) {
 			Object o = Array.get(array, i);
@@ -80,9 +82,9 @@ public final class ArrayUtils {
 		if (array == null) {
 			return null;
 		}
-		if (!array.getClass().isArray()) {
-			throw new IllegalArgumentException("Object is not an array[" + array.getClass().getCanonicalName() + "]");
-		}
+
+		Assert.isArray(array, "array");
+
 		Set<Object> set = new LinkedHashSet<Object>();
 		for (int i = 0; i < Array.getLength(array); i++) {
 			Object o = Array.get(array, i);
@@ -106,9 +108,8 @@ public final class ArrayUtils {
 		if (array == null) {
 			return null;
 		}
-		if (!array.getClass().isArray()) {
-			throw new IllegalArgumentException("Object is not an array[" + array.getClass().getCanonicalName() + "]");
-		}
+
+		Assert.isArray(array, "array");
 
 		boolean first = true;
 		StringBuilder builder = new StringBuilder();
@@ -156,9 +157,8 @@ public final class ArrayUtils {
 		if (array == null) {
 			return null;
 		}
-		if (!array.getClass().isArray()) {
-			throw new IllegalArgumentException("Object is not an array[" + array.getClass().getCanonicalName() + "]");
-		}
+
+		Assert.isArray(array, "array");
 
 		int len = Array.getLength(array);
 		String[] s = new String[len];

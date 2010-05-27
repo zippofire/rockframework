@@ -23,8 +23,6 @@ import net.woodstock.rockframework.domain.persistence.SQLRepository;
 
 public class HibernateSQLRepository extends AbstractHibernateRepository implements SQLRepository {
 
-	public static final String	TARGET_ENTITY_PARAMETER	= CommonHibernateSQLRepository.TARGET_ENTITY_PARAMETER;
-
 	public HibernateSQLRepository() {
 		super();
 	}

@@ -17,30 +17,37 @@
 package net.woodstock.rockframework.domain.persistence.impl;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
-import net.woodstock.rockframework.domain.persistence.SQLRepository;
+import org.hibernate.Query;
 
-public class SpringHibernateSQLRepository extends SpringHibernateRepository implements SQLRepository {
+abstract class AbstractHibernateQueryableRepository extends AbstractQueryableRepository {
 
-	public SpringHibernateSQLRepository() {
+	public AbstractHibernateQueryableRepository() {
 		super();
 	}
 
 	@Override
 	public void executeUpdate(final String sql, final Map<String, Object> parameters) {
-		new CommonHibernateSQLRepository(this.getSession()).executeUpdate(sql, parameters);
+		Query query = this.getQuery(sql, parameters);
+		query.executeUpdate();
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public Collection getCollection(final String sql, final Map<String, Object> parameters) {
-		return new CommonHibernateSQLRepository(this.getSession()).getCollection(sql, parameters);
+		Query query = this.getQuery(sql, parameters);
+		List list = query.list();
+		return list;
 	}
 
 	@Override
 	public Object getSingle(final String sql, final Map<String, Object> parameters) {
-		return new CommonHibernateSQLRepository(this.getSession()).getSingle(sql, parameters);
+		Query query = this.getQuery(sql, parameters);
+		Object obj = query.uniqueResult();
+		return obj;
 	}
 
+	protected abstract Query getQuery(final String sql, final Map<String, Object> parameters);
 }

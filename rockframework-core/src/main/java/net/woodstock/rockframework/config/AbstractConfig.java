@@ -21,8 +21,8 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.Properties;
 
+import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.utils.ClassLoaderUtils;
-import net.woodstock.rockframework.utils.StringUtils;
 
 public abstract class AbstractConfig {
 
@@ -30,9 +30,8 @@ public abstract class AbstractConfig {
 
 	public AbstractConfig(final String propertiesName) {
 		super();
-		if (StringUtils.isEmpty(propertiesName)) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_EMPTY, "Properties name"));
-		}
+		Assert.notEmpty(propertiesName, "propertiesName");
+
 		try {
 			this.properties = new Properties();
 			Collection<URL> urls = ClassLoaderUtils.getResources(propertiesName);

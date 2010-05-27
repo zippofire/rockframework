@@ -4,9 +4,9 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 
 import junit.framework.TestCase;
-import net.woodstock.rockframework.domain.persistence.Constants;
 import net.woodstock.rockframework.domain.persistence.query.LikeMode;
 import net.woodstock.rockframework.domain.persistence.query.impl.QueryBuilderAdapter;
+import net.woodstock.rockframework.domain.persistence.util.Constants;
 
 public class TestQuery extends TestCase {
 

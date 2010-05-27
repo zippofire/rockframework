@@ -16,18 +16,16 @@
  */
 package net.woodstock.rockframework.domain.persistence.impl;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import net.woodstock.rockframework.domain.persistence.Constants;
 import net.woodstock.rockframework.domain.persistence.EJBQLRepository;
+import net.woodstock.rockframework.domain.persistence.util.Constants;
 
-class CommonJPAEJBQLRepository implements EJBQLRepository {
+class CommonJPAEJBQLRepository extends AbstractJPAQueryableRepository implements EJBQLRepository {
 
 	private EntityManager	entityManager;
 
@@ -37,37 +35,7 @@ class CommonJPAEJBQLRepository implements EJBQLRepository {
 	}
 
 	@Override
-	public void executeUpdate(final String sql, final Map<String, Object> parameters) {
-		Query query = this.getQuery(sql, parameters);
-		query.executeUpdate();
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public Collection getCollection(final String sql, final Map<String, Object> parameters) {
-		Query query = this.getQuery(sql, parameters);
-		List list = query.getResultList();
-		return list;
-	}
-
-	@Override
-	public Object getSingle(final String sql, final Map<String, Object> parameters) {
-		Query query = this.getQuery(sql, parameters);
-		Object obj = query.getSingleResult();
-		return obj;
-	}
-
-	protected boolean isValidParameter(final String name) {
-		if (name.equals(Constants.OPTION_FIRST_RESULT)) {
-			return false;
-		}
-		if (name.equals(Constants.OPTION_MAX_RESULT)) {
-			return false;
-		}
-		return true;
-	}
-
-	private Query getQuery(final String sql, final Map<String, Object> parameters) {
+	protected Query getQuery(final String sql, final Map<String, Object> parameters) {
 		EntityManager entityManager = this.entityManager;
 		Query query = entityManager.createQuery(sql);
 
@@ -80,6 +48,9 @@ class CommonJPAEJBQLRepository implements EJBQLRepository {
 				Integer maxResult = (Integer) parameters.get(Constants.OPTION_MAX_RESULT);
 				query.setMaxResults(maxResult.intValue());
 			}
+			// if (parameters.containsKey(Constants.OPTION_READ_ONLY)) {
+			// TODO
+			// }
 
 			for (Entry<String, Object> entry : parameters.entrySet()) {
 				String name = entry.getKey();

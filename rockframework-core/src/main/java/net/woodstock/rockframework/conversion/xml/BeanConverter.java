@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.conversion.Converter;
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.conversion.ConverterException;
@@ -48,6 +47,7 @@ import net.woodstock.rockframework.conversion.common.converters.StringConverter;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactoryImpl;
+import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.utils.StringUtils;
 import net.woodstock.rockframework.xml.dom.XmlDocument;
 import net.woodstock.rockframework.xml.dom.XmlElement;
@@ -85,12 +85,9 @@ class BeanConverter extends AbstractConverter<XmlElement, Object> {
 	@Override
 	@SuppressWarnings("unchecked")
 	public Object from(final ConverterContext context, final XmlElement xmlElement) {
-		if (context == null) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Context"));
-		}
-		if (xmlElement == null) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Element"));
-		}
+		Assert.notNull(context, "context");
+		Assert.notNull(xmlElement, "xmlElement");
+
 		try {
 			Class<?> clazz = context.getType();
 			Object obj = clazz.newInstance();
@@ -135,12 +132,8 @@ class BeanConverter extends AbstractConverter<XmlElement, Object> {
 	@Override
 	@SuppressWarnings("unchecked")
 	public XmlElement to(final ConverterContext context, final Object object) {
-		if (context == null) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Context"));
-		}
-		if (object == null) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Object"));
-		}
+		Assert.notNull(context, "context");
+		Assert.notNull(object, "object");
 
 		try {
 			BeanDescriptor beanDescriptor = BeanDescriptorFactoryImpl.getInstance().getBeanDescriptor(object.getClass());

@@ -28,9 +28,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.woodstock.rockframework.config.CoreMessage;
+import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.utils.NumberUtils;
-import net.woodstock.rockframework.utils.StringUtils;
 
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
@@ -75,9 +74,7 @@ public class CaptchaImage {
 
 	// Image
 	public byte[] getBytes() throws IOException {
-		if (StringUtils.isEmpty(this.text)) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_EMPTY, "Text"));
-		}
+		Assert.notEmpty(this.text, "text");
 
 		BufferedImage bufferedImage = new BufferedImage(this.getWidth(), CaptchaImage.HEIGHT, BufferedImage.TYPE_INT_RGB);
 		Graphics2D graphics = bufferedImage.createGraphics();

@@ -16,22 +16,19 @@
  */
 package net.woodstock.rockframework.domain.persistence.impl;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.persistence.SQLRepository;
+import net.woodstock.rockframework.domain.persistence.util.Constants;
 
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
-class CommonHibernateSQLRepository implements SQLRepository {
+class CommonHibernateSQLRepository extends AbstractHibernateQueryableRepository implements SQLRepository {
 
-	public static final String	TARGET_ENTITY_PARAMETER	= "__TARGET_ENTITY__";
-
-	private Session				session;
+	private Session	session;
 
 	public CommonHibernateSQLRepository(final Session session) {
 		super();
@@ -39,40 +36,20 @@ class CommonHibernateSQLRepository implements SQLRepository {
 	}
 
 	@Override
-	public void executeUpdate(final String sql, final Map<String, Object> parameters) {
-		SQLQuery query = this.getQuery(sql, parameters);
-		query.executeUpdate();
-	}
-
-	@Override
 	@SuppressWarnings("unchecked")
-	public Collection getCollection(final String sql, final Map<String, Object> parameters) {
-		SQLQuery query = this.getQuery(sql, parameters);
-		List list = query.list();
-		return list;
-	}
-
-	@Override
-	public Object getSingle(final String sql, final Map<String, Object> parameters) {
-		SQLQuery query = this.getQuery(sql, parameters);
-		Object obj = query.uniqueResult();
-		return obj;
-	}
-
-	@SuppressWarnings("unchecked")
-	private SQLQuery getQuery(final String sql, final Map<String, Object> parameters) {
+	protected SQLQuery getQuery(final String sql, final Map<String, Object> parameters) {
 		Session session = this.session;
 		SQLQuery query = session.createSQLQuery(sql);
 		if ((parameters != null) && (parameters.size() > 0)) {
-			if (parameters.containsKey(CommonHibernateSQLRepository.TARGET_ENTITY_PARAMETER)) {
-				Class<Entity> clazz = (Class<Entity>) parameters.get(CommonHibernateSQLRepository.TARGET_ENTITY_PARAMETER);
+			if (parameters.containsKey(Constants.OPTION_TARGET_ENTITY)) {
+				Class<Entity> clazz = (Class<Entity>) parameters.get(Constants.OPTION_TARGET_ENTITY);
 				query.addEntity(clazz);
 			}
 
 			for (Entry<String, Object> entry : parameters.entrySet()) {
 				String name = entry.getKey();
 				Object value = entry.getValue();
-				if (!name.equals(CommonHibernateSQLRepository.TARGET_ENTITY_PARAMETER)) {
+				if (this.isValidParameter(name)) {
 					query.setParameter(name, value);
 				}
 			}

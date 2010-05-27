@@ -20,7 +20,7 @@ import java.sql.Connection;
 
 import net.woodstock.rockframework.jdbc.Type;
 
-public class OracleClient extends CommonClient {
+public class OracleClient extends CommonCallableClient {
 
 	private static final int	CURSOR	= -10;
 

@@ -18,13 +18,13 @@ package net.woodstock.rockframework.conversion.json;
 
 import java.util.Collection;
 
-import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.conversion.ConverterException;
 import net.woodstock.rockframework.conversion.TextConverter;
 import net.woodstock.rockframework.conversion.common.AbstractTextConverter;
 import net.woodstock.rockframework.conversion.common.BeanConverterContext;
 import net.woodstock.rockframework.conversion.common.PropertyConverterContext;
+import net.woodstock.rockframework.util.Assert;
 
 @SuppressWarnings("unchecked")
 public class CollectionConverter extends AbstractTextConverter<Collection> {
@@ -42,12 +42,9 @@ public class CollectionConverter extends AbstractTextConverter<Collection> {
 
 	@Override
 	public String to(final ConverterContext context, final Collection collection) {
-		if (context == null) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "context"));
-		}
-		if (collection == null) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Collection"));
-		}
+		Assert.notNull(context, "context");
+		Assert.notNull(collection, "collection");
+
 		try {
 			StringBuilder builder = new StringBuilder();
 			boolean first = true;

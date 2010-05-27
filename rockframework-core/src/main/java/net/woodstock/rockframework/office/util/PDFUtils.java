@@ -21,8 +21,8 @@ import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.io.InputOutputStream;
+import net.woodstock.rockframework.util.Assert;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -37,18 +37,15 @@ public abstract class PDFUtils {
 	}
 
 	public static InputStream cut(final InputStream source, final int start, final int end) throws IOException, DocumentException {
-		if (source == null) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Source"));
-		}
+		Assert.notNull(source, "source");
+
 		PdfReader reader = new PdfReader(source);
 		Document document = new Document(reader.getPageSizeWithRotation(1));
 		InputOutputStream outputStream = new InputOutputStream();
 		PdfCopy writer = new PdfCopy(document, outputStream);
 		int pageCount = reader.getNumberOfPages();
 
-		if (start > pageCount) {
-			throw new IllegalArgumentException("Start page must be less than document size");
-		}
+		Assert.lessThan(start, pageCount, "start");
 
 		int endPage = end;
 		if (endPage > pageCount) {
@@ -64,17 +61,14 @@ public abstract class PDFUtils {
 
 		document.close();
 		writer.close();
+		reader.close();
 
 		return outputStream.getInputStream();
 	}
 
 	public static InputStream merge(final InputStream[] sources) throws IOException, DocumentException {
-		if (sources == null) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Sources"));
-		}
-		if (sources.length == 0) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_EMPTY, "Sources"));
-		}
+		Assert.notNull(sources, "sources");
+		Assert.notEmpty(sources, "sources");
 
 		Document document = new Document();
 		InputOutputStream outputStream = new InputOutputStream();
@@ -89,6 +83,7 @@ public abstract class PDFUtils {
 				PdfImportedPage page = writer.getImportedPage(reader, i);
 				writer.addPage(page);
 			}
+			reader.close();
 		}
 
 		document.close();
@@ -99,12 +94,9 @@ public abstract class PDFUtils {
 	}
 
 	public static InputStream[] split(final InputStream source, final int size) throws IOException, DocumentException {
-		if (source == null) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Source"));
-		}
-		if (size <= 0) {
-			throw new IllegalArgumentException("Size must be greater than zero");
-		}
+		Assert.notNull(source, "source");
+		Assert.greaterThan(size, 0, "size");
+
 		PdfReader reader = new PdfReader(source);
 		int pageCount = reader.getNumberOfPages();
 		List<InputStream> list = new LinkedList<InputStream>();
@@ -132,6 +124,8 @@ public abstract class PDFUtils {
 			writer.close();
 			list.add(outputStream.getInputStream());
 		}
+
+		reader.close();
 
 		return list.toArray(new InputStream[list.size()]);
 	}

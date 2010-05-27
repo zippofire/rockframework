@@ -21,6 +21,7 @@ import java.lang.annotation.Annotation;
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
+import net.woodstock.rockframework.util.Assert;
 
 public class PropertyConverterContext extends AbstractConverterContext {
 
@@ -28,9 +29,7 @@ public class PropertyConverterContext extends AbstractConverterContext {
 
 	public PropertyConverterContext(final ConverterContext parent, final String name, final Class<?> type) {
 		super(parent, name, type);
-		if (!(parent instanceof BeanConverterContext)) {
-			throw new IllegalArgumentException("Parent must be an instance of " + BeanConverterContext.class.getCanonicalName());
-		}
+		Assert.instanceOf(parent, BeanConverterContext.class, "parent");
 		BeanConverterContext context = (BeanConverterContext) parent;
 		BeanDescriptor beanDescriptor = context.getBeanDescriptor();
 		this.propertyDescriptor = beanDescriptor.getProperty(name);

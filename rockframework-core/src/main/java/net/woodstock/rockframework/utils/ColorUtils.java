@@ -28,7 +28,6 @@ public abstract class ColorUtils {
 		if (s.startsWith("#")) {
 			return ColorUtils.createColorHTML(s);
 		} else if (s.startsWith("rgb")) {
-
 			return ColorUtils.createColorRGB(s);
 		}
 		return null;

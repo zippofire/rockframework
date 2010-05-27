@@ -25,8 +25,8 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
-import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.security.crypt.CrypterException;
+import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.utils.Base64Utils;
 import net.woodstock.rockframework.utils.LocaleUtils;
 import net.woodstock.rockframework.utils.StringUtils;
@@ -59,11 +59,8 @@ public class SyncCrypter extends CrypterBase {
 
 	public SyncCrypter(final InputStream inputStream) {
 		super();
+		Assert.notNull(inputStream, "inputStream");
 		try {
-			if (inputStream == null) {
-				throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "InputStream"));
-			}
-
 			KeyData data = (KeyData) Base64Utils.unserialize(inputStream);
 			SecretKey key = (SecretKey) data.getKey();
 			Algorithm algorithm = Algorithm.fromString(data.getAlgorithm());
@@ -74,10 +71,8 @@ public class SyncCrypter extends CrypterBase {
 	}
 
 	private void init(final SecretKey key, final Algorithm algorithm) {
+		Assert.notNull(key, "key");
 		this.setAlgorithm(algorithm.algorithm());
-		if (key == null) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Key"));
-		}
 		this.key = key;
 	}
 

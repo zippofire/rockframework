@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 
-import net.woodstock.rockframework.config.CoreMessage;
+import net.woodstock.rockframework.util.Assert;
 
 public class ReaderInputStream extends InputStream {
 
@@ -28,9 +28,7 @@ public class ReaderInputStream extends InputStream {
 
 	public ReaderInputStream(final Reader reader) {
 		super();
-		if (reader == null) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Reader"));
-		}
+		Assert.notNull(reader, "reader");
 		this.reader = reader;
 	}
 

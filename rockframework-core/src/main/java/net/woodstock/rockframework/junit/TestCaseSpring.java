@@ -14,14 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.persistence.query;
+package net.woodstock.rockframework.junit;
 
-public interface QueryStrategy {
+import junit.framework.TestCase;
 
-	Object getQuery(String sql, Object manager);
+import org.springframework.transaction.support.ResourceHolderSupport;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-	void setOption(Object query, String name, Object value);
+public abstract class TestCaseSpring extends TestCase {
 
-	void setParameter(Object query, String name, Object value);
+	public void bind(final Object key, final ResourceHolderSupport value) {
+		TransactionSynchronizationManager.bindResource(key, value);
+	}
+
+	public ResourceHolderSupport unbind(final Object key) {
+		return (ResourceHolderSupport) TransactionSynchronizationManager.unbindResource(key);
+	}
 
 }

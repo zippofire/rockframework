@@ -17,10 +17,10 @@
 package net.woodstock.rockframework.reflection.impl;
 
 import net.woodstock.rockframework.config.CoreConfig;
-import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.BeanDescriptorFactory;
 import net.woodstock.rockframework.reflection.ReflectionType;
+import net.woodstock.rockframework.util.Assert;
 
 public abstract class BeanDescriptorFactoryImpl implements BeanDescriptorFactory {
 
@@ -43,9 +43,7 @@ public abstract class BeanDescriptorFactoryImpl implements BeanDescriptorFactory
 	}
 
 	public static BeanDescriptorFactory getInstance(final ReflectionType type) {
-		if (type == null) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Type"));
-		}
+		Assert.notNull(type, "type");
 		switch (type) {
 			case FIELD:
 				return BeanDescriptorFactoryImpl.fieldBeanDescriptorFactory;

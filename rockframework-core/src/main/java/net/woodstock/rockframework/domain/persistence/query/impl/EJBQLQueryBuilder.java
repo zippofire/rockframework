@@ -20,8 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.domain.persistence.Constants;
 import net.woodstock.rockframework.domain.persistence.query.LikeMode;
+import net.woodstock.rockframework.domain.persistence.util.Constants;
 
 public abstract class EJBQLQueryBuilder<T> extends AbstractQueryBuilder<T> {
 

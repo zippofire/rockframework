@@ -18,37 +18,37 @@ package net.woodstock.rockframework.domain.util;
 
 import net.woodstock.rockframework.domain.Pojo;
 
-public class Range implements Pojo {
+public class Range<T extends Comparable<T>> implements Pojo {
 
 	private static final long	serialVersionUID	= 1182462172427235262L;
 
-	private int					start;
+	private T					start;
 
-	private int					end;
+	private T					end;
 
 	public Range() {
 		super();
 	}
 
-	public Range(final int start, final int end) {
+	public Range(final T start, final T end) {
 		super();
 		this.start = start;
 		this.end = end;
 	}
 
-	public int getStart() {
+	public T getStart() {
 		return this.start;
 	}
 
-	public void setStart(final int start) {
+	public void setStart(final T start) {
 		this.start = start;
 	}
 
-	public int getEnd() {
+	public T getEnd() {
 		return this.end;
 	}
 
-	public void setEnd(final int end) {
+	public void setEnd(final T end) {
 		this.end = end;
 	}
 

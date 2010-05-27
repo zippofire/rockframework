@@ -16,7 +16,6 @@
  */
 package net.woodstock.rockframework.utils;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
 import net.woodstock.rockframework.reflection.BeanDescriptor;
@@ -26,9 +25,11 @@ import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactoryImpl;
 
 public abstract class ObjectUtils {
 
-	public static final int		HASH_PRIME			= 31;
+	public static final int	HASH_PRIME	= 31;
 
-	private static final char	PROPERTY_SEPARATOR	= '.';
+	private ObjectUtils() {
+		//
+	}
 
 	public static void copyAttributes(final Object from, final Object to, final Class<?>[] ignoredTypes) {
 		BeanDescriptor beanDescriptorFrom = BeanDescriptorFactoryImpl.getInstance().getBeanDescriptor(from.getClass());
@@ -120,31 +121,6 @@ public abstract class ObjectUtils {
 			}
 		}
 		return result;
-	}
-
-	private ObjectUtils() {
-		//
-	}
-
-	public static Object getObjectAttribute(final Object o, final String name) throws NoSuchMethodException, NoSuchFieldException, IllegalAccessException, InvocationTargetException {
-		if (o == null) {
-			return null;
-		}
-
-		BeanDescriptor beanDescriptor = BeanDescriptorFactoryImpl.getInstance(ReflectionType.FIELD).getBeanDescriptor(o.getClass());
-		String currentName = name;
-		if (currentName.indexOf(ObjectUtils.PROPERTY_SEPARATOR) != -1) {
-			String fieldName = currentName.substring(0, currentName.indexOf(ObjectUtils.PROPERTY_SEPARATOR));
-			currentName = currentName.substring(currentName.indexOf(ObjectUtils.PROPERTY_SEPARATOR) + 1);
-
-			PropertyDescriptor propertyDescriptor = beanDescriptor.getProperty(fieldName);
-
-			Object tmp = propertyDescriptor.getValue(o);
-			return ObjectUtils.getObjectAttribute(tmp, currentName);
-		}
-
-		PropertyDescriptor propertyDescriptor = beanDescriptor.getProperty(currentName);
-		return propertyDescriptor.getValue(o);
 	}
 
 }

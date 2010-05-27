@@ -16,19 +16,12 @@
  */
 package net.woodstock.rockframework.jdbc;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public interface Client {
+public interface CallableClient extends Client {
 
-	// Client specific type
-	int getType(Type type);
+	Object callFunction(Type outType, String functionName, ParameterList args) throws SQLException;
 
-	// DML
-	boolean execute(String sql, ParameterList args) throws SQLException;
-
-	ResultSet query(String query, ParameterList args) throws SQLException;
-
-	int update(String update, ParameterList args) throws SQLException;
+	void callProcedure(String procedureName, ParameterList args) throws SQLException;
 
 }

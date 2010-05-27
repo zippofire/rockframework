@@ -20,11 +20,10 @@ import java.util.Collection;
 import java.util.Map;
 
 import net.woodstock.rockframework.config.CoreLog;
-import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.ConfigurationNotFoundException;
 import net.woodstock.rockframework.domain.ObjectNotFoundException;
 import net.woodstock.rockframework.domain.TooManyObjectsException;
-import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.util.Assert;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -73,9 +72,8 @@ public final class ContextHelper {
 
 	@SuppressWarnings("unchecked")
 	public <T> T getObject(final Class<T> clazz) {
-		if (clazz == null) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Class"));
-		}
+		Assert.notNull(clazz, "clazz");
+
 		Map<String, Object> map = this.context.getBeansOfType(clazz);
 		if (map.size() == 0) {
 			throw new ObjectNotFoundException("Object not found for type " + clazz.getCanonicalName());
@@ -89,18 +87,15 @@ public final class ContextHelper {
 
 	@SuppressWarnings("unchecked")
 	public <T> Collection<T> getObjects(final Class<T> clazz) {
-		if (clazz == null) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Class"));
-		}
+		Assert.notNull(clazz, "clazz");
+
 		Map<String, Object> map = this.context.getBeansOfType(clazz);
 
 		return (Collection<T>) map.values();
 	}
 
 	public Object getObject(final String name) {
-		if (StringUtils.isEmpty(name)) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_EMPTY, "Name"));
-		}
+		Assert.notEmpty(name, "name");
 		return this.context.getBean(name);
 	}
 

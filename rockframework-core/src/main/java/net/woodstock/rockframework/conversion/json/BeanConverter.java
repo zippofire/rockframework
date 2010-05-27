@@ -16,7 +16,6 @@
  */
 package net.woodstock.rockframework.conversion.json;
 
-import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.conversion.ConverterException;
 import net.woodstock.rockframework.conversion.Ignore;
@@ -27,6 +26,7 @@ import net.woodstock.rockframework.conversion.common.PropertyConverterContext;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactoryImpl;
+import net.woodstock.rockframework.util.Assert;
 
 class BeanConverter extends AbstractTextConverter<Object> {
 
@@ -46,12 +46,8 @@ class BeanConverter extends AbstractTextConverter<Object> {
 	@Override
 	@SuppressWarnings("unchecked")
 	public String to(final ConverterContext context, final Object object) {
-		if (context == null) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Context"));
-		}
-		if (object == null) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Object"));
-		}
+		Assert.notNull(context, "context");
+		Assert.notNull(object, "object");
 
 		try {
 			ConverterContext currentContext = context;

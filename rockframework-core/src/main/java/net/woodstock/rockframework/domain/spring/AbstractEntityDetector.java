@@ -19,13 +19,11 @@ package net.woodstock.rockframework.domain.spring;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.woodstock.rockframework.domain.Entity;
-
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
-import org.springframework.core.type.filter.AssignableTypeFilter;
+import org.springframework.core.type.filter.TypeFilter;
 
-public class EntityDetector {
+public class AbstractEntityDetector {
 
 	private ClassPathScanningCandidateComponentProvider	provider;
 
@@ -33,10 +31,9 @@ public class EntityDetector {
 
 	private List<Class<?>>								classes;
 
-	public EntityDetector() {
+	public AbstractEntityDetector(final TypeFilter filter) {
 		this.provider = new ClassPathScanningCandidateComponentProvider(false);
-		// this.provider.addIncludeFilter(new AnnotationTypeFilter(javax.persistence.Entity.class));
-		this.provider.addIncludeFilter(new AssignableTypeFilter(Entity.class));
+		this.provider.addIncludeFilter(filter);
 	}
 
 	public void setBasePackage(final String basePackage) {

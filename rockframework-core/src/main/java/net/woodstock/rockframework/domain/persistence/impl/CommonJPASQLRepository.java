@@ -19,34 +19,36 @@ package net.woodstock.rockframework.domain.persistence.impl;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.woodstock.rockframework.domain.persistence.EJBQLRepository;
-import net.woodstock.rockframework.domain.persistence.query.CacheMode;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import net.woodstock.rockframework.domain.Entity;
+import net.woodstock.rockframework.domain.persistence.SQLRepository;
 import net.woodstock.rockframework.domain.persistence.util.Constants;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
+class CommonJPASQLRepository extends AbstractJPAQueryableRepository implements SQLRepository {
 
-class CommonHibernateEJBQLRepository extends AbstractHibernateQueryableRepository implements EJBQLRepository {
+	private EntityManager	entityManager;
 
-	private Session	session;
-
-	public CommonHibernateEJBQLRepository(final Session session) {
+	public CommonJPASQLRepository(final EntityManager entityManager) {
 		super();
-		this.session = session;
+		this.entityManager = entityManager;
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	protected Query getQuery(final String sql, final Map<String, Object> parameters) {
-		Query query = this.session.createQuery(sql);
+		EntityManager entityManager = this.entityManager;
+		Query query = null;
 
 		if ((parameters != null) && (parameters.size() > 0)) {
-			if ((parameters.containsKey(Constants.OPTION_CACHE_MODE)) && (parameters.get(Constants.OPTION_CACHE_MODE) instanceof CacheMode)) {
-				CacheMode cacheMode = (CacheMode) parameters.get(Constants.OPTION_CACHE_MODE);
-				if (cacheMode == CacheMode.ENABLED) {
-					query.setCacheable(true);
-					query.setCacheMode(org.hibernate.CacheMode.NORMAL);
-				}
+			if (parameters.containsKey(Constants.OPTION_TARGET_ENTITY)) {
+				Class<Entity> clazz = (Class<Entity>) parameters.get(Constants.OPTION_TARGET_ENTITY);
+				query = entityManager.createNativeQuery(sql, clazz);
+			} else {
+				query = entityManager.createNativeQuery(sql);
 			}
+
 			if (parameters.containsKey(Constants.OPTION_FIRST_RESULT)) {
 				Integer firstResult = (Integer) parameters.get(Constants.OPTION_FIRST_RESULT);
 				query.setFirstResult(firstResult.intValue());
@@ -54,10 +56,6 @@ class CommonHibernateEJBQLRepository extends AbstractHibernateQueryableRepositor
 			if (parameters.containsKey(Constants.OPTION_MAX_RESULT)) {
 				Integer maxResult = (Integer) parameters.get(Constants.OPTION_MAX_RESULT);
 				query.setMaxResults(maxResult.intValue());
-			}
-			if (parameters.containsKey(Constants.OPTION_READ_ONLY)) {
-				Boolean readOnly = (Boolean) parameters.get(Constants.OPTION_READ_ONLY);
-				query.setReadOnly(readOnly.booleanValue());
 			}
 
 			for (Entry<String, Object> entry : parameters.entrySet()) {
@@ -67,9 +65,11 @@ class CommonHibernateEJBQLRepository extends AbstractHibernateQueryableRepositor
 					query.setParameter(name, value);
 				}
 			}
-
+		} else {
+			query = entityManager.createNativeQuery(sql);
 		}
 
 		return query;
 	}
+
 }

@@ -24,8 +24,10 @@ import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.CellRangeAddress;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.util.CellRangeAddress;
 
 public class Test1 extends TestCase {
 
@@ -50,7 +52,7 @@ public class Test1 extends TestCase {
 		row.setHeightInPoints(20);
 
 		HSSFFont font = workbook.createFont();
-		font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		font.setBoldweight(Font.BOLDWEIGHT_BOLD);
 
 		font.setColor(HSSFColor.WHITE.index);
 		font.setFontName("Times New Roman");
@@ -61,23 +63,23 @@ public class Test1 extends TestCase {
 		sheet.addMergedRegion(address);
 
 		HSSFCellStyle cellStyle = workbook.createCellStyle();
-		cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-		cellStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+		cellStyle.setAlignment(CellStyle.ALIGN_CENTER);
+		cellStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
 		cellStyle.setWrapText(true);
 		cellStyle.setFont(font);
 
 		// BG
 		cellStyle.setFillForegroundColor(HSSFColor.RED.index);
-		cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		cellStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
 
 		// Border
-		cellStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
+		cellStyle.setBorderRight(CellStyle.BORDER_THIN);
 		cellStyle.setRightBorderColor(HSSFColor.BLACK.index);
-		cellStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+		cellStyle.setBorderBottom(CellStyle.BORDER_THIN);
 		cellStyle.setBottomBorderColor(HSSFColor.BLACK.index);
-		cellStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+		cellStyle.setBorderLeft(CellStyle.BORDER_THIN);
 		cellStyle.setLeftBorderColor(HSSFColor.BLACK.index);
-		cellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
+		cellStyle.setBorderTop(CellStyle.BORDER_THIN);
 		cellStyle.setTopBorderColor(HSSFColor.BLACK.index);
 
 		for (int i = 0; i < 10; i++) {

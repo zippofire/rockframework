@@ -22,8 +22,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.regex.Pattern;
 
-import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.conversion.ConverterContext;
+import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.utils.StringUtils;
 
 abstract class AbstractConverterContext implements ConverterContext {
@@ -44,12 +44,8 @@ abstract class AbstractConverterContext implements ConverterContext {
 
 	public AbstractConverterContext(final ConverterContext parent, final String name, final Class<?> type) {
 		super();
-		if (StringUtils.isEmpty(name)) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_EMPTY, "Name"));
-		}
-		if (type == null) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Type"));
-		}
+		Assert.notEmpty(name, "name");
+		Assert.notNull(type, "type");
 
 		this.parent = parent;
 		this.name = name;

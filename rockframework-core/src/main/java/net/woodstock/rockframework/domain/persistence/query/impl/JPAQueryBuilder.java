@@ -22,7 +22,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import net.woodstock.rockframework.config.CoreLog;
-import net.woodstock.rockframework.domain.persistence.Constants;
+import net.woodstock.rockframework.domain.persistence.util.Constants;
 
 public class JPAQueryBuilder extends EJBQLQueryBuilder<Query> {
 

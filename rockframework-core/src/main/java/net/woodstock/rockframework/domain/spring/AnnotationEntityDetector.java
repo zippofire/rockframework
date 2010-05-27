@@ -14,18 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.persistence;
+package net.woodstock.rockframework.domain.spring;
 
-import java.util.Collection;
-import java.util.Map;
+import org.springframework.core.type.filter.AnnotationTypeFilter;
 
-public interface QueryableRepository extends Repository {
+public class AnnotationEntityDetector extends AbstractEntityDetector {
 
-	Object getSingle(String sql, Map<String, Object> parameters);
-
-	@SuppressWarnings("unchecked")
-	Collection getCollection(String sql, Map<String, Object> parameters);
-
-	void executeUpdate(String sql, Map<String, Object> parameters);
+	public AnnotationEntityDetector() {
+		super(new AnnotationTypeFilter(javax.persistence.Entity.class));
+	}
 
 }

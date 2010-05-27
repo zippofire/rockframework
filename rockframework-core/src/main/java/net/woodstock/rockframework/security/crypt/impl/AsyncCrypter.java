@@ -27,8 +27,8 @@ import java.security.SecureRandom;
 
 import javax.crypto.Cipher;
 
-import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.security.crypt.CrypterException;
+import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.utils.Base64Utils;
 import net.woodstock.rockframework.utils.LocaleUtils;
 import net.woodstock.rockframework.utils.StringUtils;
@@ -63,11 +63,8 @@ public class AsyncCrypter extends CrypterBase {
 	}
 
 	public AsyncCrypter(final InputStream privateKey, final InputStream publicKey) {
+		Assert.notNull(publicKey, "publicKey");
 		try {
-			if (publicKey == null) {
-				throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Public Key"));
-			}
-
 			KeyData publicData = (KeyData) Base64Utils.unserialize(publicKey);
 
 			PrivateKey pik = null;
@@ -86,12 +83,8 @@ public class AsyncCrypter extends CrypterBase {
 	}
 
 	private void init(final PrivateKey privateKey, final PublicKey publicKey, final Algorithm algorithm) {
+		Assert.notNull(publicKey, "publicKey");
 		this.setAlgorithm(algorithm.algorithm());
-
-		if (publicKey == null) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Public Key"));
-		}
-
 		this.privateKey = privateKey;
 		this.publicKey = publicKey;
 	}

@@ -14,18 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.persistence;
+package net.woodstock.rockframework.domain.persistence.util;
 
-import java.util.Collection;
-import java.util.Map;
+public abstract class HibernateQueryHints {
 
-public interface QueryableRepository extends Repository {
+	public static final String	CACHEABLE		= "org.hibernate.cacheable";
 
-	Object getSingle(String sql, Map<String, Object> parameters);
+	public static final String	CACHE_MODE		= "org.hibernate.cacheMode";
 
-	@SuppressWarnings("unchecked")
-	Collection getCollection(String sql, Map<String, Object> parameters);
+	public static final String	CACHE_REGION	= "org.hibernate.cacheRegion";
 
-	void executeUpdate(String sql, Map<String, Object> parameters);
+	public static final String	FETCH_SIZE		= "org.hibernate.fetchSize";
+
+	public static final String	FLUSH_MODE		= "org.hibernate.flushMode";
+
+	public static final String	READ_ONLY		= "org.hibernate.readOnly";
+
+	public static final String	TIMEOUT			= "org.hibernate.timeout";
+
+	private HibernateQueryHints() {
+		//
+	}
 
 }

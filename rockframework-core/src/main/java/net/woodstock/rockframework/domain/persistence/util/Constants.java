@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.persistence;
+package net.woodstock.rockframework.domain.persistence.util;
 
 public abstract class Constants {
 
@@ -38,6 +38,9 @@ public abstract class Constants {
 	public static final String	OPTION_DISABLE_COLLECTION	= "__DISABLE_COLLECTION__";
 
 	public static final String	OPTION_CACHE_MODE			= "__CACHE_MODE__";
+
+	// Target
+	public static final String	OPTION_TARGET_ENTITY		= "__TARGET_ENTITY__";
 
 	private Constants() {
 		//

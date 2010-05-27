@@ -22,7 +22,7 @@ public class TestPDF extends TestCase {
 		output.close();
 	}
 
-	public void test2() throws Exception {
+	public void xtest2() throws Exception {
 		InputStream input1 = new FileInputStream("C:/Documentos/j931_01.pdf");
 		InputStream input2 = new FileInputStream("C:/Documentos/j931_02.pdf");
 		InputStream tmp = PDFUtils.merge(new InputStream[] { input1, input2 });

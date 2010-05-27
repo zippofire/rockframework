@@ -2,7 +2,7 @@ package net.woodstock.rockframework.domain.persistence.impl;
 
 import java.util.Map;
 
-import net.woodstock.rockframework.domain.persistence.Constants;
+import net.woodstock.rockframework.domain.persistence.util.Constants;
 import net.woodstock.rockframework.utils.StringUtils;
 
 abstract class RepositoryHelper {

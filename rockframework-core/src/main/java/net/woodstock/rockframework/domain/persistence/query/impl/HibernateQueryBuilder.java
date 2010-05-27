@@ -19,8 +19,8 @@ package net.woodstock.rockframework.domain.persistence.query.impl;
 import java.util.Map;
 
 import net.woodstock.rockframework.config.CoreLog;
-import net.woodstock.rockframework.domain.persistence.Constants;
 import net.woodstock.rockframework.domain.persistence.query.CacheMode;
+import net.woodstock.rockframework.domain.persistence.util.Constants;
 
 import org.hibernate.Query;
 import org.hibernate.Session;

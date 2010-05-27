@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.conversion.ConverterContext;
 import net.woodstock.rockframework.conversion.ConverterException;
 import net.woodstock.rockframework.conversion.Ignore;
@@ -34,6 +33,7 @@ import net.woodstock.rockframework.conversion.common.PropertyConverterContext;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactoryImpl;
+import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.utils.StringUtils;
 
 class BeanConverter extends AbstractTextConverter<Object> {
@@ -66,13 +66,10 @@ class BeanConverter extends AbstractTextConverter<Object> {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public Object from(final ConverterContext context, final String s) {
-		if (context == null) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Context"));
-		}
-		if (StringUtils.isEmpty(s)) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_EMPTY, "Text"));
-		}
+	public Object from(final ConverterContext context, final String text) {
+		Assert.notNull(context, "context");
+		Assert.notNull(text, "text");
+
 		try {
 			Class<?> clazz = context.getType();
 			Object obj = clazz.newInstance();
@@ -83,7 +80,7 @@ class BeanConverter extends AbstractTextConverter<Object> {
 				currentContext = new BeanConverterContext(currentContext.getParent(), currentContext.getName(), currentContext.getType());
 			}
 
-			String fromStr = s;
+			String fromStr = text;
 			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
 				if (propertyDescriptor.isAnnotationPresent(Ignore.class)) {
 					continue;
@@ -119,20 +116,17 @@ class BeanConverter extends AbstractTextConverter<Object> {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public String to(final ConverterContext context, final Object t) {
-		if (context == null) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Context"));
-		}
-		if (t == null) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Object"));
-		}
+	public String to(final ConverterContext context, final Object object) {
+		Assert.notNull(context, "context");
+		Assert.notNull(object, "object");
+
 		try {
 			StringBuilder builder = new StringBuilder();
-			BeanDescriptor beanDescriptor = BeanDescriptorFactoryImpl.getInstance().getBeanDescriptor(t.getClass());
+			BeanDescriptor beanDescriptor = BeanDescriptorFactoryImpl.getInstance().getBeanDescriptor(object.getClass());
 			ConverterContext currentContext = context;
 
 			if (!(currentContext instanceof BeanConverterContext)) {
-				currentContext = new BeanConverterContext(currentContext.getParent(), currentContext.getName(), t.getClass());
+				currentContext = new BeanConverterContext(currentContext.getParent(), currentContext.getName(), object.getClass());
 			}
 
 			for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
@@ -144,7 +138,7 @@ class BeanConverter extends AbstractTextConverter<Object> {
 				}
 				String name = propertyDescriptor.getName();
 				Class<?> type = propertyDescriptor.getType();
-				Object value = propertyDescriptor.getValue(t);
+				Object value = propertyDescriptor.getValue(object);
 				ConverterContext subContext = new PropertyConverterContext(currentContext, name, type);
 				TextConverter converter = BeanConverter.nullConverter;
 				if (value != null) {

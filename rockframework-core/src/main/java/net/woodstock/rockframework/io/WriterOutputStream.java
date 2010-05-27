@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 
-import net.woodstock.rockframework.config.CoreMessage;
+import net.woodstock.rockframework.util.Assert;
 
 public class WriterOutputStream extends OutputStream {
 
@@ -28,9 +28,7 @@ public class WriterOutputStream extends OutputStream {
 
 	public WriterOutputStream(final Writer writer) {
 		super();
-		if (writer == null) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(CoreMessage.MESSAGE_NOT_NULL, "Writer"));
-		}
+		Assert.notNull(writer, "writer");
 		this.writer = writer;
 	}
 

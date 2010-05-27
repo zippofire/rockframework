@@ -22,10 +22,10 @@ import java.util.Map.Entry;
 
 import net.woodstock.rockframework.config.CoreConfig;
 import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.domain.persistence.Constants;
 import net.woodstock.rockframework.domain.persistence.GenericRepository;
 import net.woodstock.rockframework.domain.persistence.query.CacheMode;
 import net.woodstock.rockframework.domain.persistence.query.impl.HibernateQueryBuilder;
+import net.woodstock.rockframework.domain.persistence.util.Constants;
 
 import org.hibernate.HibernateException;
 import org.hibernate.NonUniqueObjectException;
