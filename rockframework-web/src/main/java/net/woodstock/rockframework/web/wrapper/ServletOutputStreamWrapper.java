@@ -41,10 +41,6 @@ public class ServletOutputStreamWrapper extends ServletOutputStream {
 		return this.outputStream.getInputStream();
 	}
 
-	public String getOutputText() {
-		return this.outputStream.getOutputText();
-	}
-
 	public OutputStream getOutputStream() {
 		return this.outputStream;
 	}
