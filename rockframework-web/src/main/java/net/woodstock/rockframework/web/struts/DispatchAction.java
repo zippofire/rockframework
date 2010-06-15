@@ -24,6 +24,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.utils.ClassUtils;
 
 import org.apache.struts.action.ActionForm;
@@ -34,12 +35,9 @@ public abstract class DispatchAction extends org.apache.struts.actions.DispatchA
 
 	@Override
 	public final ActionForward execute(final ActionMapping mapping, final ActionForm form, final ServletRequest request, final ServletResponse response) throws Exception {
-		if ((request instanceof HttpServletRequest)) {
-			throw new IllegalArgumentException("Invalid request type");
-		}
-		if ((response instanceof HttpServletResponse)) {
-			throw new IllegalArgumentException("Invalid response type");
-		}
+		Assert.instanceOf(request, HttpServletRequest.class, "request");
+		Assert.instanceOf(response, HttpServletResponse.class, "response");
+
 		return this.execute(mapping, form, (HttpServletRequest) request, (HttpServletResponse) response);
 	}
 

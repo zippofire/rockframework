@@ -19,6 +19,7 @@ package net.woodstock.rockframework.domain.service.impl;
 import net.woodstock.rockframework.domain.business.GenericBusiness;
 import net.woodstock.rockframework.domain.persistence.GenericRepository;
 import net.woodstock.rockframework.domain.service.GenericService;
+import net.woodstock.rockframework.util.Assert;
 
 abstract class GenericServiceBean extends AbstractService implements GenericService {
 
@@ -32,9 +33,7 @@ abstract class GenericServiceBean extends AbstractService implements GenericServ
 
 	// Objects
 	protected GenericBusiness getBusiness() {
-		if (this.business == null) {
-			throw new IllegalStateException("Business is null");
-		}
+		Assert.notNull(this.business, "business");
 		return this.business;
 	}
 
@@ -43,9 +42,7 @@ abstract class GenericServiceBean extends AbstractService implements GenericServ
 	}
 
 	protected GenericRepository getRepository() {
-		if (this.repository == null) {
-			throw new IllegalStateException("Repository is null");
-		}
+		Assert.notNull(this.repository, "repository");
 		return this.repository;
 	}
 

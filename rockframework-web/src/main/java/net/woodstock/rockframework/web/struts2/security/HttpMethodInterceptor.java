@@ -70,7 +70,7 @@ public class HttpMethodInterceptor extends Interceptor {
 				HttpMethodType hm = HttpMethodType.valueOf(httpMethod);
 				if (!methods.contains(hm)) {
 					WebLog.getInstance().getLog().debug("Invalid method for " + url + " found " + httpMethod + " required " + methods);
-					return Constants.INVALID_REFERER;
+					return Constants.INVALID_METHOD;
 				}
 			} else {
 				WebLog.getInstance().getLog().info("Methods not found for " + url);

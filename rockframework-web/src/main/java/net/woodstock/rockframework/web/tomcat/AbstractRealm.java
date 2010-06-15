@@ -20,7 +20,7 @@ import java.security.Principal;
 
 import org.apache.catalina.realm.RealmBase;
 
-public class AbstractRealm extends RealmBase {
+public abstract class AbstractRealm extends RealmBase {
 
 	private static final String	NAME	= "CustomRealm";
 

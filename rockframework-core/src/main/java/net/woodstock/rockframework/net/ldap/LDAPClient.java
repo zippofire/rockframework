@@ -30,6 +30,7 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
 import net.woodstock.rockframework.net.ldap.filter.LDAPFilter;
+import net.woodstock.rockframework.util.Assert;
 
 public class LDAPClient implements Serializable {
 
@@ -148,9 +149,7 @@ public class LDAPClient implements Serializable {
 		if ((this.connectOnSearch) && (!this.isConnected())) {
 			this.connect();
 		}
-		if (this.context == null) {
-			throw new IllegalStateException("Client not connected");
-		}
+		Assert.notNull(this.context, "context");
 		SearchControls controls = new SearchControls();
 		controls.setReturningAttributes(attributes);
 		controls.setCountLimit(limit);

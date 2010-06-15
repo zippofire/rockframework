@@ -14,18 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.web.struts2.converter;
+package net.woodstock.rockframework.util;
 
-import net.woodstock.rockframework.config.CoreConfig;
+public class AssertionFailedException extends RuntimeException {
 
-public class DateConverter extends DateTimeConverter {
+	private static final long	serialVersionUID	= 1L;
 
-	private static final String	DATE_FORMAT_PROPERTY	= "format.date";
+	public AssertionFailedException() {
+		super();
+	}
 
-	private static final String	DATE_FORMAT_PATTERN		= CoreConfig.getInstance().getValue(DateConverter.DATE_FORMAT_PROPERTY);
+	public AssertionFailedException(final String message) {
+		super(message);
+	}
 
-	public DateConverter() {
-		super(DateConverter.DATE_FORMAT_PATTERN);
+	public AssertionFailedException(final Throwable cause) {
+		super(cause);
+	}
+
+	public AssertionFailedException(final String message, final Throwable cause) {
+		super(message, cause);
 	}
 
 }

@@ -16,6 +16,8 @@
  */
 package net.woodstock.rockframework.domain.persistence.impl;
 
+import net.woodstock.rockframework.util.Assert;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -36,9 +38,7 @@ abstract class AbstractHibernateRepository extends AbstractRepository {
 	}
 
 	protected Session getSession() {
-		if (this.sessionFactory == null) {
-			throw new IllegalStateException("Session Factory is null");
-		}
+		Assert.notNull(this.sessionFactory, "sessionFactory");
 		return this.sessionFactory.openSession();
 	}
 

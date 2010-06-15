@@ -18,29 +18,29 @@ package net.woodstock.rockframework.domain.persistence.util;
 
 public abstract class Constants {
 
-	// String OPTION_COLLECTION_MODE = "COLLECTION_MODE__";
+	public static final String	OPTION_COLLECTION_MODE		= "net.woodstock.rockframework.domain.persistence.util.Constants.OPTION_COLLECTION_MODE";
 
-	public static final String	OPTION_FIRST_RESULT			= "__FIRST_RESULT__";
+	public static final String	OPTION_FIRST_RESULT			= "net.woodstock.rockframework.domain.persistence.util.Constants.OPTION_FIRST_RESULT";
 
-	public static final String	OPTION_IGNORE_CASE			= "__IGNORE_CASE__";
+	public static final String	OPTION_IGNORE_CASE			= "net.woodstock.rockframework.domain.persistence.util.Constants.OPTION_IGNORE_CASE";
 
-	public static final String	OPTION_LIKE_MODE			= "__LIKE_MODE__";
+	public static final String	OPTION_LIKE_MODE			= "net.woodstock.rockframework.domain.persistence.util.Constants.OPTION_LIKE_MODE";
 
-	public static final String	OPTION_MAX_RESULT			= "__MAX_RESULT__";
+	public static final String	OPTION_MAX_RESULT			= "net.woodstock.rockframework.domain.persistence.util.Constants.OPTION_MAX_RESULT";
 
-	public static final String	OPTION_ORDER_BY				= "__ORDER_BY__";
+	public static final String	OPTION_ORDER_BY				= "net.woodstock.rockframework.domain.persistence.util.Constants.OPTION_ORDER_BY";
 
-	public static final String	OPTION_READ_ONLY			= "__READ_ONLY__";
+	public static final String	OPTION_READ_ONLY			= "net.woodstock.rockframework.domain.persistence.util.Constants.OPTION_READ_ONLY";
 
 	// Disable
-	public static final String	OPTION_DISABLE_CHILD		= "__DISABLE_CHILDS__";
+	public static final String	OPTION_DISABLE_CHILD		= "net.woodstock.rockframework.domain.persistence.util.Constants.OPTION_DISABLE_CHILD";
 
-	public static final String	OPTION_DISABLE_COLLECTION	= "__DISABLE_COLLECTION__";
+	public static final String	OPTION_DISABLE_COLLECTION	= "net.woodstock.rockframework.domain.persistence.util.Constants.OPTION_DISABLE_COLLECTION";
 
-	public static final String	OPTION_CACHE_MODE			= "__CACHE_MODE__";
+	public static final String	OPTION_CACHE_MODE			= "net.woodstock.rockframework.domain.persistence.util.Constants.OPTION_CACHE_MODE";
 
 	// Target
-	public static final String	OPTION_TARGET_ENTITY		= "__TARGET_ENTITY__";
+	public static final String	OPTION_TARGET_ENTITY		= "net.woodstock.rockframework.domain.persistence.util.Constants.OPTION_TARGET_ENTITY";
 
 	private Constants() {
 		//

@@ -18,14 +18,14 @@ package net.woodstock.rockframework.web.struts2.converter;
 
 import net.woodstock.rockframework.config.CoreConfig;
 
-public class DateConverter extends DateTimeConverter {
+public class TimeConverter extends DateTimeConverter {
 
-	private static final String	DATE_FORMAT_PROPERTY	= "format.date";
+	private static final String	TIME_FORMAT_PROPERTY	= "format.time";
 
-	private static final String	DATE_FORMAT_PATTERN		= CoreConfig.getInstance().getValue(DateConverter.DATE_FORMAT_PROPERTY);
+	private static final String	TIME_FORMAT_PATTERN		= CoreConfig.getInstance().getValue(TimeConverter.TIME_FORMAT_PROPERTY);
 
-	public DateConverter() {
-		super(DateConverter.DATE_FORMAT_PATTERN);
+	public TimeConverter() {
+		super(TimeConverter.TIME_FORMAT_PATTERN);
 	}
 
 }

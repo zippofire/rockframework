@@ -32,7 +32,7 @@ public class CaptchaServlet extends AbstractHttpServlet {
 
 	public static final String	RANDOM_CHARS_PARAMETER	= "RANDOM_CHARS";
 
-	public static final String	CAPTCHA_PARAMETER		= "__SESSION_CAPTCHA__";
+	public static final String	CAPTCHA_PARAMETER		= "net.woodstock.rockframework.web.captcha.CaptchaServlet.CAPTCHA_PARAMETER";
 
 	private static final String	CONTENT_TYPE			= "image/jpeg";
 

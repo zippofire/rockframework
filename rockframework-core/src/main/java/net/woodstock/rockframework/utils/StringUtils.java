@@ -239,7 +239,7 @@ public abstract class StringUtils {
 		}
 		return builder.toString();
 	}
-
+	
 	public static String replace(final InputStream input, final Map<String, String> replaces) throws IOException {
 		return StringUtils.replace(new InputStreamReader(input), replaces);
 	}

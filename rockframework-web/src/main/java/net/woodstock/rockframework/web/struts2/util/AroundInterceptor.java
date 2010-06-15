@@ -16,7 +16,8 @@
  */
 package net.woodstock.rockframework.web.struts2.util;
 
-
+import net.woodstock.rockframework.web.config.WebLog;
+import net.woodstock.rockframework.web.struts2.Constants;
 import net.woodstock.rockframework.web.struts2.Interceptor;
 
 import com.opensymphony.xwork2.ActionInvocation;
@@ -47,6 +48,11 @@ public class AroundInterceptor extends Interceptor {
 	class AroundInterceptorListener implements PreResultListener {
 
 		public void beforeResult(final ActionInvocation invocation, final String resultCode) {
+			if ((resultCode.equals(Constants.INVALID_METHOD)) || (resultCode.equals(Constants.INVALID_REFERER)) || (resultCode.equals(Constants.NO_REFERER))) {
+				WebLog.getInstance().getLog().info("Method returns " + resultCode + " skipping after()");
+				return;
+			}
+
 			Object action = invocation.getAction();
 			AroundAction a = (AroundAction) action;
 			try {

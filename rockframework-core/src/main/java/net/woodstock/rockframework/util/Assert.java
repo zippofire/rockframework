@@ -25,6 +25,8 @@ import net.woodstock.rockframework.utils.StringUtils;
 
 public abstract class Assert {
 
+	private static final String	MESSAGE_BETWEEN			= "error.between";
+
 	private static final String	MESSAGE_GREATER_THAN	= "error.greaterThan";
 
 	private static final String	MESSAGE_INSTANCE_OF		= "error.instanceOf";
@@ -49,16 +51,29 @@ public abstract class Assert {
 		super();
 	}
 
+	// Between
+	public static void between(final double value, final double minimum, final double maximum, final String name) {
+		if ((value < minimum) || (value > maximum)) {
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_BETWEEN, name, new Double(minimum), new Double(maximum)));
+		}
+	}
+
+	public static void between(final long value, final long minimum, final long maximum, final String name) {
+		if ((value < minimum) || (value > maximum)) {
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_BETWEEN, name, new Long(minimum), new Long(maximum)));
+		}
+	}
+
 	// Greater
 	public static void greaterThan(final double value, final double minimum, final String name) {
 		if (value <= minimum) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_GREATER_THAN, name, new Double(minimum)));
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_GREATER_THAN, name, new Double(minimum)));
 		}
 	}
 
 	public static void greaterThan(final long value, final long minimum, final String name) {
 		if (value <= minimum) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_GREATER_THAN, name, new Long(minimum)));
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_GREATER_THAN, name, new Long(minimum)));
 		}
 	}
 
@@ -66,9 +81,45 @@ public abstract class Assert {
 	@SuppressWarnings("unchecked")
 	public static void instanceOf(final Object value, final Class type, final String name) {
 		Assert.notNull(value, name);
+		Assert.notNull(type, "type");
 
-		if (!type.isAssignableFrom(value.getClass())) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_INSTANCE_OF, name, type.getCanonicalName()));
+		Class clazz = value.getClass();
+		if (!type.isAssignableFrom(clazz)) {
+			String typeName = type.getName();
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_INSTANCE_OF, name, typeName));
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static void instanceOf(final Object value, final Class[] types, final String name) {
+		Assert.notNull(value, name);
+		Assert.notEmpty(types, "types");
+
+		boolean valid = false;
+		Class clazz = value.getClass();
+
+		for (Class type : types) {
+			if (type.isAssignableFrom(clazz)) {
+				valid = true;
+				break;
+			}
+		}
+
+		if (!valid) {
+			StringBuilder builder = new StringBuilder();
+			boolean first = true;
+			for (Class type : types) {
+				if (!first) {
+					builder.append(",");
+				}
+				builder.append(type.getName());
+				if (first) {
+					first = false;
+				}
+			}
+			String typeNames = builder.toString();
+
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_INSTANCE_OF, name, typeNames));
 		}
 	}
 
@@ -77,7 +128,7 @@ public abstract class Assert {
 		Assert.notNull(obj, name);
 
 		if (!obj.getClass().isArray()) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_IS_ARRAY, name));
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_IS_ARRAY, name));
 		}
 	}
 
@@ -86,7 +137,7 @@ public abstract class Assert {
 		Assert.notNull(file, name);
 
 		if ((file.exists()) && (!file.isDirectory())) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_IS_DIRECTORY, name));
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_IS_DIRECTORY, name));
 		}
 	}
 
@@ -94,27 +145,27 @@ public abstract class Assert {
 		Assert.notNull(file, name);
 
 		if ((file.exists()) && (!file.isFile())) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_IS_FILE, name));
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_IS_FILE, name));
 		}
 	}
 
 	// Less
 	public static void lessThan(final double value, final double maximum, final String name) {
 		if (value >= maximum) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_LESS_THAN, name, new Double(maximum)));
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_LESS_THAN, name, new Double(maximum)));
 		}
 	}
 
 	public static void lessThan(final long value, final long maximum, final String name) {
 		if (value >= maximum) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_LESS_THAN, name, new Long(maximum)));
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_LESS_THAN, name, new Long(maximum)));
 		}
 	}
 
 	// Not Null
 	public static void notNull(final Object obj, final String name) {
 		if (obj == null) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_NOT_NULL, name));
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_NOT_NULL, name));
 		}
 	}
 
@@ -124,7 +175,7 @@ public abstract class Assert {
 		Assert.notNull(collection, name);
 
 		if (collection.isEmpty()) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_NOT_EMPTY, name));
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_NOT_EMPTY, name));
 		}
 	}
 
@@ -132,23 +183,23 @@ public abstract class Assert {
 		Assert.notNull(array, name);
 
 		if (array.length == 0) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_NOT_EMPTY, name));
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_NOT_EMPTY, name));
 		}
 	}
 
 	public static void notEmpty(final String str, final String name) {
 		if (StringUtils.isEmpty(str)) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_NOT_EMPTY, name));
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_NOT_EMPTY, name));
 		}
 	}
 
 	// Regex
 	public static void validRegex(final String value, final String pattern, final String name) {
 		Assert.notEmpty(value, name);
-		Assert.notEmpty(pattern, name);
+		Assert.notEmpty(pattern, "pattern");
 
 		if (!Pattern.matches(pattern, value)) {
-			throw new IllegalArgumentException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_VALID_REGEX, name));
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_VALID_REGEX, name));
 		}
 	}
 

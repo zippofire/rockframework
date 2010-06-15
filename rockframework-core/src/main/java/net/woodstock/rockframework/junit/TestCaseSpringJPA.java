@@ -14,32 +14,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.persistence.impl;
+package net.woodstock.rockframework.junit;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-import net.woodstock.rockframework.util.Assert;
+import org.springframework.orm.jpa.EntityManagerFactoryUtils;
+import org.springframework.orm.jpa.EntityManagerHolder;
 
-abstract class AbstractJPARepository extends AbstractRepository {
+public abstract class TestCaseSpringJPA extends TestCaseSpring {
 
-	private EntityManagerFactory	entityManagerFactory;
+	protected abstract EntityManagerFactory getEntityManagerFactory();
 
-	public AbstractJPARepository() {
-		super();
+	private EntityManager	entityManager;
+
+	@Override
+	protected void setUp() throws Exception {
+		EntityManagerFactory factory = this.getEntityManagerFactory();
+		this.entityManager = EntityManagerFactoryUtils.getTransactionalEntityManager(factory);
+		this.bind(factory, new EntityManagerHolder(this.entityManager));
 	}
 
-	public EntityManagerFactory getEntityManagerFactory() {
-		return this.entityManagerFactory;
-	}
-
-	public void setEntityManagerFactory(final EntityManagerFactory entityManagerFactory) {
-		this.entityManagerFactory = entityManagerFactory;
-	}
-
-	protected EntityManager getEntityManager() {
-		Assert.notNull(this.entityManagerFactory, "entityManagerFactory");
-		return this.entityManagerFactory.createEntityManager();
+	public EntityManager getEntityManager() {
+		return this.entityManager;
 	}
 
 }

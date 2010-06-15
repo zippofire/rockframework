@@ -24,6 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import net.woodstock.rockframework.web.jsf.utils.FacesUtils;
+
 public abstract class ManagedBean implements Serializable {
 
 	private static final long	serialVersionUID	= 184189110204186026L;
@@ -34,28 +36,24 @@ public abstract class ManagedBean implements Serializable {
 
 	// Faces
 	protected FacesContext getFacesContext() {
-		return FacesContext.getCurrentInstance();
+		return FacesUtils.getFacesContext();
 	}
 
 	// Http
 	protected HttpServletRequest getRequest() {
-		FacesContext fc = this.getFacesContext();
-		return (HttpServletRequest) fc.getExternalContext().getRequest();
+		return FacesUtils.getRequest();
 	}
 
 	protected HttpServletResponse getResponse() {
-		FacesContext fc = this.getFacesContext();
-		return (HttpServletResponse) fc.getExternalContext().getResponse();
+		return FacesUtils.getResponse();
 	}
 
 	protected HttpSession getSession() {
-		FacesContext fc = this.getFacesContext();
-		return (HttpSession) fc.getExternalContext().getSession(false);
+		return FacesUtils.getSession();
 	}
 
 	protected ServletContext getServletContext() {
-		FacesContext fc = this.getFacesContext();
-		return (ServletContext) fc.getExternalContext().getContext();
+		return FacesUtils.getServletContext();
 	}
 
 }

@@ -19,7 +19,7 @@ package net.woodstock.rockframework.web.struts2;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.struts2.ServletActionContext;
+import net.woodstock.rockframework.web.struts2.utils.Struts2Utils;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
@@ -38,11 +38,11 @@ public abstract class Action extends ActionSupport implements Preparable {
 	}
 
 	protected HttpServletRequest getRequest() {
-		return ServletActionContext.getRequest();
+		return Struts2Utils.getRequest();
 	}
 
 	protected HttpSession getSession() {
-		return this.getRequest().getSession();
+		return Struts2Utils.getSession();
 	}
 
 }

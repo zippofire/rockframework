@@ -20,14 +20,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import net.woodstock.rockframework.web.config.WebLog;
-
-import org.apache.struts2.ServletActionContext;
+import net.woodstock.rockframework.web.struts2.utils.Struts2Utils;
 
 import com.opensymphony.xwork2.ActionContext;
 
 public abstract class Interceptor implements com.opensymphony.xwork2.interceptor.Interceptor {
 
-	private static final long	serialVersionUID	= 8055330131508038464L;
+	private static final long		serialVersionUID	= 8055330131508038464L;
+
+	protected static final String	SKIP_INTERCEPTOR	= "net.woodstock.rockframework.web.struts2.Interceptor.SKIP_INTERCEPTOR";
 
 	public Interceptor() {
 		super();
@@ -46,10 +47,11 @@ public abstract class Interceptor implements com.opensymphony.xwork2.interceptor
 	}
 
 	protected HttpServletRequest getRequest() {
-		return ServletActionContext.getRequest();
+		return Struts2Utils.getRequest();
 	}
 
 	protected HttpSession getSession() {
-		return this.getRequest().getSession();
+		return Struts2Utils.getSession();
 	}
+
 }
