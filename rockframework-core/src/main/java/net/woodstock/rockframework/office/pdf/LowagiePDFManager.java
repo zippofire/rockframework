@@ -43,7 +43,7 @@ class LowagiePDFManager extends PDFManager {
 			PdfCopy writer = new PdfCopy(document, outputStream);
 			int pageCount = reader.getNumberOfPages();
 
-			Assert.lessThan(start, pageCount, "start");
+			Assert.lessOrEqual(start, pageCount, "start");
 
 			int endPage = end;
 			if (endPage > pageCount) {

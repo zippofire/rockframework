@@ -64,6 +64,19 @@ public abstract class Assert {
 		}
 	}
 
+	// Greater or Equal
+	public static void greaterOrEqual(final double value, final double minimum, final String name) {
+		if (value < minimum) {
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_GREATER_THAN, name, new Double(minimum)));
+		}
+	}
+
+	public static void greaterOrEqual(final long value, final long minimum, final String name) {
+		if (value < minimum) {
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_GREATER_THAN, name, new Long(minimum)));
+		}
+	}
+
 	// Greater
 	public static void greaterThan(final double value, final double minimum, final String name) {
 		if (value <= minimum) {
@@ -146,6 +159,19 @@ public abstract class Assert {
 
 		if ((file.exists()) && (!file.isFile())) {
 			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_IS_FILE, name));
+		}
+	}
+
+	// Less or equals
+	public static void lessOrEqual(final double value, final double maximum, final String name) {
+		if (value > maximum) {
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_LESS_THAN, name, new Double(maximum)));
+		}
+	}
+
+	public static void lessOrEqual(final long value, final long maximum, final String name) {
+		if (value > maximum) {
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_LESS_THAN, name, new Long(maximum)));
 		}
 	}
 
