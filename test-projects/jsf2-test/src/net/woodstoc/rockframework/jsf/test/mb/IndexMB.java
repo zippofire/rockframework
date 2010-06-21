@@ -1,14 +1,16 @@
 package net.woodstoc.rockframework.jsf.test.mb;
 
-import net.woodstock.rockframework.web.jsf.ManagedBean;
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
 
-@javax.faces.bean.ManagedBean
-public class IndexMB extends ManagedBean {
+@ManagedBean(name = "indexMB")
+@ApplicationScoped
+public class IndexMB {
 
-	private static final long	serialVersionUID	= 1L;
+	private static final long serialVersionUID = 1L;
 
 	public String getMessage() {
-		return "Message";
+		return "Message On IndexMB";
 	}
 
 }

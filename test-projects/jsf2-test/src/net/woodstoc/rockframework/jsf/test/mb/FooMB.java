@@ -2,23 +2,23 @@ package net.woodstoc.rockframework.jsf.test.mb;
 
 import java.util.List;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+
 import net.woodstoc.rockframework.jsf.test.entity.Foo;
 import net.woodstoc.rockframework.jsf.test.persistence.FooRepository;
-import net.woodstock.rockframework.web.jsf.Constants;
-import net.woodstock.rockframework.web.jsf.ManagedBean;
 
-@javax.faces.bean.ManagedBean
-public class FooMB extends ManagedBean {
+@ManagedBean(name = "fooMB")
+@RequestScoped
+public class FooMB {
 
-	private static final long	serialVersionUID	= 1L;
+	private static final long serialVersionUID = 1L;
 
-	private FooRepository		fooRepository;
+	private Foo foo;
 
-	private Foo					foo;
+	private FooRepository fooRepository;
 
-	private List<Foo>			foos;
-
-	private String				message;
+	private List<Foo> foos;
 
 	public FooMB() {
 		super();
@@ -27,36 +27,28 @@ public class FooMB extends ManagedBean {
 	}
 
 	public String delete() {
-		Integer id = new Integer(this.getRequest().getParameter("foo.id"));
-		this.foo.setId(id);
+		System.out.println("Delete: " + this.foo.getId());
 		this.fooRepository.delete(this.foo);
 		this.foos = this.fooRepository.list();
-		return Constants.SUCCESS;
+		return "success";
 	}
 
 	public String edit() {
-		Integer id = new Integer(this.getRequest().getParameter("foo.id"));
-		this.foo.setId(id);
+		System.out.println("Edit: " + this.foo.getId());
 		this.foo = this.fooRepository.get(this.foo);
-		return Constants.SUCCESS;
-	}
-
-	public String list() {
-		this.foos = this.fooRepository.list();
-		return Constants.SUCCESS;
+		return "success";
 	}
 
 	public String save() {
-		this.fooRepository.save(this.foo);
-		this.foo = new Foo();
-		this.message = "Success!!!";
-		return Constants.SUCCESS;
-	}
-
-	public String update() {
-		this.fooRepository.update(this.foo);
-		this.message = "Success!!!";
-		return Constants.SUCCESS;
+		if ((this.foo.getId() != null) && (this.foo.getId().intValue() > 0)) {
+			System.out.println("Update: " + this.foo.getId());
+			this.fooRepository.update(this.foo);
+		} else {
+			System.out.println("Save: " + this.foo.getName());
+			this.fooRepository.save(this.foo);
+			this.foo = new Foo();
+		}
+		return "success";
 	}
 
 	// Getters
@@ -69,19 +61,14 @@ public class FooMB extends ManagedBean {
 	}
 
 	public List<Foo> getFoos() {
+		if (this.foos == null) {
+			this.foos = this.fooRepository.list();
+		}
 		return this.foos;
 	}
 
 	public void setFoos(List<Foo> foos) {
 		this.foos = foos;
-	}
-
-	public String getMessage() {
-		return this.message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
 	}
 
 }
