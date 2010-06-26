@@ -14,22 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.conversion.text;
+package net.woodstock.rockframework.web.struts2.security;
 
-import net.woodstock.rockframework.conversion.ConverterContext;
+import javax.servlet.http.HttpServletRequest;
 
-class BooleanConverter extends net.woodstock.rockframework.conversion.common.converters.BooleanConverter {
+public interface RoleValidator {
 
-	@Override
-	public Boolean from(final ConverterContext context, final String s) {
-		String ss = TextConverterHelper.trim(s);
-		return super.from(context, ss);
-	}
+	boolean isUserInRole(HttpServletRequest request, String role);
 
-	@Override
-	public String to(final ConverterContext context, final Boolean t) {
-		String s = super.to(context, t);
-		int size = TextConverterHelper.getSize(context);
-		return TextConverterHelper.lpad(s, size);
-	}
 }

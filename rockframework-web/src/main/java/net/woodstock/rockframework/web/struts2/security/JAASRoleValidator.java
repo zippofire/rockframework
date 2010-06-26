@@ -14,23 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.conversion.text;
+package net.woodstock.rockframework.web.struts2.security;
 
-import net.woodstock.rockframework.conversion.ConverterContext;
+import javax.servlet.http.HttpServletRequest;
 
-class DoubleConverter extends net.woodstock.rockframework.conversion.common.converters.DoubleConverter {
-
-	@Override
-	public Double from(final ConverterContext context, final String s) {
-		String ss = TextConverterHelper.trim(s);
-		return super.from(context, ss);
-	}
+public class JAASRoleValidator implements RoleValidator {
 
 	@Override
-	public String to(final ConverterContext context, final Number t) {
-		String s = super.to(context, t);
-		int size = TextConverterHelper.getSize(context);
-		return TextConverterHelper.lpad(s, size);
+	public boolean isUserInRole(HttpServletRequest request, String role) {
+		return request.isUserInRole(role);
 	}
 
 }

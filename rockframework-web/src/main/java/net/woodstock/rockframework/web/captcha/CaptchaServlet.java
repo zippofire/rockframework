@@ -41,7 +41,7 @@ public class CaptchaServlet extends AbstractHttpServlet {
 	private char[]				chars;
 
 	@Override
-	public void doInit() throws ServletException {
+	public void doInit() {
 		String randomChars = this.getInitParameter(CaptchaServlet.RANDOM_CHARS_PARAMETER);
 		if (!StringUtils.isEmpty(randomChars)) {
 			this.chars = randomChars.toCharArray();

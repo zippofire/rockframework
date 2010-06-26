@@ -35,8 +35,7 @@ public abstract class AbstractHttpServlet extends HttpServlet {
 		this.doInit();
 	}
 
-	@SuppressWarnings("unused")
-	public void doInit() throws ServletException {
+	public void doInit() {
 		//
 	}
 

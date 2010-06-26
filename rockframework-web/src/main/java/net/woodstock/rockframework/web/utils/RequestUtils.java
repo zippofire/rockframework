@@ -20,17 +20,25 @@ import javax.servlet.http.HttpServletRequest;
 
 public abstract class RequestUtils {
 
-	public static final String	HEADER_ACCEPT			= "accept";
+	public static final String	HEADER_ACCEPT			= "Accept";
 
-	public static final String	HEADER_ACCEPT_CHARSET	= "accept-charset";
+	public static final String	HEADER_ACCEPT_CHARSET	= "Accept-Charset";
 
-	public static final String	HEADER_ACCEPT_ENCODING	= "accept-encoding";
+	public static final String	HEADER_ACCEPT_ENCODING	= "Accept-Encoding";
 
-	public static final String	HEADER_ACCEPT_LANGUAGE	= "accept-language";
+	public static final String	HEADER_ACCEPT_LANGUAGE	= "Accept-Language";
 
-	public static final String	HEADER_REFERER			= "referer";
+	public static final String	HEADER_CACHE_CONTROL	= "Cache-Control";
 
-	public static final String	HEADER_USER_AGENT		= "user-agent";
+	public static final String	HEADER_CONNECTION		= "Connection";
+
+	public static final String	HEADER_DATE				= "Date";
+
+	public static final String	HEADER_HOST				= "Host";
+
+	public static final String	HEADER_REFERER			= "Referer";
+
+	public static final String	HEADER_USER_AGENT		= "User-Agent";
 
 	public static final String	HEADER_X_FORWARDED_FOR	= "X-Forwarded-For";
 

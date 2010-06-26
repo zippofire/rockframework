@@ -14,18 +14,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.conversion.common.converters;
+package net.woodstock.rockframework.web.struts2.security;
 
-public class FloatConverter extends NumberConverter<Float> {
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-	@Override
-	protected Float toNumber(final Number n) {
-		return new Float(n.floatValue());
-	}
+@Target({ ElementType.TYPE, ElementType.METHOD })
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface Role {
 
-	@Override
-	protected Float toNumber(final String s) {
-		return new Float(s);
-	}
+	String[] value() default {};
 
 }
