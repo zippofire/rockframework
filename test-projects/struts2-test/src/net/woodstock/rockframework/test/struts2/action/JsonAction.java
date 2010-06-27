@@ -9,8 +9,12 @@ import net.woodstock.rockframework.test.struts2.entity.Foo;
 import net.woodstock.rockframework.util.Date;
 import net.woodstock.rockframework.web.struts2.Action;
 
+import org.apache.struts2.convention.annotation.ParentPackage;
+import org.apache.struts2.convention.annotation.Result;
 import org.springframework.context.annotation.Scope;
 
+@ParentPackage(value = "default")
+@org.apache.struts2.convention.annotation.Action(value = "json", results = { @Result(name = "success", location = "/xyz") })
 @net.woodstock.rockframework.web.struts2.spring.Action
 @Scope(value = "prototype")
 public class JsonAction extends Action {

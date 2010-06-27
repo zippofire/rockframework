@@ -10,13 +10,14 @@
 				<param name="printSession">false</param>
 			</interceptor>
 			<interceptor-stack name="debugStack">
-				<interceptor-ref name="entityStack" />
+				<interceptor-ref name="defaultStack" />
 				<interceptor-ref name="debug" />
 			</interceptor-stack>
 		</interceptors>
 		<default-interceptor-ref name="debugStack" />		
 	</package>
 
+	<!--
 	<package name="test" namespace="/test" extends="default">
 		<action name="test!*" class="net.woodstock.rockframework.test.struts2.action.TestAction" method="{1}">
 			<result name="success">/test/test.jsp</result>
@@ -31,5 +32,6 @@
 			<result name="success">/test/list.jsp</result>
 		</action>
 	</package>
+	-->
 
 </struts>
