@@ -4,7 +4,7 @@
 <struts>
 	<package name="default" namespace="/" extends="rockframework-default">
 		<interceptors>
-			<interceptor name="debug" class="net.woodstock.rockframework.web.struts2.interceptor.DebugInterceptor">
+			<interceptor name="debug" class="net.woodstock.rockframework.web.struts2.util.DebugInterceptor">
 				<param name="level">WARN</param>
 				<param name="printParameters">true</param>
 				<param name="printSession">false</param>

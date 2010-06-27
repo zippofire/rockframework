@@ -28,6 +28,11 @@ public class TestAction extends Action {
 
 	private Foo					foo;
 
+	public TestAction() {
+		super();
+		throw new RuntimeException("Aquiiii");
+	}
+
 	@Override
 	public String execute() throws Exception {
 		return net.woodstock.rockframework.web.struts2.Constants.SUCCESS;
@@ -43,9 +48,6 @@ public class TestAction extends Action {
 
 	public String getMessage() {
 		StringBuilder builder = new StringBuilder();
-
-		X x = ActionContext.getContext().getContainer().getInstance(X.class);
-		ActionContext.getContext().getContainer().inject(x);
 
 		ConfigurationManager manager = ActionContext.getContext().getContainer().getInstance(ConfigurationManager.class);
 		Configuration configuration = manager.getConfiguration();

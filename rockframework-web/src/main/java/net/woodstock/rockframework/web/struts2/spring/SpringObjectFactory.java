@@ -35,7 +35,9 @@ public class SpringObjectFactory extends ObjectFactory {
 			return ContextHelper.getInstance().getObject(clazz);
 		} catch (DomainException e) {
 			WebLog.getInstance().getLog().info("Class " + clazz + " not found in Spring Context");
-			return super.buildBean(clazz, extraContext);
+			Object obj = super.buildBean(clazz, extraContext);
+			super.injectInternalBeans(obj);
+			return obj;
 		}
 	}
 
