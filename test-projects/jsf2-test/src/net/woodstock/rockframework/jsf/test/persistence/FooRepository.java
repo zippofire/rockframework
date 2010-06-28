@@ -1,9 +1,9 @@
-package net.woodstoc.rockframework.jsf.test.persistence;
+package net.woodstock.rockframework.jsf.test.persistence;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import net.woodstoc.rockframework.jsf.test.entity.Foo;
+import net.woodstock.rockframework.jsf.test.entity.Foo;
 
 public class FooRepository {
 

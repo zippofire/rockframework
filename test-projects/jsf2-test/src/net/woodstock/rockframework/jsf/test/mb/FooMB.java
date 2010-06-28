@@ -1,12 +1,12 @@
-package net.woodstoc.rockframework.jsf.test.mb;
+package net.woodstock.rockframework.jsf.test.mb;
 
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
-import net.woodstoc.rockframework.jsf.test.entity.Foo;
-import net.woodstoc.rockframework.jsf.test.persistence.FooRepository;
+import net.woodstock.rockframework.jsf.test.entity.Foo;
+import net.woodstock.rockframework.jsf.test.persistence.FooRepository;
 
 @ManagedBean(name = "fooMB")
 @RequestScoped

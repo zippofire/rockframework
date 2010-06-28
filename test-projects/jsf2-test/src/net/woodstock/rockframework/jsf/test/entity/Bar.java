@@ -1,4 +1,4 @@
-package net.woodstoc.rockframework.jsf.test.entity;
+package net.woodstock.rockframework.jsf.test.entity;
 
 import net.woodstock.rockframework.domain.Entity;
 

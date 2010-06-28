@@ -1,4 +1,4 @@
-package net.woodstoc.rockframework.jsf.test.mb;
+package net.woodstock.rockframework.jsf.test.mb;
 
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;

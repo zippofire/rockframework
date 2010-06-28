@@ -1,4 +1,4 @@
-package net.woodstoc.rockframework.jsf.test.converter;
+package net.woodstock.rockframework.jsf.test.converter;
 
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
