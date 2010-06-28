@@ -1,4 +1,4 @@
 <%
-	String index = request.getContextPath() + "/faces/index/index.jsp";
+	String index = request.getContextPath() + "/index/index.jsf";
 	response.sendRedirect(index);
 %>
