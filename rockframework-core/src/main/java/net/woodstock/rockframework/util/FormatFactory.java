@@ -16,36 +16,41 @@
  */
 package net.woodstock.rockframework.util;
 
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
+import net.woodstock.rockframework.cache.Cache;
+import net.woodstock.rockframework.cache.CacheManager;
+import net.woodstock.rockframework.cache.impl.CacheManagerImpl;
 import net.woodstock.rockframework.utils.LocaleUtils;
+import net.woodstock.rockframework.utils.ObjectUtils;
 
 public abstract class FormatFactory<T> {
 
 	private static final String	SEPARATOR	= "@";
 
-	private Map<String, T>		cache;
+	private Cache				cache;
 
 	public FormatFactory() {
 		super();
-		this.cache = new HashMap<String, T>();
+		String id = ObjectUtils.toString(this);
+		CacheManager cacheManager = CacheManagerImpl.getInstance();
+		this.cache = cacheManager.create(id);
 	}
 
 	protected boolean containsOnCache(final String pattern, final Locale locale) {
 		String key = pattern + FormatFactory.SEPARATOR + locale;
-		return this.cache.containsKey(key);
+		return this.cache.contains(key);
 	}
 
+	@SuppressWarnings("unchecked")
 	protected T getFromCache(final String pattern, final Locale locale) {
 		String key = pattern + FormatFactory.SEPARATOR + locale;
-		return this.cache.get(key);
+		return (T) this.cache.get(key);
 	}
 
 	protected void addToCache(final String pattern, final Locale locale, final T format) {
 		String key = pattern + FormatFactory.SEPARATOR + locale;
-		this.cache.put(key, format);
+		this.cache.add(key, format);
 	}
 
 	public T getFormat(final String pattern) {

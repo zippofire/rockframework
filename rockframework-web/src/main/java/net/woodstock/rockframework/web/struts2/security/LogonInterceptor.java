@@ -55,7 +55,7 @@ public class LogonInterceptor extends Interceptor {
 			}
 
 			if (!hasAccess) {
-				WebLog.getInstance().getLog().debug("User must be logged to call " + clazz.getName() + "." + method.getName() + "()");
+				WebLog.getInstance().getLog().info("User must be logged to call " + clazz.getName() + "." + method.getName() + "()");
 				return Constants.NO_LOGIN;
 			}
 		}
@@ -64,8 +64,12 @@ public class LogonInterceptor extends Interceptor {
 	}
 
 	// Setters
-	public void setValidator(final String validator) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-		this.validator = (LogonValidator) Class.forName(validator).newInstance();
+	public void setValidatorClass(final String validatorClass) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+		this.validator = (LogonValidator) Class.forName(validatorClass).newInstance();
+	}
+
+	protected void setValidator(final LogonValidator validator) {
+		this.validator = validator;
 	}
 
 }

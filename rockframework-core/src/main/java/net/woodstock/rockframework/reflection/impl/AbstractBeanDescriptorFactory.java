@@ -16,32 +16,36 @@
  */
 package net.woodstock.rockframework.reflection.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import net.woodstock.rockframework.cache.Cache;
+import net.woodstock.rockframework.cache.CacheManager;
+import net.woodstock.rockframework.cache.impl.CacheManagerImpl;
 import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.BeanDescriptorFactory;
 import net.woodstock.rockframework.util.Assert;
+import net.woodstock.rockframework.utils.ObjectUtils;
 
 abstract class AbstractBeanDescriptorFactory implements BeanDescriptorFactory {
 
-	private Map<Class<?>, BeanDescriptor>	cache;
+	private Cache	cache;
 
 	public AbstractBeanDescriptorFactory() {
-		this.cache = new HashMap<Class<?>, BeanDescriptor>();
+		super();
+		String id = ObjectUtils.toString(this);
+		CacheManager cacheManager = CacheManagerImpl.getInstance();
+		this.cache = cacheManager.create(id);
 	}
 
-	protected void addToCache(final Class<?> clazz, final BeanDescriptor descriptor) {
-		this.cache.put(clazz, descriptor);
+	private void addToCache(final Class<?> clazz, final BeanDescriptor descriptor) {
+		this.cache.add(clazz.getCanonicalName(), descriptor);
 	}
 
-	protected BeanDescriptor getFromCache(final Class<?> clazz) {
-		return this.cache.get(clazz);
+	private BeanDescriptor getFromCache(final Class<?> clazz) {
+		return (BeanDescriptor) this.cache.get(clazz.getCanonicalName());
 	}
 
-	protected boolean hasOnCache(final Class<?> clazz) {
-		return this.cache.containsKey(clazz);
+	private boolean hasOnCache(final Class<?> clazz) {
+		return this.cache.contains(clazz.getCanonicalName());
 	}
 
 	@Override

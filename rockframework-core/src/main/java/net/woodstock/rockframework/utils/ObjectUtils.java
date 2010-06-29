@@ -25,7 +25,9 @@ import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactoryImpl;
 
 public abstract class ObjectUtils {
 
-	public static final int	HASH_PRIME	= 31;
+	public static final int		HASH_PRIME		= 31;
+
+	private static final String	HASH_SEPARATOR	= "@";
 
 	private ObjectUtils() {
 		//
@@ -121,6 +123,17 @@ public abstract class ObjectUtils {
 			}
 		}
 		return result;
+	}
+
+	public static String toString(final Object obj) {
+		if (obj == null) {
+			return "null";
+		}
+		StringBuilder builder = new StringBuilder();
+		builder.append(obj.getClass().getName());
+		builder.append(ObjectUtils.HASH_SEPARATOR);
+		builder.append(obj.hashCode());
+		return builder.toString();
 	}
 
 }

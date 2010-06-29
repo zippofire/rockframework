@@ -17,6 +17,10 @@
 package net.woodstock.rockframework.web.struts2.security;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
 
 import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.web.config.WebLog;
@@ -30,9 +34,14 @@ public class RoleInterceptor extends Interceptor {
 
 	private static final long	serialVersionUID	= -1142678626424407060L;
 
+	private static final String	HISTORY_PARAMETER	= "net.woodstock.rockframework.web.struts2.security.HISTORY_PARAMETER";
+
+	private static final String	NO_ACCESS_PARAMETER	= "net.woodstock.rockframework.web.struts2.security.NO_ACCESS_PARAMETER";
+
 	private RoleValidator		validator;
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public String intercept(final ActionInvocation invocation) throws Exception {
 		Assert.notNull(this.validator, "validator");
 		ActionProxy proxy = invocation.getProxy();
@@ -55,15 +64,44 @@ public class RoleInterceptor extends Interceptor {
 
 		if (validate) {
 			boolean hasAccess = false;
-			for (String role : roles) {
-				if (this.validator.isUserInRole(this.getRequest(), role)) {
-					hasAccess = true;
-					break;
+			boolean skipTest = false;
+			HttpSession session = this.getSession();
+
+			String fullName = clazz.getCanonicalName() + "." + method.getName() + "()";
+
+			if (session.getAttribute(RoleInterceptor.HISTORY_PARAMETER) == null) {
+				session.setAttribute(RoleInterceptor.HISTORY_PARAMETER, new ArrayList<String>());
+			}
+
+			if (session.getAttribute(RoleInterceptor.NO_ACCESS_PARAMETER) == null) {
+				session.setAttribute(RoleInterceptor.NO_ACCESS_PARAMETER, new ArrayList<String>());
+			}
+
+			List<String> history = (List<String>) session.getAttribute(RoleInterceptor.HISTORY_PARAMETER);
+			List<String> noAccess = (List<String>) session.getAttribute(RoleInterceptor.NO_ACCESS_PARAMETER);
+
+			if (history.contains(fullName)) {
+				hasAccess = true;
+				skipTest = true;
+			} else if (noAccess.contains(fullName)) {
+				hasAccess = false;
+				skipTest = true;
+			}
+
+			if (!skipTest) {
+				for (String role : roles) {
+					if (this.validator.isUserInRole(this.getRequest(), role)) {
+						hasAccess = true;
+						break;
+					}
 				}
 			}
 
-			if (!hasAccess) {
-				WebLog.getInstance().getLog().debug("Invalid privileges to call " + clazz.getName() + "." + method.getName() + "()");
+			if (hasAccess) {
+				history.add(fullName);
+			} else {
+				noAccess.add(fullName);
+				WebLog.getInstance().getLog().info("Invalid privileges to call " + clazz.getName() + "." + method.getName() + "()");
 				return Constants.NO_ACCESS;
 			}
 		}
@@ -72,8 +110,12 @@ public class RoleInterceptor extends Interceptor {
 	}
 
 	// Setters
-	public void setValidator(final String validator) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-		this.validator = (RoleValidator) Class.forName(validator).newInstance();
+	public void setValidatorClass(final String validatorClass) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+		this.validator = (RoleValidator) Class.forName(validatorClass).newInstance();
+	}
+
+	protected void setValidator(final RoleValidator validator) {
+		this.validator = validator;
 	}
 
 }
