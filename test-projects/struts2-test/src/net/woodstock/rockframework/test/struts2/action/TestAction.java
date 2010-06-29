@@ -8,14 +8,13 @@ import net.woodstock.rockframework.web.struts2.Action;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
+import org.apache.struts2.dispatcher.Dispatcher;
 import org.springframework.context.annotation.Scope;
 
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.config.Configuration;
 import com.opensymphony.xwork2.config.ConfigurationManager;
 import com.opensymphony.xwork2.config.entities.ActionConfig;
 import com.opensymphony.xwork2.config.entities.PackageConfig;
-import com.opensymphony.xwork2.inject.Inject;
 
 @ParentPackage(value = "default")
 @org.apache.struts2.convention.annotation.Action(value = "test")
@@ -28,9 +27,10 @@ public class TestAction extends Action {
 
 	private Foo					foo;
 
+	private Object				object;
+
 	public TestAction() {
 		super();
-		throw new RuntimeException("Aquiiii");
 	}
 
 	@Override
@@ -46,33 +46,32 @@ public class TestAction extends Action {
 		this.foo = foo;
 	}
 
-	public String getMessage() {
-		StringBuilder builder = new StringBuilder();
-
-		ConfigurationManager manager = ActionContext.getContext().getContainer().getInstance(ConfigurationManager.class);
-		Configuration configuration = manager.getConfiguration();
-		for (String name : configuration.getPackageConfigNames()) {
-			PackageConfig config = configuration.getPackageConfig(name);
-			for (Entry<String, ActionConfig> action : config.getActionConfigs().entrySet()) {
-				builder.append(action.getValue().getName() + "\n");
-			}
-		}
-		return builder.toString();
+	public Object getObject() {
+		return this.object;
 	}
 
-	class X {
+	public void setObject(Object object) {
+		this.object = object;
+	}
 
-		@Inject
-		private ConfigurationManager	manager;
+	public String getMessage() {
+		StringBuilder builder = new StringBuilder();
+		ConfigurationManager manager = Dispatcher.getInstance().getConfigurationManager();
+		Configuration configuration = manager.getConfiguration();
 
-		public ConfigurationManager getManager() {
-			return this.manager;
+		String extension = configuration.getContainer().getInstance(String.class, "struts.action.extension");
+
+		for (Entry<String, PackageConfig> entryPackage : configuration.getPackageConfigs().entrySet()) {
+			PackageConfig packageConfig = entryPackage.getValue();
+			builder.append("Package: " + packageConfig.getName() + "(" + packageConfig.getNamespace() + ")\n");
+			for (Entry<String, ActionConfig> entryConfig : packageConfig.getActionConfigs().entrySet()) {
+				ActionConfig actionConfig = entryConfig.getValue();
+				builder.append("\t" + actionConfig.getName() + "." + extension + "\n");
+			}
 		}
-
-		public void setManager(ConfigurationManager manager) {
-			this.manager = manager;
-		}
-
+		String message = builder.toString();
+		System.out.println(message);
+		return message;
 	}
 
 }

@@ -31,7 +31,7 @@ public abstract class SimpleFacesConverter<T> extends FacesConverter {
 		}
 
 		T t = this.getAsObject(value);
-		WebLog.getInstance().getLog().info("From String [" + value + " => " + t + "]");
+		WebLog.getInstance().getLog().debug("From String [" + value + " => " + t + "]");
 		return t;
 	}
 
@@ -43,7 +43,7 @@ public abstract class SimpleFacesConverter<T> extends FacesConverter {
 		}
 		T t = (T) value;
 		String s = this.getAsString(t);
-		WebLog.getInstance().getLog().info("To String [" + t + " => " + s + "]");
+		WebLog.getInstance().getLog().debug("To String [" + t + " => " + s + "]");
 		return s;
 	}
 

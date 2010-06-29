@@ -14,22 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.web.filter.debug;
+package net.woodstock.rockframework.domain.persistence.query;
 
-import java.io.IOException;
+import net.woodstock.rockframework.domain.persistence.PersistenceException;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+public class QueryException extends PersistenceException {
 
-import net.woodstock.rockframework.web.filter.HttpFilter;
+	private static final long	serialVersionUID	= -989696877597815292L;
 
-public class DebugFilter extends HttpFilter {
+	public QueryException(final String message) {
+		super(message);
+	}
 
-	@Override
-	public void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain) throws IOException, ServletException {
-		chain.doFilter(request, response);
+	public QueryException(final Throwable cause) {
+		super(cause);
+	}
+
+	public QueryException(final String message, final Throwable cause) {
+		super(message, cause);
 	}
 
 }

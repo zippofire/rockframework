@@ -18,6 +18,7 @@ package net.woodstock.rockframework.util;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import net.woodstock.rockframework.config.CoreMessage;
@@ -201,6 +202,15 @@ public abstract class Assert {
 		Assert.notNull(collection, name);
 
 		if (collection.isEmpty()) {
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_NOT_EMPTY, name));
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static void notEmpty(final Map map, final String name) {
+		Assert.notNull(map, name);
+
+		if (map.size() == 0) {
 			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_NOT_EMPTY, name));
 		}
 	}

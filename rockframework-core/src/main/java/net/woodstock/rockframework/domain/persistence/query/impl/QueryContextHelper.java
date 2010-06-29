@@ -25,7 +25,7 @@ import java.util.Queue;
 
 import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.domain.persistence.query.BuilderException;
+import net.woodstock.rockframework.domain.persistence.query.QueryException;
 import net.woodstock.rockframework.domain.persistence.query.LikeMode;
 import net.woodstock.rockframework.domain.persistence.query.impl.QueryContextParameter.Operator;
 import net.woodstock.rockframework.domain.persistence.util.Constants;
@@ -88,10 +88,10 @@ abstract class QueryContextHelper {
 			}
 			QueryContextHelper.generateQueryString(context, options);
 			return context;
-		} catch (BuilderException exception) {
+		} catch (QueryException exception) {
 			throw exception;
 		} catch (Exception exception) {
-			throw new BuilderException(exception);
+			throw new QueryException(exception);
 		}
 	}
 
@@ -169,10 +169,10 @@ abstract class QueryContextHelper {
 			} else {
 				QueryContextHelper.handleCommonValue(context, sqlName, sqlAlias, value);
 			}
-		} catch (BuilderException exception) {
+		} catch (QueryException exception) {
 			throw exception;
 		} catch (Exception exception) {
-			throw new BuilderException(exception);
+			throw new QueryException(exception);
 		}
 	}
 

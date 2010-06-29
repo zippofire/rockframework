@@ -7,6 +7,11 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.PageContext;
 
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.dispatcher.Dispatcher;
+
+import com.opensymphony.xwork2.config.Configuration;
+import com.opensymphony.xwork2.config.ConfigurationManager;
+import com.opensymphony.xwork2.inject.Container;
 
 public abstract class Struts2Utils {
 
@@ -16,6 +21,15 @@ public abstract class Struts2Utils {
 
 	private Struts2Utils() {
 		// 
+	}
+
+	public static String getConstant(final String name) {
+		Dispatcher dispatcher = Dispatcher.getInstance();
+		ConfigurationManager manager = dispatcher.getConfigurationManager();
+		Configuration configuration = manager.getConfiguration();
+		Container container = configuration.getContainer();
+		String value = container.getInstance(String.class, name);
+		return value;
 	}
 
 	public static PageContext getPageContext() {

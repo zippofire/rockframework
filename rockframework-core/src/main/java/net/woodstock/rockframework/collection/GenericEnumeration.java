@@ -16,20 +16,33 @@
  */
 package net.woodstock.rockframework.collection;
 
+import java.util.Collection;
+import java.util.Enumeration;
 import java.util.Iterator;
 
-import net.woodstock.rockframework.util.Assert;
+public class GenericEnumeration<E> implements Enumeration<E> {
 
-class ImmutableIterator<E> extends DelegateIterator<E> {
+	private Iterator<E>	iterator;
 
-	public ImmutableIterator(final Iterator<E> iterator) {
-		super(iterator);
-		Assert.notNull(iterator, "iterator");
+	public GenericEnumeration(final Iterator<E> iterator) {
+		super();
+		this.iterator = iterator;
+	}
+
+	public GenericEnumeration(final Collection<E> collection) {
+		super();
+		Iterator<E> iterator = collection.iterator();
+		this.iterator = iterator;
 	}
 
 	@Override
-	public void remove() {
-		throw new UnsupportedOperationException();
+	public boolean hasMoreElements() {
+		return this.iterator.hasNext();
+	}
+
+	@Override
+	public E nextElement() {
+		return this.iterator.next();
 	}
 
 }

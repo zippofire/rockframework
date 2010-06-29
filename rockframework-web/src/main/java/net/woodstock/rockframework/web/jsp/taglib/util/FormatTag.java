@@ -21,9 +21,9 @@ import java.io.Writer;
 
 import net.woodstock.rockframework.utils.StringUtils;
 import net.woodstock.rockframework.web.config.WebLog;
-import net.woodstock.rockframework.web.jsp.taglib.BaseTag;
+import net.woodstock.rockframework.web.jsp.taglib.AbstractTag;
 
-public class FormatTag extends BaseTag {
+public class FormatTag extends AbstractTag {
 
 	private static final String	ERROR_VALUE	= "??ERROR??";
 

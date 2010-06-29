@@ -16,77 +16,32 @@
  */
 package net.woodstock.rockframework.collection;
 
-import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 
-public final class ImmutableMap<K, V> implements Map<K, V> {
-
-	private static final long	serialVersionUID	= 5609307623690022313L;
-
-	private Map<K, V>			map;
+public final class ImmutableMap<K, V> extends DelegateMap<K, V> {
 
 	private ImmutableMap(final Map<K, V> map) {
-		super();
-		this.map = map;
+		super(map);
 	}
 
+	@Override
 	public void clear() {
-		this.map.clear();
-	}
-
-	public boolean containsKey(final Object key) {
-		return this.map.containsKey(key);
-	}
-
-	public boolean containsValue(final Object value) {
-		return this.map.containsValue(value);
-	}
-
-	public Set<java.util.Map.Entry<K, V>> entrySet() {
-		return this.map.entrySet();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public boolean equals(final Object o) {
-		return this.map.equals(o);
-	}
-
-	public V get(final Object key) {
-		return this.map.get(key);
-	}
-
-	@Override
-	public int hashCode() {
-		return this.map.hashCode();
-	}
-
-	public boolean isEmpty() {
-		return this.map.isEmpty();
-	}
-
-	public Set<K> keySet() {
-		return this.map.keySet();
-	}
-
 	public V put(final K key, final V value) {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public void putAll(final Map<? extends K, ? extends V> m) {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public V remove(final Object key) {
 		throw new UnsupportedOperationException();
-	}
-
-	public int size() {
-		return this.map.size();
-	}
-
-	public Collection<V> values() {
-		return this.map.values();
 	}
 
 	// Static

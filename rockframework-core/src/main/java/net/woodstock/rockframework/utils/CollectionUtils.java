@@ -24,7 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import net.woodstock.rockframework.collection.SimpleEnumeration;
+import net.woodstock.rockframework.collection.GenericEnumeration;
 
 public abstract class CollectionUtils {
 
@@ -69,7 +69,7 @@ public abstract class CollectionUtils {
 			return null;
 		}
 		Iterator<E> iterator = collection.iterator();
-		Enumeration<E> enumeration = new SimpleEnumeration<E>(iterator);
+		Enumeration<E> enumeration = new GenericEnumeration<E>(iterator);
 		return enumeration;
 	}
 

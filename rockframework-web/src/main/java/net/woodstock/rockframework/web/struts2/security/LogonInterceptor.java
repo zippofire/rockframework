@@ -26,11 +26,11 @@ import net.woodstock.rockframework.web.struts2.Interceptor;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.ActionProxy;
 
-public class RoleInterceptor extends Interceptor {
+public class LogonInterceptor extends Interceptor {
 
 	private static final long	serialVersionUID	= -1142678626424407060L;
 
-	private RoleValidator		validator;
+	private LogonValidator		validator;
 
 	@Override
 	public String intercept(final ActionInvocation invocation) throws Exception {
@@ -40,31 +40,23 @@ public class RoleInterceptor extends Interceptor {
 		Class<?> clazz = action.getClass();
 		Method method = clazz.getMethod(proxy.getMethod(), new Class[] {});
 
-		String[] roles = null;
 		boolean validate = false;
 
-		if (method.isAnnotationPresent(Role.class)) {
-			Role annotation = method.getAnnotation(Role.class);
-			roles = annotation.value();
+		if (method.isAnnotationPresent(Logon.class)) {
 			validate = true;
-		} else if (clazz.isAnnotationPresent(Role.class)) {
-			Role annotation = clazz.getAnnotation(Role.class);
-			roles = annotation.value();
+		} else if (clazz.isAnnotationPresent(Logon.class)) {
 			validate = true;
 		}
 
 		if (validate) {
 			boolean hasAccess = false;
-			for (String role : roles) {
-				if (this.validator.isUserInRole(this.getRequest(), role)) {
-					hasAccess = true;
-					break;
-				}
+			if (this.validator.isLogged(this.getRequest())) {
+				hasAccess = true;
 			}
 
 			if (!hasAccess) {
-				WebLog.getInstance().getLog().debug("Invalid privileges to call " + clazz.getName() + "." + method.getName() + "()");
-				return Constants.NO_ACCESS;
+				WebLog.getInstance().getLog().debug("User must be logged to call " + clazz.getName() + "." + method.getName() + "()");
+				return Constants.NO_LOGIN;
 			}
 		}
 
@@ -73,7 +65,7 @@ public class RoleInterceptor extends Interceptor {
 
 	// Setters
 	public void setValidator(final String validator) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-		this.validator = (RoleValidator) Class.forName(validator).newInstance();
+		this.validator = (LogonValidator) Class.forName(validator).newInstance();
 	}
 
 }

@@ -18,13 +18,27 @@ package net.woodstock.rockframework.collection;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.Queue;
 
-public final class ImmutableList<E> extends DelegateList<E> {
+public final class ImmutableQueue<E> extends DelegateQueue<E> {
 
-	private ImmutableList(final List<E> list) {
-		super(list);
+	private ImmutableQueue(final Queue<E> queue) {
+		super(queue);
+	}
+
+	@Override
+	public boolean offer(final E e) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public E poll() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public E remove() {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -33,17 +47,7 @@ public final class ImmutableList<E> extends DelegateList<E> {
 	}
 
 	@Override
-	public void add(final int index, final E element) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public boolean addAll(final Collection<? extends E> c) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public boolean addAll(final int index, final Collection<? extends E> c) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -55,21 +59,6 @@ public final class ImmutableList<E> extends DelegateList<E> {
 	@Override
 	public Iterator<E> iterator() {
 		return new ImmutableIterator<E>(super.iterator());
-	}
-
-	@Override
-	public ListIterator<E> listIterator() {
-		return new ImmutableListIterator<E>(super.listIterator());
-	}
-
-	@Override
-	public ListIterator<E> listIterator(final int index) {
-		return new ImmutableListIterator<E>(super.listIterator(index));
-	}
-
-	@Override
-	public E remove(final int index) {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -87,14 +76,9 @@ public final class ImmutableList<E> extends DelegateList<E> {
 		throw new UnsupportedOperationException();
 	}
 
-	@Override
-	public E set(final int index, final E element) {
-		throw new UnsupportedOperationException();
-	}
-
 	// Static
-	public static <T> List<T> toImmutable(final List<T> list) {
-		return new ImmutableList<T>(list);
+	public static <T> Queue<T> toImmutable(final Queue<T> queue) {
+		return new ImmutableQueue<T>(queue);
 	}
 
 }

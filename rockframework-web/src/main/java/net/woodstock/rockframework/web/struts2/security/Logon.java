@@ -14,35 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.collection;
+package net.woodstock.rockframework.web.struts2.security;
 
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.Iterator;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public class SimpleEnumeration<E> implements Enumeration<E> {
-
-	private Iterator<E>	iterator;
-
-	public SimpleEnumeration(final Iterator<E> iterator) {
-		super();
-		this.iterator = iterator;
-	}
-
-	public SimpleEnumeration(final Collection<E> collection) {
-		super();
-		Iterator<E> iterator = collection.iterator();
-		this.iterator = iterator;
-	}
-
-	@Override
-	public boolean hasMoreElements() {
-		return this.iterator.hasNext();
-	}
-
-	@Override
-	public E nextElement() {
-		return this.iterator.next();
-	}
-
+@Target({ ElementType.TYPE, ElementType.METHOD })
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface Logon {
+	//
 }

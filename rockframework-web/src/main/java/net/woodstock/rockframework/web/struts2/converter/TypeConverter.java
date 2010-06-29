@@ -38,7 +38,7 @@ public abstract class TypeConverter<T> extends StrutsTypeConverter {
 		}
 
 		T t = this.convertFromString(o[0], toClass);
-		WebLog.getInstance().getLog().info("From String [" + s + " => " + t + "]");
+		WebLog.getInstance().getLog().debug("From String [" + s + " => " + t + "]");
 		return t;
 	}
 
@@ -50,7 +50,7 @@ public abstract class TypeConverter<T> extends StrutsTypeConverter {
 		}
 		T t = (T) o;
 		String s = this.convertToString(t);
-		WebLog.getInstance().getLog().info("To String [" + t + " => " + s + "]");
+		WebLog.getInstance().getLog().debug("To String [" + t + " => " + s + "]");
 		return s;
 	}
 

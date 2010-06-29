@@ -38,8 +38,10 @@ public abstract class JPAUtil {
 
 	public static EntityManager getEntityManager() {
 		if (JPAUtil.factory == null) {
-			String s = CoreConfig.getInstance().getValue(JPAUtil.JPA_PERSISTENCE_UNIT_PROPERTY);
-			JPAUtil.factory = Persistence.createEntityManagerFactory(s);
+			synchronized (JPAUtil.factory) {
+				String s = CoreConfig.getInstance().getValue(JPAUtil.JPA_PERSISTENCE_UNIT_PROPERTY);
+				JPAUtil.factory = Persistence.createEntityManagerFactory(s);
+			}
 		}
 		EntityManager m = JPAUtil.manager.get();
 		if (m == null) {
@@ -59,7 +61,7 @@ public abstract class JPAUtil {
 			}
 			m.flush();
 			m.close();
-			JPAUtil.manager.set(null);
+			JPAUtil.manager.remove();
 		}
 	}
 

@@ -14,35 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.web.wrapper;
+package net.woodstock.rockframework.collection;
 
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.util.Set;
 
-import javax.servlet.ServletOutputStream;
+public class DelegateSet<E> extends DelegateCollection<E> implements Set<E> {
 
-import net.woodstock.rockframework.io.InputOutputStream;
-
-public class ServletOutputStreamWrapper extends ServletOutputStream {
-
-	private InputOutputStream	outputStream;
-
-	public ServletOutputStreamWrapper() {
-		super();
-		this.outputStream = new InputOutputStream();
-	}
-
-	@Override
-	public void write(final int b) {
-		this.outputStream.write(b);
-	}
-
-	public InputStream getInputStream() {
-		return this.outputStream.getInputStream();
-	}
-
-	public OutputStream getOutputStream() {
-		return this.outputStream;
+	public DelegateSet(final Set<E> set) {
+		super(set);
 	}
 
 }

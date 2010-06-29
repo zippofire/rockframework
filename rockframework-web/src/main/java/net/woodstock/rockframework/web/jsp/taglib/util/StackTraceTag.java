@@ -23,9 +23,9 @@ import java.io.StringWriter;
 import javax.servlet.jsp.PageContext;
 
 import net.woodstock.rockframework.web.config.WebLog;
-import net.woodstock.rockframework.web.jsp.taglib.BaseTag;
+import net.woodstock.rockframework.web.jsp.taglib.AbstractTag;
 
-public class StackTraceTag extends BaseTag {
+public class StackTraceTag extends AbstractTag {
 
 	public StackTraceTag() {
 		super();

@@ -14,22 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.collection;
+package net.woodstock.rockframework.web.struts2.security;
 
-import java.util.Iterator;
+import java.security.Principal;
 
-import net.woodstock.rockframework.util.Assert;
+import javax.servlet.http.HttpServletRequest;
 
-class ImmutableIterator<E> extends DelegateIterator<E> {
-
-	public ImmutableIterator(final Iterator<E> iterator) {
-		super(iterator);
-		Assert.notNull(iterator, "iterator");
-	}
+public class JAASLogonValidator implements LogonValidator {
 
 	@Override
-	public void remove() {
-		throw new UnsupportedOperationException();
+	public boolean isLogged(final HttpServletRequest request) {
+		Principal principal = request.getUserPrincipal();
+		if (principal != null) {
+			return true;
+		}
+		return false;
 	}
 
 }

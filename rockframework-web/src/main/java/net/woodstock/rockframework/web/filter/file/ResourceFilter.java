@@ -34,11 +34,15 @@ import net.woodstock.rockframework.web.filter.HttpFilter;
 
 public class ResourceFilter extends HttpFilter {
 
-	private String[]	deny;
+	private static final String	DENY_PARAMETER	= "DENY";
+
+	private static final String	RESOURCE_REGEX	= "^/\\w*/";
+
+	private String[]			deny;
 
 	@Override
 	public void doInit() {
-		String deny = this.getInitParameter("DENY");
+		String deny = this.getInitParameter(ResourceFilter.DENY_PARAMETER);
 		if (!StringUtils.isEmpty(deny)) {
 			this.deny = deny.split(",");
 		}
@@ -48,7 +52,7 @@ public class ResourceFilter extends HttpFilter {
 	public void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain) throws IOException {
 		String context = request.getContextPath();
 		String resource = request.getRequestURI().replace(context, "");
-		resource = resource.replaceAll("^/\\w*/", "");
+		resource = resource.replaceAll(ResourceFilter.RESOURCE_REGEX, "");
 
 		if ((StringUtils.isEmpty(resource)) || (resource.endsWith("/"))) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

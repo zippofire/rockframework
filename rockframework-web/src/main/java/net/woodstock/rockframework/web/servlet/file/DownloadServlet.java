@@ -30,9 +30,9 @@ public class DownloadServlet extends AbstractHttpServlet {
 
 	private static final long	serialVersionUID	= -2921885361697687087L;
 
-	public static final String	ROOT_PARAM			= "root";
+	public static final String	ROOT_PARAMETER		= "root";
 
-	public static final String	PATH_PARAM			= "path";
+	public static final String	PATH_PARAMETER		= "path";
 
 	private String				root;
 
@@ -51,12 +51,12 @@ public class DownloadServlet extends AbstractHttpServlet {
 	}
 
 	private void doAll(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-		this.root = this.getServletConfig().getInitParameter(DownloadServlet.ROOT_PARAM);
+		this.root = this.getServletConfig().getInitParameter(DownloadServlet.ROOT_PARAMETER);
 		if (StringUtils.isEmpty(this.root)) {
 			throw new ServletException("Invalid root directory");
 		}
 
-		String path = request.getParameter(DownloadServlet.PATH_PARAM);
+		String path = request.getParameter(DownloadServlet.PATH_PARAMETER);
 		if (StringUtils.isEmpty(path)) {
 			throw new ServletException("Invalid path");
 		}

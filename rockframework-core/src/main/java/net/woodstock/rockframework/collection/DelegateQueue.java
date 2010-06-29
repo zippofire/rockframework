@@ -16,20 +16,40 @@
  */
 package net.woodstock.rockframework.collection;
 
-import java.util.Iterator;
+import java.util.Queue;
 
-import net.woodstock.rockframework.util.Assert;
+public class DelegateQueue<E> extends DelegateCollection<E> implements Queue<E> {
 
-class ImmutableIterator<E> extends DelegateIterator<E> {
+	private Queue<E>	queue;
 
-	public ImmutableIterator(final Iterator<E> iterator) {
-		super(iterator);
-		Assert.notNull(iterator, "iterator");
+	public DelegateQueue(final Queue<E> queue) {
+		super(queue);
+		this.queue = queue;
 	}
 
 	@Override
-	public void remove() {
-		throw new UnsupportedOperationException();
+	public E element() {
+		return this.queue.element();
+	}
+
+	@Override
+	public boolean offer(final E e) {
+		return this.queue.offer(e);
+	}
+
+	@Override
+	public E peek() {
+		return this.queue.peek();
+	}
+
+	@Override
+	public E poll() {
+		return this.queue.poll();
+	}
+
+	@Override
+	public E remove() {
+		return this.queue.remove();
 	}
 
 }

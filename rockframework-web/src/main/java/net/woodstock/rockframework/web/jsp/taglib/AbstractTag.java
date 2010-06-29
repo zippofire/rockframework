@@ -18,6 +18,6 @@ package net.woodstock.rockframework.web.jsp.taglib;
 
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
-public abstract class BaseTag extends SimpleTagSupport {
+public abstract class AbstractTag extends SimpleTagSupport {
 	//
 }

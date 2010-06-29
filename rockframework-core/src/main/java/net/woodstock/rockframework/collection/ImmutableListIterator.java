@@ -18,47 +18,23 @@ package net.woodstock.rockframework.collection;
 
 import java.util.ListIterator;
 
-class ImmutableListIterator<E> implements ListIterator<E> {
-
-	private ListIterator<E>	iterator;
+class ImmutableListIterator<E> extends DelegateListIterator<E> {
 
 	public ImmutableListIterator(final ListIterator<E> iterator) {
-		super();
-		this.iterator = iterator;
+		super(iterator);
 	}
 
+	@Override
 	public void add(final E e) {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean hasNext() {
-		return this.iterator.hasNext();
-	}
-
-	public boolean hasPrevious() {
-		return this.iterator.hasPrevious();
-	}
-
-	public E next() {
-		return this.iterator.next();
-	}
-
-	public int nextIndex() {
-		return this.iterator.nextIndex();
-	}
-
-	public E previous() {
-		return this.iterator.previous();
-	}
-
-	public int previousIndex() {
-		return this.iterator.previousIndex();
-	}
-
+	@Override
 	public void remove() {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public void set(final E e) {
 		throw new UnsupportedOperationException();
 	}

@@ -20,82 +20,45 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
-public final class ImmutableSet<E> implements Set<E> {
+public class ImmutableSet<E> extends DelegateSet<E> {
 
-	private static final long	serialVersionUID	= -5090564103604977206L;
-
-	private Set<E>				set;
-
-	private ImmutableSet(final Set<E> set) {
-		super();
-		this.set = set;
+	public ImmutableSet(final Set<E> set) {
+		super(set);
 	}
 
+	@Override
 	public boolean add(final E e) {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public boolean addAll(final Collection<? extends E> c) {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public void clear() {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean contains(final Object o) {
-		return this.set.contains(o);
-	}
-
-	public boolean containsAll(final Collection<?> c) {
-		return this.set.containsAll(c);
-	}
-
 	@Override
-	public boolean equals(final Object o) {
-		return this.set.equals(o);
-	}
-
-	@Override
-	public int hashCode() {
-		return this.set.hashCode();
-	}
-
-	public boolean isEmpty() {
-		return this.set.isEmpty();
-	}
-
 	public Iterator<E> iterator() {
-		return new ImmutableIterator<E>(this.set.iterator());
+		return new ImmutableIterator<E>(super.iterator());
 	}
 
+	@Override
 	public boolean remove(final Object o) {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public boolean removeAll(final Collection<?> c) {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public boolean retainAll(final Collection<?> c) {
 		throw new UnsupportedOperationException();
-	}
-
-	public int size() {
-		return this.set.size();
-	}
-
-	public Object[] toArray() {
-		return this.set.toArray();
-	}
-
-	public <T> T[] toArray(final T[] a) {
-		return this.set.toArray(a);
-	}
-
-	// Static
-	public static <T> Set<T> toImmutable(final Set<T> set) {
-		return new ImmutableSet<T>(set);
 	}
 
 }

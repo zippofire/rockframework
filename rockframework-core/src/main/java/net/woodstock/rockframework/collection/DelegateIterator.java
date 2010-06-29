@@ -20,16 +20,31 @@ import java.util.Iterator;
 
 import net.woodstock.rockframework.util.Assert;
 
-class ImmutableIterator<E> extends DelegateIterator<E> {
+class DelegateIterator<E> implements Iterator<E> {
 
-	public ImmutableIterator(final Iterator<E> iterator) {
-		super(iterator);
+	private Iterator<E>	iterator;
+
+	public DelegateIterator(final Iterator<E> iterator) {
+		super();
 		Assert.notNull(iterator, "iterator");
+		this.iterator = iterator;
+	}
+
+	public boolean hasNext() {
+		return this.iterator.hasNext();
+	}
+
+	public E next() {
+		return this.iterator.next();
+	}
+
+	public void remove() {
+		this.iterator.remove();
 	}
 
 	@Override
-	public void remove() {
-		throw new UnsupportedOperationException();
+	public String toString() {
+		return this.iterator.toString();
 	}
 
 }

@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 public class JAASRoleValidator implements RoleValidator {
 
 	@Override
-	public boolean isUserInRole(HttpServletRequest request, String role) {
+	public boolean isUserInRole(final HttpServletRequest request, final String role) {
 		return request.isUserInRole(role);
 	}
 

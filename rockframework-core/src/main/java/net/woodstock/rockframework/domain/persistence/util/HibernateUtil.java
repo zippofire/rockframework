@@ -42,16 +42,18 @@ public abstract class HibernateUtil {
 
 	public static Session getSession() {
 		if (HibernateUtil.factory == null) {
-			String s = CoreConfig.getInstance().getValue(HibernateUtil.HIBERNATE_ANNOTATION_PROPERTY);
-			if (!StringUtils.isEmpty(s)) {
-				HibernateUtil.annotation = Boolean.parseBoolean(s);
-			} else {
-				HibernateUtil.annotation = true;
-			}
-			if (HibernateUtil.annotation) {
-				HibernateUtil.factory = new AnnotationConfiguration().configure().buildSessionFactory();
-			} else {
-				HibernateUtil.factory = new Configuration().configure().buildSessionFactory();
+			synchronized (HibernateUtil.factory) {
+				String s = CoreConfig.getInstance().getValue(HibernateUtil.HIBERNATE_ANNOTATION_PROPERTY);
+				if (!StringUtils.isEmpty(s)) {
+					HibernateUtil.annotation = Boolean.parseBoolean(s);
+				} else {
+					HibernateUtil.annotation = true;
+				}
+				if (HibernateUtil.annotation) {
+					HibernateUtil.factory = new AnnotationConfiguration().configure().buildSessionFactory();
+				} else {
+					HibernateUtil.factory = new Configuration().configure().buildSessionFactory();
+				}
 			}
 		}
 		Session s = HibernateUtil.session.get();
@@ -72,7 +74,7 @@ public abstract class HibernateUtil {
 			}
 			s.flush();
 			s.close();
-			HibernateUtil.session.set(null);
+			HibernateUtil.session.remove();
 		}
 	}
 
