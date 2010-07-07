@@ -71,6 +71,13 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
+			<groupId>com.sun</groupId>
+			<artifactId>rt</artifactId>
+			<version>1.6</version>
+			<scope>system</scope>
+			<systemPath>${java.home}/lib/rt.jar</systemPath>
+		</dependency>
+		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
 			<version>1.0.0.GA</version>
