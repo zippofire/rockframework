@@ -32,8 +32,21 @@ public class LogonInterceptor extends Interceptor {
 
 	private LogonValidator		validator;
 
+	private boolean				annotationRequired;
+
+	public LogonInterceptor() {
+		super();
+	}
+
+	public LogonInterceptor(final LogonValidator validator, final boolean annotationRequired) {
+		super();
+		this.validator = validator;
+		this.annotationRequired = annotationRequired;
+	}
+
 	@Override
 	public String intercept(final ActionInvocation invocation) throws Exception {
+		WebLog.getInstance().getLog().debug("Intercepting " + invocation);
 		Assert.notNull(this.validator, "validator");
 		ActionProxy proxy = invocation.getProxy();
 		Object action = proxy.getAction();
@@ -42,9 +55,13 @@ public class LogonInterceptor extends Interceptor {
 
 		boolean validate = false;
 
-		if (method.isAnnotationPresent(Logon.class)) {
-			validate = true;
-		} else if (clazz.isAnnotationPresent(Logon.class)) {
+		if (this.annotationRequired) {
+			if (method.isAnnotationPresent(Logon.class)) {
+				validate = true;
+			} else if (clazz.isAnnotationPresent(Logon.class)) {
+				validate = true;
+			}
+		} else {
 			validate = true;
 		}
 
@@ -64,12 +81,12 @@ public class LogonInterceptor extends Interceptor {
 	}
 
 	// Setters
-	public void setValidatorClass(final String validatorClass) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-		this.validator = (LogonValidator) Class.forName(validatorClass).newInstance();
+	public void setValidator(final String validator) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+		this.validator = (LogonValidator) Class.forName(validator).newInstance();
 	}
 
-	protected void setValidator(final LogonValidator validator) {
-		this.validator = validator;
+	public void setAnnotationRequired(final String annotationRequired) {
+		this.annotationRequired = Boolean.parseBoolean(annotationRequired);
 	}
 
 }

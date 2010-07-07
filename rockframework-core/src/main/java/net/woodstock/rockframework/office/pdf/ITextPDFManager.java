@@ -92,7 +92,6 @@ class ITextPDFManager extends PDFManager {
 			document.close();
 			writer.close();
 
-			System.out.println("Retornando");
 			return outputStream.getInputStream();
 		} catch (DocumentException e) {
 			throw new RuntimeException(e);
