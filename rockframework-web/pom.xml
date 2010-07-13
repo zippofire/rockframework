@@ -105,6 +105,7 @@
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket</artifactId>
 			<version>1.4.0</version>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
