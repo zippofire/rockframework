@@ -27,10 +27,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
 
+import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.utils.FileUtils;
 import net.woodstock.rockframework.utils.IOUtils;
 
 public abstract class ResponseUtils {
+
+	public static final String	CONTENT_DISPOSITION_HEADER		= "Content-Disposition";
 
 	public static final String	DOWNLOAD_CONTENT_TYPE			= "application/force-download";
 
@@ -50,12 +53,23 @@ public abstract class ResponseUtils {
 		//
 	}
 
-	public static void redirect(final PageContext context, final String url) throws ServletException, IOException {
+	public static void forward(final PageContext context, final String url) throws ServletException, IOException {
+		Assert.notNull(context, "context");
+		Assert.notEmpty(url, "url");
 		RequestDispatcher d = context.getServletContext().getRequestDispatcher(url);
 		d.forward(context.getRequest(), context.getResponse());
 	}
 
+	public static void include(final PageContext context, final String url) throws ServletException, IOException {
+		Assert.notNull(context, "context");
+		Assert.notEmpty(url, "url");
+		RequestDispatcher d = context.getServletContext().getRequestDispatcher(url);
+		d.include(context.getRequest(), context.getResponse());
+	}
+
 	public static void downloadFile(final HttpServletResponse response, final String file) throws IOException {
+		Assert.notNull(response, "response");
+		Assert.notEmpty(file, "file");
 		File f = new File(file);
 		if (!f.exists()) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -64,25 +78,11 @@ public abstract class ResponseUtils {
 		response.setContentType(ResponseUtils.DOWNLOAD_CONTENT_TYPE);
 		response.setContentLength(FileUtils.getSize(f));
 
-		response.setHeader("Content-Disposition", ResponseUtils.getAttachmentContentDisposition(FileUtils.getName(f)));
+		response.setHeader(ResponseUtils.CONTENT_DISPOSITION_HEADER, ResponseUtils.getAttachmentContentDisposition(FileUtils.getName(f)));
 
 		InputStream input = new FileInputStream(f);
 		OutputStream output = response.getOutputStream();
 
-		IOUtils.copy(input, output, true);
-	}
-
-	public static void copyFile(final HttpServletResponse response, final String file) throws IOException {
-		File f = new File(file);
-		if (!f.exists()) {
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-		}
-
-		response.setContentType(FileUtils.getType(f));
-		response.setContentLength(FileUtils.getSize(f));
-
-		InputStream input = new FileInputStream(file);
-		OutputStream output = response.getOutputStream();
 		IOUtils.copy(input, output, true);
 	}
 

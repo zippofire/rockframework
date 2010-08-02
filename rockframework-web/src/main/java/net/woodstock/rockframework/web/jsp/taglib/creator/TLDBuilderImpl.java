@@ -20,52 +20,60 @@ import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.ReflectionType;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactoryImpl;
+import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.xml.dom.XmlDocument;
 import net.woodstock.rockframework.xml.dom.XmlElement;
 
-public final class TLDFactory {
+class TLDBuilderImpl extends TLDBuilder {
 
-	private static TLDFactory	instance	= new TLDFactory();
-
-	private TLDFactory() {
+	public TLDBuilderImpl() {
 		super();
 	}
 
+	@Override
 	public String create(final Class<?> clazz) {
-		String name = clazz.getName();
-		String type = BodyContent.JSP.getName();
-		if (clazz.isAnnotationPresent(TLD.class)) {
-			name = clazz.getAnnotation(TLD.class).name();
-			type = clazz.getAnnotation(TLD.class).content().getName();
+		Assert.notNull(clazz, "clazz");
+		if (!clazz.isAnnotationPresent(Tag.class)) {
+			throw new IllegalArgumentException("Class " + clazz + " must be annoted with @" + Tag.class.getCanonicalName());
 		}
+
+		Tag tag = clazz.getAnnotation(Tag.class);
+		String name = tag.name();
+		String description = tag.description();
+		String type = tag.content().getName();
+		boolean dynamicAttributes = tag.DynamicAttributes();
 
 		XmlDocument document = new XmlDocument("tag");
 		XmlElement root = document.getRoot();
 
 		root.addElement("name", name);
+		root.addElement("description", description);
 		root.addElement("body-content", type);
 		root.addElement("tag-class", clazz.getCanonicalName());
 
-		BeanDescriptor beanDescriptor = BeanDescriptorFactoryImpl.getInstance(ReflectionType.FIELD).getBeanDescriptor(clazz);
+		if (dynamicAttributes) {
+			root.addElement("dynamic-attributes", dynamicAttributes);
+		}
+
+		BeanDescriptor beanDescriptor = BeanDescriptorFactoryImpl.getInstance(ReflectionType.MIXED).getBeanDescriptor(clazz);
 
 		for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
-			if (!propertyDescriptor.isAnnotationPresent(TLDAttribute.class)) {
+			if (!propertyDescriptor.isAnnotationPresent(Attribute.class)) {
 				continue;
 			}
 
-			TLDAttribute tldAttribute = propertyDescriptor.getAnnotation(TLDAttribute.class);
+			Attribute tldAttribute = propertyDescriptor.getAnnotation(Attribute.class);
 			XmlElement e = root.addElement("attribute");
 
 			e.addElement("name", propertyDescriptor.getName());
 			e.addElement("rtexprvalue", tldAttribute.rtexprvalue());
 			e.addElement("required", tldAttribute.required());
+			if ((!tldAttribute.rtexprvalue()) && (tldAttribute.type() != String.class)) {
+				e.addElement("type", tldAttribute.type().getCanonicalName());
+			}
 		}
 
 		return document.toString();
-	}
-
-	public static TLDFactory getInstance() {
-		return TLDFactory.instance;
 	}
 
 }

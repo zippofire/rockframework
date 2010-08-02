@@ -47,7 +47,7 @@ public class CharsetFilter extends HttpFilter {
 	private Charset				charsetTo;
 
 	@Override
-	public void doInit() {
+	public void init() {
 		this.from = this.getInitParameter(CharsetFilter.FROM_PARAMETER);
 		this.to = this.getInitParameter(CharsetFilter.FROM_PARAMETER);
 		if (StringUtils.isEmpty(this.to)) {

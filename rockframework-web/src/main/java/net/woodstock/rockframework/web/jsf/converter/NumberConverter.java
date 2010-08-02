@@ -22,6 +22,8 @@ import java.text.NumberFormat;
 
 import javax.faces.convert.ConverterException;
 
+import net.woodstock.rockframework.util.Assert;
+
 public class NumberConverter extends SimpleFacesConverter<Number> {
 
 	private NumberFormat			format;
@@ -30,12 +32,16 @@ public class NumberConverter extends SimpleFacesConverter<Number> {
 
 	public NumberConverter(final String format, final Class<? extends Number> clazz) {
 		super();
+		Assert.notEmpty(format, "format");
+		Assert.notNull(clazz, "clazz");
 		this.format = new DecimalFormat(format);
 		this.clazz = clazz;
 	}
 
 	public NumberConverter(final NumberFormat format, final Class<? extends Number> clazz) {
 		super();
+		Assert.notNull(format, "format");
+		Assert.notNull(clazz, "clazz");
 		this.format = format;
 		this.clazz = clazz;
 	}

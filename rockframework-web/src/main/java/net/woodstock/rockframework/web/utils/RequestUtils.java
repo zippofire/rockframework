@@ -16,7 +16,16 @@
  */
 package net.woodstock.rockframework.web.utils;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+
 import javax.servlet.http.HttpServletRequest;
+
+import net.woodstock.rockframework.util.Assert;
+import net.woodstock.rockframework.utils.IOUtils;
+import net.woodstock.rockframework.utils.LocaleUtils;
+import net.woodstock.rockframework.utils.StringUtils;
 
 public abstract class RequestUtils {
 
@@ -47,6 +56,7 @@ public abstract class RequestUtils {
 	}
 
 	public static String getApplicationUrl(final HttpServletRequest request) {
+		Assert.notNull(request, "request");
 		StringBuilder builder = new StringBuilder();
 		builder.append(request.getScheme());
 		builder.append("://");
@@ -58,6 +68,7 @@ public abstract class RequestUtils {
 	}
 
 	public static String getRequestUrl(final HttpServletRequest request) {
+		Assert.notNull(request, "request");
 		StringBuilder builder = new StringBuilder();
 		builder.append(RequestUtils.getApplicationUrl(request));
 		builder.append(request.getServletPath());
@@ -66,6 +77,7 @@ public abstract class RequestUtils {
 	}
 
 	public static String getFullRequestUrl(final HttpServletRequest request) {
+		Assert.notNull(request, "request");
 		StringBuilder builder = new StringBuilder();
 		builder.append(RequestUtils.getApplicationUrl(request));
 		builder.append(request.getServletPath());
@@ -79,6 +91,7 @@ public abstract class RequestUtils {
 	}
 
 	public static String getRequestAddress(final HttpServletRequest request) {
+		Assert.notNull(request, "request");
 		String address = request.getHeader(RequestUtils.HEADER_X_FORWARDED_FOR);
 
 		if (address != null) {
@@ -92,11 +105,23 @@ public abstract class RequestUtils {
 	}
 
 	public static String getMethod(final HttpServletRequest request) {
+		Assert.notNull(request, "request");
 		return request.getMethod();
 	}
 
 	public static String getReferer(final HttpServletRequest request) {
+		Assert.notNull(request, "request");
 		return request.getHeader(RequestUtils.HEADER_REFERER);
 	}
 
+	public static String getRequestBody(final HttpServletRequest request) throws IOException {
+		Assert.notNull(request, "request");
+		InputStream inputStream = request.getInputStream();
+		Charset charset = LocaleUtils.getCharset();
+		if (StringUtils.isEmpty(request.getCharacterEncoding())) {
+			charset = Charset.forName(request.getCharacterEncoding());
+		}
+		String body = new String(IOUtils.toByteArray(inputStream), charset);
+		return body;
+	}
 }

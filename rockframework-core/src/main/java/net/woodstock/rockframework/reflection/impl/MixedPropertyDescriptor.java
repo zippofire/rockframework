@@ -48,7 +48,11 @@ class MixedPropertyDescriptor implements PropertyDescriptor {
 			}
 		}
 
-		return this.methodPropertyDescriptor.getAnnotation(clazz);
+		if (this.methodPropertyDescriptor != null) {
+			return this.methodPropertyDescriptor.getAnnotation(clazz);
+		}
+
+		return null;
 	}
 
 	@Override
@@ -73,7 +77,10 @@ class MixedPropertyDescriptor implements PropertyDescriptor {
 		if (this.fieldPropertyDescriptor != null) {
 			return this.fieldPropertyDescriptor.getModifiers();
 		}
-		return this.methodPropertyDescriptor.getModifiers();
+		if (this.methodPropertyDescriptor != null) {
+			return this.methodPropertyDescriptor.getModifiers();
+		}
+		return -1;
 	}
 
 	@Override
@@ -81,7 +88,10 @@ class MixedPropertyDescriptor implements PropertyDescriptor {
 		if (this.fieldPropertyDescriptor != null) {
 			return this.fieldPropertyDescriptor.getName();
 		}
-		return this.methodPropertyDescriptor.getName();
+		if (this.methodPropertyDescriptor != null) {
+			return this.methodPropertyDescriptor.getName();
+		}
+		return null;
 	}
 
 	@Override
@@ -89,7 +99,10 @@ class MixedPropertyDescriptor implements PropertyDescriptor {
 		if (this.fieldPropertyDescriptor != null) {
 			return this.fieldPropertyDescriptor.getType();
 		}
-		return this.methodPropertyDescriptor.getType();
+		if (this.methodPropertyDescriptor != null) {
+			return this.methodPropertyDescriptor.getType();
+		}
+		return null;
 	}
 
 	@Override
@@ -97,7 +110,10 @@ class MixedPropertyDescriptor implements PropertyDescriptor {
 		if (this.fieldPropertyDescriptor != null) {
 			return this.fieldPropertyDescriptor.getValue(o);
 		}
-		return this.methodPropertyDescriptor.getValue(o);
+		if (this.methodPropertyDescriptor != null) {
+			return this.methodPropertyDescriptor.getValue(o);
+		}
+		return null;
 	}
 
 	@Override
@@ -109,7 +125,11 @@ class MixedPropertyDescriptor implements PropertyDescriptor {
 			}
 		}
 
-		return this.methodPropertyDescriptor.isAnnotationPresent(clazz);
+		if (this.methodPropertyDescriptor != null) {
+			return this.methodPropertyDescriptor.isAnnotationPresent(clazz);
+		}
+
+		return false;
 	}
 
 	@Override
@@ -117,7 +137,10 @@ class MixedPropertyDescriptor implements PropertyDescriptor {
 		if (this.fieldPropertyDescriptor != null) {
 			return this.fieldPropertyDescriptor.isReadable();
 		}
-		return this.methodPropertyDescriptor.isReadable();
+		if (this.methodPropertyDescriptor != null) {
+			return this.methodPropertyDescriptor.isReadable();
+		}
+		return false;
 	}
 
 	@Override
@@ -125,7 +148,10 @@ class MixedPropertyDescriptor implements PropertyDescriptor {
 		if (this.fieldPropertyDescriptor != null) {
 			return this.fieldPropertyDescriptor.isWriteable();
 		}
-		return this.methodPropertyDescriptor.isWriteable();
+		if (this.methodPropertyDescriptor != null) {
+			return this.methodPropertyDescriptor.isWriteable();
+		}
+		return false;
 	}
 
 	@Override
@@ -133,7 +159,9 @@ class MixedPropertyDescriptor implements PropertyDescriptor {
 		if (this.fieldPropertyDescriptor != null) {
 			this.fieldPropertyDescriptor.setValue(o, value);
 		}
-		this.methodPropertyDescriptor.setValue(o, value);
+		if (this.methodPropertyDescriptor != null) {
+			this.methodPropertyDescriptor.setValue(o, value);
+		}
 	}
 
 	@Override

@@ -27,6 +27,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.woodstock.rockframework.util.Assert;
+
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadBase;
@@ -49,6 +51,7 @@ public class MultPartForm {
 	private boolean						multpart;
 
 	public MultPartForm(final HttpServletRequest request) throws FileUploadException {
+		Assert.notNull(request, "request");
 		this.parameters = new HashMap<String, String>();
 		this.files = new HashMap<String, FileItem>();
 

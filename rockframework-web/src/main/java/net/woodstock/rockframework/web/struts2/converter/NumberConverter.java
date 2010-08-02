@@ -20,6 +20,7 @@ import java.lang.reflect.Constructor;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
+import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.web.config.WebLog;
 
 public abstract class NumberConverter extends TypeConverter<Number> {
@@ -28,11 +29,13 @@ public abstract class NumberConverter extends TypeConverter<Number> {
 
 	public NumberConverter(final String format) {
 		super();
+		Assert.notNull(format, "format");
 		this.format = new DecimalFormat(format);
 	}
 
 	public NumberConverter(final NumberFormat format) {
 		super();
+		Assert.notNull(format, "format");
 		this.format = format;
 	}
 

@@ -19,37 +19,20 @@ package net.woodstock.rockframework.web.filter;
 import java.io.IOException;
 
 import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.woodstock.rockframework.util.Assert;
+
 public abstract class HttpFilter extends AbstractFilter {
 
-	@Override
-	public final void destroy() {
-		this.doDestroy();
-		super.destroy();
-	}
-
-	@Override
-	public final void init(final FilterConfig filterConfig) {
-		super.init(filterConfig);
-		this.doInit();
-	}
-
 	public final void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
+		Assert.instanceOf(request, HttpServletRequest.class, "request");
+		Assert.instanceOf(response, HttpServletResponse.class, "response");
 		this.doFilter((HttpServletRequest) request, (HttpServletResponse) response, chain);
-	}
-
-	public void doInit() {
-		//
-	}
-
-	public void doDestroy() {
-		//
 	}
 
 	public abstract void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException;

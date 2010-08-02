@@ -14,20 +14,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.web.servlet;
+package net.woodstock.rockframework.web.jsp.taglib.creator;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public abstract class AbstractHttpServlet extends HttpServlet {
+@Documented
+@Retention(value = RetentionPolicy.RUNTIME)
+@Target(value = ElementType.TYPE)
+public @interface Tag {
 
-	private static final long	serialVersionUID	= -5677220024908433472L;
+	String name();
 
-	@Override
-	public final void init(final ServletConfig config) throws ServletException {
-		super.init(config);
-		this.init();
-	}
+	String description() default "";
+
+	BodyContent content();
+
+	boolean DynamicAttributes() default false;
 
 }

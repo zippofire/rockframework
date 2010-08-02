@@ -18,21 +18,23 @@ package net.woodstock.rockframework.web.filter;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterConfig;
-import javax.servlet.ServletContext;
-
-import net.woodstock.rockframework.web.config.WebLog;
 
 public abstract class AbstractFilter implements Filter {
 
 	private FilterConfig	filterConfig;
 
 	public void destroy() {
-		WebLog.getInstance().getLog().info("Filter: " + this.getClass().getName() + " destroyed");
+		//
 	}
 
-	public void init(final FilterConfig filterConfig) {
-		WebLog.getInstance().getLog().info("Filter: " + this.getClass().getName() + " initialized");
+	public final void init(final FilterConfig filterConfig) {
 		this.filterConfig = filterConfig;
+		this.init();
+	}
+
+	// Override
+	public void init() {
+		//
 	}
 
 	// Config
@@ -43,10 +45,5 @@ public abstract class AbstractFilter implements Filter {
 	// Parameter
 	protected String getInitParameter(final String name) {
 		return this.filterConfig.getInitParameter(name);
-	}
-
-	// Context
-	protected ServletContext getServletContext() {
-		return this.filterConfig.getServletContext();
 	}
 }

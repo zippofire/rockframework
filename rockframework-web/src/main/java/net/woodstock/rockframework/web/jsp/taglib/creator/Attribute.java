@@ -24,11 +24,13 @@ import java.lang.annotation.Target;
 
 @Documented
 @Retention(value = RetentionPolicy.RUNTIME)
-@Target(value = ElementType.TYPE)
-public @interface TLD {
+@Target(value = { ElementType.FIELD, ElementType.METHOD })
+public @interface Attribute {
 
-	String name();
+	boolean required() default false;
 
-	BodyContent content();
+	boolean rtexprvalue() default false;
+
+	Class<?> type() default String.class;
 
 }

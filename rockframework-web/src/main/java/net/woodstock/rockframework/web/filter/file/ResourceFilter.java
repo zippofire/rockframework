@@ -41,7 +41,7 @@ public class ResourceFilter extends HttpFilter {
 	private String[]			deny;
 
 	@Override
-	public void doInit() {
+	public void init() {
 		String deny = this.getInitParameter(ResourceFilter.DENY_PARAMETER);
 		if (!StringUtils.isEmpty(deny)) {
 			this.deny = deny.split(",");

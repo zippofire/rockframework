@@ -16,19 +16,14 @@
  */
 package net.woodstock.rockframework.web.jsp.taglib.creator;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+public abstract class TLDBuilder {
 
-@Documented
-@Retention(value = RetentionPolicy.RUNTIME)
-@Target(value = ElementType.FIELD)
-public @interface TLDAttribute {
+	private static TLDBuilder	instance	= new TLDBuilderImpl();
 
-	boolean required() default false;
+	public abstract String create(final Class<?> clazz);
 
-	boolean rtexprvalue() default false;
+	public static TLDBuilder getInstance() {
+		return TLDBuilder.instance;
+	}
 
 }
