@@ -76,6 +76,7 @@
 			<version>1.6</version>
 			<scope>system</scope>
 			<systemPath>${java.home}/lib/rt.jar</systemPath>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>javax.validation</groupId>
