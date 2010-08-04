@@ -32,7 +32,7 @@ import net.woodstock.rockframework.domain.business.ValidationException;
 import net.woodstock.rockframework.domain.business.ValidationResult;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
-import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactoryImpl;
+import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilderImpl;
 
 @SuppressWarnings("unchecked")
 public abstract class AbstractJPABusiness extends AbstractBusiness {
@@ -55,7 +55,7 @@ public abstract class AbstractJPABusiness extends AbstractBusiness {
 			throw new ValidationException(CoreMessage.getInstance().getMessage(""));
 		}
 
-		BeanDescriptor beanDescriptor = BeanDescriptorFactoryImpl.getInstance().getBeanDescriptor(entity.getClass());
+		BeanDescriptor beanDescriptor = new BeanDescriptorBuilderImpl().setType(entity.getClass()).getBeanDescriptor();
 		for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
 			for (Annotation annotation : propertyDescriptor.getAnnotations()) {
 				if (annotation instanceof Id) {

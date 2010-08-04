@@ -19,13 +19,15 @@ package net.woodstock.rockframework.domain.persistence.query.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.persistence.query.LikeMode;
+import net.woodstock.rockframework.domain.persistence.query.QueryBuilder;
 import net.woodstock.rockframework.domain.persistence.util.Constants;
 
 public abstract class EJBQLQueryBuilder<T> extends AbstractQueryBuilder<T> {
 
-	private boolean				build	= false;
+	private boolean				build;
 
 	private Map<String, Object>	options;
 
@@ -35,44 +37,41 @@ public abstract class EJBQLQueryBuilder<T> extends AbstractQueryBuilder<T> {
 
 	public EJBQLQueryBuilder() {
 		super();
+		this.reset();
+	}
+
+	@Override
+	public void reset() {
+		this.build = false;
+		this.context = null;
+		this.entity = null;
 		this.options = new HashMap<String, Object>();
 		this.options.put(Constants.OPTION_IGNORE_CASE, Boolean.TRUE);
 		this.options.put(Constants.OPTION_LIKE_MODE, LikeMode.ALL);
 	}
 
 	@Override
-	public void setEntity(final Entity<?> entity) {
+	public QueryBuilder<T> setEntity(final Entity<?> entity) {
 		if (this.build) {
-			throw new IllegalStateException("Query alread build");
+			CoreLog.getInstance().getLog().warn("Query alread build");
+		} else {
+			this.entity = entity;
 		}
-		this.entity = entity;
+		return this;
 	}
 
-	public void setOption(final String name, final Object value) {
+	public QueryBuilder<T> setOption(final String name, final Object value) {
 		if (this.build) {
-			throw new IllegalStateException("Query alread build");
+			CoreLog.getInstance().getLog().warn("Query alread build");
+		} else {
+			this.options.put(name, value);
 		}
-		this.options.put(name, value);
-	}
-
-	public void build() {
-		if (this.build) {
-			throw new IllegalStateException("Query alread build");
-		}
-		this.context = QueryContextHelper.createQueryContext(this.entity, this.options);
-		this.build = true;
-	}
-
-	public String getQueryString() {
-		if (!this.build) {
-			throw new IllegalStateException("Query not build");
-		}
-		return this.context.getQueryString();
+		return this;
 	}
 
 	public T getQuery() {
 		if (this.context == null) {
-			throw new IllegalStateException("Query not build");
+			this.build();
 		}
 		String sql = this.context.getQueryString();
 
@@ -84,6 +83,18 @@ public abstract class EJBQLQueryBuilder<T> extends AbstractQueryBuilder<T> {
 			this.setQueryParameter(query, parameter.getAlias(), parameter.getValue());
 		}
 		return query;
+	}
+
+	protected QueryContext getContext() {
+		if (this.context == null) {
+			this.build();
+		}
+		return this.context;
+	}
+
+	private void build() {
+		this.context = QueryContextHelper.createQueryContext(this.entity, this.options);
+		this.build = true;
 	}
 
 	protected abstract T getQuery(String sql);

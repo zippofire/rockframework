@@ -112,7 +112,6 @@ class CommonHibernateGenericRepository implements GenericRepository {
 				builder.setOption(option.getKey(), option.getValue());
 			}
 		}
-		builder.build();
 		Query q = builder.getQuery();
 		Collection<E> list = q.list();
 		return list;

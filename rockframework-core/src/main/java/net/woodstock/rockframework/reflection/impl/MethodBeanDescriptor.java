@@ -35,11 +35,12 @@ class MethodBeanDescriptor extends AbstractBeanDescriptor {
 				if (!this.hasProperty(propertyName)) {
 					Class<?> returnType = BeanDescriptorHelper.getPropertyType(method);
 					PropertyDescriptor property = new MethodPropertyDescriptor(this, propertyName, returnType);
-					this.getProperties().add(property);
+					if ((property.isReadable()) || (property.isWriteable())) {
+						this.getProperties().add(property);
+					}
 				}
 			}
 		}
-		c = c.getSuperclass();
 	}
 
 }

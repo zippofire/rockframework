@@ -4,15 +4,19 @@ import javax.persistence.Column;
 
 import junit.framework.TestCase;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
+import net.woodstock.rockframework.reflection.BeanDescriptorBuilder;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.ReflectionType;
-import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactoryImpl;
+import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilderImpl;
 
 public class ReflectionTest extends TestCase {
 
 	public void test1() throws Exception {
 		long time = System.currentTimeMillis();
-		BeanDescriptor beanDescriptor = BeanDescriptorFactoryImpl.getInstance(ReflectionType.MIXED).getBeanDescriptor(X.class);
+		BeanDescriptorBuilder builder = new BeanDescriptorBuilderImpl();
+		builder.setMode(ReflectionType.MIXED);
+		builder.setType(X.class);
+		BeanDescriptor beanDescriptor = builder.getBeanDescriptor();
 		X x = new X();
 		x.setFirstName("Lourival");
 		x.setLastName("Sabino");

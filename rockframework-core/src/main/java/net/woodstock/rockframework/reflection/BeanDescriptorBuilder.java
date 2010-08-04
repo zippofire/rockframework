@@ -14,21 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.persistence.query;
+package net.woodstock.rockframework.reflection;
 
-import net.woodstock.rockframework.domain.Entity;
+public interface BeanDescriptorBuilder {
 
-public interface QueryBuilder<T> {
+	BeanDescriptorBuilder setType(Class<?> type);
 
-	// Reset
-	void reset();
+	BeanDescriptorBuilder setMode(ReflectionType mode);
 
-	// Set
-	QueryBuilder<T> setEntity(Entity<?> entity);
-
-	QueryBuilder<T> setOption(String name, Object value);
-
-	// Get
-	T getQuery();
+	BeanDescriptor getBeanDescriptor();
 
 }

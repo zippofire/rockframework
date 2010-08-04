@@ -63,7 +63,6 @@ class CommonJPAGenericRepository implements GenericRepository {
 				builder.setOption(option.getKey(), option.getValue());
 			}
 		}
-		builder.build();
 		Query q = builder.getQuery();
 		Collection<E> list = q.getResultList();
 		return list;

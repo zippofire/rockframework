@@ -21,12 +21,20 @@ public class TestEJBQL extends TestCase {
 		return this.getFoo().getBar();
 	}
 
+	public void test0() throws Exception {
+		Foo foo = new Foo();
+
+		QueryBuilderAdapter builder = new QueryBuilderAdapter();
+		builder.setEntity(foo);
+		String sql = builder.getQueryString();
+		System.out.println(sql);
+	}
+
 	public void test1() throws Exception {
 		Foo foo = this.getFoo();
 
 		QueryBuilderAdapter builder = new QueryBuilderAdapter();
 		builder.setEntity(foo);
-		builder.build();
 
 		String sql = builder.getQueryString();
 		System.out.println(sql);
@@ -37,7 +45,6 @@ public class TestEJBQL extends TestCase {
 
 		QueryBuilderAdapter builder = new QueryBuilderAdapter();
 		builder.setEntity(bar);
-		builder.build();
 		String sql = builder.getQueryString();
 		System.out.println(sql);
 	}

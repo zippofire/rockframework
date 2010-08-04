@@ -41,7 +41,9 @@ class FieldBeanDescriptor extends AbstractBeanDescriptor {
 				}
 
 				PropertyDescriptor property = new FieldPropertyDescriptor(this, field);
-				this.getProperties().add(property);
+				if ((property.isReadable()) || (property.isWriteable())) {
+					this.getProperties().add(property);
+				}
 			}
 			c = c.getSuperclass();
 		}

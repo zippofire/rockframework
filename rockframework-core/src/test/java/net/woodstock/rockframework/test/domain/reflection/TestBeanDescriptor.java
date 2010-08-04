@@ -7,15 +7,20 @@ import javax.persistence.Id;
 
 import junit.framework.TestCase;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
+import net.woodstock.rockframework.reflection.BeanDescriptorBuilder;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.ReflectionType;
-import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactoryImpl;
+import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilderImpl;
 
 public class TestBeanDescriptor extends TestCase {
 
-	public void xtest1() throws Exception {
+	public void test1() throws Exception {
 		X x = new X();
-		BeanDescriptor bean = BeanDescriptorFactoryImpl.getInstance(ReflectionType.METHOD).getBeanDescriptor(x.getClass());
+		BeanDescriptorBuilder builder = new BeanDescriptorBuilderImpl();
+		builder.setMode(ReflectionType.METHOD);
+		builder.setType(x.getClass());
+
+		BeanDescriptor bean = builder.getBeanDescriptor();
 
 		bean.getProperty("id").setValue(x, new Integer(1));
 		bean.getProperty("firstName").setValue(x, "Lourival");
@@ -31,7 +36,9 @@ public class TestBeanDescriptor extends TestCase {
 	public void xtest2() throws Exception {
 		X x = new X();
 
-		BeanDescriptor bean = BeanDescriptorFactoryImpl.getInstance().getBeanDescriptor(x.getClass());
+		BeanDescriptorBuilder builder = new BeanDescriptorBuilderImpl();
+		builder.setType(x.getClass());
+		BeanDescriptor bean = builder.getBeanDescriptor();
 
 		bean.getProperty("id").setValue(x, new Integer(1));
 		bean.getProperty("firstName").setValue(x, "Lourival");
@@ -42,8 +49,12 @@ public class TestBeanDescriptor extends TestCase {
 		}
 	}
 
-	public void test3() throws Exception {
-		BeanDescriptor bean = BeanDescriptorFactoryImpl.getInstance(ReflectionType.MIXED).getBeanDescriptor(X.class);
+	public void xtest3() throws Exception {
+		BeanDescriptorBuilder builder = new BeanDescriptorBuilderImpl();
+		builder.setMode(ReflectionType.MIXED);
+		builder.setType(X.class);
+
+		BeanDescriptor bean = builder.getBeanDescriptor();
 		PropertyDescriptor property = bean.getProperty("id");
 		Annotation[] annotations = property.getAnnotations();
 		for (Annotation annotation : annotations) {

@@ -15,7 +15,6 @@ public class TestEJBQL2 extends TestCase {
 
 		QueryBuilderAdapter builder = new QueryBuilderAdapter();
 		builder.setEntity(foo);
-		builder.build();
 		String sql = builder.getQueryString();
 		System.out.println(sql);
 	}

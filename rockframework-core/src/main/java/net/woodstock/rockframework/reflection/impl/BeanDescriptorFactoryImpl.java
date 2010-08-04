@@ -18,11 +18,10 @@ package net.woodstock.rockframework.reflection.impl;
 
 import net.woodstock.rockframework.config.CoreConfig;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
-import net.woodstock.rockframework.reflection.BeanDescriptorFactory;
 import net.woodstock.rockframework.reflection.ReflectionType;
 import net.woodstock.rockframework.util.Assert;
 
-public abstract class BeanDescriptorFactoryImpl implements BeanDescriptorFactory {
+abstract class BeanDescriptorFactoryImpl implements BeanDescriptorFactory {
 
 	public static final String				REFLECTION_TYPE_PROPERTY	= "reflection.type";
 

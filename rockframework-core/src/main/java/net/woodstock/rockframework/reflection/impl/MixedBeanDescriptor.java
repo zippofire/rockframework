@@ -32,8 +32,8 @@ class MixedBeanDescriptor extends AbstractBeanDescriptor {
 
 	@Override
 	public void init() {
-		this.byFieldBeanDescriptor = BeanDescriptorFactoryImpl.getInstance(ReflectionType.FIELD).getBeanDescriptor(this.getType());
-		this.byMethodBeanDescriptor = BeanDescriptorFactoryImpl.getInstance(ReflectionType.METHOD).getBeanDescriptor(this.getType());
+		this.byFieldBeanDescriptor = new BeanDescriptorBuilderImpl().setMode(ReflectionType.FIELD).setType(this.getType()).getBeanDescriptor();
+		this.byMethodBeanDescriptor = new BeanDescriptorBuilderImpl().setMode(ReflectionType.METHOD).setType(this.getType()).getBeanDescriptor();
 
 		for (PropertyDescriptor fieldProperty : this.byFieldBeanDescriptor.getProperties()) {
 			String name = fieldProperty.getName();

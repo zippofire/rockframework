@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 
 import net.woodstock.rockframework.domain.Entity;
 
+@javax.persistence.Entity
 public class Foo implements Entity<Integer> {
 
 	private static final long	serialVersionUID	= 1L;

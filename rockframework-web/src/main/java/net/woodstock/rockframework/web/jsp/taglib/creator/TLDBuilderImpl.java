@@ -19,7 +19,7 @@ package net.woodstock.rockframework.web.jsp.taglib.creator;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.ReflectionType;
-import net.woodstock.rockframework.reflection.impl.BeanDescriptorFactoryImpl;
+import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilderImpl;
 import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.xml.dom.XmlDocument;
 import net.woodstock.rockframework.xml.dom.XmlElement;
@@ -55,7 +55,7 @@ class TLDBuilderImpl extends TLDBuilder {
 			root.addElement("dynamic-attributes", dynamicAttributes);
 		}
 
-		BeanDescriptor beanDescriptor = BeanDescriptorFactoryImpl.getInstance(ReflectionType.MIXED).getBeanDescriptor(clazz);
+		BeanDescriptor beanDescriptor = new BeanDescriptorBuilderImpl().setType(clazz).setMode(ReflectionType.MIXED).getBeanDescriptor();
 
 		for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
 			if (!propertyDescriptor.isAnnotationPresent(Attribute.class)) {

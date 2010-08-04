@@ -55,7 +55,6 @@ public class TestQuery extends TestCase {
 		builder.setEntity(bar);
 		builder.setOption(Constants.OPTION_LIKE_MODE, LikeMode.ALL);
 		builder.setOption(Constants.OPTION_IGNORE_CASE, Boolean.TRUE);
-		builder.build();
 
 		String s = builder.getQueryString();
 		System.out.println(s);
@@ -70,7 +69,6 @@ public class TestQuery extends TestCase {
 		builder.setEntity(foo);
 		builder.setOption(Constants.OPTION_LIKE_MODE, LikeMode.ALL);
 		builder.setOption(Constants.OPTION_IGNORE_CASE, Boolean.TRUE);
-		builder.build();
 
 		String s = builder.getQueryString();
 		System.out.println(s);
@@ -86,7 +84,6 @@ public class TestQuery extends TestCase {
 		builder.setOption(Constants.OPTION_LIKE_MODE, LikeMode.ALL);
 		builder.setOption(Constants.OPTION_IGNORE_CASE, Boolean.TRUE);
 		builder.setOption(Constants.OPTION_ORDER_BY, "nome ASC, id DESC");
-		builder.build();
 
 		String s = builder.getQueryString();
 		System.out.println(s);
@@ -104,7 +101,6 @@ public class TestQuery extends TestCase {
 		builder.setEntity(foo);
 		builder.setOption(Constants.OPTION_LIKE_MODE, LikeMode.ALL);
 		builder.setOption(Constants.OPTION_IGNORE_CASE, Boolean.TRUE);
-		builder.build();
 
 		String s = builder.getQueryString();
 		System.out.println(s);
@@ -123,7 +119,6 @@ public class TestQuery extends TestCase {
 		builder.setEntity(baz);
 		builder.setOption(Constants.OPTION_LIKE_MODE, LikeMode.ALL);
 		builder.setOption(Constants.OPTION_IGNORE_CASE, Boolean.TRUE);
-		builder.build();
 
 		String s = builder.getQueryString();
 		System.out.println(s);

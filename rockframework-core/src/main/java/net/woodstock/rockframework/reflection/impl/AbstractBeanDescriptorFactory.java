@@ -21,7 +21,6 @@ import net.woodstock.rockframework.cache.CacheManager;
 import net.woodstock.rockframework.cache.impl.CacheManagerImpl;
 import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
-import net.woodstock.rockframework.reflection.BeanDescriptorFactory;
 import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.utils.ObjectUtils;
 
@@ -48,7 +47,6 @@ abstract class AbstractBeanDescriptorFactory implements BeanDescriptorFactory {
 		return this.cache.contains(clazz.getCanonicalName());
 	}
 
-	@Override
 	public final BeanDescriptor getBeanDescriptor(final Class<?> clazz) {
 		Assert.notNull(clazz, "clazz");
 

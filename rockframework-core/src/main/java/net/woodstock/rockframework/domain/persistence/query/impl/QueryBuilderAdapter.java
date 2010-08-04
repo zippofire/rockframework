@@ -52,4 +52,8 @@ public class QueryBuilderAdapter extends EJBQLQueryBuilder<Object> {
 		CoreLog.getInstance().getLog().warn("setQueryParameter[" + name + "] => " + value);
 	}
 
+	public String getQueryString() {
+		return this.getContext().getQueryString();
+	}
+
 }
