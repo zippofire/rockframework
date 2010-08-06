@@ -34,10 +34,12 @@ public abstract class Interceptor implements com.opensymphony.xwork2.interceptor
 		super();
 	}
 
+	@Override
 	public void destroy() {
 		WebLog.getInstance().getLog().debug("Destroying " + this.getClass().getCanonicalName());
 	}
 
+	@Override
 	public void init() {
 		WebLog.getInstance().getLog().debug("Initing " + this.getClass().getCanonicalName());
 	}

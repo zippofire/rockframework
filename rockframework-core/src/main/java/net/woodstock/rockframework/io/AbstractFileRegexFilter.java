@@ -39,6 +39,7 @@ abstract class AbstractFileRegexFilter implements FilenameFilter {
 		this.filter = filter;
 	}
 
+	@Override
 	public boolean accept(final File dir, final String name) {
 		if (StringUtils.isEmpty(this.filter)) {
 			return true;

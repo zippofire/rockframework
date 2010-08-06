@@ -92,7 +92,7 @@ public abstract class Assert {
 	}
 
 	// Instance
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void instanceOf(final Object value, final Class type, final String name) {
 		Assert.notNull(value, name);
 		Assert.notNull(type, "type");
@@ -104,7 +104,7 @@ public abstract class Assert {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void instanceOf(final Object value, final Class[] types, final String name) {
 		Assert.notNull(value, name);
 		Assert.notEmpty(types, "types");
@@ -197,7 +197,7 @@ public abstract class Assert {
 	}
 
 	// Not Empty
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public static void notEmpty(final Collection collection, final String name) {
 		Assert.notNull(collection, name);
 
@@ -206,7 +206,7 @@ public abstract class Assert {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public static void notEmpty(final Map map, final String name) {
 		Assert.notNull(map, name);
 

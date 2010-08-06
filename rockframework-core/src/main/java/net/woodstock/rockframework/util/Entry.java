@@ -43,6 +43,7 @@ public class Entry<K, V> implements Map.Entry<K, V>, Serializable {
 		this.value = value;
 	}
 
+	@Override
 	public K getKey() {
 		return this.key;
 	}
@@ -52,17 +53,18 @@ public class Entry<K, V> implements Map.Entry<K, V>, Serializable {
 		return this.key;
 	}
 
+	@Override
 	public V getValue() {
 		return this.value;
 	}
 
+	@Override
 	public V setValue(final V value) {
 		this.value = value;
 		return this.value;
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public boolean equals(final Object o) {
 		if (o == null) {
 			return false;

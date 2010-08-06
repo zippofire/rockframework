@@ -43,6 +43,7 @@ public abstract class JasperAction<T> extends Action implements JasperableAction
 
 	private String				contentDisposition	= ResponseUtils.INLINE_CONTENT_DISPOSITION;
 
+	@Override
 	public String getLocation() {
 		return this.location;
 	}
@@ -51,6 +52,7 @@ public abstract class JasperAction<T> extends Action implements JasperableAction
 		this.location = location;
 	}
 
+	@Override
 	public T getDataSource() {
 		return this.dataSource;
 	}
@@ -59,6 +61,7 @@ public abstract class JasperAction<T> extends Action implements JasperableAction
 		this.dataSource = dataSource;
 	}
 
+	@Override
 	public String getFormat() {
 		return this.format;
 	}
@@ -67,6 +70,7 @@ public abstract class JasperAction<T> extends Action implements JasperableAction
 		this.format = format;
 	}
 
+	@Override
 	public String getName() {
 		return this.name;
 	}
@@ -75,6 +79,7 @@ public abstract class JasperAction<T> extends Action implements JasperableAction
 		this.name = name;
 	}
 
+	@Override
 	public String getContentDisposition() {
 		return this.contentDisposition;
 	}

@@ -30,14 +30,17 @@ class DelegateIterator<E> implements Iterator<E> {
 		this.iterator = iterator;
 	}
 
+	@Override
 	public boolean hasNext() {
 		return this.iterator.hasNext();
 	}
 
+	@Override
 	public E next() {
 		return this.iterator.next();
 	}
 
+	@Override
 	public void remove() {
 		this.iterator.remove();
 	}

@@ -23,7 +23,7 @@ import net.woodstock.rockframework.domain.business.ValidationResult;
 import org.hibernate.validator.ClassValidator;
 import org.hibernate.validator.InvalidValue;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public abstract class AbstractHibernateBusiness extends AbstractBusiness {
 
 	public AbstractHibernateBusiness() {
@@ -43,10 +43,12 @@ public abstract class AbstractHibernateBusiness extends AbstractBusiness {
 	}
 
 	// CRUD
+	@Override
 	public ValidationResult validateSave(final Entity entity) {
 		return this.validate(entity);
 	}
 
+	@Override
 	public ValidationResult validateUpdate(final Entity entity) {
 		return this.validate(entity);
 	}

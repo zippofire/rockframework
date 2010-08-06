@@ -42,6 +42,7 @@ public class SimpleDigester implements Digester {
 		return b;
 	}
 
+	@Override
 	public String digest(final String data) {
 		byte[] b = this.digestInternal(data);
 		return new String(b, LocaleUtils.getCharset());

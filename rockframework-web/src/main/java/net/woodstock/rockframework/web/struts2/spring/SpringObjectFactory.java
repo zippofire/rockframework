@@ -29,7 +29,7 @@ public class SpringObjectFactory extends ObjectFactory {
 	private static final long	serialVersionUID	= -3223027211302424826L;
 
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Object buildBean(final Class clazz, final Map extraContext) throws Exception {
 		try {
 			return ContextHelper.getInstance().getObject(clazz);

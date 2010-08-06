@@ -36,17 +36,20 @@ class CommonJPAGenericRepository implements GenericRepository {
 		this.entityManager = entityManager;
 	}
 
+	@Override
 	public void delete(final Entity<?> e) {
 		this.entityManager.remove(e);
 	}
 
 	@SuppressWarnings("unchecked")
+	@Override
 	public <E extends Entity<?>> E get(final E entity) {
 		E e = (E) this.entityManager.find(entity.getClass(), entity.getId());
 		return e;
 	}
 
 	@SuppressWarnings("unchecked")
+	@Override
 	public <E extends Entity<?>> Collection<E> listAll(final E e, final Map<String, Object> options) {
 		String sql = RepositoryHelper.getListAllSql(e.getClass(), options, false);
 		Query q = this.entityManager.createQuery(sql);
@@ -55,6 +58,7 @@ class CommonJPAGenericRepository implements GenericRepository {
 	}
 
 	@SuppressWarnings("unchecked")
+	@Override
 	public <E extends Entity<?>> Collection<E> listByExample(final E e, final Map<String, Object> options) {
 		JPAQueryBuilder builder = new JPAQueryBuilder(this.entityManager);
 		builder.setEntity(e);
@@ -68,10 +72,12 @@ class CommonJPAGenericRepository implements GenericRepository {
 		return list;
 	}
 
+	@Override
 	public void save(final Entity<?> e) {
 		this.entityManager.persist(e);
 	}
 
+	@Override
 	public void update(final Entity<?> e) {
 		this.entityManager.merge(e);
 	}

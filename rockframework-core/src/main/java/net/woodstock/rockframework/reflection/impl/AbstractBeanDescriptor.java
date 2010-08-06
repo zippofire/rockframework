@@ -38,6 +38,7 @@ abstract class AbstractBeanDescriptor implements BeanDescriptor {
 
 	public abstract void init();
 
+	@Override
 	public String getName() {
 		return this.type.getSimpleName();
 	}
@@ -47,6 +48,7 @@ abstract class AbstractBeanDescriptor implements BeanDescriptor {
 		return this.type;
 	}
 
+	@Override
 	public boolean hasProperty(final String name) {
 		for (PropertyDescriptor property : this.properties) {
 			if (property.getName().equals(name)) {
@@ -71,10 +73,12 @@ abstract class AbstractBeanDescriptor implements BeanDescriptor {
 		return this.properties;
 	}
 
+	@Override
 	public boolean isAnnotationPresent(final Class<? extends Annotation> clazz) {
 		return this.type.isAnnotationPresent(clazz);
 	}
 
+	@Override
 	public <T extends Annotation> T getAnnotation(final Class<T> clazz) {
 		return this.type.getAnnotation(clazz);
 	}

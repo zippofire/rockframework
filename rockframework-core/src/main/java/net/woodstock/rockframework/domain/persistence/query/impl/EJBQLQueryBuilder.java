@@ -60,6 +60,7 @@ public abstract class EJBQLQueryBuilder<T> extends AbstractQueryBuilder<T> {
 		return this;
 	}
 
+	@Override
 	public QueryBuilder<T> setOption(final String name, final Object value) {
 		if (this.build) {
 			CoreLog.getInstance().getLog().warn("Query alread build");
@@ -69,6 +70,7 @@ public abstract class EJBQLQueryBuilder<T> extends AbstractQueryBuilder<T> {
 		return this;
 	}
 
+	@Override
 	public T getQuery() {
 		if (this.context == null) {
 			this.build();

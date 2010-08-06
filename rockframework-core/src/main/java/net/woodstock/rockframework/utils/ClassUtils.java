@@ -207,7 +207,6 @@ public abstract class ClassUtils {
 		return types;
 	}
 
-	@SuppressWarnings("unchecked")
 	public static Collection<Class<?>> getGenericType(final Field f) throws ClassNotFoundException {
 		Collection<Class<?>> types = new LinkedList<Class<?>>();
 

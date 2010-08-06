@@ -23,7 +23,7 @@ public interface QueryableRepository extends Repository {
 
 	Object getSingle(String sql, Map<String, Object> parameters);
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	Collection getCollection(String sql, Map<String, Object> parameters);
 
 	void executeUpdate(String sql, Map<String, Object> parameters);

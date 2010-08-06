@@ -46,6 +46,7 @@ public abstract class DownloadAction extends Action implements DownloadableActio
 
 	private String				contentDisposition;
 
+	@Override
 	public InputStream getInputStream() {
 		return this.inputStream;
 	}
@@ -67,6 +68,7 @@ public abstract class DownloadAction extends Action implements DownloadableActio
 		this.inputStream = new FileInputStream(file);
 	}
 
+	@Override
 	public String getContentType() {
 		return this.contentType;
 	}
@@ -75,6 +77,7 @@ public abstract class DownloadAction extends Action implements DownloadableActio
 		this.contentType = contentType;
 	}
 
+	@Override
 	public String getContentDisposition() {
 		return this.contentDisposition;
 	}

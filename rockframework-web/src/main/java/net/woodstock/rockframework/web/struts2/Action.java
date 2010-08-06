@@ -28,6 +28,7 @@ public abstract class Action extends ActionSupport implements Preparable {
 
 	private static final long	serialVersionUID	= 655502050649662609L;
 
+	@Override
 	public final void prepare() throws Exception {
 		this.prepare(this.getRequest());
 	}

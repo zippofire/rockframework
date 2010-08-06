@@ -46,6 +46,7 @@ public class EntityInterceptor extends Interceptor {
 	private static final String	ENTITY_SEPARATOR	= ".";
 
 	@SuppressWarnings("unchecked")
+	@Override
 	public String intercept(final ActionInvocation invocation) throws Exception {
 		Object action = invocation.getAction();
 		ActionContext ac = invocation.getInvocationContext();
@@ -74,7 +75,6 @@ public class EntityInterceptor extends Interceptor {
 		return invocation.invoke();
 	}
 
-	@SuppressWarnings("unchecked")
 	private void setIdParameter(final Object action, final String entityName, final String value) throws OgnlException {
 		try {
 			Object obj = Ognl.getValue(entityName, action);

@@ -36,7 +36,7 @@ class CommonJPASQLRepository extends AbstractJPAQueryableRepository implements S
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected Query getQuery(final String sql, final Map<String, Object> parameters) {
 		EntityManager entityManager = this.entityManager;
 		Query query = null;

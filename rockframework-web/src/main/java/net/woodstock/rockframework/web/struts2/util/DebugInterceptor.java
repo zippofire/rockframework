@@ -49,7 +49,8 @@ public class DebugInterceptor extends Interceptor {
 		this.printSession = true;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
+	@Override
 	public String intercept(final ActionInvocation invocation) throws Exception {
 		HttpServletRequest request = this.getRequest();
 		ActionProxy proxy = invocation.getProxy();

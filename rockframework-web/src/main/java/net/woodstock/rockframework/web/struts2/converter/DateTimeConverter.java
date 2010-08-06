@@ -33,7 +33,7 @@ public class DateTimeConverter extends TypeConverter<Date> {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	protected Date convertFromString(final String s, final Class toClass) {
 		try {
 			Date d = this.format.parse(s);

@@ -35,7 +35,7 @@ abstract class AbstractHibernateQueryableRepository extends AbstractQueryableRep
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public Collection getCollection(final String sql, final Map<String, Object> parameters) {
 		Query query = this.getQuery(sql, parameters);
 		List list = query.list();

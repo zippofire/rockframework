@@ -40,7 +40,7 @@ public abstract class NumberConverter extends TypeConverter<Number> {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected Number convertFromString(final String s, final Class toClass) {
 		try {
 			Number n = this.format.parse(s);

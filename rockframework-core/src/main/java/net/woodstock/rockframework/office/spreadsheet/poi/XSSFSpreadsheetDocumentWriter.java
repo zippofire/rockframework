@@ -60,6 +60,7 @@ public final class XSSFSpreadsheetDocumentWriter implements SpreadsheetDocumentW
 		super();
 	}
 
+	@Override
 	public void write(final SpreadsheetDocument document, final OutputStream outputStream) throws IOException {
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		for (Sheet sheet : document.getSheets()) {

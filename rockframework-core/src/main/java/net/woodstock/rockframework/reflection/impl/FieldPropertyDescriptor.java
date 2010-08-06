@@ -84,22 +84,27 @@ class FieldPropertyDescriptor extends AbstractPropertyDescriptor {
 		return this.field.getModifiers();
 	}
 
+	@Override
 	public String getName() {
 		return this.field.getName();
 	}
 
+	@Override
 	public Class<?> getType() {
 		return this.field.getType();
 	}
 
+	@Override
 	public boolean isAnnotationPresent(final Class<? extends Annotation> clazz) {
 		return this.field.isAnnotationPresent(clazz);
 	}
 
+	@Override
 	public <T extends Annotation> T getAnnotation(final Class<T> clazz) {
 		return this.field.getAnnotation(clazz);
 	}
 
+	@Override
 	public Annotation[] getAnnotations() {
 		return this.field.getAnnotations();
 	}

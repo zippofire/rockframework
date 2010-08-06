@@ -51,6 +51,7 @@ public class ForwardResultBuilder implements ResultBuilder {
 		return this;
 	}
 
+	@Override
 	public ActionForward build() {
 		Assert.notEmpty(this.name, "name");
 

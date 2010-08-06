@@ -38,6 +38,7 @@ abstract class AbstractPropertyDescriptor implements PropertyDescriptor {
 		super();
 	}
 
+	@Override
 	public BeanDescriptor getBeanDescriptor() {
 		return this.beanDescriptor;
 	}
@@ -79,6 +80,7 @@ abstract class AbstractPropertyDescriptor implements PropertyDescriptor {
 	}
 
 	// Getters and Setters
+	@Override
 	public Object getValue(final Object o) {
 		try {
 			if (this.getReadMethod() == null) {
@@ -90,6 +92,7 @@ abstract class AbstractPropertyDescriptor implements PropertyDescriptor {
 		}
 	}
 
+	@Override
 	public void setValue(final Object o, final Object value) {
 		try {
 			if (this.getWriteMethod() == null) {

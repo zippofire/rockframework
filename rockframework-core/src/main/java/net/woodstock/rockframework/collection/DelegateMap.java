@@ -32,18 +32,22 @@ public class DelegateMap<K, V> implements Map<K, V> {
 		this.map = map;
 	}
 
+	@Override
 	public void clear() {
 		this.map.clear();
 	}
 
+	@Override
 	public boolean containsKey(final Object key) {
 		return this.map.containsKey(key);
 	}
 
+	@Override
 	public boolean containsValue(final Object value) {
 		return this.map.containsValue(value);
 	}
 
+	@Override
 	public Set<java.util.Map.Entry<K, V>> entrySet() {
 		return this.map.entrySet();
 	}
@@ -53,6 +57,7 @@ public class DelegateMap<K, V> implements Map<K, V> {
 		return this.map.equals(o);
 	}
 
+	@Override
 	public V get(final Object key) {
 		return this.map.get(key);
 	}
@@ -62,26 +67,32 @@ public class DelegateMap<K, V> implements Map<K, V> {
 		return this.map.hashCode();
 	}
 
+	@Override
 	public boolean isEmpty() {
 		return this.map.isEmpty();
 	}
 
+	@Override
 	public Set<K> keySet() {
 		return this.map.keySet();
 	}
 
+	@Override
 	public V put(final K key, final V value) {
 		return this.map.put(key, value);
 	}
 
+	@Override
 	public void putAll(final Map<? extends K, ? extends V> m) {
 		this.map.putAll(m);
 	}
 
+	@Override
 	public V remove(final Object key) {
 		return this.map.remove(key);
 	}
 
+	@Override
 	public int size() {
 		return this.map.size();
 	}
@@ -91,6 +102,7 @@ public class DelegateMap<K, V> implements Map<K, V> {
 		return this.map.toString();
 	}
 
+	@Override
 	public Collection<V> values() {
 		return this.map.values();
 	}

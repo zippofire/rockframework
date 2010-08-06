@@ -36,7 +36,7 @@ class CommonHibernateSQLRepository extends AbstractHibernateQueryableRepository 
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected SQLQuery getQuery(final String sql, final Map<String, Object> parameters) {
 		Session session = this.session;
 		SQLQuery query = session.createSQLQuery(sql);

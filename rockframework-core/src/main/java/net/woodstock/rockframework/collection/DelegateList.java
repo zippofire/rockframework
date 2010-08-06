@@ -29,10 +29,12 @@ public class DelegateList<E> extends DelegateCollection<E> implements List<E> {
 		this.list = list;
 	}
 
+	@Override
 	public void add(final int index, final E element) {
 		this.list.add(index, element);
 	}
 
+	@Override
 	public boolean addAll(final int index, final Collection<? extends E> c) {
 		return this.list.addAll(index, c);
 	}
@@ -47,26 +49,32 @@ public class DelegateList<E> extends DelegateCollection<E> implements List<E> {
 		return this.list.indexOf(o);
 	}
 
+	@Override
 	public int lastIndexOf(final Object o) {
 		return this.list.lastIndexOf(o);
 	}
 
+	@Override
 	public ListIterator<E> listIterator() {
 		return this.list.listIterator();
 	}
 
+	@Override
 	public ListIterator<E> listIterator(final int index) {
 		return this.list.listIterator(index);
 	}
 
+	@Override
 	public E remove(final int index) {
 		return this.list.remove(index);
 	}
 
+	@Override
 	public E set(final int index, final E element) {
 		return this.list.set(index, element);
 	}
 
+	@Override
 	public List<E> subList(final int fromIndex, final int toIndex) {
 		return this.list.subList(fromIndex, toIndex);
 	}

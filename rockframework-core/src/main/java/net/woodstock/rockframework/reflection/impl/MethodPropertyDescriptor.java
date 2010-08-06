@@ -92,14 +92,17 @@ class MethodPropertyDescriptor extends AbstractPropertyDescriptor {
 		return this.modifiers;
 	}
 
+	@Override
 	public String getName() {
 		return this.name;
 	}
 
+	@Override
 	public Class<?> getType() {
 		return this.type;
 	}
 
+	@Override
 	public boolean isAnnotationPresent(final Class<? extends Annotation> clazz) {
 		if (this.getReadMethod() != null) {
 			return this.getReadMethod().isAnnotationPresent(clazz);
@@ -107,6 +110,7 @@ class MethodPropertyDescriptor extends AbstractPropertyDescriptor {
 		return this.getWriteMethod().isAnnotationPresent(clazz);
 	}
 
+	@Override
 	public <T extends Annotation> T getAnnotation(final Class<T> clazz) {
 		if (this.getReadMethod() != null) {
 			return this.getReadMethod().getAnnotation(clazz);
@@ -114,6 +118,7 @@ class MethodPropertyDescriptor extends AbstractPropertyDescriptor {
 		return this.getWriteMethod().getAnnotation(clazz);
 	}
 
+	@Override
 	public Annotation[] getAnnotations() {
 		if (this.getReadMethod() != null) {
 			return this.getReadMethod().getAnnotations();

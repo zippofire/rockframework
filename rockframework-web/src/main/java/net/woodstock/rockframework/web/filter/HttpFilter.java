@@ -29,6 +29,7 @@ import net.woodstock.rockframework.util.Assert;
 
 public abstract class HttpFilter extends AbstractFilter {
 
+	@Override
 	public final void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
 		Assert.instanceOf(request, HttpServletRequest.class, "request");
 		Assert.instanceOf(response, HttpServletResponse.class, "response");

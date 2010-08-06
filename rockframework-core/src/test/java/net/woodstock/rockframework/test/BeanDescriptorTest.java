@@ -92,18 +92,22 @@ public class BeanDescriptorTest extends TestCase {
 			super();
 		}
 
+		@Override
 		public Integer getId() {
 			return this.id;
 		}
 
+		@Override
 		public void setId(final Integer id) {
 			this.id = id;
 		}
 
+		@Override
 		public String getName() {
 			return this.name;
 		}
 
+		@Override
 		public void setName(final String name) {
 			this.name = name;
 		}
@@ -118,10 +122,12 @@ public class BeanDescriptorTest extends TestCase {
 			super();
 		}
 
+		@Override
 		public Float getValue() {
 			return this.value;
 		}
 
+		@Override
 		public void setValue(final Float value) {
 			this.value = value;
 		}
@@ -137,18 +143,22 @@ public class BeanDescriptorTest extends TestCase {
 			this.params = new HashMap<String, Object>();
 		}
 
+		@Override
 		public Integer getId() {
 			return (Integer) this.params.get("ID");
 		}
 
+		@Override
 		public void setId(final Integer id) {
 			this.params.put("ID", id);
 		}
 
+		@Override
 		public String getName() {
 			return (String) this.params.get("NAME");
 		}
 
+		@Override
 		public void setName(final String name) {
 			this.params.put("NAME", name);
 		}
@@ -165,10 +175,12 @@ public class BeanDescriptorTest extends TestCase {
 			super();
 		}
 
+		@Override
 		public Float getValue() {
 			return (Float) this.getParams().get("VALUE");
 		}
 
+		@Override
 		public void setValue(final Float value) {
 			this.getParams().put("VALUE", value);
 		}

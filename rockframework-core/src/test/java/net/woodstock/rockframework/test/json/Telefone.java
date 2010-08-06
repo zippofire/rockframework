@@ -25,10 +25,12 @@ public class Telefone implements Entity<Integer> {
 		this.id = id;
 	}
 
+	@Override
 	public Integer getId() {
 		return this.id;
 	}
 
+	@Override
 	public void setId(final Integer id) {
 		this.id = id;
 	}

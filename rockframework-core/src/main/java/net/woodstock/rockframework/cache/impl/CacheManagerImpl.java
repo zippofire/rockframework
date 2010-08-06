@@ -35,6 +35,7 @@ public final class CacheManagerImpl implements CacheManager {
 		this.caches = new ArrayList<Cache>();
 	}
 
+	@Override
 	public boolean contains(final String id) {
 		Assert.notEmpty(id, "id");
 		boolean b = false;
@@ -47,6 +48,7 @@ public final class CacheManagerImpl implements CacheManager {
 		return b;
 	}
 
+	@Override
 	public Cache create(final String id) {
 		Assert.notEmpty(id, "id");
 		if (this.contains(id)) {
@@ -57,6 +59,7 @@ public final class CacheManagerImpl implements CacheManager {
 		return c;
 	}
 
+	@Override
 	public Cache get(final String id) {
 		Assert.notEmpty(id, "id");
 		for (Cache cache : this.caches) {
@@ -67,6 +70,7 @@ public final class CacheManagerImpl implements CacheManager {
 		return null;
 	}
 
+	@Override
 	public void remove(final String id) {
 		Assert.notEmpty(id, "id");
 		Iterator<Cache> iterator = this.caches.iterator();

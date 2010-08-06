@@ -23,10 +23,12 @@ public abstract class AbstractFilter implements Filter {
 
 	private FilterConfig	filterConfig;
 
+	@Override
 	public void destroy() {
 		//
 	}
 
+	@Override
 	public final void init(final FilterConfig filterConfig) {
 		this.filterConfig = filterConfig;
 		this.init();

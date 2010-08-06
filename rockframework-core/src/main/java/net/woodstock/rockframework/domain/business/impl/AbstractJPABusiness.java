@@ -34,7 +34,7 @@ import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilderImpl;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public abstract class AbstractJPABusiness extends AbstractBusiness {
 
 	public AbstractJPABusiness() {
@@ -42,10 +42,12 @@ public abstract class AbstractJPABusiness extends AbstractBusiness {
 	}
 
 	// CRUD
+	@Override
 	public ValidationResult validateSave(final Entity entity) {
 		return this.validateSaveOrUpdate(entity, true);
 	}
 
+	@Override
 	public ValidationResult validateUpdate(final Entity entity) {
 		return this.validateSaveOrUpdate(entity, false);
 	}

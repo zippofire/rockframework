@@ -33,6 +33,7 @@ public abstract class AbstractGenericService extends GenericServiceBean {
 	}
 
 	// Methods
+	@Override
 	public void save(final Entity<?> entity) {
 		try {
 			ValidationResult result = this.getBusiness().validateSave(entity);
@@ -66,6 +67,7 @@ public abstract class AbstractGenericService extends GenericServiceBean {
 		}
 	}
 
+	@Override
 	public <E extends Entity<?>> Collection<E> listAll(final E entity, final Map<String, Object> options) {
 		try {
 			ValidationResult result = this.getBusiness().validateList(entity);
@@ -82,6 +84,7 @@ public abstract class AbstractGenericService extends GenericServiceBean {
 		}
 	}
 
+	@Override
 	public <E extends Entity<?>> Collection<E> listByExample(final E entity, final Map<String, Object> options) {
 		try {
 			ValidationResult result = this.getBusiness().validateList(entity);
@@ -98,6 +101,7 @@ public abstract class AbstractGenericService extends GenericServiceBean {
 		}
 	}
 
+	@Override
 	public void update(final Entity<?> entity) {
 		try {
 			ValidationResult result = this.getBusiness().validateUpdate(entity);
@@ -114,6 +118,7 @@ public abstract class AbstractGenericService extends GenericServiceBean {
 		}
 	}
 
+	@Override
 	public void delete(final Entity<?> entity) {
 		try {
 			ValidationResult result = this.getBusiness().validateDelete(entity);

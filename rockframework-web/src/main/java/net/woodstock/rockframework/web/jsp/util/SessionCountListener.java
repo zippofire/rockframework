@@ -23,10 +23,12 @@ public class SessionCountListener implements HttpSessionListener {
 
 	private static int	count	= 0;
 
+	@Override
 	public void sessionCreated(final HttpSessionEvent event) {
 		SessionCountListener.count++;
 	}
 
+	@Override
 	public void sessionDestroyed(final HttpSessionEvent event) {
 		SessionCountListener.count--;
 	}

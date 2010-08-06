@@ -47,6 +47,7 @@ abstract class AbstractBeanDescriptorFactory implements BeanDescriptorFactory {
 		return this.cache.contains(clazz.getCanonicalName());
 	}
 
+	@Override
 	public final BeanDescriptor getBeanDescriptor(final Class<?> clazz) {
 		Assert.notNull(clazz, "clazz");
 

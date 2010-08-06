@@ -24,6 +24,7 @@ public abstract class AbstractValidator<A extends Annotation> implements Validat
 
 	private A	annotation;
 
+	@Override
 	public final void initialize(final A annotation) {
 		this.annotation = annotation;
 		this.initialize();

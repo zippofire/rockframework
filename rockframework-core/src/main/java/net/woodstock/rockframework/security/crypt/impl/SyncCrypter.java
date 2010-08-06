@@ -76,6 +76,7 @@ public class SyncCrypter extends CrypterBase {
 		this.key = key;
 	}
 
+	@Override
 	public String encrypt(final String str) {
 		try {
 			if (this.getEncryptCipher() == null) {
@@ -90,6 +91,7 @@ public class SyncCrypter extends CrypterBase {
 		}
 	}
 
+	@Override
 	public String decrypt(final String str) {
 		try {
 			if (this.getDecryptCipher() == null) {

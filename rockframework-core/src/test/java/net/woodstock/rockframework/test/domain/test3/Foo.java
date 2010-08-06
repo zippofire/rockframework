@@ -30,10 +30,12 @@ public class Foo implements Entity<Integer> {
 		super();
 	}
 
+	@Override
 	public Integer getId() {
 		return this.id;
 	}
 
+	@Override
 	public void setId(final Integer id) {
 		this.id = id;
 	}

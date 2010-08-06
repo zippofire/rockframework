@@ -34,6 +34,7 @@ public class AroundInterceptor extends Interceptor {
 		this.listener = new AroundInterceptorListener();
 	}
 
+	@Override
 	public String intercept(final ActionInvocation invocation) throws Exception {
 		Object action = invocation.getAction();
 		if (action instanceof AroundAction) {
@@ -47,6 +48,7 @@ public class AroundInterceptor extends Interceptor {
 
 	class AroundInterceptorListener implements PreResultListener {
 
+		@Override
 		public void beforeResult(final ActionInvocation invocation, final String resultCode) {
 			if ((resultCode.equals(Constants.INVALID_METHOD)) || (resultCode.equals(Constants.INVALID_REFERER)) || (resultCode.equals(Constants.NO_REFERER))) {
 				WebLog.getInstance().getLog().info("Method returns " + resultCode + " skipping after()");

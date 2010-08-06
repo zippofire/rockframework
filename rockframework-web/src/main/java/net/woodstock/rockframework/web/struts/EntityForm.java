@@ -18,7 +18,7 @@ package net.woodstock.rockframework.web.struts;
 
 import net.woodstock.rockframework.domain.Entity;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public abstract class EntityForm<T extends Entity> extends ActionForm {
 
 	private static final long	serialVersionUID	= 1958924234447552120L;

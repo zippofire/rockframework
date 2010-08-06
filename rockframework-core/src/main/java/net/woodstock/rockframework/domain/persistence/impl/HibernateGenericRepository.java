@@ -30,6 +30,7 @@ public class HibernateGenericRepository extends AbstractHibernateRepository impl
 		super();
 	}
 
+	@Override
 	public void delete(final Entity<?> e) {
 		Session s = this.getSession();
 
@@ -48,18 +49,22 @@ public class HibernateGenericRepository extends AbstractHibernateRepository impl
 		}
 	}
 
+	@Override
 	public <E extends Entity<?>> E get(final E entity) {
 		return new CommonHibernateGenericRepository(this.getSession()).get(entity);
 	}
 
+	@Override
 	public <E extends Entity<?>> Collection<E> listAll(final E e, final Map<String, Object> options) {
 		return new CommonHibernateGenericRepository(this.getSession()).listAll(e, options);
 	}
 
+	@Override
 	public <E extends Entity<?>> Collection<E> listByExample(final E e, final Map<String, Object> options) {
 		return new CommonHibernateGenericRepository(this.getSession()).listByExample(e, options);
 	}
 
+	@Override
 	public void save(final Entity<?> e) {
 		Session s = this.getSession();
 
@@ -78,6 +83,7 @@ public class HibernateGenericRepository extends AbstractHibernateRepository impl
 		}
 	}
 
+	@Override
 	public void update(final Entity<?> e) {
 		Session s = this.getSession();
 

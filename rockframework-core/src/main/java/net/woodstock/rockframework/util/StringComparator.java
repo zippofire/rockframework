@@ -33,6 +33,7 @@ public final class StringComparator implements Comparator<String> {
 		this.collator = Collator.getInstance(locale);
 	}
 
+	@Override
 	public int compare(final String o1, final String o2) {
 		return this.collator.compare(o1, o2);
 	}

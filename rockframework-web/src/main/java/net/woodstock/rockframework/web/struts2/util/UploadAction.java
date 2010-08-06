@@ -30,6 +30,7 @@ public abstract class UploadAction extends Action implements UploadableAction {
 
 	private String				uploadFileName;
 
+	@Override
 	public File getUpload() {
 		return this.upload;
 	}
@@ -38,6 +39,7 @@ public abstract class UploadAction extends Action implements UploadableAction {
 		this.upload = upload;
 	}
 
+	@Override
 	public String getUploadContentType() {
 		return this.uploadContentType;
 	}
@@ -46,6 +48,7 @@ public abstract class UploadAction extends Action implements UploadableAction {
 		this.uploadContentType = uploadContentType;
 	}
 
+	@Override
 	public String getUploadFileName() {
 		return this.uploadFileName;
 	}

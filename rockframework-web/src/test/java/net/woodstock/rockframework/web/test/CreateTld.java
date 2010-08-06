@@ -30,7 +30,7 @@ public class CreateTld extends TestCase {
 			return this.id;
 		}
 
-		public void setId(Integer id) {
+		public void setId(final Integer id) {
 			this.id = id;
 		}
 
@@ -38,12 +38,12 @@ public class CreateTld extends TestCase {
 			return this.name;
 		}
 
-		public void setName(String name) {
+		public void setName(final String name) {
 			this.name = name;
 		}
 
 		@Attribute(rtexprvalue = true)
-		public void setObject(Object object) {
+		public void setObject(final Object object) {
 			System.out.println("Object: " + object);
 		}
 

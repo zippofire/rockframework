@@ -25,7 +25,6 @@ public class TestProxy extends TestCase {
 		System.out.println(bar);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void test3() throws Exception {
 		Object bar = ProxyObject.newInstance(this.getBar());
 		System.out.println(bar);

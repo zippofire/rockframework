@@ -31,22 +31,27 @@ public class DelegateCollection<E> implements Collection<E> {
 		this.collection = collection;
 	}
 
+	@Override
 	public boolean add(final E e) {
 		return this.collection.add(e);
 	}
 
+	@Override
 	public boolean addAll(final Collection<? extends E> c) {
 		return this.collection.addAll(c);
 	}
-
+	
+	@Override
 	public void clear() {
 		this.collection.clear();
 	}
 
+	@Override
 	public boolean contains(final Object o) {
 		return this.collection.contains(o);
 	}
 
+	@Override
 	public boolean containsAll(final Collection<?> c) {
 		return this.collection.containsAll(c);
 	}
@@ -61,34 +66,42 @@ public class DelegateCollection<E> implements Collection<E> {
 		return this.collection.hashCode();
 	}
 
+	@Override
 	public boolean isEmpty() {
 		return this.collection.isEmpty();
 	}
 
+	@Override
 	public Iterator<E> iterator() {
 		return this.collection.iterator();
 	}
 
+	@Override
 	public boolean remove(final Object o) {
 		return this.collection.remove(o);
 	}
 
+	@Override
 	public boolean removeAll(final Collection<?> c) {
 		return this.collection.removeAll(c);
 	}
 
+	@Override
 	public boolean retainAll(final Collection<?> c) {
 		return this.collection.retainAll(c);
 	}
 
+	@Override
 	public int size() {
 		return this.collection.size();
 	}
 
+	@Override
 	public Object[] toArray() {
 		return this.collection.toArray();
 	}
 
+	@Override
 	public <T> T[] toArray(final T[] a) {
 		return this.collection.toArray(a);
 	}

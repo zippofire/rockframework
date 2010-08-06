@@ -34,6 +34,7 @@ public final class ProxyObject implements InvocationHandler {
 		this.object = object;
 	}
 
+	@Override
 	public Object invoke(final Object proxy, final Method method, final Object[] args) throws InvocationTargetException, IllegalAccessException {
 		LogUtils.getSharedLog().info("Calling method " + method.getName());
 		return method.invoke(this.object, args);

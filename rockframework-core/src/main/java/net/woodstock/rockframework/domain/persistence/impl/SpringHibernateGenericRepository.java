@@ -35,16 +35,19 @@ public abstract class SpringHibernateGenericRepository extends SpringHibernateRe
 		super();
 	}
 
+	@Override
 	public void delete(final Entity<?> e) {
 		this.getHibernateTemplate().execute(new HibernateDeleteCallback(e));
 	}
 
 	@SuppressWarnings("unchecked")
+	@Override
 	public <E extends Entity<?>> E get(final E entity) {
 		return (E) this.getHibernateTemplate().get(entity.getClass(), entity.getId());
 	}
 
 	@SuppressWarnings("unchecked")
+	@Override
 	public <E extends Entity<?>> Collection<E> listAll(final E e, final Map<String, Object> options) {
 		Session s = this.getSession();
 		String sql = RepositoryHelper.getListAllSql(e.getClass(), options, true);
@@ -63,6 +66,7 @@ public abstract class SpringHibernateGenericRepository extends SpringHibernateRe
 	}
 
 	@SuppressWarnings("unchecked")
+	@Override
 	public <E extends Entity<?>> Collection<E> listByExample(final E e, final Map<String, Object> options) {
 		HibernateQueryBuilder builder = new HibernateQueryBuilder(this.getSession());
 		builder.setEntity(e);
@@ -76,10 +80,12 @@ public abstract class SpringHibernateGenericRepository extends SpringHibernateRe
 		return list;
 	}
 
+	@Override
 	public void save(final Entity<?> e) {
 		this.getHibernateTemplate().save(e);
 	}
 
+	@Override
 	public void update(final Entity<?> e) {
 		this.getHibernateTemplate().execute(new HibernateUpdateCallback(e));
 	}

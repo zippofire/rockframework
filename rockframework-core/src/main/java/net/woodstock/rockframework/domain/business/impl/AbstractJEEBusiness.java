@@ -27,7 +27,7 @@ import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.ValidationResult;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public abstract class AbstractJEEBusiness extends AbstractBusiness {
 
 	private static Validator	validator;
@@ -51,10 +51,12 @@ public abstract class AbstractJEEBusiness extends AbstractBusiness {
 	}
 
 	// CRUD
+	@Override
 	public ValidationResult validateSave(final Entity entity) {
 		return this.validate(entity);
 	}
 
+	@Override
 	public ValidationResult validateUpdate(final Entity entity) {
 		return this.validate(entity);
 	}

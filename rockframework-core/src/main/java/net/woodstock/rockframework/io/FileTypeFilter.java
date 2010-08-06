@@ -35,6 +35,7 @@ public class FileTypeFilter implements FileFilter {
 		this.type = type;
 	}
 
+	@Override
 	public boolean accept(final File pathname) {
 		if ((this.type == FileType.FILE) && (pathname.isFile())) {
 			return true;

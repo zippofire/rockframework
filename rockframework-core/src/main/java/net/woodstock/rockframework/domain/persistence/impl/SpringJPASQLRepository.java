@@ -33,7 +33,7 @@ public class SpringJPASQLRepository extends SpringJPARepository implements EJBQL
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public Collection getCollection(final String sql, final Map<String, Object> parameters) {
 		return new CommonJPASQLRepository(this.getJpaTemplate().getEntityManager()).getCollection(sql, parameters);
 	}

@@ -33,7 +33,7 @@ public class SpringHibernateEJBQLRepository extends SpringHibernateRepository im
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public Collection getCollection(final String sql, final Map<String, Object> parameters) {
 		return new CommonHibernateEJBQLRepository(this.getSession()).getCollection(sql, parameters);
 	}

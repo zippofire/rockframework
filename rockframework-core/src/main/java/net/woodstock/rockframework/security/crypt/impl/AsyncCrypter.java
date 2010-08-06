@@ -97,6 +97,7 @@ public class AsyncCrypter extends CrypterBase {
 		return this.publicKey;
 	}
 
+	@Override
 	public String encrypt(final String str) {
 		if (this.privateKey == null) {
 			throw new UnsupportedOperationException("Private key not found");
@@ -114,6 +115,7 @@ public class AsyncCrypter extends CrypterBase {
 		}
 	}
 
+	@Override
 	public String decrypt(final String str) {
 		try {
 			if (this.getDecryptCipher() == null) {

@@ -21,7 +21,7 @@ import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.GenericBusiness;
 import net.woodstock.rockframework.domain.business.ValidationResult;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 abstract class AbstractBusiness implements GenericBusiness {
 
 	protected static final String	MESSAGE_INVALID_CLASS					= "domain.business.invalid.class";

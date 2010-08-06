@@ -33,7 +33,7 @@ public class HibernateSQLRepository extends AbstractHibernateRepository implemen
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public Collection getCollection(final String sql, final Map<String, Object> parameters) {
 		return new CommonHibernateSQLRepository(this.getSession()).getCollection(sql, parameters);
 	}

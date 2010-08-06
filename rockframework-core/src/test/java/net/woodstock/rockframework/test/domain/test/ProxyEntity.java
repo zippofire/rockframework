@@ -36,26 +36,29 @@ public final class ProxyEntity<ID extends Serializable> implements Entity<ID>, I
 		this.entity = entity;
 	}
 
+	@Override
 	public ID getId() {
 		return this.entity.getId();
 	}
 
+	@Override
 	public void setId(final ID id) {
 		this.entity.setId(id);
 	}
 
+	@Override
 	public Object invoke(final Object proxy, final Method method, final Object[] args) throws InvocationTargetException, IllegalAccessException {
 		LogUtils.getSharedLog().info("Calling method " + method.getName());
 		return method.invoke(this.entity, args);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static <E extends Entity<? extends Serializable>> E newInstance(final E entity) {
 		Object obj = Proxy.newProxyInstance(entity.getClass().getClassLoader(), entity.getClass().getInterfaces(), new ProxyEntity(entity));
 		return (E) obj;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static Object newInstance2(final Object obj) {
 		return Proxy.newProxyInstance(obj.getClass().getClassLoader(), obj.getClass().getInterfaces(), new ProxyEntity((Entity) obj));
 	}

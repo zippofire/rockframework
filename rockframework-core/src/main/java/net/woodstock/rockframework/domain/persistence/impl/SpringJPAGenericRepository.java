@@ -28,27 +28,33 @@ public abstract class SpringJPAGenericRepository extends SpringJPARepository imp
 		super();
 	}
 
+	@Override
 	public void delete(final Entity<?> e) {
 		this.getJpaTemplate().remove(e);
 	}
 
 	@SuppressWarnings("unchecked")
+	@Override
 	public <E extends Entity<?>> E get(final E entity) {
 		return (E) this.getJpaTemplate().find(entity.getClass(), entity.getId());
 	}
 
+	@Override
 	public <E extends Entity<?>> Collection<E> listAll(final E e, final Map<String, Object> options) {
 		return new CommonJPAGenericRepository(this.getJpaTemplate().getEntityManager()).listAll(e, options);
 	}
 
+	@Override
 	public <E extends Entity<?>> Collection<E> listByExample(final E e, final Map<String, Object> options) {
 		return new CommonJPAGenericRepository(this.getJpaTemplate().getEntityManager()).listByExample(e, options);
 	}
 
+	@Override
 	public void save(final Entity<?> e) {
 		this.getJpaTemplate().persist(e);
 	}
 
+	@Override
 	public void update(final Entity<?> e) {
 		this.getJpaTemplate().merge(e);
 	}

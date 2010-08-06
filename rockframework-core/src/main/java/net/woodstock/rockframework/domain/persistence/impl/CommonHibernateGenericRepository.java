@@ -51,6 +51,7 @@ class CommonHibernateGenericRepository implements GenericRepository {
 		this.session = session;
 	}
 
+	@Override
 	public void delete(final Entity<?> e) {
 		try {
 			this.session.delete(e);
@@ -73,6 +74,7 @@ class CommonHibernateGenericRepository implements GenericRepository {
 	}
 
 	@SuppressWarnings("unchecked")
+	@Override
 	public <E extends Entity<?>> E get(final E entity) {
 		if (CommonHibernateGenericRepository.GET_TYPE == GetType.LOAD) {
 			try {
@@ -87,6 +89,7 @@ class CommonHibernateGenericRepository implements GenericRepository {
 	}
 
 	@SuppressWarnings("unchecked")
+	@Override
 	public <E extends Entity<?>> Collection<E> listAll(final E e, final Map<String, Object> options) {
 		String sql = RepositoryHelper.getListAllSql(e.getClass(), options, true);
 		Query q = this.session.createQuery(sql);
@@ -104,6 +107,7 @@ class CommonHibernateGenericRepository implements GenericRepository {
 	}
 
 	@SuppressWarnings("unchecked")
+	@Override
 	public <E extends Entity<?>> Collection<E> listByExample(final E e, final Map<String, Object> options) {
 		HibernateQueryBuilder builder = new HibernateQueryBuilder(this.session);
 		builder.setEntity(e);
@@ -117,10 +121,12 @@ class CommonHibernateGenericRepository implements GenericRepository {
 		return list;
 	}
 
+	@Override
 	public void save(final Entity<?> e) {
 		this.session.save(e);
 	}
 
+	@Override
 	public void update(final Entity<?> e) {
 		try {
 			this.session.update(e);

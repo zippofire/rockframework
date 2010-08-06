@@ -53,6 +53,7 @@ class CacheImpl implements Cache {
 		return this.map.containsKey(name);
 	}
 
+	@Override
 	public Object get(final String name) {
 		Assert.notEmpty(name, "name");
 		return this.map.get(name);

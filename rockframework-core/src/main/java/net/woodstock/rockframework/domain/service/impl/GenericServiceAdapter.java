@@ -16,7 +16,6 @@
  */
 package net.woodstock.rockframework.domain.service.impl;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 
@@ -30,32 +29,34 @@ public class GenericServiceAdapter extends AbstractService implements GenericSer
 		super();
 	}
 
+	@Override
 	public void save(final Entity<?> e) {
 		CoreLog.getInstance().getLog().info("Save: " + e.getClass());
 	}
 
+	@Override
 	public <E extends Entity<?>> E get(final E e) {
 		CoreLog.getInstance().getLog().info("Retrieve: " + e);
 		return null;
 	}
 
+	@Override
 	public void update(final Entity<?> e) {
 		CoreLog.getInstance().getLog().info("Update: " + e.getClass());
 	}
 
+	@Override
 	public void delete(final Entity<?> e) {
 		CoreLog.getInstance().getLog().info("Delete: " + e.getClass());
 	}
 
-	public <E extends Entity<?>> void delete(final Class<E> clazz, final Serializable id) {
-		CoreLog.getInstance().getLog().info("Delete: " + clazz.getCanonicalName() + " " + id);
-	}
-
+	@Override
 	public <E extends Entity<?>> Collection<E> listAll(final E e, final Map<String, Object> options) {
 		CoreLog.getInstance().getLog().info("Query: " + e + " Options: " + options);
 		return null;
 	}
 
+	@Override
 	public <E extends Entity<?>> Collection<E> listByExample(final E e, final Map<String, Object> options) {
 		CoreLog.getInstance().getLog().info("Query: " + e + " Options: " + options);
 		return null;

@@ -52,10 +52,12 @@ public class CommonClient implements Client {
 		return this.connection;
 	}
 
+	@Override
 	public int getType(final Type type) {
 		return type.type();
 	}
 
+	@Override
 	public boolean execute(final String sql, final ParameterList args) throws SQLException {
 		PreparedStatement ps = this.createStatement(sql, this.connection, args);
 		boolean b = ps.execute();
@@ -63,12 +65,14 @@ public class CommonClient implements Client {
 		return b;
 	}
 
+	@Override
 	public ResultSet query(final String query, final ParameterList args) throws SQLException {
 		PreparedStatement ps = this.createStatement(query, this.connection, args);
 		ResultSet rs = ps.executeQuery();
 		return rs;
 	}
 
+	@Override
 	public int update(final String update, final ParameterList args) throws SQLException {
 		PreparedStatement ps = this.createStatement(update, this.connection, args);
 		int i = ps.executeUpdate();

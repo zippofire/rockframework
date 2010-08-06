@@ -28,7 +28,7 @@ public abstract class FormatConverter extends TypeConverter<String> {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	protected String convertFromString(final String s, final Class toClass) {
 		return StringUtils.unformat(this.pattern, s);
 	}

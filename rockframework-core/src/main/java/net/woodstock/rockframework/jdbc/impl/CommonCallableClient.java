@@ -30,6 +30,7 @@ public class CommonCallableClient extends CommonClient implements CallableClient
 		super(connection);
 	}
 
+	@Override
 	public Object callFunction(final Type outType, final String functionName, final ParameterList args) throws SQLException {
 		CallableStatement cs = this.createFuncionStatement(this.getType(outType), functionName, this.getConnection(), args);
 		cs.execute();
@@ -38,6 +39,7 @@ public class CommonCallableClient extends CommonClient implements CallableClient
 		return o;
 	}
 
+	@Override
 	public void callProcedure(final String procedureName, final ParameterList args) throws SQLException {
 		CallableStatement cs = this.createProcedureStatement(procedureName, this.getConnection(), args);
 		cs.execute();

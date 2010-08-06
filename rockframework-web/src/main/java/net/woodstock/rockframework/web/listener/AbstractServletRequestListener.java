@@ -24,10 +24,12 @@ import net.woodstock.rockframework.web.config.WebLog;
 
 public abstract class AbstractServletRequestListener implements ServletRequestListener {
 
+	@Override
 	public final void requestDestroyed(final ServletRequestEvent event) {
 		this.requestDestroyed(event, (HttpServletRequest) event.getServletRequest());
 	}
 
+	@Override
 	public final void requestInitialized(final ServletRequestEvent event) {
 		this.requestInitialized(event, (HttpServletRequest) event.getServletRequest());
 	}

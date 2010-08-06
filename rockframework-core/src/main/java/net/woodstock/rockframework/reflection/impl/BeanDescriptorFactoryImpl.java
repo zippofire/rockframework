@@ -17,7 +17,6 @@
 package net.woodstock.rockframework.reflection.impl;
 
 import net.woodstock.rockframework.config.CoreConfig;
-import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.ReflectionType;
 import net.woodstock.rockframework.util.Assert;
 
@@ -35,8 +34,11 @@ abstract class BeanDescriptorFactoryImpl implements BeanDescriptorFactory {
 
 	private static BeanDescriptorFactory	mixedBeanDescriptorFactory	= new MixedBeanDescriptorFactory();
 
-	public abstract BeanDescriptor getBeanDescriptor(Class<?> clazz);
-
+	
+	protected BeanDescriptorFactoryImpl() {
+		super();
+	}
+	
 	public static BeanDescriptorFactory getInstance() {
 		return BeanDescriptorFactoryImpl.getInstance(BeanDescriptorFactoryImpl.REFLECTION_TYPE);
 	}

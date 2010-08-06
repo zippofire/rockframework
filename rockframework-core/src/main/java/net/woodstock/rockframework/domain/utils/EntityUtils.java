@@ -25,7 +25,7 @@ import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilderImpl;
 import net.woodstock.rockframework.utils.ObjectUtils;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public abstract class EntityUtils {
 
 	private static final String	UNDEFINED_ID	= "undefined";

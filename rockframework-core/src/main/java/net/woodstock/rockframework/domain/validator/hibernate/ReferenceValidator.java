@@ -21,7 +21,7 @@ import net.woodstock.rockframework.domain.Entity;
 public class ReferenceValidator extends AbstractValidator<Reference> {
 
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public boolean isValid(final Object o) {
 		if (o == null) {
 			return true;

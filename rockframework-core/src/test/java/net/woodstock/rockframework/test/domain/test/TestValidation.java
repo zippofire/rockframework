@@ -21,11 +21,10 @@ public class TestValidation extends TestCase {
 		return foo;
 	}
 
-	@SuppressWarnings("unchecked")
 	public void testHibernate() throws Exception {
 		Foo foo = this.getFoo();
 
-		ClassValidator<Foo> validator = new ClassValidator(Foo.class);
+		ClassValidator<Foo> validator = new ClassValidator<Foo>(Foo.class);
 		if (validator.hasValidationRules()) {
 			InvalidValue[] values = validator.getInvalidValues(foo);
 			for (InvalidValue value : values) {

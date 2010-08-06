@@ -35,7 +35,7 @@ import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilderImpl;
 import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.utils.StringUtils;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 abstract class QueryContextHelper {
 
 	private static final String	HIBERNATE_PROXY_CLASS	= "org.hibernate.proxy.HibernateProxy";

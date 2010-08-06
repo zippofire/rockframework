@@ -30,6 +30,7 @@ public class JPAGenericRepository extends AbstractJPARepository implements Gener
 		super();
 	}
 
+	@Override
 	public void delete(final Entity<?> e) {
 		EntityManager m = this.getEntityManager();
 
@@ -48,18 +49,22 @@ public class JPAGenericRepository extends AbstractJPARepository implements Gener
 		}
 	}
 
+	@Override
 	public <E extends Entity<?>> E get(final E entity) {
 		return new CommonJPAGenericRepository(this.getEntityManager()).get(entity);
 	}
 
+	@Override
 	public <E extends Entity<?>> Collection<E> listAll(final E e, final Map<String, Object> options) {
 		return new CommonJPAGenericRepository(this.getEntityManager()).listAll(e, options);
 	}
 
+	@Override
 	public <E extends Entity<?>> Collection<E> listByExample(final E e, final Map<String, Object> options) {
 		return new CommonJPAGenericRepository(this.getEntityManager()).listByExample(e, options);
 	}
 
+	@Override
 	public void save(final Entity<?> e) {
 		EntityManager m = this.getEntityManager();
 
@@ -78,6 +83,7 @@ public class JPAGenericRepository extends AbstractJPARepository implements Gener
 		}
 	}
 
+	@Override
 	public void update(final Entity<?> e) {
 		EntityManager m = this.getEntityManager();
 
