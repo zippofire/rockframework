@@ -25,7 +25,7 @@ import net.woodstock.rockframework.web.struts2.Constants;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.ActionProxy;
 
-public class RoleInterceptor extends AccessInterceptor {
+public class RoleInterceptor extends AccessInterceptor<String> {
 
 	private static final long	serialVersionUID	= -1142678626424407060L;
 
@@ -52,23 +52,32 @@ public class RoleInterceptor extends AccessInterceptor {
 		Class<?> clazz = action.getClass();
 		Method method = clazz.getMethod(proxy.getMethod(), new Class[] {});
 
+		String rule = clazz.getCanonicalName() + "." + method.getName() + "()";
+
 		String[] roles = null;
 		boolean validate = false;
 
-		if (method.isAnnotationPresent(Role.class)) {
-			Role annotation = method.getAnnotation(Role.class);
-			roles = annotation.value();
-			validate = true;
-		} else if (clazz.isAnnotationPresent(Role.class)) {
-			Role annotation = clazz.getAnnotation(Role.class);
-			roles = annotation.value();
-			validate = true;
+		if (this.containsRule(rule)) {
+			validate = this.getRule(rule);
+			roles = (String[]) this.getRuleValue(rule);
+		} else {
+			if (method.isAnnotationPresent(Role.class)) {
+				Role annotation = method.getAnnotation(Role.class);
+				roles = annotation.value();
+				validate = true;
+			} else if (clazz.isAnnotationPresent(Role.class)) {
+				Role annotation = clazz.getAnnotation(Role.class);
+				roles = annotation.value();
+				validate = true;
+			}
+			this.addRule(rule, validate);
+			this.addRuleValue(rule, roles);
 		}
 
 		if (validate) {
 			boolean hasAccess = false;
 			boolean skipTest = false;
-			String fullName = clazz.getCanonicalName() + "." + method.getName() + "()";
+			String fullName = rule;
 
 			if (this.existOnHistory(fullName)) {
 				hasAccess = true;
@@ -91,7 +100,7 @@ public class RoleInterceptor extends AccessInterceptor {
 				this.addToHistory(fullName);
 			} else {
 				this.addToNoAccess(fullName);
-				WebLog.getInstance().getLog().info("Invalid privileges to call " + clazz.getName() + "." + method.getName() + "()");
+				WebLog.getInstance().getLog().info("Invalid privileges to call " + fullName);
 				return Constants.NO_ACCESS;
 			}
 		}

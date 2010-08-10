@@ -21,14 +21,14 @@ import java.util.regex.Pattern;
 
 import net.woodstock.rockframework.utils.StringUtils;
 import net.woodstock.rockframework.web.config.WebLog;
+import net.woodstock.rockframework.web.struts2.ConditionalInterceptor;
 import net.woodstock.rockframework.web.struts2.Constants;
-import net.woodstock.rockframework.web.struts2.Interceptor;
 import net.woodstock.rockframework.web.utils.RequestUtils;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.ActionProxy;
 
-public class RefererInterceptor extends Interceptor {
+public class RefererInterceptor extends ConditionalInterceptor<String> {
 
 	private static final long	serialVersionUID	= -5950458600867386751L;
 
@@ -40,18 +40,26 @@ public class RefererInterceptor extends Interceptor {
 		Object action = proxy.getAction();
 		Class<?> clazz = action.getClass();
 		Method method = clazz.getMethod(proxy.getMethod(), new Class[] {});
+		String rule = clazz.getCanonicalName() + "." + method.getName() + "()";
 
 		String regex = null;
 		boolean validate = false;
 
-		if (method.isAnnotationPresent(Referer.class)) {
-			Referer annotation = method.getAnnotation(Referer.class);
-			regex = this.getRegex(annotation);
-			validate = true;
-		} else if (clazz.isAnnotationPresent(Referer.class)) {
-			Referer annotation = clazz.getAnnotation(Referer.class);
-			regex = this.getRegex(annotation);
-			validate = true;
+		if (this.containsRule(rule)) {
+			validate = this.getRule(rule);
+			regex = (String) this.getRuleValue(rule);
+		} else {
+			if (method.isAnnotationPresent(Referer.class)) {
+				Referer annotation = method.getAnnotation(Referer.class);
+				regex = this.getRegex(annotation);
+				validate = true;
+			} else if (clazz.isAnnotationPresent(Referer.class)) {
+				Referer annotation = clazz.getAnnotation(Referer.class);
+				regex = this.getRegex(annotation);
+				validate = true;
+			}
+			this.addRule(rule, validate);
+			this.addRuleValue(rule, regex);
 		}
 
 		if (validate) {

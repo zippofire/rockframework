@@ -25,7 +25,7 @@ import net.woodstock.rockframework.web.struts2.utils.Struts2Utils;
 
 import com.opensymphony.xwork2.ActionInvocation;
 
-public class URLInterceptor extends AccessInterceptor {
+public class URLInterceptor extends AccessInterceptor<String> {
 
 	private static final long	serialVersionUID	= -1142678626424407060L;
 

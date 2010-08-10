@@ -22,14 +22,14 @@ import java.util.Set;
 
 import net.woodstock.rockframework.utils.StringUtils;
 import net.woodstock.rockframework.web.config.WebLog;
+import net.woodstock.rockframework.web.struts2.ConditionalInterceptor;
 import net.woodstock.rockframework.web.struts2.Constants;
-import net.woodstock.rockframework.web.struts2.Interceptor;
 import net.woodstock.rockframework.web.utils.RequestUtils;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.ActionProxy;
 
-public class HttpMethodInterceptor extends Interceptor {
+public class HttpMethodInterceptor extends ConditionalInterceptor<String> {
 
 	private static final long	serialVersionUID	= -7686764937974794750L;
 
@@ -43,23 +43,32 @@ public class HttpMethodInterceptor extends Interceptor {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public String intercept(final ActionInvocation invocation) throws Exception {
 		ActionProxy proxy = invocation.getProxy();
 		Object action = proxy.getAction();
 		Class<?> clazz = action.getClass();
 		Method method = clazz.getMethod(proxy.getMethod(), new Class[] {});
+		String rule = clazz.getCanonicalName() + "." + method.getName() + "()";
 
 		Set<HttpMethodType> methods = null;
 		boolean validate = false;
 
-		if (method.isAnnotationPresent(HttpMethod.class)) {
-			HttpMethod annotation = method.getAnnotation(HttpMethod.class);
-			methods = this.getMethods(annotation);
-			validate = true;
-		} else if (clazz.isAnnotationPresent(HttpMethod.class)) {
-			HttpMethod annotation = clazz.getAnnotation(HttpMethod.class);
-			methods = this.getMethods(annotation);
-			validate = true;
+		if (this.containsRule(rule)) {
+			validate = this.getRule(rule);
+			methods = (Set<HttpMethodType>) this.getRuleValue(rule);
+		} else {
+			if (method.isAnnotationPresent(HttpMethod.class)) {
+				HttpMethod annotation = method.getAnnotation(HttpMethod.class);
+				methods = this.getMethods(annotation);
+				validate = true;
+			} else if (clazz.isAnnotationPresent(HttpMethod.class)) {
+				HttpMethod annotation = clazz.getAnnotation(HttpMethod.class);
+				methods = this.getMethods(annotation);
+				validate = true;
+			}
+			this.addRule(rule, false);
+			this.addRuleValue(rule, methods);
 		}
 
 		if (validate) {

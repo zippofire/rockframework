@@ -22,9 +22,9 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import net.woodstock.rockframework.util.Assert;
-import net.woodstock.rockframework.web.struts2.Interceptor;
+import net.woodstock.rockframework.web.struts2.ConditionalInterceptor;
 
-public abstract class AccessInterceptor extends Interceptor {
+public abstract class AccessInterceptor<R> extends ConditionalInterceptor<R> {
 
 	private static final long	serialVersionUID	= -1770300413724957767L;
 

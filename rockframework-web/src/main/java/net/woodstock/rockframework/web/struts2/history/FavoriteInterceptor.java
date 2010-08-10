@@ -14,85 +14,73 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.web.struts2.security;
+package net.woodstock.rockframework.web.struts2.history;
 
 import java.lang.reflect.Method;
+
+import javax.servlet.http.HttpServletRequest;
 
 import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.web.config.WebLog;
 import net.woodstock.rockframework.web.struts2.ConditionalInterceptor;
-import net.woodstock.rockframework.web.struts2.Constants;
+import net.woodstock.rockframework.web.struts2.utils.Struts2Utils;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.ActionProxy;
 
-public class LogonInterceptor extends ConditionalInterceptor<String> {
+public class FavoriteInterceptor extends ConditionalInterceptor<String> {
 
-	private static final long	serialVersionUID	= -1142678626424407060L;
+	private static final long	serialVersionUID	= -444338319191950385L;
 
-	private LogonValidator		validator;
+	private FavoriteManager		manager;
 
-	private boolean				annotationRequired;
-
-	public LogonInterceptor() {
+	public FavoriteInterceptor() {
 		super();
 	}
 
-	public LogonInterceptor(final LogonValidator validator, final boolean annotationRequired) {
+	public FavoriteInterceptor(final FavoriteManager manager) {
 		super();
-		this.validator = validator;
-		this.annotationRequired = annotationRequired;
+		this.manager = manager;
 	}
 
 	@Override
 	public String intercept(final ActionInvocation invocation) throws Exception {
 		WebLog.getInstance().getLog().debug("Intercepting " + invocation);
-		Assert.notNull(this.validator, "validator");
+		Assert.notNull(this.manager, "manager");
 		ActionProxy proxy = invocation.getProxy();
 		Object action = proxy.getAction();
 		Class<?> clazz = action.getClass();
 		Method method = clazz.getMethod(proxy.getMethod(), new Class[] {});
 		String rule = clazz.getCanonicalName() + "." + method.getName() + "()";
 
-		boolean validate = false;
+		boolean favorite = false;
 
 		if (this.containsRule(rule)) {
-			validate = this.getRule(rule);
+			favorite = this.getRule(rule);
 		} else {
-			if (this.annotationRequired) {
-				if (method.isAnnotationPresent(Logon.class)) {
-					validate = true;
-				} else if (clazz.isAnnotationPresent(Logon.class)) {
-					validate = true;
-				}
-			} else {
-				validate = true;
+			if (method.isAnnotationPresent(Favorite.class)) {
+				Favorite annotation = method.getAnnotation(Favorite.class);
+				favorite = !annotation.skip();
+			} else if (clazz.isAnnotationPresent(Favorite.class)) {
+				Favorite annotation = method.getAnnotation(Favorite.class);
+				favorite = !annotation.skip();
 			}
-			this.addRule(rule, validate);
+			this.addRule(rule, favorite);
 		}
 
-		if (validate) {
-			boolean hasAccess = false;
-			if (this.validator.isLogged(this.getRequest())) {
-				hasAccess = true;
-			}
+		if (favorite) {
+			HttpServletRequest request = this.getRequest();
+			String url = Struts2Utils.getRequestPath(request);
+			FavoriteData data = new FavoriteData(url, request);
 
-			if (!hasAccess) {
-				WebLog.getInstance().getLog().info("User must be logged to call " + clazz.getName() + "." + method.getName() + "()");
-				return Constants.NO_LOGIN;
-			}
+			this.manager.save(data);
 		}
 
 		return invocation.invoke();
 	}
 
-	// Setters
-	public void setValidator(final String validator) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-		this.validator = (LogonValidator) Class.forName(validator).newInstance();
-	}
-
-	public void setAnnotationRequired(final String annotationRequired) {
-		this.annotationRequired = Boolean.parseBoolean(annotationRequired);
+	public void setManager(final String manager) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+		this.manager = (FavoriteManager) Class.forName(manager).newInstance();
 	}
 
 }
