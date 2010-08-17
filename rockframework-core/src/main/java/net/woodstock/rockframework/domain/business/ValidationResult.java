@@ -48,4 +48,15 @@ public class ValidationResult implements Pojo {
 		this.message = message;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		if (this.error) {
+			builder.append("ERROR[" + this.message + "]");
+		} else {
+			builder.append("SUCCESS");
+		}
+		return builder.toString();
+	}
+
 }

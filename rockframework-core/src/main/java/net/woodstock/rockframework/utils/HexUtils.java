@@ -14,26 +14,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.validator.jee;
+package net.woodstock.rockframework.utils;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+public abstract class HexUtils {
 
-import javax.validation.Constraint;
-import javax.validation.Payload;
+	private static final char	PADDING_CHAR	= '0';
 
-@Target({ ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE })
-@Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = ReferenceValidator.class)
-@Documented
-public @interface Reference {
+	private static final int	BIT_COMPARATOR	= 0xFF;
 
-	String message() default "{javax.validation.constraints.NotNull.message}";
+	private HexUtils() {
+		//
+	}
 
-	Class<?>[] groups() default { };
+	public static String toHex(final byte[] bytes) {
+		StringBuilder builder = new StringBuilder();
+		for (byte b : bytes) {
+			String s = Integer.toHexString(HexUtils.BIT_COMPARATOR & b);
+			if (s.length() == 1) {
+				builder.append(HexUtils.PADDING_CHAR);
+			}
+			builder.append(s);
+		}
+		return builder.toString();
+	}
 
-	Class<? extends Payload>[] payload() default { };
 }

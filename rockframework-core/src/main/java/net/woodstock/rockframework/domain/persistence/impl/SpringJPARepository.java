@@ -16,14 +16,27 @@
  */
 package net.woodstock.rockframework.domain.persistence.impl;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+
 import net.woodstock.rockframework.domain.persistence.Repository;
 
+import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.orm.jpa.support.JpaDaoSupport;
 
 public class SpringJPARepository extends JpaDaoSupport implements Repository {
 
 	public SpringJPARepository() {
 		super();
+	}
+
+	protected EntityManager getEntityManager() {
+		EntityManager entityManager = this.getJpaTemplate().getEntityManager();
+		if (entityManager == null) {
+			EntityManagerFactory entityManagerFactory = this.getJpaTemplate().getEntityManagerFactory();
+			entityManager = EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory);
+		}
+		return entityManager;
 	}
 
 }

@@ -18,6 +18,8 @@ package net.woodstock.rockframework.security.digest;
 
 public interface Digester {
 
-	String digest(String data);
+	byte[] digest(byte[] data);
+
+	String digestAsString(byte[] data);
 
 }

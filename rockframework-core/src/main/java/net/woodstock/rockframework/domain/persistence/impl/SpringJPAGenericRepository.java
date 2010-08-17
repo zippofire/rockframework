@@ -41,12 +41,12 @@ public abstract class SpringJPAGenericRepository extends SpringJPARepository imp
 
 	@Override
 	public <E extends Entity<?>> Collection<E> listAll(final E e, final Map<String, Object> options) {
-		return new CommonJPAGenericRepository(this.getJpaTemplate().getEntityManager()).listAll(e, options);
+		return new CommonJPAGenericRepository(this.getEntityManager()).listAll(e, options);
 	}
 
 	@Override
 	public <E extends Entity<?>> Collection<E> listByExample(final E e, final Map<String, Object> options) {
-		return new CommonJPAGenericRepository(this.getJpaTemplate().getEntityManager()).listByExample(e, options);
+		return new CommonJPAGenericRepository(this.getEntityManager()).listByExample(e, options);
 	}
 
 	@Override

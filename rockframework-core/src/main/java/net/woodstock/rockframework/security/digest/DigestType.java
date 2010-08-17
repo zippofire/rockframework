@@ -14,24 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.validator.jee;
+package net.woodstock.rockframework.security.digest;
 
-import javax.validation.ConstraintValidatorContext;
 
-import net.woodstock.rockframework.domain.Entity;
+public enum DigestType {
 
-public class ReferenceValidator extends AbstractValidator<Reference, Entity<?>> {
+	MD2("MD2"),
+	MD5("MD5"),
+	SHA1("SHA1"),
+	SHA_256("SHA-256"),
+	SHA_384("SHA-384"),
+	SHA_512("SHA-512");
+	
+	private String	type;
 
-	@Override
-	public boolean isValid(final Entity<?> entity, final ConstraintValidatorContext context) {
-		if (entity == null) {
-			return true;
-		}
-		Object id = entity.getId();
-		if (id != null) {
-			return true;
-		}
-		return false;
+	private DigestType(final String type) {
+		this.type = type;
 	}
 
+	public String getType() {
+		return this.type;
+	}
+	
 }

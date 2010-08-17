@@ -36,7 +36,7 @@ public abstract class AbstractHibernateBusiness extends AbstractBusiness {
 			InvalidValue[] values = validator.getInvalidValues(entity);
 			if ((values != null) && (values.length > 0)) {
 				String message = values[0].toString();
-				new ValidationResult(true, message);
+				return new ValidationResult(true, message);
 			}
 		}
 		return new ValidationResult(false, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_OK));

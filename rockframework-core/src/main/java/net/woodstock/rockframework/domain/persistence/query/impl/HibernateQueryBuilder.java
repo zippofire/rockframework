@@ -24,7 +24,6 @@ import net.woodstock.rockframework.domain.persistence.util.Constants;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.transform.DistinctRootEntityResultTransformer;
 
 public class HibernateQueryBuilder extends EJBQLQueryBuilder<Query> {
 
@@ -38,7 +37,6 @@ public class HibernateQueryBuilder extends EJBQLQueryBuilder<Query> {
 	@Override
 	protected Query getQuery(final String sql) {
 		Query query = this.session.createQuery(sql);
-		query.setResultTransformer(new DistinctRootEntityResultTransformer());
 		return query;
 	}
 

@@ -29,18 +29,18 @@ public class SpringJPAEJBQLRepository extends SpringJPARepository implements EJB
 
 	@Override
 	public void executeUpdate(final String sql, final Map<String, Object> parameters) {
-		new CommonJPAEJBQLRepository(this.getJpaTemplate().getEntityManager()).executeUpdate(sql, parameters);
+		new CommonJPAEJBQLRepository(this.getEntityManager()).executeUpdate(sql, parameters);
 	}
 
 	@Override
 	@SuppressWarnings("rawtypes")
 	public Collection getCollection(final String sql, final Map<String, Object> parameters) {
-		return new CommonJPAEJBQLRepository(this.getJpaTemplate().getEntityManager()).getCollection(sql, parameters);
+		return new CommonJPAEJBQLRepository(this.getEntityManager()).getCollection(sql, parameters);
 	}
 
 	@Override
 	public Object getSingle(final String sql, final Map<String, Object> parameters) {
-		return new CommonJPAEJBQLRepository(this.getJpaTemplate().getEntityManager()).getSingle(sql, parameters);
+		return new CommonJPAEJBQLRepository(this.getEntityManager()).getSingle(sql, parameters);
 	}
 
 }

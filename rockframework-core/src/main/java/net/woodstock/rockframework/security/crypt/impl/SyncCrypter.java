@@ -16,126 +16,57 @@
  */
 package net.woodstock.rockframework.security.crypt.impl;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
 import net.woodstock.rockframework.security.crypt.CrypterException;
+import net.woodstock.rockframework.security.crypt.KeyType;
 import net.woodstock.rockframework.util.Assert;
-import net.woodstock.rockframework.utils.Base64Utils;
-import net.woodstock.rockframework.utils.LocaleUtils;
 import net.woodstock.rockframework.utils.StringUtils;
 
-public class SyncCrypter extends CrypterBase {
+public class SyncCrypter extends AbstractCrypter {
 
 	private SecretKey	key;
 
-	public SyncCrypter(final Algorithm algorithm, final String seed) {
+	public SyncCrypter(final KeyType type) {
+		this(type, null);
+	}
+
+	public SyncCrypter(final KeyType type, final String seed) {
 		super();
+		Assert.notNull(type, "type");
 		try {
-			Algorithm a = algorithm;
-			if (a == null) {
-				a = Algorithm.DEFAULT;
-			}
-
-			KeyGenerator generator = KeyGenerator.getInstance(a.algorithm());
-
-			if (!StringUtils.isEmpty(seed)) {
-				SecureRandom random = new SecureRandom(seed.getBytes(LocaleUtils.getCharset()));
-				generator.init(random);
-			}
-
-			SecretKey key = KeyGenerator.getInstance(a.algorithm()).generateKey();
-			this.init(key, a);
+			this.initKeys(type, seed);
+			this.initCiphers();
 		} catch (Exception e) {
 			throw new CrypterException(e);
 		}
 	}
 
-	public SyncCrypter(final InputStream inputStream) {
-		super();
-		Assert.notNull(inputStream, "inputStream");
-		try {
-			KeyData data = (KeyData) Base64Utils.unserialize(inputStream);
-			SecretKey key = (SecretKey) data.getKey();
-			Algorithm algorithm = Algorithm.fromString(data.getAlgorithm());
-			this.init(key, algorithm);
-		} catch (Exception e) {
-			throw new CrypterException(e);
-		}
-	}
+	private void initKeys(final KeyType type, final String seed) throws NoSuchAlgorithmException {
+		KeyGenerator generator = KeyGenerator.getInstance(type.getType());
 
-	private void init(final SecretKey key, final Algorithm algorithm) {
-		Assert.notNull(key, "key");
-		this.setAlgorithm(algorithm.algorithm());
+		if (!StringUtils.isEmpty(seed)) {
+			SecureRandom random = new SecureRandom(seed.getBytes());
+			generator.init(random);
+		}
+
+		SecretKey key = generator.generateKey();
 		this.key = key;
+		this.setAlgorithm(type.getType());
 	}
 
-	@Override
-	public String encrypt(final String str) {
-		try {
-			if (this.getEncryptCipher() == null) {
-				this.setEncryptCipher(Cipher.getInstance(this.getAlgorithm()));
-				this.getEncryptCipher().init(Cipher.ENCRYPT_MODE, this.key);
-			}
-			byte[] bytes = str.getBytes(LocaleUtils.getCharset());
-			byte[] enc = this.getEncryptCipher().doFinal(bytes);
-			return new String(enc, LocaleUtils.getCharset());
-		} catch (Exception e) {
-			throw new CrypterException(e);
-		}
-	}
+	private void initCiphers() throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException {
+		this.setEncryptCipher(Cipher.getInstance(this.getAlgorithm()));
+		this.getEncryptCipher().init(Cipher.ENCRYPT_MODE, this.key);
 
-	@Override
-	public String decrypt(final String str) {
-		try {
-			if (this.getDecryptCipher() == null) {
-				this.setDecryptCipher(Cipher.getInstance(this.getAlgorithm()));
-				this.getDecryptCipher().init(Cipher.DECRYPT_MODE, this.key);
-			}
-			byte[] bytes = this.getDecryptCipher().doFinal(str.getBytes(LocaleUtils.getCharset()));
-			return new String(bytes, LocaleUtils.getCharset());
-		} catch (Exception e) {
-			throw new CrypterException(e);
-		}
-	}
-
-	public void saveKey(final OutputStream outputStream) {
-		try {
-			KeyData data = new KeyData(this.key.getAlgorithm(), this.key);
-			Base64Utils.serialize(data, outputStream);
-		} catch (IOException e) {
-			throw new CrypterException(e);
-		}
-	}
-
-	public static enum Algorithm {
-
-		AES("AES"), BLOWFISH("Blowfish"), DEFAULT("DESede"), DESAES("DESAES"), DES("DES"), DESEDE("DESede"), MD5("HmacMD5"), SHA1("HmacSHA1");
-
-		private String	algorithm;
-
-		private Algorithm(final String algorithm) {
-			this.algorithm = algorithm;
-		}
-
-		public String algorithm() {
-			return this.algorithm;
-		}
-
-		public static Algorithm fromString(final String algorithm) {
-			for (Algorithm s : Algorithm.values()) {
-				if (s.algorithm().equalsIgnoreCase(algorithm)) {
-					return s;
-				}
-			}
-			return null;
-		}
-
+		this.setDecryptCipher(Cipher.getInstance(this.getAlgorithm()));
+		this.getDecryptCipher().init(Cipher.DECRYPT_MODE, this.key);
 	}
 }

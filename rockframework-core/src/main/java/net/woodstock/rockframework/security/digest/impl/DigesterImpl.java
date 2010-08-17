@@ -19,48 +19,40 @@ package net.woodstock.rockframework.security.digest.impl;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import net.woodstock.rockframework.security.digest.DigestType;
 import net.woodstock.rockframework.security.digest.Digester;
 import net.woodstock.rockframework.security.digest.DigesterException;
-import net.woodstock.rockframework.utils.LocaleUtils;
+import net.woodstock.rockframework.util.Assert;
+import net.woodstock.rockframework.utils.HexUtils;
 
-public class SimpleDigester implements Digester {
+public class DigesterImpl implements Digester {
 
-	private MessageDigest	digest;
+	private DigestType	type;
 
-	public SimpleDigester(final Algorithm algorithm) {
+	public DigesterImpl(final DigestType type) {
 		super();
+		Assert.notNull(type, "type");
+		this.type = type;
+	}
+
+	@Override
+	public byte[] digest(final byte[] data) {
+		Assert.notNull(data, "data");
+		Assert.notEmpty(data, "data");
 		try {
-			this.digest = MessageDigest.getInstance(algorithm.algorithm());
+			MessageDigest digest = MessageDigest.getInstance(this.type.getType());
+			digest.update(data);
+			byte[] digested = digest.digest();
+			return digested;
 		} catch (NoSuchAlgorithmException e) {
 			throw new DigesterException(e);
 		}
 	}
 
-	private synchronized byte[] digestInternal(final String data) {
-		byte[] b = this.digest.digest(data.getBytes(LocaleUtils.getCharset()));
-		this.digest.reset();
-		return b;
-	}
-
 	@Override
-	public String digest(final String data) {
-		byte[] b = this.digestInternal(data);
-		return new String(b, LocaleUtils.getCharset());
-	}
-
-	public static enum Algorithm {
-
-		DEFAULT("SHA-1"), MD2("MD2"), MD5("MD5"), SHA_1("SHA-1"), SHA_256("SHA-256"), SHA_384("SHA-384,"), SHA_512("SHA-512");
-
-		private String	algorithm;
-
-		private Algorithm(final String algorithm) {
-			this.algorithm = algorithm;
-		}
-
-		public String algorithm() {
-			return this.algorithm;
-		}
-
+	public String digestAsString(final byte[] data) {
+		byte[] digested = this.digest(data);
+		String str = HexUtils.toHex(digested);
+		return str;
 	}
 }

@@ -19,8 +19,9 @@ package net.woodstock.rockframework.security.crypt.impl;
 import javax.crypto.Cipher;
 
 import net.woodstock.rockframework.security.crypt.Crypter;
+import net.woodstock.rockframework.security.crypt.CrypterException;
 
-abstract class CrypterBase implements Crypter {
+abstract class AbstractCrypter implements Crypter {
 
 	private String	algorithm;
 
@@ -28,7 +29,7 @@ abstract class CrypterBase implements Crypter {
 
 	private Cipher	decryptCipher;
 
-	public String getAlgorithm() {
+	protected String getAlgorithm() {
 		return this.algorithm;
 	}
 
@@ -36,20 +37,40 @@ abstract class CrypterBase implements Crypter {
 		this.algorithm = algorithm;
 	}
 
-	public Cipher getEncryptCipher() {
+	protected Cipher getEncryptCipher() {
 		return this.encryptCipher;
 	}
 
-	public void setEncryptCipher(final Cipher encryptCipher) {
+	protected void setEncryptCipher(final Cipher encryptCipher) {
 		this.encryptCipher = encryptCipher;
 	}
 
-	public Cipher getDecryptCipher() {
+	protected Cipher getDecryptCipher() {
 		return this.decryptCipher;
 	}
 
-	public void setDecryptCipher(final Cipher decryptCipher) {
+	protected void setDecryptCipher(final Cipher decryptCipher) {
 		this.decryptCipher = decryptCipher;
+	}
+
+	@Override
+	public byte[] encrypt(final byte[] data) {
+		try {
+			byte[] enc = this.encryptCipher.doFinal(data);
+			return enc;
+		} catch (Exception e) {
+			throw new CrypterException(e);
+		}
+	}
+
+	@Override
+	public byte[] decrypt(final byte[] data) {
+		try {
+			byte[] dec = this.decryptCipher.doFinal(data);
+			return dec;
+		} catch (Exception e) {
+			throw new CrypterException(e);
+		}
 	}
 
 }

@@ -14,24 +14,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.validator.jee;
+package net.woodstock.rockframework.security.crypt;
 
-import javax.validation.ConstraintValidatorContext;
 
-import net.woodstock.rockframework.domain.Entity;
+public enum KeyType {
 
-public class ReferenceValidator extends AbstractValidator<Reference, Entity<?>> {
+	ARCFOUR("ARCFOUR"),
+	DES("DES"),
+	DESEDE("DESede"),
+	AES("AES"),
+	BLOWFISH("Blowfish");
+	
+	private String	type;
 
-	@Override
-	public boolean isValid(final Entity<?> entity, final ConstraintValidatorContext context) {
-		if (entity == null) {
-			return true;
-		}
-		Object id = entity.getId();
-		if (id != null) {
-			return true;
-		}
-		return false;
+	private KeyType(final String type) {
+		this.type = type;
 	}
 
+	public String getType() {
+		return this.type;
+	}
+	
 }

@@ -18,8 +18,8 @@ package net.woodstock.rockframework.security.crypt;
 
 public interface Crypter {
 
-	String encrypt(String str);
+	byte[] encrypt(byte[] data);
 
-	String decrypt(String str);
+	byte[] decrypt(byte[] data);
 
 }

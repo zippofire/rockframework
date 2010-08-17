@@ -17,10 +17,12 @@
 package net.woodstock.rockframework.util;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.utils.StringUtils;
 
@@ -220,6 +222,18 @@ public abstract class Assert {
 
 		if (array.length == 0) {
 			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_NOT_EMPTY, name));
+		}
+	}
+
+	public static void notEmpty(final Object array, final String name) {
+		Assert.notNull(array, name);
+
+		if (array.getClass().isArray()) {
+			if (Array.getLength(array) == 0) {
+				throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_NOT_EMPTY, name));
+			}
+		} else {
+			CoreLog.getInstance().getLog().warn("Object is not an array. Fix it " + name + " : " + array);
 		}
 	}
 

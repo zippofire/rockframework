@@ -96,7 +96,7 @@ abstract class QueryContextHelper {
 
 	private static void generateQueryString(final QueryContext context, final Map<String, Object> options) {
 		StringBuilder builder = new StringBuilder();
-		builder.append("SELECT " + context.getAlias() + QueryContextHelper.LINE_SEPARATOR);
+		builder.append("SELECT DISTINCT " + context.getAlias() + QueryContextHelper.LINE_SEPARATOR);
 		builder.append("  FROM " + context.getName() + " AS " + context.getAlias() + QueryContextHelper.LINE_SEPARATOR);
 		boolean where = true;
 		for (QueryContext child : context.getChildsRecursive()) {

@@ -14,24 +14,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.validator.jee;
+package net.woodstock.rockframework.security.crypt;
 
-import javax.validation.ConstraintValidatorContext;
+public enum SignatureType {
 
-import net.woodstock.rockframework.domain.Entity;
+	MD2_RSA("MD2withRSA"),
+	MD5_RSA("MD5withRSA"),
+	SHA1_RSA("SHA1withRSA"),
+	SHA256_RSA("SHA256withRSA"),
+	SHA384_RSA("SHA384withRSA"),
+	SHA512_RSA("SHA512withRSA"),
+	SHA1_DSA("SHA1withDSA"),
+	NONE_DSA("NONEwithDSA"),
+	SHA1_ECDSA("SHA1withECDSA"),
+	SHA256_ECDSA("SHA256withECDSA"),
+	SHA384_ECDSA("SHA384withECDSA"),
+	SHA512_ECDSA("SHA512withECDSA"),
+	NONE_ECDSA("NONEwithECDSA");
 
-public class ReferenceValidator extends AbstractValidator<Reference, Entity<?>> {
+	private String	type;
 
-	@Override
-	public boolean isValid(final Entity<?> entity, final ConstraintValidatorContext context) {
-		if (entity == null) {
-			return true;
-		}
-		Object id = entity.getId();
-		if (id != null) {
-			return true;
-		}
-		return false;
+	private SignatureType(final String type) {
+		this.type = type;
+	}
+
+	public String getType() {
+		return this.type;
 	}
 
 }

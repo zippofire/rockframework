@@ -14,26 +14,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.validator.jee;
+package net.woodstock.rockframework.security.crypt;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+public enum CertificateType {
 
-import javax.validation.Constraint;
-import javax.validation.Payload;
+	X509("X.509");
 
-@Target({ ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE })
-@Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = ReferenceValidator.class)
-@Documented
-public @interface Reference {
+	private String	type;
 
-	String message() default "{javax.validation.constraints.NotNull.message}";
+	private CertificateType(final String type) {
+		this.type = type;
+	}
 
-	Class<?>[] groups() default { };
+	public String getType() {
+		return this.type;
+	}
 
-	Class<? extends Payload>[] payload() default { };
 }
