@@ -83,7 +83,7 @@ public abstract class ResponseUtils {
 		InputStream input = new FileInputStream(f);
 		OutputStream output = response.getOutputStream();
 
-		IOUtils.copy(input, output, true);
+		IOUtils.copy(input, output);
 	}
 
 	public static String getAttachmentContentDisposition(final String fileName) {

@@ -14,24 +14,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.test;
+package net.woodstock.rockframework.security.crypt.impl;
 
-import java.util.Locale;
+import net.woodstock.rockframework.security.crypt.Crypter;
+import net.woodstock.rockframework.util.Assert;
 
-import junit.framework.TestCase;
-import net.woodstock.rockframework.utils.NumberUtils;
+public class DelegateCrypter implements Crypter {
 
-public class LocaleTest extends TestCase {
+	private Crypter	crypter;
 
-	public void xtest1() throws Exception {
-		// en US 999,999,999
-		// pt BR 999.999.999
-		int n = 999999999;
-		System.out.println(NumberUtils.format(n));
+	public DelegateCrypter(final Crypter crypter) {
+		super();
+		Assert.notNull(crypter, "crypter");
+		this.crypter = crypter;
 	}
 
-	public void xtest2() throws Exception {
-		System.out.println(Locale.getDefault());
+	@Override
+	public byte[] decrypt(final byte[] data) {
+		return this.crypter.decrypt(data);
+	}
+
+	@Override
+	public byte[] encrypt(final byte[] data) {
+		return this.crypter.encrypt(data);
 	}
 
 }

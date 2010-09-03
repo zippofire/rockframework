@@ -16,43 +16,19 @@
  */
 package net.woodstock.rockframework.security.digest.impl;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
-import net.woodstock.rockframework.security.digest.DigestType;
 import net.woodstock.rockframework.security.digest.Digester;
-import net.woodstock.rockframework.security.digest.DigesterException;
-import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.utils.HexUtils;
 
-public class DigesterImpl implements Digester {
+public class HexDigester extends DelegateDigester {
 
-	private DigestType	type;
-
-	public DigesterImpl(final DigestType type) {
-		super();
-		Assert.notNull(type, "type");
-		this.type = type;
+	public HexDigester(final Digester digester) {
+		super(digester);
 	}
 
 	@Override
 	public byte[] digest(final byte[] data) {
-		Assert.notNull(data, "data");
-		Assert.notEmpty(data, "data");
-		try {
-			MessageDigest digest = MessageDigest.getInstance(this.type.getType());
-			digest.update(data);
-			byte[] digested = digest.digest();
-			return digested;
-		} catch (NoSuchAlgorithmException e) {
-			throw new DigesterException(e);
-		}
-	}
-
-	@Override
-	public String digestAsString(final byte[] data) {
-		byte[] digested = this.digest(data);
-		String str = HexUtils.toHex(digested);
-		return str;
+		byte[] digested = super.digest(data);
+		byte[] hex = HexUtils.toHex(digested);
+		return hex;
 	}
 }

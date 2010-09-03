@@ -33,14 +33,16 @@ abstract class ElementWrapper implements Comparable<Element>, Element, Serializa
 
 	private Element				element;
 
-	@Override
-	public abstract int compareTo(Element o);
+	public ElementWrapper(final Element element) {
+		super();
+		this.element = element;
+	}
 
-	public Element getElement() {
+	protected Element getElement() {
 		return this.element;
 	}
 
-	public void setElement(final Element element) {
+	protected void setElement(final Element element) {
 		this.element = element;
 	}
 

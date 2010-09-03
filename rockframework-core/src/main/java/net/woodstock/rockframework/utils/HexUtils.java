@@ -26,7 +26,19 @@ public abstract class HexUtils {
 		//
 	}
 
-	public static String toHex(final byte[] bytes) {
+	public static byte[] toHex(final byte[] bytes) {
+		StringBuilder builder = new StringBuilder();
+		for (byte b : bytes) {
+			String s = Integer.toHexString(HexUtils.BIT_COMPARATOR & b);
+			if (s.length() == 1) {
+				builder.append(HexUtils.PADDING_CHAR);
+			}
+			builder.append(s);
+		}
+		return builder.toString().getBytes();
+	}
+
+	public static String toHexString(final byte[] bytes) {
 		StringBuilder builder = new StringBuilder();
 		for (byte b : bytes) {
 			String s = Integer.toHexString(HexUtils.BIT_COMPARATOR & b);

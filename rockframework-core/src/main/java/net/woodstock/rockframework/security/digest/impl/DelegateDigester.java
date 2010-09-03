@@ -14,24 +14,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.test;
+package net.woodstock.rockframework.security.digest.impl;
 
-import java.util.Locale;
+import net.woodstock.rockframework.security.digest.Digester;
+import net.woodstock.rockframework.util.Assert;
 
-import junit.framework.TestCase;
-import net.woodstock.rockframework.utils.NumberUtils;
+public abstract class DelegateDigester implements Digester {
 
-public class LocaleTest extends TestCase {
+	private Digester	digester;
 
-	public void xtest1() throws Exception {
-		// en US 999,999,999
-		// pt BR 999.999.999
-		int n = 999999999;
-		System.out.println(NumberUtils.format(n));
+	public DelegateDigester(final Digester digester) {
+		super();
+		Assert.notNull(digester, "digester");
+		this.digester = digester;
 	}
 
-	public void xtest2() throws Exception {
-		System.out.println(Locale.getDefault());
+	@Override
+	public byte[] digest(final byte[] data) {
+		return this.digester.digest(data);
 	}
-
 }

@@ -18,6 +18,8 @@ package net.woodstock.rockframework.utils;
 
 public abstract class SystemUtils {
 
+	public static final String	FILE_ENCODING_PROPERTY		= "file.encoding";
+
 	public static final String	FILE_SEPARATOR_PROPERTY		= "file.separator";
 
 	public static final String	JAVA_CLASS_PATH_PROPERTY	= "java.class.path";
@@ -56,11 +58,19 @@ public abstract class SystemUtils {
 
 	public static final String	PATH_SEPARADOR_PROPERTY		= "path.separator";
 
+	public static final String	USER_COUNTRY_PROPERTY		= "user.country";
+
 	public static final String	USER_DIR_PROPERTY			= "user.dir";
 
 	public static final String	USER_HOME_PROPERTY			= "user.home";
 
+	public static final String	USER_LANGUAGE_PROPERTY		= "user.language";
+
 	public static final String	USER_NAME_PROPERTY			= "user.name";
+
+	public static final String	USER_TIMEZONE_PROPERTY		= "user.timezone";
+
+	public static final String	USER_VARIANT_PROPERTY		= "user.variant";
 
 	private SystemUtils() {
 		//

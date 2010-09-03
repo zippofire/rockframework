@@ -39,7 +39,7 @@ public abstract class SecurityUtils {
 		//
 	}
 
-	public static Certificate getCertificateFile(final InputStream inputStream, final CertificateType type) throws CertificateException {
+	public static Certificate getCertificateFromFile(final InputStream inputStream, final CertificateType type) throws CertificateException {
 		Assert.notNull(inputStream, "inputStream");
 		Assert.notNull(type, "type");
 		CertificateFactory certFactory = CertificateFactory.getInstance(type.getType());

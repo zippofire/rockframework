@@ -95,7 +95,7 @@ public class ResourceFilter extends HttpFilter {
 		response.setContentLength(contentLength);
 		response.setContentType(contentType);
 
-		IOUtils.copy(input, output, true);
+		IOUtils.copy(input, output);
 	}
 
 }

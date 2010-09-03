@@ -1,6 +1,6 @@
 package net.woodstock.rockframework.test;
 
-import java.io.File;
+import java.io.FileInputStream;
 
 import junit.framework.TestCase;
 import net.woodstock.rockframework.xml.dom.XmlDocument;
@@ -14,7 +14,7 @@ import org.w3c.dom.Text;
 public class XmlText extends TestCase {
 
 	public void test1() throws Exception {
-		XmlDocument doc = XmlDocument.read(new File("D:/operations.xml"));
+		XmlDocument doc = XmlDocument.read(new FileInputStream("D:/operations.xml"));
 		XmlElement root = doc.getRoot();
 
 		for (XmlElement e : root.getElements()) {

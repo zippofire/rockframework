@@ -18,15 +18,10 @@ package net.woodstock.rockframework.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
 
 import net.woodstock.rockframework.util.Base64Encoder;
@@ -74,23 +69,6 @@ public abstract class Base64Utils {
 		return bytes;
 	}
 
-	public static void serialize(final Object o, final File file) throws IOException {
-		Base64Utils.serialize(o, new FileOutputStream(file));
-	}
-
-	public static void serialize(final Object o, final OutputStream output) throws IOException {
-		byte[] bytes = Base64Utils.serialize(o);
-		output.write(bytes);
-		output.close();
-	}
-
-	public static Object unserialize(final String object) throws IOException, ClassNotFoundException {
-		if (StringUtils.isEmpty(object)) {
-			return null;
-		}
-		return Base64Utils.unserialize(object.getBytes(LocaleUtils.getCharset()));
-	}
-
 	public static Object unserialize(final byte[] bytes) throws IOException, ClassNotFoundException {
 		byte[] b = Base64Encoder.getInstance().decode(bytes);
 
@@ -99,27 +77,6 @@ public abstract class Base64Utils {
 		input.close();
 
 		return o;
-	}
-
-	public static Object unserialize(final File file) throws IOException, ClassNotFoundException {
-		return Base64Utils.unserialize(new FileInputStream(file));
-	}
-
-	public static Object unserialize(final InputStream input) throws IOException, ClassNotFoundException {
-		ByteArrayOutputStream output = new ByteArrayOutputStream();
-
-		int b = -1;
-		do {
-			b = input.read();
-			if (b != -1) {
-				output.write(b);
-			}
-		} while (b != -1);
-
-		input.close();
-		output.close();
-
-		return Base64Utils.unserialize(output.toByteArray());
 	}
 
 }

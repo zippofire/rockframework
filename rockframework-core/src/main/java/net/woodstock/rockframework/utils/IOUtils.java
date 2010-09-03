@@ -16,13 +16,11 @@
  */
 package net.woodstock.rockframework.utils;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Reader;
-import java.io.Writer;
+
+import net.woodstock.rockframework.util.Assert;
 
 public abstract class IOUtils {
 
@@ -30,68 +28,29 @@ public abstract class IOUtils {
 		//
 	}
 
-	public static void copy(final InputStream input, final OutputStream output) throws IOException {
-		IOUtils.copy(input, output, true);
-	}
-
-	public static void copy(final InputStream input, final OutputStream output, final boolean close) throws IOException {
-		int b = -1;
-		do {
-			b = input.read();
-			if (b != -1) {
-				output.write(b);
-			}
-		} while (b != -1);
-
-		if (close) {
-			input.close();
-			output.flush();
-			output.close();
-		}
-	}
-
-	public static void copy(final Reader reader, final Writer writer) throws IOException {
-		IOUtils.copy(reader, writer, true);
-	}
-
-	public static void copy(final Reader reader, final Writer writer, final boolean close) throws IOException {
-		int b = -1;
-		do {
-			b = reader.read();
-			if (b != -1) {
-				writer.write(b);
-			}
-		} while (b != -1);
-
-		if (close) {
-			reader.close();
-			writer.flush();
-			writer.close();
-		}
+	public static void copy(final InputStream inputStream, final OutputStream outputStream) throws IOException {
+		Assert.notNull(inputStream, "inputStream");
+		Assert.notNull(outputStream, "outputStream");
+		byte[] bytes = new byte[inputStream.available()];
+		inputStream.read(bytes);
+		outputStream.write(bytes);
 	}
 
 	public static byte[] toByteArray(final InputStream inputStream) throws IOException {
-		byte[] b = new byte[inputStream.available()];
-		inputStream.read(b);
-		return b;
+		Assert.notNull(inputStream, "inputStream");
+		byte[] bytes = new byte[inputStream.available()];
+		inputStream.read(bytes);
+		return bytes;
 	}
 
 	public static String toString(final InputStream inputStream) throws IOException {
-		return new String(IOUtils.toByteArray(inputStream), LocaleUtils.getCharset());
-	}
+		Assert.notNull(inputStream, "inputStream");
+		byte[] bytes = new byte[inputStream.available()];
+		inputStream.read(bytes);
 
-	public static InputStream toInputStream(final byte[] bytes) {
-		InputStream inputStream = new ByteArrayInputStream(bytes);
-		return inputStream;
-	}
+		String s = new String(bytes, LocaleUtils.getCharset());
 
-	public static InputStream toInputStream(final Reader reader) throws IOException {
-		ByteArrayOutputStream output = new ByteArrayOutputStream();
-		int i = -1;
-		while ((i = reader.read()) != -1) {
-			output.write(i);
-		}
-		return new ByteArrayInputStream(output.toByteArray());
+		return s;
 	}
 
 }

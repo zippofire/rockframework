@@ -20,6 +20,4 @@ public interface Digester {
 
 	byte[] digest(byte[] data);
 
-	String digestAsString(byte[] data);
-
 }

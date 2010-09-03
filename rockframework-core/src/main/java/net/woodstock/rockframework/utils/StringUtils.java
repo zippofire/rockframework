@@ -230,6 +230,10 @@ public abstract class StringUtils {
 		return builder.toString();
 	}
 
+	public static String normalize(final String s) {
+		return Normalizer.normalize(s, Normalizer.Form.NFD).replaceAll(StringUtils.ACCENT_PATTERN, "");
+	}
+
 	public static String random(final int size) {
 		StringBuilder builder = new StringBuilder();
 		int max = StringUtils.LETTERS_DIGITS.length();
@@ -239,7 +243,7 @@ public abstract class StringUtils {
 		}
 		return builder.toString();
 	}
-	
+
 	public static String replace(final InputStream input, final Map<String, String> replaces) throws IOException {
 		return StringUtils.replace(new InputStreamReader(input), replaces);
 	}
@@ -305,9 +309,5 @@ public abstract class StringUtils {
 		}
 
 		return s.toString();
-	}
-
-	public static String normalize(final String s) {
-		return Normalizer.normalize(s, Normalizer.Form.NFD).replaceAll(StringUtils.ACCENT_PATTERN, "");
 	}
 }

@@ -17,29 +17,24 @@
 package net.woodstock.rockframework.security.crypt.impl;
 
 import net.woodstock.rockframework.security.crypt.Crypter;
-import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.utils.Base64Utils;
 
-public class Base64Crypter implements Crypter {
-
-	private Crypter	crypter;
+public class Base64Crypter extends DelegateCrypter {
 
 	public Base64Crypter(final Crypter crypter) {
-		super();
-		Assert.notNull(crypter, "crypter");
-		this.crypter = crypter;
+		super(crypter);
 	}
 
 	@Override
 	public byte[] decrypt(final byte[] data) {
 		byte[] b64 = Base64Utils.fromBase64(data);
-		byte[] dec = this.crypter.decrypt(b64);
+		byte[] dec = super.decrypt(b64);
 		return dec;
 	}
 
 	@Override
 	public byte[] encrypt(final byte[] data) {
-		byte[] enc = this.crypter.encrypt(data);
+		byte[] enc = super.encrypt(data);
 		byte[] b64 = Base64Utils.toBase64(enc);
 		return b64;
 	}

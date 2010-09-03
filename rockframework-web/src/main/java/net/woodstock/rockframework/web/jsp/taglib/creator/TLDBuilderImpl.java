@@ -16,11 +16,14 @@
  */
 package net.woodstock.rockframework.web.jsp.taglib.creator;
 
+import javax.servlet.jsp.tagext.JspTag;
+
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.ReflectionType;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilderImpl;
 import net.woodstock.rockframework.util.Assert;
+import net.woodstock.rockframework.web.config.WebLog;
 import net.woodstock.rockframework.xml.dom.XmlDocument;
 import net.woodstock.rockframework.xml.dom.XmlElement;
 
@@ -37,6 +40,10 @@ class TLDBuilderImpl extends TLDBuilder {
 			throw new IllegalArgumentException("Class " + clazz + " must be annoted with @" + Tag.class.getCanonicalName());
 		}
 
+		if (!JspTag.class.isAssignableFrom(clazz)) {
+			WebLog.getInstance().getLog().info("Class " + clazz.getCanonicalName() + " is not not a child of " + JspTag.class.getCanonicalName());
+		}
+
 		Tag tag = clazz.getAnnotation(Tag.class);
 		String name = tag.name();
 		String description = tag.description();
@@ -46,13 +53,13 @@ class TLDBuilderImpl extends TLDBuilder {
 		XmlDocument document = new XmlDocument("tag");
 		XmlElement root = document.getRoot();
 
-		root.addElement("name", name);
-		root.addElement("description", description);
-		root.addElement("body-content", type);
-		root.addElement("tag-class", clazz.getCanonicalName());
+		root.addElement("name").setData(name);
+		root.addElement("description").setData(description);
+		root.addElement("body-content").setData(type);
+		root.addElement("tag-class").setData(clazz.getCanonicalName());
 
 		if (dynamicAttributes) {
-			root.addElement("dynamic-attributes", dynamicAttributes);
+			root.addElement("dynamic-attributes").setData(new Boolean(dynamicAttributes));
 		}
 
 		BeanDescriptor beanDescriptor = new BeanDescriptorBuilderImpl().setType(clazz).setMode(ReflectionType.MIXED).getBeanDescriptor();
@@ -65,15 +72,14 @@ class TLDBuilderImpl extends TLDBuilder {
 			Attribute tldAttribute = propertyDescriptor.getAnnotation(Attribute.class);
 			XmlElement e = root.addElement("attribute");
 
-			e.addElement("name", propertyDescriptor.getName());
-			e.addElement("rtexprvalue", tldAttribute.rtexprvalue());
-			e.addElement("required", tldAttribute.required());
+			e.addElement("name").setData(propertyDescriptor.getName());
+			e.addElement("rtexprvalue").setData(new Boolean(tldAttribute.rtexprvalue()));
+			e.addElement("required").setData(new Boolean(tldAttribute.required()));
 			if ((!tldAttribute.rtexprvalue()) && (tldAttribute.type() != String.class)) {
-				e.addElement("type", tldAttribute.type().getCanonicalName());
+				e.addElement("type").setData(tldAttribute.type().getCanonicalName());
 			}
 		}
 
 		return document.toString();
 	}
-
 }

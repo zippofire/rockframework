@@ -6,10 +6,11 @@ import java.io.ObjectOutputStream;
 
 import junit.framework.TestCase;
 import net.woodstock.rockframework.io.FileInfo;
+import net.woodstock.rockframework.utils.SystemUtils;
 
 public class FileTest extends TestCase {
 
-	public void test1() throws Exception {
+	public void xtest1() throws Exception {
 		System.out.println("======================================");
 		File file = new File("C:/Temp/split.pdf");
 		FileInfo fileInfo = new FileInfo(file);
@@ -22,7 +23,7 @@ public class FileTest extends TestCase {
 		System.out.println(fileInfo.getSize());
 	}
 
-	public void test2() throws Exception {
+	public void xtest2() throws Exception {
 		System.out.println("======================================");
 		FileInfo fileInfo = new FileInfo("C:/Temp/split.pdf");
 
@@ -34,7 +35,7 @@ public class FileTest extends TestCase {
 		System.out.println(fileInfo.getSize());
 	}
 
-	public void test3() throws Exception {
+	public void xtest3() throws Exception {
 		System.out.println("======================================");
 		File file = new File("C:/Temp/split.pdf");
 		FileInfo fileInfo = new FileInfo(file);
@@ -57,6 +58,10 @@ public class FileTest extends TestCase {
 
 		System.out.println("File    : " + size1);
 		System.out.println("FileInfo: " + size2);
+	}
+
+	public void test4() throws Exception {
+		System.out.println(SystemUtils.getProperty(SystemUtils.FILE_ENCODING_PROPERTY));
 	}
 
 }

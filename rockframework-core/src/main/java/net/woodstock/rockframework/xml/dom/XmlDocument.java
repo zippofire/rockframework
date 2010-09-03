@@ -16,9 +16,6 @@
  */
 package net.woodstock.rockframework.xml.dom;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -27,18 +24,11 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.net.URL;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Source;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-import javax.xml.validation.Validator;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -101,10 +91,6 @@ public class XmlDocument extends DocumentWrapper {
 		return this.root;
 	}
 
-	public static XmlDocument read(final File file) throws SAXException, IOException {
-		return XmlDocument.read(new FileReader(file));
-	}
-
 	public static XmlDocument read(final InputStream input) throws SAXException, IOException {
 		return XmlDocument.read(new InputStreamReader(input));
 	}
@@ -115,50 +101,12 @@ public class XmlDocument extends DocumentWrapper {
 		return new XmlDocument(document);
 	}
 
-	public static XmlDocument read(final URL url) throws SAXException, IOException {
-		InputStream input = url.openStream();
-		Document document = XmlDocument.builder.parse(input);
-		input.close();
-		return new XmlDocument(document);
-	}
-
-	public void write(final File file) throws IOException {
-		this.write(new FileWriter(file));
-	}
-
 	public void write(final OutputStream out) throws IOException {
 		this.write(new OutputStreamWriter(out));
 	}
 
 	public void write(final Writer writer) throws IOException {
 		XmlWriter.getInstance().write(this, writer);
-	}
-
-	public void validateSchema(final File source, final String ns) throws SAXException, IOException {
-		this.validateSchema(new StreamSource(source), ns);
-	}
-
-	public void validateSchema(final URL source, final String ns) throws SAXException, IOException {
-		this.validateSchema(source.openStream(), ns);
-	}
-
-	public void validateSchema(final InputStream source, final String ns) throws SAXException, IOException {
-		this.validateSchema(new StreamSource(source), ns);
-	}
-
-	public void validateSchema(final Reader source, final String ns) throws SAXException, IOException {
-		this.validateSchema(new StreamSource(source), ns);
-	}
-
-	public void validateSchema(final Source source, final String ns) throws SAXException, IOException {
-		SchemaFactory factory = SchemaFactory.newInstance(ns);
-		Schema schema = factory.newSchema(source);
-		Validator validator = schema.newValidator();
-		validator.validate(new DOMSource(this.getDocument()));
-	}
-
-	public static Document toDocument(final XmlDocument d) {
-		return d.getDocument();
 	}
 
 	public static XmlDocument toXmlDocument(final Document d) {

@@ -37,7 +37,6 @@ import net.woodstock.rockframework.jdbc.Client;
 import net.woodstock.rockframework.jdbc.Parameter;
 import net.woodstock.rockframework.jdbc.ParameterList;
 import net.woodstock.rockframework.jdbc.Type;
-import net.woodstock.rockframework.utils.IOUtils;
 
 public class CommonClient implements Client {
 
@@ -111,8 +110,6 @@ public class CommonClient implements Client {
 				try {
 					if (value instanceof File) {
 						value = new FileInputStream((File) value);
-					} else if (value instanceof Reader) {
-						value = IOUtils.toInputStream((Reader) value);
 					}
 					cs.setBinaryStream(index, (InputStream) value, ((InputStream) value).available());
 				} catch (IOException e) {
@@ -135,8 +132,6 @@ public class CommonClient implements Client {
 				try {
 					if (value instanceof File) {
 						value = new FileInputStream((File) value);
-					} else if (value instanceof Reader) {
-						value = IOUtils.toInputStream((Reader) value);
 					}
 					int size = ((InputStream) value).available();
 					value = new InputStreamReader((InputStream) value);

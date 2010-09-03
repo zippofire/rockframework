@@ -24,22 +24,27 @@ import net.woodstock.rockframework.util.Assert;
 
 public class ReaderInputStream extends InputStream {
 
-	private Reader	reader;
+	private InputStream	wrapper;
 
-	public ReaderInputStream(final Reader reader) {
+	public ReaderInputStream(final Reader reader) throws IOException {
 		super();
 		Assert.notNull(reader, "reader");
-		this.reader = reader;
+		InputOutputStream ios = new InputOutputStream();
+		int b = -1;
+		while ((b = reader.read()) != -1) {
+			ios.write(b);
+		}
+		this.wrapper = ios.getInputStream();
 	}
 
 	@Override
 	public int available() throws IOException {
-		throw new UnsupportedOperationException();
+		return this.wrapper.available();
 	}
 
 	@Override
 	public int read() throws IOException {
-		return this.reader.read();
+		return this.wrapper.read();
 	}
 
 }
