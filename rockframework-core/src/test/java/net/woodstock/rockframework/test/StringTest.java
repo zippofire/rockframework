@@ -2,6 +2,7 @@ package net.woodstock.rockframework.test;
 
 import junit.framework.TestCase;
 import net.woodstock.rockframework.utils.Base64Utils;
+import net.woodstock.rockframework.utils.CharacterUtils;
 import net.woodstock.rockframework.utils.StringUtils;
 
 public class StringTest extends TestCase {
@@ -28,10 +29,18 @@ public class StringTest extends TestCase {
 		System.out.println(StringUtils.random(10000));
 	}
 
-	public void test3() throws Exception {
+	public void xtest3() throws Exception {
 		String s = "12345678";
 		s = s.substring(0, 5) + "-" + s.substring(5);
 		System.out.println(s);
+	}
+
+	public void test4() throws Exception {
+		String s = "Júnior";
+		char[] chars = s.toCharArray();
+		for (char c : chars) {
+			System.out.println(c + " int: " + ((int) c) + " ascii: " + CharacterUtils.isASCII(c) + " iso-8859-1: " + CharacterUtils.isISO8859_1(c));
+		}
 	}
 
 }

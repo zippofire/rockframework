@@ -19,6 +19,7 @@ package net.woodstock.rockframework.security.crypt.impl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.KeyFactory;
@@ -66,7 +67,7 @@ public class AsyncCrypter extends AbstractCrypter {
 		this.setAlgorithm(type.getType());
 		try {
 			this.initCiphers();
-		} catch (Exception e) {
+		} catch (GeneralSecurityException e) {
 			throw new CrypterException(e);
 		}
 	}
@@ -81,7 +82,7 @@ public class AsyncCrypter extends AbstractCrypter {
 		try {
 			this.initKeys(type, seed);
 			this.initCiphers();
-		} catch (Exception e) {
+		} catch (GeneralSecurityException e) {
 			throw new CrypterException(e);
 		}
 	}
@@ -115,7 +116,7 @@ public class AsyncCrypter extends AbstractCrypter {
 	@Override
 	public byte[] encrypt(final byte[] data) {
 		if (this.privateKey == null) {
-			throw new UnsupportedOperationException("Private key is null");
+			throw new IllegalStateException("Private key is null");
 		}
 		return super.encrypt(data);
 	}
@@ -123,7 +124,7 @@ public class AsyncCrypter extends AbstractCrypter {
 	@Override
 	public byte[] decrypt(final byte[] data) {
 		if (this.publicKey == null) {
-			throw new UnsupportedOperationException("Public key is null");
+			throw new IllegalStateException("Public key is null");
 		}
 		return super.decrypt(data);
 	}

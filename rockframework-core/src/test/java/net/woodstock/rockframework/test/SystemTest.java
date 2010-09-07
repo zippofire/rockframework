@@ -10,6 +10,7 @@ import junit.framework.TestCase;
 
 public class SystemTest extends TestCase {
 
+	@SuppressWarnings("rawtypes")
 	public void test1() throws Exception {
 		Properties properties = System.getProperties();
 		List<String> list = new ArrayList<String>();

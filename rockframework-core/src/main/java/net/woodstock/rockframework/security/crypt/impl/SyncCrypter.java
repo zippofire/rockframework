@@ -16,6 +16,7 @@
  */
 package net.woodstock.rockframework.security.crypt.impl;
 
+import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -32,6 +33,10 @@ import net.woodstock.rockframework.utils.StringUtils;
 
 public class SyncCrypter extends AbstractCrypter {
 
+	private KeyType		type;
+
+	private String		seed;
+
 	private SecretKey	key;
 
 	public SyncCrypter(final KeyType type) {
@@ -41,25 +46,27 @@ public class SyncCrypter extends AbstractCrypter {
 	public SyncCrypter(final KeyType type, final String seed) {
 		super();
 		Assert.notNull(type, "type");
+		this.type = type;
+		this.seed = seed;
 		try {
-			this.initKeys(type, seed);
+			this.initKeys();
 			this.initCiphers();
-		} catch (Exception e) {
+		} catch (GeneralSecurityException e) {
 			throw new CrypterException(e);
 		}
 	}
 
-	private void initKeys(final KeyType type, final String seed) throws NoSuchAlgorithmException {
-		KeyGenerator generator = KeyGenerator.getInstance(type.getType());
+	private void initKeys() throws NoSuchAlgorithmException {
+		KeyGenerator generator = KeyGenerator.getInstance(this.type.getType());
 
-		if (!StringUtils.isEmpty(seed)) {
-			SecureRandom random = new SecureRandom(seed.getBytes());
+		if (!StringUtils.isEmpty(this.seed)) {
+			SecureRandom random = new SecureRandom(this.seed.getBytes());
 			generator.init(random);
 		}
 
 		SecretKey key = generator.generateKey();
 		this.key = key;
-		this.setAlgorithm(type.getType());
+		this.setAlgorithm(this.type.getType());
 	}
 
 	private void initCiphers() throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException {
