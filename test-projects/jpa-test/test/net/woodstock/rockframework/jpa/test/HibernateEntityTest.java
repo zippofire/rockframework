@@ -55,7 +55,6 @@ public class HibernateEntityTest extends TestCase {
 
 		HibernateQueryBuilder builder = new HibernateQueryBuilder(session);
 		builder.setEntity(email);
-		builder.build();
 		Query query = builder.getQuery();
 		List<Email> emails = query.list();
 

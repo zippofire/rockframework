@@ -55,7 +55,6 @@ public class JPAEntityTest extends TestCase {
 
 		JPAQueryBuilder builder = new JPAQueryBuilder(manager);
 		builder.setEntity(email);
-		builder.build();
 		
 		System.out.println(builder.getQueryString());
 		

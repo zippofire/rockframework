@@ -21,9 +21,6 @@ import java.sql.SQLException;
 
 public interface Client {
 
-	// Client specific type
-	int getType(Type type);
-
 	// DML
 	boolean execute(String sql, ParameterList args) throws SQLException;
 

@@ -41,10 +41,7 @@ Slightly modified version of Sun Checks that better matches the default code for
     <module name="StaticVariableName"/>
     <module name="TypeName"/>
     <module name="AvoidStarImport"/>
-    <module name="IllegalImport">
-      <property name="severity" value="ignore"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
-    </module>
+    <module name="IllegalImport"/>
     <module name="RedundantImport"/>
     <module name="UnusedImports"/>
     <module name="LineLength">

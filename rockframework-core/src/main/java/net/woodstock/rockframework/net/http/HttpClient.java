@@ -60,7 +60,7 @@ public class HttpClient implements Serializable {
 		}
 		XmlDocument doc = new XmlDocument(HttpClient.ERROR_ELEMENT);
 		XmlElement root = doc.getRoot();
-		root.setAttribute(HttpClient.ERRORCODE_ATTRIBUTE, status);
+		root.setAttribute(HttpClient.ERRORCODE_ATTRIBUTE, new Integer(status));
 		root.setTextContent(method.getResponseBodyAsString());
 		return doc;
 	}

@@ -39,7 +39,7 @@ public class StringTest extends TestCase {
 		String s = "Júnior";
 		char[] chars = s.toCharArray();
 		for (char c : chars) {
-			System.out.println(c + " int: " + ((int) c) + " ascii: " + CharacterUtils.isASCII(c) + " iso-8859-1: " + CharacterUtils.isISO8859_1(c));
+			System.out.println(c + " int: " + ((int) c) + " ascii: " + CharacterUtils.isASCII(c) + " iso-8859-1: " + CharacterUtils.isISO88591(c));
 		}
 	}
 

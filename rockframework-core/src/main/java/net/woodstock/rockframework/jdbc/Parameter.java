@@ -43,7 +43,7 @@ public class Parameter implements Serializable {
 	public boolean equals(final Object obj) {
 		if (obj instanceof Parameter) {
 			Parameter other = (Parameter) obj;
-			return (this.type.type() == other.getType().type()) && this.value.equals(other.getValue());
+			return (this.type.equals(other.getType()) && this.value.equals(other.getValue()));
 		}
 		return false;
 	}

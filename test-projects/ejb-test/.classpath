@@ -7,16 +7,8 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/lib-test"/>
-	<classpathentry kind="lib" path="/lib-test/rockframework-core-1.0.0.jar">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="../"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="/lib-test/rockframework-web-1.0.0.jar">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="../"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
+	<classpathentry kind="lib" path="/lib-test/rockframework-core-1.0.1.jar"/>
+	<classpathentry kind="lib" path="/lib-test/rockframework-web-1.0.1.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

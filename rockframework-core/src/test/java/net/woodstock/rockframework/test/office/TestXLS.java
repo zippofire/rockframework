@@ -27,15 +27,4 @@ public class TestXLS extends TestCase {
 		}
 	}
 
-	public void test2() throws Exception {
-		InputStream inputStream = new FileInputStream("C:/temp/teste.xls");
-		SpreadsheetDocumentReader reader = HSSFSpreadsheetDocumentReader.getInstance();
-		SpreadsheetDocument document = reader.read(inputStream);
-		Sheet sheet = document.getSheets().get(0);
-		Row row = sheet.getRows().get(2);
-		Cell cell = row.getCells().get(2);
-		Object value = cell.getValue();
-		System.out.println(value);
-	}
-
 }

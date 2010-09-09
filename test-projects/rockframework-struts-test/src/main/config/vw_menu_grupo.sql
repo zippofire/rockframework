@@ -1,0 +1,17 @@
+CREATE OR REPLACE VIEW vw_menu_grupo AS
+SELECT m.ID_MENU AS ID_MENU,
+       m.NOM_MENU AS NOM_MENU,
+       m.DSC_MENU AS DSC_MENU,
+       m.DSC_URL AS DSC_URL,
+       m.FLG_ATIVO AS FLG_ATIVO,
+       m.ID_PAGINA AS ID_PAGINA,
+       m.ID_MENU_PAI AS ID_MENU_PAI,
+       m.NUM_INDEX AS NUM_INDEX,
+       gp.ID_GRUPO AS ID_GRUPO
+  FROM tb_menu AS m
+       LEFT OUTER JOIN tb_pagina AS p ON (m.ID_PAGINA = p.ID_PAGINA)
+       LEFT OUTER JOIN tb_grupo_pagina AS gp ON (p.ID_PAGINA = gp.ID_PAGINA)
+ WHERE m.FLG_ATIVO = 1
+   AND (p.ID_PAGINA IS NULL OR p.FLG_ATIVO = 1)
+ ORDER BY m.NUM_INDEX,
+          m.NOM_MENU

@@ -16,26 +16,14 @@
  */
 package net.woodstock.rockframework.jdbc.impl;
 
-import java.sql.Connection;
-
 import net.woodstock.rockframework.jdbc.Type;
+import net.woodstock.rockframework.jdbc.TypeHandler;
 
-public class OracleClient extends CommonCallableClient {
-
-	private static final int	CURSOR	= -10;
-
-	public OracleClient(final Connection connection) {
-		super(connection);
-	}
+public class CommonTypeHandler implements TypeHandler {
 
 	@Override
 	public int getType(final Type type) {
-		switch (type) {
-			case RESULTSET:
-				return OracleClient.CURSOR;
-			default:
-				return super.getType(type);
-		}
+		return type.getType();
 	}
 
 }

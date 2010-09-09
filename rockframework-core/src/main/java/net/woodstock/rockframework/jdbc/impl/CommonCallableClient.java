@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import net.woodstock.rockframework.jdbc.CallableClient;
 import net.woodstock.rockframework.jdbc.ParameterList;
 import net.woodstock.rockframework.jdbc.Type;
+import net.woodstock.rockframework.jdbc.TypeHandler;
 
 public class CommonCallableClient extends CommonClient implements CallableClient {
 
@@ -30,138 +31,23 @@ public class CommonCallableClient extends CommonClient implements CallableClient
 		super(connection);
 	}
 
+	public CommonCallableClient(final Connection connection, final TypeHandler typeHandler) {
+		super(connection, typeHandler);
+	}
+
 	@Override
 	public Object callFunction(final Type outType, final String functionName, final ParameterList args) throws SQLException {
-		CallableStatement cs = this.createFuncionStatement(this.getType(outType), functionName, this.getConnection(), args);
+		CallableStatement cs = ClientHelper.createFuncionStatement(outType, functionName, this.getConnection(), args, this.getTypeHandler());
 		cs.execute();
-		Object o = this.getParameter(1, outType, cs);
+		Object o = ClientHelper.getParameter(1, outType, cs);
 		cs.close();
 		return o;
 	}
 
 	@Override
 	public void callProcedure(final String procedureName, final ParameterList args) throws SQLException {
-		CallableStatement cs = this.createProcedureStatement(procedureName, this.getConnection(), args);
+		CallableStatement cs = ClientHelper.createProcedureStatement(procedureName, this.getConnection(), args, this.getTypeHandler());
 		cs.execute();
 		cs.close();
-	}
-
-	// Utils
-	private CallableStatement createFuncionStatement(final int outType, final String name, final Connection c, final ParameterList args) throws SQLException {
-		CallableStatement cs = null;
-		StringBuilder sql = new StringBuilder("{ ? = call " + name + "(");
-		if (args != null) {
-			for (int cont = 0; cont < args.size(); cont++) {
-				sql.append("?");
-				if (cont + 1 < args.size()) {
-					sql.append(",");
-				}
-			}
-		}
-		sql.append(") }");
-		cs = c.prepareCall(sql.toString());
-		cs.registerOutParameter(1, outType);
-
-		if (args != null) {
-			this.setParameters(2, cs, args);
-		}
-		return cs;
-	}
-
-	private CallableStatement createProcedureStatement(final String name, final Connection c, final ParameterList args) throws SQLException {
-		CallableStatement cs = null;
-		StringBuilder sql = new StringBuilder("{ call " + name + "(");
-		if (args != null) {
-			for (int cont = 0; cont < args.size(); cont++) {
-				sql.append("?");
-				if (cont + 1 < args.size()) {
-					sql.append(",");
-				}
-			}
-		}
-		sql.append(") }");
-		cs = c.prepareCall(sql.toString());
-		if (args != null) {
-			this.setParameters(1, cs, args);
-		}
-		return cs;
-	}
-
-	private Object getParameter(final int index, final Type outType, final CallableStatement cs) throws SQLException {
-		Object o = null;
-		switch (outType) {
-			case ARRAY:
-				o = cs.getArray(index);
-				break;
-			case BIGINT:
-				o = cs.getBigDecimal(index);
-				break;
-			case BLOB:
-				o = cs.getBlob(index);
-				break;
-			case BOOLEAN:
-				o = Boolean.valueOf(cs.getBoolean(index));
-				break;
-			case CHAR:
-				o = cs.getString(index);
-				break;
-			case CLOB:
-				o = cs.getClob(index);
-				break;
-			case DATE:
-				o = cs.getDate(index);
-				break;
-			case DECIMAL:
-				o = Integer.valueOf(cs.getInt(index));
-				break;
-			case DOUBLE:
-				o = Double.valueOf(cs.getDouble(index));
-				break;
-			case FLOAT:
-				o = Float.valueOf(cs.getFloat(index));
-				break;
-			case INTEGER:
-				o = Integer.valueOf(cs.getInt(index));
-				break;
-			case NUMERIC:
-				o = cs.getBigDecimal(index);
-				break;
-			case OBJECT:
-				o = cs.getObject(index);
-				break;
-			case OTHER:
-				o = cs.getObject(index);
-				break;
-			case REAL:
-				o = Float.valueOf(cs.getFloat(index));
-				break;
-			case REF:
-				o = cs.getRef(index);
-				break;
-			case RESULTSET:
-				o = cs.getObject(index);
-				break;
-			case SMALLINT:
-				o = Short.valueOf(cs.getShort(index));
-				break;
-			case STRUCT:
-				o = cs.getObject(index);
-				break;
-			case TIME:
-				o = cs.getTime(index);
-				break;
-			case TIMESTAMP:
-				o = cs.getTimestamp(index);
-				break;
-			case TINYINT:
-				o = Short.valueOf(cs.getShort(index));
-				break;
-			case VARCHAR:
-				o = cs.getString(index);
-				break;
-			default:
-				throw new SQLException("Type not supported " + outType);
-		}
-		return o;
 	}
 }

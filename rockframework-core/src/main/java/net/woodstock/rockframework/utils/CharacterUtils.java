@@ -26,7 +26,7 @@ public abstract class CharacterUtils {
 		//
 	}
 
-	public static boolean isASCII(char c) {
+	public static boolean isASCII(final char c) {
 		int i = c;
 		if (i <= CharacterUtils.MAX_ASCII_CHAR) {
 			return true;
@@ -34,7 +34,7 @@ public abstract class CharacterUtils {
 		return false;
 	}
 
-	public static boolean isISO8859_1(char c) {
+	public static boolean isISO88591(final char c) {
 		int i = c;
 		if (i <= CharacterUtils.MAX_ISO88591_CHAR) {
 			return true;

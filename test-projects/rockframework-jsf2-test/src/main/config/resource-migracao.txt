@@ -1,0 +1,1 @@
+jdbc:jtds:sqlserver://10.209.64.241:1433/ASPAR;user=usr_aspar;password=pwd_aspar;charset=ISO-8859-1
