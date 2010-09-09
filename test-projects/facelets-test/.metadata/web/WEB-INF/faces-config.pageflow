@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf12581104730500" configfile="/facelets-test/web/WEB-INF/faces-config.xml">
-  <nodes xsi:type="pageflow:PFPage" name="index/index" x="122" y="370" id="pf12581144535491" referenceLink="//@navigationRule.1/@fromViewId|" path="*"/>
-  <nodes xsi:type="pageflow:PFPage" name="test/foo-list" x="338" y="178" id="pf12581144535502" referenceLink="//@navigationRule.2/@fromViewId|" path="/test/foo-list.jsp"/>
-  <nodes xsi:type="pageflow:PFPage" name="test/foo-save" x="122" y="754" id="pf12581144535503" referenceLink="//@navigationRule.2/@navigationCase.1/@toViewId|" path="/test/foo-list.jsp"/>
-  <nodes xsi:type="pageflow:PFPage" name="*" x="122" y="1138" id="pf12581147581248" path="*"/>
-  <nodes xsi:type="pageflow:PFPage" name="index/index" x="338" y="562" id="pf12581306269226" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" path="/index/index.jsp"/>
-  <nodes xsi:type="pageflow:PFPage" name="test/foo-save" x="554" y="178" id="pf12581306269227" referenceLink="//@navigationRule.3/@navigationCase.1/@toViewId|" path="/test/foo-save.jsp"/>
-</pageflow:Pageflow>
