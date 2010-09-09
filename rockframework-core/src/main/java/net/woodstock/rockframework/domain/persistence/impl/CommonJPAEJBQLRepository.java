@@ -48,9 +48,6 @@ class CommonJPAEJBQLRepository extends AbstractJPAQueryableRepository implements
 				Integer maxResult = (Integer) parameters.get(Constants.OPTION_MAX_RESULT);
 				query.setMaxResults(maxResult.intValue());
 			}
-			// if (parameters.containsKey(Constants.OPTION_READ_ONLY)) {
-			// TODO
-			// }
 
 			for (Entry<String, Object> entry : parameters.entrySet()) {
 				String name = entry.getKey();

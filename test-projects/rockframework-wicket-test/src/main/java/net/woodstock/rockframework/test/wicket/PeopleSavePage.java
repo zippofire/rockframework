@@ -6,6 +6,7 @@ import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 
 public class PeopleSavePage extends WebPage {
@@ -13,6 +14,7 @@ public class PeopleSavePage extends WebPage {
 	public PeopleSavePage(PageParameters parameters) {
 		super();
 		this.add(new BookmarkablePageLink<PeopleListPage>("back", PeopleListPage.class));
+		this.add(new FeedbackPanel("messages"));
 		People people = new People();
 		if (parameters.containsKey("id")) {
 			Integer id = parameters.getAsInteger("id");
