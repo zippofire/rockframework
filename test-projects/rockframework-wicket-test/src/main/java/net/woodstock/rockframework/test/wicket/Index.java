@@ -1,4 +1,4 @@
-package net.woodstoc.rockframework.test.wicket;
+package net.woodstock.rockframework.test.wicket;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;

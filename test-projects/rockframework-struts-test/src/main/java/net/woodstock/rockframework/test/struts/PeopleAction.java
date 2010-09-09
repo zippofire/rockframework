@@ -1,4 +1,4 @@
-package net.woodstoc.rockframework.test.struts;
+package net.woodstock.rockframework.test.struts;
 
 import net.woodstock.rockframework.web.struts.Constants;
 import net.woodstock.rockframework.web.struts.SimpleAction;

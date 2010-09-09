@@ -1,4 +1,4 @@
-package net.woodstoc.rockframework.test.wicket;
+package net.woodstock.rockframework.test.wicket;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.WebApplication;

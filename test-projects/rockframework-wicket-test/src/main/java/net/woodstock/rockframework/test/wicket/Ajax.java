@@ -1,4 +1,4 @@
-package net.woodstoc.rockframework.test.wicket;
+package net.woodstock.rockframework.test.wicket;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;

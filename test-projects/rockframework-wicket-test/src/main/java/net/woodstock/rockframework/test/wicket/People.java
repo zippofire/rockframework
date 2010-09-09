@@ -1,4 +1,4 @@
-package net.woodstoc.rockframework.test.wicket;
+package net.woodstock.rockframework.test.wicket;
 
 import net.woodstock.rockframework.domain.Entity;
 
