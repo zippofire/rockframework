@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.web.filter.referer;
+package net.woodstock.rockframework.web.resource;
 
 import java.io.IOException;
 
@@ -23,26 +23,26 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.woodstock.rockframework.web.config.WebLog;
+import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.web.filter.AbstractHttpFilter;
-import net.woodstock.rockframework.web.utils.RequestUtils;
 
-public abstract class RefererFilter extends AbstractHttpFilter {
+public abstract class AbstractResourceFilter extends AbstractHttpFilter {
 
-	protected static final int	BAD_REQUEST	= HttpServletResponse.SC_BAD_REQUEST;
+	private ResourceManager	resourceManager;
 
-	@Override
-	public final void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain) throws IOException, ServletException {
-		boolean b = this.validateReferer(request);
-		if (!b) {
-			String url = request.getRequestURI();
-			String referer = RequestUtils.getReferer(request);
-			WebLog.getInstance().getLog().info("Invalid referer for URL: " + url + " referer: " + referer);
-			response.setStatus(RefererFilter.BAD_REQUEST);
-			return;
-		}
-		chain.doFilter(request, response);
+	public AbstractResourceFilter() {
+		super();
 	}
 
-	protected abstract boolean validateReferer(HttpServletRequest request);
+	public void setResourceManager(final ResourceManager resourceManager) {
+		this.resourceManager = resourceManager;
+	}
+
+	@Override
+	public void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain) throws IOException, ServletException {
+		Assert.notNull(this.resourceManager, "resourceManager");
+
+		this.resourceManager.manage(request, response);
+	}
+
 }

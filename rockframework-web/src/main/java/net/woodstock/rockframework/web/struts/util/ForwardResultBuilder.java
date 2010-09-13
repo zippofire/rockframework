@@ -42,11 +42,13 @@ public class ForwardResultBuilder implements ResultBuilder {
 	}
 
 	public ForwardResultBuilder name(final String name) {
+		Assert.notEmpty(this.name, "name");
 		this.name = name;
 		return this;
 	}
 
 	public ForwardResultBuilder parameter(final String name, final Object value) {
+		Assert.notEmpty(this.name, "name");
 		this.parameters.put(name, value);
 		return this;
 	}
@@ -59,9 +61,10 @@ public class ForwardResultBuilder implements ResultBuilder {
 		if ((this.parameters != null) && (this.parameters.size() > 0)) {
 			for (Entry<String, Object> entry : this.parameters.entrySet()) {
 				String k = entry.getKey();
+				Object o = entry.getValue();
 				String v = "";
-				if (entry.getValue() != null) {
-					v = entry.getValue().toString();
+				if (o != null) {
+					v = o.toString();
 				}
 				redirect.addParameter(k, v);
 			}

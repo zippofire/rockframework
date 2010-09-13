@@ -14,34 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.web.persistence;
+package net.woodstock.rockframework.web.resource;
 
 import java.io.IOException;
 
-import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.woodstock.rockframework.domain.persistence.util.HibernateUtil;
-import net.woodstock.rockframework.web.filter.AbstractHttpFilter;
+public interface ResourceManager {
 
-public class OpenSessionInViewFilter extends AbstractHttpFilter {
-
-	@Override
-	public void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain) throws IOException, ServletException {
-		HibernateUtil.getSession();
-		try {
-			chain.doFilter(request, response);
-		} catch (IOException e) {
-			throw e;
-		} catch (ServletException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new ServletException(e);
-		} finally {
-			HibernateUtil.closeSession();
-		}
-	}
+	void manage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
 
 }

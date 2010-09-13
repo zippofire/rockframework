@@ -28,23 +28,24 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
 import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.utils.NumberUtils;
 
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
-
 public class CaptchaImage {
 
-	private static final int	MAX_DRAW	= 3;
+	private static final int	MAX_DRAW		= 3;
 
-	private static final int	MIN_FONT	= 10;
+	private static final int	MIN_FONT		= 10;
 
-	private static final int	MAX_FONT	= 16;
+	private static final int	MAX_FONT		= 16;
 
-	private static final int	HEIGHT		= 25;
+	private static final int	HEIGHT			= 25;
 
-	private static final int	CHAR_WIDTH	= 20;
+	private static final int	CHAR_WIDTH		= 20;
+
+	private static final String	IMAGE_FORMAT	= "gif";
 
 	private static List<Font>	fonts;
 
@@ -93,9 +94,7 @@ public class CaptchaImage {
 		this.drawText(graphics);
 
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(outputStream);
-
-		encoder.encode(bufferedImage);
+		ImageIO.write(bufferedImage, CaptchaImage.IMAGE_FORMAT, outputStream);
 
 		return outputStream.toByteArray();
 	}

@@ -18,6 +18,7 @@ package net.woodstock.rockframework.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.net.URLConnection;
 
 public abstract class FileUtils {
@@ -53,6 +54,15 @@ public abstract class FileUtils {
 			return null;
 		}
 		return file.getName();
+	}
+
+	public static String getName(final URL url) {
+		if (url == null) {
+			return null;
+		}
+
+		String path = url.getPath();
+		return FileUtils.getName(path);
 	}
 
 	public static String getExtension(final String src) {
@@ -122,6 +132,14 @@ public abstract class FileUtils {
 		return con.getContentLength();
 	}
 
+	public static int getSize(final URL url) throws IOException {
+		if (url == null) {
+			return -1;
+		}
+		URLConnection con = url.openConnection();
+		return con.getContentLength();
+	}
+
 	public static String getType(final File file) throws IOException {
 		if (file == null) {
 			return null;
@@ -130,13 +148,21 @@ public abstract class FileUtils {
 		return con.getContentType();
 	}
 
-	// Delegate Mime
-	public static String getTypeByExtension(final String extension) {
-		return MimeUtils.getMimeType(extension);
+	public static String getType(final URL url) throws IOException {
+		if (url == null) {
+			return null;
+		}
+		URLConnection con = url.openConnection();
+		return con.getContentType();
 	}
 
-	public static String getExtensionByType(final String mimeType) {
+	// Delegate
+	public static String getTypeByExtension(final String mimeType) {
 		return MimeUtils.getExtension(mimeType);
+	}
+
+	public static String getMimeType(final String extension) {
+		return MimeUtils.getMimeType(extension);
 	}
 
 }

@@ -3,9 +3,11 @@ package net.woodstock.rockframework.test;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.ObjectOutputStream;
+import java.net.URL;
 
 import junit.framework.TestCase;
 import net.woodstock.rockframework.io.FileInfo;
+import net.woodstock.rockframework.utils.FileUtils;
 import net.woodstock.rockframework.utils.SystemUtils;
 
 public class FileTest extends TestCase {
@@ -60,8 +62,16 @@ public class FileTest extends TestCase {
 		System.out.println("FileInfo: " + size2);
 	}
 
-	public void test4() throws Exception {
+	public void xtest4() throws Exception {
 		System.out.println(SystemUtils.getProperty(SystemUtils.FILE_ENCODING_PROPERTY));
+	}
+
+	public void test5() throws Exception {
+		File file = new File("C:\\temp\\cidades-mg\\lourival.junior.der");
+		URL url = file.toURI().toURL();
+		System.out.println(url.getPath());
+		System.out.println(url.getFile());
+		System.out.println(FileUtils.getName(url));
 	}
 
 }

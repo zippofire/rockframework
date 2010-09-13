@@ -28,11 +28,11 @@ import javax.servlet.http.HttpServletResponse;
 import net.woodstock.rockframework.utils.IOUtils;
 import net.woodstock.rockframework.utils.StringUtils;
 import net.woodstock.rockframework.web.config.WebLog;
-import net.woodstock.rockframework.web.filter.HttpFilter;
+import net.woodstock.rockframework.web.filter.AbstractHttpFilter;
 import net.woodstock.rockframework.web.util.CachedHttpServletResponse;
 import net.woodstock.rockframework.web.util.CachedServletOutputStream;
 
-public class CharsetFilter extends HttpFilter {
+public class CharsetFilter extends AbstractHttpFilter {
 
 	public static final String	FROM_PARAMETER	= "from";
 

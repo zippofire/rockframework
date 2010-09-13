@@ -61,7 +61,7 @@ public abstract class JPAUtil {
 			}
 			m.flush();
 			m.close();
-			JPAUtil.manager.remove();
+			JPAUtil.manager.set(null);
 		}
 	}
 

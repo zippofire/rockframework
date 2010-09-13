@@ -14,34 +14,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.web.persistence;
+package net.woodstock.rockframework.web.resource;
 
 import java.io.IOException;
 
-import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.woodstock.rockframework.domain.persistence.util.HibernateUtil;
-import net.woodstock.rockframework.web.filter.AbstractHttpFilter;
+import net.woodstock.rockframework.utils.StringUtils;
 
-public class OpenSessionInViewFilter extends AbstractHttpFilter {
+public abstract class PathBasedResourceManager implements ResourceManager {
+
+	public static final String	PATH_PARAMETER	= "path";
+
+	public PathBasedResourceManager() {
+		super();
+	}
 
 	@Override
-	public void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain) throws IOException, ServletException {
-		HibernateUtil.getSession();
-		try {
-			chain.doFilter(request, response);
-		} catch (IOException e) {
-			throw e;
-		} catch (ServletException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new ServletException(e);
-		} finally {
-			HibernateUtil.closeSession();
+	public final void manage(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+		String path = request.getParameter(PathBasedResourceManager.PATH_PARAMETER);
+		if (StringUtils.isEmpty(path)) {
+			throw new ServletException("Invalid path");
 		}
+
+		this.manage(request, response, path);
 	}
+
+	protected abstract void manage(final HttpServletRequest request, final HttpServletResponse response, String path) throws ServletException, IOException;
 
 }

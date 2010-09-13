@@ -21,6 +21,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -71,16 +72,39 @@ public abstract class ResponseUtils {
 		Assert.notNull(response, "response");
 		Assert.notEmpty(file, "file");
 		File f = new File(file);
-		if (!f.exists()) {
+
+		ResponseUtils.downloadFile(response, f);
+	}
+
+	public static void downloadFile(final HttpServletResponse response, final File file) throws IOException {
+		Assert.notNull(response, "response");
+		Assert.notNull(file, "file");
+		if (!file.exists()) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			return;
 		}
 
 		response.setContentType(ResponseUtils.DOWNLOAD_CONTENT_TYPE);
-		response.setContentLength(FileUtils.getSize(f));
+		response.setContentLength(FileUtils.getSize(file));
 
-		response.setHeader(ResponseUtils.CONTENT_DISPOSITION_HEADER, ResponseUtils.getAttachmentContentDisposition(FileUtils.getName(f)));
+		response.setHeader(ResponseUtils.CONTENT_DISPOSITION_HEADER, ResponseUtils.getAttachmentContentDisposition(FileUtils.getName(file)));
 
-		InputStream input = new FileInputStream(f);
+		InputStream input = new FileInputStream(file);
+		OutputStream output = response.getOutputStream();
+
+		IOUtils.copy(input, output);
+	}
+	
+	public static void downloadFile(final HttpServletResponse response, final URL url) throws IOException {
+		Assert.notNull(response, "response");
+		Assert.notNull(url, "url");
+		
+		response.setContentType(ResponseUtils.DOWNLOAD_CONTENT_TYPE);
+		response.setContentLength(FileUtils.getSize(url));
+
+		response.setHeader(ResponseUtils.CONTENT_DISPOSITION_HEADER, ResponseUtils.getAttachmentContentDisposition(FileUtils.getName(url)));
+
+		InputStream input = url.openStream();
 		OutputStream output = response.getOutputStream();
 
 		IOUtils.copy(input, output);

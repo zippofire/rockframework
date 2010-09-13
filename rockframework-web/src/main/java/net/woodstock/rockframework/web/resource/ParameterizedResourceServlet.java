@@ -14,34 +14,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.web.persistence;
+package net.woodstock.rockframework.web.resource;
 
-import java.io.IOException;
-
-import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import net.woodstock.rockframework.domain.persistence.util.HibernateUtil;
-import net.woodstock.rockframework.web.filter.AbstractHttpFilter;
+public class ParameterizedResourceServlet extends AbstractResourceServlet {
 
-public class OpenSessionInViewFilter extends AbstractHttpFilter {
+	private static final long	serialVersionUID			= -8118171525668671964L;
 
-	@Override
-	public void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain) throws IOException, ServletException {
-		HibernateUtil.getSession();
-		try {
-			chain.doFilter(request, response);
-		} catch (IOException e) {
-			throw e;
-		} catch (ServletException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new ServletException(e);
-		} finally {
-			HibernateUtil.closeSession();
-		}
+	private static final String	RESOURCE_MANAGER_PARAMETER	= "resourceManager";
+
+	public ParameterizedResourceServlet() {
+		super();
+
 	}
 
+	@SuppressWarnings("rawtypes")
+	@Override
+	public void init() throws ServletException {
+		super.init();
+		try {
+			String clazzName = this.getInitParameter(ParameterizedResourceServlet.RESOURCE_MANAGER_PARAMETER);
+			Class clazz = Class.forName(clazzName);
+			ResourceManager resourceManager = (ResourceManager) clazz.newInstance();
+			this.setResourceManager(resourceManager);
+		} catch (Exception e) {
+			throw new ServletException(e);
+		}
+	}
 }

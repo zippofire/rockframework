@@ -74,7 +74,7 @@ public abstract class HibernateUtil {
 			}
 			s.flush();
 			s.close();
-			HibernateUtil.session.remove();
+			HibernateUtil.session.set(null);
 		}
 	}
 

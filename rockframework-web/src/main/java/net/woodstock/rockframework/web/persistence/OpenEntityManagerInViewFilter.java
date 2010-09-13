@@ -24,9 +24,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.woodstock.rockframework.domain.persistence.util.JPAUtil;
-import net.woodstock.rockframework.web.filter.HttpFilter;
+import net.woodstock.rockframework.web.filter.AbstractHttpFilter;
 
-public class OpenEntityManagerInViewFilter extends HttpFilter {
+public class OpenEntityManagerInViewFilter extends AbstractHttpFilter {
 
 	@Override
 	public void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain) throws IOException, ServletException {
