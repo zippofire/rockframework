@@ -12,8 +12,8 @@ public class MSAccessTest {
 
 	private static final String	DB_FILE	= "C:/Temp/access/BD_Demandas_HC.mdb";
 
-	private Connection getConnection() throws SQLException {
-		new sun.jdbc.odbc.JdbcOdbcDriver();
+	private Connection getConnection() throws SQLException, ClassNotFoundException {
+		Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
 		String url = "jdbc:odbc:Driver={Microsoft Access Driver (*.mdb)};DBQ=" + DB_FILE + ";DriverID=22;READONLY=true}";
 		Connection c = DriverManager.getConnection(url, "lilian", "rt447766");
 
