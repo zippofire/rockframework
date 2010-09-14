@@ -8,9 +8,9 @@ import net.woodstock.rockframework.web.captcha.CaptchaImage;
 public class ImageTest extends TestCase {
 
 	public void test1() throws Exception {
-		CaptchaImage image = new CaptchaImage("THIAGO GOULART");
+		CaptchaImage image = new CaptchaImage("Rock Framework");
 		byte[] bytes = image.getBytes();
-		FileOutputStream fos = new FileOutputStream("D:/image.jpeg");
+		FileOutputStream fos = new FileOutputStream("C:/Temp/image.gif");
 		fos.write(bytes);
 		fos.close();
 	}

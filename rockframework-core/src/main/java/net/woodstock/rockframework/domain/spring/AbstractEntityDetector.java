@@ -18,6 +18,9 @@ package net.woodstock.rockframework.domain.spring;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
+import net.woodstock.rockframework.util.Assert;
 
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
@@ -32,7 +35,13 @@ public class AbstractEntityDetector {
 	private List<Class<?>>								classes;
 
 	public AbstractEntityDetector(final TypeFilter filter) {
-		this.provider = new ClassPathScanningCandidateComponentProvider(false);
+		this(filter, false);
+	}
+
+	public AbstractEntityDetector(final TypeFilter filter, final boolean useDefaultFilters) {
+		super();
+		Assert.notNull(filter, "filter");
+		this.provider = new ClassPathScanningCandidateComponentProvider(useDefaultFilters);
 		this.provider.addIncludeFilter(filter);
 	}
 
@@ -43,8 +52,9 @@ public class AbstractEntityDetector {
 	public List<Class<?>> getClasses() throws ClassNotFoundException {
 		if (this.classes == null) {
 			this.classes = new ArrayList<Class<? extends Object>>();
-			for (BeanDefinition beanDef : this.provider.findCandidateComponents(this.basePackage)) {
-				this.classes.add(Class.forName(beanDef.getBeanClassName()));
+			Set<BeanDefinition> set = this.provider.findCandidateComponents(this.basePackage);
+			for (BeanDefinition beanDefinition : set) {
+				this.classes.add(Class.forName(beanDefinition.getBeanClassName()));
 			}
 		}
 		return this.classes;
