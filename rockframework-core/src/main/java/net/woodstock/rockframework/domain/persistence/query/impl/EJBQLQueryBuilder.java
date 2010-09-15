@@ -18,6 +18,7 @@ package net.woodstock.rockframework.domain.persistence.query.impl;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.domain.Entity;
@@ -37,11 +38,6 @@ public abstract class EJBQLQueryBuilder<T> extends AbstractQueryBuilder<T> {
 
 	public EJBQLQueryBuilder() {
 		super();
-		this.reset();
-	}
-
-	@Override
-	public void reset() {
 		this.build = false;
 		this.context = null;
 		this.entity = null;
@@ -79,12 +75,28 @@ public abstract class EJBQLQueryBuilder<T> extends AbstractQueryBuilder<T> {
 
 		T query = this.getQuery(sql);
 
-		this.setQueryOptions(query, this.options);
+		for (Entry<String, Object> entry : this.options.entrySet()) {
+			String name = entry.getKey();
+			Object value = entry.getValue();
+			CoreLog.getInstance().getLog().debug("Setting option[" + name + "] => " + value);
+			this.setQueryOption(query, name, value);
+		}
 
 		for (QueryContextParameter parameter : this.context.getParametersRecursive()) {
-			this.setQueryParameter(query, parameter.getAlias(), parameter.getValue());
+			String name = parameter.getAlias();
+			Object value = parameter.getValue();
+			CoreLog.getInstance().getLog().debug("Setting parameter[" + name + "] => " + value);
+			this.setQueryParameter(query, name, value);
 		}
+
 		return query;
+	}
+
+	public String getQueryString() {
+		if (this.context == null) {
+			this.build();
+		}
+		return this.getContext().getQueryString();
 	}
 
 	protected QueryContext getContext() {
@@ -101,8 +113,8 @@ public abstract class EJBQLQueryBuilder<T> extends AbstractQueryBuilder<T> {
 
 	protected abstract T getQuery(String sql);
 
-	protected abstract void setQueryOptions(Object query, Map<String, Object> options);
+	protected abstract void setQueryOption(T query, String name, Object value);
 
-	protected abstract void setQueryParameter(Object query, String name, Object value);
+	protected abstract void setQueryParameter(T query, String name, Object value);
 
 }

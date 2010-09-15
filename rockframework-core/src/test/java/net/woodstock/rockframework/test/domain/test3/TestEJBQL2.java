@@ -1,7 +1,7 @@
 package net.woodstock.rockframework.test.domain.test3;
 
 import junit.framework.TestCase;
-import net.woodstock.rockframework.domain.persistence.query.impl.QueryBuilderAdapter;
+import net.woodstock.rockframework.test.domain.test.TestQueryBuilder;
 
 public class TestEJBQL2 extends TestCase {
 
@@ -13,7 +13,7 @@ public class TestEJBQL2 extends TestCase {
 	public void test1() throws Exception {
 		Foo foo = this.getFoo();
 
-		QueryBuilderAdapter builder = new QueryBuilderAdapter();
+		TestQueryBuilder builder = new TestQueryBuilder();
 		builder.setEntity(foo);
 		String sql = builder.getQueryString();
 		System.out.println(sql);

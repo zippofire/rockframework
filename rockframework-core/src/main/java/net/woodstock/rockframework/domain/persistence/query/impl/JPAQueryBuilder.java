@@ -16,8 +16,6 @@
  */
 package net.woodstock.rockframework.domain.persistence.query.impl;
 
-import java.util.Map;
-
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
@@ -40,22 +38,32 @@ public class JPAQueryBuilder extends EJBQLQueryBuilder<Query> {
 	}
 
 	@Override
-	protected void setQueryParameter(final Object query, final String name, final Object value) {
-		CoreLog.getInstance().getLog().debug("Setting parameter[" + name + "] => " + value);
-		Query q = (Query) query;
-		q.setParameter(name, value);
+	protected void setQueryParameter(final Query query, final String name, final Object value) {
+		query.setParameter(name, value);
 	}
 
 	@Override
-	protected void setQueryOptions(final Object query, final Map<String, Object> options) {
-		Query q = (Query) query;
-		if ((options.containsKey(Constants.OPTION_FIRST_RESULT)) && (options.get(Constants.OPTION_FIRST_RESULT) instanceof Integer)) {
-			Integer firstResult = (Integer) options.get(Constants.OPTION_FIRST_RESULT);
-			q.setFirstResult(firstResult.intValue());
-		}
-		if ((options.containsKey(Constants.OPTION_MAX_RESULT)) && (options.get(Constants.OPTION_MAX_RESULT) instanceof Integer)) {
-			Integer maxResult = (Integer) options.get(Constants.OPTION_MAX_RESULT);
-			q.setMaxResults(maxResult.intValue());
+	protected void setQueryOption(final Query query, final String name, final Object value) {
+		if (name.equals(Constants.OPTION_FIRST_RESULT)) {
+			if (value instanceof Integer) {
+				Integer firstResult = (Integer) value;
+				query.setFirstResult(firstResult.intValue());
+			} else if (value != null) {
+				CoreLog.getInstance().getLog().warn("Illegal option type[" + name + "] => " + value.getClass().getCanonicalName() + ", must be " + Integer.class.getCanonicalName());
+			} else {
+				CoreLog.getInstance().getLog().warn("Illegal option value[" + name + "] => null");
+			}
+		} else if (name.equals(Constants.OPTION_MAX_RESULT)) {
+			if (value instanceof Integer) {
+				Integer maxResult = (Integer) value;
+				query.setMaxResults(maxResult.intValue());
+			} else if (value != null) {
+				CoreLog.getInstance().getLog().warn("Illegal option type[" + name + "] => " + value.getClass().getCanonicalName() + ", must be " + Integer.class.getCanonicalName());
+			} else {
+				CoreLog.getInstance().getLog().warn("Illegal option value[" + name + "] => null");
+			}
+		} else {
+			CoreLog.getInstance().getLog().warn("Illegal option[" + name + "] => " + value);
 		}
 	}
 

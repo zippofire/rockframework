@@ -1,7 +1,7 @@
 package net.woodstock.rockframework.test.domain.test3;
 
 import junit.framework.TestCase;
-import net.woodstock.rockframework.domain.persistence.query.impl.QueryBuilderAdapter;
+import net.woodstock.rockframework.test.domain.test.TestQueryBuilder;
 
 public class TestEJBQL extends TestCase {
 
@@ -24,7 +24,7 @@ public class TestEJBQL extends TestCase {
 	public void test0() throws Exception {
 		Foo foo = new Foo();
 
-		QueryBuilderAdapter builder = new QueryBuilderAdapter();
+		TestQueryBuilder builder = new TestQueryBuilder();
 		builder.setEntity(foo);
 		String sql = builder.getQueryString();
 		System.out.println(sql);
@@ -33,7 +33,7 @@ public class TestEJBQL extends TestCase {
 	public void test1() throws Exception {
 		Foo foo = this.getFoo();
 
-		QueryBuilderAdapter builder = new QueryBuilderAdapter();
+		TestQueryBuilder builder = new TestQueryBuilder();
 		builder.setEntity(foo);
 
 		String sql = builder.getQueryString();
@@ -43,7 +43,7 @@ public class TestEJBQL extends TestCase {
 	public void test2() throws Exception {
 		Bar bar = this.getBar();
 
-		QueryBuilderAdapter builder = new QueryBuilderAdapter();
+		TestQueryBuilder builder = new TestQueryBuilder();
 		builder.setEntity(bar);
 		String sql = builder.getQueryString();
 		System.out.println(sql);

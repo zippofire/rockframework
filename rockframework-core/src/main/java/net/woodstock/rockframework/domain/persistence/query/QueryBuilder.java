@@ -20,9 +20,6 @@ import net.woodstock.rockframework.domain.Entity;
 
 public interface QueryBuilder<T> {
 
-	// Reset
-	void reset();
-
 	// Set
 	QueryBuilder<T> setEntity(Entity<?> entity);
 

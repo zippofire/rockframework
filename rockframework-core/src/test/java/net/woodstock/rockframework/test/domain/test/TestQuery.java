@@ -5,7 +5,6 @@ import java.util.LinkedHashSet;
 
 import junit.framework.TestCase;
 import net.woodstock.rockframework.domain.persistence.query.LikeMode;
-import net.woodstock.rockframework.domain.persistence.query.impl.QueryBuilderAdapter;
 import net.woodstock.rockframework.domain.persistence.util.Constants;
 
 public class TestQuery extends TestCase {
@@ -51,7 +50,7 @@ public class TestQuery extends TestCase {
 	public void xtest1() throws Exception {
 		Bar bar = this.getBar();
 
-		QueryBuilderAdapter builder = new QueryBuilderAdapter();
+		TestQueryBuilder builder = new TestQueryBuilder();
 		builder.setEntity(bar);
 		builder.setOption(Constants.OPTION_LIKE_MODE, LikeMode.ALL);
 		builder.setOption(Constants.OPTION_IGNORE_CASE, Boolean.TRUE);
@@ -65,7 +64,7 @@ public class TestQuery extends TestCase {
 	public void xtest2() throws Exception {
 		Foo foo = this.getFoo(true);
 
-		QueryBuilderAdapter builder = new QueryBuilderAdapter();
+		TestQueryBuilder builder = new TestQueryBuilder();
 		builder.setEntity(foo);
 		builder.setOption(Constants.OPTION_LIKE_MODE, LikeMode.ALL);
 		builder.setOption(Constants.OPTION_IGNORE_CASE, Boolean.TRUE);
@@ -79,7 +78,7 @@ public class TestQuery extends TestCase {
 	public void test3() throws Exception {
 		Baz baz = this.getBaz(true);
 
-		QueryBuilderAdapter builder = new QueryBuilderAdapter();
+		TestQueryBuilder builder = new TestQueryBuilder();
 		builder.setEntity(baz);
 		builder.setOption(Constants.OPTION_LIKE_MODE, LikeMode.ALL);
 		builder.setOption(Constants.OPTION_IGNORE_CASE, Boolean.TRUE);
@@ -97,7 +96,7 @@ public class TestQuery extends TestCase {
 		Foo foo = this.getFoo(false);
 		foo.setBar(new Bar());
 
-		QueryBuilderAdapter builder = new QueryBuilderAdapter();
+		TestQueryBuilder builder = new TestQueryBuilder();
 		builder.setEntity(foo);
 		builder.setOption(Constants.OPTION_LIKE_MODE, LikeMode.ALL);
 		builder.setOption(Constants.OPTION_IGNORE_CASE, Boolean.TRUE);
@@ -115,7 +114,7 @@ public class TestQuery extends TestCase {
 		baz.setFoo(new Foo());
 		baz.setBars(new HashSet<Bar>());
 
-		QueryBuilderAdapter builder = new QueryBuilderAdapter();
+		TestQueryBuilder builder = new TestQueryBuilder();
 		builder.setEntity(baz);
 		builder.setOption(Constants.OPTION_LIKE_MODE, LikeMode.ALL);
 		builder.setOption(Constants.OPTION_IGNORE_CASE, Boolean.TRUE);
