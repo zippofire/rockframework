@@ -10,13 +10,13 @@
 	<url>http://code.google.com/p/rockframework/</url>
 	<properties>
 		<!-- Maven -->
-		<gpg.passphrase>rockframework</gpg.passphrase>
+		<project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
 		<!-- Libs -->
 		<test />
 	</properties>
 	<mailingLists>
 		<mailingList>
-			<name>rockframework User List</name>
+			<name>RockFramework User List</name>
 			<subscribe>rockframework.subscribe@wooodstock.net</subscribe>
 			<unsubscribe>rockframework.unsubscribe@wooodstock.net</unsubscribe>
 			<post>do not post to rockframework.users@woodstock.net unless subscribed</post>
@@ -76,20 +76,18 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.4</version>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>2.3</version>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>javancss-maven-plugin</artifactId>
-				<version>2.0</version>
 			</plugin>
 		</plugins>
 	</reporting>
+	
 	<build>
 		<defaultGoal>install</defaultGoal>
 		<plugins>
@@ -100,24 +98,8 @@
 					<source>1.6</source>
 					<target>1.6</target>
 					<encoding>ISO-8859-1</encoding>
-					<!--<executable>${JAVA_HOME}/bin/javac</executable>-->
 				</configuration>
 			</plugin>
-			<!--
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-gpg-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>sign-artifacts</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>sign</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
