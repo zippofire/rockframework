@@ -42,7 +42,7 @@ public abstract class HibernateUtil {
 
 	public static Session getSession() {
 		if (HibernateUtil.factory == null) {
-			synchronized (HibernateUtil.factory) {
+			synchronized (HibernateUtil.class) {
 				String s = CoreConfig.getInstance().getValue(HibernateUtil.HIBERNATE_ANNOTATION_PROPERTY);
 				if (!StringUtils.isEmpty(s)) {
 					HibernateUtil.annotation = Boolean.parseBoolean(s);

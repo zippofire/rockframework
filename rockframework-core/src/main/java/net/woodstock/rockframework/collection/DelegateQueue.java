@@ -33,6 +33,16 @@ public class DelegateQueue<E> extends DelegateCollection<E> implements Queue<E> 
 	}
 
 	@Override
+	public boolean equals(final Object o) {
+		return this.queue.equals(o);
+	}
+
+	@Override
+	public int hashCode() {
+		return this.queue.hashCode();
+	}
+
+	@Override
 	public boolean offer(final E e) {
 		return this.queue.offer(e);
 	}

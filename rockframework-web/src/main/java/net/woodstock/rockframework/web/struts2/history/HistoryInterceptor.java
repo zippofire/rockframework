@@ -30,9 +30,9 @@ import com.opensymphony.xwork2.ActionProxy;
 
 public class HistoryInterceptor extends ConditionalInterceptor<String> {
 
-	private static final long	serialVersionUID	= -444338319191950385L;
+	private static final long			serialVersionUID	= -444338319191950385L;
 
-	private HistoryManager		manager;
+	private transient HistoryManager	manager;
 
 	public HistoryInterceptor() {
 		super();

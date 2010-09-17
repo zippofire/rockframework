@@ -35,13 +35,13 @@ public class RequestTimeListener implements ServletRequestListener {
 		HttpServletRequest request = (HttpServletRequest) event.getServletRequest();
 		String address = RequestUtils.getRequestAddress(request);
 		String url = RequestUtils.getFullRequestUrl(request);
-		RequestTimeListener.requests.put(new Integer(request.hashCode()), new RequestDebug(address, url));
+		RequestTimeListener.requests.put(Integer.valueOf(request.hashCode()), new RequestDebug(address, url));
 	}
 
 	@Override
 	public void requestDestroyed(final ServletRequestEvent event) {
 		HttpServletRequest request = (HttpServletRequest) event.getServletRequest();
-		RequestDebug requestDebug = RequestTimeListener.requests.get(new Integer(request.hashCode()));
+		RequestDebug requestDebug = RequestTimeListener.requests.get(Integer.valueOf(request.hashCode()));
 		requestDebug.setEnd(System.currentTimeMillis());
 	}
 

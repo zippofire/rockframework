@@ -37,7 +37,7 @@ public abstract class ConditionalInterceptor<R> extends Interceptor {
 
 	protected void addRule(final R rule, final boolean value) {
 		Assert.notNull(rule, "rule");
-		this.rules.put(rule, new Boolean(value));
+		this.rules.put(rule, Boolean.valueOf(value));
 	}
 
 	protected void addRuleValue(final R rule, final Object value) {

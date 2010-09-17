@@ -22,15 +22,15 @@ import javax.servlet.http.HttpServletRequest;
 
 public class HistoryData implements Serializable {
 
-	private static final long	serialVersionUID	= 1500323178751402507L;
+	private static final long				serialVersionUID	= 1500323178751402507L;
 
-	private String				url;
+	private String							url;
 
-	private String				className;
+	private String							className;
 
-	private String				methodName;
+	private String							methodName;
 
-	private HttpServletRequest	request;
+	private transient HttpServletRequest	request;
 
 	public HistoryData(final String url, final String className, final String methodName, final HttpServletRequest request) {
 		super();

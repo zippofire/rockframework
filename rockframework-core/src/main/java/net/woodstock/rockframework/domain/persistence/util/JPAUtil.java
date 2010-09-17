@@ -38,7 +38,7 @@ public abstract class JPAUtil {
 
 	public static EntityManager getEntityManager() {
 		if (JPAUtil.factory == null) {
-			synchronized (JPAUtil.factory) {
+			synchronized (JPAUtil.class) {
 				String s = CoreConfig.getInstance().getValue(JPAUtil.JPA_PERSISTENCE_UNIT_PROPERTY);
 				JPAUtil.factory = Persistence.createEntityManagerFactory(s);
 			}

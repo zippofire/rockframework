@@ -36,13 +36,13 @@ public class RequestActiveListener implements ServletRequestListener {
 		String address = RequestUtils.getRequestAddress(request);
 		String path = RequestUtils.getFullRequestUrl(request);
 		String s = address + "\t" + path;
-		RequestActiveListener.requests.put(new Integer(request.hashCode()), s);
+		RequestActiveListener.requests.put(Integer.valueOf(request.hashCode()), s);
 	}
 
 	@Override
 	public void requestDestroyed(final ServletRequestEvent event) {
 		HttpServletRequest request = (HttpServletRequest) event.getServletRequest();
-		RequestActiveListener.requests.remove(new Integer(request.hashCode()));
+		RequestActiveListener.requests.remove(Integer.valueOf(request.hashCode()));
 	}
 
 	public static Collection<String> getRequests() {

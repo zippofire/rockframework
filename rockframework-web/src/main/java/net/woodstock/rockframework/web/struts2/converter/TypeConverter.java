@@ -30,6 +30,7 @@ public abstract class TypeConverter<T> extends StrutsTypeConverter {
 	public final Object convertFromString(final Map context, final String[] o, final Class toClass) {
 		if ((o == null) || (o.length != 1)) {
 			super.performFallbackConversion(context, o, toClass);
+			return null;
 		}
 
 		String s = o[0];

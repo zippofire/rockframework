@@ -6,17 +6,17 @@ public class TipoTelefone implements Serializable {
 
 	private static final long			serialVersionUID			= -2850519769437585071L;
 
-	public static final TipoTelefone	TELEFONE_FIXO_COMERCIAL		= new TipoTelefone(new Integer(1));
+	public static final TipoTelefone	TELEFONE_FIXO_COMERCIAL		= new TipoTelefone(Integer.valueOf(1));
 
-	public static final TipoTelefone	TELEFONE_FIXO_RESIDENCIAL	= new TipoTelefone(new Integer(2));
+	public static final TipoTelefone	TELEFONE_FIXO_RESIDENCIAL	= new TipoTelefone(Integer.valueOf(2));
 
-	public static final TipoTelefone	TELEFONE_CELULAR_COMERCIAL	= new TipoTelefone(new Integer(3));
+	public static final TipoTelefone	TELEFONE_CELULAR_COMERCIAL	= new TipoTelefone(Integer.valueOf(3));
 
-	public static final TipoTelefone	TELEFONE_CELULAR_PESSOAL	= new TipoTelefone(new Integer(4));
+	public static final TipoTelefone	TELEFONE_CELULAR_PESSOAL	= new TipoTelefone(Integer.valueOf(4));
 
-	public static final TipoTelefone	TELEFONE_FAX_COMERCIAL		= new TipoTelefone(new Integer(5));
+	public static final TipoTelefone	TELEFONE_FAX_COMERCIAL		= new TipoTelefone(Integer.valueOf(5));
 
-	public static final TipoTelefone	TELEFONE_FAX_PESSOAL		= new TipoTelefone(new Integer(6));
+	public static final TipoTelefone	TELEFONE_FAX_PESSOAL		= new TipoTelefone(Integer.valueOf(6));
 
 	private Integer						id;
 

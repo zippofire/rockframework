@@ -28,11 +28,11 @@ import com.opensymphony.xwork2.ActionProxy;
 
 public class LogonInterceptor extends ConditionalInterceptor<String> {
 
-	private static final long	serialVersionUID	= -1142678626424407060L;
+	private static final long			serialVersionUID	= -1142678626424407060L;
 
-	private LogonValidator		validator;
+	private transient LogonValidator	validator;
 
-	private boolean				annotationRequired;
+	private boolean						annotationRequired;
 
 	public LogonInterceptor() {
 		super();

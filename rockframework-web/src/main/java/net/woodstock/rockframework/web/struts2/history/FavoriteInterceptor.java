@@ -30,9 +30,9 @@ import com.opensymphony.xwork2.ActionProxy;
 
 public class FavoriteInterceptor extends ConditionalInterceptor<String> {
 
-	private static final long	serialVersionUID	= -444338319191950385L;
+	private static final long			serialVersionUID	= -444338319191950385L;
 
-	private FavoriteManager		manager;
+	private transient FavoriteManager	manager;
 
 	public FavoriteInterceptor() {
 		super();

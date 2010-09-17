@@ -27,13 +27,13 @@ import com.opensymphony.xwork2.ActionProxy;
 
 public class RoleInterceptor extends AccessInterceptor<String> {
 
-	private static final long	serialVersionUID	= -1142678626424407060L;
+	private static final long		serialVersionUID	= -1142678626424407060L;
 
-	private static final String	HISTORY_PARAMETER	= "net.woodstock.rockframework.web.struts2.security.RoleInterceptor.HISTORY_PARAMETER";
+	private static final String		HISTORY_PARAMETER	= "net.woodstock.rockframework.web.struts2.security.RoleInterceptor.HISTORY_PARAMETER";
 
-	private static final String	NO_ACCESS_PARAMETER	= "net.woodstock.rockframework.web.struts2.security.RoleInterceptor.NO_ACCESS_PARAMETER";
+	private static final String		NO_ACCESS_PARAMETER	= "net.woodstock.rockframework.web.struts2.security.RoleInterceptor.NO_ACCESS_PARAMETER";
 
-	private RoleValidator		validator;
+	private transient RoleValidator	validator;
 
 	public RoleInterceptor() {
 		super(RoleInterceptor.HISTORY_PARAMETER, RoleInterceptor.NO_ACCESS_PARAMETER);

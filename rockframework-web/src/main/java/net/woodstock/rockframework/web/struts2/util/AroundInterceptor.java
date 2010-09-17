@@ -25,9 +25,9 @@ import com.opensymphony.xwork2.interceptor.PreResultListener;
 
 public class AroundInterceptor extends Interceptor {
 
-	private static final long	serialVersionUID	= 1L;
+	private static final long			serialVersionUID	= 1L;
 
-	private PreResultListener	listener;
+	private transient PreResultListener	listener;
 
 	public AroundInterceptor() {
 		super();
@@ -46,7 +46,7 @@ public class AroundInterceptor extends Interceptor {
 		return invocation.invoke();
 	}
 
-	class AroundInterceptorListener implements PreResultListener {
+	static class AroundInterceptorListener implements PreResultListener {
 
 		@Override
 		public void beforeResult(final ActionInvocation invocation, final String resultCode) {

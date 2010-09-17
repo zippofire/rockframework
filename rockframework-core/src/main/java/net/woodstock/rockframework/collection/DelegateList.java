@@ -40,8 +40,18 @@ public class DelegateList<E> extends DelegateCollection<E> implements List<E> {
 	}
 
 	@Override
+	public boolean equals(final Object o) {
+		return this.equals(o);
+	}
+	
+	@Override
 	public E get(final int index) {
 		return this.list.get(index);
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.list.hashCode();
 	}
 
 	@Override

@@ -206,7 +206,7 @@ abstract class ClientHelper {
 				break;
 			case CHAR:
 				if (value instanceof Character) {
-					value = new String(((Character) value).toString());
+					value = ((Character) value).toString();
 				}
 				cs.setString(index, (String) value);
 				break;

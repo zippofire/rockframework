@@ -59,7 +59,7 @@ class TLDBuilderImpl extends TLDBuilder {
 		root.addElement("tag-class").setData(clazz.getCanonicalName());
 
 		if (dynamicAttributes) {
-			root.addElement("dynamic-attributes").setData(new Boolean(dynamicAttributes));
+			root.addElement("dynamic-attributes").setData(Boolean.valueOf(dynamicAttributes));
 		}
 
 		BeanDescriptor beanDescriptor = new BeanDescriptorBuilderImpl().setType(clazz).setMode(ReflectionType.MIXED).getBeanDescriptor();
@@ -73,8 +73,8 @@ class TLDBuilderImpl extends TLDBuilder {
 			XmlElement e = root.addElement("attribute");
 
 			e.addElement("name").setData(propertyDescriptor.getName());
-			e.addElement("rtexprvalue").setData(new Boolean(tldAttribute.rtexprvalue()));
-			e.addElement("required").setData(new Boolean(tldAttribute.required()));
+			e.addElement("rtexprvalue").setData(Boolean.valueOf(tldAttribute.rtexprvalue()));
+			e.addElement("required").setData(Boolean.valueOf(tldAttribute.required()));
 			if ((!tldAttribute.rtexprvalue()) && (tldAttribute.type() != String.class)) {
 				e.addElement("type").setData(tldAttribute.type().getCanonicalName());
 			}

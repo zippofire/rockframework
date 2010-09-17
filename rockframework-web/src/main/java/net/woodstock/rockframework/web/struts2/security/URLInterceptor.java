@@ -27,13 +27,13 @@ import com.opensymphony.xwork2.ActionInvocation;
 
 public class URLInterceptor extends AccessInterceptor<String> {
 
-	private static final long	serialVersionUID	= -1142678626424407060L;
+	private static final long		serialVersionUID	= -1142678626424407060L;
 
-	private static final String	HISTORY_PARAMETER	= "net.woodstock.rockframework.web.struts2.security.URLInterceptor.HISTORY_PARAMETER";
+	private static final String		HISTORY_PARAMETER	= "net.woodstock.rockframework.web.struts2.security.URLInterceptor.HISTORY_PARAMETER";
 
-	private static final String	NO_ACCESS_PARAMETER	= "net.woodstock.rockframework.web.struts2.security.URLInterceptor.NO_ACCESS_PARAMETER";
+	private static final String		NO_ACCESS_PARAMETER	= "net.woodstock.rockframework.web.struts2.security.URLInterceptor.NO_ACCESS_PARAMETER";
 
-	private URLValidator		validator;
+	private transient URLValidator	validator;
 
 	public URLInterceptor() {
 		super(URLInterceptor.HISTORY_PARAMETER, URLInterceptor.NO_ACCESS_PARAMETER);

@@ -22,11 +22,11 @@ import javax.servlet.http.HttpServletRequest;
 
 public class FavoriteData implements Serializable {
 
-	private static final long	serialVersionUID	= 4133654698635313525L;
+	private static final long				serialVersionUID	= 4133654698635313525L;
 
-	private String				url;
+	private String							url;
 
-	private HttpServletRequest	request;
+	private transient HttpServletRequest	request;
 
 	public FavoriteData(final String url, final HttpServletRequest request) {
 		super();

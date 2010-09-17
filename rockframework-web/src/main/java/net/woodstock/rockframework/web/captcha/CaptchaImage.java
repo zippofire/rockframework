@@ -135,7 +135,7 @@ public class CaptchaImage {
 	private void drawText(final Graphics2D graphics) {
 		int left = 5;
 		for (char c : this.text.toCharArray()) {
-			String s = new Character(c).toString();
+			String s = Character.valueOf(c).toString();
 			Font font = this.getFont();
 			TextLayout textLayout = new TextLayout(s, font, graphics.getFontRenderContext());
 			Rectangle2D rectangle = textLayout.getBounds();
