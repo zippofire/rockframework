@@ -97,6 +97,11 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/target/classes"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/target/classes"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/target/classes"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/target/classes"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/target/classes"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/target/classes"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/target/classes"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/target/classes"/>
         <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/rockframework-web/rockframework-web">
             <dependency-type>uses</dependency-type>
         </dependent-module>

@@ -78,8 +78,12 @@ public abstract class EJBQLQueryBuilder<T> extends AbstractQueryBuilder<T> {
 		for (Entry<String, Object> entry : this.options.entrySet()) {
 			String name = entry.getKey();
 			Object value = entry.getValue();
-			CoreLog.getInstance().getLog().debug("Setting option[" + name + "] => " + value);
-			this.setQueryOption(query, name, value);
+			if (this.isOptionDelegate(name)) {
+				CoreLog.getInstance().getLog().debug("Setting option[" + name + "] => " + value);
+				this.setQueryOption(query, name, value);
+			} else {
+				CoreLog.getInstance().getLog().debug("Skipping option[" + name + "]");
+			}
 		}
 
 		for (QueryContextParameter parameter : this.context.getParametersRecursive()) {
@@ -109,6 +113,19 @@ public abstract class EJBQLQueryBuilder<T> extends AbstractQueryBuilder<T> {
 	private void build() {
 		this.context = QueryContextHelper.createQueryContext(this.entity, this.options);
 		this.build = true;
+	}
+
+	protected boolean isOptionDelegate(final String name) {
+		if (name.equals(Constants.OPTION_IGNORE_CASE)) {
+			return false;
+		}
+		if (name.equals(Constants.OPTION_LIKE_MODE)) {
+			return false;
+		}
+		if (name.equals(Constants.OPTION_ORDER_BY)) {
+			return false;
+		}
+		return true;
 	}
 
 	protected abstract T getQuery(String sql);

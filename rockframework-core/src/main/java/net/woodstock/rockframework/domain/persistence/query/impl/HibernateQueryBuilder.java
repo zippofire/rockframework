@@ -45,7 +45,19 @@ public class HibernateQueryBuilder extends EJBQLQueryBuilder<Query> {
 
 	@Override
 	protected void setQueryOption(final Query query, final String name, final Object value) {
-		if (name.equals(Constants.OPTION_FIRST_RESULT)) {
+		if (name.equals(Constants.OPTION_CACHE_MODE)) {
+			if (value instanceof CacheMode) {
+				CacheMode cacheMode = (CacheMode) value;
+				if (cacheMode == CacheMode.ENABLED) {
+					query.setCacheable(true);
+					query.setCacheMode(org.hibernate.CacheMode.NORMAL);
+				}
+			} else if (value != null) {
+				CoreLog.getInstance().getLog().warn("Illegal option type[" + name + "] => " + value.getClass().getCanonicalName() + ", must be " + CacheMode.class.getCanonicalName());
+			} else {
+				CoreLog.getInstance().getLog().warn("Illegal option value[" + name + "] => null");
+			}
+		} else if (name.equals(Constants.OPTION_FIRST_RESULT)) {
 			if (value instanceof Integer) {
 				Integer firstResult = (Integer) value;
 				query.setFirstResult(firstResult.intValue());
@@ -69,18 +81,6 @@ public class HibernateQueryBuilder extends EJBQLQueryBuilder<Query> {
 				query.setReadOnly(readOnly.booleanValue());
 			} else if (value != null) {
 				CoreLog.getInstance().getLog().warn("Illegal option type[" + name + "] => " + value.getClass().getCanonicalName() + ", must be " + Boolean.class.getCanonicalName());
-			} else {
-				CoreLog.getInstance().getLog().warn("Illegal option value[" + name + "] => null");
-			}
-		} else if (name.equals(Constants.OPTION_CACHE_MODE)) {
-			if (value instanceof CacheMode) {
-				CacheMode cacheMode = (CacheMode) value;
-				if (cacheMode == CacheMode.ENABLED) {
-					query.setCacheable(true);
-					query.setCacheMode(org.hibernate.CacheMode.NORMAL);
-				}
-			} else if (value != null) {
-				CoreLog.getInstance().getLog().warn("Illegal option type[" + name + "] => " + value.getClass().getCanonicalName() + ", must be " + CacheMode.class.getCanonicalName());
 			} else {
 				CoreLog.getInstance().getLog().warn("Illegal option value[" + name + "] => null");
 			}
