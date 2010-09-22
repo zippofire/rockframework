@@ -157,12 +157,12 @@ public abstract class FileUtils {
 	}
 
 	// Delegate
-	public static String getTypeByExtension(final String mimeType) {
-		return MimeUtils.getExtension(mimeType);
+	public static String getTypeByExtension(final String extension) {
+		return MimeUtils.getMimeType(extension);
 	}
 
-	public static String getMimeType(final String extension) {
-		return MimeUtils.getMimeType(extension);
+	public static String getExtensionByType(final String mimeType) {
+		return MimeUtils.getExtension(mimeType);
 	}
 
 }
