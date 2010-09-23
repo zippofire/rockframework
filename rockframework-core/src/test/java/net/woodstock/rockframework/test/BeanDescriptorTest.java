@@ -48,7 +48,7 @@ public class BeanDescriptorTest extends TestCase {
 		}
 
 		PropertyDescriptor property = bean.getProperty("id");
-		property.setValue(x, new Integer(1));
+		property.setValue(x, Integer.valueOf(1));
 		System.out.println("ID: " + property.getValue(x));
 	}
 

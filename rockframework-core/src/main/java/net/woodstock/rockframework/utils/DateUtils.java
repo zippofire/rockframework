@@ -25,11 +25,9 @@ import net.woodstock.rockframework.util.DateFormatFactory;
 
 public abstract class DateUtils {
 
-	private static final String		DATE_FORMAT_PROPERTY	= "format.date";
+	private static final String	DATE_FORMAT_PROPERTY	= "format.date";
 
-	private static final String		DATE_FORMAT_PATTERN		= CoreConfig.getInstance().getValue(DateUtils.DATE_FORMAT_PROPERTY);
-
-	private static final DateFormat	DATE_FORMAT				= DateFormatFactory.getInstance().getFormat(DateUtils.DATE_FORMAT_PATTERN, LocaleUtils.getLocale());
+	private static final String	DATE_FORMAT_PATTERN		= CoreConfig.getInstance().getValue(DateUtils.DATE_FORMAT_PROPERTY);
 
 	private DateUtils() {
 		//
@@ -39,7 +37,8 @@ public abstract class DateUtils {
 		if (date == null) {
 			return null;
 		}
-		return DateUtils.DATE_FORMAT.format(date);
+		DateFormat df = DateFormatFactory.getInstance().getFormat(DateUtils.DATE_FORMAT_PATTERN);
+		return df.format(date);
 	}
 
 	public static String format(final Date date, final String format) {
@@ -54,7 +53,8 @@ public abstract class DateUtils {
 		if (StringUtils.isEmpty(date)) {
 			return null;
 		}
-		return DateUtils.DATE_FORMAT.parse(date);
+		DateFormat df = DateFormatFactory.getInstance().getFormat(DateUtils.DATE_FORMAT_PATTERN);
+		return df.parse(date);
 	}
 
 	public static Date parse(final String date, final String format) throws ParseException {

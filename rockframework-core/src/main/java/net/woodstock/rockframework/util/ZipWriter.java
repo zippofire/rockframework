@@ -79,9 +79,6 @@ public class ZipWriter {
 		ZipOutputStream out = new ZipOutputStream(new FileOutputStream(file));
 		for (File f : this.files) {
 			if (f.isDirectory()) {
-				ZipEntry entry = new ZipEntry(f.getName() + ZipWriter.SEPARATOR);
-				out.putNextEntry(entry);
-				out.closeEntry();
 				ZipWriter.addDir(out, f);
 			} else if (f.isFile()) {
 				ZipWriter.addFile(out, f);
@@ -103,7 +100,8 @@ public class ZipWriter {
 		for (File f : files) {
 			if (f.isDirectory()) {
 				String name = (parent != null ? parent.getName() + ZipWriter.SEPARATOR : "") + dir.getName() + ZipWriter.SEPARATOR;
-				out.putNextEntry(new ZipEntry(name));
+				ZipEntry entry = new ZipEntry(name);
+				out.putNextEntry(entry);
 				out.closeEntry();
 				ZipWriter.addDir(out, dir, f);
 			} else if (f.isFile()) {

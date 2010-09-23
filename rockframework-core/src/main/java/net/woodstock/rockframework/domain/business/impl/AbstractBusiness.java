@@ -24,7 +24,7 @@ import net.woodstock.rockframework.domain.business.ValidationResult;
 @SuppressWarnings("rawtypes")
 abstract class AbstractBusiness implements GenericBusiness {
 
-	private static final String		NULL_OBJECT								= "null";
+	private static final String		NULL_OBJECT_MESSAGE								= "null";
 
 	protected static final String	MESSAGE_INVALID_CLASS					= "domain.business.invalid.class";
 
@@ -56,10 +56,10 @@ abstract class AbstractBusiness implements GenericBusiness {
 		String message = CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_OK);
 		if (entity == null) {
 			error = true;
-			message = CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_INVALID_OBJECT, entity);
+			message = CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_INVALID_OBJECT, AbstractBusiness.NULL_OBJECT_MESSAGE);
 		} else if (entity.getId() == null) {
 			error = true;
-			message = CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_INVALID_ID, AbstractBusiness.NULL_OBJECT);
+			message = CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_INVALID_ID, AbstractBusiness.NULL_OBJECT_MESSAGE);
 		}
 		return new ValidationResult(error, message);
 	}
@@ -75,7 +75,7 @@ abstract class AbstractBusiness implements GenericBusiness {
 		String message = CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_OK);
 		if (entity == null) {
 			error = true;
-			message = CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_INVALID_OBJECT, AbstractBusiness.NULL_OBJECT);
+			message = CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_INVALID_OBJECT, AbstractBusiness.NULL_OBJECT_MESSAGE);
 		}
 		return new ValidationResult(error, message);
 	}

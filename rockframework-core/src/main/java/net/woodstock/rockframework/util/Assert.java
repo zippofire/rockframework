@@ -57,39 +57,39 @@ public abstract class Assert {
 	// Between
 	public static void between(final double value, final double minimum, final double maximum, final String name) {
 		if ((value < minimum) || (value > maximum)) {
-			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_BETWEEN, name, new Double(minimum), new Double(maximum)));
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_BETWEEN, name, Double.valueOf(minimum), Double.valueOf(maximum)));
 		}
 	}
 
 	public static void between(final long value, final long minimum, final long maximum, final String name) {
 		if ((value < minimum) || (value > maximum)) {
-			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_BETWEEN, name, new Long(minimum), new Long(maximum)));
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_BETWEEN, name, Long.valueOf(minimum), Long.valueOf(maximum)));
 		}
 	}
 
 	// Greater or Equal
 	public static void greaterOrEqual(final double value, final double minimum, final String name) {
 		if (value < minimum) {
-			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_GREATER_THAN, name, new Double(minimum)));
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_GREATER_THAN, name, Double.valueOf(minimum)));
 		}
 	}
 
 	public static void greaterOrEqual(final long value, final long minimum, final String name) {
 		if (value < minimum) {
-			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_GREATER_THAN, name, new Long(minimum)));
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_GREATER_THAN, name, Long.valueOf(minimum)));
 		}
 	}
 
 	// Greater
 	public static void greaterThan(final double value, final double minimum, final String name) {
 		if (value <= minimum) {
-			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_GREATER_THAN, name, new Double(minimum)));
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_GREATER_THAN, name, Double.valueOf(minimum)));
 		}
 	}
 
 	public static void greaterThan(final long value, final long minimum, final String name) {
 		if (value <= minimum) {
-			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_GREATER_THAN, name, new Long(minimum)));
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_GREATER_THAN, name, Long.valueOf(minimum)));
 		}
 	}
 
@@ -168,26 +168,26 @@ public abstract class Assert {
 	// Less or equals
 	public static void lessOrEqual(final double value, final double maximum, final String name) {
 		if (value > maximum) {
-			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_LESS_THAN, name, new Double(maximum)));
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_LESS_THAN, name, Double.valueOf(maximum)));
 		}
 	}
 
 	public static void lessOrEqual(final long value, final long maximum, final String name) {
 		if (value > maximum) {
-			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_LESS_THAN, name, new Long(maximum)));
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_LESS_THAN, name, Long.valueOf(maximum)));
 		}
 	}
 
 	// Less
 	public static void lessThan(final double value, final double maximum, final String name) {
 		if (value >= maximum) {
-			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_LESS_THAN, name, new Double(maximum)));
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_LESS_THAN, name, Double.valueOf(maximum)));
 		}
 	}
 
 	public static void lessThan(final long value, final long maximum, final String name) {
 		if (value >= maximum) {
-			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_LESS_THAN, name, new Long(maximum)));
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_LESS_THAN, name, Long.valueOf(maximum)));
 		}
 	}
 

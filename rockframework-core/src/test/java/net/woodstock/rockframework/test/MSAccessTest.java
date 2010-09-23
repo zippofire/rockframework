@@ -15,7 +15,7 @@ public class MSAccessTest {
 	private Connection getConnection() throws SQLException, ClassNotFoundException {
 		Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
 		String url = "jdbc:odbc:Driver={Microsoft Access Driver (*.mdb)};DBQ=" + DB_FILE + ";DriverID=22;READONLY=true}";
-		Connection c = DriverManager.getConnection(url, "lilian", "rt447766");
+		Connection c = DriverManager.getConnection(url, "", "");
 
 		return c;
 	}
@@ -84,6 +84,9 @@ public class MSAccessTest {
 				System.out.printf("\n");
 			} while (rs.next());
 		}
+
+		rs.close();
+		stmt.close();
 
 		c.close();
 	}

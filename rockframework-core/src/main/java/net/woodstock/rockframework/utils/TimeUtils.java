@@ -18,16 +18,13 @@ package net.woodstock.rockframework.utils;
 
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import net.woodstock.rockframework.config.CoreConfig;
+import net.woodstock.rockframework.util.DateFormatFactory;
 
 public abstract class TimeUtils {
 
-	private static final String		TIME_FORMAT_PROPERTY	= "format.time";
-
-	private static final DateFormat	DATE_FORMAT				= new SimpleDateFormat(CoreConfig.getInstance().getValue(TimeUtils.TIME_FORMAT_PROPERTY));
+	private static final String	TIME_FORMAT_PROPERTY	= "format.time";
 
 	private TimeUtils() {
 		//
@@ -37,28 +34,32 @@ public abstract class TimeUtils {
 		if (date == null) {
 			return null;
 		}
-		return TimeUtils.DATE_FORMAT.format(date);
+		DateFormat df = DateFormatFactory.getInstance().getFormat(TimeUtils.TIME_FORMAT_PROPERTY);
+		return df.format(date);
 	}
 
 	public static String format(final Date date, final String format) {
 		if (date == null) {
 			return null;
 		}
-		return new SimpleDateFormat(format).format(date);
+		DateFormat df = DateFormatFactory.getInstance().getFormat(format);
+		return df.format(date);
 	}
 
 	public static Date parse(final String date) throws ParseException {
 		if (StringUtils.isEmpty(date)) {
 			return null;
 		}
-		return TimeUtils.DATE_FORMAT.parse(date);
+		DateFormat df = DateFormatFactory.getInstance().getFormat(TimeUtils.TIME_FORMAT_PROPERTY);
+		return df.parse(date);
 	}
 
 	public static Date parse(final String date, final String format) throws ParseException {
 		if (StringUtils.isEmpty(date)) {
 			return null;
 		}
-		return new SimpleDateFormat(format).parse(date);
+		DateFormat df = DateFormatFactory.getInstance().getFormat(format);
+		return df.parse(date);
 	}
 
 }

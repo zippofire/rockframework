@@ -18,117 +18,124 @@ package net.woodstock.rockframework.utils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Random;
 
 import net.woodstock.rockframework.config.CoreConfig;
-import net.woodstock.rockframework.util.DecimalFormatFactory;
+import net.woodstock.rockframework.util.NumberFormatFactory;
 
 public abstract class NumberUtils {
 
-	private static final String			DECIMAL_FORMAT_PROPERTY	= "format.decimal";
+	private static final String	DECIMAL_FORMAT_PROPERTY	= "format.decimal";
 
-	private static final String			INTEGER_FORMAT_PROPERTY	= "format.integer";
+	private static final String	INTEGER_FORMAT_PROPERTY	= "format.integer";
 
-	private static final String			DECIMAL_FORMAT_PATTERN	= CoreConfig.getInstance().getValue(NumberUtils.DECIMAL_FORMAT_PROPERTY);
+	private static final String	DECIMAL_FORMAT_PATTERN	= CoreConfig.getInstance().getValue(NumberUtils.DECIMAL_FORMAT_PROPERTY);
 
-	private static final String			INTEGER_FORMAT_PATTERN	= CoreConfig.getInstance().getValue(NumberUtils.INTEGER_FORMAT_PROPERTY);
+	private static final String	INTEGER_FORMAT_PATTERN	= CoreConfig.getInstance().getValue(NumberUtils.INTEGER_FORMAT_PROPERTY);
 
-	private static final DecimalFormat	DECIMAL_FORMAT			= DecimalFormatFactory.getInstance().getFormat(NumberUtils.DECIMAL_FORMAT_PATTERN, LocaleUtils.getLocale());
-
-	private static final DecimalFormat	INTEGER_FORMAT			= DecimalFormatFactory.getInstance().getFormat(NumberUtils.INTEGER_FORMAT_PATTERN, LocaleUtils.getLocale());
-
-	private static final Random			RANDOM					= new Random();
+	private static final Random	RANDOM					= new Random();
 
 	public static String format(final BigDecimal value) {
 		if (value == null) {
 			return null;
 		}
-		return NumberUtils.DECIMAL_FORMAT.format(value);
+		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(NumberUtils.DECIMAL_FORMAT_PATTERN);
+		return nf.format(value);
 	}
 
 	public static String format(final BigInteger value) {
 		if (value == null) {
 			return null;
 		}
-		return NumberUtils.INTEGER_FORMAT.format(value);
+		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(NumberUtils.INTEGER_FORMAT_PATTERN);
+		return nf.format(value);
 	}
 
 	public static String format(final Byte value) {
 		if (value == null) {
 			return null;
 		}
-		return NumberUtils.INTEGER_FORMAT.format(value);
+		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(NumberUtils.INTEGER_FORMAT_PATTERN);
+		return nf.format(value);
 	}
 
 	public static String format(final double value) {
-		return NumberUtils.DECIMAL_FORMAT.format(value);
+		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(NumberUtils.DECIMAL_FORMAT_PATTERN);
+		return nf.format(value);
 	}
 
 	public static String format(final Double value) {
 		if (value == null) {
 			return null;
 		}
-		return NumberUtils.DECIMAL_FORMAT.format(value);
+		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(NumberUtils.DECIMAL_FORMAT_PATTERN);
+		return nf.format(value);
 	}
 
 	public static String format(final Float value) {
 		if (value == null) {
 			return null;
 		}
-		return NumberUtils.DECIMAL_FORMAT.format(value);
+		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(NumberUtils.DECIMAL_FORMAT_PATTERN);
+		return nf.format(value);
 	}
 
 	public static String format(final Integer value) {
 		if (value == null) {
 			return null;
 		}
-		return NumberUtils.INTEGER_FORMAT.format(value);
+		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(NumberUtils.INTEGER_FORMAT_PATTERN);
+		return nf.format(value);
 	}
 
 	public static String format(final long value) {
-		return NumberUtils.INTEGER_FORMAT.format(value);
+		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(NumberUtils.INTEGER_FORMAT_PATTERN);
+		return nf.format(value);
 	}
 
 	public static String format(final Long value) {
 		if (value == null) {
 			return null;
 		}
-		return NumberUtils.INTEGER_FORMAT.format(value);
+		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(NumberUtils.INTEGER_FORMAT_PATTERN);
+		return nf.format(value);
 	}
 
 	public static String format(final Number value) {
 		if (value == null) {
 			return null;
 		}
-		return NumberUtils.DECIMAL_FORMAT.format(value);
+		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(NumberUtils.DECIMAL_FORMAT_PATTERN);
+		return nf.format(value);
 	}
 
 	public static String format(final Short value) {
 		if (value == null) {
 			return null;
 		}
-		return NumberUtils.INTEGER_FORMAT.format(value);
+		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(NumberUtils.INTEGER_FORMAT_PATTERN);
+		return nf.format(value);
 	}
 
 	// Pattern
 	public static String format(final double value, final String pattern) {
-		DecimalFormat df = DecimalFormatFactory.getInstance().getFormat(pattern);
-		return df.format(value);
+		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(pattern);
+		return nf.format(value);
 	}
 
 	public static String format(final long value, final String pattern) {
-		DecimalFormat df = DecimalFormatFactory.getInstance().getFormat(pattern);
-		return df.format(value);
+		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(pattern);
+		return nf.format(value);
 	}
 
 	public static String format(final Number value, final String pattern) {
 		if (value == null) {
 			return null;
 		}
-		DecimalFormat df = DecimalFormatFactory.getInstance().getFormat(pattern);
-		return df.format(value);
+		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(pattern);
+		return nf.format(value);
 	}
 
 	// Parse
@@ -136,8 +143,8 @@ public abstract class NumberUtils {
 		if (StringUtils.isEmpty(value)) {
 			return null;
 		}
-		DecimalFormat df = DecimalFormatFactory.getInstance().getFormat(pattern);
-		return df.parse(value);
+		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(pattern);
+		return nf.parse(value);
 	}
 
 	// Random

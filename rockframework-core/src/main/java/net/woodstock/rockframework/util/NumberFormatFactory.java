@@ -18,18 +18,19 @@ package net.woodstock.rockframework.util;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.Locale;
 
-public final class DecimalFormatFactory extends FormatFactory<DecimalFormat> {
+public final class NumberFormatFactory extends FormatFactory<NumberFormat> {
 
-	private static DecimalFormatFactory	instance	= new DecimalFormatFactory();
+	private static NumberFormatFactory	instance	= new NumberFormatFactory();
 
-	private DecimalFormatFactory() {
+	private NumberFormatFactory() {
 		super();
 	}
 
 	@Override
-	public DecimalFormat getFormat(final String pattern, final Locale locale) {
+	public NumberFormat getFormat(final String pattern, final Locale locale) {
 		Assert.notEmpty(pattern, "pattern");
 		Assert.notNull(locale, "locale");
 
@@ -37,13 +38,13 @@ public final class DecimalFormatFactory extends FormatFactory<DecimalFormat> {
 			return this.getFromCache(pattern, locale);
 		}
 
-		DecimalFormat format = new DecimalFormat(pattern, new DecimalFormatSymbols(locale));
+		ImmutableNumberFormat format = new ImmutableNumberFormat(new DecimalFormat(pattern, new DecimalFormatSymbols(locale)));
 		this.addToCache(pattern, locale, format);
 		return format;
 	}
 
 	// Instance
-	public static DecimalFormatFactory getInstance() {
+	public static NumberFormatFactory getInstance() {
 		return instance;
 	}
 }

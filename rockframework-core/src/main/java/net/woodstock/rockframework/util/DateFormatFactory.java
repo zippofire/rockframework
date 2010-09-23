@@ -36,7 +36,7 @@ public final class DateFormatFactory extends FormatFactory<DateFormat> {
 		if (this.containsOnCache(pattern, locale)) {
 			return this.getFromCache(pattern, locale);
 		}
-		DateFormat format = new SimpleDateFormat(pattern, locale);
+		ImmutableDateFormat format = new ImmutableDateFormat(new SimpleDateFormat(pattern, locale));
 		this.addToCache(pattern, locale, format);
 		return format;
 	}

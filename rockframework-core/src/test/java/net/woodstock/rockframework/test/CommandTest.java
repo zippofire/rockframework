@@ -2,7 +2,7 @@ package net.woodstock.rockframework.test;
 
 import junit.framework.TestCase;
 import net.woodstock.rockframework.runtime.Command;
-import net.woodstock.rockframework.runtime.Command.Output;
+import net.woodstock.rockframework.runtime.Output;
 
 public class CommandTest extends TestCase {
 

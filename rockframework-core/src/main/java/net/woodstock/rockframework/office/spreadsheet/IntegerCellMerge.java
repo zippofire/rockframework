@@ -29,7 +29,7 @@ public class IntegerCellMerge extends CellMerge<Integer, Integer> {
 	}
 
 	public IntegerCellMerge(final int firstRow, final int lastRow, final int firstColumn, final int lastColumn) {
-		super(new Integer(firstRow), new Integer(lastRow), new Integer(firstColumn), new Integer(lastColumn));
+		super(Integer.valueOf(firstRow), Integer.valueOf(lastRow), Integer.valueOf(firstColumn), Integer.valueOf(lastColumn));
 	}
 
 }

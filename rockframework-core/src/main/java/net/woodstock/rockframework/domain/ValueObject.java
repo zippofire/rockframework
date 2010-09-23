@@ -49,10 +49,9 @@ public class ValueObject<T> implements Pojo {
 		ValueObject<?> other = (ValueObject<?>) obj;
 		if ((this.value == null) && (other.value != null)) {
 			return false;
-		} else if ((this.value != null) && (other.value == null)) {
-			return false;
-		} else if (!this.value.equals(other.value)) {
-			return false;
+		}
+		if (this.value != null) {
+			return this.value.equals(obj);
 		}
 		return true;
 	}

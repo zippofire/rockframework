@@ -133,7 +133,7 @@ public abstract class AbstractJPABusiness extends AbstractBusiness {
 		if (value instanceof String) {
 			int length = ((String) value).length();
 			if (length > column.length()) {
-				return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_LENGTH, name, Integer.valueOf(0), new Integer(column.length())));
+				return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_LENGTH, name, Integer.valueOf(0), Integer.valueOf(column.length())));
 			}
 		}
 		return null;

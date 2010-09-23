@@ -18,7 +18,9 @@ package net.woodstock.rockframework.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Reader;
 
 import net.woodstock.rockframework.util.Assert;
 
@@ -41,6 +43,12 @@ public abstract class IOUtils {
 		byte[] bytes = new byte[inputStream.available()];
 		inputStream.read(bytes);
 		return bytes;
+	}
+
+	public static Reader toReader(final InputStream inputStream) {
+		Assert.notNull(inputStream, "inputStream");
+
+		return new InputStreamReader(inputStream);
 	}
 
 	public static String toString(final InputStream inputStream) throws IOException {

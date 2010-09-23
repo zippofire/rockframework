@@ -14,27 +14,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.io;
+package net.woodstock.rockframework.util;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.Writer;
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.ParsePosition;
+import java.util.Date;
 
-import net.woodstock.rockframework.util.Assert;
+class ImmutableDateFormat extends DateFormat {
 
-public class WriterOutputStream extends OutputStream {
+	private static final long	serialVersionUID	= 3851905427842569833L;
 
-	private Writer	writer;
+	private DateFormat			delegate;
 
-	public WriterOutputStream(final Writer writer) {
+	public ImmutableDateFormat(final DateFormat delegate) {
 		super();
-		Assert.notNull(writer, "writer");
-		this.writer = writer;
+		Assert.notNull(delegate, "delegate");
+		this.delegate = delegate;
 	}
 
 	@Override
-	public void write(final int b) throws IOException {
-		this.writer.write(b);
+	public StringBuffer format(final Date date, final StringBuffer toAppendTo, final FieldPosition fieldPosition) {
+		return this.delegate.format(date, toAppendTo, fieldPosition);
+	}
+
+	@Override
+	public Date parse(final String source, final ParsePosition pos) {
+		return this.delegate.parse(source, pos);
 	}
 
 }

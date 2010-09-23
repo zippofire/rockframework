@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
-import java.util.LinkedList;
 import java.util.List;
 
 import net.woodstock.rockframework.util.Assert;
@@ -105,37 +104,6 @@ public class Command implements Serializable {
 		errorStream.close();
 
 		return output;
-	}
-
-	public class Output implements Serializable {
-
-		private static final long	serialVersionUID	= -2039121423679516050L;
-
-		private List<String>		out;
-
-		private List<String>		err;
-
-		public Output() {
-			this.out = new LinkedList<String>();
-			this.err = new LinkedList<String>();
-		}
-
-		public List<String> getOut() {
-			return this.out;
-		}
-
-		public List<String> getErr() {
-			return this.err;
-		}
-
-		void addOut(final String s) {
-			this.out.add(s);
-		}
-
-		void addErr(final String s) {
-			this.err.add(s);
-		}
-
 	}
 
 }

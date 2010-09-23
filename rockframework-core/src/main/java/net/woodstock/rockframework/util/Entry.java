@@ -93,7 +93,19 @@ public class Entry<K, V> implements Map.Entry<K, V>, Serializable {
 		if ((this.key == null) && (this.value == null)) {
 			return super.hashCode();
 		}
-		return this.key.hashCode() ^ this.value.hashCode();
+
+		int hashKey = 0;
+		int hashValue = 0;
+
+		if (this.key != null) {
+			hashKey = this.key.hashCode();
+		}
+
+		if (this.value != null) {
+			hashValue = this.value.hashCode();
+		}
+
+		return hashKey ^ hashValue;
 	}
 
 	@Override

@@ -41,7 +41,7 @@ public class DelegateList<E> extends DelegateCollection<E> implements List<E> {
 
 	@Override
 	public boolean equals(final Object o) {
-		return this.equals(o);
+		return this.list.equals(o);
 	}
 	
 	@Override

@@ -14,37 +14,39 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.io;
+package net.woodstock.rockframework.runtime;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
+import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 
-import net.woodstock.rockframework.util.Assert;
+public class Output implements Serializable {
 
-public class ReaderInputStream extends InputStream {
+	private static final long	serialVersionUID	= -2039121423679516050L;
 
-	private InputStream	wrapper;
+	private List<String>		out;
 
-	public ReaderInputStream(final Reader reader) throws IOException {
-		super();
-		Assert.notNull(reader, "reader");
-		InputOutputStream ios = new InputOutputStream();
-		int b = -1;
-		while ((b = reader.read()) != -1) {
-			ios.write(b);
-		}
-		this.wrapper = ios.getInputStream();
+	private List<String>		err;
+
+	public Output() {
+		this.out = new LinkedList<String>();
+		this.err = new LinkedList<String>();
 	}
 
-	@Override
-	public int available() throws IOException {
-		return this.wrapper.available();
+	public List<String> getOut() {
+		return this.out;
 	}
 
-	@Override
-	public int read() throws IOException {
-		return this.wrapper.read();
+	public List<String> getErr() {
+		return this.err;
+	}
+
+	void addOut(final String s) {
+		this.out.add(s);
+	}
+
+	void addErr(final String s) {
+		this.err.add(s);
 	}
 
 }
