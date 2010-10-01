@@ -26,14 +26,14 @@ public enum DigestType {
 	SHA_384("SHA-384"),
 	SHA_512("SHA-512");
 	
-	private String	type;
+	private String	algorithm;
 
-	private DigestType(final String type) {
-		this.type = type;
+	private DigestType(final String algorithm) {
+		this.algorithm = algorithm;
 	}
 
-	public String getType() {
-		return this.type;
+	public String getAlgorithm() {
+		return this.algorithm;
 	}
 	
 }

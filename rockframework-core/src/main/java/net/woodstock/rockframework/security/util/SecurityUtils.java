@@ -16,6 +16,7 @@
  */
 package net.woodstock.rockframework.security.util;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyFactory;
@@ -47,6 +48,14 @@ public abstract class SecurityUtils {
 		return certificate;
 	}
 
+	public static Certificate getCertificateFromFile(final byte[] bytes, final CertificateType type) throws CertificateException {
+		Assert.notEmpty(bytes, "bytes");
+		Assert.notNull(type, "type");
+		InputStream inputStream = new ByteArrayInputStream(bytes);
+
+		return SecurityUtils.getCertificateFromFile(inputStream, type);
+	}
+
 	public static PrivateKey getPrivateKeyFromPKCS8File(final InputStream inputStream, final KeyPairType type) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
 		Assert.notNull(inputStream, "inputStream");
 		Assert.notNull(type, "type");
@@ -62,7 +71,7 @@ public abstract class SecurityUtils {
 		Assert.notNull(type, "type");
 
 		PKCS8EncodedKeySpec specPrivate = new PKCS8EncodedKeySpec(bytes);
-		KeyFactory factory = KeyFactory.getInstance(type.getType());
+		KeyFactory factory = KeyFactory.getInstance(type.getAlgorithm());
 		PrivateKey privateKey = factory.generatePrivate(specPrivate);
 		return privateKey;
 	}
@@ -82,7 +91,7 @@ public abstract class SecurityUtils {
 		Assert.notNull(type, "type");
 
 		X509EncodedKeySpec specPublic = new X509EncodedKeySpec(bytes);
-		KeyFactory factory = KeyFactory.getInstance(type.getType());
+		KeyFactory factory = KeyFactory.getInstance(type.getAlgorithm());
 		PublicKey privateKey = factory.generatePublic(specPublic);
 		return privateKey;
 	}

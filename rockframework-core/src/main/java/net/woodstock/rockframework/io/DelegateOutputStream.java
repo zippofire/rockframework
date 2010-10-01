@@ -14,25 +14,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.security.crypt;
+package net.woodstock.rockframework.io;
 
+import java.io.IOException;
+import java.io.OutputStream;
 
-public enum KeyType {
+public class DelegateOutputStream extends OutputStream {
 
-	ARCFOUR("ARCFOUR"),
-	DES("DES"),
-	DESEDE("DESede"),
-	AES("AES"),
-	BLOWFISH("Blowfish");
-	
-	private String	algorithm;
+	private OutputStream	outputStream;
 
-	private KeyType(final String algorithm) {
-		this.algorithm = algorithm;
+	public DelegateOutputStream(final OutputStream outputStream) {
+		super();
+		this.outputStream = outputStream;
 	}
 
-	public String getAlgorithm() {
-		return this.algorithm;
+	@Override
+	public void close() throws IOException {
+		this.outputStream.close();
 	}
-	
+
+	@Override
+	public void flush() throws IOException {
+		this.outputStream.flush();
+	}
+
+	@Override
+	public void write(final int b) throws IOException {
+		this.outputStream.write(b);
+	}
+
 }

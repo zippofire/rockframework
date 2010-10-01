@@ -18,7 +18,6 @@ package net.woodstock.rockframework.util;
 
 import java.io.IOException;
 
-import net.woodstock.rockframework.utils.LocaleUtils;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
@@ -37,7 +36,7 @@ class SunBase64Encoder extends Base64Encoder {
 	@Override
 	public String decode(final String s) {
 		try {
-			String str = new String(this.decoder.decodeBuffer(s), LocaleUtils.getCharset());
+			String str = new String(this.decoder.decodeBuffer(s));
 			return str;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -47,9 +46,9 @@ class SunBase64Encoder extends Base64Encoder {
 	@Override
 	public byte[] decode(final byte[] b) {
 		try {
-			String s = new String(b, LocaleUtils.getCharset());
-			String str = new String(this.decoder.decodeBuffer(s), LocaleUtils.getCharset());
-			byte[] bytes = str.getBytes(LocaleUtils.getCharset());
+			String s = new String(b);
+			String str = new String(this.decoder.decodeBuffer(s));
+			byte[] bytes = str.getBytes();
 			return bytes;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -58,14 +57,14 @@ class SunBase64Encoder extends Base64Encoder {
 
 	@Override
 	public String encode(final String s) {
-		String str = this.encoder.encode(s.getBytes(LocaleUtils.getCharset()));
+		String str = this.encoder.encode(s.getBytes());
 		return str;
 	}
 
 	@Override
 	public byte[] encode(final byte[] b) {
 		String str = this.encoder.encode(b);
-		byte[] bytes = str.getBytes(LocaleUtils.getCharset());
+		byte[] bytes = str.getBytes();
 		return bytes;
 	}
 

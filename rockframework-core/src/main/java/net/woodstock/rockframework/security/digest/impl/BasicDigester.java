@@ -36,10 +36,9 @@ public class BasicDigester implements Digester {
 
 	@Override
 	public byte[] digest(final byte[] data) {
-		Assert.notNull(data, "data");
 		Assert.notEmpty(data, "data");
 		try {
-			MessageDigest digest = MessageDigest.getInstance(this.type.getType());
+			MessageDigest digest = MessageDigest.getInstance(this.type.getAlgorithm());
 			digest.update(data);
 			byte[] digested = digest.digest();
 			return digested;

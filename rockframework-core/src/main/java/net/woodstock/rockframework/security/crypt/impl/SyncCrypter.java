@@ -17,27 +17,26 @@
 package net.woodstock.rockframework.security.crypt.impl;
 
 import java.security.GeneralSecurityException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
 import net.woodstock.rockframework.security.crypt.CrypterException;
 import net.woodstock.rockframework.security.crypt.KeyType;
+import net.woodstock.rockframework.security.crypt.impl.CrypterOperation.Mode;
 import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.utils.StringUtils;
 
 public class SyncCrypter extends AbstractCrypter {
 
-	private KeyType		type;
-
-	private String		seed;
-
 	private SecretKey	key;
+
+	public SyncCrypter(final SecretKey key) {
+		super();
+		Assert.notNull(key, "key");
+		this.key = key;
+	}
 
 	public SyncCrypter(final KeyType type) {
 		this(type, null);
@@ -46,34 +45,45 @@ public class SyncCrypter extends AbstractCrypter {
 	public SyncCrypter(final KeyType type, final String seed) {
 		super();
 		Assert.notNull(type, "type");
-		this.type = type;
-		this.seed = seed;
+
 		try {
-			this.initKeys();
-			this.initCiphers();
+			KeyGenerator generator = KeyGenerator.getInstance(type.getAlgorithm());
+
+			if (!StringUtils.isEmpty(seed)) {
+				SecureRandom random = new SecureRandom(seed.getBytes());
+				generator.init(random);
+			}
+
+			this.key = generator.generateKey();
 		} catch (GeneralSecurityException e) {
 			throw new CrypterException(e);
 		}
 	}
 
-	private void initKeys() throws NoSuchAlgorithmException {
-		KeyGenerator generator = KeyGenerator.getInstance(this.type.getType());
-
-		if (!StringUtils.isEmpty(this.seed)) {
-			SecureRandom random = new SecureRandom(this.seed.getBytes());
-			generator.init(random);
+	@Override
+	public byte[] encrypt(final byte[] data) {
+		try {
+			Assert.notNull(data, "data");
+			CrypterOperation operation = new CrypterOperation(this.key, Mode.ENCRYPT, data);
+			return operation.execute();
+		} catch (Exception e) {
+			throw new CrypterException(e);
 		}
-
-		SecretKey key = generator.generateKey();
-		this.key = key;
-		this.setAlgorithm(this.type.getType());
 	}
 
-	private void initCiphers() throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException {
-		this.setEncryptCipher(Cipher.getInstance(this.getAlgorithm()));
-		this.getEncryptCipher().init(Cipher.ENCRYPT_MODE, this.key);
-
-		this.setDecryptCipher(Cipher.getInstance(this.getAlgorithm()));
-		this.getDecryptCipher().init(Cipher.DECRYPT_MODE, this.key);
+	@Override
+	public byte[] decrypt(final byte[] data) {
+		try {
+			Assert.notNull(data, "data");
+			CrypterOperation operation = new CrypterOperation(this.key, Mode.DECRYPT, data);
+			return operation.execute();
+		} catch (Exception e) {
+			throw new CrypterException(e);
+		}
 	}
+
+	protected SecretKey getKey() {
+		return this.key;
+	}
+
 }

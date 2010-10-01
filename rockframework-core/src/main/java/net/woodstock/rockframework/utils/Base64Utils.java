@@ -28,24 +28,26 @@ import net.woodstock.rockframework.util.Base64Encoder;
 
 public abstract class Base64Utils {
 
+	private static Base64Encoder	encoder	= Base64Encoder.getInstance();
+
 	private Base64Utils() {
 		//
 	}
 
 	public static byte[] toBase64(final byte[] b) {
-		return Base64Encoder.getInstance().encode(b);
+		return encoder.encode(b);
 	}
 
 	public static byte[] fromBase64(final byte[] b) {
-		return Base64Encoder.getInstance().decode(b);
+		return encoder.decode(b);
 	}
 
 	public static String toBase64(final String s) {
-		return Base64Encoder.getInstance().encode(s);
+		return encoder.encode(s);
 	}
 
 	public static String fromBase64(final String s) {
-		return Base64Encoder.getInstance().decode(s);
+		return encoder.decode(s);
 	}
 
 	public static byte[] serialize(final Object o) throws IOException {
@@ -64,13 +66,13 @@ public abstract class Base64Utils {
 		output.close();
 		bos.close();
 
-		byte[] bytes = Base64Encoder.getInstance().encode(bos.toByteArray());
+		byte[] bytes = encoder.encode(bos.toByteArray());
 
 		return bytes;
 	}
 
 	public static Object unserialize(final byte[] bytes) throws IOException, ClassNotFoundException {
-		byte[] b = Base64Encoder.getInstance().decode(bytes);
+		byte[] b = encoder.decode(bytes);
 
 		ObjectInputStream input = new ObjectInputStream(new ByteArrayInputStream(b));
 		Object o = input.readUnshared();

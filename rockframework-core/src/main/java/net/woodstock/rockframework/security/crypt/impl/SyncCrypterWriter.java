@@ -16,32 +16,37 @@
  */
 package net.woodstock.rockframework.security.crypt.impl;
 
-import net.woodstock.rockframework.security.crypt.Crypter;
+import java.io.IOException;
+import java.io.OutputStream;
+
+import net.woodstock.rockframework.security.crypt.CrypterException;
+import net.woodstock.rockframework.security.crypt.CrypterWriter;
 import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.utils.Base64Utils;
 
-public class Base64Crypter extends DelegateCrypter {
+public class SyncCrypterWriter implements CrypterWriter {
 
-	public Base64Crypter(final Crypter crypter) {
-		super(crypter);
+	private SyncCrypter		crypter;
+
+	private OutputStream	outputStream;
+
+	public SyncCrypterWriter(final SyncCrypter crypter, final OutputStream outputStream) {
+		super();
+		Assert.notNull(crypter, "crypter");
+		Assert.notNull(outputStream, "outputStream");
+		this.crypter = crypter;
+		this.outputStream = outputStream;
 	}
 
 	@Override
-	public byte[] decrypt(final byte[] data) {
-		Assert.notNull(data, "data");
-
-		byte[] b64 = Base64Utils.fromBase64(data);
-		byte[] dec = super.decrypt(b64);
-		return dec;
-	}
-
-	@Override
-	public byte[] encrypt(final byte[] data) {
-		Assert.notNull(data, "data");
-
-		byte[] enc = super.encrypt(data);
-		byte[] b64 = Base64Utils.toBase64(enc);
-		return b64;
+	public void write() {
+		try {
+			byte[] bytes = this.crypter.getKey().getEncoded();
+			byte[] base64 = Base64Utils.toBase64(bytes);
+			this.outputStream.write(base64);
+		} catch (IOException e) {
+			throw new CrypterException(e);
+		}
 	}
 
 }

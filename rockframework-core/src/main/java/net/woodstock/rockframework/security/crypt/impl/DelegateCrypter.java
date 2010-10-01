@@ -19,7 +19,7 @@ package net.woodstock.rockframework.security.crypt.impl;
 import net.woodstock.rockframework.security.crypt.Crypter;
 import net.woodstock.rockframework.util.Assert;
 
-public class DelegateCrypter implements Crypter {
+public abstract class DelegateCrypter implements Crypter {
 
 	private Crypter	crypter;
 

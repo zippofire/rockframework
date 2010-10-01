@@ -16,15 +16,13 @@
  */
 package net.woodstock.rockframework.util;
 
-import net.woodstock.rockframework.utils.LocaleUtils;
-
 import org.apache.commons.codec.binary.Base64;
 
 class ApacheBase64Encoder extends Base64Encoder {
 
 	@Override
 	public String decode(final String s) {
-		String str = new String(Base64.decodeBase64(s.getBytes(LocaleUtils.getCharset())));
+		String str = new String(Base64.decodeBase64(s.getBytes()));
 		return str;
 	}
 
@@ -36,15 +34,15 @@ class ApacheBase64Encoder extends Base64Encoder {
 
 	@Override
 	public String encode(final String s) {
-		String str = new String(Base64.encodeBase64Chunked(s.getBytes(LocaleUtils.getCharset()))).trim();
+		String str = new String(Base64.encodeBase64Chunked(s.getBytes())).trim();
 		return str;
 	}
 
 	@Override
 	public byte[] encode(final byte[] b) {
 		byte[] bytes = Base64.encodeBase64Chunked(b);
-		String str = new String(bytes, LocaleUtils.getCharset());
-		return str.trim().getBytes(LocaleUtils.getCharset());
+		String str = new String(bytes);
+		return str.trim().getBytes();
 	}
 
 }

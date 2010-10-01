@@ -24,14 +24,14 @@ public enum KeyPairType {
 	EC("EC"),
 	DIFFIE_HELLMAN("DiffieHellman");
 	
-	private String	type;
+	private String	algorithm;
 
-	private KeyPairType(final String type) {
-		this.type = type;
+	private KeyPairType(final String algorithm) {
+		this.algorithm = algorithm;
 	}
 
-	public String getType() {
-		return this.type;
+	public String getAlgorithm() {
+		return this.algorithm;
 	}
 	
 }

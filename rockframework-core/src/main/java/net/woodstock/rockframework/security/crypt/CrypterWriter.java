@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.security.crypt.impl;
+package net.woodstock.rockframework.security.crypt;
 
-import net.woodstock.rockframework.security.crypt.Crypter;
+public interface CrypterWriter {
 
-abstract class AbstractCrypter implements Crypter {
-	//
+	void write();
+
 }

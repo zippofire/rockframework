@@ -56,7 +56,7 @@ public abstract class IOUtils {
 		byte[] bytes = new byte[inputStream.available()];
 		inputStream.read(bytes);
 
-		String s = new String(bytes, LocaleUtils.getCharset());
+		String s = new String(bytes);
 
 		return s;
 	}

@@ -32,14 +32,14 @@ public enum SignatureType {
 	SHA512_ECDSA("SHA512withECDSA"),
 	NONE_ECDSA("NONEwithECDSA");
 
-	private String	type;
+	private String	algorithm;
 
-	private SignatureType(final String type) {
-		this.type = type;
+	private SignatureType(final String algorithm) {
+		this.algorithm = algorithm;
 	}
 
-	public String getType() {
-		return this.type;
+	public String getAlgorithm() {
+		return this.algorithm;
 	}
 
 }

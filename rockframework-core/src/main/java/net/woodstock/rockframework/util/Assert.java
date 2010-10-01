@@ -30,6 +30,8 @@ public abstract class Assert {
 
 	private static final String	MESSAGE_BETWEEN			= "error.between";
 
+	private static final String	MESSAGE_EQUALS			= "error.equals";
+
 	private static final String	MESSAGE_GREATER_THAN	= "error.greaterThan";
 
 	private static final String	MESSAGE_INSTANCE_OF		= "error.instanceOf";
@@ -64,6 +66,14 @@ public abstract class Assert {
 	public static void between(final long value, final long minimum, final long maximum, final String name) {
 		if ((value < minimum) || (value > maximum)) {
 			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_BETWEEN, name, Long.valueOf(minimum), Long.valueOf(maximum)));
+		}
+	}
+
+	// Greater or Equals
+	public static void equals(final Object value, final Object other, final String name) {
+		Assert.notNull(value, name);
+		if (!value.equals(other)) {
+			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_EQUALS, name, other));
 		}
 	}
 

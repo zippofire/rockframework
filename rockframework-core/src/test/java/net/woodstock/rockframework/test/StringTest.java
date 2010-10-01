@@ -1,6 +1,7 @@
 package net.woodstock.rockframework.test;
 
 import junit.framework.TestCase;
+import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.utils.Base64Utils;
 import net.woodstock.rockframework.utils.CharacterUtils;
 import net.woodstock.rockframework.utils.StringUtils;
@@ -35,12 +36,17 @@ public class StringTest extends TestCase {
 		System.out.println(s);
 	}
 
-	public void test4() throws Exception {
+	public void xtest4() throws Exception {
 		String s = "Júnior";
 		char[] chars = s.toCharArray();
 		for (char c : chars) {
 			System.out.println(c + " int: " + ((int) c) + " ascii: " + CharacterUtils.isASCII(c) + " iso-8859-1: " + CharacterUtils.isISO88591(c));
 		}
+	}
+	
+	public void test5() throws Exception {
+		//Assert.equals(null, null, "null");
+		Assert.equals("nulo", "nulo", "nulo");
 	}
 
 }

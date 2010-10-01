@@ -17,7 +17,40 @@
 package net.woodstock.rockframework.security.crypt.impl;
 
 import net.woodstock.rockframework.security.crypt.Crypter;
+import net.woodstock.rockframework.util.Assert;
 
-abstract class AbstractCrypter implements Crypter {
-	//
+public class AsStringCrypter extends DelegateCrypter {
+
+	public AsStringCrypter(final Crypter crypter) {
+		super(crypter);
+	}
+
+	public String decryptAsString(final byte[] data) {
+		byte[] dec = super.decrypt(data);
+		return new String(dec);
+	}
+
+	public String decryptAsString(final String str) {
+		Assert.notEmpty(str, "str");
+
+		byte[] data = str.getBytes();
+
+		byte[] dec = super.decrypt(data);
+		return new String(dec);
+	}
+
+	public String encryptAsString(final byte[] data) {
+		byte[] enc = super.encrypt(data);
+		return new String(enc);
+	}
+
+	public String encryptAsString(final String str) {
+		Assert.notEmpty(str, "str");
+
+		byte[] data = str.getBytes();
+
+		byte[] enc = super.encrypt(data);
+		return new String(enc);
+	}
+
 }
