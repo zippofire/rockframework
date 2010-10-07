@@ -16,32 +16,31 @@
  */
 package net.woodstock.rockframework.net.mail;
 
-import java.io.File;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 
 public class SimpleMail implements Serializable {
 
-	private static final long	serialVersionUID	= -7704634381340126487L;
+	private static final long		serialVersionUID	= -7704634381340126487L;
 
-	private String				text;
+	private String					text;
 
-	private String				subject;
+	private String					subject;
 
-	private String				from;
+	private String					from;
 
-	private boolean				html;
+	private boolean					html;
 
-	private Collection<String>	replyTo;
+	private Collection<String>		replyTo;
 
-	private Collection<String>	to;
+	private Collection<String>		to;
 
-	private Collection<String>	bcc;
+	private Collection<String>		bcc;
 
-	private Collection<String>	cc;
+	private Collection<String>		cc;
 
-	private Collection<File>	attach;
+	private Collection<Attachment>	attach;
 
 	public SimpleMail() {
 		super();
@@ -53,18 +52,18 @@ public class SimpleMail implements Serializable {
 		this.to = new LinkedHashSet<String>();
 		this.bcc = new LinkedHashSet<String>();
 		this.cc = new LinkedHashSet<String>();
-		this.attach = new LinkedHashSet<File>();
+		this.attach = new LinkedHashSet<Attachment>();
 	}
 
-	public void addAttach(final File attach) {
+	public void addAttach(final Attachment attach) {
 		this.attach.add(attach);
 	}
 
-	public Collection<File> getAttach() {
+	public Collection<Attachment> getAttach() {
 		return this.attach;
 	}
 
-	public void setAttach(final Collection<File> attach) {
+	public void setAttach(final Collection<Attachment> attach) {
 		this.attach = attach;
 	}
 

@@ -16,18 +16,13 @@
  */
 package net.woodstock.rockframework.net.mail;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.Properties;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.FileDataSource;
+import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
-import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
-import javax.mail.Message.RecipientType;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
@@ -92,7 +87,7 @@ public class SimpleMailSender {
 
 	private void send(final SimpleMail message, final Session session) throws MessagingException {
 		MimeMessage mimeMessage = new MimeMessage(session);
-		Multipart body = new MimeMultipart();
+		MimeMultipart body = new MimeMultipart();
 
 		mimeMessage.setSubject(message.getSubject());
 		mimeMessage.setFrom(new InternetAddress(message.getFrom()));
@@ -135,12 +130,17 @@ public class SimpleMailSender {
 		}
 
 		if (message.getAttach().size() > 0) {
-			for (File f : message.getAttach()) {
+			for (Attachment a : message.getAttach()) {
 				MimeBodyPart part = new MimeBodyPart();
-				DataSource source = new FileDataSource(f);
-				part.setDataHandler(new DataHandler(source));
-				part.setFileName(f.getName());
+
+				part.setContent(a.getContentAsString(), a.getContentType());
+				part.setFileName(a.getName());
 				body.addBodyPart(part);
+
+				// DataSource source = a.getDataSource();
+				// part.setDataHandler(new DataHandler(source));
+				// part.setFileName(source.getName());
+				// body.addBodyPart(part);
 			}
 		}
 

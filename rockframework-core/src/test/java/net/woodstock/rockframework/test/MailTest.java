@@ -15,8 +15,8 @@ public class MailTest extends TestCase {
 
 		SimpleMailSender mailSender = new SimpleMailSender("10.209.64.105");
 		mailSender.setDebug(false);
-		mailSender.setUser("sissce");
-		mailSender.setPassword("s1@sce$5");
+		mailSender.setUser("xxxx");
+		mailSender.setPassword("xxxxx");
 
 		mailSender.send(mail);
 	}
