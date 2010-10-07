@@ -16,6 +16,9 @@
  */
 package net.woodstock.rockframework.web.jsf.utils;
 
+import java.util.ResourceBundle;
+
+import javax.faces.application.Application;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +34,13 @@ public abstract class FacesUtils {
 	// Faces
 	public static FacesContext getFacesContext() {
 		return FacesContext.getCurrentInstance();
+	}
+
+	public static ResourceBundle getResourceBundle(final String name) {
+		FacesContext context = FacesContext.getCurrentInstance();
+		Application application = context.getApplication();
+		ResourceBundle resource = application.getResourceBundle(context, name);
+		return resource;
 	}
 
 	// Http

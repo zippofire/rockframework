@@ -26,7 +26,7 @@ public class StringTest extends TestCase {
 		System.out.println(Base64Utils.toBase64("37893432349"));
 	}
 
-	public void xtest2() throws Exception {
+	public void test2() throws Exception {
 		System.out.println(StringUtils.random(10000));
 	}
 
@@ -43,9 +43,9 @@ public class StringTest extends TestCase {
 			System.out.println(c + " int: " + ((int) c) + " ascii: " + CharacterUtils.isASCII(c) + " iso-8859-1: " + CharacterUtils.isISO88591(c));
 		}
 	}
-	
-	public void test5() throws Exception {
-		//Assert.equals(null, null, "null");
+
+	public void xtest5() throws Exception {
+		// Assert.equals(null, null, "null");
 		Assert.equals("nulo", "nulo", "nulo");
 	}
 

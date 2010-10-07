@@ -16,33 +16,36 @@
  */
 package net.woodstock.rockframework.util;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
+public class CamelCaseTransform implements StringTransform {
 
-public final class DateFormatFactory extends LocaleableFormatFactory<DateFormat> {
+	private static final char	DEFAULT_SEPARATOR	= ' ';
 
-	private static DateFormatFactory	instance	= new DateFormatFactory();
+	private char				separator;
 
-	private DateFormatFactory() {
+	public CamelCaseTransform() {
+		this(CamelCaseTransform.DEFAULT_SEPARATOR);
+	}
+
+	public CamelCaseTransform(final char separator) {
 		super();
+		this.separator = separator;
 	}
 
 	@Override
-	public DateFormat getFormat(final String pattern, final Locale locale) {
-		Assert.notEmpty(pattern, "pattern");
-		Assert.notNull(locale, "locale");
-
-		if (this.containsOnCache(pattern, locale)) {
-			return this.getFromCache(pattern, locale);
+	public String transform(final String str) {
+		if (str == null) {
+			return null;
 		}
-		ImmutableDateFormat format = new ImmutableDateFormat(new SimpleDateFormat(pattern, locale));
-		this.addToCache(pattern, locale, format);
-		return format;
-	}
-
-	// Instance
-	public static DateFormatFactory getInstance() {
-		return instance;
+		StringBuilder builder = new StringBuilder();
+		String[] array = str.split(Character.toString(this.separator));
+		for (int i = 0; i < array.length; i++) {
+			if (i == 0) {
+				builder.append(Character.toLowerCase(array[i].charAt(0)));
+			} else {
+				builder.append(Character.toUpperCase(array[i].charAt(0)));
+			}
+			builder.append(array[i].substring(1));
+		}
+		return builder.toString();
 	}
 }

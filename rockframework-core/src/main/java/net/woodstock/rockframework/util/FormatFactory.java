@@ -16,19 +16,16 @@
  */
 package net.woodstock.rockframework.util;
 
-import java.util.Locale;
+import java.text.Format;
 
 import net.woodstock.rockframework.cache.Cache;
 import net.woodstock.rockframework.cache.CacheManager;
 import net.woodstock.rockframework.cache.impl.CacheManagerImpl;
-import net.woodstock.rockframework.utils.LocaleUtils;
 import net.woodstock.rockframework.utils.ObjectUtils;
 
-public abstract class FormatFactory<T> {
+public abstract class FormatFactory<T extends Format> {
 
-	private static final String	SEPARATOR	= "@";
-
-	private Cache				cache;
+	private Cache	cache;
 
 	public FormatFactory() {
 		super();
@@ -37,25 +34,18 @@ public abstract class FormatFactory<T> {
 		this.cache = cacheManager.create(id);
 	}
 
-	protected boolean containsOnCache(final String pattern, final Locale locale) {
-		String key = pattern + FormatFactory.SEPARATOR + locale;
-		return this.cache.contains(key);
+	protected boolean containsOnCache(final String pattern) {
+		return this.cache.contains(pattern);
 	}
 
 	@SuppressWarnings("unchecked")
-	protected T getFromCache(final String pattern, final Locale locale) {
-		String key = pattern + FormatFactory.SEPARATOR + locale;
-		return (T) this.cache.get(key);
+	protected T getFromCache(final String pattern) {
+		return (T) this.cache.get(pattern);
 	}
 
-	protected void addToCache(final String pattern, final Locale locale, final T format) {
-		String key = pattern + FormatFactory.SEPARATOR + locale;
-		this.cache.add(key, format);
+	protected void addToCache(final String pattern, final T format) {
+		this.cache.add(pattern, format);
 	}
 
-	public T getFormat(final String pattern) {
-		return this.getFormat(pattern, LocaleUtils.getLocale());
-	}
-
-	public abstract T getFormat(String pattern, Locale locale);
+	public abstract T getFormat(final String pattern);
 }

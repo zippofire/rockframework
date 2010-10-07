@@ -16,33 +16,21 @@
  */
 package net.woodstock.rockframework.util;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
+import java.text.Normalizer;
 
-public final class DateFormatFactory extends LocaleableFormatFactory<DateFormat> {
+public class NormalizerTransform implements StringTransform {
 
-	private static DateFormatFactory	instance	= new DateFormatFactory();
+	private static final String	ACCENT_PATTERN	= "[^\\p{ASCII}]";
 
-	private DateFormatFactory() {
+	public NormalizerTransform() {
 		super();
 	}
 
 	@Override
-	public DateFormat getFormat(final String pattern, final Locale locale) {
-		Assert.notEmpty(pattern, "pattern");
-		Assert.notNull(locale, "locale");
-
-		if (this.containsOnCache(pattern, locale)) {
-			return this.getFromCache(pattern, locale);
+	public String transform(final String src) {
+		if (src == null) {
+			return null;
 		}
-		ImmutableDateFormat format = new ImmutableDateFormat(new SimpleDateFormat(pattern, locale));
-		this.addToCache(pattern, locale, format);
-		return format;
-	}
-
-	// Instance
-	public static DateFormatFactory getInstance() {
-		return instance;
+		return Normalizer.normalize(src, Normalizer.Form.NFD).replaceAll(NormalizerTransform.ACCENT_PATTERN, "");
 	}
 }

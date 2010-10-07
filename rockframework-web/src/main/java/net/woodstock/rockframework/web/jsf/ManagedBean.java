@@ -17,7 +17,9 @@
 package net.woodstock.rockframework.web.jsf;
 
 import java.io.Serializable;
+import java.util.ResourceBundle;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -35,8 +37,21 @@ public abstract class ManagedBean implements Serializable {
 	}
 
 	// Faces
+	protected void addMessage(final String message) {
+		FacesContext context = FacesUtils.getFacesContext();
+		context.addMessage(null, new FacesMessage(message));
+	}
+
 	protected FacesContext getFacesContext() {
 		return FacesUtils.getFacesContext();
+	}
+
+	protected String getMessage(final String resource, final String key) {
+		ResourceBundle rb = FacesUtils.getResourceBundle(resource);
+		if (rb != null) {
+			return rb.getString(key);
+		}
+		return null;
 	}
 
 	// Http

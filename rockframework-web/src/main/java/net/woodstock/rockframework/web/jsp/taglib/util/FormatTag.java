@@ -19,6 +19,7 @@ package net.woodstock.rockframework.web.jsp.taglib.util;
 import java.io.IOException;
 import java.io.Writer;
 
+import net.woodstock.rockframework.util.StringFormat;
 import net.woodstock.rockframework.utils.StringUtils;
 import net.woodstock.rockframework.web.config.WebLog;
 import net.woodstock.rockframework.web.jsp.taglib.AbstractTag;
@@ -35,7 +36,7 @@ public class FormatTag extends AbstractTag {
 
 	public FormatTag() {
 		super();
-		this.character = Character.toString(StringUtils.DEFAULT_FORMAT_CHAR);
+		this.character = Character.toString(StringFormat.DEFAULT_CHARACTER);
 	}
 
 	@Override

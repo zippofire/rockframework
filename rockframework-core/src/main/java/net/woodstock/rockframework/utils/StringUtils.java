@@ -21,81 +21,28 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CharsetEncoder;
-import java.text.Normalizer;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.woodstock.rockframework.util.CamelCaseTransform;
+import net.woodstock.rockframework.util.CharsetTransform;
+import net.woodstock.rockframework.util.NormalizerTransform;
+import net.woodstock.rockframework.util.RandomGenerator;
+import net.woodstock.rockframework.util.StringFormat;
+
 public abstract class StringUtils {
-
-	public static final char	DEFAULT_FORMAT_CHAR	= '#';
-
-	private static final String	ACCENT_PATTERN		= "[^\\p{ASCII}]";
-
-	private static final String	LOWERCASE_LETTERS	= "abcdefghijklmnopkrstuvwxyz";
-
-	private static final String	DIGITS				= "0123456789";
-
-	private static final String	UPERCASE_LETTERS	= "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-	private static final String	LETTERS_DIGITS		= StringUtils.UPERCASE_LETTERS + StringUtils.LOWERCASE_LETTERS + StringUtils.DIGITS;
 
 	private StringUtils() {
 		//
 	}
 
 	public static String camelCase(final String s) {
-		if (s == null) {
-			return null;
-		}
-		if (StringUtils.isEmpty(s)) {
-			return s;
-		}
-		StringBuilder builder = new StringBuilder();
-		builder.append(Character.toLowerCase(s.charAt(0)));
-		builder.append(s.substring(1));
-		return builder.toString();
+		return new CamelCaseTransform().transform(s);
 	}
 
 	public static String camelCase(final String s, final char separator) {
-		if (s == null) {
-			return null;
-		}
-		if (StringUtils.isEmpty(s)) {
-			return s;
-		}
-		StringBuilder builder = new StringBuilder();
-		String[] array = s.split(Character.toString(separator));
-		for (int i = 0; i < array.length; i++) {
-			if (i == 0) {
-				builder.append(Character.toLowerCase(array[i].charAt(0)));
-			} else {
-				builder.append(Character.toUpperCase(array[i].charAt(0)));
-			}
-			builder.append(array[i].substring(1));
-		}
-		return builder.toString();
-	}
-
-	public static String camelCase(final String[] array) {
-		if (array == null) {
-			return null;
-		}
-		StringBuilder builder = new StringBuilder();
-		for (int i = 0; i < array.length; i++) {
-			if (i == 0) {
-				builder.append(Character.toLowerCase(array[i].charAt(0)));
-			} else {
-				builder.append(Character.toUpperCase(array[i].charAt(0)));
-			}
-			builder.append(array[i].substring(1));
-		}
-		return builder.toString();
+		return new CamelCaseTransform(separator).transform(s);
 	}
 
 	public static String capitalize(final String s) {
@@ -122,57 +69,22 @@ public abstract class StringUtils {
 		return b.toString();
 	}
 
-	public static String convertCharset(final Charset from, final String text) throws CharacterCodingException {
-		return StringUtils.convertCharset(from, Charset.defaultCharset(), text);
+	public static String convertCharset(final Charset from, final String text) {
+		return new CharsetTransform(from, LocaleUtils.getCharset()).transform(text);
 	}
 
-	public static String convertCharset(final Charset from, final Charset to, final String text) throws CharacterCodingException {
-		CharsetDecoder decoderFrom = from.newDecoder();
-		CharsetEncoder encoderTo = to.newEncoder();
-
-		CharBuffer charBufferFrom = decoderFrom.decode(ByteBuffer.wrap(text.getBytes(from)));
-		String tmp = charBufferFrom.toString();
-
-		StringBuilder builder = new StringBuilder();
-		for (int i = 0; i < tmp.length(); i++) {
-			char c = tmp.charAt(i);
-			if (encoderTo.canEncode(c)) {
-				builder.append(c);
-			}
-		}
-
-		return builder.toString();
+	public static String convertCharset(final Charset from, final Charset to, final String text) {
+		return new CharsetTransform(from, to).transform(text);
 	}
 
 	public static String format(final String format, final String value) {
-		return StringUtils.format(format, value, StringUtils.DEFAULT_FORMAT_CHAR);
+		StringFormat sf = new StringFormat(format);
+		return sf.format(value);
 	}
 
 	public static String format(final String format, final String value, final char c) {
-		if (StringUtils.isEmpty(format)) {
-			return null;
-		}
-
-		if (StringUtils.isEmpty(value)) {
-			return null;
-		}
-
-		int index = 0;
-
-		StringBuilder s = new StringBuilder();
-
-		char[] charsFormat = format.toCharArray();
-		char[] charsValue = value.toCharArray();
-
-		for (char element : charsFormat) {
-			if (element != c) {
-				s.append(element);
-			} else {
-				s.append(charsValue[index++]);
-			}
-		}
-
-		return s.toString();
+		StringFormat sf = new StringFormat(format, c);
+		return sf.format(value);
 	}
 
 	public static boolean hasOnlyDigit(final String s) {
@@ -231,17 +143,12 @@ public abstract class StringUtils {
 	}
 
 	public static String normalize(final String s) {
-		return Normalizer.normalize(s, Normalizer.Form.NFD).replaceAll(StringUtils.ACCENT_PATTERN, "");
+		return new NormalizerTransform().transform(s);
 	}
 
 	public static String random(final int size) {
-		StringBuilder builder = new StringBuilder();
-		int max = StringUtils.LETTERS_DIGITS.length();
-		for (int i = 0; i < size; i++) {
-			int index = NumberUtils.random(max);
-			builder.append(StringUtils.LETTERS_DIGITS.charAt(index));
-		}
-		return builder.toString();
+		RandomGenerator randomString = new RandomGenerator(size);
+		return randomString.generate();
 	}
 
 	public static String replace(final InputStream input, final Map<String, String> replaces) throws IOException {
@@ -285,29 +192,12 @@ public abstract class StringUtils {
 	}
 
 	public static String unformat(final String format, final String value) {
-		return StringUtils.unformat(format, value, StringUtils.DEFAULT_FORMAT_CHAR);
+		StringFormat sf = new StringFormat(format);
+		return sf.parse(value);
 	}
 
 	public static String unformat(final String format, final String value, final char c) {
-		if (StringUtils.isEmpty(format)) {
-			return null;
-		}
-
-		if (StringUtils.isEmpty(value)) {
-			return null;
-		}
-
-		StringBuilder s = new StringBuilder();
-
-		char[] charsFormat = format.toCharArray();
-		char[] charsValue = value.toCharArray();
-
-		for (int i = 0; i < charsFormat.length; i++) {
-			if (charsFormat[i] == c) {
-				s.append(charsValue[i]);
-			}
-		}
-
-		return s.toString();
+		StringFormat sf = new StringFormat(format, c);
+		return sf.parse(value);
 	}
 }

@@ -16,33 +16,18 @@
  */
 package net.woodstock.rockframework.util;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
+import java.text.ParsePosition;
 
-public final class DateFormatFactory extends LocaleableFormatFactory<DateFormat> {
+public final class DontCareParsePosition extends ParsePosition {
 
-	private static DateFormatFactory	instance	= new DateFormatFactory();
+	private static DontCareParsePosition	instance	= new DontCareParsePosition();
 
-	private DateFormatFactory() {
-		super();
+	private DontCareParsePosition() {
+		super(0);
 	}
 
-	@Override
-	public DateFormat getFormat(final String pattern, final Locale locale) {
-		Assert.notEmpty(pattern, "pattern");
-		Assert.notNull(locale, "locale");
-
-		if (this.containsOnCache(pattern, locale)) {
-			return this.getFromCache(pattern, locale);
-		}
-		ImmutableDateFormat format = new ImmutableDateFormat(new SimpleDateFormat(pattern, locale));
-		this.addToCache(pattern, locale, format);
-		return format;
-	}
-
-	// Instance
-	public static DateFormatFactory getInstance() {
+	public static ParsePosition getInstance() {
 		return instance;
 	}
+
 }

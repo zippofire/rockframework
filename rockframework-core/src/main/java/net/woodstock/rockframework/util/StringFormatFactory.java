@@ -16,35 +16,28 @@
  */
 package net.woodstock.rockframework.util;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
-import java.util.Locale;
+public final class StringFormatFactory extends FormatFactory<StringFormat> {
 
-public final class NumberFormatFactory extends LocaleableFormatFactory<NumberFormat> {
+	private static StringFormatFactory	instance	= new StringFormatFactory();
 
-	private static NumberFormatFactory	instance	= new NumberFormatFactory();
-
-	private NumberFormatFactory() {
+	private StringFormatFactory() {
 		super();
 	}
 
 	@Override
-	public NumberFormat getFormat(final String pattern, final Locale locale) {
+	public StringFormat getFormat(final String pattern) {
 		Assert.notEmpty(pattern, "pattern");
-		Assert.notNull(locale, "locale");
 
-		if (this.containsOnCache(pattern, locale)) {
-			return this.getFromCache(pattern, locale);
+		if (this.containsOnCache(pattern)) {
+			return this.getFromCache(pattern);
 		}
-
-		ImmutableNumberFormat format = new ImmutableNumberFormat(new DecimalFormat(pattern, new DecimalFormatSymbols(locale)));
-		this.addToCache(pattern, locale, format);
+		StringFormat format = new StringFormat(pattern);
+		this.addToCache(pattern, format);
 		return format;
 	}
 
 	// Instance
-	public static NumberFormatFactory getInstance() {
+	public static StringFormatFactory getInstance() {
 		return instance;
 	}
 }
