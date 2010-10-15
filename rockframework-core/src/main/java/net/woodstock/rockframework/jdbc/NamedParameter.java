@@ -16,6 +16,9 @@
  */
 package net.woodstock.rockframework.jdbc;
 
+import net.woodstock.rockframework.util.Assert;
+import net.woodstock.rockframework.utils.ObjectUtils;
+
 public class NamedParameter extends Parameter {
 
 	private static final long	serialVersionUID	= -1160839266198779724L;
@@ -24,6 +27,7 @@ public class NamedParameter extends Parameter {
 
 	public NamedParameter(final String name, final Object value, final Type type) {
 		super(value, type);
+		Assert.notEmpty(name, "name");
 		this.name = name;
 	}
 
@@ -42,12 +46,6 @@ public class NamedParameter extends Parameter {
 			if (!this.getName().equals(other.getName())) {
 				return false;
 			}
-			if (!this.getValue().equals(other.getValue())) {
-				return false;
-			}
-			if (this.getType() != other.getType()) {
-				return false;
-			}
 			return true;
 		}
 		return false;
@@ -55,7 +53,8 @@ public class NamedParameter extends Parameter {
 
 	@Override
 	public int hashCode() {
-		return this.name.hashCode();
+		int hash = ObjectUtils.HASH_PRIME * super.hashCode() + this.name.hashCode();
+		return hash;
 	}
 
 	@Override

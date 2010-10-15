@@ -17,19 +17,52 @@
 package net.woodstock.rockframework.domain.persistence.util;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 
-public abstract class JPAUtil {
+public class UntransactionalEntityManager extends DelegateEntityManager {
 
-	private JPAUtil() {
-		//
+	public UntransactionalEntityManager(final EntityManager entityManager) {
+		super(entityManager);
 	}
 
-	public static EntityManager getEntityManager() {
-		return JPAPersistenceHelper.getInstance().get();
+	@Override
+	public EntityTransaction getTransaction() {
+		// throw new UnsupportedOperationException();
+		return new EmptyEntityTransaction();
 	}
 
-	public static void closeEntityManager() {
-		JPAPersistenceHelper.getInstance().close();
+	public static class EmptyEntityTransaction implements EntityTransaction {
+
+		@Override
+		public void begin() {
+			//
+		}
+
+		@Override
+		public void commit() {
+			//
+		}
+
+		@Override
+		public void rollback() {
+			//
+		}
+
+		@Override
+		public boolean isActive() {
+			return false;
+		}
+
+		@Override
+		public void setRollbackOnly() {
+			//
+		}
+
+		@Override
+		public boolean getRollbackOnly() {
+			return false;
+		}
+
 	}
 
 }

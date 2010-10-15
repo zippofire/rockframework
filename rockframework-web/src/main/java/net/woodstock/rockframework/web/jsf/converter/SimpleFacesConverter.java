@@ -25,7 +25,7 @@ import net.woodstock.rockframework.web.config.WebLog;
 public abstract class SimpleFacesConverter<T> extends FacesConverter {
 
 	@Override
-	public final Object getAsObject(final FacesContext context, final UIComponent component, final String value) {
+	public final T getAsObject(final FacesContext context, final UIComponent component, final String value) {
 		if (StringUtils.isEmpty(value)) {
 			return null;
 		}

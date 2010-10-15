@@ -14,23 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.test;
+package net.woodstock.rockframework.domain.persistence.util;
 
-import junit.framework.TestCase;
-import net.woodstock.rockframework.util.Calendar;
-import net.woodstock.rockframework.utils.DateUtils;
+public interface PersistenceHelper<T> {
 
-public class CalendarTest extends TestCase {
+	T get();
 
-	public void test1() throws Exception {
-		Calendar calendar = Calendar.getInstance();
-		System.out.println(DateUtils.format(calendar.getTime(), "dd/MM/yyy hh:mm:ss"));
-
-		calendar.addMinutes(90);
-		System.out.println(DateUtils.format(calendar.getTime(), "dd/MM/yyy hh:mm:ss"));
-
-		calendar.removeMinutes(115);
-		System.out.println(DateUtils.format(calendar.getTime(), "dd/MM/yyy hh:mm:ss"));
-	}
+	void close();
 
 }

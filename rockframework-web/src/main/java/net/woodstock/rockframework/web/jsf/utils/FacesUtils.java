@@ -37,9 +37,9 @@ public abstract class FacesUtils {
 	}
 
 	public static ResourceBundle getResourceBundle(final String name) {
-		FacesContext context = FacesContext.getCurrentInstance();
-		Application application = context.getApplication();
-		ResourceBundle resource = application.getResourceBundle(context, name);
+		FacesContext fc = FacesUtils.getFacesContext();
+		Application application = fc.getApplication();
+		ResourceBundle resource = application.getResourceBundle(fc, name);
 		return resource;
 	}
 

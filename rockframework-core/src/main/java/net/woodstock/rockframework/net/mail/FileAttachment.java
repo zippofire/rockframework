@@ -29,13 +29,22 @@ public class FileAttachment extends AttachmentBean {
 		super();
 		Assert.notNull(file, "file");
 
-		FileInputStream inputStream = new FileInputStream(file);
-		byte[] bytes = new byte[inputStream.available()];
-		inputStream.read(bytes);
+		FileInputStream inputStream = null;
+		try {
+			inputStream = new FileInputStream(file);
+			byte[] bytes = new byte[inputStream.available()];
+			inputStream.read(bytes);
 
-		this.setName(file.getName());
-		this.setContentType(FileUtils.getType(file));
-		this.setContentAsString(new String(bytes));
+			this.setName(file.getName());
+			this.setContentType(FileUtils.getType(file));
+			this.setContentAsString(new String(bytes));
+		} catch (IOException e) {
+			throw e;
+		} finally {
+			if (inputStream != null) {
+				inputStream.close();
+			}
+		}
 	}
 
 }

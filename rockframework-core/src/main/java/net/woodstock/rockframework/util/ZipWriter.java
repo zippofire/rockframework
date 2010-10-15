@@ -102,7 +102,6 @@ public class ZipWriter {
 				String name = (parent != null ? parent.getName() + ZipWriter.SEPARATOR : "") + dir.getName() + ZipWriter.SEPARATOR;
 				ZipEntry entry = new ZipEntry(name);
 				out.putNextEntry(entry);
-				out.closeEntry();
 				ZipWriter.addDir(out, dir, f);
 			} else if (f.isFile()) {
 				ZipWriter.addFile(out, dir, f);

@@ -18,6 +18,9 @@ package net.woodstock.rockframework.jdbc;
 
 import java.io.Serializable;
 
+import net.woodstock.rockframework.util.Assert;
+import net.woodstock.rockframework.utils.ObjectUtils;
+
 public class Parameter implements Serializable {
 
 	private static final long	serialVersionUID	= -1779134234723910581L;
@@ -27,6 +30,8 @@ public class Parameter implements Serializable {
 	private Type				type;
 
 	public Parameter(final Object value, final Type type) {
+		super();
+		Assert.notEmpty(type, "type");
 		this.value = value;
 		this.type = type;
 	}
@@ -43,14 +48,32 @@ public class Parameter implements Serializable {
 	public boolean equals(final Object obj) {
 		if (obj instanceof Parameter) {
 			Parameter other = (Parameter) obj;
-			return (this.type.equals(other.getType()) && this.value.equals(other.getValue()));
+			if (!this.type.equals(other.getType())) {
+				return false;
+			}
+			if ((this.value != null) && (other.getValue() == null)) {
+				return false;
+			}
+			if ((this.value == null) && (other.getValue() != null)) {
+				return false;
+			}
+			if (!this.value.equals(other.getValue())) {
+				return false;
+			}
+			return true;
 		}
 		return false;
 	}
 
 	@Override
 	public int hashCode() {
-		return this.type.hashCode();
+		int hash = this.type.hashCode();
+		if (this.value != null) {
+			hash = ObjectUtils.HASH_PRIME * hash + this.value.hashCode();
+		} else {
+			hash = ObjectUtils.HASH_PRIME * hash;
+		}
+		return hash;
 	}
 
 	@Override

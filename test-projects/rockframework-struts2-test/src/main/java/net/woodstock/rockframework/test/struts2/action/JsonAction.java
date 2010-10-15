@@ -6,7 +6,7 @@ import java.util.Collection;
 import net.woodstock.rockframework.test.struts2.entity.Bar;
 import net.woodstock.rockframework.test.struts2.entity.Baz;
 import net.woodstock.rockframework.test.struts2.entity.Foo;
-import net.woodstock.rockframework.util.Date;
+import net.woodstock.rockframework.util.DateBuilder;
 import net.woodstock.rockframework.web.struts2.Action;
 
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -31,9 +31,9 @@ public class JsonAction extends Action {
 			foo.setId(new Integer(f));
 			foo.setName("Foo " + f);
 
-			Date date = new Date();
-			date.addDays(f);
-			foo.setDate(date);
+			DateBuilder dateBuilder = new DateBuilder();
+			dateBuilder.addDays(f);
+			foo.setDate(dateBuilder.getDate());
 
 			foo.setBars(new ArrayList<Bar>());
 			for (int b = 0; b < 100; b++) {

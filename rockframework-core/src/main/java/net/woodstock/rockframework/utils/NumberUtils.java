@@ -35,6 +35,8 @@ public abstract class NumberUtils {
 
 	private static final String	INTEGER_FORMAT_PATTERN	= CoreConfig.getInstance().getValue(NumberUtils.INTEGER_FORMAT_PROPERTY);
 
+	private static final Random	RANDOM					= new Random();
+
 	public static String format(final BigDecimal value) {
 		if (value == null) {
 			return null;
@@ -147,11 +149,11 @@ public abstract class NumberUtils {
 
 	// Random
 	public static int random() {
-		return new Random().nextInt();
+		return NumberUtils.RANDOM.nextInt();
 	}
 
 	public static int random(final int max) {
-		return new Random().nextInt(max);
+		return NumberUtils.RANDOM.nextInt(max);
 	}
 
 	public static double root(final double value, final double root) {

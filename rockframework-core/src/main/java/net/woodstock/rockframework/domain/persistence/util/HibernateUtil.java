@@ -16,66 +16,20 @@
  */
 package net.woodstock.rockframework.domain.persistence.util;
 
-import net.woodstock.rockframework.config.CoreConfig;
-import net.woodstock.rockframework.config.CoreLog;
-import net.woodstock.rockframework.utils.StringUtils;
-
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.AnnotationConfiguration;
-import org.hibernate.cfg.Configuration;
 
 public abstract class HibernateUtil {
-
-	private static final String			HIBERNATE_ANNOTATION_PROPERTY	= "hibernate.annotation";
-
-	private static ThreadLocal<Session>	session							= new ThreadLocal<Session>();
-
-	private static boolean				annotation;
-
-	private static SessionFactory		factory;
 
 	private HibernateUtil() {
 		//
 	}
 
 	public static Session getSession() {
-		if (HibernateUtil.factory == null) {
-			synchronized (HibernateUtil.class) {
-				String s = CoreConfig.getInstance().getValue(HibernateUtil.HIBERNATE_ANNOTATION_PROPERTY);
-				if (!StringUtils.isEmpty(s)) {
-					HibernateUtil.annotation = Boolean.parseBoolean(s);
-				} else {
-					HibernateUtil.annotation = true;
-				}
-				if (HibernateUtil.annotation) {
-					HibernateUtil.factory = new AnnotationConfiguration().configure().buildSessionFactory();
-				} else {
-					HibernateUtil.factory = new Configuration().configure().buildSessionFactory();
-				}
-			}
-		}
-		Session s = HibernateUtil.session.get();
-		if (s == null) {
-			s = HibernateUtil.factory.openSession();
-			HibernateUtil.session.set(s);
-		}
-		return s;
+		return HibernatePersistenceHelper.getInstance().get();
 	}
 
 	public static void closeSession() {
-		Session s = HibernateUtil.session.get();
-		if (s != null) {
-			Transaction t = s.getTransaction();
-			if (t.isActive()) {
-				CoreLog.getInstance().getLog().warn("Session contains an active transaction, commiting transaction");
-				t.commit();
-			}
-			s.flush();
-			s.close();
-			HibernateUtil.session.set(null);
-		}
+		HibernatePersistenceHelper.getInstance().close();
 	}
 
 }
