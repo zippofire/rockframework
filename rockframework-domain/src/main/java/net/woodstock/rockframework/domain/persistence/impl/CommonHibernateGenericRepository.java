@@ -20,8 +20,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.woodstock.rockframework.config.CoreConfig;
 import net.woodstock.rockframework.domain.Entity;
+import net.woodstock.rockframework.domain.config.DomainConfig;
 import net.woodstock.rockframework.domain.persistence.GenericRepository;
 import net.woodstock.rockframework.domain.persistence.query.CacheMode;
 import net.woodstock.rockframework.domain.persistence.query.impl.HibernateQueryBuilder;
@@ -38,7 +38,7 @@ class CommonHibernateGenericRepository implements GenericRepository {
 
 	private static final String		PROPERTY_GET_TYPE		= "hibernate.getType";
 
-	private static final GetType	GET_TYPE				= GetType.valueOf(CoreConfig.getInstance().getValue(CommonHibernateGenericRepository.PROPERTY_GET_TYPE));
+	private static final GetType	GET_TYPE				= GetType.valueOf(DomainConfig.getInstance().getValue(CommonHibernateGenericRepository.PROPERTY_GET_TYPE));
 
 	private static final String		MSG_ERROR_TWO_SESSION	= "Illegal attempt to associate a collection with two open sessions";
 

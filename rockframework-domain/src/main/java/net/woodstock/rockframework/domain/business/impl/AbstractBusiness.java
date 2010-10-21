@@ -16,10 +16,10 @@
  */
 package net.woodstock.rockframework.domain.business.impl;
 
-import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.GenericBusiness;
 import net.woodstock.rockframework.domain.business.ValidationResult;
+import net.woodstock.rockframework.domain.config.DomainMessage;
 
 @SuppressWarnings("rawtypes")
 abstract class AbstractBusiness implements GenericBusiness {
@@ -53,13 +53,13 @@ abstract class AbstractBusiness implements GenericBusiness {
 	@Override
 	public ValidationResult validateGet(final Entity entity) {
 		boolean error = false;
-		String message = CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_OK);
+		String message = DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_OK);
 		if (entity == null) {
 			error = true;
-			message = CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_INVALID_OBJECT, AbstractBusiness.NULL_OBJECT_MESSAGE);
+			message = DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_INVALID_OBJECT, AbstractBusiness.NULL_OBJECT_MESSAGE);
 		} else if (entity.getId() == null) {
 			error = true;
-			message = CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_INVALID_ID, AbstractBusiness.NULL_OBJECT_MESSAGE);
+			message = DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_INVALID_ID, AbstractBusiness.NULL_OBJECT_MESSAGE);
 		}
 		return new ValidationResult(error, message);
 	}
@@ -72,10 +72,10 @@ abstract class AbstractBusiness implements GenericBusiness {
 	@Override
 	public ValidationResult validateList(final Entity entity) {
 		boolean error = false;
-		String message = CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_OK);
+		String message = DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_OK);
 		if (entity == null) {
 			error = true;
-			message = CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_INVALID_OBJECT, AbstractBusiness.NULL_OBJECT_MESSAGE);
+			message = DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_INVALID_OBJECT, AbstractBusiness.NULL_OBJECT_MESSAGE);
 		}
 		return new ValidationResult(error, message);
 	}

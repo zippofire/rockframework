@@ -21,8 +21,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
-import net.woodstock.rockframework.config.CoreConfig;
-import net.woodstock.rockframework.config.CoreLog;
+import net.woodstock.rockframework.domain.config.DomainConfig;
+import net.woodstock.rockframework.domain.config.DomainLog;
 
 public final class JPAPersistenceHelper implements PersistenceHelper<EntityManager> {
 
@@ -36,7 +36,7 @@ public final class JPAPersistenceHelper implements PersistenceHelper<EntityManag
 
 	private JPAPersistenceHelper() {
 		super();
-		String s = CoreConfig.getInstance().getValue(JPAPersistenceHelper.JPA_PERSISTENCE_UNIT_PROPERTY);
+		String s = DomainConfig.getInstance().getValue(JPAPersistenceHelper.JPA_PERSISTENCE_UNIT_PROPERTY);
 		this.factory = Persistence.createEntityManagerFactory(s);
 	}
 
@@ -46,7 +46,7 @@ public final class JPAPersistenceHelper implements PersistenceHelper<EntityManag
 		if (m != null) {
 			EntityTransaction t = m.getTransaction();
 			if (t.isActive()) {
-				CoreLog.getInstance().getLog().warn("EntityManager contains an active transaction, commiting transaction");
+				DomainLog.getInstance().getLog().warn("EntityManager contains an active transaction, commiting transaction");
 				t.commit();
 			}
 			m.flush();

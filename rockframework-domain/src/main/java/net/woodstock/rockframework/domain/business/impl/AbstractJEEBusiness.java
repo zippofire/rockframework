@@ -23,9 +23,9 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.ValidationResult;
+import net.woodstock.rockframework.domain.config.DomainMessage;
 
 @SuppressWarnings("rawtypes")
 public abstract class AbstractJEEBusiness extends AbstractBusiness {
@@ -48,7 +48,7 @@ public abstract class AbstractJEEBusiness extends AbstractBusiness {
 			String message = violation.getMessage();
 			return new ValidationResult(true, field + " " + message);
 		}
-		return new ValidationResult(false, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_OK));
+		return new ValidationResult(false, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_OK));
 	}
 
 	// CRUD

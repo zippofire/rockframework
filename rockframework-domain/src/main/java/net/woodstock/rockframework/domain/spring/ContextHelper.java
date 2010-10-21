@@ -19,10 +19,10 @@ package net.woodstock.rockframework.domain.spring;
 import java.util.Collection;
 import java.util.Map;
 
-import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.domain.ConfigurationNotFoundException;
 import net.woodstock.rockframework.domain.ObjectNotFoundException;
 import net.woodstock.rockframework.domain.TooManyObjectsException;
+import net.woodstock.rockframework.domain.config.DomainLog;
 import net.woodstock.rockframework.util.Assert;
 
 import org.springframework.context.ApplicationContext;
@@ -52,7 +52,7 @@ public final class ContextHelper {
 			Class.forName(ContextHelper.WEB_CONTEXT_LOADER_CLASS);
 			return WebContextHelper.isWebApplication();
 		} catch (ClassNotFoundException e) {
-			CoreLog.getInstance().getLog().info(e.getMessage(), e);
+			DomainLog.getInstance().getLog().info(e.getMessage(), e);
 			return false;
 		}
 	}

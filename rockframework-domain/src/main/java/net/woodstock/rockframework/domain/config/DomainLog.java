@@ -14,27 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.ejb.jms;
+package net.woodstock.rockframework.domain.config;
 
-import javax.jms.JMSException;
-import javax.jms.Message;
+import net.woodstock.rockframework.config.AbstractLog;
 
-import net.woodstock.rockframework.domain.config.DomainLog;
+public final class DomainLog extends AbstractLog {
 
-public abstract class GenericMessageListener<T extends Message> extends AbstractMessageListener {
+	private static final String	LOG_NAME	= "net.woodstock.rockframework.domain";
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public final void onMessage(final Message message) {
-		try {
-			T sm = (T) message;
-			this.onLocalMessage(sm);
-		} catch (Exception e) {
-			DomainLog.getInstance().getLog().warn(e.getMessage(), e);
-			this.getContext().setRollbackOnly();
-		}
+	private static DomainLog		instance	= new DomainLog();
+
+	private DomainLog() {
+		super(DomainLog.LOG_NAME);
 	}
 
-	protected abstract void onLocalMessage(T message) throws JMSException;
-
+	public static DomainLog getInstance() {
+		return DomainLog.instance;
+	}
 }

@@ -19,7 +19,7 @@ package net.woodstock.rockframework.domain.persistence.query.impl;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import net.woodstock.rockframework.config.CoreLog;
+import net.woodstock.rockframework.domain.config.DomainLog;
 import net.woodstock.rockframework.domain.persistence.util.Constants;
 
 public class JPAQueryBuilder extends EJBQLQueryBuilder<Query> {
@@ -49,21 +49,21 @@ public class JPAQueryBuilder extends EJBQLQueryBuilder<Query> {
 				Integer firstResult = (Integer) value;
 				query.setFirstResult(firstResult.intValue());
 			} else if (value != null) {
-				CoreLog.getInstance().getLog().warn("Illegal option type[" + name + "] => " + value.getClass().getCanonicalName() + ", must be " + Integer.class.getCanonicalName());
+				DomainLog.getInstance().getLog().warn("Illegal option type[" + name + "] => " + value.getClass().getCanonicalName() + ", must be " + Integer.class.getCanonicalName());
 			} else {
-				CoreLog.getInstance().getLog().warn("Illegal option value[" + name + "] => null");
+				DomainLog.getInstance().getLog().warn("Illegal option value[" + name + "] => null");
 			}
 		} else if (name.equals(Constants.OPTION_MAX_RESULT)) {
 			if (value instanceof Integer) {
 				Integer maxResult = (Integer) value;
 				query.setMaxResults(maxResult.intValue());
 			} else if (value != null) {
-				CoreLog.getInstance().getLog().warn("Illegal option type[" + name + "] => " + value.getClass().getCanonicalName() + ", must be " + Integer.class.getCanonicalName());
+				DomainLog.getInstance().getLog().warn("Illegal option type[" + name + "] => " + value.getClass().getCanonicalName() + ", must be " + Integer.class.getCanonicalName());
 			} else {
-				CoreLog.getInstance().getLog().warn("Illegal option value[" + name + "] => null");
+				DomainLog.getInstance().getLog().warn("Illegal option value[" + name + "] => null");
 			}
 		} else {
-			CoreLog.getInstance().getLog().warn("Illegal option[" + name + "] => " + value);
+			DomainLog.getInstance().getLog().warn("Illegal option[" + name + "] => " + value);
 		}
 	}
 

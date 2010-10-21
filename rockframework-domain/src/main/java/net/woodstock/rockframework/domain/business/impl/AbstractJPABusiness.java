@@ -26,10 +26,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.ValidationException;
 import net.woodstock.rockframework.domain.business.ValidationResult;
+import net.woodstock.rockframework.domain.config.DomainMessage;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilderImpl;
@@ -54,7 +54,7 @@ public abstract class AbstractJPABusiness extends AbstractBusiness {
 
 	private ValidationResult validateSaveOrUpdate(final Entity entity, final boolean save) {
 		if (entity == null) {
-			throw new ValidationException(CoreMessage.getInstance().getMessage(""));
+			throw new ValidationException(DomainMessage.getInstance().getMessage(""));
 		}
 
 		BeanDescriptor beanDescriptor = new BeanDescriptorBuilderImpl().setType(entity.getClass()).getBeanDescriptor();
@@ -93,7 +93,7 @@ public abstract class AbstractJPABusiness extends AbstractBusiness {
 				}
 			}
 		}
-		return new ValidationResult(false, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_OK));
+		return new ValidationResult(false, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_OK));
 	}
 
 	private ValidationResult validateId(final Entity entity, final PropertyDescriptor propertyDescriptor, final boolean save) {
@@ -105,15 +105,15 @@ public abstract class AbstractJPABusiness extends AbstractBusiness {
 				if (propertyDescriptor.isAnnotationPresent(GeneratedValue.class)) {
 					return null;
 				}
-				return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NOT_NULL, name));
+				return new ValidationResult(true, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NOT_NULL, name));
 			}
 
 			if (propertyDescriptor.isAnnotationPresent(GeneratedValue.class)) {
-				return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NULL, name));
+				return new ValidationResult(true, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NULL, name));
 			}
 		} else {
 			if (value == null) {
-				return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NOT_NULL, name));
+				return new ValidationResult(true, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NOT_NULL, name));
 			}
 		}
 		return null;
@@ -127,13 +127,13 @@ public abstract class AbstractJPABusiness extends AbstractBusiness {
 			if (column.nullable()) {
 				return null;
 			}
-			return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NOT_NULL, name));
+			return new ValidationResult(true, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NOT_NULL, name));
 		}
 
 		if (value instanceof String) {
 			int length = ((String) value).length();
 			if (length > column.length()) {
-				return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_LENGTH, name, Integer.valueOf(0), Integer.valueOf(column.length())));
+				return new ValidationResult(true, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_LENGTH, name, Integer.valueOf(0), Integer.valueOf(column.length())));
 			}
 		}
 		return null;
@@ -151,17 +151,17 @@ public abstract class AbstractJPABusiness extends AbstractBusiness {
 			if (manyToOne.optional()) {
 				return null;
 			}
-			return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NOT_NULL, name));
+			return new ValidationResult(true, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NOT_NULL, name));
 		}
 
 		if (!(value instanceof Entity)) {
-			return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_INVALID_TYPE, name));
+			return new ValidationResult(true, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_INVALID_TYPE, name));
 		}
 
 		Entity<?> e = (Entity<?>) value;
 
 		if ((e.getId() == null) && (!manyToOne.optional())) {
-			return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NOT_EMPTY, name));
+			return new ValidationResult(true, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NOT_EMPTY, name));
 		}
 
 		return null;
@@ -175,17 +175,17 @@ public abstract class AbstractJPABusiness extends AbstractBusiness {
 			if (oneToOne.optional()) {
 				return null;
 			}
-			return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NOT_NULL, name));
+			return new ValidationResult(true, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NOT_NULL, name));
 		}
 
 		if (!(value instanceof Entity)) {
-			return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_INVALID_TYPE, name));
+			return new ValidationResult(true, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_INVALID_TYPE, name));
 		}
 
 		Entity<?> e = (Entity<?>) value;
 
 		if ((e.getId() == null) && (!oneToOne.optional())) {
-			return new ValidationResult(true, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NOT_EMPTY, name));
+			return new ValidationResult(true, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NOT_EMPTY, name));
 		}
 
 		return null;

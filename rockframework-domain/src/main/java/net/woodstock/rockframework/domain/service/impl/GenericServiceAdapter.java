@@ -19,8 +19,8 @@ package net.woodstock.rockframework.domain.service.impl;
 import java.util.Collection;
 import java.util.Map;
 
-import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.domain.Entity;
+import net.woodstock.rockframework.domain.config.DomainLog;
 import net.woodstock.rockframework.domain.service.GenericService;
 
 public class GenericServiceAdapter extends AbstractService implements GenericService {
@@ -31,34 +31,34 @@ public class GenericServiceAdapter extends AbstractService implements GenericSer
 
 	@Override
 	public void save(final Entity<?> e) {
-		CoreLog.getInstance().getLog().info("Save: " + e.getClass());
+		DomainLog.getInstance().getLog().info("Save: " + e.getClass());
 	}
 
 	@Override
 	public <E extends Entity<?>> E get(final E e) {
-		CoreLog.getInstance().getLog().info("Retrieve: " + e);
+		DomainLog.getInstance().getLog().info("Retrieve: " + e);
 		return null;
 	}
 
 	@Override
 	public void update(final Entity<?> e) {
-		CoreLog.getInstance().getLog().info("Update: " + e.getClass());
+		DomainLog.getInstance().getLog().info("Update: " + e.getClass());
 	}
 
 	@Override
 	public void delete(final Entity<?> e) {
-		CoreLog.getInstance().getLog().info("Delete: " + e.getClass());
+		DomainLog.getInstance().getLog().info("Delete: " + e.getClass());
 	}
 
 	@Override
 	public <E extends Entity<?>> Collection<E> listAll(final E e, final Map<String, Object> options) {
-		CoreLog.getInstance().getLog().info("Query: " + e + " Options: " + options);
+		DomainLog.getInstance().getLog().info("Query: " + e + " Options: " + options);
 		return null;
 	}
 
 	@Override
 	public <E extends Entity<?>> Collection<E> listByExample(final E e, final Map<String, Object> options) {
-		CoreLog.getInstance().getLog().info("Query: " + e + " Options: " + options);
+		DomainLog.getInstance().getLog().info("Query: " + e + " Options: " + options);
 		return null;
 	}
 

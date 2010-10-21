@@ -16,8 +16,8 @@
  */
 package net.woodstock.rockframework.domain.persistence.util;
 
-import net.woodstock.rockframework.config.CoreConfig;
-import net.woodstock.rockframework.config.CoreLog;
+import net.woodstock.rockframework.domain.config.DomainConfig;
+import net.woodstock.rockframework.domain.config.DomainLog;
 import net.woodstock.rockframework.utils.StringUtils;
 
 import org.hibernate.Session;
@@ -40,7 +40,7 @@ public final class HibernatePersistenceHelper implements PersistenceHelper<Sessi
 
 	private HibernatePersistenceHelper() {
 		super();
-		String s = CoreConfig.getInstance().getValue(HibernatePersistenceHelper.HIBERNATE_ANNOTATION_PROPERTY);
+		String s = DomainConfig.getInstance().getValue(HibernatePersistenceHelper.HIBERNATE_ANNOTATION_PROPERTY);
 		if (!StringUtils.isEmpty(s)) {
 			this.annotation = Boolean.parseBoolean(s);
 		} else {
@@ -59,7 +59,7 @@ public final class HibernatePersistenceHelper implements PersistenceHelper<Sessi
 		if (s != null) {
 			Transaction t = s.getTransaction();
 			if (t.isActive()) {
-				CoreLog.getInstance().getLog().warn("Session contains an active transaction, commiting transaction");
+				DomainLog.getInstance().getLog().warn("Session contains an active transaction, commiting transaction");
 				t.commit();
 			}
 			s.flush();

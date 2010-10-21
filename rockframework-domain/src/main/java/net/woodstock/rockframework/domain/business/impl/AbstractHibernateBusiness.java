@@ -16,9 +16,9 @@
  */
 package net.woodstock.rockframework.domain.business.impl;
 
-import net.woodstock.rockframework.config.CoreMessage;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.ValidationResult;
+import net.woodstock.rockframework.domain.config.DomainMessage;
 
 import org.hibernate.validator.ClassValidator;
 import org.hibernate.validator.InvalidValue;
@@ -39,7 +39,7 @@ public abstract class AbstractHibernateBusiness extends AbstractBusiness {
 				return new ValidationResult(true, message);
 			}
 		}
-		return new ValidationResult(false, CoreMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_OK));
+		return new ValidationResult(false, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_OK));
 	}
 
 	// CRUD

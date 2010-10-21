@@ -16,7 +16,7 @@
  */
 package net.woodstock.rockframework.domain.spring;
 
-import net.woodstock.rockframework.config.CoreLog;
+import net.woodstock.rockframework.domain.config.DomainLog;
 
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.config.Scope;
@@ -25,24 +25,24 @@ public class AbstractScope implements Scope {
 
 	@Override
 	public Object get(final String name, final ObjectFactory objectFactory) {
-		CoreLog.getInstance().getLog().warn("This method must be overrided");
+		DomainLog.getInstance().getLog().warn("This method must be overrided");
 		return null;
 	}
 
 	@Override
 	public String getConversationId() {
-		CoreLog.getInstance().getLog().warn("This method must be overrided");
+		DomainLog.getInstance().getLog().warn("This method must be overrided");
 		return null;
 	}
 
 	@Override
 	public void registerDestructionCallback(final String name, final Runnable callback) {
-		CoreLog.getInstance().getLog().warn("This method must be overrided");
+		DomainLog.getInstance().getLog().warn("This method must be overrided");
 	}
 
 	@Override
 	public Object remove(final String name) {
-		CoreLog.getInstance().getLog().warn("This method must be overrided");
+		DomainLog.getInstance().getLog().warn("This method must be overrided");
 		return null;
 	}
 
