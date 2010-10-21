@@ -6,6 +6,7 @@
 		<project>rockframework-core</project>
 		<project>rockframework-web</project>
 		<project>rockframework-web-test-parent</project>
+		<project>rockframework-domain</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

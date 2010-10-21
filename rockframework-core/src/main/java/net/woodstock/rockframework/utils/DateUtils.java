@@ -22,9 +22,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 import net.woodstock.rockframework.config.CoreConfig;
+import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.util.DateFormatFactory;
-
-import org.springframework.util.Assert;
 
 public abstract class DateUtils {
 

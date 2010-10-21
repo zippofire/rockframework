@@ -6,7 +6,7 @@
 	<artifactId>rockframework-parent</artifactId>
 	<packaging>pom</packaging>
 	<name>Rock Framework</name>
-	<version>1.0.1</version>
+	<version>1.1.1</version>
 	<url>http://code.google.com/p/rockframework/</url>
 	<properties>
 		<!-- Maven -->
@@ -55,22 +55,9 @@
 	</organization>
 	<modules>
 		<module>rockframework-core</module>
+		<module>rockframework-domain</module>
 		<module>rockframework-web</module>
 	</modules>
-    <!--	
-	<repositories>
-		<repository>
-			<id>jboss.org</id>
-			<name>JBoss Repository</name>
-			<url>http://repository.jboss.org/maven2</url>
-		</repository>
-		<repository>
-			<id>jboss.com</id>
-			<name>JBoss Repository</name>
-			<url>http://repository.jboss.com/maven2</url>
-		</repository>		
-	</repositories>
-	-->
 	<reporting>
 		<plugins>
 			<plugin>

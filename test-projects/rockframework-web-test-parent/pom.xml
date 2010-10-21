@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.woodstock.rockframework</groupId>
 	<artifactId>rockframework-web-test-parent</artifactId>
-	<version>1.0.1</version>
+	<version>1.1.1</version>
 	<packaging>pom</packaging>
 	<name>rockframework-web-test-parent</name>
 
@@ -131,6 +131,12 @@
 		<dependency>
 			<groupId>net.woodstock.rockframework</groupId>
 			<artifactId>rockframework-core</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.woodstock.rockframework</groupId>
+			<artifactId>rockframework-domain</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>

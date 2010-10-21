@@ -5,13 +5,12 @@
 	<groupId>net.woodstock.rockframework</groupId>
 	<artifactId>rockframework-struts2-test</artifactId>
 	<packaging>war</packaging>
-	<version>1.0.1</version>
 	<name>rockframework-struts2-test</name>
 
 	<parent>
 		<groupId>net.woodstock.rockframework</groupId>
 		<artifactId>rockframework-web-test-parent</artifactId>
-		<version>1.0.1</version>
+		<version>1.1.1</version>
 	</parent>
 	
 	<dependencies>

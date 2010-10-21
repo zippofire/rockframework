@@ -26,7 +26,7 @@ public class StringTest extends TestCase {
 		System.out.println(Base64Utils.toBase64("37893432349"));
 	}
 
-	public void test2() throws Exception {
+	public void xtest2() throws Exception {
 		System.out.println(StringUtils.random(10000));
 	}
 
@@ -47,6 +47,32 @@ public class StringTest extends TestCase {
 	public void xtest5() throws Exception {
 		// Assert.equals(null, null, "null");
 		Assert.equals("nulo", "nulo", "nulo");
+	}
+
+	public void test6() throws Exception {
+		String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		String str = "Texto que sera modificado";
+		char[] chars = str.toCharArray();
+		for (int i = 0; i < chars.length; i++) {
+			char currentChar = chars[i];
+			if (Character.isLetter(currentChar)) {
+				boolean isUpperCase = Character.isUpperCase(currentChar);
+				currentChar = Character.toUpperCase(currentChar);
+				int newIndex = letters.indexOf(currentChar) + 13;
+				char newChar = '\0';
+				if (newIndex >= letters.length()) {
+					newIndex -= letters.length();
+				}
+				newChar = letters.charAt(newIndex);
+				if (!isUpperCase) {
+					newChar = Character.toLowerCase(newChar);
+				}
+				chars[i] = newChar;
+			}
+		}
+		String newStr = new String(chars);
+		System.out.println("Original: " + str);
+		System.out.println("Novo    : " + newStr);
 	}
 
 }
