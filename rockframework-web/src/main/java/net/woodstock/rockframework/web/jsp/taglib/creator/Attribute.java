@@ -27,6 +27,8 @@ import java.lang.annotation.Target;
 @Target(value = { ElementType.FIELD, ElementType.METHOD })
 public @interface Attribute {
 
+	String description() default "";
+	
 	boolean required() default false;
 
 	boolean rtexprvalue() default false;

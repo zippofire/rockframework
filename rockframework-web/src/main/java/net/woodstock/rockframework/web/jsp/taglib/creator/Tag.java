@@ -33,6 +33,6 @@ public @interface Tag {
 
 	BodyContent content();
 
-	boolean DynamicAttributes() default false;
+	boolean dynamicAttributes() default false;
 
 }

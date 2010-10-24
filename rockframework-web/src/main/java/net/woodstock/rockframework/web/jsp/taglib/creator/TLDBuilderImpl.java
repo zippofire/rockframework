@@ -23,6 +23,7 @@ import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.ReflectionType;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilderImpl;
 import net.woodstock.rockframework.util.Assert;
+import net.woodstock.rockframework.utils.StringUtils;
 import net.woodstock.rockframework.web.config.WebLog;
 import net.woodstock.rockframework.xml.dom.XmlDocument;
 import net.woodstock.rockframework.xml.dom.XmlElement;
@@ -45,21 +46,20 @@ class TLDBuilderImpl extends TLDBuilder {
 		}
 
 		Tag tag = clazz.getAnnotation(Tag.class);
-		String name = tag.name();
-		String description = tag.description();
-		String type = tag.content().getName();
-		boolean dynamicAttributes = tag.DynamicAttributes();
 
 		XmlDocument document = new XmlDocument("tag");
 		XmlElement root = document.getRoot();
 
-		root.addElement("name").setData(name);
-		root.addElement("description").setData(description);
-		root.addElement("body-content").setData(type);
-		root.addElement("tag-class").setData(clazz.getCanonicalName());
+		if (!StringUtils.isEmpty(tag.description())) {
+			root.addElement("description").setData(tag.description());
+		}
 
-		if (dynamicAttributes) {
-			root.addElement("dynamic-attributes").setData(Boolean.valueOf(dynamicAttributes));
+		root.addElement("name").setData(tag.name());
+		root.addElement("tag-class").setData(clazz.getCanonicalName());
+		root.addElement("body-content").setData(tag.content());
+
+		if (tag.dynamicAttributes()) {
+			root.addElement("dynamic-attributes").setData(Boolean.valueOf(tag.dynamicAttributes()));
 		}
 
 		BeanDescriptor beanDescriptor = new BeanDescriptorBuilderImpl().setType(clazz).setMode(ReflectionType.MIXED).getBeanDescriptor();
@@ -72,9 +72,13 @@ class TLDBuilderImpl extends TLDBuilder {
 			Attribute tldAttribute = propertyDescriptor.getAnnotation(Attribute.class);
 			XmlElement e = root.addElement("attribute");
 
+			if (!StringUtils.isEmpty(tldAttribute.description())) {
+				e.addElement("description").setData(tldAttribute.description());
+			}
+
 			e.addElement("name").setData(propertyDescriptor.getName());
-			e.addElement("rtexprvalue").setData(Boolean.valueOf(tldAttribute.rtexprvalue()));
 			e.addElement("required").setData(Boolean.valueOf(tldAttribute.required()));
+			e.addElement("rtexprvalue").setData(Boolean.valueOf(tldAttribute.rtexprvalue()));
 			if ((!tldAttribute.rtexprvalue()) && (tldAttribute.type() != String.class)) {
 				e.addElement("type").setData(tldAttribute.type().getCanonicalName());
 			}
