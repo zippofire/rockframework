@@ -39,7 +39,7 @@ public class DelegateInputStream extends InputStream {
 	}
 
 	@Override
-	public void mark(final int readlimit) {
+	public synchronized void mark(final int readlimit) {
 		this.inputStream.mark(readlimit);
 	}
 
@@ -49,7 +49,7 @@ public class DelegateInputStream extends InputStream {
 	}
 
 	@Override
-	public void reset() throws IOException {
+	public synchronized void reset() throws IOException {
 		this.inputStream.reset();
 	}
 
