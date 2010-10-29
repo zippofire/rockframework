@@ -33,6 +33,7 @@ import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilderImpl;
 import net.woodstock.rockframework.util.Assert;
+import net.woodstock.rockframework.utils.ConditionUtils;
 import net.woodstock.rockframework.utils.StringUtils;
 
 @SuppressWarnings("rawtypes")
@@ -121,7 +122,7 @@ abstract class QueryContextHelper {
 		if (options.containsKey(Constants.OPTION_ORDER_BY)) {
 			Object order = options.get(Constants.OPTION_ORDER_BY);
 
-			if ((order != null) && (!StringUtils.isEmpty(order.toString()))) {
+			if (ConditionUtils.isNotEmptyAsString(order)) {
 				String[] orders = order.toString().split(QueryContextHelper.ORDER_SEPARATOR);
 				if (orders.length > 0) {
 					for (int index = 0; index < orders.length; index++) {

@@ -76,7 +76,7 @@ public class StringFormat extends Format {
 
 	@Override
 	public Object parseObject(final String source, final ParsePosition pos) {
-		if (!StringUtils.isEmpty(source)) {
+		if (StringUtils.isNotEmpty(source)) {
 			StringBuilder s = new StringBuilder();
 
 			char[] sourceChars = source.toCharArray();

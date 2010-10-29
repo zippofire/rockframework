@@ -24,6 +24,7 @@ import javax.persistence.Query;
 
 import net.woodstock.rockframework.domain.persistence.EJBQLRepository;
 import net.woodstock.rockframework.domain.persistence.util.Constants;
+import net.woodstock.rockframework.utils.ConditionUtils;
 
 class CommonJPAEJBQLRepository extends AbstractJPAQueryableRepository implements EJBQLRepository {
 
@@ -39,7 +40,7 @@ class CommonJPAEJBQLRepository extends AbstractJPAQueryableRepository implements
 		EntityManager entityManager = this.entityManager;
 		Query query = entityManager.createQuery(sql);
 
-		if ((parameters != null) && (parameters.size() > 0)) {
+		if (ConditionUtils.isNotEmpty(parameters)) {
 			if (parameters.containsKey(Constants.OPTION_FIRST_RESULT)) {
 				Integer firstResult = (Integer) parameters.get(Constants.OPTION_FIRST_RESULT);
 				query.setFirstResult(firstResult.intValue());

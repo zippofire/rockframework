@@ -18,6 +18,8 @@ package net.woodstock.rockframework.reflection.impl;
 
 import java.lang.reflect.Method;
 
+import net.woodstock.rockframework.utils.ConditionUtils;
+
 abstract class BeanDescriptorHelper {
 
 	public static final String	GET_CLASS_METHOD_NAME	= "getClass";
@@ -56,7 +58,7 @@ abstract class BeanDescriptorHelper {
 			return method.getReturnType();
 		} else if (BeanDescriptorHelper.isSetter(method)) {
 			Class<?>[] parameterTypes = method.getParameterTypes();
-			if ((parameterTypes != null) && (parameterTypes.length == 1)) {
+			if (ConditionUtils.isNotEmpty(parameterTypes)) {
 				return parameterTypes[0];
 			}
 		}
@@ -69,7 +71,7 @@ abstract class BeanDescriptorHelper {
 			if (methodName.equals(BeanDescriptorHelper.GET_CLASS_METHOD_NAME)) {
 				return false;
 			}
-			if ((method.getParameterTypes() != null) && (method.getParameterTypes().length > 0)) {
+			if (ConditionUtils.isNotEmpty(method.getParameterTypes())) {
 				return false;
 			}
 			if (method.getReturnType().equals(Void.TYPE)) {

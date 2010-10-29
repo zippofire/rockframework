@@ -156,7 +156,7 @@ public class SimpleMailSender {
 	}
 
 	private boolean hasAuthentication() {
-		return !StringUtils.isEmpty(this.user);
+		return StringUtils.isNotEmpty(this.user);
 	}
 
 	private Session getSession() {
@@ -168,7 +168,7 @@ public class SimpleMailSender {
 		properties.put("mail.smtp.port", Integer.toString(this.smtpPort));
 		properties.put("mail.smtp.timeout", "15000");
 		properties.put("mail.smtp.connectiontimeout", "15000");
-		if (!StringUtils.isEmpty(this.user)) {
+		if (StringUtils.isNotEmpty(this.user)) {
 			properties.put("mail.smtp.auth", "true");
 		}
 		return Session.getDefaultInstance(properties);

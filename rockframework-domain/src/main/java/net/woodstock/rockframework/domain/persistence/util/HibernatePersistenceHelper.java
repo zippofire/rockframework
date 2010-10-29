@@ -41,7 +41,7 @@ public final class HibernatePersistenceHelper implements PersistenceHelper<Sessi
 	private HibernatePersistenceHelper() {
 		super();
 		String s = DomainConfig.getInstance().getValue(HibernatePersistenceHelper.HIBERNATE_ANNOTATION_PROPERTY);
-		if (!StringUtils.isEmpty(s)) {
+		if (StringUtils.isNotEmpty(s)) {
 			this.annotation = Boolean.parseBoolean(s);
 		} else {
 			this.annotation = true;

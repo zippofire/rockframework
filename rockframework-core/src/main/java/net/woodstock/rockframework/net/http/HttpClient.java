@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.woodstock.rockframework.utils.ConditionUtils;
 import net.woodstock.rockframework.xml.dom.XmlDocument;
 import net.woodstock.rockframework.xml.dom.XmlElement;
 
@@ -67,7 +68,7 @@ public class HttpClient implements Serializable {
 
 	private GetMethod createGetMethod(final String url, final Map<String, Object> params) {
 		GetMethod method = new GetMethod(url);
-		if ((params != null) && (params.size() > 0)) {
+		if (ConditionUtils.isNotEmpty(params)) {
 			HttpMethodParams hps = new HttpMethodParams();
 			for (Entry<String, Object> p : params.entrySet()) {
 				String key = p.getKey();

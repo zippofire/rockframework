@@ -26,6 +26,7 @@ import javax.persistence.Query;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.persistence.GenericRepository;
 import net.woodstock.rockframework.domain.persistence.query.impl.JPAQueryBuilder;
+import net.woodstock.rockframework.utils.ConditionUtils;
 
 class CommonJPAGenericRepository implements GenericRepository {
 
@@ -62,7 +63,7 @@ class CommonJPAGenericRepository implements GenericRepository {
 	public <E extends Entity<?>> Collection<E> listByExample(final E e, final Map<String, Object> options) {
 		JPAQueryBuilder builder = new JPAQueryBuilder(this.entityManager);
 		builder.setEntity(e);
-		if ((options != null) && (options.size() > 0)) {
+		if (ConditionUtils.isNotEmpty(options)) {
 			for (Entry<String, Object> option : options.entrySet()) {
 				builder.setOption(option.getKey(), option.getValue());
 			}

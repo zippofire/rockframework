@@ -114,9 +114,9 @@ public class Entry<K, V> implements Map.Entry<K, V>, Serializable {
 		builder.append(this.getClass().getSimpleName());
 		builder.append(Entry.BEGIN_ENTRY);
 		builder.append(this.key);
+		builder.append(Entry.END_ENTRY);
 		builder.append(Entry.VALUE_SEPARATOR);
 		builder.append(this.value);
-		builder.append(Entry.END_ENTRY);
 		return builder.toString();
 	}
 

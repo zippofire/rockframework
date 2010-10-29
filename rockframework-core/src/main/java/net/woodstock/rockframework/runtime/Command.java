@@ -70,7 +70,7 @@ public class Command implements Serializable {
 		if ((this.subCommands != null) && (this.subCommands.size() > 0)) {
 			OutputStreamWriter writer = new OutputStreamWriter(process.getOutputStream());
 			for (String sc : this.subCommands) {
-				if (!StringUtils.isEmpty(sc)) {
+				if (StringUtils.isNotEmpty(sc)) {
 					writer.write(sc);
 				}
 			}
@@ -84,7 +84,7 @@ public class Command implements Serializable {
 
 		String line = readerInput.readLine();
 		while (line != null) {
-			if (!StringUtils.isEmpty(line)) {
+			if (StringUtils.isNotEmpty(line)) {
 				output.addOut(line.trim());
 			}
 			line = readerInput.readLine();
@@ -92,7 +92,7 @@ public class Command implements Serializable {
 
 		line = readerError.readLine();
 		while (line != null) {
-			if (!StringUtils.isEmpty(line)) {
+			if (StringUtils.isNotEmpty(line)) {
 				output.addErr(line.trim());
 			}
 			line = readerError.readLine();

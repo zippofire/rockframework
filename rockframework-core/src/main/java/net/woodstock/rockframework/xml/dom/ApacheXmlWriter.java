@@ -32,9 +32,11 @@ class ApacheXmlWriter extends XmlWriter {
 	@Override
 	public void write(final Document document, final Writer writer) throws IOException {
 		OutputFormat format = new OutputFormat(document, XmlWriter.XML_ENCODING, true);
-		XMLSerializer serializer = new XMLSerializer(writer, format);
 		format.setIndent(1);
 		format.setIndenting(true);
+		format.setLineWidth(0);
+
+		XMLSerializer serializer = new XMLSerializer(writer, format);
 		serializer.asDOMSerializer();
 		serializer.serialize(document);
 	}

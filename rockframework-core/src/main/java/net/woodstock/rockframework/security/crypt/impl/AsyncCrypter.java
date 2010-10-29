@@ -51,7 +51,7 @@ public class AsyncCrypter extends AbstractCrypter {
 		try {
 			KeyPairGenerator generator = KeyPairGenerator.getInstance(type.getAlgorithm());
 
-			if (!StringUtils.isEmpty(seed)) {
+			if (StringUtils.isNotEmpty(seed)) {
 				SecureRandom random = new SecureRandom(seed.getBytes());
 				generator.initialize(AsyncCrypter.DEFAULT_KEY_SIZE, random);
 			}

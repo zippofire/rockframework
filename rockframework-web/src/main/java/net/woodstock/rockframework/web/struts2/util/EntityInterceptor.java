@@ -66,7 +66,7 @@ public class EntityInterceptor extends Interceptor {
 					}
 				}
 
-				if ((!StringUtils.isEmpty(value)) && (this.isIdParameter(key))) {
+				if ((StringUtils.isNotEmpty(value)) && (this.isIdParameter(key))) {
 					String entityName = this.getEntityName(key);
 					this.setIdParameter(action, entityName, value);
 				}

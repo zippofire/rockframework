@@ -22,6 +22,7 @@ import java.util.Map.Entry;
 import net.woodstock.rockframework.domain.persistence.EJBQLRepository;
 import net.woodstock.rockframework.domain.persistence.query.CacheMode;
 import net.woodstock.rockframework.domain.persistence.util.Constants;
+import net.woodstock.rockframework.utils.ConditionUtils;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -39,7 +40,7 @@ class CommonHibernateEJBQLRepository extends AbstractHibernateQueryableRepositor
 	protected Query getQuery(final String sql, final Map<String, Object> parameters) {
 		Query query = this.session.createQuery(sql);
 
-		if ((parameters != null) && (parameters.size() > 0)) {
+		if (ConditionUtils.isNotEmpty(parameters)) {
 			if ((parameters.containsKey(Constants.OPTION_CACHE_MODE)) && (parameters.get(Constants.OPTION_CACHE_MODE) instanceof CacheMode)) {
 				CacheMode cacheMode = (CacheMode) parameters.get(Constants.OPTION_CACHE_MODE);
 				if (cacheMode == CacheMode.ENABLED) {

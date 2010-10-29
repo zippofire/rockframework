@@ -26,6 +26,7 @@ import net.woodstock.rockframework.domain.persistence.GenericRepository;
 import net.woodstock.rockframework.domain.persistence.query.CacheMode;
 import net.woodstock.rockframework.domain.persistence.query.impl.HibernateQueryBuilder;
 import net.woodstock.rockframework.domain.persistence.util.Constants;
+import net.woodstock.rockframework.utils.ConditionUtils;
 
 import org.hibernate.HibernateException;
 import org.hibernate.NonUniqueObjectException;
@@ -94,11 +95,16 @@ class CommonHibernateGenericRepository implements GenericRepository {
 		String sql = RepositoryHelper.getListAllSql(e.getClass(), options, true);
 		Query q = this.session.createQuery(sql);
 
-		if ((options != null) && (options.containsKey(Constants.OPTION_CACHE_MODE)) && (options.get(Constants.OPTION_CACHE_MODE) instanceof CacheMode)) {
-			CacheMode cacheMode = (CacheMode) options.get(Constants.OPTION_CACHE_MODE);
-			if (cacheMode == CacheMode.ENABLED) {
-				q.setCacheable(true);
-				q.setCacheMode(org.hibernate.CacheMode.NORMAL);
+		if (ConditionUtils.isNotEmpty(options)) {
+			if (options.containsKey(Constants.OPTION_CACHE_MODE)) {
+				Object o = options.get(Constants.OPTION_CACHE_MODE);
+				if (o instanceof CacheMode) {
+					CacheMode cacheMode = (CacheMode) o;
+					if (cacheMode == CacheMode.ENABLED) {
+						q.setCacheable(true);
+						q.setCacheMode(org.hibernate.CacheMode.NORMAL);
+					}
+				}
 			}
 		}
 
@@ -111,7 +117,7 @@ class CommonHibernateGenericRepository implements GenericRepository {
 	public <E extends Entity<?>> Collection<E> listByExample(final E e, final Map<String, Object> options) {
 		HibernateQueryBuilder builder = new HibernateQueryBuilder(this.session);
 		builder.setEntity(e);
-		if ((options != null) && (options.size() > 0)) {
+		if (ConditionUtils.isNotEmpty(options)) {
 			for (Entry<String, Object> option : options.entrySet()) {
 				builder.setOption(option.getKey(), option.getValue());
 			}

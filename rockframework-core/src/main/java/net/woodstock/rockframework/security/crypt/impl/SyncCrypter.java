@@ -49,7 +49,7 @@ public class SyncCrypter extends AbstractCrypter {
 		try {
 			KeyGenerator generator = KeyGenerator.getInstance(type.getAlgorithm());
 
-			if (!StringUtils.isEmpty(seed)) {
+			if (StringUtils.isNotEmpty(seed)) {
 				SecureRandom random = new SecureRandom(seed.getBytes());
 				generator.init(random);
 			}

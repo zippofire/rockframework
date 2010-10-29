@@ -49,7 +49,7 @@ public class FileInfo implements Serializable, Comparable<FileInfo> {
 		this.parent = FileUtils.getParentPath(src);
 
 		this.extension = FileUtils.getExtension(this.name);
-		if (!StringUtils.isEmpty(this.extension)) {
+		if (StringUtils.isNotEmpty(this.extension)) {
 			this.mimeType = FileUtils.getTypeByExtension(this.extension);
 		}
 	}
@@ -64,7 +64,7 @@ public class FileInfo implements Serializable, Comparable<FileInfo> {
 		this.parent = FileUtils.getParentPath(file);
 
 		this.extension = FileUtils.getExtension(this.name);
-		if (!StringUtils.isEmpty(this.extension)) {
+		if (StringUtils.isNotEmpty(this.extension)) {
 			this.mimeType = FileUtils.getTypeByExtension(this.extension);
 		}
 		this.size = FileUtils.getSize(file);

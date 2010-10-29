@@ -25,6 +25,7 @@ import javax.persistence.Query;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.persistence.SQLRepository;
 import net.woodstock.rockframework.domain.persistence.util.Constants;
+import net.woodstock.rockframework.utils.ConditionUtils;
 
 class CommonJPASQLRepository extends AbstractJPAQueryableRepository implements SQLRepository {
 
@@ -41,7 +42,7 @@ class CommonJPASQLRepository extends AbstractJPAQueryableRepository implements S
 		EntityManager entityManager = this.entityManager;
 		Query query = null;
 
-		if ((parameters != null) && (parameters.size() > 0)) {
+		if (ConditionUtils.isNotEmpty(parameters)) {
 			if (parameters.containsKey(Constants.OPTION_TARGET_ENTITY)) {
 				Class<Entity> clazz = (Class<Entity>) parameters.get(Constants.OPTION_TARGET_ENTITY);
 				query = entityManager.createNativeQuery(sql, clazz);

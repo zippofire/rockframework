@@ -124,13 +124,11 @@ public abstract class StringUtils {
 	}
 
 	public static boolean isEmpty(final String s) {
-		if (s == null) {
-			return true;
-		}
-		if (s.trim().length() == 0) {
-			return true;
-		}
-		return false;
+		return ConditionUtils.isEmpty(s);
+	}
+
+	public static boolean isNotEmpty(final String s) {
+		return ConditionUtils.isNotEmpty(s);
 	}
 
 	public static String lpad(final String s, final int size, final char pad) {

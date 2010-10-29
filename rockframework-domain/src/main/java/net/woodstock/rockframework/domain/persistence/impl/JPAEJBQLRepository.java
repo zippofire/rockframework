@@ -25,6 +25,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import net.woodstock.rockframework.domain.persistence.EJBQLRepository;
+import net.woodstock.rockframework.utils.ConditionUtils;
 
 public class JPAEJBQLRepository extends AbstractJPARepository implements EJBQLRepository {
 
@@ -57,7 +58,7 @@ public class JPAEJBQLRepository extends AbstractJPARepository implements EJBQLRe
 		EntityManager entityManager = this.getEntityManager();
 		Query query = entityManager.createQuery(sql);
 
-		if ((parameters != null) && (parameters.size() > 0)) {
+		if (ConditionUtils.isNotEmpty(parameters)) {
 			for (Entry<String, Object> entry : parameters.entrySet()) {
 				String name = entry.getKey();
 				Object value = entry.getValue();

@@ -131,7 +131,7 @@ abstract class CrypterHelper {
 			}
 
 			if (valid) {
-				if ((!StringUtils.isEmpty(s)) && (s.indexOf(":") == -1)) {
+				if ((StringUtils.isNotEmpty(s)) && (s.indexOf(":") == -1)) {
 					builder.append(s);
 					builder.append("\n");
 				}
@@ -155,7 +155,7 @@ abstract class CrypterHelper {
 			}
 
 			if (valid) {
-				if ((!StringUtils.isEmpty(s)) && (s.indexOf(":") == -1)) {
+				if ((StringUtils.isNotEmpty(s)) && (s.indexOf(":") == -1)) {
 					builder.append(s);
 					builder.append("\n");
 				}

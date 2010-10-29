@@ -19,6 +19,7 @@ package net.woodstock.rockframework.domain.business.impl;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.ValidationResult;
 import net.woodstock.rockframework.domain.config.DomainMessage;
+import net.woodstock.rockframework.utils.ConditionUtils;
 
 import org.hibernate.validator.ClassValidator;
 import org.hibernate.validator.InvalidValue;
@@ -34,7 +35,7 @@ public abstract class AbstractHibernateBusiness extends AbstractBusiness {
 		ClassValidator validator = new ClassValidator(entity.getClass());
 		if (validator.hasValidationRules()) {
 			InvalidValue[] values = validator.getInvalidValues(entity);
-			if ((values != null) && (values.length > 0)) {
+			if (ConditionUtils.isNotEmpty(values)) {
 				String message = values[0].toString();
 				return new ValidationResult(true, message);
 			}

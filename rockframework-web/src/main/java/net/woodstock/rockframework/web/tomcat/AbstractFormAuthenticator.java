@@ -40,7 +40,7 @@ public abstract class AbstractFormAuthenticator extends FormAuthenticator {
 		String password = request.getParameter(AbstractFormAuthenticator.PASSWORD_PARAMETER);
 		if (principal != null) {
 			return true;
-		} else if (!StringUtils.isEmpty(username)) {
+		} else if (StringUtils.isNotEmpty(username)) {
 			principal = this.validate(username, password);
 			if (principal != null) {
 				this.register(request, response, principal, Constants.FORM_METHOD, username, password);

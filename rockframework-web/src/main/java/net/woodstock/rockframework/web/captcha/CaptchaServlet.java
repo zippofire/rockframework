@@ -43,7 +43,7 @@ public class CaptchaServlet extends AbstractHttpServlet {
 	@Override
 	public void init() {
 		String randomChars = this.getInitParameter(CaptchaServlet.RANDOM_CHARS_PARAMETER);
-		if (!StringUtils.isEmpty(randomChars)) {
+		if (StringUtils.isNotEmpty(randomChars)) {
 			this.chars = randomChars.toCharArray();
 		} else {
 			this.chars = CaptchaServlet.RANDOM_CHARS.toCharArray();

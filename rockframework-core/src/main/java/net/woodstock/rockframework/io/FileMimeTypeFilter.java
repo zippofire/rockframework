@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 
+import net.woodstock.rockframework.utils.ConditionUtils;
 import net.woodstock.rockframework.utils.FileUtils;
 
 public class FileMimeTypeFilter implements FilenameFilter {
@@ -40,7 +41,7 @@ public class FileMimeTypeFilter implements FilenameFilter {
 
 	@Override
 	public boolean accept(final File dir, final String name) {
-		if ((this.types == null) || (this.types.size() == 0)) {
+		if (ConditionUtils.isEmptyOrNull(this.types)) {
 			return true;
 		}
 

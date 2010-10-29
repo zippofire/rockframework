@@ -51,7 +51,7 @@ abstract class MimeUtils {
 	private static void createMimeMap(final String name, final String[] extensions) {
 		Collection<String> c = new HashSet<String>();
 		for (String s : extensions) {
-			if (!StringUtils.isEmpty(s)) {
+			if (StringUtils.isNotEmpty(s)) {
 				c.add(s);
 			}
 		}

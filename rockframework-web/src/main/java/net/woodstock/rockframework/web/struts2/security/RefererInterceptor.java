@@ -66,8 +66,8 @@ public class RefererInterceptor extends ConditionalInterceptor<String> {
 			String url = RequestUtils.getRequestUrl(this.getRequest());
 			String referer = RequestUtils.getReferer(this.getRequest());
 
-			if (!StringUtils.isEmpty(referer)) {
-				if (!StringUtils.isEmpty(regex)) {
+			if (StringUtils.isNotEmpty(referer)) {
+				if (StringUtils.isNotEmpty(regex)) {
 					if ((StringUtils.isEmpty(referer)) || (!Pattern.matches(regex, referer))) {
 						WebLog.getInstance().getLog().debug("Invalid referer for " + url + " found " + referer + " required " + regex);
 						return Constants.INVALID_REFERER;
@@ -85,7 +85,7 @@ public class RefererInterceptor extends ConditionalInterceptor<String> {
 
 	private String getRegex(final Referer annotation) {
 		String s = annotation.value();
-		if (!StringUtils.isEmpty(s)) {
+		if (StringUtils.isNotEmpty(s)) {
 			return s;
 		}
 		return this.regex;

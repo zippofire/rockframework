@@ -22,6 +22,7 @@ import java.util.Map.Entry;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.persistence.SQLRepository;
 import net.woodstock.rockframework.domain.persistence.util.Constants;
+import net.woodstock.rockframework.utils.ConditionUtils;
 
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -40,7 +41,7 @@ class CommonHibernateSQLRepository extends AbstractHibernateQueryableRepository 
 	protected SQLQuery getQuery(final String sql, final Map<String, Object> parameters) {
 		Session session = this.session;
 		SQLQuery query = session.createSQLQuery(sql);
-		if ((parameters != null) && (parameters.size() > 0)) {
+		if (ConditionUtils.isNotEmpty(parameters)) {
 			if (parameters.containsKey(Constants.OPTION_TARGET_ENTITY)) {
 				Class<Entity> clazz = (Class<Entity>) parameters.get(Constants.OPTION_TARGET_ENTITY);
 				query.addEntity(clazz);
