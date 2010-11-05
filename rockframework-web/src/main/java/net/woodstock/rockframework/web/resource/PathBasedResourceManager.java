@@ -22,7 +22,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.utils.ConditionUtils;
 
 public abstract class PathBasedResourceManager implements ResourceManager {
 
@@ -35,7 +35,7 @@ public abstract class PathBasedResourceManager implements ResourceManager {
 	@Override
 	public final void manage(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 		String path = request.getParameter(PathBasedResourceManager.PATH_PARAMETER);
-		if (StringUtils.isEmpty(path)) {
+		if (ConditionUtils.isEmpty(path)) {
 			throw new ServletException("Invalid path");
 		}
 

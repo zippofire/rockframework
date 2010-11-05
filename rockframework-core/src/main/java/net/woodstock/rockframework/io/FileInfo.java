@@ -21,8 +21,8 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import net.woodstock.rockframework.util.Assert;
+import net.woodstock.rockframework.utils.ConditionUtils;
 import net.woodstock.rockframework.utils.FileUtils;
-import net.woodstock.rockframework.utils.StringUtils;
 
 public class FileInfo implements Serializable, Comparable<FileInfo> {
 
@@ -49,7 +49,7 @@ public class FileInfo implements Serializable, Comparable<FileInfo> {
 		this.parent = FileUtils.getParentPath(src);
 
 		this.extension = FileUtils.getExtension(this.name);
-		if (StringUtils.isNotEmpty(this.extension)) {
+		if (ConditionUtils.isNotEmpty(this.extension)) {
 			this.mimeType = FileUtils.getTypeByExtension(this.extension);
 		}
 	}
@@ -64,7 +64,7 @@ public class FileInfo implements Serializable, Comparable<FileInfo> {
 		this.parent = FileUtils.getParentPath(file);
 
 		this.extension = FileUtils.getExtension(this.name);
-		if (StringUtils.isNotEmpty(this.extension)) {
+		if (ConditionUtils.isNotEmpty(this.extension)) {
 			this.mimeType = FileUtils.getTypeByExtension(this.extension);
 		}
 		this.size = FileUtils.getSize(file);

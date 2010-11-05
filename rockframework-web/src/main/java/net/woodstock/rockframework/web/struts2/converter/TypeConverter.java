@@ -18,7 +18,7 @@ package net.woodstock.rockframework.web.struts2.converter;
 
 import java.util.Map;
 
-import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.utils.ConditionUtils;
 import net.woodstock.rockframework.web.config.WebLog;
 
 import org.apache.struts2.util.StrutsTypeConverter;
@@ -34,7 +34,7 @@ public abstract class TypeConverter<T> extends StrutsTypeConverter {
 		}
 
 		String s = o[0];
-		if (StringUtils.isEmpty(s)) {
+		if (ConditionUtils.isEmpty(s)) {
 			return super.performFallbackConversion(context, o, toClass);
 		}
 

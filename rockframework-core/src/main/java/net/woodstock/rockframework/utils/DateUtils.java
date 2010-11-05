@@ -52,7 +52,7 @@ public abstract class DateUtils {
 	}
 
 	public static Date parse(final String date) throws ParseException {
-		if (StringUtils.isEmpty(date)) {
+		if (ConditionUtils.isEmpty(date)) {
 			return null;
 		}
 		DateFormat df = DateFormatFactory.getInstance().getFormat(DateUtils.DATE_FORMAT_PATTERN);
@@ -60,7 +60,7 @@ public abstract class DateUtils {
 	}
 
 	public static Date parse(final String date, final String format) throws ParseException {
-		if (StringUtils.isEmpty(date)) {
+		if (ConditionUtils.isEmpty(date)) {
 			return null;
 		}
 		DateFormat df = DateFormatFactory.getInstance().getFormat(format);

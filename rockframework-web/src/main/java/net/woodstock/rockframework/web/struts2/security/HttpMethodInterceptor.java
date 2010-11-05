@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.utils.ConditionUtils;
 import net.woodstock.rockframework.web.config.WebLog;
 import net.woodstock.rockframework.web.struts2.ConditionalInterceptor;
 import net.woodstock.rockframework.web.struts2.Constants;
@@ -105,7 +105,7 @@ public class HttpMethodInterceptor extends ConditionalInterceptor<String> {
 
 	// Setters
 	public void setMethods(final String methods) {
-		if (StringUtils.isNotEmpty(methods)) {
+		if (ConditionUtils.isNotEmpty(methods)) {
 			if (methods.indexOf(HttpMethodInterceptor.METHOD_SEPARATOR) != -1) {
 				String[] array = methods.split(HttpMethodInterceptor.METHOD_SEPARATOR);
 				for (String s : array) {

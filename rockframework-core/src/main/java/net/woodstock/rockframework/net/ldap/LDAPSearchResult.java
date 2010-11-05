@@ -18,14 +18,9 @@ package net.woodstock.rockframework.net.ldap;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 import java.util.Map.Entry;
+import java.util.Set;
 
-import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
-import javax.naming.directory.Attributes;
 import javax.naming.directory.SearchResult;
 
 public class LDAPSearchResult {
@@ -34,32 +29,14 @@ public class LDAPSearchResult {
 
 	private Map<String, String>	attributes;
 
-	public LDAPSearchResult(final SearchResult searchResult) throws NamingException {
+	public LDAPSearchResult(final SearchResult searchResult, final Map<String, String> attributes) {
 		super();
 		this.searchResult = searchResult;
-		this.attributes = new TreeMap<String, String>();
-		this.init();
+		this.attributes = attributes;
 	}
 
-	private void init() throws NamingException {
-		Attributes attributes = this.searchResult.getAttributes();
-		if (attributes != null) {
-			NamingEnumeration<? extends Attribute> ne = attributes.getAll();
-			while (ne.hasMoreElements()) {
-				Attribute a = ne.nextElement();
-				String name = a.getID();
-				String value = null;
-				if (a.size() > 0) {
-					StringBuilder builder = new StringBuilder();
-					for (int i = 0; i < a.size(); i++) {
-						Object o = a.get(i);
-						builder.append(o.toString());
-					}
-					value = builder.toString();
-				}
-				this.attributes.put(name, value);
-			}
-		}
+	public SearchResult getSearchResult() {
+		return this.searchResult;
 	}
 
 	public String getAttribute(final String name) {

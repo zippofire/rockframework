@@ -26,7 +26,7 @@ import net.woodstock.rockframework.security.crypt.CrypterException;
 import net.woodstock.rockframework.security.crypt.KeyType;
 import net.woodstock.rockframework.security.crypt.impl.CrypterOperation.Mode;
 import net.woodstock.rockframework.util.Assert;
-import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.utils.ConditionUtils;
 
 public class SyncCrypter extends AbstractCrypter {
 
@@ -49,7 +49,7 @@ public class SyncCrypter extends AbstractCrypter {
 		try {
 			KeyGenerator generator = KeyGenerator.getInstance(type.getAlgorithm());
 
-			if (StringUtils.isNotEmpty(seed)) {
+			if (ConditionUtils.isNotEmpty(seed)) {
 				SecureRandom random = new SecureRandom(seed.getBytes());
 				generator.init(random);
 			}

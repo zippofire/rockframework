@@ -4,7 +4,6 @@ import java.util.Map;
 
 import net.woodstock.rockframework.domain.persistence.util.Constants;
 import net.woodstock.rockframework.utils.ConditionUtils;
-import net.woodstock.rockframework.utils.StringUtils;
 
 abstract class RepositoryHelper {
 
@@ -26,7 +25,7 @@ abstract class RepositoryHelper {
 				Object o = options.get(Constants.OPTION_ORDER_BY);
 				if (o != null) {
 					String order = o.toString();
-					if (StringUtils.isNotEmpty(order)) {
+					if (ConditionUtils.isNotEmpty(order)) {
 						builder.append(" ORDER BY ");
 						builder.append(order);
 					}

@@ -27,7 +27,7 @@ import net.woodstock.rockframework.security.crypt.CrypterException;
 import net.woodstock.rockframework.security.crypt.KeyPairType;
 import net.woodstock.rockframework.security.crypt.impl.CrypterOperation.Mode;
 import net.woodstock.rockframework.util.Assert;
-import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.utils.ConditionUtils;
 
 public class AsyncCrypter extends AbstractCrypter {
 
@@ -51,7 +51,7 @@ public class AsyncCrypter extends AbstractCrypter {
 		try {
 			KeyPairGenerator generator = KeyPairGenerator.getInstance(type.getAlgorithm());
 
-			if (StringUtils.isNotEmpty(seed)) {
+			if (ConditionUtils.isNotEmpty(seed)) {
 				SecureRandom random = new SecureRandom(seed.getBytes());
 				generator.initialize(AsyncCrypter.DEFAULT_KEY_SIZE, random);
 			}

@@ -14,22 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.web.filter.referer;
+package net.woodstock.rockframework.net.ldap;
 
-import javax.servlet.http.HttpServletRequest;
+import net.woodstock.rockframework.net.NetworkException;
 
-import net.woodstock.rockframework.utils.ConditionUtils;
-import net.woodstock.rockframework.web.utils.RequestUtils;
+public class LDAPException extends NetworkException {
 
-public class NoRefererFilter extends RefererFilter {
+	private static final long	serialVersionUID	= 1L;
 
-	@Override
-	protected boolean validateReferer(final HttpServletRequest request) {
-		String referer = RequestUtils.getReferer(request);
-		if (ConditionUtils.isEmpty(referer)) {
-			return false;
-		}
-		return true;
+	public LDAPException(final String message) {
+		super(message);
+	}
+
+	public LDAPException(final Throwable cause) {
+		super(cause);
+	}
+
+	public LDAPException(final String message, final Throwable cause) {
+		super(message, cause);
 	}
 
 }

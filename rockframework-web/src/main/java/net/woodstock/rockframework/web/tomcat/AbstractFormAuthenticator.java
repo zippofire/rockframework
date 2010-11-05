@@ -19,7 +19,7 @@ package net.woodstock.rockframework.web.tomcat;
 import java.io.IOException;
 import java.security.Principal;
 
-import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.utils.ConditionUtils;
 
 import org.apache.catalina.authenticator.Constants;
 import org.apache.catalina.authenticator.FormAuthenticator;
@@ -40,7 +40,7 @@ public abstract class AbstractFormAuthenticator extends FormAuthenticator {
 		String password = request.getParameter(AbstractFormAuthenticator.PASSWORD_PARAMETER);
 		if (principal != null) {
 			return true;
-		} else if (StringUtils.isNotEmpty(username)) {
+		} else if (ConditionUtils.isNotEmpty(username)) {
 			principal = this.validate(username, password);
 			if (principal != null) {
 				this.register(request, response, principal, Constants.FORM_METHOD, username, password);

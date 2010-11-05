@@ -47,7 +47,7 @@ public abstract class TimeUtils {
 	}
 
 	public static Date parse(final String date) throws ParseException {
-		if (StringUtils.isEmpty(date)) {
+		if (ConditionUtils.isEmpty(date)) {
 			return null;
 		}
 		DateFormat df = DateFormatFactory.getInstance().getFormat(TimeUtils.TIME_FORMAT_PROPERTY);
@@ -55,7 +55,7 @@ public abstract class TimeUtils {
 	}
 
 	public static Date parse(final String date, final String format) throws ParseException {
-		if (StringUtils.isEmpty(date)) {
+		if (ConditionUtils.isEmpty(date)) {
 			return null;
 		}
 		DateFormat df = DateFormatFactory.getInstance().getFormat(format);

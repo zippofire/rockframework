@@ -20,7 +20,7 @@ import java.text.FieldPosition;
 import java.text.Format;
 import java.text.ParsePosition;
 
-import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.utils.ConditionUtils;
 
 public class StringFormat extends Format {
 
@@ -76,7 +76,7 @@ public class StringFormat extends Format {
 
 	@Override
 	public Object parseObject(final String source, final ParsePosition pos) {
-		if (StringUtils.isNotEmpty(source)) {
+		if (ConditionUtils.isNotEmpty(source)) {
 			StringBuilder s = new StringBuilder();
 
 			char[] sourceChars = source.toCharArray();

@@ -28,7 +28,7 @@ class FieldBeanDescriptor extends AbstractBeanDescriptor {
 	}
 
 	@Override
-	public void init() {
+	public void configure() {
 		Class<?> c = this.getType();
 		while (c != null) {
 			for (Field field : c.getDeclaredFields()) {

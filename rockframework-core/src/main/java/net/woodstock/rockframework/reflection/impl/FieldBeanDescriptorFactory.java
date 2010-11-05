@@ -6,7 +6,9 @@ class FieldBeanDescriptorFactory extends AbstractBeanDescriptorFactory {
 
 	@Override
 	public BeanDescriptor getBeanDescriptorInternal(final Class<?> clazz) {
-		return new FieldBeanDescriptor(clazz);
+		FieldBeanDescriptor beanDescriptor = new FieldBeanDescriptor(clazz);
+		beanDescriptor.configure();
+		return beanDescriptor;
 	}
 
 }

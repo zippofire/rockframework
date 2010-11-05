@@ -25,7 +25,7 @@ import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilderImpl;
-import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.utils.ConditionUtils;
 import net.woodstock.rockframework.web.config.WebLog;
 import net.woodstock.rockframework.web.struts2.Interceptor;
 import ognl.NoSuchPropertyException;
@@ -66,7 +66,7 @@ public class EntityInterceptor extends Interceptor {
 					}
 				}
 
-				if ((StringUtils.isNotEmpty(value)) && (this.isIdParameter(key))) {
+				if ((ConditionUtils.isNotEmpty(value)) && (this.isIdParameter(key))) {
 					String entityName = this.getEntityName(key);
 					this.setIdParameter(action, entityName, value);
 				}

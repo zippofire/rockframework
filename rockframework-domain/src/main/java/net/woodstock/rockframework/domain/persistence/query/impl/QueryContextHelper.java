@@ -34,7 +34,6 @@ import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilderImpl;
 import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.utils.ConditionUtils;
-import net.woodstock.rockframework.utils.StringUtils;
 
 @SuppressWarnings("rawtypes")
 abstract class QueryContextHelper {
@@ -244,7 +243,7 @@ abstract class QueryContextHelper {
 	}
 
 	private static void handleStringValue(final QueryContext context, final Map<String, Object> options, final String name, final String alias, final String value) {
-		if (StringUtils.isEmpty(value)) {
+		if (ConditionUtils.isEmpty(value)) {
 			return;
 		}
 		String sqlName = name;

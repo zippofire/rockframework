@@ -34,7 +34,7 @@ public abstract class FileUtils {
 	}
 
 	public static String getName(final String src) {
-		if (StringUtils.isEmpty(src)) {
+		if (ConditionUtils.isEmpty(src)) {
 			return null;
 		}
 		if (src.indexOf(FileUtils.UNIX_FILE_SEPARATOR) != -1) {
@@ -66,7 +66,7 @@ public abstract class FileUtils {
 	}
 
 	public static String getExtension(final String src) {
-		if (StringUtils.isEmpty(src)) {
+		if (ConditionUtils.isEmpty(src)) {
 			return null;
 		}
 		String fileName = FileUtils.getName(src);
@@ -95,7 +95,7 @@ public abstract class FileUtils {
 	}
 
 	public static String getParentPath(final String src) {
-		if (StringUtils.isEmpty(src)) {
+		if (ConditionUtils.isEmpty(src)) {
 			return null;
 		}
 		if (src.indexOf(FileUtils.UNIX_FILE_SEPARATOR) != -1) {
@@ -118,7 +118,7 @@ public abstract class FileUtils {
 	}
 
 	public static String getPath(final String src) {
-		if (StringUtils.isEmpty(src)) {
+		if (ConditionUtils.isEmpty(src)) {
 			return null;
 		}
 		return src;

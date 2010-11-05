@@ -24,7 +24,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import net.woodstock.rockframework.util.Assert;
-import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.utils.ConditionUtils;
 
 public class Command implements Serializable {
 
@@ -70,7 +70,7 @@ public class Command implements Serializable {
 		if ((this.subCommands != null) && (this.subCommands.size() > 0)) {
 			OutputStreamWriter writer = new OutputStreamWriter(process.getOutputStream());
 			for (String sc : this.subCommands) {
-				if (StringUtils.isNotEmpty(sc)) {
+				if (ConditionUtils.isNotEmpty(sc)) {
 					writer.write(sc);
 				}
 			}
@@ -84,7 +84,7 @@ public class Command implements Serializable {
 
 		String line = readerInput.readLine();
 		while (line != null) {
-			if (StringUtils.isNotEmpty(line)) {
+			if (ConditionUtils.isNotEmpty(line)) {
 				output.addOut(line.trim());
 			}
 			line = readerInput.readLine();
@@ -92,7 +92,7 @@ public class Command implements Serializable {
 
 		line = readerError.readLine();
 		while (line != null) {
-			if (StringUtils.isNotEmpty(line)) {
+			if (ConditionUtils.isNotEmpty(line)) {
 				output.addErr(line.trim());
 			}
 			line = readerError.readLine();

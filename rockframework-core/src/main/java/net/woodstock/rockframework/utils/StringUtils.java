@@ -88,7 +88,7 @@ public abstract class StringUtils {
 	}
 
 	public static boolean hasOnlyDigit(final String s) {
-		if (StringUtils.isEmpty(s)) {
+		if (ConditionUtils.isEmpty(s)) {
 			return false;
 		}
 		for (char c : s.toCharArray()) {
@@ -100,7 +100,7 @@ public abstract class StringUtils {
 	}
 
 	public static boolean hasOnlyLetter(final String s) {
-		if (StringUtils.isEmpty(s)) {
+		if (ConditionUtils.isEmpty(s)) {
 			return false;
 		}
 		for (char c : s.toCharArray()) {
@@ -112,7 +112,7 @@ public abstract class StringUtils {
 	}
 
 	public static boolean hasOnlyLetterOrDigit(final String s) {
-		if (StringUtils.isEmpty(s)) {
+		if (ConditionUtils.isEmpty(s)) {
 			return false;
 		}
 		for (char c : s.toCharArray()) {
@@ -121,14 +121,6 @@ public abstract class StringUtils {
 			}
 		}
 		return true;
-	}
-
-	public static boolean isEmpty(final String s) {
-		return ConditionUtils.isEmpty(s);
-	}
-
-	public static boolean isNotEmpty(final String s) {
-		return ConditionUtils.isNotEmpty(s);
 	}
 
 	public static String lpad(final String s, final int size, final char pad) {

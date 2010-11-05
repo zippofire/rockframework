@@ -6,7 +6,9 @@ class MixedBeanDescriptorFactory extends AbstractBeanDescriptorFactory {
 
 	@Override
 	public BeanDescriptor getBeanDescriptorInternal(final Class<?> clazz) {
-		return new MixedBeanDescriptor(clazz);
+		MixedBeanDescriptor beanDescriptor = new MixedBeanDescriptor(clazz);
+		beanDescriptor.configure();
+		return beanDescriptor;
 	}
 
 }

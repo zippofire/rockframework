@@ -21,7 +21,7 @@ import java.io.FilenameFilter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.utils.ConditionUtils;
 
 abstract class AbstractFileRegexFilter implements FilenameFilter {
 
@@ -41,7 +41,7 @@ abstract class AbstractFileRegexFilter implements FilenameFilter {
 
 	@Override
 	public boolean accept(final File dir, final String name) {
-		if (StringUtils.isEmpty(this.filter)) {
+		if (ConditionUtils.isEmpty(this.filter)) {
 			return true;
 		}
 

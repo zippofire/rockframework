@@ -19,22 +19,20 @@ package net.woodstock.rockframework.net.mail;
 import java.util.Collection;
 import java.util.Properties;
 
-import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
 
-import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.utils.ConditionUtils;
 
 public class SimpleMailSender {
 
 	public static final String	PROTOCOL			= "smtp";
 
 	public static final int		DEFAULT_SMTP_PORT	= 25;
+
+	private static final long	TIMEOUT				= 15000;
 
 	private String				smtpServer;
 
@@ -69,112 +67,58 @@ public class SimpleMailSender {
 		this.password = password;
 	}
 
-	public void send(final SimpleMail message) throws MessagingException {
+	public void send(final SimpleMail message) {
 		this.send(message, this.getSession());
 	}
 
-	public void send(final SimpleMail[] messages) throws MessagingException {
+	public void send(final SimpleMail[] messages) {
 		for (SimpleMail message : messages) {
 			this.send(message, this.getSession());
 		}
 	}
 
-	public void send(final Collection<SimpleMail> messages) throws MessagingException {
+	public void send(final Collection<SimpleMail> messages) {
 		for (SimpleMail message : messages) {
 			this.send(message, this.getSession());
 		}
 	}
 
-	private void send(final SimpleMail message, final Session session) throws MessagingException {
-		MimeMessage mimeMessage = new MimeMessage(session);
-		MimeMultipart body = new MimeMultipart();
-
-		mimeMessage.setSubject(message.getSubject());
-		mimeMessage.setFrom(new InternetAddress(message.getFrom()));
-
-		if (message.getReplyTo().size() > 0) {
-			InternetAddress[] address = new InternetAddress[message.getReplyTo().size()];
-			int index = 0;
-			for (String s : message.getReplyTo()) {
-				address[index++] = new InternetAddress(s);
-			}
-			mimeMessage.setReplyTo(address);
-		}
-
-		if (message.getBcc().size() > 0) {
-			for (String s : message.getBcc()) {
-				mimeMessage.addRecipient(RecipientType.BCC, new InternetAddress(s));
-			}
-		}
-
-		if (message.getCc().size() > 0) {
-			for (String s : message.getCc()) {
-				mimeMessage.addRecipient(RecipientType.CC, new InternetAddress(s));
-			}
-		}
-
-		if (message.getTo().size() > 0) {
-			for (String s : message.getTo()) {
-				mimeMessage.addRecipient(RecipientType.TO, new InternetAddress(s));
-			}
-		}
-
-		if (message.isHtml()) {
-			MimeBodyPart part = new MimeBodyPart();
-			part.setContent(message.getText(), "text/html");
-			body.addBodyPart(part);
-		} else {
-			MimeBodyPart part = new MimeBodyPart();
-			part.setContent(message.getText(), "text/plain");
-			body.addBodyPart(part);
-		}
-
-		if (message.getAttach().size() > 0) {
-			for (Attachment a : message.getAttach()) {
-				MimeBodyPart part = new MimeBodyPart();
-
-				part.setContent(a.getContentAsString(), a.getContentType());
-				part.setFileName(a.getName());
-				body.addBodyPart(part);
-
-				// DataSource source = a.getDataSource();
-				// part.setDataHandler(new DataHandler(source));
-				// part.setFileName(source.getName());
-				// body.addBodyPart(part);
-			}
-		}
-
-		mimeMessage.setContent(body);
-
-		if (this.hasAuthentication()) {
+	private void send(final SimpleMail message, final Session session) {
+		try {
+			MimeMessage mimeMessage = MailHelper.toMimeMessage(message, session);
 			Transport transport = this.getTransport(session);
-			mimeMessage.saveChanges();
-			transport.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
-		} else {
-			Transport.send(mimeMessage);
+			this.send(mimeMessage, transport);
+		} catch (MessagingException e) {
+			throw new MailException(e);
 		}
 	}
 
-	private boolean hasAuthentication() {
-		return StringUtils.isNotEmpty(this.user);
+	protected void send(final MimeMessage mimeMessage, final Transport transport) {
+		try {
+			MailHelper.send(mimeMessage, transport);
+		} catch (MessagingException e) {
+			throw new MailException(e);
+		}
 	}
 
 	private Session getSession() {
 		Properties properties = new Properties();
-		if (this.isDebug()) {
-			properties.put("mail.debug", "true");
-		}
+		properties.put("mail.debug", Boolean.toString(this.debug));
 		properties.put("mail.smtp.host", this.smtpServer);
 		properties.put("mail.smtp.port", Integer.toString(this.smtpPort));
-		properties.put("mail.smtp.timeout", "15000");
-		properties.put("mail.smtp.connectiontimeout", "15000");
-		if (StringUtils.isNotEmpty(this.user)) {
+		properties.put("mail.smtp.timeout", Long.toString(SimpleMailSender.TIMEOUT));
+		properties.put("mail.smtp.connectiontimeout", Long.toString(SimpleMailSender.TIMEOUT));
+		if (ConditionUtils.isNotEmpty(this.user)) {
 			properties.put("mail.smtp.auth", "true");
 		}
 		return Session.getDefaultInstance(properties);
 	}
 
 	private Transport getTransport(final Session session) throws MessagingException {
+		if (ConditionUtils.isEmpty(this.user)) {
+			return null;
+		}
+
 		Transport transport = session.getTransport(SimpleMailSender.PROTOCOL);
 		transport.connect(this.smtpServer, this.user, this.password);
 		return transport;

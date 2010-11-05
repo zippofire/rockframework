@@ -19,8 +19,8 @@ package net.woodstock.rockframework.utils;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 abstract class MimeUtils {
 
@@ -51,7 +51,7 @@ abstract class MimeUtils {
 	private static void createMimeMap(final String name, final String[] extensions) {
 		Collection<String> c = new HashSet<String>();
 		for (String s : extensions) {
-			if (StringUtils.isNotEmpty(s)) {
+			if (ConditionUtils.isNotEmpty(s)) {
 				c.add(s);
 			}
 		}

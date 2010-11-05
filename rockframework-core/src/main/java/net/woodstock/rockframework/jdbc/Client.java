@@ -22,10 +22,10 @@ import java.sql.SQLException;
 public interface Client {
 
 	// DML
-	boolean execute(String sql, ParameterList args) throws SQLException;
+	void execute(String dml, ParameterList args) throws SQLException;
 
-	ResultSet query(String query, ParameterList args) throws SQLException;
+	ResultSet executeQuery(String sql, ParameterList args) throws SQLException;
 
-	int update(String update, ParameterList args) throws SQLException;
+	int executeUpdate(String sql, ParameterList args) throws SQLException;
 
 }

@@ -27,7 +27,7 @@ class MethodBeanDescriptor extends AbstractBeanDescriptor {
 	}
 
 	@Override
-	public void init() {
+	public void configure() {
 		Class<?> c = this.getType();
 		for (Method method : c.getMethods()) {
 			if (BeanDescriptorHelper.isValidGetterOrSetter(method)) {

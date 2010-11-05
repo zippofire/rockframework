@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
-import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.utils.ConditionUtils;
 import net.woodstock.rockframework.web.utils.RequestUtils;
 
 public class RegexRefererFilter extends NoRefererFilter {
@@ -34,7 +34,7 @@ public class RegexRefererFilter extends NoRefererFilter {
 		if (this.regex == null) {
 			this.regex = this.getInitParameter(RegexRefererFilter.REGEX_PARAMETER);
 		}
-		if (StringUtils.isEmpty(this.regex)) {
+		if (ConditionUtils.isEmpty(this.regex)) {
 			throw new RuntimeException("Parameter '" + RegexRefererFilter.REGEX_PARAMETER + "' must be set");
 		}
 		if (super.validateReferer(request)) {

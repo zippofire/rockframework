@@ -140,7 +140,7 @@ public abstract class NumberUtils {
 
 	// Parse
 	public static Number parse(final String value, final String pattern) throws ParseException {
-		if (StringUtils.isEmpty(value)) {
+		if (ConditionUtils.isEmpty(value)) {
 			return null;
 		}
 		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(pattern);

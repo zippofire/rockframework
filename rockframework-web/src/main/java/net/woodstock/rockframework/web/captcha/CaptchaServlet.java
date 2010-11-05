@@ -22,8 +22,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.woodstock.rockframework.utils.ConditionUtils;
 import net.woodstock.rockframework.utils.NumberUtils;
-import net.woodstock.rockframework.utils.StringUtils;
 import net.woodstock.rockframework.web.servlet.AbstractHttpServlet;
 
 public class CaptchaServlet extends AbstractHttpServlet {
@@ -43,7 +43,7 @@ public class CaptchaServlet extends AbstractHttpServlet {
 	@Override
 	public void init() {
 		String randomChars = this.getInitParameter(CaptchaServlet.RANDOM_CHARS_PARAMETER);
-		if (StringUtils.isNotEmpty(randomChars)) {
+		if (ConditionUtils.isNotEmpty(randomChars)) {
 			this.chars = randomChars.toCharArray();
 		} else {
 			this.chars = CaptchaServlet.RANDOM_CHARS.toCharArray();

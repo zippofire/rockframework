@@ -33,10 +33,9 @@ abstract class AbstractBeanDescriptor implements BeanDescriptor {
 		super();
 		this.type = clazz;
 		this.properties = new LinkedList<PropertyDescriptor>();
-		this.init();
 	}
 
-	public abstract void init();
+	public abstract void configure();
 
 	@Override
 	public String getName() {

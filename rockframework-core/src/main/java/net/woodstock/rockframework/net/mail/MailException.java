@@ -16,29 +16,22 @@
  */
 package net.woodstock.rockframework.net.mail;
 
-import java.io.IOException;
-import java.io.InputStream;
+import net.woodstock.rockframework.net.NetworkException;
 
-import net.woodstock.rockframework.util.Assert;
+public class MailException extends NetworkException {
 
-public class InputStreamAttachment extends AttachmentBean {
+	private static final long	serialVersionUID	= 1L;
 
-	public InputStreamAttachment(final String name, final String contentType, final InputStream inputStream) {
-		super();
-		Assert.notEmpty(name, "name");
-		Assert.notEmpty(contentType, "contentType");
-		Assert.notNull(inputStream, "inputStream");
+	public MailException(final String message) {
+		super(message);
+	}
 
-		try {
-			byte[] bytes = new byte[inputStream.available()];
-			inputStream.read(bytes);
+	public MailException(final Throwable cause) {
+		super(cause);
+	}
 
-			this.setName(name);
-			this.setContentType(contentType);
-			this.setContentAsString(new String(bytes));
-		} catch (IOException e) {
-			throw new MailException(e);
-		}
+	public MailException(final String message, final Throwable cause) {
+		super(message, cause);
 	}
 
 }

@@ -53,23 +53,25 @@ public class CommonClient implements Client {
 	}
 
 	@Override
-	public boolean execute(final String sql, final ParameterList args) throws SQLException {
-		PreparedStatement ps = ClientHelper.createStatement(sql, this.connection, args, this.typeHandler);
-		boolean b = ps.execute();
+	public void execute(final String dml, final ParameterList args) throws SQLException {
+		Assert.notEmpty(dml, "dml");
+		PreparedStatement ps = ClientHelper.createStatement(dml, this.connection, args, this.typeHandler);
+		ps.execute();
 		ps.close();
-		return b;
 	}
 
 	@Override
-	public ResultSet query(final String query, final ParameterList args) throws SQLException {
-		PreparedStatement ps = ClientHelper.createStatement(query, this.connection, args, this.typeHandler);
+	public ResultSet executeQuery(final String sql, final ParameterList args) throws SQLException {
+		Assert.notEmpty(sql, "sql");
+		PreparedStatement ps = ClientHelper.createStatement(sql, this.connection, args, this.typeHandler);
 		ResultSet rs = ps.executeQuery();
 		return rs;
 	}
 
 	@Override
-	public int update(final String update, final ParameterList args) throws SQLException {
-		PreparedStatement ps = ClientHelper.createStatement(update, this.connection, args, this.typeHandler);
+	public int executeUpdate(final String sql, final ParameterList args) throws SQLException {
+		Assert.notEmpty(sql, "sql");
+		PreparedStatement ps = ClientHelper.createStatement(sql, this.connection, args, this.typeHandler);
 		int i = ps.executeUpdate();
 		ps.close();
 		return i;

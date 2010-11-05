@@ -36,8 +36,8 @@ public class CommonCallableClient extends CommonClient implements CallableClient
 	}
 
 	@Override
-	public Object callFunction(final Type outType, final String functionName, final ParameterList args) throws SQLException {
-		CallableStatement cs = ClientHelper.createFuncionStatement(outType, functionName, this.getConnection(), args, this.getTypeHandler());
+	public Object callFunction(final Type outType, final String function, final ParameterList args) throws SQLException {
+		CallableStatement cs = ClientHelper.createFuncionStatement(outType, function, this.getConnection(), args, this.getTypeHandler());
 		cs.execute();
 		Object o = ClientHelper.getParameter(1, outType, cs);
 		cs.close();
@@ -45,8 +45,8 @@ public class CommonCallableClient extends CommonClient implements CallableClient
 	}
 
 	@Override
-	public void callProcedure(final String procedureName, final ParameterList args) throws SQLException {
-		CallableStatement cs = ClientHelper.createProcedureStatement(procedureName, this.getConnection(), args, this.getTypeHandler());
+	public void callProcedure(final String procedure, final ParameterList args) throws SQLException {
+		CallableStatement cs = ClientHelper.createProcedureStatement(procedure, this.getConnection(), args, this.getTypeHandler());
 		cs.execute();
 		cs.close();
 	}

@@ -25,6 +25,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.woodstock.rockframework.utils.ConditionUtils;
 import net.woodstock.rockframework.utils.IOUtils;
 import net.woodstock.rockframework.utils.StringUtils;
 import net.woodstock.rockframework.web.config.WebLog;
@@ -50,7 +51,7 @@ public class CharsetFilter extends AbstractHttpFilter {
 	public void init() {
 		this.from = this.getInitParameter(CharsetFilter.FROM_PARAMETER);
 		this.to = this.getInitParameter(CharsetFilter.FROM_PARAMETER);
-		if (StringUtils.isEmpty(this.to)) {
+		if (ConditionUtils.isEmpty(this.to)) {
 			this.charsetTo = Charset.defaultCharset();
 		}
 		this.charsetFrom = Charset.forName(this.from);

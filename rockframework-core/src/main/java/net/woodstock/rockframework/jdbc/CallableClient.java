@@ -20,8 +20,8 @@ import java.sql.SQLException;
 
 public interface CallableClient extends Client {
 
-	Object callFunction(Type outType, String functionName, ParameterList args) throws SQLException;
+	Object callFunction(Type outType, String function, ParameterList args) throws SQLException;
 
-	void callProcedure(String procedureName, ParameterList args) throws SQLException;
+	void callProcedure(String procedure, ParameterList args) throws SQLException;
 
 }

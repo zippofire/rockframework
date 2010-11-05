@@ -19,7 +19,7 @@ package net.woodstock.rockframework.web.struts2.security;
 import java.lang.reflect.Method;
 import java.util.regex.Pattern;
 
-import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.utils.ConditionUtils;
 import net.woodstock.rockframework.web.config.WebLog;
 import net.woodstock.rockframework.web.struts2.ConditionalInterceptor;
 import net.woodstock.rockframework.web.struts2.Constants;
@@ -66,9 +66,9 @@ public class RefererInterceptor extends ConditionalInterceptor<String> {
 			String url = RequestUtils.getRequestUrl(this.getRequest());
 			String referer = RequestUtils.getReferer(this.getRequest());
 
-			if (StringUtils.isNotEmpty(referer)) {
-				if (StringUtils.isNotEmpty(regex)) {
-					if ((StringUtils.isEmpty(referer)) || (!Pattern.matches(regex, referer))) {
+			if (ConditionUtils.isNotEmpty(referer)) {
+				if (ConditionUtils.isNotEmpty(regex)) {
+					if ((ConditionUtils.isEmpty(referer)) || (!Pattern.matches(regex, referer))) {
 						WebLog.getInstance().getLog().debug("Invalid referer for " + url + " found " + referer + " required " + regex);
 						return Constants.INVALID_REFERER;
 					}
@@ -85,7 +85,7 @@ public class RefererInterceptor extends ConditionalInterceptor<String> {
 
 	private String getRegex(final Referer annotation) {
 		String s = annotation.value();
-		if (StringUtils.isNotEmpty(s)) {
+		if (ConditionUtils.isNotEmpty(s)) {
 			return s;
 		}
 		return this.regex;

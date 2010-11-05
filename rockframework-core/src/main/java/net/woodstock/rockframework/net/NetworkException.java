@@ -14,22 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.web.filter.referer;
+package net.woodstock.rockframework.net;
 
-import javax.servlet.http.HttpServletRequest;
+public class NetworkException extends RuntimeException {
 
-import net.woodstock.rockframework.utils.ConditionUtils;
-import net.woodstock.rockframework.web.utils.RequestUtils;
+	private static final long	serialVersionUID	= 1L;
 
-public class NoRefererFilter extends RefererFilter {
+	public NetworkException(final String message) {
+		super(message);
+	}
 
-	@Override
-	protected boolean validateReferer(final HttpServletRequest request) {
-		String referer = RequestUtils.getReferer(request);
-		if (ConditionUtils.isEmpty(referer)) {
-			return false;
-		}
-		return true;
+	public NetworkException(final Throwable cause) {
+		super(cause);
+	}
+
+	public NetworkException(final String message, final Throwable cause) {
+		super(message, cause);
 	}
 
 }

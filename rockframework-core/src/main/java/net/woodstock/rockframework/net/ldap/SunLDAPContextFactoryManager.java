@@ -14,22 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.web.filter.referer;
+package net.woodstock.rockframework.net.ldap;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.naming.spi.InitialContextFactory;
 
-import net.woodstock.rockframework.utils.ConditionUtils;
-import net.woodstock.rockframework.web.utils.RequestUtils;
+import com.sun.jndi.ldap.LdapCtxFactory;
 
-public class NoRefererFilter extends RefererFilter {
+class SunLDAPContextFactoryManager extends LDAPContextFactoryManager {
+
+	private static final String					SUN_FACTORY_NAME	= "com.sun.jndi.ldap.LdapCtxFactory";
+
+	private static final Class<LdapCtxFactory>	SUN_FACTORY_TYPE	= LdapCtxFactory.class;
 
 	@Override
-	protected boolean validateReferer(final HttpServletRequest request) {
-		String referer = RequestUtils.getReferer(request);
-		if (ConditionUtils.isEmpty(referer)) {
-			return false;
-		}
-		return true;
+	public String getName() {
+		return SunLDAPContextFactoryManager.SUN_FACTORY_NAME;
+	}
+
+	@Override
+	public Class<? extends InitialContextFactory> getType() {
+		return SunLDAPContextFactoryManager.SUN_FACTORY_TYPE;
 	}
 
 }

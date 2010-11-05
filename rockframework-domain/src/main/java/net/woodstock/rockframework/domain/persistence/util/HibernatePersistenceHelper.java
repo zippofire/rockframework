@@ -18,7 +18,7 @@ package net.woodstock.rockframework.domain.persistence.util;
 
 import net.woodstock.rockframework.domain.config.DomainConfig;
 import net.woodstock.rockframework.domain.config.DomainLog;
-import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.utils.ConditionUtils;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -41,7 +41,7 @@ public final class HibernatePersistenceHelper implements PersistenceHelper<Sessi
 	private HibernatePersistenceHelper() {
 		super();
 		String s = DomainConfig.getInstance().getValue(HibernatePersistenceHelper.HIBERNATE_ANNOTATION_PROPERTY);
-		if (StringUtils.isNotEmpty(s)) {
+		if (ConditionUtils.isNotEmpty(s)) {
 			this.annotation = Boolean.parseBoolean(s);
 		} else {
 			this.annotation = true;

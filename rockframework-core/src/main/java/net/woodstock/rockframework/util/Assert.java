@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 
 import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.config.CoreMessage;
-import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.utils.ConditionUtils;
 
 public abstract class Assert {
 
@@ -248,7 +248,7 @@ public abstract class Assert {
 	}
 
 	public static void notEmpty(final String str, final String name) {
-		if (StringUtils.isEmpty(str)) {
+		if (ConditionUtils.isEmpty(str)) {
 			throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_NOT_EMPTY, name));
 		}
 	}

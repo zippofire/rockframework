@@ -6,7 +6,9 @@ class MethodBeanDescriptorFactory extends AbstractBeanDescriptorFactory {
 
 	@Override
 	public BeanDescriptor getBeanDescriptorInternal(final Class<?> clazz) {
-		return new MethodBeanDescriptor(clazz);
+		MethodBeanDescriptor beanDescriptor = new MethodBeanDescriptor(clazz);
+		beanDescriptor.configure();
+		return beanDescriptor;
 	}
 
 }

@@ -35,8 +35,8 @@ import net.woodstock.rockframework.security.crypt.KeyPairType;
 import net.woodstock.rockframework.security.crypt.KeyType;
 import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.utils.Base64Utils;
+import net.woodstock.rockframework.utils.ConditionUtils;
 import net.woodstock.rockframework.utils.IOUtils;
-import net.woodstock.rockframework.utils.StringUtils;
 
 abstract class CrypterHelper {
 
@@ -131,7 +131,7 @@ abstract class CrypterHelper {
 			}
 
 			if (valid) {
-				if ((StringUtils.isNotEmpty(s)) && (s.indexOf(":") == -1)) {
+				if ((ConditionUtils.isNotEmpty(s)) && (s.indexOf(":") == -1)) {
 					builder.append(s);
 					builder.append("\n");
 				}
@@ -155,7 +155,7 @@ abstract class CrypterHelper {
 			}
 
 			if (valid) {
-				if ((StringUtils.isNotEmpty(s)) && (s.indexOf(":") == -1)) {
+				if ((ConditionUtils.isNotEmpty(s)) && (s.indexOf(":") == -1)) {
 					builder.append(s);
 					builder.append("\n");
 				}

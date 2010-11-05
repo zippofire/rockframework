@@ -19,14 +19,14 @@ package net.woodstock.rockframework.web.jsf.converter;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.utils.ConditionUtils;
 import net.woodstock.rockframework.web.config.WebLog;
 
 public abstract class SimpleFacesConverter<T> extends FacesConverter {
 
 	@Override
 	public final T getAsObject(final FacesContext context, final UIComponent component, final String value) {
-		if (StringUtils.isEmpty(value)) {
+		if (ConditionUtils.isEmpty(value)) {
 			return null;
 		}
 

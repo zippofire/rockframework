@@ -19,7 +19,6 @@ package net.woodstock.rockframework.net.ldap;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Hashtable;
-import java.util.LinkedList;
 
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
@@ -35,8 +34,6 @@ import net.woodstock.rockframework.util.Assert;
 public class LDAPClient implements Serializable {
 
 	private static final long		serialVersionUID		= 3389854358379894685L;
-
-	public static final String		CONTEXT_FACTORY			= "com.sun.jndi.ldap.LdapCtxFactory";
 
 	public static final String		AUTHENTICATION_NONE		= "none";
 
@@ -111,69 +108,71 @@ public class LDAPClient implements Serializable {
 		return this.context != null;
 	}
 
-	public void connect() throws NamingException {
-		Hashtable<String, String> env = new Hashtable<String, String>();
-		env.put(Context.INITIAL_CONTEXT_FACTORY, LDAPClient.CONTEXT_FACTORY);
-		env.put(Context.PROVIDER_URL, this.url);
-		env.put(Context.SECURITY_AUTHENTICATION, this.authenticationType);
-		if (!this.authenticationType.equals(LDAPClient.AUTHENTICATION_NONE)) {
-			env.put(Context.SECURITY_PRINCIPAL, this.user);
-			env.put(Context.SECURITY_CREDENTIALS, this.password);
+	public void connect() {
+		try {
+			Hashtable<String, String> env = new Hashtable<String, String>();
+			env.put(Context.INITIAL_CONTEXT_FACTORY, LDAPContextFactoryManager.getInstance().getName());
+			env.put(Context.PROVIDER_URL, this.url);
+			env.put(Context.SECURITY_AUTHENTICATION, this.authenticationType);
+			if (!this.authenticationType.equals(LDAPClient.AUTHENTICATION_NONE)) {
+				env.put(Context.SECURITY_PRINCIPAL, this.user);
+				env.put(Context.SECURITY_CREDENTIALS, this.password);
+			}
+
+			this.context = new InitialDirContext(env);
+		} catch (NamingException e) {
+			throw new LDAPException(e);
 		}
-
-		this.context = new InitialDirContext(env);
 	}
 
-	public void disconnect() throws NamingException {
-		this.context.close();
-		this.context = null;
+	public void disconnect() {
+		try {
+			this.context.close();
+			this.context = null;
+		} catch (NamingException e) {
+			throw new LDAPException(e);
+		}
 	}
 
-	public Collection<LDAPSearchResult> search(final LDAPFilter filter) throws NamingException {
+	public Collection<LDAPSearchResult> search(final LDAPFilter filter) {
 		return this.search(filter.getBaseName(), filter.getFilter(), filter.getAttributes(), filter.getLimit());
 	}
 
-	public Collection<LDAPSearchResult> search(final String baseName, final String filter) throws NamingException {
+	public Collection<LDAPSearchResult> search(final String baseName, final String filter) {
 		return this.search(baseName, filter, null, 0);
 	}
 
-	public Collection<LDAPSearchResult> search(final String baseName, final String filter, final int limit) throws NamingException {
+	public Collection<LDAPSearchResult> search(final String baseName, final String filter, final int limit) {
 		return this.search(baseName, filter, null, limit);
 	}
 
-	public Collection<LDAPSearchResult> search(final String baseName, final String filter, final String[] attributes) throws NamingException {
+	public Collection<LDAPSearchResult> search(final String baseName, final String filter, final String[] attributes) {
 		return this.search(baseName, filter, attributes, 0);
 	}
 
-	public Collection<LDAPSearchResult> search(final String baseName, final String filter, final String[] attributes, final int limit) throws NamingException {
-		if ((this.connectOnSearch) && (!this.isConnected())) {
-			this.connect();
+	public Collection<LDAPSearchResult> search(final String baseName, final String filter, final String[] attributes, final int limit) {
+		try {
+			if ((this.connectOnSearch) && (!this.isConnected())) {
+				this.connect();
+			}
+			Assert.notNull(this.context, "context");
+			SearchControls controls = new SearchControls();
+			controls.setReturningAttributes(attributes);
+			controls.setCountLimit(limit);
+			controls.setTimeLimit(0);
+			controls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+
+			NamingEnumeration<SearchResult> results = this.context.search(baseName, filter, controls);
+
+			Collection<LDAPSearchResult> c = LDAPHelper.toCollection(results);
+
+			if (this.connectOnSearch) {
+				this.disconnect();
+			}
+
+			return c;
+		} catch (NamingException e) {
+			throw new LDAPException(e);
 		}
-		Assert.notNull(this.context, "context");
-		SearchControls controls = new SearchControls();
-		controls.setReturningAttributes(attributes);
-		controls.setCountLimit(limit);
-		controls.setTimeLimit(0);
-		controls.setSearchScope(SearchControls.SUBTREE_SCOPE);
-
-		NamingEnumeration<SearchResult> results = this.context.search(baseName, filter, controls);
-
-		Collection<LDAPSearchResult> c = this.toCollection(results);
-
-		if (this.connectOnSearch) {
-			this.disconnect();
-		}
-
-		return c;
-	}
-
-	private Collection<LDAPSearchResult> toCollection(final NamingEnumeration<SearchResult> results) throws NamingException {
-		Collection<LDAPSearchResult> collection = new LinkedList<LDAPSearchResult>();
-		while (results.hasMore()) {
-			SearchResult result = results.next();
-			LDAPSearchResult ldapResult = new LDAPSearchResult(result);
-			collection.add(ldapResult);
-		}
-		return collection;
 	}
 }

@@ -221,7 +221,7 @@ public abstract class ConditionUtils {
 		}
 		return true;
 	}
-	
+
 	public static boolean isNotEmptyAsString(final Object o) {
 		if (o == null) {
 			return false;
@@ -229,4 +229,20 @@ public abstract class ConditionUtils {
 		String str = o.toString();
 		return ConditionUtils.isEmpty(str);
 	}
+
+	// Object
+	public static boolean isNull(final Object o) {
+		if (o == null) {
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean isNotNull(final Object o) {
+		if (o == null) {
+			return false;
+		}
+		return true;
+	}
+
 }

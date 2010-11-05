@@ -21,7 +21,7 @@ import javax.persistence.Transient;
 
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
-import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.utils.ConditionUtils;
 
 final class JPAHelper {
 
@@ -40,7 +40,7 @@ final class JPAHelper {
 		if (beanDescriptor.isAnnotationPresent(Entity.class)) {
 			Entity annotation = beanDescriptor.getAnnotation(Entity.class);
 			String name = annotation.name();
-			if (StringUtils.isEmpty(name)) {
+			if (ConditionUtils.isEmpty(name)) {
 				name = beanDescriptor.getType().getSimpleName();
 			}
 			return name;

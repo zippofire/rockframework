@@ -23,9 +23,9 @@ import java.nio.charset.Charset;
 import javax.servlet.http.HttpServletRequest;
 
 import net.woodstock.rockframework.util.Assert;
+import net.woodstock.rockframework.utils.ConditionUtils;
 import net.woodstock.rockframework.utils.IOUtils;
 import net.woodstock.rockframework.utils.LocaleUtils;
-import net.woodstock.rockframework.utils.StringUtils;
 
 public abstract class RequestUtils {
 
@@ -118,7 +118,7 @@ public abstract class RequestUtils {
 		Assert.notNull(request, "request");
 		InputStream inputStream = request.getInputStream();
 		Charset charset = LocaleUtils.getCharset();
-		if (StringUtils.isEmpty(request.getCharacterEncoding())) {
+		if (ConditionUtils.isEmpty(request.getCharacterEncoding())) {
 			charset = Charset.forName(request.getCharacterEncoding());
 		}
 		String body = new String(IOUtils.toByteArray(inputStream), charset);

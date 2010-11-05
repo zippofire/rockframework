@@ -41,29 +41,36 @@ public class HttpClient implements Serializable {
 	private transient org.apache.commons.httpclient.HttpClient	client;
 
 	public HttpClient() {
+		super();
 		this.client = new org.apache.commons.httpclient.HttpClient();
 	}
 
-	public String openText(final String url, final Map<String, Object> params) throws IOException {
-		GetMethod method = this.createGetMethod(url, params);
-		return method.getResponseBodyAsString();
+	public String openText(final String url, final Map<String, Object> params) {
+		try {
+			GetMethod method = this.createGetMethod(url, params);
+			return method.getResponseBodyAsString();
+		} catch (IOException e) {
+			throw new HttpException(e);
+		}
 	}
 
-	public XmlDocument openXml(final String url, final Map<String, Object> params) throws IOException {
-		GetMethod method = this.createGetMethod(url, params);
-		int status = this.client.executeMethod(method);
-		if (status == HttpStatus.SC_OK) {
-			try {
+	public XmlDocument openXml(final String url, final Map<String, Object> params) {
+		try {
+			GetMethod method = this.createGetMethod(url, params);
+			int status = this.client.executeMethod(method);
+			if (status == HttpStatus.SC_OK) {
 				return XmlDocument.read(method.getResponseBodyAsStream());
-			} catch (SAXException e) {
-				throw new RuntimeException(e);
 			}
+			XmlDocument doc = new XmlDocument(HttpClient.ERROR_ELEMENT);
+			XmlElement root = doc.getRoot();
+			root.setAttribute(HttpClient.ERRORCODE_ATTRIBUTE, Integer.valueOf(status));
+			root.setTextContent(method.getResponseBodyAsString());
+			return doc;
+		} catch (SAXException e) {
+			throw new HttpException(e);
+		} catch (IOException e) {
+			throw new HttpException(e);
 		}
-		XmlDocument doc = new XmlDocument(HttpClient.ERROR_ELEMENT);
-		XmlElement root = doc.getRoot();
-		root.setAttribute(HttpClient.ERRORCODE_ATTRIBUTE, Integer.valueOf(status));
-		root.setTextContent(method.getResponseBodyAsString());
-		return doc;
 	}
 
 	private GetMethod createGetMethod(final String url, final Map<String, Object> params) {

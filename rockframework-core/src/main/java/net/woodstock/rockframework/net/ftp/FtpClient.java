@@ -22,11 +22,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.net.SocketException;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 
 import net.woodstock.rockframework.config.CoreLog;
+import net.woodstock.rockframework.net.NetworkException;
+import net.woodstock.rockframework.util.Assert;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
@@ -46,15 +47,26 @@ public class FtpClient implements Serializable {
 
 	private transient FTPClient	client;
 
-	public FtpClient(final String host, final String username, final String password) throws IOException {
+	public FtpClient(final String host, final String username, final String password) {
 		super();
+		Assert.notEmpty(host, "host");
+		Assert.notEmpty(username, "username");
+		Assert.notEmpty(password, "password");
+
 		this.host = host;
 		this.username = username;
 		this.password = password;
 		this.client = new FTPClient();
-		this.connect();
 	}
 
+	// Aux
+	private void checkConnected() {
+		if (this.client.isConnected()) {
+			throw new IllegalStateException("Client is not connected");
+		}
+	}
+
+	//
 	public void active() {
 		this.client.enterLocalActiveMode();
 	}
@@ -63,154 +75,174 @@ public class FtpClient implements Serializable {
 		this.client.enterLocalPassiveMode();
 	}
 
-	public void ascii() throws IOException {
-		this.client.setFileType(FTP.ASCII_FILE_TYPE);
-	}
-
-	public void binary() throws IOException {
-		this.client.setFileType(FTP.BINARY_FILE_TYPE);
-	}
-
-	public boolean cdup() throws IOException {
-		if (this.client.isConnected()) {
-			return this.client.cdup() != FtpClient.ERROR_CODE;
+	public void ascii() {
+		try {
+			this.client.setFileType(FTP.ASCII_FILE_TYPE);
+		} catch (IOException e) {
+			throw new FtpException(e);
 		}
-		return false;
 	}
 
-	public boolean cd(final String path) throws IOException {
-		if (this.client.isConnected()) {
+	public void binary() {
+		try {
+			this.client.setFileType(FTP.BINARY_FILE_TYPE);
+		} catch (IOException e) {
+			throw new FtpException(e);
+		}
+	}
+
+	public boolean cdup() {
+		try {
+			if (this.client.isConnected()) {
+				return this.client.cdup() != FtpClient.ERROR_CODE;
+			}
+			return false;
+		} catch (IOException e) {
+			throw new FtpException(e);
+		}
+	}
+
+	public boolean cd(final String path) {
+		try {
+			this.checkConnected();
 			return this.client.cwd(path) != FtpClient.ERROR_CODE;
-		}
-		return false;
-	}
-
-	public void connect() throws IOException {
-		this.disconnect();
-		this.client.connect(this.host);
-		if (!this.client.login(this.username, this.password)) {
-			throw new SocketException(this.client.getReplyString());
-		}
-		CoreLog.getInstance().getLog().debug(this.client.getReplyString().trim());
-	}
-
-	public void disconnect() throws IOException {
-		if (this.client.isConnected()) {
-			this.client.disconnect();
+		} catch (IOException e) {
+			throw new FtpException(e);
 		}
 	}
 
-	public File get(final String file) throws IOException {
+	public void connect() {
+		try {
+			this.disconnect();
+			this.client.connect(this.host);
+			if (!this.client.login(this.username, this.password)) {
+				throw new NetworkException(this.client.getReplyString());
+			}
+			CoreLog.getInstance().getLog().debug(this.client.getReplyString().trim());
+		} catch (IOException e) {
+			throw new FtpException(e);
+		}
+	}
+
+	public void disconnect() {
+		try {
+			if (this.client.isConnected()) {
+				this.client.disconnect();
+			}
+		} catch (IOException e) {
+			throw new FtpException(e);
+		}
+	}
+
+	public File get(final String file) {
 		return this.get(file, file);
 	}
 
-	public File get(final String src, final String dst) throws IOException {
-		if (this.client.isConnected()) {
+	public File get(final String src, final String dst) {
+		try {
+			this.checkConnected();
+
 			File f = new File(dst);
 			FileOutputStream output = new FileOutputStream(f);
 			this.client.retrieveFile(src, output);
 			output.close();
 			CoreLog.getInstance().getLog().debug(this.client.getReplyString().trim());
 			return f;
+		} catch (IOException e) {
+			throw new FtpException(e);
 		}
-		return null;
 	}
 
 	public String getMessage() {
+		this.checkConnected();
+
 		return this.client.getReplyString();
 	}
 
 	public String getServerAddress() {
+		this.checkConnected();
+
 		return this.client.getRemoteAddress().getHostAddress();
 	}
 
 	public String getServerName() {
+		this.checkConnected();
+
 		return this.client.getRemoteAddress().getHostName();
 	}
 
 	public int getServerPort() {
+		this.checkConnected();
+
 		return this.client.getRemotePort();
 	}
 
-	public Collection<String> ls() throws IOException {
-		Collection<String> l = new LinkedHashSet<String>();
-		if (this.client.isConnected()) {
+	public Collection<String> ls() {
+		try {
+			this.checkConnected();
+
+			Collection<String> l = new LinkedHashSet<String>();
 			FTPFile[] ls = this.client.listFiles();
 			CoreLog.getInstance().getLog().debug(this.client.getReplyString().trim());
 			for (FTPFile f : ls) {
 				l.add(f.getName());
 			}
+			return l;
+		} catch (IOException e) {
+			throw new FtpException(e);
 		}
-		return l;
 	}
 
-	public boolean put(final String name) throws IOException {
-		if (this.client.isConnected()) {
-			boolean put = this.client.storeFile(name, new FileInputStream(name));
-			CoreLog.getInstance().getLog().debug(this.client.getReplyString().trim());
-			return put;
+	public boolean put(final String name) {
+		try {
+			return this.put(name, new FileInputStream(name));
+		} catch (IOException e) {
+			throw new FtpException(e);
 		}
-		return false;
 	}
 
-	public boolean put(final File f) throws IOException {
-		if (this.client.isConnected()) {
-			boolean put = this.client.storeFile(f.getName(), new FileInputStream(f));
-			CoreLog.getInstance().getLog().debug(this.client.getReplyString().trim());
-			return put;
+	public boolean put(final File f) {
+		try {
+			return this.put(f.getName(), new FileInputStream(f));
+		} catch (IOException e) {
+			throw new FtpException(e);
 		}
-		return false;
 	}
 
-	public boolean put(final String name, final InputStream input) throws IOException {
-		if (this.client.isConnected()) {
+	public boolean put(final String name, final InputStream input) {
+		try {
+			this.checkConnected();
+
 			boolean put = this.client.storeFile(name, input);
 			CoreLog.getInstance().getLog().debug(this.client.getReplyString().trim());
 			return put;
+		} catch (IOException e) {
+			throw new FtpException(e);
 		}
-		return false;
 	}
 
-	public String pwd() throws IOException {
-		if (this.client.isConnected()) {
+	public String pwd() {
+		try {
+			this.checkConnected();
+
 			String pwd = this.client.printWorkingDirectory();
 			CoreLog.getInstance().getLog().debug(this.client.getReplyString().trim());
 			return pwd;
+		} catch (IOException e) {
+			throw new FtpException(e);
 		}
-		return null;
 	}
 
-	public boolean rm(final String name) throws IOException {
-		if (this.client.isConnected()) {
+	public boolean rm(final String name) {
+		try {
+			this.checkConnected();
+
 			boolean rm = this.client.deleteFile(name);
 			CoreLog.getInstance().getLog().debug(this.client.getReplyString().trim());
 			return rm;
+		} catch (IOException e) {
+			throw new FtpException(e);
 		}
-		return false;
-	}
-
-	public String getHost() {
-		return this.host;
-	}
-
-	public void setHost(final String host) {
-		this.host = host;
-	}
-
-	public String getUsername() {
-		return this.username;
-	}
-
-	public void setUsername(final String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return this.password;
-	}
-
-	public void setPassword(final String password) {
-		this.password = password;
 	}
 
 }
