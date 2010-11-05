@@ -23,7 +23,7 @@ import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.ReflectionType;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilderImpl;
 import net.woodstock.rockframework.util.Assert;
-import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.utils.ConditionUtils;
 import net.woodstock.rockframework.web.config.WebLog;
 import net.woodstock.rockframework.xml.dom.XmlDocument;
 import net.woodstock.rockframework.xml.dom.XmlElement;
@@ -50,7 +50,7 @@ class TLDBuilderImpl extends TLDBuilder {
 		XmlDocument document = new XmlDocument("tag");
 		XmlElement root = document.getRoot();
 
-		if (!StringUtils.isEmpty(tag.description())) {
+		if (ConditionUtils.isNotEmpty(tag.description())) {
 			root.addElement("description").setData(tag.description());
 		}
 
@@ -72,7 +72,7 @@ class TLDBuilderImpl extends TLDBuilder {
 			Attribute tldAttribute = propertyDescriptor.getAnnotation(Attribute.class);
 			XmlElement e = root.addElement("attribute");
 
-			if (!StringUtils.isEmpty(tldAttribute.description())) {
+			if (ConditionUtils.isNotEmpty(tldAttribute.description())) {
 				e.addElement("description").setData(tldAttribute.description());
 			}
 
