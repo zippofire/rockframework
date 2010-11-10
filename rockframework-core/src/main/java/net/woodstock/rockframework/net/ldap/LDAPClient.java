@@ -28,7 +28,6 @@ import javax.naming.directory.InitialDirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
-import net.woodstock.rockframework.net.ldap.filter.LDAPFilter;
 import net.woodstock.rockframework.util.Assert;
 
 public class LDAPClient implements Serializable {
@@ -135,34 +134,19 @@ public class LDAPClient implements Serializable {
 	}
 
 	public Collection<LDAPSearchResult> search(final LDAPFilter filter) {
-		return this.search(filter.getBaseName(), filter.getFilter(), filter.getAttributes(), filter.getLimit());
-	}
-
-	public Collection<LDAPSearchResult> search(final String baseName, final String filter) {
-		return this.search(baseName, filter, null, 0);
-	}
-
-	public Collection<LDAPSearchResult> search(final String baseName, final String filter, final int limit) {
-		return this.search(baseName, filter, null, limit);
-	}
-
-	public Collection<LDAPSearchResult> search(final String baseName, final String filter, final String[] attributes) {
-		return this.search(baseName, filter, attributes, 0);
-	}
-
-	public Collection<LDAPSearchResult> search(final String baseName, final String filter, final String[] attributes, final int limit) {
+		Assert.notNull(filter, "filter");
 		try {
 			if ((this.connectOnSearch) && (!this.isConnected())) {
 				this.connect();
 			}
 			Assert.notNull(this.context, "context");
 			SearchControls controls = new SearchControls();
-			controls.setReturningAttributes(attributes);
-			controls.setCountLimit(limit);
+			controls.setReturningAttributes(filter.getAttributes());
+			controls.setCountLimit(filter.getLimit());
 			controls.setTimeLimit(0);
 			controls.setSearchScope(SearchControls.SUBTREE_SCOPE);
 
-			NamingEnumeration<SearchResult> results = this.context.search(baseName, filter, controls);
+			NamingEnumeration<SearchResult> results = this.context.search(filter.getBaseName(), filter.getFilter(), controls);
 
 			Collection<LDAPSearchResult> c = LDAPHelper.toCollection(results);
 

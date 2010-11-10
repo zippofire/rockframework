@@ -18,13 +18,16 @@ package net.woodstock.rockframework.jdbc.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.math.BigDecimal;
 import java.sql.Array;
+import java.sql.Blob;
 import java.sql.CallableStatement;
+import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -183,84 +186,45 @@ abstract class ClientHelper {
 				cs.setArray(index, (Array) value);
 				break;
 			case BIGINT:
-				if (value instanceof String) {
-					value = Long.valueOf((String) value);
-				}
-				cs.setLong(index, ((Long) value).longValue());
+				cs.setLong(index, ClientHelper.toLong(value));
 				break;
 			case BLOB:
-				try {
-					if (value instanceof File) {
-						value = new FileInputStream((File) value);
-					}
-					cs.setBinaryStream(index, (InputStream) value, ((InputStream) value).available());
-				} catch (IOException e) {
-					throw new SQLException(e.getMessage());
+				InputStream inputStream = ClientHelper.toInputStream(value);
+				if (inputStream == null) {
+					throw new IllegalArgumentException("A Blob parameter must be setted with an InputStream, File or Clob value");
 				}
+				cs.setBinaryStream(index, inputStream);
 				break;
 			case BOOLEAN:
-				if (value instanceof String) {
-					value = Boolean.valueOf((String) value);
-				}
-				cs.setBoolean(index, ((Boolean) value).booleanValue());
+				cs.setBoolean(index, ClientHelper.toBoolean(value));
 				break;
 			case CHAR:
-				if (value instanceof Character) {
-					value = ((Character) value).toString();
-				}
-				cs.setString(index, (String) value);
+				cs.setString(index, ClientHelper.toString(value));
 				break;
 			case CLOB:
-				try {
-					if (value instanceof File) {
-						value = new FileInputStream((File) value);
-					}
-					int size = ((InputStream) value).available();
-					value = new InputStreamReader((InputStream) value);
-					cs.setCharacterStream(index, (Reader) value, size);
-				} catch (IOException e) {
-					throw new SQLException(e.getMessage());
+				Reader reader = ClientHelper.toReader(value);
+				if (reader == null) {
+					throw new IllegalArgumentException("A CLOB parameter must be setted with an InputStream, Reader, File or Clob value");
 				}
+				cs.setCharacterStream(index, (Reader) value);
 				break;
 			case DATE:
-				if (value instanceof Long) {
-					value = new Date(((Long) value).longValue());
-				} else if ((value instanceof java.util.Date) && (!(value instanceof Date))) {
-					value = new Date(((java.util.Date) value).getTime());
-				}
-				cs.setDate(index, (Date) value);
+				cs.setDate(index, ClientHelper.toDate(value));
 				break;
 			case DECIMAL:
-				if (value instanceof String) {
-					value = Integer.valueOf((String) value);
-				}
-				cs.setInt(index, ((Integer) value).intValue());
+				cs.setFloat(index, ClientHelper.toFloat(value));
 				break;
 			case DOUBLE:
-				if (value instanceof String) {
-					value = Double.valueOf((String) value);
-				}
-				cs.setDouble(index, ((Double) value).doubleValue());
+				cs.setDouble(index, ClientHelper.toDouble(value));
 				break;
 			case FLOAT:
-				if (value instanceof String) {
-					value = Float.valueOf((String) value);
-				}
-				cs.setFloat(index, ((Float) value).floatValue());
+				cs.setFloat(index, ClientHelper.toFloat(value));
 				break;
 			case INTEGER:
-				if (value instanceof String) {
-					value = Integer.valueOf((String) value);
-				}
-				cs.setInt(index, ((Integer) value).intValue());
+				cs.setInt(index, ClientHelper.toInt(value));
 				break;
 			case NUMERIC:
-				if (value instanceof String) {
-					value = new BigDecimal(Double.parseDouble((String) value));
-				} else if (value instanceof Integer) {
-					value = new BigDecimal(((Integer) value).intValue());
-				}
-				cs.setBigDecimal(index, (BigDecimal) value);
+				cs.setBigDecimal(index, ClientHelper.toBigDecimal(value));
 				break;
 			case OBJECT:
 				cs.setObject(index, value);
@@ -269,10 +233,7 @@ abstract class ClientHelper {
 				cs.setObject(index, value);
 				break;
 			case REAL:
-				if (value instanceof String) {
-					value = Float.valueOf((String) value);
-				}
-				cs.setFloat(index, ((Float) value).floatValue());
+				cs.setFloat(index, ClientHelper.toFloat(value));
 				break;
 			case REF:
 				cs.setRef(index, (Ref) value);
@@ -281,41 +242,181 @@ abstract class ClientHelper {
 				cs.setObject(index, value);
 				break;
 			case SMALLINT:
-				if (value instanceof String) {
-					value = Short.valueOf((String) value);
-				}
-				cs.setShort(index, ((Short) value).shortValue());
+				cs.setShort(index, ClientHelper.toShort(value));
 				break;
 			case TIME:
-				if (value instanceof Long) {
-					value = new Date(((Long) value).longValue());
-				}
-				cs.setTime(index, (Time) value);
+				cs.setTime(index, ClientHelper.toTime(value));
 				break;
 			case TIMESTAMP:
-				if (value instanceof Long) {
-					value = new Timestamp(((Long) value).longValue());
-				} else if ((value instanceof java.util.Date) && (!(value instanceof Timestamp))) {
-					value = new Timestamp(((java.util.Date) value).getTime());
-				}
-				cs.setTimestamp(index, (Timestamp) value);
+				cs.setTimestamp(index, ClientHelper.toTimestamp(value));
 				break;
 			case TINYINT:
-				if (value instanceof String) {
-					value = Byte.valueOf((String) value);
-				}
-				cs.setByte(index, ((Byte) value).byteValue());
+				cs.setByte(index, ClientHelper.toByte(value));
 				break;
 			case VARCHAR:
-				if (!(value instanceof String)) {
-					value = value.toString();
-				}
-				cs.setString(index, (String) value);
+				cs.setString(index, ClientHelper.toString(value));
 				break;
 			default:
 				throw new SQLException("Type not supported " + type);
 		}
 
+	}
+
+	private static BigDecimal toBigDecimal(final Object value) {
+		if (value instanceof BigDecimal) {
+			BigDecimal bd = (BigDecimal) value;
+			return bd;
+		}
+		if (value instanceof Number) {
+			Number n = (Number) value;
+			return new BigDecimal(n.doubleValue());
+		}
+		return new BigDecimal(value.toString());
+	}
+
+	private static boolean toBoolean(final Object value) {
+		if (value instanceof Boolean) {
+			Boolean b = (Boolean) value;
+			return b.booleanValue();
+		}
+		return Boolean.parseBoolean(value.toString());
+	}
+
+	private static byte toByte(final Object value) {
+		if (value instanceof Number) {
+			Number n = (Number) value;
+			return n.byteValue();
+		}
+		return Byte.parseByte(value.toString());
+	}
+
+	private static Date toDate(final Object value) {
+		if (value instanceof Date) {
+			return (Date) value;
+		}
+		if (value instanceof Long) {
+			Long l = (Long) value;
+			return new Date(l.longValue());
+		}
+		long l = Long.parseLong(value.toString());
+		return new Date(l);
+	}
+
+	private static double toDouble(final Object value) {
+		if (value instanceof Number) {
+			Number n = (Number) value;
+			return n.doubleValue();
+		}
+		return Double.parseDouble(value.toString());
+	}
+
+	private static float toFloat(final Object value) {
+		if (value instanceof Number) {
+			Number n = (Number) value;
+			return n.floatValue();
+		}
+		return Float.parseFloat(value.toString());
+	}
+
+	private static InputStream toInputStream(final Object value) throws SQLException {
+		if (value instanceof InputStream) {
+			return (InputStream) value;
+		}
+		if (value instanceof File) {
+			try {
+				return new FileInputStream((File) value);
+			} catch (FileNotFoundException e) {
+				throw new SQLException(e);
+			}
+		}
+		if (value instanceof Blob) {
+			return ((Blob) value).getBinaryStream();
+		}
+		return null;
+	}
+
+	private static int toInt(final Object value) {
+		if (value instanceof Number) {
+			Number n = (Number) value;
+			return n.intValue();
+		}
+		return Integer.parseInt(value.toString());
+	}
+
+	private static long toLong(final Object value) {
+		if (value instanceof Number) {
+			Number n = (Number) value;
+			return n.longValue();
+		}
+		return Long.parseLong(value.toString());
+	}
+
+	private static Reader toReader(final Object value) throws SQLException {
+		if (value instanceof Reader) {
+			return (Reader) value;
+		}
+		if (value instanceof InputStream) {
+			return new InputStreamReader((InputStream) value);
+		}
+		if (value instanceof File) {
+			try {
+				return new FileReader((File) value);
+			} catch (FileNotFoundException e) {
+				throw new SQLException(e);
+			}
+		}
+		if (value instanceof Clob) {
+			return ((Clob) value).getCharacterStream();
+		}
+
+		return null;
+	}
+
+	private static short toShort(final Object value) {
+		if (value instanceof Number) {
+			Number n = (Number) value;
+			return n.shortValue();
+		}
+		return Short.parseShort(value.toString());
+	}
+
+	private static String toString(final Object value) {
+		if (value instanceof String) {
+			return (String) value;
+		}
+		return value.toString();
+	}
+
+	private static Time toTime(final Object value) {
+		if (value instanceof Time) {
+			return (Time) value;
+		}
+		if (value instanceof Date) {
+			Date d = (Date) value;
+			return new Time(d.getTime());
+		}
+		if (value instanceof Long) {
+			Long l = (Long) value;
+			return new Time(l.longValue());
+		}
+		long l = Long.parseLong(value.toString());
+		return new Time(l);
+	}
+
+	private static Timestamp toTimestamp(final Object value) {
+		if (value instanceof Timestamp) {
+			return (Timestamp) value;
+		}
+		if (value instanceof Date) {
+			Date d = (Date) value;
+			return new Timestamp(d.getTime());
+		}
+		if (value instanceof Long) {
+			Long l = (Long) value;
+			return new Timestamp(l.longValue());
+		}
+		long l = Long.parseLong(value.toString());
+		return new Timestamp(l);
 	}
 
 	public static void setParameters(final int index, final PreparedStatement ps, final ParameterList args, final TypeHandler typeHandler) throws SQLException {
