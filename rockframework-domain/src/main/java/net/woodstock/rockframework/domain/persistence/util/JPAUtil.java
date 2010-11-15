@@ -18,16 +18,22 @@ package net.woodstock.rockframework.domain.persistence.util;
 
 import javax.persistence.EntityManager;
 
+/**
+ * @see JPAPersistenceHelper
+ */
+@Deprecated
 public abstract class JPAUtil {
 
 	private JPAUtil() {
 		//
 	}
 
+	@Deprecated
 	public static EntityManager getEntityManager() {
 		return JPAPersistenceHelper.getInstance().get();
 	}
 
+	@Deprecated
 	public static void closeEntityManager() {
 		JPAPersistenceHelper.getInstance().close();
 	}

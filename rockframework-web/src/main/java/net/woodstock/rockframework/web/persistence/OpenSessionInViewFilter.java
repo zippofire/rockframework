@@ -16,32 +16,12 @@
  */
 package net.woodstock.rockframework.web.persistence;
 
-import java.io.IOException;
+import net.woodstock.rockframework.domain.persistence.util.HibernatePersistenceHelper;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+public class OpenSessionInViewFilter extends OpenManagerInViewFilter {
 
-import net.woodstock.rockframework.domain.persistence.util.HibernateUtil;
-import net.woodstock.rockframework.web.filter.AbstractHttpFilter;
-
-public class OpenSessionInViewFilter extends AbstractHttpFilter {
-
-	@Override
-	public void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain) throws IOException, ServletException {
-		HibernateUtil.getSession();
-		try {
-			chain.doFilter(request, response);
-		} catch (IOException e) {
-			throw e;
-		} catch (ServletException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new ServletException(e);
-		} finally {
-			HibernateUtil.closeSession();
-		}
+	public OpenSessionInViewFilter() {
+		super(HibernatePersistenceHelper.getInstance());
 	}
 
 }

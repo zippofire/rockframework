@@ -18,16 +18,22 @@ package net.woodstock.rockframework.domain.persistence.util;
 
 import org.hibernate.Session;
 
+/**
+ * @see HibernatePersistenceHelper
+ */
+@Deprecated
 public abstract class HibernateUtil {
 
 	private HibernateUtil() {
 		//
 	}
 
+	@Deprecated
 	public static Session getSession() {
 		return HibernatePersistenceHelper.getInstance().get();
 	}
 
+	@Deprecated
 	public static void closeSession() {
 		HibernatePersistenceHelper.getInstance().close();
 	}
