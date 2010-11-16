@@ -24,10 +24,15 @@ import net.woodstock.rockframework.util.Assert;
 public class InputStreamAttachment extends AttachmentBean {
 
 	public InputStreamAttachment(final String name, final String contentType, final InputStream inputStream) {
+		this(name, contentType, inputStream, Disposition.ATTACHMENT);
+	}
+
+	public InputStreamAttachment(final String name, final String contentType, final InputStream inputStream, final Disposition disposition) {
 		super();
 		Assert.notEmpty(name, "name");
 		Assert.notEmpty(contentType, "contentType");
 		Assert.notNull(inputStream, "inputStream");
+		Assert.notNull(disposition, "disposition");
 
 		try {
 			byte[] bytes = new byte[inputStream.available()];
@@ -36,6 +41,7 @@ public class InputStreamAttachment extends AttachmentBean {
 			this.setName(name);
 			this.setContentType(contentType);
 			this.setContentAsString(new String(bytes));
+			this.setDisposition(disposition);
 		} catch (IOException e) {
 			throw new MailException(e);
 		}

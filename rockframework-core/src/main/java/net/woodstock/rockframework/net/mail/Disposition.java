@@ -16,23 +16,8 @@
  */
 package net.woodstock.rockframework.net.mail;
 
-import net.woodstock.rockframework.util.Assert;
+public enum Disposition {
 
-public class ByteArrayAttachment extends AttachmentBean {
-
-	public ByteArrayAttachment(final String name, final String contentType, final byte[] bytes) {
-		this(name, contentType, bytes, Disposition.ATTACHMENT);
-	}
-
-	public ByteArrayAttachment(final String name, final String contentType, final byte[] bytes, final Disposition disposition) {
-		super();
-		Assert.notEmpty(name, "name");
-		Assert.notEmpty(contentType, "contentType");
-		Assert.notEmpty(bytes, "bytes");
-		this.setName(name);
-		this.setContentType(contentType);
-		this.setContentAsString(new String(bytes));
-		this.setDisposition(disposition);
-	}
+	ATTACHMENT, INLINE;
 
 }

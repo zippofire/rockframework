@@ -26,8 +26,13 @@ import net.woodstock.rockframework.utils.FileUtils;
 public class FileAttachment extends AttachmentBean {
 
 	public FileAttachment(final File file) {
+		this(file, Disposition.ATTACHMENT);
+	}
+
+	public FileAttachment(final File file, final Disposition disposition) {
 		super();
 		Assert.notNull(file, "file");
+		Assert.notNull(disposition, "disposition");
 
 		FileInputStream inputStream = null;
 		try {
@@ -38,6 +43,7 @@ public class FileAttachment extends AttachmentBean {
 			this.setName(file.getName());
 			this.setContentType(FileUtils.getType(file));
 			this.setContentAsString(new String(bytes));
+			this.setDisposition(disposition);
 		} catch (IOException e) {
 			throw new MailException(e);
 		} finally {

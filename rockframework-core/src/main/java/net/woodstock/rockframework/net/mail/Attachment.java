@@ -22,6 +22,8 @@ public interface Attachment {
 
 	String getContentType();
 
+	Disposition getDisposition();
+
 	String getName();
 
 }

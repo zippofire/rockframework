@@ -18,11 +18,17 @@ package net.woodstock.rockframework.net.mail;
 
 abstract class AttachmentBean implements Attachment {
 
-	private String	name;
+	private String		name;
 
-	private String	contentType;
+	private String		contentType;
 
-	private String	contentAsString;
+	private String		contentAsString;
+
+	private Disposition	disposition;
+
+	public AttachmentBean() {
+		super();
+	}
 
 	@Override
 	public String getName() {
@@ -49,6 +55,15 @@ abstract class AttachmentBean implements Attachment {
 
 	void setContentAsString(final String contentAsString) {
 		this.contentAsString = contentAsString;
+	}
+
+	@Override
+	public Disposition getDisposition() {
+		return this.disposition;
+	}
+
+	public void setDisposition(final Disposition disposition) {
+		this.disposition = disposition;
 	}
 
 }

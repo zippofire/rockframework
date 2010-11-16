@@ -18,6 +18,7 @@ package net.woodstock.rockframework.net.mail;
 
 import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
+import javax.mail.Part;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
@@ -27,9 +28,11 @@ import javax.mail.internet.MimeMultipart;
 
 abstract class MailHelper {
 
-	public static final String	PROTOCOL			= "smtp";
+	private static final String	MULTIPART_TYPE		= "related";
 
-	public static final int		DEFAULT_SMTP_PORT	= 25;
+	private static final String	HTML_CONTENT_TYPE	= "text/html";
+
+	private static final String	PLAIN_CONTENT_TYPE	= "text/plain";
 
 	private MailHelper() {
 		//
@@ -46,7 +49,7 @@ abstract class MailHelper {
 
 	public static MimeMessage toMimeMessage(final SimpleMail message, final Session session) throws MessagingException {
 		MimeMessage mimeMessage = new MimeMessage(session);
-		MimeMultipart body = new MimeMultipart();
+		MimeMultipart multipart = new MimeMultipart(MailHelper.MULTIPART_TYPE);
 
 		mimeMessage.setSubject(message.getSubject());
 		mimeMessage.setFrom(new InternetAddress(message.getFrom()));
@@ -80,27 +83,44 @@ abstract class MailHelper {
 
 		if (message.isHtml()) {
 			MimeBodyPart part = new MimeBodyPart();
-			part.setContent(message.getText(), "text/html");
-			body.addBodyPart(part);
+			part.setContent(message.getText(), MailHelper.HTML_CONTENT_TYPE);
+			multipart.addBodyPart(part);
+
 		} else {
 			MimeBodyPart part = new MimeBodyPart();
-			part.setContent(message.getText(), "text/plain");
-			body.addBodyPart(part);
+			part.setContent(message.getText(), MailHelper.PLAIN_CONTENT_TYPE);
+			multipart.addBodyPart(part);
 		}
 
 		if (message.getAttach().size() > 0) {
 			for (Attachment a : message.getAttach()) {
-				MimeBodyPart part = new MimeBodyPart();
-
-				part.setContent(a.getContentAsString(), a.getContentType());
-				part.setFileName(a.getName());
-				body.addBodyPart(part);
+				if (a.getDisposition() == Disposition.INLINE) {
+					MimeBodyPart part = new MimeBodyPart();
+					part.setContent(a.getContentAsString(), a.getContentType());
+					part.setContentID(MailHelper.getContentId(a));
+					part.setDisposition(Part.INLINE);
+					multipart.addBodyPart(part);
+				} else {
+					MimeBodyPart part = new MimeBodyPart();
+					part.setContent(a.getContentAsString(), a.getContentType());
+					part.setFileName(a.getName());
+					part.setDisposition(Part.ATTACHMENT);
+					multipart.addBodyPart(part);
+				}
 			}
 		}
 
-		mimeMessage.setContent(body);
+		mimeMessage.setContent(multipart);
 
 		return mimeMessage;
+	}
+
+	private static String getContentId(final Attachment a) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("<");
+		builder.append(a.getName());
+		builder.append(">");
+		return builder.toString();
 	}
 
 }
