@@ -54,7 +54,7 @@ public class FileMimeTypeFilter implements FilenameFilter {
 			String mimeType = FileUtils.getType(f);
 			return this.types.contains(mimeType);
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new net.woodstock.rockframework.io.IOException(e);
 		}
 	}
 

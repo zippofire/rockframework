@@ -14,16 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.net.http;
+package net.woodstock.rockframework.web;
 
-import net.woodstock.rockframework.net.NetworkException;
+public class JSPException extends RuntimeException {
 
-public class HttpException extends NetworkException {
+	private static final long	serialVersionUID	= 6368209676543758159L;
 
-	private static final long	serialVersionUID	= -8619341971063378923L;
+	public JSPException(final String message) {
+		super(message);
+	}
 
-	public HttpException(final Throwable cause) {
+	public JSPException(final Throwable cause) {
 		super(cause);
+	}
+
+	public JSPException(final String message, final Throwable cause) {
+		super(message, cause);
 	}
 
 }

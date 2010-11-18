@@ -14,16 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.net.http;
+package net.woodstock.rockframework;
 
-import net.woodstock.rockframework.net.NetworkException;
+public abstract class DelegateException extends RuntimeException {
 
-public class HttpException extends NetworkException {
+	private static final long	serialVersionUID	= -1656474885839978484L;
 
-	private static final long	serialVersionUID	= -8619341971063378923L;
-
-	public HttpException(final Throwable cause) {
+	public DelegateException(final Throwable cause) {
 		super(cause);
+	}
+
+	public DelegateException(final String message) {
+		super(message);
+	}
+
+	public DelegateException(final String message, final Throwable cause) {
+		super(message, cause);
 	}
 
 }

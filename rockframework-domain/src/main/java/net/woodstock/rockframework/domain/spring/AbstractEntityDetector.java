@@ -26,7 +26,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.TypeFilter;
 
-public class AbstractEntityDetector {
+public class AbstractEntityDetector implements EntityDetector {
 
 	private ClassPathScanningCandidateComponentProvider	provider;
 
@@ -49,6 +49,7 @@ public class AbstractEntityDetector {
 		this.basePackage = basePackage;
 	}
 
+	@Override
 	public List<Class<?>> getClasses() throws ClassNotFoundException {
 		if (this.classes == null) {
 			this.classes = new ArrayList<Class<? extends Object>>();

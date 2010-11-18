@@ -20,18 +20,10 @@ import net.woodstock.rockframework.net.NetworkException;
 
 public class MailException extends NetworkException {
 
-	private static final long	serialVersionUID	= 1L;
-
-	public MailException(final String message) {
-		super(message);
-	}
+	private static final long	serialVersionUID	= -8592044670688941896L;
 
 	public MailException(final Throwable cause) {
 		super(cause);
-	}
-
-	public MailException(final String message, final Throwable cause) {
-		super(message, cause);
 	}
 
 }

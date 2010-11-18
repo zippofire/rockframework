@@ -20,18 +20,14 @@ import net.woodstock.rockframework.net.NetworkException;
 
 public class FtpException extends NetworkException {
 
-	private static final long	serialVersionUID	= 1L;
-
-	public FtpException(final String message) {
-		super(message);
-	}
+	private static final long	serialVersionUID	= -2535660043392784412L;
 
 	public FtpException(final Throwable cause) {
 		super(cause);
 	}
 
-	public FtpException(final String message, final Throwable cause) {
-		super(message, cause);
+	public FtpException(final String message) {
+		super(message);
 	}
 
 }

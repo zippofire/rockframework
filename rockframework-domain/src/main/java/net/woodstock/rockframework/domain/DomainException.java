@@ -18,7 +18,7 @@ package net.woodstock.rockframework.domain;
 
 public class DomainException extends RuntimeException {
 
-	private static final long	serialVersionUID	= 1L;
+	private static final long	serialVersionUID	= 5354305796553036166L;
 
 	public DomainException(final String message) {
 		super(message);

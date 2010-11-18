@@ -16,20 +16,18 @@
  */
 package net.woodstock.rockframework.net;
 
-public class NetworkException extends RuntimeException {
+import net.woodstock.rockframework.DelegateException;
 
-	private static final long	serialVersionUID	= 1L;
+public class NetworkException extends DelegateException {
 
-	public NetworkException(final String message) {
-		super(message);
-	}
+	private static final long	serialVersionUID	= 3689719398935816159L;
 
 	public NetworkException(final Throwable cause) {
 		super(cause);
 	}
 
-	public NetworkException(final String message, final Throwable cause) {
-		super(message, cause);
+	public NetworkException(final String message) {
+		super(message);
 	}
 
 }

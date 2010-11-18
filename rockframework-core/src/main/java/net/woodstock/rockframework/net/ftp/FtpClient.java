@@ -26,7 +26,6 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 
 import net.woodstock.rockframework.config.CoreLog;
-import net.woodstock.rockframework.net.NetworkException;
 import net.woodstock.rockframework.util.Assert;
 
 import org.apache.commons.net.ftp.FTP;
@@ -116,7 +115,7 @@ public class FtpClient implements Serializable {
 			this.disconnect();
 			this.client.connect(this.host);
 			if (!this.client.login(this.username, this.password)) {
-				throw new NetworkException(this.client.getReplyString());
+				throw new FtpException(this.client.getReplyString());
 			}
 			CoreLog.getInstance().getLog().debug(this.client.getReplyString().trim());
 		} catch (IOException e) {

@@ -56,7 +56,7 @@ public abstract class AbstractConfig {
 				}
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new ConfigException(e);
 		}
 	}
 

@@ -38,7 +38,7 @@ class PDFBoxPDFManager extends PDFManager {
 			Assert.notNull(source, "source");
 			return null;
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new net.woodstock.rockframework.office.DocumentException(e);
 		}
 	}
 
@@ -61,7 +61,7 @@ class PDFBoxPDFManager extends PDFManager {
 
 			return bis;
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new net.woodstock.rockframework.office.DocumentException(e);
 		}
 	}
 
@@ -96,7 +96,7 @@ class PDFBoxPDFManager extends PDFManager {
 
 			return array;
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new net.woodstock.rockframework.office.DocumentException(e);
 		}
 	}
 

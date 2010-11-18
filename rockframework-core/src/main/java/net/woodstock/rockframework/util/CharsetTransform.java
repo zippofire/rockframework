@@ -23,6 +23,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
 
+import net.woodstock.rockframework.io.IOException;
 import net.woodstock.rockframework.utils.LocaleUtils;
 
 public class CharsetTransform implements StringTransform {
@@ -62,7 +63,7 @@ public class CharsetTransform implements StringTransform {
 
 			return builder.toString();
 		} catch (CharacterCodingException e) {
-			throw new RuntimeException(e);
+			throw new IOException(e);
 		}
 	}
 }

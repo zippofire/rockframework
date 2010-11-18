@@ -63,7 +63,7 @@ class ITextPDFManager extends PDFManager {
 
 			return outputStream.getInputStream();
 		} catch (DocumentException e) {
-			throw new RuntimeException(e);
+			throw new net.woodstock.rockframework.office.DocumentException(e);
 		}
 	}
 
@@ -94,7 +94,7 @@ class ITextPDFManager extends PDFManager {
 
 			return outputStream.getInputStream();
 		} catch (DocumentException e) {
-			throw new RuntimeException(e);
+			throw new net.woodstock.rockframework.office.DocumentException(e);
 		}
 	}
 
@@ -136,7 +136,7 @@ class ITextPDFManager extends PDFManager {
 
 			return list.toArray(new InputStream[list.size()]);
 		} catch (DocumentException e) {
-			throw new RuntimeException(e);
+			throw new net.woodstock.rockframework.office.DocumentException(e);
 		}
 	}
 

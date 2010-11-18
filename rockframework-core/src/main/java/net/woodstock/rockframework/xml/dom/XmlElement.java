@@ -240,7 +240,7 @@ public class XmlElement extends ElementWrapper {
 			this.write(writer);
 			return writer.toString();
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new net.woodstock.rockframework.io.IOException(e);
 		}
 	}
 }

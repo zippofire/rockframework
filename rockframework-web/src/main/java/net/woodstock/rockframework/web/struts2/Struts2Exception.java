@@ -14,16 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.net.http;
+package net.woodstock.rockframework.web.struts2;
 
-import net.woodstock.rockframework.net.NetworkException;
+import net.woodstock.rockframework.web.JSPException;
 
-public class HttpException extends NetworkException {
+public class Struts2Exception extends JSPException {
 
-	private static final long	serialVersionUID	= -8619341971063378923L;
+	private static final long	serialVersionUID	= -1493406578925776390L;
 
-	public HttpException(final Throwable cause) {
+	public Struts2Exception(final String message) {
+		super(message);
+	}
+
+	public Struts2Exception(final Throwable cause) {
 		super(cause);
+	}
+
+	public Struts2Exception(final String message, final Throwable cause) {
+		super(message, cause);
 	}
 
 }

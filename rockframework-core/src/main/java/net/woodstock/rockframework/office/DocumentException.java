@@ -16,20 +16,18 @@
  */
 package net.woodstock.rockframework.office;
 
-public class DocumentException extends RuntimeException {
+import net.woodstock.rockframework.DelegateException;
 
-	private static final long	serialVersionUID	= 1L;
+public class DocumentException extends DelegateException {
 
-	public DocumentException(final String message) {
-		super(message);
-	}
+	private static final long	serialVersionUID	= -4078203436486140269L;
 
 	public DocumentException(final Throwable cause) {
 		super(cause);
 	}
 
-	public DocumentException(final String message, final Throwable cause) {
-		super(message, cause);
+	public DocumentException(final String message) {
+		super(message);
 	}
 
 }

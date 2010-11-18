@@ -16,6 +16,8 @@
  */
 package net.woodstock.rockframework.web.resource;
 
+import net.woodstock.rockframework.web.struts2.Struts2Exception;
+
 public class ParameterizedResourceFilter extends AbstractResourceFilter {
 
 	private static final long	serialVersionUID			= -8118171525668671964L;
@@ -37,7 +39,7 @@ public class ParameterizedResourceFilter extends AbstractResourceFilter {
 			ResourceManager resourceManager = (ResourceManager) clazz.newInstance();
 			this.setResourceManager(resourceManager);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new Struts2Exception(e);
 		}
 	}
 }

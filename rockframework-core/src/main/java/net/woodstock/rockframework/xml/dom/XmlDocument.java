@@ -152,7 +152,7 @@ public class XmlDocument extends DocumentWrapper {
 			this.write(writer);
 			return writer.toString();
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new net.woodstock.rockframework.io.IOException(e);
 		}
 	}
 
@@ -165,7 +165,7 @@ public class XmlDocument extends DocumentWrapper {
 			XmlDocument.factory = DocumentBuilderFactory.newInstance();
 			XmlDocument.builder = XmlDocument.factory.newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
-			throw new RuntimeException(e);
+			throw new net.woodstock.rockframework.io.IOException(e);
 		}
 	}
 

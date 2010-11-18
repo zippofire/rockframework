@@ -14,16 +14,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.net.http;
+package net.woodstock.rockframework.util;
 
-import net.woodstock.rockframework.net.NetworkException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
-public class HttpException extends NetworkException {
+public final class XMLPropertiesFactory implements PropertiesFactory {
 
-	private static final long	serialVersionUID	= -8619341971063378923L;
+	private static PropertiesFactory	instance	= new XMLPropertiesFactory();
 
-	public HttpException(final Throwable cause) {
-		super(cause);
+	private XMLPropertiesFactory() {
+		super();
+	}
+
+	@Override
+	public Properties getProperties(final InputStream inputStream) {
+		try {
+			Properties properties = new Properties();
+			properties.loadFromXML(inputStream);
+			return properties;
+		} catch (IOException e) {
+			throw new net.woodstock.rockframework.io.IOException(e);
+		}
+
+	}
+
+	public static PropertiesFactory getInstance() {
+		return instance;
 	}
 
 }
