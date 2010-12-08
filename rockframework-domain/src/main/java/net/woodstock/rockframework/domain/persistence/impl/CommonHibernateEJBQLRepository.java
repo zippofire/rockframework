@@ -16,6 +16,7 @@
  */
 package net.woodstock.rockframework.domain.persistence.impl;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -36,6 +37,7 @@ class CommonHibernateEJBQLRepository extends AbstractHibernateQueryableRepositor
 		this.session = session;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	protected Query getQuery(final String sql, final Map<String, Object> parameters) {
 		Query query = this.session.createQuery(sql);
@@ -65,12 +67,32 @@ class CommonHibernateEJBQLRepository extends AbstractHibernateQueryableRepositor
 				String name = entry.getKey();
 				Object value = entry.getValue();
 				if (this.isValidParameter(name)) {
-					query.setParameter(name, value);
+					if (this.isCollection(value)) {
+						query.setParameterList(name, (Collection) value);
+					} else if (this.isArray(value)) {
+						query.setParameterList(name, (Object[]) value);
+					} else {
+						query.setParameter(name, value);
+					}
 				}
 			}
 
 		}
 
 		return query;
+	}
+
+	private boolean isCollection(final Object value) {
+		if (value instanceof Collection) {
+			return true;
+		}
+		return false;
+	}
+
+	private boolean isArray(final Object value) {
+		if ((value != null) && (value.getClass().isArray())) {
+			return true;
+		}
+		return false;
 	}
 }

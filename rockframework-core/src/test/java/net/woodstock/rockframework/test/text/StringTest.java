@@ -1,5 +1,8 @@
 package net.woodstock.rockframework.test.text;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import junit.framework.TestCase;
 import net.woodstock.rockframework.util.RandomGenerator;
 import net.woodstock.rockframework.util.RandomGenerator.RandomPattern;
@@ -20,7 +23,7 @@ public class StringTest extends TestCase {
 		System.out.println(format.parse(s));
 	}
 
-	public void test3() throws Exception {
+	public void xtest3() throws Exception {
 		RandomGenerator randomString = new RandomGenerator(15);
 		for (int i = 0; i < 5; i++) {
 			System.out.println(randomString.generate());
@@ -33,5 +36,19 @@ public class StringTest extends TestCase {
 		for (int i = 0; i < 5; i++) {
 			System.out.println(randomString.generate());
 		}
+	}
+
+	public void test4() throws Exception {
+		String texto = "Frase um. Frase dois. Frase 3";
+		Pattern pattern = Pattern.compile("(\\.?.*dois.*\\.)");
+		// Pattern pattern = Pattern.compile("\\.?.*dois.*\\..*");
+		// Pattern pattern = Pattern.compile("dois");
+		Matcher matcher = pattern.matcher(texto);
+		System.out.println(matcher);
+		System.out.println(matcher.matches());
+		System.out.println(matcher.group());
+		System.out.println(matcher.groupCount());
+		System.out.println(matcher.regionStart());
+		System.out.println(matcher.regionEnd());
 	}
 }
