@@ -24,13 +24,11 @@ import net.woodstock.rockframework.cache.Cache;
 import net.woodstock.rockframework.cache.CacheManager;
 import net.woodstock.rockframework.util.Assert;
 
-public final class CacheManagerImpl implements CacheManager {
+class MemoryCacheManagerImpl implements CacheManager {
 
-	private static CacheManager	instance	= new CacheManagerImpl();
+	private List<Cache>	caches;
 
-	private List<Cache>			caches;
-
-	private CacheManagerImpl() {
+	public MemoryCacheManagerImpl() {
 		super();
 		this.caches = new ArrayList<Cache>();
 	}
@@ -40,7 +38,7 @@ public final class CacheManagerImpl implements CacheManager {
 		Assert.notEmpty(id, "id");
 		boolean b = false;
 		for (Cache cache : this.caches) {
-			if (((CacheImpl) cache).getId().equals(id)) {
+			if (((MemoryCacheImpl) cache).getId().equals(id)) {
 				b = true;
 				break;
 			}
@@ -54,7 +52,7 @@ public final class CacheManagerImpl implements CacheManager {
 		if (this.contains(id)) {
 			throw new IllegalArgumentException("A cache with name " + id + " already exists");
 		}
-		Cache c = new CacheImpl(id);
+		Cache c = new MemoryCacheImpl(id);
 		this.caches.add(c);
 		return c;
 	}
@@ -63,7 +61,7 @@ public final class CacheManagerImpl implements CacheManager {
 	public Cache get(final String id) {
 		Assert.notEmpty(id, "id");
 		for (Cache cache : this.caches) {
-			if (((CacheImpl) cache).getId().equals(id)) {
+			if (((MemoryCacheImpl) cache).getId().equals(id)) {
 				return cache;
 			}
 		}
@@ -76,15 +74,11 @@ public final class CacheManagerImpl implements CacheManager {
 		Iterator<Cache> iterator = this.caches.iterator();
 		while (iterator.hasNext()) {
 			Cache cache = iterator.next();
-			if (((CacheImpl) cache).getId().equals(id)) {
+			if (((MemoryCacheImpl) cache).getId().equals(id)) {
 				iterator.remove();
 				break;
 			}
 		}
-	}
-
-	public static CacheManager getInstance() {
-		return CacheManagerImpl.instance;
 	}
 
 }

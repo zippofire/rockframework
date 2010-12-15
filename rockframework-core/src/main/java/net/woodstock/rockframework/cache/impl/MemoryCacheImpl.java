@@ -22,7 +22,7 @@ import java.util.Map;
 import net.woodstock.rockframework.cache.Cache;
 import net.woodstock.rockframework.util.Assert;
 
-class CacheImpl implements Cache {
+class MemoryCacheImpl implements Cache {
 
 	private static final long	serialVersionUID	= -8671956307741808591L;
 
@@ -30,7 +30,7 @@ class CacheImpl implements Cache {
 
 	private Map<String, Object>	map;
 
-	CacheImpl(final String id) {
+	MemoryCacheImpl(final String id) {
 		super();
 		Assert.notEmpty(id, "id");
 		this.id = id;
@@ -75,11 +75,11 @@ class CacheImpl implements Cache {
 			return true;
 		}
 
-		if (!(obj instanceof CacheImpl)) {
+		if (!(obj instanceof MemoryCacheImpl)) {
 			return false;
 		}
 
-		CacheImpl other = (CacheImpl) obj;
+		MemoryCacheImpl other = (MemoryCacheImpl) obj;
 
 		return this.id.equals(other.getId());
 	}

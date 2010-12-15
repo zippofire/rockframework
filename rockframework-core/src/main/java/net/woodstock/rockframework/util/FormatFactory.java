@@ -20,7 +20,7 @@ import java.text.Format;
 
 import net.woodstock.rockframework.cache.Cache;
 import net.woodstock.rockframework.cache.CacheManager;
-import net.woodstock.rockframework.cache.impl.CacheManagerImpl;
+import net.woodstock.rockframework.cache.impl.CacheManagerHolder;
 import net.woodstock.rockframework.utils.ObjectUtils;
 
 public abstract class FormatFactory<T extends Format> {
@@ -30,7 +30,7 @@ public abstract class FormatFactory<T extends Format> {
 	public FormatFactory() {
 		super();
 		String id = ObjectUtils.toString(this);
-		CacheManager cacheManager = CacheManagerImpl.getInstance();
+		CacheManager cacheManager = CacheManagerHolder.getInstance();
 		this.cache = cacheManager.create(id);
 	}
 

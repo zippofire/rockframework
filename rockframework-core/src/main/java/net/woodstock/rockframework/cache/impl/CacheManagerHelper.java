@@ -14,33 +14,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.utils;
+package net.woodstock.rockframework.cache.impl;
 
-public abstract class HexUtils {
+import net.woodstock.rockframework.cache.CacheManager;
 
-	private static final char	PADDING_CHAR	= '0';
+abstract class CacheManagerHelper {
 
-	private static final int	BIT_COMPARATOR	= 0xFF;
+	private static final String	EHCACHE_CLASS	= "net.sf.ehcache.CacheManager";
 
-	private HexUtils() {
+	private CacheManagerHelper() {
 		//
 	}
 
-	public static byte[] toHex(final byte[] bytes) {
-		String str = HexUtils.toHexString(bytes);
-		return str.getBytes();
-	}
-
-	public static String toHexString(final byte[] bytes) {
-		StringBuilder builder = new StringBuilder();
-		for (byte b : bytes) {
-			String s = Integer.toHexString(HexUtils.BIT_COMPARATOR & b);
-			if (s.length() == 1) {
-				builder.append(HexUtils.PADDING_CHAR);
-			}
-			builder.append(s);
+	public static CacheManager getInstance() {
+		try {
+			Class.forName(CacheManagerHelper.EHCACHE_CLASS);
+			EHCacheManagerImpl manager = new EHCacheManagerImpl();
+			return manager;
+		} catch (ClassNotFoundException e) {
+			MemoryCacheManagerImpl manager = new MemoryCacheManagerImpl();
+			return manager;
 		}
-		return builder.toString();
 	}
 
 }

@@ -14,33 +14,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.utils;
+package net.woodstock.rockframework.util;
 
-public abstract class HexUtils {
+public class RPadTransform implements StringTransform {
 
-	private static final char	PADDING_CHAR	= '0';
+	private int		size;
 
-	private static final int	BIT_COMPARATOR	= 0xFF;
+	private char	pad;
 
-	private HexUtils() {
-		//
+	public RPadTransform(final int size, final char pad) {
+		super();
+		this.size = size;
+		this.pad = pad;
 	}
 
-	public static byte[] toHex(final byte[] bytes) {
-		String str = HexUtils.toHexString(bytes);
-		return str.getBytes();
-	}
-
-	public static String toHexString(final byte[] bytes) {
+	@Override
+	public String transform(final String str) {
+		if (str == null) {
+			return null;
+		}
 		StringBuilder builder = new StringBuilder();
-		for (byte b : bytes) {
-			String s = Integer.toHexString(HexUtils.BIT_COMPARATOR & b);
-			if (s.length() == 1) {
-				builder.append(HexUtils.PADDING_CHAR);
-			}
-			builder.append(s);
+		builder.append(str);
+		while (builder.length() < this.size) {
+			builder.append(this.pad);
 		}
 		return builder.toString();
 	}
-
 }

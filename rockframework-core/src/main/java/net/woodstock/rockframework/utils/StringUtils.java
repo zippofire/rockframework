@@ -26,8 +26,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import net.woodstock.rockframework.util.CamelCaseTransform;
+import net.woodstock.rockframework.util.CapitalizeTransform;
 import net.woodstock.rockframework.util.CharsetTransform;
+import net.woodstock.rockframework.util.LPadTransform;
 import net.woodstock.rockframework.util.NormalizerTransform;
+import net.woodstock.rockframework.util.RPadTransform;
 import net.woodstock.rockframework.util.RandomGenerator;
 import net.woodstock.rockframework.util.StringFormat;
 
@@ -46,27 +49,7 @@ public abstract class StringUtils {
 	}
 
 	public static String capitalize(final String s) {
-		if (s == null) {
-			return null;
-		}
-		StringBuilder b = new StringBuilder();
-		char[] chars = s.toCharArray();
-		for (int i = 0; i < chars.length; i++) {
-			boolean capitalize = false;
-			if (i == 0) {
-				capitalize = true;
-			} else if ((i > 0) && (chars[i - 1] == ' ')) {
-				capitalize = true;
-			}
-			if ((capitalize) && (Character.isLetter(chars[i]))) {
-				b.append(Character.toUpperCase(chars[i]));
-			} else if (Character.isLetter(chars[i])) {
-				b.append(Character.toLowerCase(chars[i]));
-			} else {
-				b.append(chars[i]);
-			}
-		}
-		return b.toString();
+		return new CapitalizeTransform().transform(s);
 	}
 
 	public static String convertCharset(final Charset from, final String text) {
@@ -124,12 +107,7 @@ public abstract class StringUtils {
 	}
 
 	public static String lpad(final String s, final int size, final char pad) {
-		StringBuilder builder = new StringBuilder();
-		while (builder.length() + s.length() < size) {
-			builder.append(pad);
-		}
-		builder.append(s);
-		return builder.toString();
+		return new LPadTransform(size, pad).transform(s);
 	}
 
 	public static String normalize(final String s) {
@@ -174,11 +152,7 @@ public abstract class StringUtils {
 	}
 
 	public static String rpad(final String s, final int size, final char pad) {
-		StringBuilder builder = new StringBuilder(s);
-		while (builder.length() < size) {
-			builder.append(pad);
-		}
-		return builder.toString();
+		return new RPadTransform(size, pad).transform(s);
 	}
 
 	public static String unformat(final String format, final String value) {
