@@ -38,8 +38,8 @@ public abstract class OpenManagerInViewFilter extends AbstractHttpFilter {
 
 	@Override
 	public void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain) throws IOException, ServletException {
-		this.persistenceHelper.get();
 		try {
+			this.persistenceHelper.get();
 			chain.doFilter(request, response);
 		} catch (IOException e) {
 			throw e;

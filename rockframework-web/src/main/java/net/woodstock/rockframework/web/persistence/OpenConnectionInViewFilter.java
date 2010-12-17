@@ -14,10 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.jdbc;
+package net.woodstock.rockframework.web.persistence;
 
-public interface TypeHandler {
+import net.woodstock.rockframework.domain.persistence.util.JDBCPersistenceHelper;
 
-	int getType(Type type);
+public class OpenConnectionInViewFilter extends OpenManagerInViewFilter {
+
+	public OpenConnectionInViewFilter() {
+		super(JDBCPersistenceHelper.getInstance());
+	}
 
 }

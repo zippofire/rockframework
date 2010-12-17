@@ -16,32 +16,14 @@
  */
 package net.woodstock.rockframework.jdbc;
 
-import java.util.LinkedList;
+import java.sql.SQLException;
+import java.util.Properties;
 
-public class ParameterList extends LinkedList<Parameter> {
+import javax.naming.spi.ObjectFactory;
+import javax.sql.DataSource;
 
-	private static final long	serialVersionUID	= 17529574718383571L;
+public interface DataSourceFactory extends ObjectFactory {
 
-	public ParameterList() {
-		super();
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder s = new StringBuilder();
-		boolean first = true;
-		s.append("[");
-		for (Parameter p : this) {
-			if (first) {
-				s.append(p.toString());
-				first = false;
-			} else {
-				s.append(", ");
-				s.append(p.toString());
-			}
-		}
-		s.append("]");
-		return s.toString();
-	}
+	DataSource getDataSource(Properties properties) throws SQLException;
 
 }
