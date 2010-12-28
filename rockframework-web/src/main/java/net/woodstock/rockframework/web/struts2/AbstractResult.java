@@ -16,21 +16,16 @@
  */
 package net.woodstock.rockframework.web.struts2;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.util.ValueStack;
 
-import net.woodstock.rockframework.web.struts2.utils.Struts2Utils;
+abstract class AbstractResult implements com.opensymphony.xwork2.Result {
 
-public abstract class Result extends AbstractResult {
+	private static final long	serialVersionUID	= -1868652740559524844L;
 
-	private static final long	serialVersionUID	= -4756169112128368396L;
-
-	protected HttpServletRequest getRequest() {
-		return Struts2Utils.getRequest();
-	}
-
-	protected HttpSession getSession() {
-		return Struts2Utils.getSession();
+	protected Object findValue(final ActionInvocation invocation, final String expr) {
+		ValueStack stack = invocation.getStack();
+		return stack.findValue(expr);
 	}
 
 }

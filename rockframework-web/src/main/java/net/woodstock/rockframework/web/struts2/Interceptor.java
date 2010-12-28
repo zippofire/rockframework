@@ -19,12 +19,11 @@ package net.woodstock.rockframework.web.struts2;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import net.woodstock.rockframework.web.config.WebLog;
 import net.woodstock.rockframework.web.struts2.utils.Struts2Utils;
 
 import com.opensymphony.xwork2.ActionContext;
 
-public abstract class Interceptor implements com.opensymphony.xwork2.interceptor.Interceptor {
+public abstract class Interceptor extends AbstractInterceptor {
 
 	private static final long		serialVersionUID	= 8055330131508038464L;
 
@@ -32,16 +31,6 @@ public abstract class Interceptor implements com.opensymphony.xwork2.interceptor
 
 	public Interceptor() {
 		super();
-	}
-
-	@Override
-	public void destroy() {
-		WebLog.getInstance().getLog().debug("Destroying " + this.getClass().getCanonicalName());
-	}
-
-	@Override
-	public void init() {
-		WebLog.getInstance().getLog().debug("Initing " + this.getClass().getCanonicalName());
 	}
 
 	protected String getActionName() {

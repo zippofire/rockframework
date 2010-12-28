@@ -17,13 +17,12 @@
 package net.woodstock.rockframework.test;
 
 import junit.framework.TestCase;
-import net.woodstock.rockframework.net.http.HttpClient;
 
 public class HttpTest extends TestCase {
 
 	public void test1() throws Exception {
-		HttpClient http = new HttpClient();
-		System.out.println(http.openXml("http://svn.woodstock.net/index.php", null));
+		// HttpClient http = new HttpClient();
+		// System.out.println(http.openXml("http://svn.woodstock.net/index.php", null));
 	}
 
 }

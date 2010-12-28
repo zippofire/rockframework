@@ -16,76 +16,151 @@
  */
 package net.woodstock.rockframework.net.http;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.Serializable;
+import java.io.Writer;
+import java.net.HttpURLConnection;
+import java.net.Proxy;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.utils.ConditionUtils;
-import net.woodstock.rockframework.xml.dom.XmlDocument;
-import net.woodstock.rockframework.xml.dom.XmlElement;
-
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.params.HttpMethodParams;
-import org.xml.sax.SAXException;
 
 public class HttpClient implements Serializable {
 
-	private static final long									serialVersionUID	= -4741892532905721566L;
+	private static final long		serialVersionUID			= -4741892532905721566L;
 
-	public static final String									ERROR_ELEMENT		= "error";
+	private static final Charset	DEFAULT_CHARSET				= Charset.forName("UTF-8");
 
-	public static final String									ERRORCODE_ATTRIBUTE	= "code";
+	private static final String		GET_METHOD					= "GET";
 
-	private transient org.apache.commons.httpclient.HttpClient	client;
+	private static final String		POST_METHOD					= "POST";
+
+	private static final String		POST_CONTENT_TYPE_PROPERTY	= "Content-Type";
+
+	private static final String		POST_CONTENT_TYPE_VALUE		= "application/x-www-form-urlencoded";
+
+	private Proxy					proxy;
 
 	public HttpClient() {
 		super();
-		this.client = new org.apache.commons.httpclient.HttpClient();
 	}
 
-	public String openText(final String url, final Map<String, Object> params) {
+	public HttpClient(final Proxy proxy) {
+		super();
+		this.proxy = proxy;
+	}
+
+	public byte[] doGet(final String url) {
+		Assert.notEmpty(url, "url");
 		try {
-			GetMethod method = this.createGetMethod(url, params);
-			return method.getResponseBodyAsString();
+			HttpURLConnection c = this.getGetConnection(url);
+			c.connect();
+			InputStream inputStream = c.getInputStream();
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			int i = -1;
+			do {
+				i = inputStream.read();
+				if (i != -1) {
+					outputStream.write(i);
+				}
+			} while (i != -1);
+			inputStream.close();
+
+			return outputStream.toByteArray();
 		} catch (IOException e) {
 			throw new HttpException(e);
 		}
 	}
 
-	public XmlDocument openXml(final String url, final Map<String, Object> params) {
+	public byte[] doPost(final String url, final Map<String, Object> params) {
+		return this.doPost(url, params, HttpClient.DEFAULT_CHARSET);
+	}
+
+	public byte[] doPost(final String url, final Map<String, Object> params, final Charset charset) {
+		Assert.notEmpty(url, "url");
+		Assert.notNull(charset, "charset");
 		try {
-			GetMethod method = this.createGetMethod(url, params);
-			int status = this.client.executeMethod(method);
-			if (status == HttpStatus.SC_OK) {
-				return XmlDocument.read(method.getResponseBodyAsStream());
-			}
-			XmlDocument doc = new XmlDocument(HttpClient.ERROR_ELEMENT);
-			XmlElement root = doc.getRoot();
-			root.setAttribute(HttpClient.ERRORCODE_ATTRIBUTE, Integer.valueOf(status));
-			root.setTextContent(method.getResponseBodyAsString());
-			return doc;
-		} catch (SAXException e) {
-			throw new HttpException(e);
+			HttpURLConnection c = this.getPostConnection(url, params, charset);
+			InputStream inputStream = c.getInputStream();
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			int i = -1;
+			do {
+				i = inputStream.read();
+				if (i != -1) {
+					outputStream.write(i);
+				}
+			} while (i != -1);
+			inputStream.close();
+
+			return outputStream.toByteArray();
 		} catch (IOException e) {
 			throw new HttpException(e);
 		}
 	}
 
-	private GetMethod createGetMethod(final String url, final Map<String, Object> params) {
-		GetMethod method = new GetMethod(url);
+	private HttpURLConnection getPostConnection(final String url, final Map<String, Object> params, final Charset charset) throws IOException {
+		URL u = new URL(url);
+		HttpURLConnection c = this.getConnection(u);
+		c.setAllowUserInteraction(true);
+		c.setDoInput(true);
+		c.setDoOutput(true);
+		c.setRequestMethod(HttpClient.POST_METHOD);
+		c.setRequestProperty(HttpClient.POST_CONTENT_TYPE_PROPERTY, HttpClient.POST_CONTENT_TYPE_VALUE);
 		if (ConditionUtils.isNotEmpty(params)) {
-			HttpMethodParams hps = new HttpMethodParams();
-			for (Entry<String, Object> p : params.entrySet()) {
-				String key = p.getKey();
-				Object value = p.getValue();
-				String valueStr = value == null ? "" : value.toString();
-				hps.setParameter(key, valueStr);
+			OutputStream outputStream = c.getOutputStream();
+			Writer writer = new OutputStreamWriter(outputStream);
+			StringBuilder builder = new StringBuilder();
+			boolean first = true;
+			for (Entry<String, Object> entry : params.entrySet()) {
+				String key = entry.getKey();
+				Object value = entry.getValue();
+				if (!first) {
+					builder.append("&");
+				}
+				builder.append(key);
+				builder.append("=");
+				if (value != null) {
+					String valueStr = URLEncoder.encode(value.toString(), charset.displayName());
+					builder.append(valueStr);
+				}
+				if (first) {
+					first = false;
+				}
 			}
-			method.setParams(hps);
+			writer.write(builder.toString());
+			writer.flush();
+			writer.close();
 		}
-		return method;
+
+		return c;
+	}
+
+	private HttpURLConnection getGetConnection(final String url) throws IOException {
+		URL u = new URL(url);
+		HttpURLConnection c = this.getConnection(u);
+		c.setDefaultUseCaches(false);
+		c.setDoInput(true);
+		c.setRequestMethod(HttpClient.GET_METHOD);
+		c.setUseCaches(false);
+		return c;
+	}
+
+	private HttpURLConnection getConnection(final URL url) throws IOException {
+		if (this.proxy != null) {
+			HttpURLConnection c = (HttpURLConnection) url.openConnection(this.proxy);
+			return c;
+		}
+		HttpURLConnection c = (HttpURLConnection) url.openConnection();
+		return c;
 	}
 
 }

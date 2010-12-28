@@ -16,21 +16,24 @@
  */
 package net.woodstock.rockframework.web.struts2;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import net.woodstock.rockframework.web.config.WebLog;
 
-import net.woodstock.rockframework.web.struts2.utils.Struts2Utils;
+abstract class AbstractInterceptor implements com.opensymphony.xwork2.interceptor.Interceptor {
 
-public abstract class Result extends AbstractResult {
+	private static final long	serialVersionUID	= -914362643212260445L;
 
-	private static final long	serialVersionUID	= -4756169112128368396L;
-
-	protected HttpServletRequest getRequest() {
-		return Struts2Utils.getRequest();
+	public AbstractInterceptor() {
+		super();
 	}
 
-	protected HttpSession getSession() {
-		return Struts2Utils.getSession();
+	@Override
+	public void destroy() {
+		WebLog.getInstance().getLog().debug("Destroying " + this.getClass().getCanonicalName());
+	}
+
+	@Override
+	public void init() {
+		WebLog.getInstance().getLog().debug("Initing " + this.getClass().getCanonicalName());
 	}
 
 }
