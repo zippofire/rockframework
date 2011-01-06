@@ -49,20 +49,18 @@ public abstract class EJBQLQueryBuilder<T> extends AbstractQueryBuilder<T> {
 	@Override
 	public QueryBuilder<T> setEntity(final Entity<?> entity) {
 		if (this.build) {
-			DomainLog.getInstance().getLog().warn("Query alread build");
-		} else {
-			this.entity = entity;
+			DomainLog.getInstance().getLog().warn("Query alread build, rebuild it");
 		}
+		this.entity = entity;
 		return this;
 	}
 
 	@Override
 	public QueryBuilder<T> setOption(final String name, final Object value) {
 		if (this.build) {
-			DomainLog.getInstance().getLog().warn("Query alread build");
-		} else {
-			this.options.put(name, value);
+			DomainLog.getInstance().getLog().warn("Query alread build, rebuild it");
 		}
+		this.options.put(name, value);
 		return this;
 	}
 

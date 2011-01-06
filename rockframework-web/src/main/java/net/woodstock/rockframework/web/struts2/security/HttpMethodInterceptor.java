@@ -67,7 +67,7 @@ public class HttpMethodInterceptor extends ConditionalInterceptor<String> {
 				methods = this.getMethods(annotation);
 				validate = true;
 			}
-			this.addRule(rule, false);
+			this.addRule(rule, validate);
 			this.addRuleValue(rule, methods);
 		}
 
@@ -85,7 +85,6 @@ public class HttpMethodInterceptor extends ConditionalInterceptor<String> {
 				WebLog.getInstance().getLog().info("Methods not found for " + url);
 				return Constants.INVALID_METHOD;
 			}
-
 		}
 
 		return invocation.invoke();

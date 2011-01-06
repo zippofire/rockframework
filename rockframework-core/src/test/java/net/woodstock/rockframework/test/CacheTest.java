@@ -1,5 +1,7 @@
 package net.woodstock.rockframework.test;
 
+import java.io.Serializable;
+
 import junit.framework.TestCase;
 import net.woodstock.rockframework.cache.Cache;
 import net.woodstock.rockframework.cache.CacheManager;
@@ -10,25 +12,26 @@ public class CacheTest extends TestCase {
 	public void test1() throws Exception {
 		CacheManager manager = CacheManagerHolder.getInstance();
 		Cache cache = manager.create("test");
-		cache.add("1", "Testando");
+		Test test = new Test("Testando");
+		cache.add("test", test);
+
+		Test tmp = (Test) cache.get("test");
+		System.out.println(test.getValue());
+		System.out.println(tmp.getValue());
 	}
 
-	public void test2() throws Exception {
-		CacheManager manager = CacheManagerHolder.getInstance();
-		Cache cache = manager.get("test");
-		System.out.println(cache.get("1"));
-	}
+	public static class Test implements Serializable {
 
-	public void test3() throws Exception {
-		CacheManager manager = CacheManagerHolder.getInstance();
-		Cache cache = manager.get("test");
-		cache.remove("1");
-	}
+		private String	value;
 
-	public void test4() throws Exception {
-		CacheManager manager = CacheManagerHolder.getInstance();
-		Cache cache = manager.get("test");
-		System.out.println(cache.get("1"));
+		public Test(final String value) {
+			super();
+			this.value = value;
+		}
+
+		public String getValue() {
+			return this.value;
+		}
 	}
 
 }

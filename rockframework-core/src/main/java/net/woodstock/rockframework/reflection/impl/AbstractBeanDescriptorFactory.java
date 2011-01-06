@@ -53,7 +53,8 @@ abstract class AbstractBeanDescriptorFactory implements BeanDescriptorFactory {
 
 		if (this.hasOnCache(clazz)) {
 			CoreLog.getInstance().getLog().info("Class " + clazz.getSimpleName() + " exists on cache");
-			return this.getFromCache(clazz);
+			BeanDescriptor descriptor = this.getFromCache(clazz);
+			return descriptor;
 		}
 		BeanDescriptor descriptor = this.getBeanDescriptorInternal(clazz);
 		CoreLog.getInstance().getLog().info("Adding class " + clazz.getSimpleName() + " to cache");

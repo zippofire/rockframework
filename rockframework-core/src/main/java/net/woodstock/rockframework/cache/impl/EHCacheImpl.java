@@ -39,7 +39,13 @@ class EHCacheImpl implements Cache {
 
 	@Override
 	public boolean contains(final String name) {
-		return this.cache.isKeyInCache(name);
+		if (this.cache.isKeyInCache(name)) {
+			Object o = this.get(name);
+			if (o != null) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
