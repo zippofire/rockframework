@@ -16,25 +16,41 @@
  */
 package net.woodstock.rockframework.cache.impl;
 
+import net.woodstock.rockframework.cache.Cache;
 import net.woodstock.rockframework.cache.CacheManager;
 
-abstract class CacheManagerHelper {
+public final class CacheManagerImpl implements CacheManager {
 
-	private static final String	EHCACHE_CLASS	= "net.sf.ehcache.CacheManager";
+	private static CacheManager	instance	= new CacheManagerImpl();
 
-	private CacheManagerHelper() {
-		//
+	private CacheManager		delegate	= CacheManagerHolder.getInstance();
+
+	private CacheManagerImpl() {
+		super();
+	}
+
+	@Override
+	public boolean contains(final String id) {
+		return this.delegate.contains(id);
+	}
+
+	@Override
+	public Cache create(final String id) {
+		return this.delegate.create(id);
+	}
+
+	@Override
+	public Cache get(final String id) {
+		return this.delegate.get(id);
+	}
+
+	@Override
+	public void remove(final String id) {
+		this.delegate.remove(id);
 	}
 
 	public static CacheManager getInstance() {
-		try {
-			Class.forName(CacheManagerHelper.EHCACHE_CLASS);
-			EHCacheManagerImpl manager = new EHCacheManagerImpl();
-			return manager;
-		} catch (ClassNotFoundException e) {
-			MemoryCacheManagerImpl manager = new MemoryCacheManagerImpl();
-			return manager;
-		}
+		return instance;
 	}
 
 }

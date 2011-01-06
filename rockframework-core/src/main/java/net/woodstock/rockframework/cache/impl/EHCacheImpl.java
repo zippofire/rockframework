@@ -19,6 +19,8 @@ package net.woodstock.rockframework.cache.impl;
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
 import net.woodstock.rockframework.cache.Cache;
+import net.woodstock.rockframework.config.CoreLog;
+import net.woodstock.rockframework.util.Assert;
 
 class EHCacheImpl implements Cache {
 
@@ -32,13 +34,20 @@ class EHCacheImpl implements Cache {
 	}
 
 	@Override
-	public void add(final String name, final Object object) {
+	public boolean add(final String name, final Object object) {
+		Assert.notEmpty(name, "name");
+		if (object == null) {
+			CoreLog.getInstance().getLog().warn("Cache not supports null objects");
+			return false;
+		}
 		Element element = new Element(name, object);
 		this.cache.put(element);
+		return true;
 	}
 
 	@Override
 	public boolean contains(final String name) {
+		Assert.notEmpty(name, "name");
 		if (this.cache.isKeyInCache(name)) {
 			Object o = this.get(name);
 			if (o != null) {
@@ -50,6 +59,7 @@ class EHCacheImpl implements Cache {
 
 	@Override
 	public Object get(final String name) {
+		Assert.notEmpty(name, "name");
 		Element element = this.cache.get(name);
 		if (element != null) {
 			return element.getObjectValue();
@@ -59,6 +69,7 @@ class EHCacheImpl implements Cache {
 
 	@Override
 	public Object remove(final String name) {
+		Assert.notEmpty(name, "name");
 		Element element = this.cache.get(name);
 		if (element != null) {
 			Object value = element.getObjectValue();

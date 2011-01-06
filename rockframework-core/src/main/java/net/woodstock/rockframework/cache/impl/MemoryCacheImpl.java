@@ -16,25 +16,39 @@
  */
 package net.woodstock.rockframework.cache.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.woodstock.rockframework.cache.Cache;
+import net.woodstock.rockframework.config.CoreConfig;
+import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.util.Assert;
 
 class MemoryCacheImpl implements Cache {
 
-	private static final long	serialVersionUID	= -8671956307741808591L;
+	private static final long				serialVersionUID		= -8671956307741808591L;
 
-	private String				id;
+	private static final String				MAX_CACHE_SIZE_PROPERTY	= "cache.size";
 
-	private Map<String, Object>	map;
+	private static final String				MAX_CACHE_SIZE_VALUE	= CoreConfig.getInstance().getValue(MemoryCacheImpl.MAX_CACHE_SIZE_PROPERTY);
+
+	private static final int				MAX_CACHE_SIZE			= Integer.parseInt(MemoryCacheImpl.MAX_CACHE_SIZE_VALUE);
+
+	private static final int				CLEAN_SIZE				= 50;
+
+	private String							id;
+
+	private Map<String, MemoryCacheItem>	map;
 
 	MemoryCacheImpl(final String id) {
 		super();
 		Assert.notEmpty(id, "id");
 		this.id = id;
-		this.map = new HashMap<String, Object>();
+		this.map = new HashMap<String, MemoryCacheItem>();
 	}
 
 	public String getId() {
@@ -42,60 +56,62 @@ class MemoryCacheImpl implements Cache {
 	}
 
 	@Override
-	public void add(final String name, final Object object) {
+	public synchronized boolean add(final String name, final Object object) {
 		Assert.notEmpty(name, "name");
-		this.map.put(name, object);
-	}
-
-	@Override
-	public boolean contains(final String name) {
-		Assert.notEmpty(name, "name");
-		return this.map.containsKey(name);
-	}
-
-	@Override
-	public Object get(final String name) {
-		Assert.notEmpty(name, "name");
-		return this.map.get(name);
-	}
-
-	@Override
-	public Object remove(final String name) {
-		Assert.notEmpty(name, "name");
-		return this.map.remove(name);
-	}
-
-	// Object
-	@Override
-	public boolean equals(final Object obj) {
-		if (obj == null) {
+		if (object == null) {
+			CoreLog.getInstance().getLog().warn("Cache not supports null objects");
 			return false;
 		}
-		if (this == obj) {
+		if (this.map.size() > MemoryCacheImpl.MAX_CACHE_SIZE) {
+
+			CoreLog.getInstance().getLog().info("Cache[" + this.id + "]  size is greater than " + MemoryCacheImpl.MAX_CACHE_SIZE + " and will be cleaned");
+			Collection<MemoryCacheItem> collection = this.map.values();
+			List<MemoryCacheItem> list = new ArrayList<MemoryCacheItem>(collection);
+			Collections.sort(list);
+
+			List<MemoryCacheItem> deletables = list.subList(0, MemoryCacheImpl.CLEAN_SIZE);
+			for (MemoryCacheItem item : deletables) {
+				this.map.remove(item.getName());
+			}
+			CoreLog.getInstance().getLog().info("Cache clean");
+		}
+		MemoryCacheItem item = new MemoryCacheItem(name, object);
+		this.map.put(name, item);
+		return true;
+	}
+
+	@Override
+	public synchronized boolean contains(final String name) {
+		Assert.notEmpty(name, "name");
+		MemoryCacheItem item = this.map.get(name);
+		if (item != null) {
+			item.updateLastAccess();
 			return true;
 		}
+		return false;
+	}
 
-		if (!(obj instanceof MemoryCacheImpl)) {
-			return false;
+	@Override
+	public synchronized Object get(final String name) {
+		Assert.notEmpty(name, "name");
+		MemoryCacheItem item = this.map.get(name);
+		if (item != null) {
+			item.updateLastAccess();
+			return item.getValue();
 		}
-
-		MemoryCacheImpl other = (MemoryCacheImpl) obj;
-
-		return this.id.equals(other.getId());
+		return item;
 	}
 
 	@Override
-	public int hashCode() {
-		return this.id.hashCode();
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Cache[");
-		builder.append(this.id);
-		builder.append("]");
-		return this.id;
+	public synchronized Object remove(final String name) {
+		Assert.notEmpty(name, "name");
+		MemoryCacheItem item = this.map.get(name);
+		if (item != null) {
+			item.updateLastAccess();
+			this.map.remove(name);
+			return item.getValue();
+		}
+		return null;
 	}
 
 }

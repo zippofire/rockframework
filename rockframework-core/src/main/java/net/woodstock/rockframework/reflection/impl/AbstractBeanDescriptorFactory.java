@@ -18,7 +18,7 @@ package net.woodstock.rockframework.reflection.impl;
 
 import net.woodstock.rockframework.cache.Cache;
 import net.woodstock.rockframework.cache.CacheManager;
-import net.woodstock.rockframework.cache.impl.CacheManagerHolder;
+import net.woodstock.rockframework.cache.impl.CacheManagerImpl;
 import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.util.Assert;
@@ -31,7 +31,7 @@ abstract class AbstractBeanDescriptorFactory implements BeanDescriptorFactory {
 	public AbstractBeanDescriptorFactory() {
 		super();
 		String id = ObjectUtils.toString(this);
-		CacheManager cacheManager = CacheManagerHolder.getInstance();
+		CacheManager cacheManager = CacheManagerImpl.getInstance();
 		this.cache = cacheManager.create(id);
 	}
 

@@ -18,16 +18,23 @@ package net.woodstock.rockframework.cache.impl;
 
 import net.woodstock.rockframework.cache.CacheManager;
 
-public abstract class CacheManagerHolder {
+abstract class CacheManagerHolder {
 
-	private static CacheManager	instance	= CacheManagerHelper.getInstance();
+	private static final String	EHCACHE_CLASS	= "net.sf.ehcache.CacheManager___XXXXX";
 
 	private CacheManagerHolder() {
 		//
 	}
 
 	public static CacheManager getInstance() {
-		return instance;
+		try {
+			Class.forName(CacheManagerHolder.EHCACHE_CLASS);
+			EHCacheManagerImpl manager = new EHCacheManagerImpl();
+			return manager;
+		} catch (ClassNotFoundException e) {
+			MemoryCacheManagerImpl manager = new MemoryCacheManagerImpl();
+			return manager;
+		}
 	}
 
 }

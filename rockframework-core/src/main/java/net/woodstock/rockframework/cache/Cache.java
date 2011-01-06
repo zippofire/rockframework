@@ -20,8 +20,8 @@ import java.io.Serializable;
 
 public interface Cache extends Serializable {
 
-	void add(String name, Object object);
-	
+	boolean add(String name, Object object);
+
 	boolean contains(String name);
 
 	Object get(String name);
