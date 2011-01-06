@@ -17,10 +17,11 @@
 package net.woodstock.rockframework.net.mail;
 
 import javax.mail.MessagingException;
+import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.MimeMessage;
 
-public class RunnableMailSender extends SimpleMailSender {
+public class RunnableMailSender extends AbstractMailSender {
 
 	public RunnableMailSender() {
 		super();
@@ -39,10 +40,16 @@ public class RunnableMailSender extends SimpleMailSender {
 	}
 
 	@Override
-	protected void send(final MimeMessage mimeMessage, final Transport transport) {
-		Runnable runnable = new RunnableMailSenderHelper(mimeMessage, transport);
-		Thread thread = new Thread(runnable);
-		thread.start();
+	protected void send(final Mail message, final Session session) {
+		try {
+			MimeMessage mimeMessage = MailHelper.toMimeMessage(message, session);
+			Transport transport = MailHelper.getTransport(session, this.getSmtpServer(), this.getSmtpPort(), this.getUser(), this.getPassword());
+			Runnable runnable = new RunnableMailSenderHelper(mimeMessage, transport);
+			Thread thread = new Thread(runnable);
+			thread.start();
+		} catch (MessagingException e) {
+			throw new MailException(e);
+		}
 	}
 
 	public static class RunnableMailSenderHelper implements Runnable {

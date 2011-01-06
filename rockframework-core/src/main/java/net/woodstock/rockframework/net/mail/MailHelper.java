@@ -26,6 +26,8 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import net.woodstock.rockframework.utils.ConditionUtils;
+
 abstract class MailHelper {
 
 	private static final String	MULTIPART_TYPE		= "related";
@@ -47,7 +49,7 @@ abstract class MailHelper {
 		}
 	}
 
-	public static MimeMessage toMimeMessage(final SimpleMail message, final Session session) throws MessagingException {
+	public static MimeMessage toMimeMessage(final Mail message, final Session session) throws MessagingException {
 		MimeMessage mimeMessage = new MimeMessage(session);
 		MimeMultipart multipart = new MimeMultipart(MailHelper.MULTIPART_TYPE);
 
@@ -113,6 +115,16 @@ abstract class MailHelper {
 		mimeMessage.setContent(multipart);
 
 		return mimeMessage;
+	}
+
+	public static Transport getTransport(final Session session, final String smtpServer, final int port, final String user, final String password) throws MessagingException {
+		if (ConditionUtils.isEmpty(user)) {
+			return null;
+		}
+
+		Transport transport = session.getTransport(AbstractMailSender.PROTOCOL);
+		transport.connect(smtpServer, port, user, password);
+		return transport;
 	}
 
 	private static String getContentId(final Attachment a) {

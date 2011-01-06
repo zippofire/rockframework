@@ -16,11 +16,10 @@
  */
 package net.woodstock.rockframework.net.mail;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 
-public class SimpleMail implements Serializable {
+public class SimpleMail implements Mail {
 
 	private static final long		serialVersionUID	= -7704634381340126487L;
 
@@ -59,6 +58,7 @@ public class SimpleMail implements Serializable {
 		this.attach.add(attach);
 	}
 
+	@Override
 	public Collection<Attachment> getAttach() {
 		return this.attach;
 	}
@@ -71,6 +71,7 @@ public class SimpleMail implements Serializable {
 		this.bcc.add(bcc);
 	}
 
+	@Override
 	public Collection<String> getBcc() {
 		return this.bcc;
 	}
@@ -83,6 +84,7 @@ public class SimpleMail implements Serializable {
 		this.cc.add(cc);
 	}
 
+	@Override
 	public Collection<String> getCc() {
 		return this.cc;
 	}
@@ -91,6 +93,7 @@ public class SimpleMail implements Serializable {
 		this.cc = cc;
 	}
 
+	@Override
 	public String getFrom() {
 		return this.from;
 	}
@@ -99,6 +102,7 @@ public class SimpleMail implements Serializable {
 		this.from = from;
 	}
 
+	@Override
 	public boolean isHtml() {
 		return this.html;
 	}
@@ -111,6 +115,7 @@ public class SimpleMail implements Serializable {
 		this.replyTo.add(replyTo);
 	}
 
+	@Override
 	public Collection<String> getReplyTo() {
 		return this.replyTo;
 	}
@@ -119,6 +124,7 @@ public class SimpleMail implements Serializable {
 		this.replyTo = replyTo;
 	}
 
+	@Override
 	public String getSubject() {
 		return this.subject;
 	}
@@ -127,6 +133,7 @@ public class SimpleMail implements Serializable {
 		this.subject = subject;
 	}
 
+	@Override
 	public String getText() {
 		return this.text;
 	}
@@ -139,6 +146,7 @@ public class SimpleMail implements Serializable {
 		this.to.add(to);
 	}
 
+	@Override
 	public Collection<String> getTo() {
 		return this.to;
 	}
