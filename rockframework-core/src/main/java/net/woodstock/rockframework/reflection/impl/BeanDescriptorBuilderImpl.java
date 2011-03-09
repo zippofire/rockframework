@@ -45,6 +45,12 @@ public class BeanDescriptorBuilderImpl implements BeanDescriptorBuilder {
 		this.mode = BeanDescriptorBuilderImpl.REFLECTION_TYPE;
 	}
 
+	public BeanDescriptorBuilderImpl(final ReflectionType reflectionType, final Class<?> type) {
+		super();
+		this.mode = reflectionType;
+		this.type = type;
+	}
+
 	@Override
 	public BeanDescriptorBuilder setMode(final ReflectionType reflectionType) {
 		this.mode = reflectionType;
