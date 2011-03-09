@@ -27,6 +27,8 @@ import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import net.woodstock.rockframework.collection.ImmutableSet;
+
 public class ZipReader {
 
 	private Set<String>	files;
@@ -96,6 +98,10 @@ public class ZipReader {
 
 	public File getFile(final String file, final String outFile) throws IOException {
 		return this.getFile(file, new File(outFile));
+	}
+
+	public Collection<String> getFiles() {
+		return new ImmutableSet<String>(this.files);
 	}
 
 	public void unzipFiles(final File outDir, final String... files) throws IOException {

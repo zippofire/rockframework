@@ -16,7 +16,7 @@
  */
 package net.woodstock.rockframework.web.persistence;
 
-import net.woodstock.rockframework.domain.persistence.util.JPAPersistenceHelper;
+import net.woodstock.rockframework.domain.persistence.orm.util.JPAPersistenceHelper;
 
 public class OpenEntityManagerInViewFilter extends OpenManagerInViewFilter {
 

@@ -1,8 +1,8 @@
 package net.woodstock.rockframework.domain.test.test1;
 
-import net.woodstock.rockframework.domain.persistence.query.impl.EJBQLQueryBuilder;
+import net.woodstock.rockframework.domain.query.impl.JPQLQueryBuilder;
 
-public class TestQueryBuilder extends EJBQLQueryBuilder<Object> {
+public class TestQueryBuilder extends JPQLQueryBuilder<Object> {
 
 	@Override
 	protected Object getQuery(final String sql) {

@@ -21,10 +21,19 @@ import java.lang.reflect.Method;
 
 import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
+import net.woodstock.rockframework.reflection.ReflectionException;
 
 class MethodPropertyDescriptor extends AbstractPropertyDescriptor {
 
 	private String		name;
+
+	private Method		readMethod;
+
+	private String		readMethodName;
+
+	private Method		writeMethod;
+
+	private String		writeMethodName;
 
 	private Class<?>	type;
 
@@ -46,45 +55,35 @@ class MethodPropertyDescriptor extends AbstractPropertyDescriptor {
 
 	private void initGet() {
 		Class<?> c = this.getBeanDescriptor().getType();
-		String readMethodName = null;
-		Method readMethod = null;
 		// Is
 		if (this.type.equals(Boolean.TYPE)) {
 			try {
-				readMethodName = BeanDescriptorHelper.getMethodName(BeanDescriptorHelper.IS_METHOD_PREFIX, this.name);
-				readMethod = c.getMethod(readMethodName, new Class[] {});
+				this.readMethodName = BeanDescriptorHelper.getMethodName(BeanDescriptorHelper.IS_METHOD_PREFIX, this.name);
+				this.readMethod = c.getMethod(this.readMethodName, new Class[] {});
 			} catch (NoSuchMethodException e) {
 				CoreLog.getInstance().getLog().debug(e.getMessage(), e);
 			}
 			// Get
 		} else {
 			try {
-				readMethodName = BeanDescriptorHelper.getMethodName(BeanDescriptorHelper.GET_METHOD_PREFIX, this.name);
-				readMethod = c.getMethod(readMethodName, new Class[] {});
+				this.readMethodName = BeanDescriptorHelper.getMethodName(BeanDescriptorHelper.GET_METHOD_PREFIX, this.name);
+				this.readMethod = c.getMethod(this.readMethodName, new Class[] {});
 			} catch (NoSuchMethodException e) {
 				CoreLog.getInstance().getLog().debug(e.getMessage(), e);
 			}
 		}
-		this.setReadMethodName(readMethodName);
-		this.setReadMethod(readMethod);
-		if (readMethod != null) {
-			this.modifiers = readMethod.getModifiers();
-		}
+		this.modifiers = this.readMethod.getModifiers();
 	}
 
 	private void initSet() {
 		Class<?> c = this.getBeanDescriptor().getType();
-		String writeMethodName = null;
-		Method writeMethod = null;
 		// Set
 		try {
-			writeMethodName = BeanDescriptorHelper.getMethodName(BeanDescriptorHelper.SET_METHOD_PREFIX, this.name);
-			writeMethod = c.getMethod(writeMethodName, new Class[] { this.type });
+			this.writeMethodName = BeanDescriptorHelper.getMethodName(BeanDescriptorHelper.SET_METHOD_PREFIX, this.name);
+			this.writeMethod = c.getMethod(this.writeMethodName, new Class[] { this.type });
 		} catch (NoSuchMethodException e) {
 			CoreLog.getInstance().getLog().debug(e.getMessage(), e);
 		}
-		this.setWriteMethodName(writeMethodName);
-		this.setWriteMethod(writeMethod);
 	}
 
 	@Override
@@ -104,26 +103,62 @@ class MethodPropertyDescriptor extends AbstractPropertyDescriptor {
 
 	@Override
 	public boolean isAnnotationPresent(final Class<? extends Annotation> clazz) {
-		if (this.getReadMethod() != null) {
-			return this.getReadMethod().isAnnotationPresent(clazz);
+		if (this.readMethod != null) {
+			return this.readMethod.isAnnotationPresent(clazz);
 		}
-		return this.getWriteMethod().isAnnotationPresent(clazz);
+		return this.writeMethod.isAnnotationPresent(clazz);
 	}
 
 	@Override
 	public <T extends Annotation> T getAnnotation(final Class<T> clazz) {
-		if (this.getReadMethod() != null) {
-			return this.getReadMethod().getAnnotation(clazz);
+		if (this.readMethod != null) {
+			return this.readMethod.getAnnotation(clazz);
 		}
-		return this.getWriteMethod().getAnnotation(clazz);
+		return this.writeMethod.getAnnotation(clazz);
 	}
 
 	@Override
 	public Annotation[] getAnnotations() {
-		if (this.getReadMethod() != null) {
-			return this.getReadMethod().getAnnotations();
+		if (this.readMethod != null) {
+			return this.readMethod.getAnnotations();
 		}
-		return this.getWriteMethod().getAnnotations();
+		return this.writeMethod.getAnnotations();
+	}
+
+	// Getters and Setters
+	@Override
+	public Object getValue(final Object o) {
+		try {
+			if (this.readMethod == null) {
+				throw new NoSuchMethodException(this.getBeanDescriptor().getType().getCanonicalName() + "." + this.readMethodName);
+			}
+			return this.readMethod.invoke(o, new Object[] {});
+		} catch (Exception e) {
+			throw new ReflectionException(e);
+		}
+	}
+
+	@Override
+	public void setValue(final Object o, final Object value) {
+		try {
+			if (this.writeMethod == null) {
+				throw new NoSuchMethodException(this.getBeanDescriptor().getType().getCanonicalName() + "." + this.writeMethodName);
+			}
+			this.writeMethod.invoke(o, new Object[] { value });
+		} catch (Exception e) {
+			throw new ReflectionException(e);
+		}
+	}
+
+	// Aux
+	@Override
+	public boolean isReadable() {
+		return this.readMethod != null;
+	}
+
+	@Override
+	public boolean isWriteable() {
+		return this.writeMethod != null;
 	}
 
 }

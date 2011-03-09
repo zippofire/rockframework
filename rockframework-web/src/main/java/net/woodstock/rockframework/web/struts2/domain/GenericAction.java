@@ -66,28 +66,6 @@ public abstract class GenericAction<E extends Entity> extends Action {
 		}
 	}
 
-	public String list() {
-		try {
-			this.entities = this.getGenericService().listByExample(this.entity, null);
-			return Constants.SUCCESS;
-		} catch (DomainException e) {
-			WebLog.getInstance().getLog().error(e.getMessage(), e);
-			this.addActionError(e.getMessage());
-			return Constants.ERROR;
-		}
-	}
-
-	public String listAll() {
-		try {
-			this.entities = this.getGenericService().listAll(this.entity, null);
-			return Constants.SUCCESS;
-		} catch (DomainException e) {
-			WebLog.getInstance().getLog().error(e.getMessage(), e);
-			this.addActionError(e.getMessage());
-			return Constants.ERROR;
-		}
-	}
-
 	public String save() {
 		try {
 			this.getGenericService().save(this.entity);

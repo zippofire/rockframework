@@ -18,6 +18,8 @@ package net.woodstock.rockframework.domain.util;
 
 import net.woodstock.rockframework.domain.Pojo;
 
+import org.springframework.util.Assert;
+
 public class Range<T extends Comparable<T>> implements Pojo {
 
 	private static final long	serialVersionUID	= 1182462172427235262L;
@@ -32,6 +34,8 @@ public class Range<T extends Comparable<T>> implements Pojo {
 
 	public Range(final T start, final T end) {
 		super();
+		Assert.notNull(start, "start");
+		Assert.notNull(end, "end");
 		this.start = start;
 		this.end = end;
 	}
@@ -40,16 +44,18 @@ public class Range<T extends Comparable<T>> implements Pojo {
 		return this.start;
 	}
 
-	public void setStart(final T start) {
-		this.start = start;
-	}
-
 	public T getEnd() {
 		return this.end;
 	}
 
-	public void setEnd(final T end) {
-		this.end = end;
+	// Aux
+	public boolean isValid(final T value) {
+		if (this.start.compareTo(value) > 0) {
+			return false;
+		}
+		if (this.end.compareTo(value) < 0) {
+			return false;
+		}
+		return true;
 	}
-
 }

@@ -16,14 +16,11 @@
  */
 package net.woodstock.rockframework.domain.service.impl;
 
-import java.util.Collection;
-import java.util.Map;
-
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.BusinessException;
 import net.woodstock.rockframework.domain.business.ValidationException;
 import net.woodstock.rockframework.domain.business.ValidationResult;
-import net.woodstock.rockframework.domain.persistence.PersistenceException;
+import net.woodstock.rockframework.domain.persistence.orm.PersistenceException;
 import net.woodstock.rockframework.domain.service.ServiceException;
 
 public abstract class AbstractGenericService extends GenericServiceBean {
@@ -58,40 +55,6 @@ public abstract class AbstractGenericService extends GenericServiceBean {
 				throw new ValidationException(result.getMessage());
 			}
 			return this.getRepository().get(entity);
-		} catch (PersistenceException e) {
-			throw e;
-		} catch (BusinessException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new ServiceException(e);
-		}
-	}
-
-	@Override
-	public <E extends Entity<?>> Collection<E> listAll(final E entity, final Map<String, Object> options) {
-		try {
-			ValidationResult result = this.getBusiness().validateList(entity);
-			if (result.isError()) {
-				throw new ValidationException(result.getMessage());
-			}
-			return this.getRepository().listAll(entity, options);
-		} catch (PersistenceException e) {
-			throw e;
-		} catch (BusinessException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new ServiceException(e);
-		}
-	}
-
-	@Override
-	public <E extends Entity<?>> Collection<E> listByExample(final E entity, final Map<String, Object> options) {
-		try {
-			ValidationResult result = this.getBusiness().validateList(entity);
-			if (result.isError()) {
-				throw new ValidationException(result.getMessage());
-			}
-			return this.getRepository().listByExample(entity, options);
 		} catch (PersistenceException e) {
 			throw e;
 		} catch (BusinessException e) {

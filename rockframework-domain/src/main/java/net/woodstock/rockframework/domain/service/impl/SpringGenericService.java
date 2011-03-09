@@ -16,9 +16,6 @@
  */
 package net.woodstock.rockframework.domain.service.impl;
 
-import java.util.Collection;
-import java.util.Map;
-
 import net.woodstock.rockframework.domain.Entity;
 
 import org.springframework.transaction.annotation.Propagation;
@@ -40,18 +37,6 @@ public abstract class SpringGenericService extends AbstractGenericService {
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public <E extends Entity<?>> E get(final E entity) {
 		return super.get(entity);
-	}
-
-	@Override
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public <E extends Entity<?>> Collection<E> listAll(final E entity, final Map<String, Object> options) {
-		return super.listAll(entity, options);
-	}
-
-	@Override
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public <E extends Entity<?>> Collection<E> listByExample(final E entity, final Map<String, Object> options) {
-		return super.listByExample(entity, options);
 	}
 
 	@Override

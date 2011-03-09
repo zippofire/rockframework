@@ -17,7 +17,7 @@
 package net.woodstock.rockframework.domain.service.impl;
 
 import net.woodstock.rockframework.domain.business.GenericBusiness;
-import net.woodstock.rockframework.domain.persistence.GenericRepository;
+import net.woodstock.rockframework.domain.persistence.orm.GenericRepository;
 import net.woodstock.rockframework.domain.service.GenericService;
 import net.woodstock.rockframework.util.Assert;
 

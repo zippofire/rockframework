@@ -16,6 +16,7 @@
  */
 package net.woodstock.rockframework.domain.spring;
 
+import java.security.Principal;
 import java.util.Collection;
 import java.util.Map;
 
@@ -34,9 +35,13 @@ public final class ContextHelper {
 
 	private static final String		WEB_CONTEXT_LOADER_CLASS	= "org.springframework.web.context.ContextLoader";
 
+	private static final String		SECURITY_CONTEXT_CLASS		= "org.springframework.security.core.Authentication";
+
 	private static ContextHelper	instance					= new ContextHelper();
 
 	private ApplicationContext		context;
+
+	private boolean					isSecurityAvailable;
 
 	private ContextHelper() {
 		super();
@@ -45,9 +50,10 @@ public final class ContextHelper {
 		} else {
 			this.context = this.getApplicationContext();
 		}
+		this.isSecurityAvailable = this.isSecurityAvailable();
 	}
 
-	private synchronized boolean isWebApplication() {
+	private boolean isWebApplication() {
 		try {
 			Class.forName(ContextHelper.WEB_CONTEXT_LOADER_CLASS);
 			return WebContextHelper.isWebApplication();
@@ -57,11 +63,21 @@ public final class ContextHelper {
 		}
 	}
 
-	private synchronized ApplicationContext getWebApplicationContext() {
+	private boolean isSecurityAvailable() {
+		try {
+			Class.forName(ContextHelper.SECURITY_CONTEXT_CLASS);
+			return true;
+		} catch (ClassNotFoundException e) {
+			DomainLog.getInstance().getLog().info(e.getMessage(), e);
+			return false;
+		}
+	}
+
+	private ApplicationContext getWebApplicationContext() {
 		return WebContextHelper.getWebApplicationContext();
 	}
 
-	private synchronized ApplicationContext getApplicationContext() {
+	private ApplicationContext getApplicationContext() {
 		ClassLoader classLoader = ContextHelper.class.getClassLoader();
 		if (classLoader.getResource(ContextHelper.APPLICATION_CONFIGURATION) == null) {
 			throw new ConfigurationNotFoundException("File " + ContextHelper.APPLICATION_CONFIGURATION + " not found");
@@ -97,6 +113,20 @@ public final class ContextHelper {
 	public Object getObject(final String name) {
 		Assert.notEmpty(name, "name");
 		return this.context.getBean(name);
+	}
+
+	public Principal getPrincipal() {
+		if (this.isSecurityAvailable) {
+			return SecurityContextHelper.getPrincipal();
+		}
+		return null;
+	}
+
+	public Object getPrincipalAsObject() {
+		if (this.isSecurityAvailable) {
+			return SecurityContextHelper.getPrincipalAsObject();
+		}
+		return null;
 	}
 
 	public static ContextHelper getInstance() {

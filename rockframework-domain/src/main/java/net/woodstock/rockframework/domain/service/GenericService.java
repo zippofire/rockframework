@@ -16,9 +16,6 @@
  */
 package net.woodstock.rockframework.domain.service;
 
-import java.util.Collection;
-import java.util.Map;
-
 import net.woodstock.rockframework.domain.Entity;
 
 public interface GenericService extends Service {
@@ -29,12 +26,6 @@ public interface GenericService extends Service {
 
 	void delete(Entity<?> entity);
 
-	// Retrieve
 	<E extends Entity<?>> E get(E entity);
-
-	// List
-	<E extends Entity<?>> Collection<E> listAll(E entity, Map<String, Object> options);
-
-	<E extends Entity<?>> Collection<E> listByExample(E entity, Map<String, Object> options);
 
 }

@@ -18,6 +18,16 @@ package net.woodstock.rockframework.domain.ejb.jms;
 
 public enum DestinationType {
 
-	QUEUE, TOPIC;
+	QUEUE("javax.jms.Queue"), TOPIC("javax.jms.Topic");
+
+	private String	type;
+
+	private DestinationType(final String type) {
+		this.type = type;
+	}
+
+	public String getType() {
+		return this.type;
+	}
 
 }

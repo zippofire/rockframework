@@ -18,7 +18,7 @@ package net.woodstock.rockframework.domain.ejb.jms;
 
 import javax.jms.Session;
 
-public enum AcknowledgeMode {
+enum AcknowledgeMode {
 
 	AUTO_ACKNOWLEDGE(Session.AUTO_ACKNOWLEDGE), CLIENT_ACKNOWLEDGE(Session.CLIENT_ACKNOWLEDGE), DUPS_OK_ACKNOWLEDGE(Session.DUPS_OK_ACKNOWLEDGE), SESSION_TRANSACTED(Session.SESSION_TRANSACTED);
 

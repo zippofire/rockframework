@@ -28,7 +28,7 @@ public class BeanDescriptorTest extends TestCase {
 		ITest y = new ConcreteY();
 		BeanDescriptorBuilder builder = new BeanDescriptorBuilderImpl();
 		builder.setMode(ReflectionType.FIELD);
-		builder.setType(y.getClass());		
+		builder.setType(y.getClass());
 		BeanDescriptor bean = builder.getBeanDescriptor();
 		System.out.println("Name: " + bean.getName());
 		for (PropertyDescriptor property : bean.getProperties()) {
@@ -37,7 +37,7 @@ public class BeanDescriptorTest extends TestCase {
 	}
 
 	public void test3() throws Exception {
-		ConcreteX x = new ConcreteX();
+		ITest x = new ConcreteX();
 		BeanDescriptorBuilder builder = new BeanDescriptorBuilderImpl();
 		builder.setMode(ReflectionType.FIELD);
 		builder.setType(x.getClass());

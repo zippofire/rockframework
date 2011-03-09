@@ -16,7 +16,7 @@
  */
 package net.woodstock.rockframework.web.persistence;
 
-import net.woodstock.rockframework.domain.persistence.util.HibernatePersistenceHelper;
+import net.woodstock.rockframework.domain.persistence.orm.util.HibernatePersistenceHelper;
 
 public class OpenSessionInViewFilter extends OpenManagerInViewFilter {
 

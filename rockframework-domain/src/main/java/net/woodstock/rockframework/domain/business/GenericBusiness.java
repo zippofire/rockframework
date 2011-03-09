@@ -26,8 +26,6 @@ public interface GenericBusiness extends Business {
 
 	ValidationResult validateDelete(Entity<?> entity);
 
-	ValidationResult validateList(Entity<?> entity);
-
 	ValidationResult validateGet(Entity<?> entity);
 
 }
