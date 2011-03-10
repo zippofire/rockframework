@@ -30,6 +30,10 @@ public class RequestTimeListener implements ServletRequestListener {
 
 	private static Map<Integer, RequestDebug>	requests	= new HashMap<Integer, RequestDebug>();
 
+	public RequestTimeListener() {
+		super();
+	}
+
 	@Override
 	public void requestInitialized(final ServletRequestEvent event) {
 		HttpServletRequest request = (HttpServletRequest) event.getServletRequest();

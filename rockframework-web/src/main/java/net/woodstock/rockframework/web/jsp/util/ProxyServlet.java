@@ -35,9 +35,9 @@ public class ProxyServlet extends AbstractHttpServlet {
 
 	private static final long	serialVersionUID	= -3878060433162392807L;
 
-	public static final String	URL_PARAMETER		= "ProxyServlet.URL_PARAMETER";
+	public static final String	URL_PARAMETER		= "net.woodstock.rockframework.web.jsp.util.ProxyServlet.URL_PARAMETER";
 
-	public static final String	CHARSET_PARAMETER	= "ProxyServlet.CHARSET_PARAMETER";
+	public static final String	CHARSET_PARAMETER	= "net.woodstock.rockframework.web.jsp.util.ProxyServlet.CHARSET_PARAMETER";
 
 	private String				url;
 

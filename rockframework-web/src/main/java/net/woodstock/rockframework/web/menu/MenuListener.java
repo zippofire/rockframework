@@ -26,20 +26,22 @@ import net.woodstock.rockframework.web.listener.AbstractServletContextListener;
 
 public class MenuListener extends AbstractServletContextListener {
 
-	private static final String	BASENAME_PARAM			= "net.woodstock.rockframework.web.menu.BASENAME";
+	public static final String	BASENAME_PARAM			= "net.woodstock.rockframework.web.menu.MenuListener.BASENAME";
 
-	private static final String	TRANSFORM_PARAM			= "net.woodstock.rockframework.web.menu.TRANSFORM";
+	public static final String	TRANSFORM_PARAM			= "net.woodstock.rockframework.web.menu.MenuListener.TRANSFORM";
 
-	private static final String	MENU_ATTRIBUTE_PARAM	= "net.woodstock.rockframework.web.menu.MENU_ATTRIBUTE";
+	public static final String	MENU_ATTRIBUTE_PARAM	= "net.woodstock.rockframework.web.menu.MenuListener.MENU_ATTRIBUTE";
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void contextInitialized(final ServletContextEvent event) {
 		try {
 			super.contextInitialized(event);
+
 			String baseName = event.getServletContext().getInitParameter(MenuListener.BASENAME_PARAM);
 			String transform = event.getServletContext().getInitParameter(MenuListener.TRANSFORM_PARAM);
 			String menuAttribute = event.getServletContext().getInitParameter(MenuListener.MENU_ATTRIBUTE_PARAM);
+
 			Assert.notEmpty(baseName, MenuListener.BASENAME_PARAM);
 			Assert.notEmpty(transform, MenuListener.TRANSFORM_PARAM);
 			Assert.notEmpty(menuAttribute, MenuListener.MENU_ATTRIBUTE_PARAM);
@@ -48,6 +50,7 @@ public class MenuListener extends AbstractServletContextListener {
 			MenuTransformer transformer = clazz.newInstance();
 			List<MenuItemBean> menu = MenuHelper.getMenu(baseName);
 			String menuStr = transformer.toText(menu);
+
 			event.getServletContext().setAttribute(menuAttribute, menuStr);
 		} catch (Exception e) {
 			throw new JSPException(e);

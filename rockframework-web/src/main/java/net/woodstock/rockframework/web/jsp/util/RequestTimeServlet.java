@@ -43,6 +43,7 @@ public class RequestTimeServlet extends AbstractHttpServlet {
 			builder.append(r.getTime());
 			builder.append("\tURL: ");
 			builder.append(r.getUrl());
+			builder.append("\n");
 			response.getWriter().write(builder.toString());
 		}
 	}

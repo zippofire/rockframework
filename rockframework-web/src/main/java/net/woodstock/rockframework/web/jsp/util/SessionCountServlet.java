@@ -31,7 +31,7 @@ public class SessionCountServlet extends AbstractHttpServlet {
 	@Override
 	protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/plain");
-		response.getWriter().write("Session Count: " + SessionCountListener.getSessionCount());
+		response.getWriter().write("Session Count: " + SessionCountListener.getSessionCount(request.getSession().getServletContext()));
 	}
 
 }

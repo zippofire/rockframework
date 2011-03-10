@@ -16,25 +16,46 @@
  */
 package net.woodstock.rockframework.web.jsp.util;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
 public class SessionCountListener implements HttpSessionListener {
 
-	private static int	count	= 0;
+	private static final String	SESSION_COUNT_ATTRIBUTE	= "net.woodstock.rockframework.web.jsp.util.SessionCountListener.SESSION_COUNT_ATTRIBUTE";
 
 	@Override
 	public void sessionCreated(final HttpSessionEvent event) {
-		SessionCountListener.count++;
+		this.doSession(event.getSession().getServletContext(), true);
 	}
 
 	@Override
 	public void sessionDestroyed(final HttpSessionEvent event) {
-		SessionCountListener.count--;
+		this.doSession(event.getSession().getServletContext(), false);
 	}
 
-	public static final int getSessionCount() {
-		return SessionCountListener.count;
+	private synchronized void doSession(final ServletContext context, final boolean created) {
+		Integer count = (Integer) context.getAttribute(SessionCountListener.SESSION_COUNT_ATTRIBUTE);
+		if (count == null) {
+			count = Integer.valueOf(0);
+		}
+		int i = count.intValue();
+		if (created) {
+			i++;
+		} else {
+			i--;
+		}
+		count = Integer.valueOf(i);
+		context.setAttribute(SessionCountListener.SESSION_COUNT_ATTRIBUTE, count);
+	}
+
+	public static final int getSessionCount(final ServletContext context) {
+		Integer count = (Integer) context.getAttribute(SessionCountListener.SESSION_COUNT_ATTRIBUTE);
+		if (count == null) {
+			count = Integer.valueOf(0);
+		}
+		int i = count.intValue();
+		return i;
 	}
 
 }

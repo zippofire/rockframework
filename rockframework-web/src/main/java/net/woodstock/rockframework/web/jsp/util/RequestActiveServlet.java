@@ -32,7 +32,10 @@ public class RequestActiveServlet extends AbstractHttpServlet {
 	protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/plain");
 		for (String s : RequestActiveListener.getRequests()) {
-			response.getWriter().write(s);
+			StringBuilder builder = new StringBuilder();
+			builder.append(s);
+			builder.append("\n");
+			response.getWriter().write(builder.toString());
 		}
 	}
 
