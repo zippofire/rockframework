@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.validator.Max;
 import org.hibernate.validator.Min;
-import org.hibernate.validator.NotNull;
+import javax.validation.constraints.NotNull;
 import org.hibernate.validator.Valid;
 
 import net.woodstock.rockframework.domain.Entity;

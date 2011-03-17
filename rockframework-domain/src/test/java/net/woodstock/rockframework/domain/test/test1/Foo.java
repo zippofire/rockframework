@@ -1,17 +1,17 @@
 package net.woodstock.rockframework.domain.test.test1;
 
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import net.woodstock.rockframework.domain.Entity;
+
 import org.hibernate.validator.Length;
 import org.hibernate.validator.Max;
 import org.hibernate.validator.Min;
-import org.hibernate.validator.NotNull;
 import org.hibernate.validator.Valid;
-
-import net.woodstock.rockframework.domain.Entity;
 
 @XmlRootElement(name = "foo")
 @XmlAccessorType(XmlAccessType.FIELD)
