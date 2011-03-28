@@ -1,5 +1,6 @@
 package net.woodstock.rockframework.test.text;
 
+import java.nio.charset.Charset;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,6 +9,7 @@ import net.woodstock.rockframework.util.RandomGenerator;
 import net.woodstock.rockframework.util.RandomGenerator.RandomPattern;
 import net.woodstock.rockframework.util.StringFormat;
 import net.woodstock.rockframework.util.StringFormatFactory;
+import net.woodstock.rockframework.utils.StringUtils;
 
 public class StringTest extends TestCase {
 
@@ -38,7 +40,7 @@ public class StringTest extends TestCase {
 		}
 	}
 
-	public void test4() throws Exception {
+	public void xtest4() throws Exception {
 		String texto = "Frase um. Frase dois. Frase 3";
 		Pattern pattern = Pattern.compile("(\\.?.*dois.*\\.)");
 		// Pattern pattern = Pattern.compile("\\.?.*dois.*\\..*");
@@ -50,5 +52,9 @@ public class StringTest extends TestCase {
 		System.out.println(matcher.groupCount());
 		System.out.println(matcher.regionStart());
 		System.out.println(matcher.regionEnd());
+	}
+
+	public void test5() throws Exception {
+		System.out.println(StringUtils.convertCharset(Charset.forName("ISO-8859-1"), Charset.forName("UTF-8"), "Júnior"));
 	}
 }

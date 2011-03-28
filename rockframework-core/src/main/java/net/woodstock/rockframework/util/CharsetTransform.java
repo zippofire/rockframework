@@ -22,6 +22,7 @@ import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
+import java.nio.charset.CodingErrorAction;
 
 import net.woodstock.rockframework.io.IOException;
 import net.woodstock.rockframework.utils.LocaleUtils;
@@ -47,21 +48,24 @@ public class CharsetTransform implements StringTransform {
 	@Override
 	public String transform(final String str) {
 		try {
-			CharsetDecoder decoderFrom = this.from.newDecoder();
-			CharsetEncoder encoderTo = this.to.newEncoder();
+			CharsetDecoder decoder = this.from.newDecoder();
+			CharsetEncoder encoder = this.to.newEncoder();
+			CharsetDecoder decoderTo = this.to.newDecoder();
 
-			CharBuffer charBufferFrom = decoderFrom.decode(ByteBuffer.wrap(str.getBytes(this.from)));
-			String tmp = charBufferFrom.toString();
+			decoder.onMalformedInput(CodingErrorAction.IGNORE);
+			decoder.onUnmappableCharacter(CodingErrorAction.IGNORE);
 
-			StringBuilder builder = new StringBuilder();
-			for (int i = 0; i < tmp.length(); i++) {
-				char c = tmp.charAt(i);
-				if (encoderTo.canEncode(c)) {
-					builder.append(c);
-				}
-			}
+			encoder.onMalformedInput(CodingErrorAction.IGNORE);
+			encoder.onUnmappableCharacter(CodingErrorAction.IGNORE);
+			decoderTo.onMalformedInput(CodingErrorAction.IGNORE);
+			decoderTo.onUnmappableCharacter(CodingErrorAction.IGNORE);
 
-			return builder.toString();
+			CharBuffer charBuffer = decoder.decode(ByteBuffer.wrap(str.getBytes(this.from)));
+			ByteBuffer byteBuffer = encoder.encode(charBuffer);
+
+			String s = decoderTo.decode(byteBuffer).toString();
+
+			return s;
 		} catch (CharacterCodingException e) {
 			throw new IOException(e);
 		}
