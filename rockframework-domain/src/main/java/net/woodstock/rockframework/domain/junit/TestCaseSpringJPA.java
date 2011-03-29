@@ -19,7 +19,6 @@ package net.woodstock.rockframework.domain.junit;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.orm.jpa.EntityManagerHolder;
 
 public abstract class TestCaseSpringJPA extends TestCaseSpring {
@@ -31,7 +30,7 @@ public abstract class TestCaseSpringJPA extends TestCaseSpring {
 	@Override
 	protected void setUp() throws Exception {
 		EntityManagerFactory factory = this.getEntityManagerFactory();
-		this.entityManager = EntityManagerFactoryUtils.getTransactionalEntityManager(factory);
+		this.entityManager = factory.createEntityManager();
 		this.bind(factory, new EntityManagerHolder(this.entityManager));
 	}
 
