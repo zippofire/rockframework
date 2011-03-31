@@ -29,9 +29,13 @@ import net.woodstock.rockframework.utils.LocaleUtils;
 
 public class CharsetTransform implements StringTransform {
 
-	private Charset	from;
+	private Charset			from;
 
-	private Charset	to;
+	private Charset			to;
+
+	private CharsetDecoder	decoder;
+
+	private CharsetEncoder	encoder;
 
 	public CharsetTransform(final Charset from) {
 		this(from, LocaleUtils.getCharset());
@@ -43,27 +47,23 @@ public class CharsetTransform implements StringTransform {
 		Assert.notNull(to, "to");
 		this.from = from;
 		this.to = to;
+		this.decoder = this.from.newDecoder();
+		this.encoder = this.to.newEncoder();
+
+		this.decoder.onMalformedInput(CodingErrorAction.IGNORE);
+		this.decoder.onUnmappableCharacter(CodingErrorAction.IGNORE);
+
+		this.encoder.onMalformedInput(CodingErrorAction.IGNORE);
+		this.encoder.onUnmappableCharacter(CodingErrorAction.IGNORE);
 	}
 
 	@Override
 	public String transform(final String str) {
 		try {
-			CharsetDecoder decoder = this.from.newDecoder();
-			CharsetEncoder encoder = this.to.newEncoder();
-			CharsetDecoder decoderTo = this.to.newDecoder();
+			ByteBuffer byteBuffer = this.encoder.encode(CharBuffer.wrap(str));
+			CharBuffer charBuffer = this.decoder.decode(byteBuffer);
 
-			decoder.onMalformedInput(CodingErrorAction.IGNORE);
-			decoder.onUnmappableCharacter(CodingErrorAction.IGNORE);
-
-			encoder.onMalformedInput(CodingErrorAction.IGNORE);
-			encoder.onUnmappableCharacter(CodingErrorAction.IGNORE);
-			decoderTo.onMalformedInput(CodingErrorAction.IGNORE);
-			decoderTo.onUnmappableCharacter(CodingErrorAction.IGNORE);
-
-			CharBuffer charBuffer = decoder.decode(ByteBuffer.wrap(str.getBytes(this.from)));
-			ByteBuffer byteBuffer = encoder.encode(charBuffer);
-
-			String s = decoderTo.decode(byteBuffer).toString();
+			String s = charBuffer.toString();
 
 			return s;
 		} catch (CharacterCodingException e) {

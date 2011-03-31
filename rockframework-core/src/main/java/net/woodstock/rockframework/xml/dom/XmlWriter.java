@@ -25,13 +25,11 @@ import org.w3c.dom.Document;
 
 abstract class XmlWriter {
 
-	private static final String		APACHE_XML_SERIALIZER	= "org.apache.xml.serialize.XMLSerializer";
+	private static final String	APACHE_XML_SERIALIZER	= "org.apache.xml.serialize.XMLSerializer";
 
-	private static final String		SUN_XML_SERIALIZER		= "com.sun.org.apache.xml.internal.serialize.XMLSerializer";
+	private static final String	SUN_XML_SERIALIZER		= "com.sun.org.apache.xml.internal.serialize.XMLSerializer";
 
-	protected static final String	XML_ENCODING			= "UTF-8";
-
-	private static XmlWriter		instance				= XmlWriter.getAvailable();
+	private static XmlWriter	instance				= XmlWriter.getAvailable();
 
 	public abstract void write(Document document, Writer writer) throws IOException;
 

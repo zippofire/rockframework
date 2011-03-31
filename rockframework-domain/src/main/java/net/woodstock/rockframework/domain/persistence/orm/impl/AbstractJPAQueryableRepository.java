@@ -20,7 +20,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
+
+import net.woodstock.rockframework.domain.config.DomainLog;
 
 abstract class AbstractJPAQueryableRepository extends AbstractQueryableRepository {
 
@@ -44,9 +47,14 @@ abstract class AbstractJPAQueryableRepository extends AbstractQueryableRepositor
 
 	@Override
 	public Object getSingle(final String sql, final Map<String, Object> parameters) {
-		Query query = this.getQuery(sql, parameters);
-		Object obj = query.getSingleResult();
-		return obj;
+		try {
+			Query query = this.getQuery(sql, parameters);
+			Object obj = query.getSingleResult();
+			return obj;
+		} catch (NoResultException e) {
+			DomainLog.getInstance().getLog().info(e.getMessage(), e);
+			return null;
+		}
 	}
 
 	protected abstract Query getQuery(final String sql, final Map<String, Object> parameters);

@@ -32,7 +32,7 @@ class SunXmlWriter extends XmlWriter {
 
 	@Override
 	public void write(final Document document, final Writer writer) throws IOException {
-		OutputFormat format = new OutputFormat(document, XmlWriter.XML_ENCODING, true);
+		OutputFormat format = new OutputFormat(document, XmlDocument.XML_ENCODING, true);
 		format.setIndent(1);
 		format.setIndenting(true);
 		format.setLineWidth(0);

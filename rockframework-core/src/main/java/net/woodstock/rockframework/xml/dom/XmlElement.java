@@ -21,8 +21,11 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
+
+import net.woodstock.rockframework.util.CharsetTransform;
 
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
@@ -37,7 +40,9 @@ import org.w3c.dom.Text;
 
 public class XmlElement extends ElementWrapper {
 
-	private static final long	serialVersionUID	= 8642703359069757721L;
+	private static final long				serialVersionUID	= 8642703359069757721L;
+
+	private static final CharsetTransform	CHARSET_TRANSFORM	= new CharsetTransform(Charset.forName(XmlDocument.XML_ENCODING), Charset.defaultCharset());
 
 	protected XmlElement(final Element e) {
 		super(e);
@@ -167,7 +172,7 @@ public class XmlElement extends ElementWrapper {
 		this.appendChild(t);
 	}
 
-	public String getdata() {
+	public String getData() {
 		NodeList list = this.getChildNodes();
 
 		StringBuilder builder = new StringBuilder();
@@ -177,7 +182,8 @@ public class XmlElement extends ElementWrapper {
 			if ((node instanceof CDATASection) || (node instanceof CharacterData) || (node instanceof Text)) {
 				String nodeValue = node.getNodeValue();
 				if (nodeValue != null) {
-					builder.append(nodeValue.trim());
+					nodeValue = XmlElement.CHARSET_TRANSFORM.transform(nodeValue).trim();
+					builder.append(nodeValue);
 				}
 			}
 		}
@@ -185,6 +191,15 @@ public class XmlElement extends ElementWrapper {
 		String value = builder.toString();
 
 		return value;
+	}
+
+	@Override
+	public String getAttribute(final String name) {
+		String attribute = super.getAttribute(name);
+		if (attribute != null) {
+			return XmlElement.CHARSET_TRANSFORM.transform(attribute);
+		}
+		return null;
 	}
 
 	public void setAttribute(final String name, final Object value) {

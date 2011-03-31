@@ -46,6 +46,8 @@ public class XmlDocument extends DocumentWrapper {
 
 	public static final String				XML_NS_URI			= XMLConstants.XML_NS_URI;
 
+	public static final String				XML_ENCODING		= "UTF-8";
+
 	private static DocumentBuilderFactory	factory;
 
 	private static DocumentBuilder			builder;
@@ -97,6 +99,7 @@ public class XmlDocument extends DocumentWrapper {
 
 	public static XmlDocument read(final Reader reader) throws SAXException, IOException {
 		InputSource source = new InputSource(reader);
+		source.setEncoding(XmlDocument.XML_ENCODING);
 		Document document = XmlDocument.builder.parse(source);
 		return new XmlDocument(document);
 	}
