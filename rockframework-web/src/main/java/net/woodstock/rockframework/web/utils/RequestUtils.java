@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.utils.ConditionUtils;
 import net.woodstock.rockframework.utils.IOUtils;
-import net.woodstock.rockframework.utils.LocaleUtils;
 
 public abstract class RequestUtils {
 
@@ -117,7 +116,7 @@ public abstract class RequestUtils {
 	public static String getRequestBody(final HttpServletRequest request) throws IOException {
 		Assert.notNull(request, "request");
 		InputStream inputStream = request.getInputStream();
-		Charset charset = LocaleUtils.getCharset();
+		Charset charset = Charset.defaultCharset();
 		if (ConditionUtils.isEmpty(request.getCharacterEncoding())) {
 			charset = Charset.forName(request.getCharacterEncoding());
 		}

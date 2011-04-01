@@ -16,26 +16,26 @@
  */
 package net.woodstock.rockframework.web.struts2.converter;
 
-import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.util.StringFormat;
 
 public abstract class FormatConverter extends TypeConverter<String> {
 
-	private String	pattern;
+	private StringFormat	format;
 
 	public FormatConverter(final String pattern) {
 		super();
-		this.pattern = pattern;
+		this.format = new StringFormat(pattern);
 	}
 
 	@Override
 	@SuppressWarnings("rawtypes")
 	protected String convertFromString(final String s, final Class toClass) {
-		return StringUtils.unformat(this.pattern, s);
+		return this.format.parse(s);
 	}
 
 	@Override
 	protected String convertToString(final String o) {
-		return StringUtils.format(this.pattern, o);
+		return this.format.format(o);
 	}
 
 }

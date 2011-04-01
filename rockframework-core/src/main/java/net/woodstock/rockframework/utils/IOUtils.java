@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
+import java.nio.charset.Charset;
 
 import net.woodstock.rockframework.util.Assert;
 
@@ -52,11 +53,16 @@ public abstract class IOUtils {
 	}
 
 	public static String toString(final InputStream inputStream) throws IOException {
+		return IOUtils.toString(inputStream, Charset.defaultCharset());
+	}
+
+	public static String toString(final InputStream inputStream, final Charset charset) throws IOException {
 		Assert.notNull(inputStream, "inputStream");
+		Assert.notNull(charset, "charset");
 		byte[] bytes = new byte[inputStream.available()];
 		inputStream.read(bytes);
 
-		String s = new String(bytes);
+		String s = new String(bytes, charset);
 
 		return s;
 	}

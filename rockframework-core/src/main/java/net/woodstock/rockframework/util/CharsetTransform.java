@@ -25,7 +25,6 @@ import java.nio.charset.CharsetEncoder;
 import java.nio.charset.CodingErrorAction;
 
 import net.woodstock.rockframework.io.IOException;
-import net.woodstock.rockframework.utils.LocaleUtils;
 
 public class CharsetTransform implements StringTransform {
 
@@ -38,7 +37,7 @@ public class CharsetTransform implements StringTransform {
 	private CharsetEncoder	encoder;
 
 	public CharsetTransform(final Charset from) {
-		this(from, LocaleUtils.getCharset());
+		this(from, Charset.defaultCharset());
 	}
 
 	public CharsetTransform(final Charset from, final Charset to) {

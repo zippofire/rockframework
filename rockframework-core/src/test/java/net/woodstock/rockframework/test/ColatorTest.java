@@ -4,12 +4,12 @@ import java.text.Normalizer;
 import java.text.Normalizer.Form;
 
 import junit.framework.TestCase;
-import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.util.NormalizerTransform;
 
 public class ColatorTest extends TestCase {
 
 	public void test1() throws Exception {
-		System.out.println(StringUtils.normalize("Júnior"));
+		System.out.println(NormalizerTransform.getInstance().transform("Júnior"));
 	}
 
 	public void xtest2() throws Exception {

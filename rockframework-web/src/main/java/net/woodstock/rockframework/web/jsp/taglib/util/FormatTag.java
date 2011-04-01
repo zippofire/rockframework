@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.Writer;
 
 import net.woodstock.rockframework.util.StringFormat;
-import net.woodstock.rockframework.utils.StringUtils;
 import net.woodstock.rockframework.web.config.WebLog;
 import net.woodstock.rockframework.web.jsp.taglib.AbstractTag;
 
@@ -32,11 +31,11 @@ public class FormatTag extends AbstractTag {
 
 	private Object				value;
 
-	private String				character;
+	private char				character;
 
 	public FormatTag() {
 		super();
-		this.character = Character.toString(StringFormat.DEFAULT_CHARACTER);
+		this.character = StringFormat.DEFAULT_CHARACTER;
 	}
 
 	@Override
@@ -45,12 +44,12 @@ public class FormatTag extends AbstractTag {
 			return;
 		}
 		String value = this.value.toString();
-		char character = this.character.charAt(0);
+		StringFormat format = new StringFormat(this.format, this.character);
 		Writer writer = this.getJspContext().getOut();
 		String formated = "";
 
 		try {
-			formated = StringUtils.format(this.format, value, character);
+			formated = format.format(value);
 		} catch (ArrayIndexOutOfBoundsException e) {
 			WebLog.getInstance().getLog().warn("Error formating '" + value + "'  with mask '" + this.format + "'");
 			formated = FormatTag.ERROR_VALUE;
@@ -75,11 +74,11 @@ public class FormatTag extends AbstractTag {
 		this.value = value;
 	}
 
-	public String getCharacter() {
+	public char getCharacter() {
 		return this.character;
 	}
 
-	public void setCharacter(final String character) {
+	public void setCharacter(final char character) {
 		this.character = character;
 	}
 

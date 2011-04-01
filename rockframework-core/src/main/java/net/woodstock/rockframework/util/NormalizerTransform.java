@@ -18,11 +18,13 @@ package net.woodstock.rockframework.util;
 
 import java.text.Normalizer;
 
-public class NormalizerTransform implements StringTransform {
+public final class NormalizerTransform implements StringTransform {
 
-	private static final String	ACCENT_PATTERN	= "[^\\p{ASCII}]";
+	private static final String		ACCENT_PATTERN	= "[^\\p{ASCII}]";
 
-	public NormalizerTransform() {
+	private static StringTransform	instance		= new NormalizerTransform();
+
+	private NormalizerTransform() {
 		super();
 	}
 
@@ -32,5 +34,9 @@ public class NormalizerTransform implements StringTransform {
 			return null;
 		}
 		return Normalizer.normalize(src, Normalizer.Form.NFD).replaceAll(NormalizerTransform.ACCENT_PATTERN, "");
+	}
+
+	public static StringTransform getInstance() {
+		return instance;
 	}
 }

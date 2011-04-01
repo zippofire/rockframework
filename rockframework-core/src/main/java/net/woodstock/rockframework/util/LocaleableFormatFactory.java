@@ -19,8 +19,6 @@ package net.woodstock.rockframework.util;
 import java.text.Format;
 import java.util.Locale;
 
-import net.woodstock.rockframework.utils.LocaleUtils;
-
 public abstract class LocaleableFormatFactory<T extends Format> extends FormatFactory<T> {
 
 	private static final String	SEPARATOR	= "@";
@@ -46,7 +44,7 @@ public abstract class LocaleableFormatFactory<T extends Format> extends FormatFa
 
 	@Override
 	public T getFormat(final String pattern) {
-		return this.getFormat(pattern, LocaleUtils.getLocale());
+		return this.getFormat(pattern, Locale.getDefault());
 	}
 
 	public abstract T getFormat(String pattern, Locale locale);

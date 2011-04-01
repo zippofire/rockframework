@@ -20,11 +20,9 @@ import java.text.Collator;
 import java.util.Comparator;
 import java.util.Locale;
 
-import net.woodstock.rockframework.utils.LocaleUtils;
-
 public final class StringComparator implements Comparator<String> {
 
-	private static StringComparator	instance	= new StringComparator(LocaleUtils.getLocale());
+	private static StringComparator	instance	= new StringComparator(Locale.getDefault());
 
 	private Collator				collator;
 

@@ -5,11 +5,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import junit.framework.TestCase;
+import net.woodstock.rockframework.util.CharsetTransform;
 import net.woodstock.rockframework.util.RandomGenerator;
 import net.woodstock.rockframework.util.RandomGenerator.RandomPattern;
 import net.woodstock.rockframework.util.StringFormat;
 import net.woodstock.rockframework.util.StringFormatFactory;
-import net.woodstock.rockframework.utils.StringUtils;
 
 public class StringTest extends TestCase {
 
@@ -55,6 +55,6 @@ public class StringTest extends TestCase {
 	}
 
 	public void test5() throws Exception {
-		System.out.println(StringUtils.convertCharset(Charset.forName("ISO-8859-1"), Charset.forName("UTF-8"), "Júnior"));
+		System.out.println(new CharsetTransform(Charset.forName("ISO-8859-1"), Charset.forName("UTF-8")).transform("Júnior"));
 	}
 }

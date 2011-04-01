@@ -16,11 +16,13 @@
  */
 package net.woodstock.rockframework.util;
 
-public class CapitalizeTransform implements StringTransform {
+public final class CapitalizeTransform implements StringTransform {
 
-	private static final char	SPACE	= ' ';
+	private static final char		SPACE		= ' ';
 
-	public CapitalizeTransform() {
+	private static StringTransform	instance	= new CapitalizeTransform();
+
+	private CapitalizeTransform() {
 		super();
 	}
 
@@ -47,5 +49,9 @@ public class CapitalizeTransform implements StringTransform {
 			}
 		}
 		return b.toString();
+	}
+
+	public static StringTransform getInstance() {
+		return instance;
 	}
 }

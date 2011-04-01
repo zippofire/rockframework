@@ -25,10 +25,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.woodstock.rockframework.util.CharsetTransform;
 import net.woodstock.rockframework.utils.ConditionUtils;
 import net.woodstock.rockframework.utils.IOUtils;
-import net.woodstock.rockframework.utils.StringUtils;
-import net.woodstock.rockframework.web.config.WebLog;
 import net.woodstock.rockframework.web.filter.AbstractHttpFilter;
 import net.woodstock.rockframework.web.util.CachedHttpServletResponse;
 import net.woodstock.rockframework.web.util.CachedServletOutputStream;
@@ -39,41 +38,37 @@ public class CharsetFilter extends AbstractHttpFilter {
 
 	public static final String	TO_PARAMETER	= "to";
 
-	private String				from;
-
-	private String				to;
-
 	private Charset				charsetFrom;
 
 	private Charset				charsetTo;
 
+	private CharsetTransform	charsetTransform;
+
 	@Override
 	public void init() {
-		this.from = this.getInitParameter(CharsetFilter.FROM_PARAMETER);
-		this.to = this.getInitParameter(CharsetFilter.FROM_PARAMETER);
-		if (ConditionUtils.isEmpty(this.to)) {
+		String from = this.getInitParameter(CharsetFilter.FROM_PARAMETER);
+		String to = this.getInitParameter(CharsetFilter.FROM_PARAMETER);
+		this.charsetFrom = Charset.forName(from);
+		if (ConditionUtils.isEmpty(to)) {
 			this.charsetTo = Charset.defaultCharset();
+		} else {
+			this.charsetTo = Charset.forName(to);
 		}
-		this.charsetFrom = Charset.forName(this.from);
+		this.charsetTransform = new CharsetTransform(this.charsetFrom, this.charsetTo);
 	}
 
 	@Override
 	public void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain) throws IOException, ServletException {
 		CachedHttpServletResponse responseWrapper = new CachedHttpServletResponse(response);
 
-		WebLog.getInstance().getLog().debug("Filtering " + request.getRequestURI());
-		WebLog.getInstance().getLog().debug("Send request to next chain");
 		chain.doFilter(request, responseWrapper);
 
-		WebLog.getInstance().getLog().debug("Getting response content");
 		CachedServletOutputStream wrapper = (CachedServletOutputStream) responseWrapper.getOutputStream();
 
-		WebLog.getInstance().getLog().debug("Convert from charset " + this.charsetFrom.displayName() + " to " + this.charsetTo.displayName());
 		InputStream cache = wrapper.getCache();
-		String text = IOUtils.toString(cache);
-		String content = StringUtils.convertCharset(this.charsetFrom, this.charsetTo, text);
+		String text = IOUtils.toString(cache, this.charsetFrom);
+		String content = this.charsetTransform.transform(text);
 
-		WebLog.getInstance().getLog().debug("Writing text to output");
 		response.getOutputStream().write(content.getBytes());
 	}
 }

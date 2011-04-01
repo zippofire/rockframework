@@ -20,15 +20,13 @@ import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import net.woodstock.rockframework.utils.LocaleUtils;
-
 public class MessageBundle {
 
 	private ResourceBundle	resource;
 
 	protected MessageBundle(final String baseName) {
 		super();
-		this.resource = ResourceBundle.getBundle(baseName, LocaleUtils.getLocale());
+		this.resource = ResourceBundle.getBundle(baseName, Locale.getDefault());
 	}
 
 	protected MessageBundle(final String baseName, final Locale locale) {
@@ -53,7 +51,7 @@ public class MessageBundle {
 	}
 
 	public static MessageBundle getBundle(final String baseName) {
-		return new MessageBundle(baseName, LocaleUtils.getLocale());
+		return new MessageBundle(baseName, Locale.getDefault());
 	}
 
 	public static MessageBundle getBundle(final String baseName, final Locale locale) {

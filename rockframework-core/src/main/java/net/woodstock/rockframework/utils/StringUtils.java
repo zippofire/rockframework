@@ -21,53 +21,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.woodstock.rockframework.util.CamelCaseTransform;
-import net.woodstock.rockframework.util.CapitalizeTransform;
-import net.woodstock.rockframework.util.CharsetTransform;
-import net.woodstock.rockframework.util.LPadTransform;
-import net.woodstock.rockframework.util.NormalizerTransform;
-import net.woodstock.rockframework.util.RPadTransform;
 import net.woodstock.rockframework.util.RandomGenerator;
-import net.woodstock.rockframework.util.StringFormat;
 
 public abstract class StringUtils {
 
 	private StringUtils() {
 		//
-	}
-
-	public static String camelCase(final String s) {
-		return new CamelCaseTransform().transform(s);
-	}
-
-	public static String camelCase(final String s, final char separator) {
-		return new CamelCaseTransform(separator).transform(s);
-	}
-
-	public static String capitalize(final String s) {
-		return new CapitalizeTransform().transform(s);
-	}
-
-	public static String convertCharset(final Charset from, final String text) {
-		return new CharsetTransform(from, LocaleUtils.getCharset()).transform(text);
-	}
-
-	public static String convertCharset(final Charset from, final Charset to, final String text) {
-		return new CharsetTransform(from, to).transform(text);
-	}
-
-	public static String format(final String format, final String value) {
-		StringFormat sf = new StringFormat(format);
-		return sf.format(value);
-	}
-
-	public static String format(final String format, final String value, final char c) {
-		StringFormat sf = new StringFormat(format, c);
-		return sf.format(value);
 	}
 
 	public static boolean hasOnlyDigit(final String s) {
@@ -106,14 +68,6 @@ public abstract class StringUtils {
 		return true;
 	}
 
-	public static String lpad(final String s, final int size, final char pad) {
-		return new LPadTransform(size, pad).transform(s);
-	}
-
-	public static String normalize(final String s) {
-		return new NormalizerTransform().transform(s);
-	}
-
 	public static String random(final int size) {
 		RandomGenerator randomString = new RandomGenerator(size);
 		return randomString.generate();
@@ -149,19 +103,5 @@ public abstract class StringUtils {
 			return null;
 		}
 		return new StringBuilder(s).reverse().toString();
-	}
-
-	public static String rpad(final String s, final int size, final char pad) {
-		return new RPadTransform(size, pad).transform(s);
-	}
-
-	public static String unformat(final String format, final String value) {
-		StringFormat sf = new StringFormat(format);
-		return sf.parse(value);
-	}
-
-	public static String unformat(final String format, final String value, final char c) {
-		StringFormat sf = new StringFormat(format, c);
-		return sf.parse(value);
 	}
 }

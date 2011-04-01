@@ -1,7 +1,7 @@
 package net.woodstock.rockframework.test;
 
 import junit.framework.TestCase;
-import net.woodstock.rockframework.utils.StringUtils;
+import net.woodstock.rockframework.util.StringFormat;
 
 public class PrinterTest extends TestCase {
 
@@ -12,8 +12,8 @@ public class PrinterTest extends TestCase {
 		// System.out.println(StringUtils.unformat("####-####", "1234-5678"));
 		// System.out.println(StringUtils.unformat("###.###.###-##", "862.165.031-20"));
 
-		System.out.println(StringUtils.format("(##)####-####", "6112345678"));
-		System.out.println(StringUtils.unformat("(##)####-####", "(61)1234-5678"));
+		System.out.println(new StringFormat("(##)####-####").format("6112345678"));
+		System.out.println(new StringFormat("(##)####-####").parse("(61)1234-5678"));
 
 	}
 
