@@ -21,11 +21,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
-
-import net.woodstock.rockframework.util.CharsetTransform;
 
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
@@ -40,9 +37,7 @@ import org.w3c.dom.Text;
 
 public class XmlElement extends ElementWrapper {
 
-	private static final long				serialVersionUID	= 8642703359069757721L;
-
-	private static final CharsetTransform	CHARSET_TRANSFORM	= new CharsetTransform(Charset.forName(XmlDocument.XML_ENCODING), Charset.defaultCharset());
+	private static final long	serialVersionUID	= 8642703359069757721L;
 
 	protected XmlElement(final Element e) {
 		super(e);
@@ -144,20 +139,26 @@ public class XmlElement extends ElementWrapper {
 		int length = nodes.getLength();
 		List<XmlElement> list = new LinkedList<XmlElement>();
 		for (int i = 0; i < length; i++) {
-			if (nodes.item(i) instanceof Element) {
-				list.add(XmlElement.toXmlElement((Element) nodes.item(i)));
+			Node node = nodes.item(i);
+			if (node instanceof Element) {
+				Element element = (Element) node;
+				list.add(XmlElement.toXmlElement(element));
 			}
 		}
 		return list;
 	}
 
 	public List<XmlElement> getElements(final String name) {
-		NodeList nodes = this.getElementsByTagName(name);
+		NodeList nodes = this.getChildNodes();
 		int length = nodes.getLength();
 		List<XmlElement> list = new LinkedList<XmlElement>();
 		for (int i = 0; i < length; i++) {
-			if (nodes.item(i) instanceof Element) {
-				list.add(XmlElement.toXmlElement((Element) nodes.item(i)));
+			Node node = nodes.item(i);
+			if (node instanceof Element) {
+				Element element = (Element) node;
+				if (element.getTagName().equalsIgnoreCase(name)) {
+					list.add(XmlElement.toXmlElement(element));
+				}
 			}
 		}
 		return list;
@@ -168,7 +169,8 @@ public class XmlElement extends ElementWrapper {
 			return;
 		}
 		Document doc = this.getOwnerDocument();
-		Text t = doc.createTextNode(String.valueOf(data));
+		String strData = String.valueOf(data);
+		Text t = doc.createTextNode(strData);
 		this.appendChild(t);
 	}
 
@@ -182,7 +184,7 @@ public class XmlElement extends ElementWrapper {
 			if ((node instanceof CDATASection) || (node instanceof CharacterData) || (node instanceof Text)) {
 				String nodeValue = node.getNodeValue();
 				if (nodeValue != null) {
-					nodeValue = XmlElement.CHARSET_TRANSFORM.transform(nodeValue).trim();
+					nodeValue = nodeValue.trim();
 					builder.append(nodeValue);
 				}
 			}
@@ -196,14 +198,13 @@ public class XmlElement extends ElementWrapper {
 	@Override
 	public String getAttribute(final String name) {
 		String attribute = super.getAttribute(name);
-		if (attribute != null) {
-			return XmlElement.CHARSET_TRANSFORM.transform(attribute);
-		}
-		return null;
+		return attribute;
 	}
 
 	public void setAttribute(final String name, final Object value) {
-		super.setAttribute(name, String.valueOf(value));
+		// String strValue = WRITE_CHARSET_TRANSFORM.transform(String.valueOf(value));
+		String strValue = String.valueOf(value);
+		super.setAttribute(name, String.valueOf(strValue));
 	}
 
 	public void write(final OutputStream out) throws IOException {

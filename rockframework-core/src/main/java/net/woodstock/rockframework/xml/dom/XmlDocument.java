@@ -24,6 +24,7 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.charset.Charset;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -45,8 +46,6 @@ public class XmlDocument extends DocumentWrapper {
 	public static final String				XML_NS_PREFIX		= XMLConstants.XML_NS_PREFIX;
 
 	public static final String				XML_NS_URI			= XMLConstants.XML_NS_URI;
-
-	public static final String				XML_ENCODING		= "UTF-8";
 
 	private static DocumentBuilderFactory	factory;
 
@@ -93,23 +92,40 @@ public class XmlDocument extends DocumentWrapper {
 		return this.root;
 	}
 
+	// FIXME
 	public static XmlDocument read(final InputStream input) throws SAXException, IOException {
-		return XmlDocument.read(new InputStreamReader(input));
+		return XmlDocument.read(new InputStreamReader(input), Charset.defaultCharset());
 	}
 
 	public static XmlDocument read(final Reader reader) throws SAXException, IOException {
+		return XmlDocument.read(reader, Charset.defaultCharset());
+	}
+
+	public static XmlDocument read(final InputStream input, final Charset charset) throws SAXException, IOException {
+		return XmlDocument.read(new InputStreamReader(input), charset);
+	}
+
+	public static XmlDocument read(final Reader reader, final Charset charset) throws SAXException, IOException {
 		InputSource source = new InputSource(reader);
-		source.setEncoding(XmlDocument.XML_ENCODING);
+		source.setEncoding(charset.name());
 		Document document = XmlDocument.builder.parse(source);
 		return new XmlDocument(document);
 	}
 
 	public void write(final OutputStream out) throws IOException {
-		this.write(new OutputStreamWriter(out));
+		this.write(new OutputStreamWriter(out), Charset.defaultCharset());
 	}
 
 	public void write(final Writer writer) throws IOException {
-		XmlWriter.getInstance().write(this, writer);
+		this.write(writer, Charset.defaultCharset());
+	}
+
+	public void write(final OutputStream out, final Charset charset) throws IOException {
+		this.write(new OutputStreamWriter(out, charset));
+	}
+
+	public void write(final Writer writer, final Charset charset) throws IOException {
+		XmlWriter.getInstance().write(this, writer, charset);
 	}
 
 	public static XmlDocument toXmlDocument(final Document d) {

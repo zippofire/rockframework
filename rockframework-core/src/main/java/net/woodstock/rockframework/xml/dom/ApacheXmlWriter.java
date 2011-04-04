@@ -18,6 +18,7 @@ package net.woodstock.rockframework.xml.dom;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.charset.Charset;
 
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
@@ -30,8 +31,8 @@ class ApacheXmlWriter extends XmlWriter {
 	}
 
 	@Override
-	public void write(final Document document, final Writer writer) throws IOException {
-		OutputFormat format = new OutputFormat(document, XmlDocument.XML_ENCODING, true);
+	public void write(final Document document, final Writer writer, final Charset encoding) throws IOException {
+		OutputFormat format = new OutputFormat(document, encoding.name(), true);
 		format.setIndent(1);
 		format.setIndenting(true);
 		format.setLineWidth(0);

@@ -20,6 +20,8 @@ import java.io.InputStream;
 
 public interface DownloadableAction {
 
+	String	DOWNLOAD	= "download";
+
 	InputStream getInputStream();
 
 	String getContentType();

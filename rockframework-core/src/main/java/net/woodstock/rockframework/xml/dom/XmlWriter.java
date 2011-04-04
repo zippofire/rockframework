@@ -18,6 +18,7 @@ package net.woodstock.rockframework.xml.dom;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.charset.Charset;
 
 import net.woodstock.rockframework.config.CoreLog;
 
@@ -31,7 +32,7 @@ abstract class XmlWriter {
 
 	private static XmlWriter	instance				= XmlWriter.getAvailable();
 
-	public abstract void write(Document document, Writer writer) throws IOException;
+	public abstract void write(Document document, Writer writer, Charset encoding) throws IOException;
 
 	public static XmlWriter getInstance() {
 		return XmlWriter.instance;

@@ -18,6 +18,7 @@ package net.woodstock.rockframework.xml.dom;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.charset.Charset;
 
 import org.w3c.dom.Document;
 
@@ -31,8 +32,8 @@ class SunXmlWriter extends XmlWriter {
 	}
 
 	@Override
-	public void write(final Document document, final Writer writer) throws IOException {
-		OutputFormat format = new OutputFormat(document, XmlDocument.XML_ENCODING, true);
+	public void write(final Document document, final Writer writer, final Charset charset) throws IOException {
+		OutputFormat format = new OutputFormat(document, charset.name(), true);
 		format.setIndent(1);
 		format.setIndenting(true);
 		format.setLineWidth(0);
