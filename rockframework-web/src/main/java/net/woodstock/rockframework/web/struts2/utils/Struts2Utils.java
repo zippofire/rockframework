@@ -15,12 +15,18 @@ import com.opensymphony.xwork2.inject.Container;
 
 public abstract class Struts2Utils {
 
-	private static final String	METHOD_REGEX	= "!\\w*\\.";
+	private static final String	METHOD_SEPARATOR_1	= "!";
 
-	private static final String	METHOD_REPLACE	= ".";
+	private static final String	METHOD_SEPARATOR_2	= "%21";
+
+	private static final String	METHOD_REGEX_1		= "!\\w*\\.";
+
+	private static final String	METHOD_REGEX_2		= "%21\\w*\\.";
+
+	private static final String	METHOD_REPLACE		= ".";
 
 	private Struts2Utils() {
-		// 
+		//
 	}
 
 	public static String getConstant(final String name) {
@@ -55,8 +61,11 @@ public abstract class Struts2Utils {
 	public static String getRequestPath(final HttpServletRequest request) {
 		String contextPath = request.getContextPath();
 		String path = request.getRequestURI().replace(contextPath, "");
-		if (path.indexOf('!') != -1) {
-			path = path.replaceAll(Struts2Utils.METHOD_REGEX, Struts2Utils.METHOD_REPLACE);
+		if (path.indexOf(Struts2Utils.METHOD_SEPARATOR_1) != -1) {
+			path = path.replaceAll(Struts2Utils.METHOD_REGEX_1, Struts2Utils.METHOD_REPLACE);
+		}
+		if (path.indexOf(Struts2Utils.METHOD_SEPARATOR_2) != -1) {
+			path = path.replaceAll(Struts2Utils.METHOD_REGEX_2, Struts2Utils.METHOD_REPLACE);
 		}
 		return path;
 	}
