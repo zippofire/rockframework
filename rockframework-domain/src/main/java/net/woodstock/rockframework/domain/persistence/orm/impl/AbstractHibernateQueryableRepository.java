@@ -50,4 +50,5 @@ abstract class AbstractHibernateQueryableRepository extends AbstractQueryableRep
 	}
 
 	protected abstract Query getQuery(final String sql, final Map<String, Object> parameters);
+
 }

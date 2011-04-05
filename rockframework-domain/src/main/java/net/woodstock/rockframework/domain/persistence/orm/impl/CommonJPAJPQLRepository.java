@@ -53,7 +53,9 @@ class CommonJPAJPQLRepository extends AbstractJPAQueryableRepository implements 
 			for (Entry<String, Object> entry : parameters.entrySet()) {
 				String name = entry.getKey();
 				Object value = entry.getValue();
-				query.setParameter(name, value);
+				if (this.isValidParameter(name)) {
+					query.setParameter(name, value);
+				}
 			}
 		}
 

@@ -16,10 +16,26 @@
  */
 package net.woodstock.rockframework.domain.persistence.orm.impl;
 
+import java.util.Collection;
+
 import net.woodstock.rockframework.domain.persistence.orm.QueryableRepository;
 import net.woodstock.rockframework.domain.query.Constants;
 
 abstract class AbstractQueryableRepository implements QueryableRepository {
+
+	protected boolean isCollection(final Object value) {
+		if (value instanceof Collection) {
+			return true;
+		}
+		return false;
+	}
+
+	protected boolean isArray(final Object value) {
+		if ((value != null) && (value.getClass().isArray())) {
+			return true;
+		}
+		return false;
+	}
 
 	protected boolean isValidParameter(final String name) {
 		if (name.equals(Constants.OPTION_CACHE_MODE)) {

@@ -81,18 +81,4 @@ class CommonHibernateJPQLRepository extends AbstractHibernateQueryableRepository
 
 		return query;
 	}
-
-	private boolean isCollection(final Object value) {
-		if (value instanceof Collection) {
-			return true;
-		}
-		return false;
-	}
-
-	private boolean isArray(final Object value) {
-		if ((value != null) && (value.getClass().isArray())) {
-			return true;
-		}
-		return false;
-	}
 }
