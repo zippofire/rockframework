@@ -1,1 +1,1 @@
-mvn clean compiler:compile resources:resources javadoc:javadoc jar:jar source:jar javadoc:jar site:site install:install
+mvn clean compiler:compile resources:resources site:site javadoc:javadoc jar:jar source:jar javadoc:jar site:jar install:install
