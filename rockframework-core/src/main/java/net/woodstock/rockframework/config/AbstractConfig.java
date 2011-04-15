@@ -19,21 +19,24 @@ package net.woodstock.rockframework.config;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
+import net.woodstock.rockframework.collection.ImmutableMap;
 import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.utils.ClassLoaderUtils;
 
 public abstract class AbstractConfig {
 
-	private Properties	properties;
+	private Map<String, String>	config;
 
 	public AbstractConfig(final String propertiesName) {
 		super();
 		Assert.notEmpty(propertiesName, "propertiesName");
 
 		try {
-			this.properties = new Properties();
+			Map<String, String> tmpMap = new HashMap<String, String>();
 			Collection<URL> urls = ClassLoaderUtils.getResources(propertiesName);
 			if (urls != null) {
 				for (URL url : urls) {
@@ -41,7 +44,11 @@ public abstract class AbstractConfig {
 					if (s.startsWith(ClassLoaderUtils.JAR_PREFIX)) {
 						InputStream inputStream = ClassLoaderUtils.getInputStream(url, propertiesName);
 						if (inputStream != null) {
-							this.properties.load(inputStream);
+							Properties p = new Properties();
+							p.load(inputStream);
+							for (Object key : p.keySet()) {
+								tmpMap.put(key.toString(), p.getProperty(key.toString()));
+							}
 						}
 					}
 				}
@@ -50,22 +57,42 @@ public abstract class AbstractConfig {
 					if (s.startsWith(ClassLoaderUtils.FILE_PREFIX)) {
 						InputStream inputStream = ClassLoaderUtils.getInputStream(url, propertiesName);
 						if (inputStream != null) {
-							this.properties.load(inputStream);
+							Properties p = new Properties();
+							p.load(inputStream);
+							for (Object key : p.keySet()) {
+								tmpMap.put(key.toString(), p.getProperty(key.toString()));
+							}
 						}
 					}
 				}
 			}
+			this.config = ImmutableMap.toImmutable(tmpMap);
 		} catch (Exception e) {
 			throw new ConfigException(e);
 		}
 	}
 
+	public Collection<String> getKeys() {
+		return this.config.keySet();
+	}
+
+	public Collection<String> getValues() {
+		return this.config.values();
+	}
+
+	public Map<String, String> getMap() {
+		return this.config;
+	}
+
 	public String getValue(final String key) {
-		return this.properties.getProperty(key);
+		return this.config.get(key);
 	}
 
 	public String getValue(final String key, final String defaultValue) {
-		return this.properties.getProperty(key, defaultValue);
+		if (this.config.containsKey(key)) {
+			return this.config.get(key);
+		}
+		return defaultValue;
 	}
 
 }
