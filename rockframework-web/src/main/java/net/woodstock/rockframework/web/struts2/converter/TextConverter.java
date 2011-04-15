@@ -16,44 +16,30 @@
  */
 package net.woodstock.rockframework.web.struts2.converter;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import net.woodstock.rockframework.util.StringFormat;
+import net.woodstock.rockframework.web.types.TextType;
 
-import net.woodstock.rockframework.web.config.WebLog;
-import net.woodstock.rockframework.web.types.DateTimeType;
+public abstract class TextConverter<T extends TextType> extends TypeConverter<T> {
 
-public abstract class DateTimeConverter<T extends DateTimeType> extends TypeConverter<T> {
+	private StringFormat	format;
 
-	private DateFormat	format;
-
-	public DateTimeConverter(final String pattern) {
+	public TextConverter(final String pattern) {
 		super();
-		this.format = new SimpleDateFormat(pattern);
+		this.format = new StringFormat(pattern);
 	}
 
 	@Override
 	@SuppressWarnings("rawtypes")
 	protected T convertFromString(final String s, final Class toClass) {
-		try {
-			Date d = this.format.parse(s);
-			return this.wrap(d);
-		} catch (ParseException e) {
-			WebLog.getInstance().getLog().warn(e.getMessage(), e);
-			return null;
-		}
+		String text = this.format.parse(s);
+		return this.wrap(text);
 	}
 
 	@Override
 	protected String convertToString(final T o) {
-		if (o == null) {
-			return null;
-		}
-		String s = this.format.format(o.getValue());
-		return s;
+		return this.format.format(o.getValue());
 	}
 
-	protected abstract T wrap(Date d);
+	protected abstract T wrap(String text);
 
 }

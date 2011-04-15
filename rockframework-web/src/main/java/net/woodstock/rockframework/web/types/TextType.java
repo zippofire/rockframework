@@ -14,30 +14,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.web.struts2.converter;
+package net.woodstock.rockframework.web.types;
 
-import java.util.Date;
+public abstract class TextType extends AbstractType<String> {
 
-import net.woodstock.rockframework.config.CoreConfig;
-import net.woodstock.rockframework.web.types.DateType;
+	private static final long	serialVersionUID	= -5353316328175634182L;
 
-public class DateConverter extends DateTimeConverter<DateType> {
-
-	private static final String	DATE_FORMAT_PROPERTY	= "format.date";
-
-	private static final String	DATE_FORMAT_PATTERN		= CoreConfig.getInstance().getValue(DateConverter.DATE_FORMAT_PROPERTY);
-
-	public DateConverter() {
-		super(DateConverter.DATE_FORMAT_PATTERN);
+	public TextType() {
+		super();
 	}
 
-	public DateConverter(final String pattern) {
-		super(pattern);
-	}
-
-	@Override
-	protected DateType wrap(final Date d) {
-		return new DateType(d);
+	public TextType(final String value) {
+		super(value);
 	}
 
 }

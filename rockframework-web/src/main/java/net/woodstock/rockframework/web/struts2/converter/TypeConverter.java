@@ -20,13 +20,14 @@ import java.util.Map;
 
 import net.woodstock.rockframework.utils.ConditionUtils;
 import net.woodstock.rockframework.web.config.WebLog;
+import net.woodstock.rockframework.web.types.Type;
 
 import org.apache.struts2.util.StrutsTypeConverter;
 
-public abstract class TypeConverter<T> extends StrutsTypeConverter {
+@SuppressWarnings("rawtypes")
+public abstract class TypeConverter<T extends Type> extends StrutsTypeConverter {
 
 	@Override
-	@SuppressWarnings("rawtypes")
 	public final Object convertFromString(final Map context, final String[] o, final Class toClass) {
 		if ((o == null) || (o.length != 1)) {
 			super.performFallbackConversion(context, o, toClass);
@@ -43,8 +44,8 @@ public abstract class TypeConverter<T> extends StrutsTypeConverter {
 		return t;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public final String convertToString(final Map map, final Object o) {
 		if (o == null) {
 			return null;
@@ -55,7 +56,6 @@ public abstract class TypeConverter<T> extends StrutsTypeConverter {
 		return s;
 	}
 
-	@SuppressWarnings("rawtypes")
 	protected abstract T convertFromString(String s, Class toClass);
 
 	protected abstract String convertToString(T o);

@@ -16,28 +16,26 @@
  */
 package net.woodstock.rockframework.web.struts2.converter;
 
-import java.util.Date;
+import net.woodstock.rockframework.web.config.WebConfig;
+import net.woodstock.rockframework.web.types.PhoneType;
 
-import net.woodstock.rockframework.config.CoreConfig;
-import net.woodstock.rockframework.web.types.DateType;
+public class PhoneConverter extends TextConverter<PhoneType> {
 
-public class DateConverter extends DateTimeConverter<DateType> {
+	private static final String	PHONE_FORMAT_PROPERTY	= "format.phone";
 
-	private static final String	DATE_FORMAT_PROPERTY	= "format.date";
+	private static final String	PHONE_FORMAT_PATTERN	= WebConfig.getInstance().getValue(PhoneConverter.PHONE_FORMAT_PROPERTY);
 
-	private static final String	DATE_FORMAT_PATTERN		= CoreConfig.getInstance().getValue(DateConverter.DATE_FORMAT_PROPERTY);
-
-	public DateConverter() {
-		super(DateConverter.DATE_FORMAT_PATTERN);
+	public PhoneConverter() {
+		super(PhoneConverter.PHONE_FORMAT_PATTERN);
 	}
 
-	public DateConverter(final String pattern) {
+	public PhoneConverter(final String pattern) {
 		super(pattern);
 	}
 
 	@Override
-	protected DateType wrap(final Date d) {
-		return new DateType(d);
+	protected PhoneType wrap(final String text) {
+		return new PhoneType(text);
 	}
 
 }

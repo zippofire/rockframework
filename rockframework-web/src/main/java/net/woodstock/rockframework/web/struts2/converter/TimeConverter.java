@@ -16,9 +16,12 @@
  */
 package net.woodstock.rockframework.web.struts2.converter;
 
-import net.woodstock.rockframework.config.CoreConfig;
+import java.util.Date;
 
-public class TimeConverter extends DateTimeConverter {
+import net.woodstock.rockframework.config.CoreConfig;
+import net.woodstock.rockframework.web.types.TimeType;
+
+public class TimeConverter extends DateTimeConverter<TimeType> {
 
 	private static final String	TIME_FORMAT_PROPERTY	= "format.time";
 
@@ -26,6 +29,15 @@ public class TimeConverter extends DateTimeConverter {
 
 	public TimeConverter() {
 		super(TimeConverter.TIME_FORMAT_PATTERN);
+	}
+
+	public TimeConverter(final String pattern) {
+		super(pattern);
+	}
+
+	@Override
+	protected TimeType wrap(final Date d) {
+		return new TimeType(d);
 	}
 
 }

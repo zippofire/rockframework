@@ -16,26 +16,32 @@
  */
 package net.woodstock.rockframework.web.struts2.converter;
 
-import net.woodstock.rockframework.util.StringFormat;
+import java.text.NumberFormat;
 
-public abstract class FormatConverter extends TypeConverter<String> {
+import net.woodstock.rockframework.config.CoreConfig;
+import net.woodstock.rockframework.web.types.IntegerType;
 
-	private StringFormat	format;
+public class IntegerConverter extends NumericConverter<IntegerType> {
 
-	public FormatConverter(final String pattern) {
-		super();
-		this.format = new StringFormat(pattern);
+	private static final String	INTEGER_FORMAT_PROPERTY	= "format.integer";
+
+	private static final String	INTEGER_FORMAT_PATTERN	= CoreConfig.getInstance().getValue(IntegerConverter.INTEGER_FORMAT_PROPERTY);
+
+	public IntegerConverter() {
+		super(IntegerConverter.INTEGER_FORMAT_PATTERN);
+	}
+
+	public IntegerConverter(final String format) {
+		super(format);
+	}
+
+	public IntegerConverter(final NumberFormat format) {
+		super(format);
 	}
 
 	@Override
-	@SuppressWarnings("rawtypes")
-	protected String convertFromString(final String s, final Class toClass) {
-		return this.format.parse(s);
-	}
-
-	@Override
-	protected String convertToString(final String o) {
-		return this.format.format(o);
+	protected IntegerType wrap(final Number n) {
+		return new IntegerType(Long.valueOf(n.longValue()));
 	}
 
 }

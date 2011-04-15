@@ -16,28 +16,32 @@
  */
 package net.woodstock.rockframework.web.struts2.converter;
 
-import java.util.Date;
+import java.text.NumberFormat;
 
 import net.woodstock.rockframework.config.CoreConfig;
-import net.woodstock.rockframework.web.types.DateType;
+import net.woodstock.rockframework.web.types.MoneyType;
 
-public class DateConverter extends DateTimeConverter<DateType> {
+public class MoneyConverter extends NumericConverter<MoneyType> {
 
-	private static final String	DATE_FORMAT_PROPERTY	= "format.date";
+	private static final String	DECIMAL_FORMAT_PROPERTY	= "format.decimal";
 
-	private static final String	DATE_FORMAT_PATTERN		= CoreConfig.getInstance().getValue(DateConverter.DATE_FORMAT_PROPERTY);
+	private static final String	DECIMAL_FORMAT_PATTERN	= CoreConfig.getInstance().getValue(MoneyConverter.DECIMAL_FORMAT_PROPERTY);
 
-	public DateConverter() {
-		super(DateConverter.DATE_FORMAT_PATTERN);
+	public MoneyConverter() {
+		super(MoneyConverter.DECIMAL_FORMAT_PATTERN);
 	}
 
-	public DateConverter(final String pattern) {
-		super(pattern);
+	public MoneyConverter(final String format) {
+		super(format);
+	}
+
+	public MoneyConverter(final NumberFormat format) {
+		super(format);
 	}
 
 	@Override
-	protected DateType wrap(final Date d) {
-		return new DateType(d);
+	protected MoneyType wrap(final Number n) {
+		return new MoneyType(Double.valueOf(n.longValue()));
 	}
 
 }
