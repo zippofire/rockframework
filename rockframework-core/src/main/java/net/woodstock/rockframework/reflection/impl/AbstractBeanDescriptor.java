@@ -35,8 +35,6 @@ abstract class AbstractBeanDescriptor implements BeanDescriptor {
 		this.properties = new LinkedList<PropertyDescriptor>();
 	}
 
-	public abstract void configure();
-
 	@Override
 	public String getName() {
 		return this.type.getSimpleName();

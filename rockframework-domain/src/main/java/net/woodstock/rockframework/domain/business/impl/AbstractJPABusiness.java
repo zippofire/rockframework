@@ -32,7 +32,7 @@ import net.woodstock.rockframework.domain.business.ValidationResult;
 import net.woodstock.rockframework.domain.config.DomainMessage;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
-import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilderImpl;
+import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilder;
 
 @SuppressWarnings("rawtypes")
 public abstract class AbstractJPABusiness extends AbstractBusiness {
@@ -41,27 +41,16 @@ public abstract class AbstractJPABusiness extends AbstractBusiness {
 		super();
 	}
 
-	// CRUD
-	@Override
-	public ValidationResult validateSave(final Entity entity) {
-		return this.validateSaveOrUpdate(entity, true);
-	}
-
-	@Override
-	public ValidationResult validateUpdate(final Entity entity) {
-		return this.validateSaveOrUpdate(entity, false);
-	}
-
-	private ValidationResult validateSaveOrUpdate(final Entity entity, final boolean save) {
+	protected ValidationResult validate(final Entity entity, final JPAOperation operation) {
 		if (entity == null) {
-			throw new ValidationException(DomainMessage.getInstance().getMessage(""));
+			throw new ValidationException(this.getMessage(AbstractBusiness.MESSAGE_INVALID_OBJECT));
 		}
 
-		BeanDescriptor beanDescriptor = new BeanDescriptorBuilderImpl().setType(entity.getClass()).getBeanDescriptor();
+		BeanDescriptor beanDescriptor = new BeanDescriptorBuilder(entity.getClass()).getBeanDescriptor();
 		for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
 			for (Annotation annotation : propertyDescriptor.getAnnotations()) {
 				if (annotation instanceof Id) {
-					ValidationResult result = this.validateId(entity, propertyDescriptor, save);
+					ValidationResult result = this.validateId(entity, propertyDescriptor, operation);
 					if (result != null) {
 						return result;
 					}
@@ -96,11 +85,11 @@ public abstract class AbstractJPABusiness extends AbstractBusiness {
 		return new ValidationResult(false, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_OK));
 	}
 
-	private ValidationResult validateId(final Entity entity, final PropertyDescriptor propertyDescriptor, final boolean save) {
+	private ValidationResult validateId(final Entity entity, final PropertyDescriptor propertyDescriptor, final JPAOperation operation) {
 		String name = propertyDescriptor.getName();
 		Object value = propertyDescriptor.getValue(entity);
 
-		if (save) {
+		if (operation == JPAOperation.PERSIST) {
 			if (value == null) {
 				if (propertyDescriptor.isAnnotationPresent(GeneratedValue.class)) {
 					return null;

@@ -31,7 +31,7 @@ public abstract class AbstractHibernateBusiness extends AbstractBusiness {
 		super();
 	}
 
-	private ValidationResult validate(final Entity entity) {
+	protected ValidationResult validate(final Entity entity) {
 		ClassValidator validator = new ClassValidator(entity.getClass());
 		if (validator.hasValidationRules()) {
 			InvalidValue[] values = validator.getInvalidValues(entity);
@@ -41,17 +41,6 @@ public abstract class AbstractHibernateBusiness extends AbstractBusiness {
 			}
 		}
 		return new ValidationResult(false, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_OK));
-	}
-
-	// CRUD
-	@Override
-	public ValidationResult validateSave(final Entity entity) {
-		return this.validate(entity);
-	}
-
-	@Override
-	public ValidationResult validateUpdate(final Entity entity) {
-		return this.validate(entity);
 	}
 
 }

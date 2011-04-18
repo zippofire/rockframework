@@ -33,6 +33,10 @@ public class PhoneConverter extends TextConverter<PhoneType> {
 		super(pattern);
 	}
 
+	public PhoneConverter(final String pattern, final char character) {
+		super(pattern, character);
+	}
+
 	@Override
 	protected PhoneType wrap(final String text) {
 		return new PhoneType(text);

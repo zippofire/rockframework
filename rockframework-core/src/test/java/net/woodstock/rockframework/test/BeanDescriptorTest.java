@@ -5,19 +5,14 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
-import net.woodstock.rockframework.reflection.BeanDescriptorBuilder;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
-import net.woodstock.rockframework.reflection.ReflectionType;
-import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilderImpl;
+import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilder;
 
 public class BeanDescriptorTest extends TestCase {
 
 	public void test1() throws Exception {
 		ITest x = new ConcreteX();
-		BeanDescriptorBuilder builder = new BeanDescriptorBuilderImpl();
-		builder.setMode(ReflectionType.FIELD);
-		builder.setType(x.getClass());
-		BeanDescriptor bean = builder.getBeanDescriptor();
+		BeanDescriptor bean = new BeanDescriptorBuilder(x.getClass()).getBeanDescriptor();
 		System.out.println("Name: " + bean.getName());
 		for (PropertyDescriptor property : bean.getProperties()) {
 			System.out.println(property.getType().getSimpleName() + " " + property.getName());
@@ -26,10 +21,7 @@ public class BeanDescriptorTest extends TestCase {
 
 	public void test2() throws Exception {
 		ITest y = new ConcreteY();
-		BeanDescriptorBuilder builder = new BeanDescriptorBuilderImpl();
-		builder.setMode(ReflectionType.FIELD);
-		builder.setType(y.getClass());
-		BeanDescriptor bean = builder.getBeanDescriptor();
+		BeanDescriptor bean = new BeanDescriptorBuilder(y.getClass()).getBeanDescriptor();
 		System.out.println("Name: " + bean.getName());
 		for (PropertyDescriptor property : bean.getProperties()) {
 			System.out.println(property.getType().getSimpleName() + " " + property.getName());
@@ -38,10 +30,7 @@ public class BeanDescriptorTest extends TestCase {
 
 	public void test3() throws Exception {
 		ITest x = new ConcreteX();
-		BeanDescriptorBuilder builder = new BeanDescriptorBuilderImpl();
-		builder.setMode(ReflectionType.FIELD);
-		builder.setType(x.getClass());
-		BeanDescriptor bean = builder.getBeanDescriptor();
+		BeanDescriptor bean = new BeanDescriptorBuilder(x.getClass()).getBeanDescriptor();
 		System.out.println("Name: " + bean.getName());
 		for (PropertyDescriptor property : bean.getProperties()) {
 			System.out.println(property.getType().getSimpleName() + " " + property.getName());
@@ -54,10 +43,7 @@ public class BeanDescriptorTest extends TestCase {
 
 	public void test4() throws Exception {
 		ITest y = new ConcreteY();
-		BeanDescriptorBuilder builder = new BeanDescriptorBuilderImpl();
-		builder.setMode(ReflectionType.FIELD);
-		builder.setType(y.getClass());
-		BeanDescriptor bean = builder.getBeanDescriptor();
+		BeanDescriptor bean = new BeanDescriptorBuilder(y.getClass()).getBeanDescriptor();
 		System.out.println("Name: " + bean.getName());
 		for (PropertyDescriptor property : bean.getProperties()) {
 			System.out.println(property.getType().getSimpleName() + " " + property.getName());

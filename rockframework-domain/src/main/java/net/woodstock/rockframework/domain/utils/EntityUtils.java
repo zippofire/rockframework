@@ -22,7 +22,7 @@ import java.util.Date;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
-import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilderImpl;
+import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilder;
 import net.woodstock.rockframework.utils.ObjectUtils;
 
 @SuppressWarnings("rawtypes")
@@ -61,7 +61,7 @@ public abstract class EntityUtils {
 			return false;
 		}
 
-		BeanDescriptor beanDescriptor = new BeanDescriptorBuilderImpl().setType(entity1.getClass()).getBeanDescriptor();
+		BeanDescriptor beanDescriptor = new BeanDescriptorBuilder(entity1.getClass()).getBeanDescriptor();
 		Collection<PropertyDescriptor> properties = beanDescriptor.getProperties();
 
 		for (PropertyDescriptor property : properties) {
@@ -96,7 +96,7 @@ public abstract class EntityUtils {
 
 		int result = 1;
 
-		BeanDescriptor beanDescriptor = new BeanDescriptorBuilderImpl().setType(entity.getClass()).getBeanDescriptor();
+		BeanDescriptor beanDescriptor = new BeanDescriptorBuilder(entity.getClass()).getBeanDescriptor();
 		Collection<PropertyDescriptor> properties = beanDescriptor.getProperties();
 
 		for (PropertyDescriptor property : properties) {

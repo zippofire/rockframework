@@ -24,17 +24,17 @@ class MethodBeanDescriptor extends AbstractBeanDescriptor {
 
 	public MethodBeanDescriptor(final Class<?> clazz) {
 		super(clazz);
+		this.configure();
 	}
 
-	@Override
-	public void configure() {
+	private void configure() {
 		Class<?> c = this.getType();
 		for (Method method : c.getMethods()) {
 			if (BeanDescriptorHelper.isValidGetterOrSetter(method)) {
 				String propertyName = BeanDescriptorHelper.getPropertyName(method);
 				if (!this.hasProperty(propertyName)) {
-					Class<?> returnType = BeanDescriptorHelper.getPropertyType(method);
-					PropertyDescriptor property = new MethodPropertyDescriptor(this, propertyName, returnType);
+					Class<?> propertyType = BeanDescriptorHelper.getPropertyType(method);
+					PropertyDescriptor property = new MethodPropertyDescriptor(this, propertyName, propertyType);
 					if ((property.isReadable()) || (property.isWriteable())) {
 						this.getProperties().add(property);
 					}

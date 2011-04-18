@@ -16,57 +16,37 @@
  */
 package net.woodstock.rockframework.domain.business.impl;
 
-import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.domain.business.GenericBusiness;
-import net.woodstock.rockframework.domain.business.ValidationResult;
+import net.woodstock.rockframework.domain.business.Business;
 import net.woodstock.rockframework.domain.config.DomainMessage;
 
-@SuppressWarnings("rawtypes")
-abstract class AbstractBusiness implements GenericBusiness {
+public abstract class AbstractBusiness implements Business {
 
-	private static final String		NULL_OBJECT_MESSAGE						= "null";
+	public static final String	MESSAGE_INVALID_CLASS					= "domain.business.invalid.class";
 
-	protected static final String	MESSAGE_INVALID_CLASS					= "domain.business.invalid.class";
+	public static final String	MESSAGE_INVALID_ID						= "domain.business.invalid.id";
 
-	protected static final String	MESSAGE_INVALID_ID						= "domain.business.invalid.id";
+	public static final String	MESSAGE_INVALID_OBJECT					= "domain.business.invalid.object";
 
-	protected static final String	MESSAGE_INVALID_OBJECT					= "domain.business.invalid.object";
+	public static final String	MESSAGE_VALIDATION_OK					= "domain.business.validation.ok";
 
-	protected static final String	MESSAGE_VALIDATION_OK					= "domain.business.validation.ok";
+	public static final String	MESSAGE_VALIDATION_ERROR_INVALID		= "domain.business.validation.error.invalid";
 
-	protected static final String	MESSAGE_VALIDATION_ERROR_INVALID		= "domain.business.validation.error.invalid";
+	public static final String	MESSAGE_VALIDATION_ERROR_INVALID_TYPE	= "domain.business.validation.error.invalidType";
 
-	protected static final String	MESSAGE_VALIDATION_ERROR_INVALID_TYPE	= "domain.business.validation.error.invalidType";
+	public static final String	MESSAGE_VALIDATION_ERROR_LENGTH			= "domain.business.validation.error.length";
 
-	protected static final String	MESSAGE_VALIDATION_ERROR_LENGTH			= "domain.business.validation.error.length";
+	public static final String	MESSAGE_VALIDATION_ERROR_NOT_EMPTY		= "domain.business.validation.error.notEmpty";
 
-	protected static final String	MESSAGE_VALIDATION_ERROR_NOT_EMPTY		= "domain.business.validation.error.notEmpty";
+	public static final String	MESSAGE_VALIDATION_ERROR_NOT_NULL		= "domain.business.validation.error.notNull";
 
-	protected static final String	MESSAGE_VALIDATION_ERROR_NOT_NULL		= "domain.business.validation.error.notNull";
-
-	protected static final String	MESSAGE_VALIDATION_ERROR_NULL			= "domain.business.validation.error.null";
+	public static final String	MESSAGE_VALIDATION_ERROR_NULL			= "domain.business.validation.error.null";
 
 	public AbstractBusiness() {
 		super();
 	}
 
-	@Override
-	public ValidationResult validateGet(final Entity entity) {
-		boolean error = false;
-		String message = DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_OK);
-		if (entity == null) {
-			error = true;
-			message = DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_INVALID_OBJECT, AbstractBusiness.NULL_OBJECT_MESSAGE);
-		} else if (entity.getId() == null) {
-			error = true;
-			message = DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_INVALID_ID, AbstractBusiness.NULL_OBJECT_MESSAGE);
-		}
-		return new ValidationResult(error, message);
-	}
-
-	@Override
-	public ValidationResult validateDelete(final Entity entity) {
-		return this.validateGet(entity);
+	protected String getMessage(final String key, final Object... args) {
+		return DomainMessage.getInstance().getMessage(key, args);
 	}
 
 }

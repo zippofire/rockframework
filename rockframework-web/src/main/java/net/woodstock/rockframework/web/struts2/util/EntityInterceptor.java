@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
-import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilderImpl;
+import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilder;
 import net.woodstock.rockframework.utils.ConditionUtils;
 import net.woodstock.rockframework.web.config.WebLog;
 import net.woodstock.rockframework.web.struts2.Interceptor;
@@ -81,7 +81,7 @@ public class EntityInterceptor extends Interceptor {
 			if ((obj != null) && (obj instanceof Entity)) {
 				Entity<?> entity = (Entity<?>) obj;
 
-				BeanDescriptor beanDescriptor = new BeanDescriptorBuilderImpl().setType(entity.getClass()).getBeanDescriptor();
+				BeanDescriptor beanDescriptor = new BeanDescriptorBuilder(entity.getClass()).getBeanDescriptor();
 
 				PropertyDescriptor propertyDescriptor = beanDescriptor.getProperty(EntityInterceptor.ENTITY_ID);
 				Class<?> clazz = propertyDescriptor.getType();

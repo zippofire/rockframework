@@ -14,18 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.service;
+package net.woodstock.rockframework.domain.business.impl;
 
-import net.woodstock.rockframework.domain.Entity;
+public enum JPAOperation {
 
-public interface GenericService extends Service {
-
-	void save(Entity<?> entity);
-
-	void update(Entity<?> entity);
-
-	void delete(Entity<?> entity);
-
-	<E extends Entity<?>> E get(E entity);
+	PERSIST, MERGE, REMOVE, FIND;
 
 }

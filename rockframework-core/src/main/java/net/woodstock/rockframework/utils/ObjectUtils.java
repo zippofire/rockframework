@@ -20,7 +20,7 @@ import java.util.Collection;
 
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
-import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilderImpl;
+import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilder;
 
 public abstract class ObjectUtils {
 
@@ -39,8 +39,8 @@ public abstract class ObjectUtils {
 	}
 
 	public static void copyAttributes(final Object from, final Object to, final Class<?>[] ignoredTypes) {
-		BeanDescriptor beanDescriptorFrom = new BeanDescriptorBuilderImpl().setType(from.getClass()).getBeanDescriptor();
-		BeanDescriptor beanDescriptorTo = new BeanDescriptorBuilderImpl().setType(to.getClass()).getBeanDescriptor();
+		BeanDescriptor beanDescriptorFrom = new BeanDescriptorBuilder(from.getClass()).getBeanDescriptor();
+		BeanDescriptor beanDescriptorTo = new BeanDescriptorBuilder(to.getClass()).getBeanDescriptor();
 
 		outer: for (PropertyDescriptor propertyDescriptor : beanDescriptorFrom.getProperties()) {
 			if (beanDescriptorTo.hasProperty(propertyDescriptor.getName())) {
@@ -62,8 +62,8 @@ public abstract class ObjectUtils {
 	}
 
 	public static void copyAttributes(final Object from, final Object to, final String[] ignoredAttributes) {
-		BeanDescriptor beanDescriptorFrom = new BeanDescriptorBuilderImpl().setType(from.getClass()).getBeanDescriptor();
-		BeanDescriptor beanDescriptorTo = new BeanDescriptorBuilderImpl().setType(to.getClass()).getBeanDescriptor();
+		BeanDescriptor beanDescriptorFrom = new BeanDescriptorBuilder(from.getClass()).getBeanDescriptor();
+		BeanDescriptor beanDescriptorTo = new BeanDescriptorBuilder(to.getClass()).getBeanDescriptor();
 
 		outer: for (PropertyDescriptor propertyDescriptor : beanDescriptorFrom.getProperties()) {
 			if (beanDescriptorTo.hasProperty(propertyDescriptor.getName())) {
@@ -92,7 +92,7 @@ public abstract class ObjectUtils {
 			return false;
 		}
 
-		BeanDescriptor beanDescriptor = new BeanDescriptorBuilderImpl().setType(o1.getClass()).getBeanDescriptor();
+		BeanDescriptor beanDescriptor = new BeanDescriptorBuilder(o1.getClass()).getBeanDescriptor();
 		Collection<PropertyDescriptor> properties = beanDescriptor.getProperties();
 
 		for (PropertyDescriptor property : properties) {
@@ -115,7 +115,7 @@ public abstract class ObjectUtils {
 
 	public static int hashCode(final Object obj) {
 		int result = 1;
-		BeanDescriptor beanDescriptor = new BeanDescriptorBuilderImpl().setType(obj.getClass()).getBeanDescriptor();
+		BeanDescriptor beanDescriptor = new BeanDescriptorBuilder(obj.getClass()).getBeanDescriptor();
 		Collection<PropertyDescriptor> properties = beanDescriptor.getProperties();
 
 		for (PropertyDescriptor property : properties) {

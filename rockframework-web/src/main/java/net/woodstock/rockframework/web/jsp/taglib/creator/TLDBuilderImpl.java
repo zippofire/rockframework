@@ -20,8 +20,7 @@ import javax.servlet.jsp.tagext.JspTag;
 
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
-import net.woodstock.rockframework.reflection.ReflectionType;
-import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilderImpl;
+import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilder;
 import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.utils.ConditionUtils;
 import net.woodstock.rockframework.web.config.WebLog;
@@ -62,7 +61,7 @@ class TLDBuilderImpl extends TLDBuilder {
 			root.addElement("dynamic-attributes").setData(Boolean.valueOf(tag.dynamicAttributes()));
 		}
 
-		BeanDescriptor beanDescriptor = new BeanDescriptorBuilderImpl().setType(clazz).setMode(ReflectionType.MIXED).getBeanDescriptor();
+		BeanDescriptor beanDescriptor = new BeanDescriptorBuilder(clazz).getBeanDescriptor();
 
 		for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
 			if (!propertyDescriptor.isAnnotationPresent(Attribute.class)) {

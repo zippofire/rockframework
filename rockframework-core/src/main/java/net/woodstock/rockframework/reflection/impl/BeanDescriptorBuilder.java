@@ -16,37 +16,20 @@
  */
 package net.woodstock.rockframework.reflection.impl;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+import net.woodstock.rockframework.reflection.BeanDescriptor;
 
-import net.woodstock.rockframework.reflection.PropertyDescriptor;
+public class BeanDescriptorBuilder {
 
-class FieldBeanDescriptor extends AbstractBeanDescriptor {
+	private Class<?>	clazz;
 
-	public FieldBeanDescriptor(final Class<?> clazz) {
-		super(clazz);
+	public BeanDescriptorBuilder(final Class<?> clazz) {
+		super();
+		this.clazz = clazz;
 	}
 
-	@Override
-	public void configure() {
-		Class<?> c = this.getType();
-		while (c != null) {
-			for (Field field : c.getDeclaredFields()) {
-				if (this.hasProperty(field.getName())) {
-					continue;
-				}
-
-				if (Modifier.isStatic(field.getModifiers())) {
-					continue;
-				}
-
-				PropertyDescriptor property = new FieldPropertyDescriptor(this, field);
-				if ((property.isReadable()) || (property.isWriteable())) {
-					this.getProperties().add(property);
-				}
-			}
-			c = c.getSuperclass();
-		}
+	public BeanDescriptor getBeanDescriptor() {
+		BeanDescriptor beanDescriptor = new MethodBeanDescriptor(this.clazz);
+		return beanDescriptor;
 	}
 
 }

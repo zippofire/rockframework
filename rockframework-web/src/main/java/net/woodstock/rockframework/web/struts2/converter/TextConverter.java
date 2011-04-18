@@ -28,6 +28,11 @@ public abstract class TextConverter<T extends TextType> extends TypeConverter<T>
 		this.format = new StringFormat(pattern);
 	}
 
+	public TextConverter(final String pattern, final char character) {
+		super();
+		this.format = new StringFormat(pattern, character);
+	}
+
 	@Override
 	@SuppressWarnings("rawtypes")
 	protected T convertFromString(final String s, final Class toClass) {

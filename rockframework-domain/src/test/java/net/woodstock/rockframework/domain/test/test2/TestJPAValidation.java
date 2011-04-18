@@ -1,17 +1,15 @@
 package net.woodstock.rockframework.domain.test.test2;
 
 import junit.framework.TestCase;
-
-import net.woodstock.rockframework.domain.business.GenericBusiness;
+import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.business.ValidationResult;
 import net.woodstock.rockframework.domain.business.impl.AbstractJPABusiness;
+import net.woodstock.rockframework.domain.business.impl.JPAOperation;
 
 public class TestJPAValidation extends TestCase {
 
-	private GenericBusiness getBusiness() {
-		return new AbstractJPABusiness() {
-			//
-		};
+	private MyBusiness getBusiness() {
+		return new MyBusiness();
 	}
 
 	private Bar getBar() {
@@ -30,10 +28,20 @@ public class TestJPAValidation extends TestCase {
 	}
 
 	public void test1() throws Exception {
-		GenericBusiness business = this.getBusiness();
+		MyBusiness business = this.getBusiness();
 		Bar bar = this.getBar();
-		ValidationResult result = business.validateSave(bar);
+		ValidationResult result = business.validate(bar, JPAOperation.PERSIST);
 		System.out.println(result.getMessage());
+	}
+
+	public class MyBusiness extends AbstractJPABusiness {
+
+		@SuppressWarnings("rawtypes")
+		@Override
+		public ValidationResult validate(final Entity entity, final JPAOperation operation) {
+			return super.validate(entity, operation);
+		}
+
 	}
 
 }
