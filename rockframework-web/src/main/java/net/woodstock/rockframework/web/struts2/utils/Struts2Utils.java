@@ -1,3 +1,19 @@
+/*
+ * This file is part of rockframework.
+ * 
+ * rockframework is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * rockframework is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
+ */
 package net.woodstock.rockframework.web.struts2.utils;
 
 import javax.servlet.ServletContext;
@@ -5,6 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.PageContext;
+
+import net.woodstock.rockframework.web.utils.RequestUtils;
 
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.dispatcher.Dispatcher;
@@ -60,7 +78,8 @@ public abstract class Struts2Utils {
 
 	public static String getRequestPath(final HttpServletRequest request) {
 		String contextPath = request.getContextPath();
-		String path = request.getRequestURI().replace(contextPath, "");
+		String uri = RequestUtils.getRequestPath(request);
+		String path = uri.replace(contextPath, "");
 		if (path.indexOf(Struts2Utils.METHOD_SEPARATOR_1) != -1) {
 			path = path.replaceAll(Struts2Utils.METHOD_REGEX_1, Struts2Utils.METHOD_REPLACE);
 		}

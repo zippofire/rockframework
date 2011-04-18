@@ -28,33 +28,37 @@ import net.woodstock.rockframework.utils.IOUtils;
 
 public abstract class RequestUtils {
 
-	public static final String	HEADER_ACCEPT			= "Accept";
+	public static final String	HEADER_ACCEPT						= "Accept";
 
-	public static final String	HEADER_ACCEPT_CHARSET	= "Accept-Charset";
+	public static final String	HEADER_ACCEPT_CHARSET				= "Accept-Charset";
 
-	public static final String	HEADER_ACCEPT_ENCODING	= "Accept-Encoding";
+	public static final String	HEADER_ACCEPT_ENCODING				= "Accept-Encoding";
 
-	public static final String	HEADER_ACCEPT_LANGUAGE	= "Accept-Language";
+	public static final String	HEADER_ACCEPT_LANGUAGE				= "Accept-Language";
 
-	public static final String	HEADER_CACHE_CONTROL	= "Cache-Control";
+	public static final String	HEADER_CACHE_CONTROL				= "Cache-Control";
 
-	public static final String	HEADER_CONNECTION		= "Connection";
+	public static final String	HEADER_CONNECTION					= "Connection";
 
-	public static final String	HEADER_DATE				= "Date";
+	public static final String	HEADER_DATE							= "Date";
 
-	public static final String	HEADER_HOST				= "Host";
+	public static final String	HEADER_HOST							= "Host";
 
-	public static final String	HEADER_REFERER			= "Referer";
+	public static final String	HEADER_REFERER						= "Referer";
 
-	public static final String	HEADER_USER_AGENT		= "User-Agent";
+	public static final String	HEADER_USER_AGENT					= "User-Agent";
 
-	public static final String	HEADER_X_FORWARDED_FOR	= "X-Forwarded-For";
+	public static final String	HEADER_X_FORWARDED_FOR				= "X-Forwarded-For";
+
+	public static final String	JAVAX_SERVLET_FORWARD_REQUEST_URI	= "javax.servlet.forward.request_uri";
+
+	public static final String	JAVAX_SERVLET_INCLUDE_REQUEST_URI	= "javax.servlet.include.request_uri";
 
 	private RequestUtils() {
 		//
 	}
 
-	public static String getApplicationUrl(final HttpServletRequest request) {
+	private static String getServerUrl(final HttpServletRequest request) {
 		Assert.notNull(request, "request");
 		StringBuilder builder = new StringBuilder();
 		builder.append(request.getScheme());
@@ -62,6 +66,25 @@ public abstract class RequestUtils {
 		builder.append(request.getServerName());
 		builder.append(":");
 		builder.append(request.getServerPort());
+		return builder.toString();
+	}
+
+	private static String getRequestUri(final HttpServletRequest request) {
+		String webInf = request.getContextPath() + "/WEB-INF";
+		String uri = request.getRequestURI();
+		if (uri.startsWith(webInf)) {
+			uri = (String) request.getAttribute(RequestUtils.JAVAX_SERVLET_INCLUDE_REQUEST_URI);
+			if (uri.startsWith(webInf)) {
+				uri = (String) request.getAttribute(RequestUtils.JAVAX_SERVLET_FORWARD_REQUEST_URI);
+			}
+		}
+		return uri;
+	}
+
+	public static String getApplicationUrl(final HttpServletRequest request) {
+		Assert.notNull(request, "request");
+		StringBuilder builder = new StringBuilder();
+		builder.append(RequestUtils.getServerUrl(request));
 		builder.append(request.getContextPath());
 		return builder.toString();
 	}
@@ -69,17 +92,35 @@ public abstract class RequestUtils {
 	public static String getRequestUrl(final HttpServletRequest request) {
 		Assert.notNull(request, "request");
 		StringBuilder builder = new StringBuilder();
-		builder.append(RequestUtils.getApplicationUrl(request));
-		builder.append(request.getServletPath());
-
+		builder.append(RequestUtils.getServerUrl(request));
+		builder.append(RequestUtils.getRequestUri(request));
 		return builder.toString();
 	}
 
 	public static String getFullRequestUrl(final HttpServletRequest request) {
 		Assert.notNull(request, "request");
 		StringBuilder builder = new StringBuilder();
-		builder.append(RequestUtils.getApplicationUrl(request));
-		builder.append(request.getServletPath());
+		builder.append(RequestUtils.getRequestUrl(request));
+
+		if (request.getQueryString() != null) {
+			builder.append("?");
+			builder.append(request.getQueryString());
+		}
+
+		return builder.toString();
+	}
+
+	public static String getRequestPath(final HttpServletRequest request) {
+		Assert.notNull(request, "request");
+		StringBuilder builder = new StringBuilder();
+		builder.append(RequestUtils.getRequestUri(request));
+		return builder.toString();
+	}
+
+	public static String getFullRequestPath(final HttpServletRequest request) {
+		Assert.notNull(request, "request");
+		StringBuilder builder = new StringBuilder();
+		builder.append(RequestUtils.getRequestPath(request));
 
 		if (request.getQueryString() != null) {
 			builder.append("?");
