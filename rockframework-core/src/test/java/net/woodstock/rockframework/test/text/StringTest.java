@@ -54,7 +54,16 @@ public class StringTest extends TestCase {
 		System.out.println(matcher.regionEnd());
 	}
 
-	public void test5() throws Exception {
+	public void xtest5() throws Exception {
 		System.out.println(new CharsetTransform(Charset.forName("ISO-8859-1"), Charset.forName("UTF-8")).transform("Júnior"));
+	}
+
+	public void test6() throws Exception {
+		StringFormat format = new StringFormat("999.999.999-99", '9');
+		String s = format.format("01234567890");
+		String ss = format.parse(s);
+		System.out.println(s);
+		System.out.println(ss);
+
 	}
 }

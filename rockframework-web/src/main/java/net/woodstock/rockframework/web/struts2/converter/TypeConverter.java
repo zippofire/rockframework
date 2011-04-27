@@ -56,6 +56,11 @@ public abstract class TypeConverter<T extends Type> extends StrutsTypeConverter 
 		return s;
 	}
 
+	@Override
+	public String toString() {
+		return super.toString();
+	}
+	
 	protected abstract T convertFromString(String s, Class toClass);
 
 	protected abstract String convertToString(T o);

@@ -215,7 +215,28 @@ public class DateBuilder {
 		this.roll(years, java.util.Calendar.YEAR, false);
 	}
 
-	//
+	public boolean isWeekend() {
+		if (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+			return true;
+		}
+		if (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+			return true;
+		}
+		return false;
+	}
+
+	// Aux
+	public int getFieldValue(final DateField field) {
+		Assert.notNull(field, "field");
+		return this.calendar.get(field.getCalendarField());
+	}
+
+	public void setFieldValue(final DateField field, final int value) {
+		Assert.notNull(field, "field");
+		this.calendar.set(field.getCalendarField(), value);
+	}
+
+	// Internal
 	private void roll(final int count, final int field, final boolean up) {
 		for (int i = 0; i < count; i++) {
 			this.calendar.roll(field, up);
