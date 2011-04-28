@@ -34,6 +34,14 @@ public abstract class TestCaseSpringJPA extends TestCaseSpring {
 		this.bind(factory, new EntityManagerHolder(this.entityManager));
 	}
 
+	@Override
+	protected void tearDown() throws Exception {
+		EntityManagerFactory factory = this.getEntityManagerFactory();
+		EntityManagerHolder holder = (EntityManagerHolder) this.unbind(factory);
+		EntityManager manager = holder.getEntityManager();
+		manager.close();
+	}
+
 	public EntityManager getEntityManager() {
 		return this.entityManager;
 	}
