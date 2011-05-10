@@ -21,25 +21,27 @@ import net.woodstock.rockframework.domain.validator.jpa.EntityValidator;
 
 public abstract class AbstractEntityValidator implements EntityValidator {
 
-	protected static final String	MESSAGE_VALIDATION_OK					= "domain.validation.ok";
+	protected static final String	MESSAGE_VALIDATION_OK						= "domain.validation.ok";
 
-	protected static final String	MESSAGE_INVALID_CLASS					= "domain.validation.invalid.class";
+	protected static final String	MESSAGE_INVALID_CLASS						= "domain.validation.invalid.class";
 
-	protected static final String	MESSAGE_INVALID_ID						= "domain.validation.invalid.id";
+	protected static final String	MESSAGE_INVALID_ID							= "domain.validation.invalid.id";
 
-	protected static final String	MESSAGE_INVALID_OBJECT					= "domain.validation.invalid.object";
+	protected static final String	MESSAGE_INVALID_OBJECT						= "domain.validation.invalid.object";
 
-	protected static final String	MESSAGE_VALIDATION_ERROR_INVALID		= "domain.validation.error.invalid";
+	protected static final String	MESSAGE_VALIDATION_ERROR_INVALID			= "domain.validation.error.invalid";
 
-	protected static final String	MESSAGE_VALIDATION_ERROR_INVALID_TYPE	= "domain.validation.error.invalidType";
+	protected static final String	MESSAGE_VALIDATION_ERROR_INVALID_REFERENCE	= "domain.validation.error.invalidReference";
 
-	protected static final String	MESSAGE_VALIDATION_ERROR_LENGTH			= "domain.validation.error.length";
+	protected static final String	MESSAGE_VALIDATION_ERROR_INVALID_TYPE		= "domain.validation.error.invalidType";
 
-	protected static final String	MESSAGE_VALIDATION_ERROR_NOT_EMPTY		= "domain.validation.error.notEmpty";
+	protected static final String	MESSAGE_VALIDATION_ERROR_LENGTH				= "domain.validation.error.length";
 
-	protected static final String	MESSAGE_VALIDATION_ERROR_NOT_NULL		= "domain.validation.error.notNull";
+	protected static final String	MESSAGE_VALIDATION_ERROR_NOT_EMPTY			= "domain.validation.error.notEmpty";
 
-	protected static final String	MESSAGE_VALIDATION_ERROR_NULL			= "domain.validation.error.null";
+	protected static final String	MESSAGE_VALIDATION_ERROR_NOT_NULL			= "domain.validation.error.notNull";
+
+	protected static final String	MESSAGE_VALIDATION_ERROR_NULL				= "domain.validation.error.null";
 
 	public AbstractEntityValidator() {
 		super();

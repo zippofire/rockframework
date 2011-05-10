@@ -141,7 +141,7 @@ class AbstractByMethodPropertyDescriptor extends AbstractPropertyDescriptor {
 	public <T extends Annotation> T getAnnotation(final Class<T> clazz) {
 		T t = null;
 		if (this.readMethod != null) {
-			return this.readMethod.getAnnotation(clazz);
+			t = this.readMethod.getAnnotation(clazz);
 		}
 		if ((t == null) && (this.field != null)) {
 			t = this.field.getAnnotation(clazz);

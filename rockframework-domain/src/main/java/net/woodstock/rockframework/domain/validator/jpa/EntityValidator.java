@@ -18,11 +18,8 @@ package net.woodstock.rockframework.domain.validator.jpa;
 
 import java.util.Collection;
 
-import net.woodstock.rockframework.domain.Entity;
-
 public interface EntityValidator {
 
-	@SuppressWarnings("rawtypes")
-	Collection<ValidationResult> validate(final Entity entity);
+	Collection<ValidationResult> validate(final Object entity);
 
 }

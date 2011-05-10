@@ -23,7 +23,7 @@ public class Bar implements Entity<Integer> {
 	private String				value;
 
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "id_foo", referencedColumnName = "id")
+	@JoinColumn(name = "id_foo", referencedColumnName = "id", nullable = false)
 	private Foo					foo;
 
 	public Bar() {

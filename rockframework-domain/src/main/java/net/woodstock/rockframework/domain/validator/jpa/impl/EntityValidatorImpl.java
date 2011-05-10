@@ -16,19 +16,19 @@
  */
 package net.woodstock.rockframework.domain.validator.jpa.impl;
 
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.config.DomainMessage;
 import net.woodstock.rockframework.domain.validator.jpa.Operation;
 import net.woodstock.rockframework.domain.validator.jpa.ValidationException;
@@ -38,7 +38,6 @@ import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilder;
 import net.woodstock.rockframework.util.Assert;
 
-@SuppressWarnings("rawtypes")
 public class EntityValidatorImpl extends AbstractEntityValidator {
 
 	private Operation	operation;
@@ -57,7 +56,7 @@ public class EntityValidatorImpl extends AbstractEntityValidator {
 	}
 
 	@Override
-	public Collection<ValidationResult> validate(final Entity entity) {
+	public Collection<ValidationResult> validate(final Object entity) {
 		if (entity == null) {
 			throw new ValidationException(this.getMessage(AbstractEntityValidator.MESSAGE_INVALID_OBJECT));
 		}
@@ -65,42 +64,74 @@ public class EntityValidatorImpl extends AbstractEntityValidator {
 		BeanDescriptor beanDescriptor = new BeanDescriptorBuilder(entity.getClass()).getBeanDescriptor();
 		Collection<ValidationResult> collection = new ArrayList<ValidationResult>();
 		for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
-			for (Annotation annotation : propertyDescriptor.getAnnotations()) {
-				ValidationResult result = null;
-				if (annotation instanceof Id) {
+			ValidationResult result = null;
+			boolean checkIdOnly = false;
+			boolean checkColumn = false;
+			boolean checkJoinColumn = false;
+
+			if ((this.operation == Operation.FIND) || (this.operation == Operation.REMOVE)) {
+				checkIdOnly = true;
+			}
+
+			if (checkIdOnly) {
+				if (propertyDescriptor.isAnnotationPresent(Id.class)) {
 					result = this.validateId(entity, propertyDescriptor, this.operation);
-				} else if (annotation instanceof Column) {
-					result = this.validateColumn(entity, propertyDescriptor, (Column) annotation);
-				} else if (annotation instanceof OneToOne) {
-					result = this.validateOneToOne(entity, propertyDescriptor, (OneToOne) annotation);
-				} else if (annotation instanceof OneToMany) {
-					result = this.validateOneToMany(entity, propertyDescriptor, (OneToMany) annotation);
-				} else if (annotation instanceof ManyToOne) {
-					result = this.validateManyToOne(entity, propertyDescriptor, (ManyToOne) annotation);
-				} else if (annotation instanceof ManyToMany) {
-					result = this.validateManyToMany(entity, propertyDescriptor, (ManyToMany) annotation);
+				}
+			} else {
+				if (propertyDescriptor.isAnnotationPresent(Id.class)) {
+					result = this.validateId(entity, propertyDescriptor, this.operation);
+					checkColumn = true;
+				} else if (propertyDescriptor.isAnnotationPresent(Basic.class)) {
+					result = this.validateBasic(entity, propertyDescriptor, propertyDescriptor.getAnnotation(Basic.class));
+					checkColumn = true;
+				} else if (propertyDescriptor.isAnnotationPresent(OneToOne.class)) {
+					result = this.validateOneToOne(entity, propertyDescriptor, propertyDescriptor.getAnnotation(OneToOne.class));
+					checkJoinColumn = true;
+				} else if (propertyDescriptor.isAnnotationPresent(OneToMany.class)) {
+					result = this.validateOneToMany(entity, propertyDescriptor, propertyDescriptor.getAnnotation(OneToMany.class));
+				} else if (propertyDescriptor.isAnnotationPresent(ManyToOne.class)) {
+					result = this.validateManyToOne(entity, propertyDescriptor, propertyDescriptor.getAnnotation(ManyToOne.class));
+					checkJoinColumn = true;
+				} else if (propertyDescriptor.isAnnotationPresent(ManyToMany.class)) {
+					result = this.validateManyToMany(entity, propertyDescriptor, propertyDescriptor.getAnnotation(ManyToMany.class));
+				} else if (propertyDescriptor.isAnnotationPresent(Column.class)) {
+					result = this.validateColumn(entity, propertyDescriptor, propertyDescriptor.getAnnotation(Column.class));
 				}
 
-				if (result != null) {
-					if (result.isError()) {
-						collection.add(result);
-					} else if (this.includeSuccessResult) {
-						collection.add(result);
+				if ((result != null) && (!result.isError())) {
+					if (checkColumn) {
+						if (propertyDescriptor.isAnnotationPresent(Column.class)) {
+							result = this.validateColumn(entity, propertyDescriptor, propertyDescriptor.getAnnotation(Column.class));
+						}
 					}
+
+					if (checkJoinColumn) {
+						if (propertyDescriptor.isAnnotationPresent(JoinColumn.class)) {
+							result = this.validateJoinColumn(entity, propertyDescriptor, propertyDescriptor.getAnnotation(JoinColumn.class));
+						}
+					}
+				}
+			}
+
+			if (result != null) {
+				if (result.isError()) {
+					collection.add(result);
+				} else if (this.includeSuccessResult) {
+					collection.add(result);
 				}
 			}
 		}
 		return collection;
 	}
 
-	private ValidationResult validateId(final Entity entity, final PropertyDescriptor propertyDescriptor, final Operation operation) {
+	private ValidationResult validateId(final Object entity, final PropertyDescriptor propertyDescriptor, final Operation operation) {
 		String name = propertyDescriptor.getName();
 		Object value = propertyDescriptor.getValue(entity);
 
 		if (operation == Operation.PERSIST) {
 			if (value == null) {
 				if (propertyDescriptor.isAnnotationPresent(GeneratedValue.class)) {
-					return null;
+					return new ValidationResult(false, name, DomainMessage.getInstance().getMessage(AbstractEntityValidator.MESSAGE_VALIDATION_OK));
 				}
 				return new ValidationResult(true, name, DomainMessage.getInstance().getMessage(AbstractEntityValidator.MESSAGE_VALIDATION_ERROR_NOT_NULL, name));
 			}
@@ -116,7 +147,7 @@ public class EntityValidatorImpl extends AbstractEntityValidator {
 		return new ValidationResult(false, name, DomainMessage.getInstance().getMessage(AbstractEntityValidator.MESSAGE_VALIDATION_OK));
 	}
 
-	private ValidationResult validateColumn(final Entity entity, final PropertyDescriptor propertyDescriptor, final Column column) {
+	private ValidationResult validateColumn(final Object entity, final PropertyDescriptor propertyDescriptor, final Column column) {
 		String name = propertyDescriptor.getName();
 		Object value = propertyDescriptor.getValue(entity);
 
@@ -136,13 +167,40 @@ public class EntityValidatorImpl extends AbstractEntityValidator {
 		return new ValidationResult(false, name, DomainMessage.getInstance().getMessage(AbstractEntityValidator.MESSAGE_VALIDATION_OK));
 	}
 
+	private ValidationResult validateJoinColumn(final Object entity, final PropertyDescriptor propertyDescriptor, final JoinColumn column) {
+		String name = propertyDescriptor.getName();
+		Object value = propertyDescriptor.getValue(entity);
+
+		if (value == null) {
+			if (column.nullable()) {
+				return new ValidationResult(false, name, DomainMessage.getInstance().getMessage(AbstractEntityValidator.MESSAGE_VALIDATION_OK));
+			}
+			return new ValidationResult(true, name, DomainMessage.getInstance().getMessage(AbstractEntityValidator.MESSAGE_VALIDATION_ERROR_NOT_NULL, name));
+		}
+		return new ValidationResult(false, name, DomainMessage.getInstance().getMessage(AbstractEntityValidator.MESSAGE_VALIDATION_OK));
+	}
+
+	private ValidationResult validateBasic(final Object entity, final PropertyDescriptor propertyDescriptor, final Basic basic) {
+		String name = propertyDescriptor.getName();
+		Object value = propertyDescriptor.getValue(entity);
+
+		if (value == null) {
+			if (basic.optional()) {
+				return new ValidationResult(false, name, DomainMessage.getInstance().getMessage(AbstractEntityValidator.MESSAGE_VALIDATION_OK));
+			}
+			return new ValidationResult(true, name, DomainMessage.getInstance().getMessage(AbstractEntityValidator.MESSAGE_VALIDATION_ERROR_NOT_NULL, name));
+		}
+
+		return new ValidationResult(false, name, DomainMessage.getInstance().getMessage(AbstractEntityValidator.MESSAGE_VALIDATION_OK));
+	}
+
 	@SuppressWarnings("unused")
-	private ValidationResult validateManyToMany(final Entity entity, final PropertyDescriptor propertyDescriptor, final ManyToMany manyToMany) {
+	private ValidationResult validateManyToMany(final Object entity, final PropertyDescriptor propertyDescriptor, final ManyToMany manyToMany) {
 		String name = propertyDescriptor.getName();
 		return new ValidationResult(false, name, DomainMessage.getInstance().getMessage(AbstractEntityValidator.MESSAGE_VALIDATION_OK));
 	}
 
-	private ValidationResult validateManyToOne(final Entity entity, final PropertyDescriptor propertyDescriptor, final ManyToOne manyToOne) {
+	private ValidationResult validateManyToOne(final Object entity, final PropertyDescriptor propertyDescriptor, final ManyToOne manyToOne) {
 		String name = propertyDescriptor.getName();
 		Object value = propertyDescriptor.getValue(entity);
 
@@ -153,20 +211,16 @@ public class EntityValidatorImpl extends AbstractEntityValidator {
 			return new ValidationResult(true, name, DomainMessage.getInstance().getMessage(AbstractEntityValidator.MESSAGE_VALIDATION_ERROR_NOT_NULL, name));
 		}
 
-		if (!(value instanceof Entity)) {
-			return new ValidationResult(true, name, DomainMessage.getInstance().getMessage(AbstractEntityValidator.MESSAGE_VALIDATION_ERROR_INVALID_TYPE, name));
-		}
+		Object id = this.getId(value);
 
-		Entity<?> e = (Entity<?>) value;
-
-		if ((e.getId() == null) && (!manyToOne.optional())) {
-			return new ValidationResult(true, name, DomainMessage.getInstance().getMessage(AbstractEntityValidator.MESSAGE_VALIDATION_ERROR_NOT_EMPTY, name));
+		if ((id == null) && (!manyToOne.optional())) {
+			return new ValidationResult(true, name, DomainMessage.getInstance().getMessage(AbstractEntityValidator.MESSAGE_VALIDATION_ERROR_INVALID_REFERENCE, name));
 		}
 
 		return new ValidationResult(false, name, DomainMessage.getInstance().getMessage(AbstractEntityValidator.MESSAGE_VALIDATION_OK));
 	}
 
-	private ValidationResult validateOneToOne(final Entity entity, final PropertyDescriptor propertyDescriptor, final OneToOne oneToOne) {
+	private ValidationResult validateOneToOne(final Object entity, final PropertyDescriptor propertyDescriptor, final OneToOne oneToOne) {
 		String name = propertyDescriptor.getName();
 		Object value = propertyDescriptor.getValue(entity);
 
@@ -177,23 +231,29 @@ public class EntityValidatorImpl extends AbstractEntityValidator {
 			return new ValidationResult(true, name, DomainMessage.getInstance().getMessage(AbstractEntityValidator.MESSAGE_VALIDATION_ERROR_NOT_NULL, name));
 		}
 
-		if (!(value instanceof Entity)) {
-			return new ValidationResult(true, name, DomainMessage.getInstance().getMessage(AbstractEntityValidator.MESSAGE_VALIDATION_ERROR_INVALID_TYPE, name));
-		}
+		Object id = this.getId(value);
 
-		Entity<?> e = (Entity<?>) value;
-
-		if ((e.getId() == null) && (!oneToOne.optional())) {
-			return new ValidationResult(true, name, DomainMessage.getInstance().getMessage(AbstractEntityValidator.MESSAGE_VALIDATION_ERROR_NOT_EMPTY, name));
+		if ((id == null) && (!oneToOne.optional())) {
+			return new ValidationResult(true, name, DomainMessage.getInstance().getMessage(AbstractEntityValidator.MESSAGE_VALIDATION_ERROR_INVALID_REFERENCE, name));
 		}
 
 		return new ValidationResult(false, name, DomainMessage.getInstance().getMessage(AbstractEntityValidator.MESSAGE_VALIDATION_OK));
 	}
 
 	@SuppressWarnings("unused")
-	private ValidationResult validateOneToMany(final Entity entity, final PropertyDescriptor propertyDescriptor, final OneToMany oneToMany) {
+	private ValidationResult validateOneToMany(final Object entity, final PropertyDescriptor propertyDescriptor, final OneToMany oneToMany) {
 		String name = propertyDescriptor.getName();
 		return new ValidationResult(false, name, DomainMessage.getInstance().getMessage(AbstractEntityValidator.MESSAGE_VALIDATION_OK));
+	}
+
+	private Object getId(final Object o) {
+		BeanDescriptor beanDescriptor = new BeanDescriptorBuilder(o.getClass()).getBeanDescriptor();
+		for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
+			if (propertyDescriptor.isAnnotationPresent(Id.class)) {
+				return propertyDescriptor.getValue(o);
+			}
+		}
+		return null;
 	}
 
 }

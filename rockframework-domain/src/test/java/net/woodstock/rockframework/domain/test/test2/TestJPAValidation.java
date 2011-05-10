@@ -1,19 +1,12 @@
 package net.woodstock.rockframework.domain.test.test2;
 
 import junit.framework.TestCase;
-import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.domain.business.BusinessResult;
-import net.woodstock.rockframework.domain.business.impl.AbstractJPABusiness;
 import net.woodstock.rockframework.domain.validator.jpa.EntityValidator;
 import net.woodstock.rockframework.domain.validator.jpa.Operation;
 import net.woodstock.rockframework.domain.validator.jpa.ValidationResult;
 import net.woodstock.rockframework.domain.validator.jpa.impl.EntityValidatorImpl;
 
 public class TestJPAValidation extends TestCase {
-
-	private MyBusiness getBusiness() {
-		return new MyBusiness();
-	}
 
 	private Bar getBar() {
 		Bar bar = new Bar();
@@ -39,29 +32,43 @@ public class TestJPAValidation extends TestCase {
 		return foo;
 	}
 
-	public void xtest1() throws Exception {
-		MyBusiness business = this.getBusiness();
+	public void test1() throws Exception {
+		System.out.println("============= test1 ============");
 		Bar bar = this.getBar();
-		BusinessResult result = business.validate(bar, Operation.PERSIST);
-		System.out.println(result.getMessage());
+		EntityValidator validator = new EntityValidatorImpl(Operation.PERSIST, true);
+		for (ValidationResult result : validator.validate(bar)) {
+			System.out.println(result);
+		}
 	}
 
 	public void test2() throws Exception {
+		System.out.println("============= test2 ============");
 		Bar bar = this.getBar2();
-		EntityValidator validator = new EntityValidatorImpl(Operation.PERSIST, true);
+		bar.setId(null);
+		bar.getFoo().setId(null);
+		EntityValidator validator = new EntityValidatorImpl(Operation.MERGE, true);
 		for (ValidationResult result : validator.validate(bar)) {
-			System.out.println(result.getProperty() + " - " + result.getMessage());
+			System.out.println(result);
 		}
 	}
 
-	public class MyBusiness extends AbstractJPABusiness {
-
-		@SuppressWarnings("rawtypes")
-		@Override
-		public BusinessResult validate(final Entity entity, final Operation operation) {
-			return super.validate(entity, operation);
+	public void test3() throws Exception {
+		System.out.println("============= test3 ============");
+		Bar bar = new Bar();
+		EntityValidator validator = new EntityValidatorImpl(Operation.FIND, true);
+		for (ValidationResult result : validator.validate(bar)) {
+			System.out.println(result);
 		}
+	}
 
+	public void test4() throws Exception {
+		System.out.println("============= test3 ============");
+		Bar bar = new Bar();
+		bar.setId(new Integer(1));
+		EntityValidator validator = new EntityValidatorImpl(Operation.REMOVE, true);
+		for (ValidationResult result : validator.validate(bar)) {
+			System.out.println(result);
+		}
 	}
 
 }
