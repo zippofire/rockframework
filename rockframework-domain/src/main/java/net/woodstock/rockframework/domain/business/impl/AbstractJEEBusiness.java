@@ -23,9 +23,10 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+import org.springframework.util.Assert;
+
 import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.domain.business.ValidationResult;
-import net.woodstock.rockframework.domain.config.DomainMessage;
+import net.woodstock.rockframework.domain.business.BusinessResult;
 
 @SuppressWarnings("rawtypes")
 public abstract class AbstractJEEBusiness extends AbstractBusiness {
@@ -40,15 +41,16 @@ public abstract class AbstractJEEBusiness extends AbstractBusiness {
 		}
 	}
 
-	protected ValidationResult validate(final Entity entity, final Class... groups) {
+	protected BusinessResult validate(final Entity entity, final Class... groups) {
+		Assert.notNull(entity, "entity");
 		Set<ConstraintViolation<Entity>> constraintViolations = AbstractJEEBusiness.validator.validate(entity, groups);
 		if (constraintViolations.size() > 0) {
 			ConstraintViolation<Entity> violation = constraintViolations.iterator().next();
 			String field = violation.getPropertyPath().toString();
 			String message = violation.getMessage();
-			return new ValidationResult(true, field + " " + message);
+			return new BusinessResult(true, field + " " + message);
 		}
-		return new ValidationResult(false, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_OK));
+		return new BusinessResult(false, AbstractBusiness.OK_MESSAGE);
 	}
 
 }

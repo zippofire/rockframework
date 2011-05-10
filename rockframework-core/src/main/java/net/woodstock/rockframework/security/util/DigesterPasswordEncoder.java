@@ -21,6 +21,7 @@ import net.woodstock.rockframework.security.digest.Digester;
 import net.woodstock.rockframework.security.digest.impl.AsStringDigester;
 import net.woodstock.rockframework.security.digest.impl.Base64Digester;
 import net.woodstock.rockframework.security.digest.impl.BasicDigester;
+import net.woodstock.rockframework.util.Assert;
 
 public class DigesterPasswordEncoder implements PasswordEncoder {
 
@@ -28,6 +29,7 @@ public class DigesterPasswordEncoder implements PasswordEncoder {
 
 	public DigesterPasswordEncoder(final DigestType type) {
 		super();
+		Assert.notNull(type, "type");
 		Digester basic = new BasicDigester(type);
 		Digester base64 = new Base64Digester(basic);
 		this.digester = new AsStringDigester(base64);

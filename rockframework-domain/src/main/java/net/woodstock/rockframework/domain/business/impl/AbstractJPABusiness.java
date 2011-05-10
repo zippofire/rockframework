@@ -16,23 +16,16 @@
  */
 package net.woodstock.rockframework.domain.business.impl;
 
-import java.lang.annotation.Annotation;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import java.util.Collection;
 
 import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.domain.business.ValidationException;
-import net.woodstock.rockframework.domain.business.ValidationResult;
-import net.woodstock.rockframework.domain.config.DomainMessage;
-import net.woodstock.rockframework.reflection.BeanDescriptor;
-import net.woodstock.rockframework.reflection.PropertyDescriptor;
-import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilder;
+import net.woodstock.rockframework.domain.business.BusinessResult;
+import net.woodstock.rockframework.domain.validator.jpa.EntityValidator;
+import net.woodstock.rockframework.domain.validator.jpa.Operation;
+import net.woodstock.rockframework.domain.validator.jpa.ValidationResult;
+import net.woodstock.rockframework.domain.validator.jpa.impl.EntityValidatorImpl;
+
+import org.springframework.util.Assert;
 
 @SuppressWarnings("rawtypes")
 public abstract class AbstractJPABusiness extends AbstractBusiness {
@@ -41,147 +34,18 @@ public abstract class AbstractJPABusiness extends AbstractBusiness {
 		super();
 	}
 
-	protected ValidationResult validate(final Entity entity, final JPAOperation operation) {
-		if (entity == null) {
-			throw new ValidationException(this.getMessage(AbstractBusiness.MESSAGE_INVALID_OBJECT));
+	protected BusinessResult validate(final Entity entity, final Operation operation) {
+		Assert.notNull(entity, "entity");
+		Assert.notNull(operation, "operation");
+
+		EntityValidator validator = new EntityValidatorImpl(operation);
+		Collection<ValidationResult> results = validator.validate(entity);
+		if (results.size() > 0) {
+			ValidationResult result = results.iterator().next();
+			return new BusinessResult(true, result.getMessage());
 		}
 
-		BeanDescriptor beanDescriptor = new BeanDescriptorBuilder(entity.getClass()).getBeanDescriptor();
-		for (PropertyDescriptor propertyDescriptor : beanDescriptor.getProperties()) {
-			for (Annotation annotation : propertyDescriptor.getAnnotations()) {
-				if (annotation instanceof Id) {
-					ValidationResult result = this.validateId(entity, propertyDescriptor, operation);
-					if (result != null) {
-						return result;
-					}
-				} else if (annotation instanceof Column) {
-					ValidationResult result = this.validateColumn(entity, propertyDescriptor, (Column) annotation);
-					if (result != null) {
-						return result;
-					}
-				} else if (annotation instanceof OneToOne) {
-					ValidationResult result = this.validateOneToOne(entity, propertyDescriptor, (OneToOne) annotation);
-					if (result != null) {
-						return result;
-					}
-				} else if (annotation instanceof OneToMany) {
-					ValidationResult result = this.validateOneToMany();
-					if (result != null) {
-						return result;
-					}
-				} else if (annotation instanceof ManyToOne) {
-					ValidationResult result = this.validateManyToOne(entity, propertyDescriptor, (ManyToOne) annotation);
-					if (result != null) {
-						return result;
-					}
-				} else if (annotation instanceof ManyToMany) {
-					ValidationResult result = this.validateManyToMany();
-					if (result != null) {
-						return result;
-					}
-				}
-			}
-		}
-		return new ValidationResult(false, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_OK));
-	}
-
-	private ValidationResult validateId(final Entity entity, final PropertyDescriptor propertyDescriptor, final JPAOperation operation) {
-		String name = propertyDescriptor.getName();
-		Object value = propertyDescriptor.getValue(entity);
-
-		if (operation == JPAOperation.PERSIST) {
-			if (value == null) {
-				if (propertyDescriptor.isAnnotationPresent(GeneratedValue.class)) {
-					return null;
-				}
-				return new ValidationResult(true, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NOT_NULL, name));
-			}
-
-			if (propertyDescriptor.isAnnotationPresent(GeneratedValue.class)) {
-				return new ValidationResult(true, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NULL, name));
-			}
-		} else {
-			if (value == null) {
-				return new ValidationResult(true, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NOT_NULL, name));
-			}
-		}
-		return null;
-	}
-
-	private ValidationResult validateColumn(final Entity entity, final PropertyDescriptor propertyDescriptor, final Column column) {
-		String name = propertyDescriptor.getName();
-		Object value = propertyDescriptor.getValue(entity);
-
-		if (value == null) {
-			if (column.nullable()) {
-				return null;
-			}
-			return new ValidationResult(true, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NOT_NULL, name));
-		}
-
-		if (value instanceof String) {
-			int length = ((String) value).length();
-			if (length > column.length()) {
-				return new ValidationResult(true, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_LENGTH, name, Integer.valueOf(0), Integer.valueOf(column.length())));
-			}
-		}
-		return null;
-	}
-
-	private ValidationResult validateManyToMany() {
-		return null;
-	}
-
-	private ValidationResult validateManyToOne(final Entity entity, final PropertyDescriptor propertyDescriptor, final ManyToOne manyToOne) {
-		String name = propertyDescriptor.getName();
-		Object value = propertyDescriptor.getValue(entity);
-
-		if (value == null) {
-			if (manyToOne.optional()) {
-				return null;
-			}
-			return new ValidationResult(true, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NOT_NULL, name));
-		}
-
-		if (!(value instanceof Entity)) {
-			return new ValidationResult(true, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_INVALID_TYPE, name));
-		}
-
-		Entity<?> e = (Entity<?>) value;
-
-		if ((e.getId() == null) && (!manyToOne.optional())) {
-			return new ValidationResult(true, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NOT_EMPTY, name));
-		}
-
-		return null;
-	}
-
-	private ValidationResult validateOneToOne(final Entity entity, final PropertyDescriptor propertyDescriptor, final OneToOne oneToOne) {
-		String name = propertyDescriptor.getName();
-		Object value = propertyDescriptor.getValue(entity);
-
-		if (value == null) {
-			if (oneToOne.optional()) {
-				return null;
-			}
-			return new ValidationResult(true, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NOT_NULL, name));
-		}
-
-		if (!(value instanceof Entity)) {
-			return new ValidationResult(true, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_INVALID_TYPE, name));
-		}
-
-		Entity<?> e = (Entity<?>) value;
-
-		if ((e.getId() == null) && (!oneToOne.optional())) {
-			return new ValidationResult(true, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_ERROR_NOT_EMPTY, name));
-		}
-
-		return null;
-	}
-
-	private ValidationResult validateOneToMany() {
-		return null;
+		return new BusinessResult(false, AbstractBusiness.OK_MESSAGE);
 	}
 
 }

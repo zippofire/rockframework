@@ -14,21 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.business.impl;
+package net.woodstock.rockframework.domain.validator.jpa;
 
-import net.woodstock.rockframework.domain.business.Business;
-import net.woodstock.rockframework.domain.config.DomainMessage;
+import net.woodstock.rockframework.domain.DomainException;
 
-public abstract class AbstractBusiness implements Business {
+public class ValidationException extends DomainException {
 
-	public static final String	OK_MESSAGE	= "OK";
+	private static final long	serialVersionUID	= 1L;
 
-	public AbstractBusiness() {
-		super();
+	public ValidationException(final String message) {
+		super(message);
 	}
 
-	protected String getMessage(final String key, final Object... args) {
-		return DomainMessage.getInstance().getMessage(key, args);
+	public ValidationException(final Throwable cause) {
+		super(cause);
+	}
+
+	public ValidationException(final String message, final Throwable cause) {
+		super(message, cause);
 	}
 
 }

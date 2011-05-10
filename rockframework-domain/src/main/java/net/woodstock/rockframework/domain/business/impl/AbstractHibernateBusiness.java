@@ -17,12 +17,12 @@
 package net.woodstock.rockframework.domain.business.impl;
 
 import net.woodstock.rockframework.domain.Entity;
-import net.woodstock.rockframework.domain.business.ValidationResult;
-import net.woodstock.rockframework.domain.config.DomainMessage;
+import net.woodstock.rockframework.domain.business.BusinessResult;
 import net.woodstock.rockframework.utils.ConditionUtils;
 
 import org.hibernate.validator.ClassValidator;
 import org.hibernate.validator.InvalidValue;
+import org.springframework.util.Assert;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public abstract class AbstractHibernateBusiness extends AbstractBusiness {
@@ -31,16 +31,17 @@ public abstract class AbstractHibernateBusiness extends AbstractBusiness {
 		super();
 	}
 
-	protected ValidationResult validate(final Entity entity) {
+	protected BusinessResult validate(final Entity entity) {
+		Assert.notNull(entity, "entity");
 		ClassValidator validator = new ClassValidator(entity.getClass());
 		if (validator.hasValidationRules()) {
 			InvalidValue[] values = validator.getInvalidValues(entity);
 			if (ConditionUtils.isNotEmpty(values)) {
 				String message = values[0].toString();
-				return new ValidationResult(true, message);
+				return new BusinessResult(true, message);
 			}
 		}
-		return new ValidationResult(false, DomainMessage.getInstance().getMessage(AbstractBusiness.MESSAGE_VALIDATION_OK));
+		return new BusinessResult(false, AbstractBusiness.OK_MESSAGE);
 	}
 
 }

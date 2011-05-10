@@ -14,22 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.business;
+package net.woodstock.rockframework.domain.validator.jpa;
 
-public class ValidationException extends BusinessException {
+import java.util.Collection;
 
-	private static final long	serialVersionUID	= 1L;
+import net.woodstock.rockframework.domain.Entity;
 
-	public ValidationException(final String message) {
-		super(message);
-	}
+public interface EntityValidator {
 
-	public ValidationException(final Throwable cause) {
-		super(cause);
-	}
-
-	public ValidationException(final String message, final Throwable cause) {
-		super(message, cause);
-	}
+	@SuppressWarnings("rawtypes")
+	Collection<ValidationResult> validate(final Entity entity);
 
 }

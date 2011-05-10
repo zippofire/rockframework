@@ -18,15 +18,15 @@ package net.woodstock.rockframework.domain.business;
 
 import net.woodstock.rockframework.domain.Pojo;
 
-public class ValidationResult implements Pojo {
+public class BusinessResult implements Pojo {
 
-	private static final long	serialVersionUID	= 6766952296126588148L;
+	private static final long	serialVersionUID	= -2620673953053678447L;
 
 	private boolean				error;
 
 	private String				message;
 
-	public ValidationResult(final boolean error, final String message) {
+	public BusinessResult(final boolean error, final String message) {
 		super();
 		this.error = error;
 		this.message = message;

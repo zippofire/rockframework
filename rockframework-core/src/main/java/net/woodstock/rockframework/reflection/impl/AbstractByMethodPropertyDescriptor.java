@@ -17,7 +17,11 @@
 package net.woodstock.rockframework.reflection.impl;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import net.woodstock.rockframework.config.CoreLog;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
@@ -26,6 +30,8 @@ import net.woodstock.rockframework.reflection.ReflectionException;
 class AbstractByMethodPropertyDescriptor extends AbstractPropertyDescriptor {
 
 	private String		name;
+
+	private Field		field;
 
 	private Method		readMethod;
 
@@ -46,6 +52,7 @@ class AbstractByMethodPropertyDescriptor extends AbstractPropertyDescriptor {
 		this.type = propertyType;
 		this.initGet();
 		this.initSet();
+		this.initField();
 	}
 
 	private void initGet() {
@@ -83,6 +90,23 @@ class AbstractByMethodPropertyDescriptor extends AbstractPropertyDescriptor {
 		}
 	}
 
+	private void initField() {
+		Class<?> c = this.getBeanDescriptor().getType();
+		while (c != Object.class) {
+			Field field = null;
+			try {
+				field = c.getDeclaredField(this.name);
+			} catch (NoSuchFieldException e) {
+				CoreLog.getInstance().getLog().debug(e.getMessage());
+			}
+			if (field != null) {
+				this.field = field;
+				break;
+			}
+			c = c.getSuperclass();
+		}
+	}
+
 	@Override
 	public int getModifiers() {
 		return this.modifiers;
@@ -100,26 +124,64 @@ class AbstractByMethodPropertyDescriptor extends AbstractPropertyDescriptor {
 
 	@Override
 	public boolean isAnnotationPresent(final Class<? extends Annotation> clazz) {
+		boolean b = false;
 		if (this.readMethod != null) {
-			return this.readMethod.isAnnotationPresent(clazz);
+			b = this.readMethod.isAnnotationPresent(clazz);
 		}
-		return this.writeMethod.isAnnotationPresent(clazz);
+		if ((!b) && (this.field != null)) {
+			b = this.field.isAnnotationPresent(clazz);
+		}
+		if ((!b) && (this.writeMethod != null)) {
+			b = this.writeMethod.isAnnotationPresent(clazz);
+		}
+		return b;
 	}
 
 	@Override
 	public <T extends Annotation> T getAnnotation(final Class<T> clazz) {
+		T t = null;
 		if (this.readMethod != null) {
 			return this.readMethod.getAnnotation(clazz);
 		}
-		return this.writeMethod.getAnnotation(clazz);
+		if ((t == null) && (this.field != null)) {
+			t = this.field.getAnnotation(clazz);
+		}
+		if ((t == null) && (this.writeMethod != null)) {
+			t = this.writeMethod.getAnnotation(clazz);
+		}
+		return t;
 	}
 
 	@Override
 	public Annotation[] getAnnotations() {
+		List<Annotation> annotations = new ArrayList<Annotation>();
 		if (this.readMethod != null) {
-			return this.readMethod.getAnnotations();
+			Annotation[] array = this.readMethod.getAnnotations();
+			if ((array != null) && (array.length > 0)) {
+				annotations.addAll(Arrays.asList(array));
+			}
 		}
-		return this.writeMethod.getAnnotations();
+		if (this.field != null) {
+			Annotation[] array = this.field.getAnnotations();
+			if ((array != null) && (array.length > 0)) {
+				for (Annotation a : array) {
+					if (!annotations.contains(a)) {
+						annotations.add(a);
+					}
+				}
+			}
+		}
+		if (this.writeMethod != null) {
+			Annotation[] array = this.writeMethod.getAnnotations();
+			if ((array != null) && (array.length > 0)) {
+				for (Annotation a : array) {
+					if (!annotations.contains(a)) {
+						annotations.add(a);
+					}
+				}
+			}
+		}
+		return annotations.toArray(new Annotation[annotations.size()]);
 	}
 
 	// Getters and Setters
