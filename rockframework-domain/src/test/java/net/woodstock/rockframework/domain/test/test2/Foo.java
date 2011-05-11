@@ -3,14 +3,14 @@ package net.woodstock.rockframework.domain.test.test2;
 import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import net.woodstock.rockframework.domain.Entity;
-
-public class Foo implements Entity<Integer> {
+@Entity
+public class Foo {
 
 	private static final long	serialVersionUID	= 1L;
 
@@ -29,12 +29,10 @@ public class Foo implements Entity<Integer> {
 		super();
 	}
 
-	@Override
 	public Integer getId() {
 		return this.id;
 	}
 
-	@Override
 	public void setId(final Integer id) {
 		this.id = id;
 	}

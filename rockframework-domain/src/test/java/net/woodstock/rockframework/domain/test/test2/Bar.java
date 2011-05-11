@@ -1,16 +1,15 @@
 package net.woodstock.rockframework.domain.test.test2;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import net.woodstock.rockframework.domain.Entity;
-
-@javax.persistence.Entity
-public class Bar implements Entity<Integer> {
+@Entity
+public class Bar {
 
 	private static final long	serialVersionUID	= 1L;
 
@@ -30,12 +29,10 @@ public class Bar implements Entity<Integer> {
 		super();
 	}
 
-	@Override
 	public Integer getId() {
 		return this.id;
 	}
 
-	@Override
 	public void setId(final Integer id) {
 		this.id = id;
 	}
