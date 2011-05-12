@@ -117,6 +117,34 @@ public abstract class EntityUtils {
 		return result;
 	}
 
+	public static boolean isEmptyId(final Entity e) {
+		if (e == null) {
+			return true;
+		}
+		if (e.getId() == null) {
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean isNotEmptyId(final Entity e) {
+		return !EntityUtils.isNotEmptyId(e);
+	}
+
+	public static <E extends Entity> E getNullIfEmptyId(final E e) {
+		return EntityUtils.getDefaultIfEmptyId(e, null);
+	}
+
+	public static <E extends Entity> E getDefaultIfEmptyId(final E e, final E defaultEntity) {
+		if (e == null) {
+			return defaultEntity;
+		}
+		if (e.getId() == null) {
+			return defaultEntity;
+		}
+		return e;
+	}
+
 	public static String toString(final Entity e) {
 		if (e == null) {
 			return null;
