@@ -128,7 +128,7 @@ public abstract class EntityUtils {
 	}
 
 	public static boolean isNotEmptyId(final Entity e) {
-		return !EntityUtils.isNotEmptyId(e);
+		return !EntityUtils.isEmptyId(e);
 	}
 
 	public static <E extends Entity> E getNullIfEmptyId(final E e) {

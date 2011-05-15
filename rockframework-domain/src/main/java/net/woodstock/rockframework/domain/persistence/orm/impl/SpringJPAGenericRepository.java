@@ -33,7 +33,11 @@ public abstract class SpringJPAGenericRepository extends SpringJPARepository imp
 	@SuppressWarnings("unchecked")
 	@Override
 	public <E extends Entity<?>> E get(final E entity) {
-		return (E) this.getJpaTemplate().find(entity.getClass(), entity.getId());
+		E e = (E) this.getJpaTemplate().find(entity.getClass(), entity.getId());
+		if (e != null) {
+			this.getJpaTemplate().refresh(e);
+		}
+		return e;
 	}
 
 	@Override

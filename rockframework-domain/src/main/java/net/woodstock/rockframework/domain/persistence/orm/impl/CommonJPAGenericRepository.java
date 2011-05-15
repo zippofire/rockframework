@@ -42,6 +42,9 @@ class CommonJPAGenericRepository implements GenericRepository {
 	@Override
 	public <E extends Entity<?>> E get(final E entity) {
 		E e = (E) this.entityManager.find(entity.getClass(), entity.getId());
+		if (e != null) {
+			this.entityManager.refresh(e);
+		}
 		return e;
 	}
 

@@ -16,41 +16,24 @@
  */
 package net.woodstock.rockframework.domain.persistence.orm.util;
 
-import net.woodstock.rockframework.domain.config.DomainConfig;
 import net.woodstock.rockframework.domain.config.DomainLog;
-import net.woodstock.rockframework.utils.ConditionUtils;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 
 public final class HibernatePersistenceHelper implements PersistenceHelper<Session> {
 
-	private static HibernatePersistenceHelper	instance						= new HibernatePersistenceHelper();
+	private static HibernatePersistenceHelper	instance	= new HibernatePersistenceHelper();
 
-	private static ThreadLocal<Session>			session							= new ThreadLocal<Session>();
-
-	private static final String					HIBERNATE_ANNOTATION_PROPERTY	= "hibernate.annotation";
-
-	private boolean								annotation;
+	private static ThreadLocal<Session>			session		= new ThreadLocal<Session>();
 
 	private SessionFactory						factory;
 
 	private HibernatePersistenceHelper() {
 		super();
-		String s = DomainConfig.getInstance().getValue(HibernatePersistenceHelper.HIBERNATE_ANNOTATION_PROPERTY);
-		if (ConditionUtils.isNotEmpty(s)) {
-			this.annotation = Boolean.parseBoolean(s);
-		} else {
-			this.annotation = true;
-		}
-		if (this.annotation) {
-			this.factory = new AnnotationConfiguration().configure().buildSessionFactory();
-		} else {
-			this.factory = new Configuration().configure().buildSessionFactory();
-		}
+		this.factory = new Configuration().configure().buildSessionFactory();
 	}
 
 	@Override

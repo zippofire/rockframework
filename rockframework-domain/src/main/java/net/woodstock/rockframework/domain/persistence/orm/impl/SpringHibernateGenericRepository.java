@@ -33,7 +33,11 @@ public abstract class SpringHibernateGenericRepository extends SpringHibernateRe
 	@SuppressWarnings("unchecked")
 	@Override
 	public <E extends Entity<?>> E get(final E entity) {
-		return (E) this.getHibernateTemplate().get(entity.getClass(), entity.getId());
+		E e = (E) this.getHibernateTemplate().get(entity.getClass(), entity.getId());
+		if (e != null) {
+			this.getHibernateTemplate().refresh(e);
+		}
+		return e;
 	}
 
 	@Override
