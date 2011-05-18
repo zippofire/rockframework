@@ -24,15 +24,9 @@ import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilder;
 
 public abstract class ObjectUtils {
 
-	public static final int		COMPARE_TO_BEFORE	= -1;
+	public static final int		HASH_PRIME		= 31;
 
-	public static final int		COMPARE_TO_EQUALS	= 0;
-
-	public static final int		COMPARE_TO_AFTER	= 1;
-
-	public static final int		HASH_PRIME			= 31;
-
-	private static final String	HASH_SEPARATOR		= "@";
+	private static final String	HASH_SEPARATOR	= "@";
 
 	private ObjectUtils() {
 		//
