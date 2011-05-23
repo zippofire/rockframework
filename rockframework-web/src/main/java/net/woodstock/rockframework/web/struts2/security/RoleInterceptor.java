@@ -61,11 +61,17 @@ public class RoleInterceptor extends AccessInterceptor<String> {
 			validate = this.getRule(rule);
 			roles = (String[]) this.getRuleValue(rule);
 		} else {
-			if (method.isAnnotationPresent(Role.class)) {
+			if (method.isAnnotationPresent(AllowAnyRole.class)) {
+				validate = false;
+			} else if (method.isAnnotationPresent(Role.class)) {
 				Role annotation = method.getAnnotation(Role.class);
 				roles = annotation.value();
 				validate = true;
 			} else if (clazz.isAnnotationPresent(Role.class)) {
+				Role annotation = clazz.getAnnotation(Role.class);
+				roles = annotation.value();
+				validate = true;
+			} else if (clazz.getPackage().isAnnotationPresent(Role.class)) {
 				Role annotation = clazz.getAnnotation(Role.class);
 				roles = annotation.value();
 				validate = true;

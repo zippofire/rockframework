@@ -58,11 +58,17 @@ public class HttpMethodInterceptor extends ConditionalInterceptor<String> {
 			validate = this.getRule(rule);
 			methods = (Set<HttpMethodType>) this.getRuleValue(rule);
 		} else {
-			if (method.isAnnotationPresent(HttpMethod.class)) {
+			if (method.isAnnotationPresent(AllowAnyHttpMethod.class)) {
+				validate = false;
+			} else if (method.isAnnotationPresent(HttpMethod.class)) {
 				HttpMethod annotation = method.getAnnotation(HttpMethod.class);
 				methods = this.getMethods(annotation);
 				validate = true;
 			} else if (clazz.isAnnotationPresent(HttpMethod.class)) {
+				HttpMethod annotation = clazz.getAnnotation(HttpMethod.class);
+				methods = this.getMethods(annotation);
+				validate = true;
+			} else if (clazz.getPackage().isAnnotationPresent(Role.class)) {
 				HttpMethod annotation = clazz.getAnnotation(HttpMethod.class);
 				methods = this.getMethods(annotation);
 				validate = true;
