@@ -22,23 +22,64 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import net.woodstock.rockframework.office.DocumentException;
 import net.woodstock.rockframework.util.Assert;
 
+import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdfparser.PDFParser;
 import org.apache.pdfbox.pdfwriter.COSWriter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.util.PDFMergerUtility;
+import org.apache.pdfbox.util.PDFTextStripper;
 import org.apache.pdfbox.util.Splitter;
 
-class PDFBoxPDFManager extends PDFManager {
+public class PDFBoxPDFManager extends PDFManager {
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public InputStream cut(final InputStream source, final int start, final int end) throws IOException {
 		try {
 			Assert.notNull(source, "source");
-			return null;
-		} catch (Exception e) {
-			throw new net.woodstock.rockframework.office.DocumentException(e);
+
+			PDFParser parser = new PDFParser(source);
+			parser.parse();
+
+			PDDocument document = parser.getPDDocument();
+
+			Splitter splitter = new Splitter();
+			splitter.setSplitAtPage(1);
+
+			List<PDDocument> list = splitter.split(document);
+			int pageCount = list.size();
+
+			int endPage = end;
+			if (endPage > pageCount) {
+				endPage = pageCount;
+			}
+
+			PDDocument destination = list.get(start + 1);
+
+			PDFMergerUtility merger = new PDFMergerUtility();
+			for (int i = start + 2; i <= endPage; i++) {
+				PDDocument tmpDocument = list.get(i);
+				merger.appendDocument(destination, tmpDocument);
+			}
+
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+			merger.setDestinationStream(bos);
+			merger.mergeDocuments();
+
+			for (PDDocument doc : list) {
+				doc.close();
+			}
+			document.close();
+
+			ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
+
+			return bis;
+		} catch (COSVisitorException e) {
+			throw new DocumentException(e);
 		}
 	}
 
@@ -60,8 +101,8 @@ class PDFBoxPDFManager extends PDFManager {
 			ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
 
 			return bis;
-		} catch (Exception e) {
-			throw new net.woodstock.rockframework.office.DocumentException(e);
+		} catch (COSVisitorException e) {
+			throw new DocumentException(e);
 		}
 	}
 
@@ -73,13 +114,10 @@ class PDFBoxPDFManager extends PDFManager {
 			Assert.greaterThan(size, 0, "size");
 
 			PDFParser parser = new PDFParser(source);
-
 			parser.parse();
 
 			PDDocument document = parser.getPDDocument();
-
 			Splitter splitter = new Splitter();
-
 			splitter.setSplitAtPage(size);
 
 			List<PDDocument> list = splitter.split(document);
@@ -93,11 +131,29 @@ class PDFBoxPDFManager extends PDFManager {
 				array[i] = new ByteArrayInputStream(bos.toByteArray());
 				d.close();
 			}
+			document.close();
 
 			return array;
-		} catch (Exception e) {
-			throw new net.woodstock.rockframework.office.DocumentException(e);
+		} catch (COSVisitorException e) {
+			throw new DocumentException(e);
 		}
+	}
+
+	@Override
+	public String getText(final InputStream source) throws IOException {
+		Assert.notNull(source, "source");
+
+		PDFParser parser = new PDFParser(source);
+		parser.parse();
+
+		PDDocument document = parser.getPDDocument();
+		PDFTextStripper stripper = new PDFTextStripper();
+
+		String text = stripper.getText(document);
+
+		document.close();
+
+		return text;
 	}
 
 }

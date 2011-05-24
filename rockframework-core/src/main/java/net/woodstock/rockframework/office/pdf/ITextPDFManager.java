@@ -16,8 +16,10 @@
  */
 package net.woodstock.rockframework.office.pdf;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,8 +31,11 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfCopy;
 import com.itextpdf.text.pdf.PdfImportedPage;
 import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
+import com.itextpdf.text.pdf.parser.SimpleTextExtractionStrategy;
+import com.itextpdf.text.pdf.parser.TextExtractionStrategy;
 
-class ITextPDFManager extends PDFManager {
+public class ITextPDFManager extends PDFManager {
 
 	@Override
 	public InputStream cut(final InputStream source, final int start, final int end) throws IOException {
@@ -138,6 +143,30 @@ class ITextPDFManager extends PDFManager {
 		} catch (DocumentException e) {
 			throw new net.woodstock.rockframework.office.DocumentException(e);
 		}
+	}
+
+	@Override
+	public String getText(final InputStream source) throws IOException {
+		Assert.notNull(source, "source");
+
+		PdfReader reader = new PdfReader(source);
+		PdfReaderContentParser parser = new PdfReaderContentParser(reader);
+		TextExtractionStrategy strategy = new SimpleTextExtractionStrategy();
+		int pageCount = reader.getNumberOfPages();
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		PrintWriter writer = new PrintWriter(outputStream);
+
+		for (int i = 1; i <= pageCount; i++) {
+			TextExtractionStrategy result = parser.processContent(i, strategy);
+			String pageText = result.getResultantText();
+			writer.println(pageText);
+		}
+
+		reader.close();
+		writer.close();
+
+		String text = new String(outputStream.toByteArray());
+		return text;
 	}
 
 }

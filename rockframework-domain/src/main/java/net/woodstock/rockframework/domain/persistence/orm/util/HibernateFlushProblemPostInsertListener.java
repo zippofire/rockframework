@@ -16,17 +16,18 @@
  */
 package net.woodstock.rockframework.domain.persistence.orm.util;
 
-import org.hibernate.event.PreUpdateEvent;
-import org.hibernate.event.PreUpdateEventListener;
+import org.hibernate.event.EventSource;
+import org.hibernate.event.PostInsertEvent;
+import org.hibernate.event.PostInsertEventListener;
 
-public class HibernateFlushProblemPreUpdateListener extends AbstractHibernateFlushProblemPreListener implements PreUpdateEventListener {
+public class HibernateFlushProblemPostInsertListener extends AbstractHibernateFlushProblemPostListener implements PostInsertEventListener {
 
 	private static final long	serialVersionUID	= 1L;
 
 	@Override
-	public boolean onPreUpdate(final PreUpdateEvent event) {
-		super.cleanEntity(event);
-		return false;
+	public void onPostInsert(final PostInsertEvent event) {
+		Object src = event.getEntity();
+		EventSource eventSource = event.getSession();
+		super.refreshEntity(src, eventSource);
 	}
-
 }

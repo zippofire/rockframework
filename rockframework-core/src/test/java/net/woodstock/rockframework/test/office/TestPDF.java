@@ -6,6 +6,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import junit.framework.TestCase;
+import net.woodstock.rockframework.office.pdf.ITextPDFManager;
+import net.woodstock.rockframework.office.pdf.LowagiePDFManager;
+import net.woodstock.rockframework.office.pdf.PDFBoxPDFManager;
+import net.woodstock.rockframework.office.pdf.PDFManager;
 import net.woodstock.rockframework.office.util.PDFUtils;
 import net.woodstock.rockframework.utils.IOUtils;
 
@@ -44,7 +48,7 @@ public class TestPDF extends TestCase {
 		output.close();
 	}
 
-	public void test3() throws Exception {
+	public void xtest3() throws Exception {
 		InputStream inputStream = new FileInputStream("C:/temp/split.pdf");
 		OutputStream outputStream = new FileOutputStream("C:/temp/split-barcode.pdf");
 		PdfReader pdfReader = new PdfReader(inputStream);
@@ -60,6 +64,33 @@ public class TestPDF extends TestCase {
 
 		pdfStamper.close();
 
+	}
+
+	public void xtest4() throws Exception {
+		System.out.println("IText");
+		FileInputStream inputStream = new FileInputStream("C:/Temp/uml.pdf");
+		PDFManager manager = new ITextPDFManager();
+		String text = manager.getText(inputStream);
+		inputStream.close();
+		System.out.println(text);
+	}
+
+	public void xtest5() throws Exception {
+		System.out.println("PDFBox");
+		FileInputStream inputStream = new FileInputStream("C:/Temp/uml.pdf");
+		PDFManager manager = new PDFBoxPDFManager();
+		String text = manager.getText(inputStream);
+		inputStream.close();
+		System.out.println(text);
+	}
+
+	public void test6() throws Exception {
+		System.out.println("Lowagie");
+		FileInputStream inputStream = new FileInputStream("C:/Temp/uml.pdf");
+		PDFManager manager = new LowagiePDFManager();
+		String text = manager.getText(inputStream);
+		inputStream.close();
+		System.out.println(text);
 	}
 
 }

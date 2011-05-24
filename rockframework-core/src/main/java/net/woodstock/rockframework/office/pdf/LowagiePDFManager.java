@@ -29,8 +29,9 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.PdfCopy;
 import com.lowagie.text.pdf.PdfImportedPage;
 import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.parser.PdfTextExtractor;
 
-class LowagiePDFManager extends PDFManager {
+public class LowagiePDFManager extends PDFManager {
 
 	@Override
 	public InputStream cut(final InputStream source, final int start, final int end) throws IOException {
@@ -138,6 +139,23 @@ class LowagiePDFManager extends PDFManager {
 		} catch (DocumentException e) {
 			throw new net.woodstock.rockframework.office.DocumentException(e);
 		}
+	}
+
+	@Override
+	public String getText(final InputStream source) throws IOException {
+		Assert.notNull(source, "source");
+
+		PdfReader reader = new PdfReader(source);
+		int pageCount = reader.getNumberOfPages();
+		StringBuilder builder = new StringBuilder();
+
+		for (int i = 1; i <= pageCount; i++) {
+			PdfTextExtractor extractor = new PdfTextExtractor(reader);
+			String pageText = extractor.getTextFromPage(i);
+			builder.append(pageText);
+		}
+		reader.close();
+		return builder.toString();
 	}
 
 }

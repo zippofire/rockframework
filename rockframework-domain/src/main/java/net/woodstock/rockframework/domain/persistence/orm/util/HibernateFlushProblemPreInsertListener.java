@@ -16,15 +16,15 @@
  */
 package net.woodstock.rockframework.domain.persistence.orm.util;
 
-import org.hibernate.event.PreUpdateEvent;
-import org.hibernate.event.PreUpdateEventListener;
+import org.hibernate.event.PreInsertEvent;
+import org.hibernate.event.PreInsertEventListener;
 
-public class HibernateFlushProblemPreUpdateListener extends AbstractHibernateFlushProblemPreListener implements PreUpdateEventListener {
+public class HibernateFlushProblemPreInsertListener extends AbstractHibernateFlushProblemPreListener implements PreInsertEventListener {
 
 	private static final long	serialVersionUID	= 1L;
 
 	@Override
-	public boolean onPreUpdate(final PreUpdateEvent event) {
+	public boolean onPreInsert(final PreInsertEvent event) {
 		super.cleanEntity(event);
 		return false;
 	}
