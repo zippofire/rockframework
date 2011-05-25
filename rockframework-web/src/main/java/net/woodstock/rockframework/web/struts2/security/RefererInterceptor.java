@@ -59,8 +59,8 @@ public class RefererInterceptor extends ConditionalInterceptor<String> {
 				Referer annotation = clazz.getAnnotation(Referer.class);
 				regex = this.getRegex(annotation);
 				validate = true;
-			} else if (clazz.getPackage().isAnnotationPresent(Role.class)) {
-				Referer annotation = clazz.getAnnotation(Referer.class);
+			} else if (clazz.getPackage().isAnnotationPresent(Referer.class)) {
+				Referer annotation = clazz.getPackage().getAnnotation(Referer.class);
 				regex = this.getRegex(annotation);
 				validate = true;
 			}

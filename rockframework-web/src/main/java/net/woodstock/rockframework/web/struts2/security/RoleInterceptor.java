@@ -72,7 +72,7 @@ public class RoleInterceptor extends AccessInterceptor<String> {
 				roles = annotation.value();
 				validate = true;
 			} else if (clazz.getPackage().isAnnotationPresent(Role.class)) {
-				Role annotation = clazz.getAnnotation(Role.class);
+				Role annotation = clazz.getPackage().getAnnotation(Role.class);
 				roles = annotation.value();
 				validate = true;
 			}
