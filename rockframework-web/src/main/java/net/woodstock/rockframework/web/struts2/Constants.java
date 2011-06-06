@@ -22,6 +22,8 @@ public abstract class Constants {
 
 	public static final String	ERROR			= Action.ERROR;
 
+	public static final String	FORWARD			= "forward";
+
 	public static final String	INDEX			= "index";
 
 	public static final String	INPUT			= Action.INPUT;
