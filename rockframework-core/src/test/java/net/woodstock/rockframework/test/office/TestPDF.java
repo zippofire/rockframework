@@ -1,9 +1,12 @@
 package net.woodstock.rockframework.test.office;
 
+import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import javax.imageio.ImageIO;
 
 import junit.framework.TestCase;
 import net.woodstock.rockframework.office.pdf.ITextPDFManager;
@@ -84,13 +87,28 @@ public class TestPDF extends TestCase {
 		System.out.println(text);
 	}
 
-	public void test6() throws Exception {
+	public void xtest6() throws Exception {
 		System.out.println("Lowagie");
 		FileInputStream inputStream = new FileInputStream("C:/Temp/uml.pdf");
 		PDFManager manager = new LowagiePDFManager();
 		String text = manager.getText(inputStream);
 		inputStream.close();
 		System.out.println(text);
+	}
+
+	public void test7() throws Exception {
+		System.out.println("Lowagie");
+		FileInputStream inputStream = new FileInputStream("C:/Temp/edital_dataprev_2011_v1.pdf");
+		PDFManager manager = new PDFBoxPDFManager();
+		BufferedImage[] images = manager.toImage(inputStream);
+		int count = 0;
+		for (BufferedImage img : images) {
+			FileOutputStream fos = new FileOutputStream("C:/Temp/edital_dataprev_2011_v1_" + count + ".jpg");
+			ImageIO.write(img, "jpeg", fos);
+			count++;
+			fos.close();
+		}
+		inputStream.close();
 	}
 
 }

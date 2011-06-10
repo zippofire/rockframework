@@ -16,6 +16,7 @@
  */
 package net.woodstock.rockframework.office.pdf;
 
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -29,6 +30,7 @@ import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdfparser.PDFParser;
 import org.apache.pdfbox.pdfwriter.COSWriter;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.util.PDFMergerUtility;
 import org.apache.pdfbox.util.PDFTextStripper;
 import org.apache.pdfbox.util.Splitter;
@@ -154,6 +156,21 @@ public class PDFBoxPDFManager extends PDFManager {
 		document.close();
 
 		return text;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public BufferedImage[] toImage(final InputStream source) throws IOException {
+		PDDocument document = PDDocument.load(source);
+		List<PDPage> pages = document.getDocumentCatalog().getAllPages();
+		int pageCount = pages.size();
+		int index = 0;
+		BufferedImage[] array = new BufferedImage[pageCount];
+		for (PDPage page : pages) {
+			BufferedImage image = page.convertToImage();
+			array[index++] = image;
+		}
+		return array;
 	}
 
 }

@@ -16,6 +16,7 @@
  */
 package net.woodstock.rockframework.office.pdf;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -38,6 +39,8 @@ public abstract class PDFManager {
 	public abstract InputStream[] split(InputStream source, int size) throws IOException;
 
 	public abstract String getText(InputStream source) throws IOException;
+
+	public abstract BufferedImage[] toImage(InputStream source) throws IOException;
 
 	public static PDFManager getInstance() {
 		return PDFManager.instance;

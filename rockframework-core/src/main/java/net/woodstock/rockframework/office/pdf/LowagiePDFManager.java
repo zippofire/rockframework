@@ -16,6 +16,7 @@
  */
 package net.woodstock.rockframework.office.pdf;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
@@ -156,6 +157,11 @@ public class LowagiePDFManager extends PDFManager {
 		}
 		reader.close();
 		return builder.toString();
+	}
+	
+	@Override
+	public BufferedImage[] toImage(InputStream source) throws IOException {
+		return null;
 	}
 
 }

@@ -16,6 +16,7 @@
  */
 package net.woodstock.rockframework.office.pdf;
 
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -167,6 +168,11 @@ public class ITextPDFManager extends PDFManager {
 
 		String text = new String(outputStream.toByteArray());
 		return text;
+	}
+
+	@Override
+	public BufferedImage[] toImage(final InputStream source) throws IOException {
+		return null;
 	}
 
 }
