@@ -31,11 +31,14 @@ class CommonJPAGenericRepository implements GenericRepository {
 	}
 
 	@Override
+	@SuppressWarnings("rawtypes")
 	public void delete(final Entity<?> e) {
-		if (!this.entityManager.contains(e)) {
-			this.entityManager.merge(e);
+		try {
+			this.entityManager.remove(e);
+		} catch (IllegalArgumentException ex) {
+			Entity tmp = this.entityManager.find(e.getClass(), e.getId());
+			this.entityManager.remove(tmp);
 		}
-		this.entityManager.remove(e);
 	}
 
 	@SuppressWarnings("unchecked")

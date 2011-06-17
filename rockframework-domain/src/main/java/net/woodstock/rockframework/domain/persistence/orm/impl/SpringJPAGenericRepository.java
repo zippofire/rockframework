@@ -26,12 +26,18 @@ public abstract class SpringJPAGenericRepository extends SpringJPARepository imp
 	}
 
 	@Override
+	@SuppressWarnings("rawtypes")
 	public void delete(final Entity<?> e) {
-		this.getJpaTemplate().remove(e);
+		if (!this.getJpaTemplate().contains(e)) {
+			Entity tmp = this.getJpaTemplate().find(e.getClass(), e.getId());
+			this.getJpaTemplate().remove(tmp);
+		} else {
+			this.getJpaTemplate().remove(e);
+		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
+	@SuppressWarnings("unchecked")
 	public <E extends Entity<?>> E get(final E entity) {
 		E e = (E) this.getJpaTemplate().find(entity.getClass(), entity.getId());
 		if (e != null) {
