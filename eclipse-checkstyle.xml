@@ -5,9 +5,8 @@
     This configuration file was written by the eclipse-cs plugin configuration editor
 -->
 <!--
-    Checkstyle-Configuration: Rock Framework
-    Description: 
-Slightly modified version of Sun Checks that better matches the default code formatter setting of Eclipse.
+    Checkstyle-Configuration: Rockframework
+    Description: none
 -->
 <module name="Checker">
   <property name="severity" value="warning"/>
@@ -15,7 +14,6 @@ Slightly modified version of Sun Checks that better matches the default code for
     <property name="tabWidth" value="4"/>
     <module name="JavadocMethod">
       <property name="severity" value="ignore"/>
-      <property name="logLoadErrors" value="true"/>
       <property name="suppressLoadErrors" value="true"/>
       <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
@@ -87,7 +85,6 @@ Slightly modified version of Sun Checks that better matches the default code for
     </module>
     <module name="MissingSwitchDefault"/>
     <module name="RedundantThrows">
-      <property name="logLoadErrors" value="true"/>
       <property name="suppressLoadErrors" value="true"/>
     </module>
     <module name="SimplifyBooleanExpression"/>
@@ -107,6 +104,7 @@ Slightly modified version of Sun Checks that better matches the default code for
       <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
     <module name="UpperEll"/>
+    <module name="AvoidStaticImport"/>
   </module>
   <module name="JavadocPackage">
     <property name="severity" value="ignore"/>

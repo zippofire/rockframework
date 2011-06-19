@@ -98,12 +98,12 @@ public class TestPDF extends TestCase {
 
 	public void test7() throws Exception {
 		System.out.println("Lowagie");
-		FileInputStream inputStream = new FileInputStream("C:/Temp/edital_dataprev_2011_v1.pdf");
+		FileInputStream inputStream = new FileInputStream("/tmp/generics-tutorial.pdf");
 		PDFManager manager = new PDFBoxPDFManager();
 		BufferedImage[] images = manager.toImage(inputStream);
 		int count = 0;
 		for (BufferedImage img : images) {
-			FileOutputStream fos = new FileOutputStream("C:/Temp/edital_dataprev_2011_v1_" + count + ".jpg");
+			FileOutputStream fos = new FileOutputStream("/tmp/generics-tutorial_" + count + ".jpg");
 			ImageIO.write(img, "jpeg", fos);
 			count++;
 			fos.close();
