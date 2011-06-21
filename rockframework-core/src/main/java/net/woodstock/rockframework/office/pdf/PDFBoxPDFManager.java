@@ -38,7 +38,6 @@ import org.apache.pdfbox.util.Splitter;
 public class PDFBoxPDFManager extends PDFManager {
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public InputStream cut(final InputStream source, final int start, final int end) throws IOException {
 		try {
 			Assert.notNull(source, "source");
@@ -54,28 +53,36 @@ public class PDFBoxPDFManager extends PDFManager {
 			List<PDDocument> list = splitter.split(document);
 			int pageCount = list.size();
 
+			int startPage = start;
+			if (startPage < 1) {
+				startPage = 1;
+			}
+			startPage = startPage - 1;
+
 			int endPage = end;
 			if (endPage > pageCount) {
 				endPage = pageCount;
 			}
 
-			PDDocument destination = list.get(start + 1);
+			PDDocument destination = list.get(start);
 
 			PDFMergerUtility merger = new PDFMergerUtility();
-			for (int i = start + 2; i <= endPage; i++) {
+			for (int i = startPage + 1; i < endPage; i++) {
 				PDDocument tmpDocument = list.get(i);
 				merger.appendDocument(destination, tmpDocument);
 			}
 
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
-			merger.setDestinationStream(bos);
-			merger.mergeDocuments();
+			COSWriter writer = new COSWriter(bos);
+			writer.write(destination);
 
 			for (PDDocument doc : list) {
 				doc.close();
 			}
+
 			document.close();
+			destination.close();
 
 			ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
 
@@ -109,7 +116,6 @@ public class PDFBoxPDFManager extends PDFManager {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public InputStream[] split(final InputStream source, final int size) throws IOException {
 		try {
 			Assert.notNull(source, "source");

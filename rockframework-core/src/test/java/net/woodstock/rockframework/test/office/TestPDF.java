@@ -1,5 +1,7 @@
 package net.woodstock.rockframework.test.office;
 
+import java.awt.Font;
+import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -96,7 +98,7 @@ public class TestPDF extends TestCase {
 		System.out.println(text);
 	}
 
-	public void test7() throws Exception {
+	public void xtest7() throws Exception {
 		System.out.println("Lowagie");
 		FileInputStream inputStream = new FileInputStream("/tmp/generics-tutorial.pdf");
 		PDFManager manager = new PDFBoxPDFManager();
@@ -109,6 +111,13 @@ public class TestPDF extends TestCase {
 			fos.close();
 		}
 		inputStream.close();
+	}
+
+	public void test8() throws Exception {
+		Font[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
+		for (Font font : fonts) {
+			System.out.println(font.getFontName());
+		}
 	}
 
 }
