@@ -14,25 +14,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.office.pdf;
+package net.woodstock.rockframework.office.pdf.impl;
 
-import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
 
 import net.woodstock.rockframework.io.InputOutputStream;
+import net.woodstock.rockframework.office.pdf.PDFManager;
 import net.woodstock.rockframework.util.Assert;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.pdf.PdfCopy;
-import com.lowagie.text.pdf.PdfImportedPage;
-import com.lowagie.text.pdf.PdfReader;
-import com.lowagie.text.pdf.parser.PdfTextExtractor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfCopy;
+import com.itextpdf.text.pdf.PdfImportedPage;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
+import com.itextpdf.text.pdf.parser.SimpleTextExtractionStrategy;
+import com.itextpdf.text.pdf.parser.TextExtractionStrategy;
 
-public class LowagiePDFManager extends PDFManager {
+class ITextManager implements PDFManager {
 
 	@Override
 	public InputStream cut(final InputStream source, final int start, final int end) throws IOException {
@@ -147,21 +151,28 @@ public class LowagiePDFManager extends PDFManager {
 		Assert.notNull(source, "source");
 
 		PdfReader reader = new PdfReader(source);
+		PdfReaderContentParser parser = new PdfReaderContentParser(reader);
+		TextExtractionStrategy strategy = new SimpleTextExtractionStrategy();
 		int pageCount = reader.getNumberOfPages();
-		StringBuilder builder = new StringBuilder();
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		PrintWriter writer = new PrintWriter(outputStream);
 
 		for (int i = 1; i <= pageCount; i++) {
-			PdfTextExtractor extractor = new PdfTextExtractor(reader);
-			String pageText = extractor.getTextFromPage(i);
-			builder.append(pageText);
+			TextExtractionStrategy result = parser.processContent(i, strategy);
+			String pageText = result.getResultantText();
+			writer.println(pageText);
 		}
+
 		reader.close();
-		return builder.toString();
+		writer.close();
+
+		String text = new String(outputStream.toByteArray());
+		return text;
 	}
-	
+
 	@Override
-	public BufferedImage[] toImage(InputStream source) throws IOException {
-		return null;
+	public InputStream[] toImage(final InputStream source, final String format) throws IOException {
+		throw new UnsupportedOperationException();
 	}
 
 }

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.office.pdf;
+package net.woodstock.rockframework.office.pdf.impl;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -23,7 +23,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
 import net.woodstock.rockframework.office.DocumentException;
+import net.woodstock.rockframework.office.pdf.PDFManager;
 import net.woodstock.rockframework.util.Assert;
 
 import org.apache.pdfbox.exceptions.COSVisitorException;
@@ -35,7 +38,13 @@ import org.apache.pdfbox.util.PDFMergerUtility;
 import org.apache.pdfbox.util.PDFTextStripper;
 import org.apache.pdfbox.util.Splitter;
 
-public class PDFBoxPDFManager extends PDFManager {
+class PDFBoxManager implements PDFManager {
+
+	public static final String	GIF_FORMAT	= "gif";
+
+	public static final String	JPEG_FORMAT	= "jpeg";
+
+	public static final String	PNG_FORMAT	= "png";
 
 	@Override
 	public InputStream cut(final InputStream source, final int start, final int end) throws IOException {
@@ -166,15 +175,18 @@ public class PDFBoxPDFManager extends PDFManager {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public BufferedImage[] toImage(final InputStream source) throws IOException {
+	public InputStream[] toImage(final InputStream source, final String format) throws IOException {
 		PDDocument document = PDDocument.load(source);
 		List<PDPage> pages = document.getDocumentCatalog().getAllPages();
 		int pageCount = pages.size();
 		int index = 0;
-		BufferedImage[] array = new BufferedImage[pageCount];
+		InputStream[] array = new InputStream[pageCount];
 		for (PDPage page : pages) {
 			BufferedImage image = page.convertToImage();
-			array[index++] = image;
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			ImageIO.write(image, format, outputStream);
+			InputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+			array[index++] = inputStream;
 		}
 		return array;
 	}

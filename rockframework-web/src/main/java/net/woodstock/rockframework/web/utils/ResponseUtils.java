@@ -94,11 +94,11 @@ public abstract class ResponseUtils {
 
 		IOUtils.copy(input, output);
 	}
-	
+
 	public static void downloadFile(final HttpServletResponse response, final URL url) throws IOException {
 		Assert.notNull(response, "response");
 		Assert.notNull(url, "url");
-		
+
 		response.setContentType(ResponseUtils.DOWNLOAD_CONTENT_TYPE);
 		response.setContentLength(FileUtils.getSize(url));
 
@@ -112,6 +112,10 @@ public abstract class ResponseUtils {
 
 	public static String getAttachmentContentDisposition(final String fileName) {
 		return "attachment; filename=\"" + fileName + "\"";
+	}
+
+	public static String getInLineContentDisposition(final String fileName) {
+		return "inline; filename=\"" + fileName + "\"";
 	}
 
 }
