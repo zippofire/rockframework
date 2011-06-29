@@ -18,12 +18,12 @@ package net.woodstock.rockframework.utils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Random;
 
 import net.woodstock.rockframework.config.CoreConfig;
-import net.woodstock.rockframework.util.NumberFormatFactory;
 
 public abstract class NumberUtils {
 
@@ -41,7 +41,7 @@ public abstract class NumberUtils {
 		if (value == null) {
 			return null;
 		}
-		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(NumberUtils.DECIMAL_FORMAT_PATTERN);
+		NumberFormat nf = new DecimalFormat(NumberUtils.DECIMAL_FORMAT_PATTERN);
 		return nf.format(value);
 	}
 
@@ -49,7 +49,7 @@ public abstract class NumberUtils {
 		if (value == null) {
 			return null;
 		}
-		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(NumberUtils.INTEGER_FORMAT_PATTERN);
+		NumberFormat nf = new DecimalFormat(NumberUtils.INTEGER_FORMAT_PATTERN);
 		return nf.format(value);
 	}
 
@@ -57,12 +57,12 @@ public abstract class NumberUtils {
 		if (value == null) {
 			return null;
 		}
-		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(NumberUtils.INTEGER_FORMAT_PATTERN);
+		NumberFormat nf = new DecimalFormat(NumberUtils.INTEGER_FORMAT_PATTERN);
 		return nf.format(value);
 	}
 
 	public static String format(final double value) {
-		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(NumberUtils.DECIMAL_FORMAT_PATTERN);
+		NumberFormat nf = new DecimalFormat(NumberUtils.DECIMAL_FORMAT_PATTERN);
 		return nf.format(value);
 	}
 
@@ -70,7 +70,7 @@ public abstract class NumberUtils {
 		if (value == null) {
 			return null;
 		}
-		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(NumberUtils.DECIMAL_FORMAT_PATTERN);
+		NumberFormat nf = new DecimalFormat(NumberUtils.DECIMAL_FORMAT_PATTERN);
 		return nf.format(value);
 	}
 
@@ -78,7 +78,7 @@ public abstract class NumberUtils {
 		if (value == null) {
 			return null;
 		}
-		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(NumberUtils.DECIMAL_FORMAT_PATTERN);
+		NumberFormat nf = new DecimalFormat(NumberUtils.DECIMAL_FORMAT_PATTERN);
 		return nf.format(value);
 	}
 
@@ -86,12 +86,12 @@ public abstract class NumberUtils {
 		if (value == null) {
 			return null;
 		}
-		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(NumberUtils.INTEGER_FORMAT_PATTERN);
+		NumberFormat nf = new DecimalFormat(NumberUtils.INTEGER_FORMAT_PATTERN);
 		return nf.format(value);
 	}
 
 	public static String format(final long value) {
-		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(NumberUtils.INTEGER_FORMAT_PATTERN);
+		NumberFormat nf = new DecimalFormat(NumberUtils.INTEGER_FORMAT_PATTERN);
 		return nf.format(value);
 	}
 
@@ -99,7 +99,7 @@ public abstract class NumberUtils {
 		if (value == null) {
 			return null;
 		}
-		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(NumberUtils.INTEGER_FORMAT_PATTERN);
+		NumberFormat nf = new DecimalFormat(NumberUtils.INTEGER_FORMAT_PATTERN);
 		return nf.format(value);
 	}
 
@@ -107,7 +107,7 @@ public abstract class NumberUtils {
 		if (value == null) {
 			return null;
 		}
-		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(NumberUtils.DECIMAL_FORMAT_PATTERN);
+		NumberFormat nf = new DecimalFormat(NumberUtils.DECIMAL_FORMAT_PATTERN);
 		return nf.format(value);
 	}
 
@@ -115,18 +115,18 @@ public abstract class NumberUtils {
 		if (value == null) {
 			return null;
 		}
-		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(NumberUtils.INTEGER_FORMAT_PATTERN);
+		NumberFormat nf = new DecimalFormat(NumberUtils.INTEGER_FORMAT_PATTERN);
 		return nf.format(value);
 	}
 
 	// Pattern
 	public static String format(final double value, final String pattern) {
-		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(pattern);
+		NumberFormat nf = new DecimalFormat(pattern);
 		return nf.format(value);
 	}
 
 	public static String format(final long value, final String pattern) {
-		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(pattern);
+		NumberFormat nf = new DecimalFormat(pattern);
 		return nf.format(value);
 	}
 
@@ -134,7 +134,7 @@ public abstract class NumberUtils {
 		if (value == null) {
 			return null;
 		}
-		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(pattern);
+		NumberFormat nf = new DecimalFormat(pattern);
 		return nf.format(value);
 	}
 
@@ -143,7 +143,7 @@ public abstract class NumberUtils {
 		if (ConditionUtils.isEmpty(value)) {
 			return null;
 		}
-		NumberFormat nf = NumberFormatFactory.getInstance().getFormat(pattern);
+		NumberFormat nf = new DecimalFormat(pattern);
 		return nf.parse(value);
 	}
 

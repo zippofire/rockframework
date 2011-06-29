@@ -26,7 +26,7 @@ import java.nio.charset.CodingErrorAction;
 
 import net.woodstock.rockframework.io.IOException;
 
-public class CharsetTransform implements StringTransform {
+public class CharsetTransformer implements StringTransformer {
 
 	private Charset			from;
 
@@ -36,11 +36,11 @@ public class CharsetTransform implements StringTransform {
 
 	private CharsetEncoder	encoder;
 
-	public CharsetTransform(final Charset from) {
+	public CharsetTransformer(final Charset from) {
 		this(from, Charset.defaultCharset());
 	}
 
-	public CharsetTransform(final Charset from, final Charset to) {
+	public CharsetTransformer(final Charset from, final Charset to) {
 		super();
 		Assert.notNull(from, "from");
 		Assert.notNull(to, "to");

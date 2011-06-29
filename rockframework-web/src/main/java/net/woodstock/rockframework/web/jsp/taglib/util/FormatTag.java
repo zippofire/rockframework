@@ -19,7 +19,7 @@ package net.woodstock.rockframework.web.jsp.taglib.util;
 import java.io.IOException;
 import java.io.Writer;
 
-import net.woodstock.rockframework.util.StringFormat;
+import net.woodstock.rockframework.util.StringFormater;
 import net.woodstock.rockframework.web.config.WebLog;
 import net.woodstock.rockframework.web.jsp.taglib.AbstractTag;
 
@@ -35,7 +35,7 @@ public class FormatTag extends AbstractTag {
 
 	public FormatTag() {
 		super();
-		this.character = StringFormat.DEFAULT_CHARACTER;
+		this.character = StringFormater.DEFAULT_CHARACTER;
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class FormatTag extends AbstractTag {
 			return;
 		}
 		String value = this.value.toString();
-		StringFormat format = new StringFormat(this.format, this.character);
+		StringFormater format = new StringFormater(this.format, this.character);
 		Writer writer = this.getJspContext().getOut();
 		String formated = "";
 

@@ -14,29 +14,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.util;
+package net.woodstock.rockframework.image;
 
-import java.text.Normalizer;
+public enum ImageType {
 
-public final class NormalizerTransform implements StringTransform {
+	JPEG("jpeg"), GIF("gif"), PNG("png"), BMP("bmp"), TIFF("tiff");
 
-	private static final String		ACCENT_PATTERN	= "[^\\p{ASCII}]";
+	private String	internalName;
 
-	private static StringTransform	instance		= new NormalizerTransform();
-
-	private NormalizerTransform() {
-		super();
+	private ImageType(final String internalName) {
+		this.internalName = internalName;
 	}
 
-	@Override
-	public String transform(final String src) {
-		if (src == null) {
-			return null;
-		}
-		return Normalizer.normalize(src, Normalizer.Form.NFD).replaceAll(NormalizerTransform.ACCENT_PATTERN, "");
+	public String getInternalName() {
+		return this.internalName;
 	}
 
-	public static StringTransform getInstance() {
-		return instance;
-	}
 }

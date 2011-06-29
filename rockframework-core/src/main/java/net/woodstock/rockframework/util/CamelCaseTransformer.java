@@ -16,17 +16,17 @@
  */
 package net.woodstock.rockframework.util;
 
-public class CamelCaseTransform implements StringTransform {
+public class CamelCaseTransformer implements StringTransformer {
 
 	private static final char	DEFAULT_SEPARATOR	= ' ';
 
 	private char				separator;
 
-	public CamelCaseTransform() {
-		this(CamelCaseTransform.DEFAULT_SEPARATOR);
+	public CamelCaseTransformer() {
+		this(CamelCaseTransformer.DEFAULT_SEPARATOR);
 	}
 
-	public CamelCaseTransform(final char separator) {
+	public CamelCaseTransformer(final char separator) {
 		super();
 		this.separator = separator;
 	}

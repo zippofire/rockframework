@@ -25,7 +25,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.woodstock.rockframework.util.CharsetTransform;
+import net.woodstock.rockframework.util.CharsetTransformer;
 import net.woodstock.rockframework.utils.ConditionUtils;
 import net.woodstock.rockframework.utils.IOUtils;
 import net.woodstock.rockframework.web.filter.AbstractHttpFilter;
@@ -42,7 +42,7 @@ public class CharsetFilter extends AbstractHttpFilter {
 
 	private Charset				charsetTo;
 
-	private CharsetTransform	charsetTransform;
+	private CharsetTransformer	charsetTransform;
 
 	@Override
 	public void init() {
@@ -54,7 +54,7 @@ public class CharsetFilter extends AbstractHttpFilter {
 		} else {
 			this.charsetTo = Charset.forName(to);
 		}
-		this.charsetTransform = new CharsetTransform(this.charsetFrom, this.charsetTo);
+		this.charsetTransform = new CharsetTransformer(this.charsetFrom, this.charsetTo);
 	}
 
 	@Override

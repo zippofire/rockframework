@@ -16,8 +16,27 @@
  */
 package net.woodstock.rockframework.util;
 
-public interface StringTransform {
+import java.text.Normalizer;
 
-	String transform(String src);
+public final class NormalizerTransformer implements StringTransformer {
 
+	private static final String		ACCENT_PATTERN	= "[^\\p{ASCII}]";
+
+	private static StringTransformer	instance		= new NormalizerTransformer();
+
+	private NormalizerTransformer() {
+		super();
+	}
+
+	@Override
+	public String transform(final String src) {
+		if (src == null) {
+			return null;
+		}
+		return Normalizer.normalize(src, Normalizer.Form.NFD).replaceAll(NormalizerTransformer.ACCENT_PATTERN, "");
+	}
+
+	public static StringTransformer getInstance() {
+		return instance;
+	}
 }

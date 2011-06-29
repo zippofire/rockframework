@@ -16,31 +16,28 @@
  */
 package net.woodstock.rockframework.util;
 
-import java.text.DateFormat;
-import java.text.FieldPosition;
-import java.text.ParsePosition;
-import java.util.Date;
+public class LPadTransformer implements StringTransformer {
 
-class ImmutableDateFormat extends DateFormat {
+	private int		size;
 
-	private static final long	serialVersionUID	= 3851905427842569833L;
+	private char	pad;
 
-	private DateFormat			delegate;
-
-	public ImmutableDateFormat(final DateFormat delegate) {
+	public LPadTransformer(final int size, final char pad) {
 		super();
-		Assert.notNull(delegate, "delegate");
-		this.delegate = delegate;
+		this.size = size;
+		this.pad = pad;
 	}
 
 	@Override
-	public StringBuffer format(final Date date, final StringBuffer toAppendTo, final FieldPosition fieldPosition) {
-		return this.delegate.format(date, toAppendTo, fieldPosition);
+	public String transform(final String str) {
+		if (str == null) {
+			return null;
+		}
+		StringBuilder builder = new StringBuilder();
+		while (builder.length() + str.length() < this.size) {
+			builder.append(this.pad);
+		}
+		builder.append(str);
+		return builder.toString();
 	}
-
-	@Override
-	public Date parse(final String source, final ParsePosition pos) {
-		return this.delegate.parse(source, pos);
-	}
-
 }

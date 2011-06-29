@@ -18,9 +18,8 @@ package net.woodstock.rockframework.utils;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import net.woodstock.rockframework.util.DateFormatFactory;
 
 public abstract class TimeUtils {
 
@@ -34,7 +33,7 @@ public abstract class TimeUtils {
 		if (date == null) {
 			return null;
 		}
-		DateFormat df = DateFormatFactory.getInstance().getFormat(TimeUtils.TIME_FORMAT_PROPERTY);
+		DateFormat df = new SimpleDateFormat(TimeUtils.TIME_FORMAT_PROPERTY);
 		return df.format(date);
 	}
 
@@ -42,7 +41,7 @@ public abstract class TimeUtils {
 		if (date == null) {
 			return null;
 		}
-		DateFormat df = DateFormatFactory.getInstance().getFormat(format);
+		DateFormat df = new SimpleDateFormat(format);
 		return df.format(date);
 	}
 
@@ -50,7 +49,7 @@ public abstract class TimeUtils {
 		if (ConditionUtils.isEmpty(date)) {
 			return null;
 		}
-		DateFormat df = DateFormatFactory.getInstance().getFormat(TimeUtils.TIME_FORMAT_PROPERTY);
+		DateFormat df = new SimpleDateFormat(TimeUtils.TIME_FORMAT_PROPERTY);
 		return df.parse(date);
 	}
 
@@ -58,7 +57,7 @@ public abstract class TimeUtils {
 		if (ConditionUtils.isEmpty(date)) {
 			return null;
 		}
-		DateFormat df = DateFormatFactory.getInstance().getFormat(format);
+		DateFormat df = new SimpleDateFormat(format);
 		return df.parse(date);
 	}
 

@@ -18,7 +18,7 @@ package net.woodstock.rockframework.utils;
 
 import java.awt.Color;
 
-import net.woodstock.rockframework.util.LPadTransform;
+import net.woodstock.rockframework.util.LPadTransformer;
 
 public abstract class ColorUtils {
 
@@ -69,7 +69,7 @@ public abstract class ColorUtils {
 
 	public static String toStringHTML(final Color c) {
 		StringBuilder b = new StringBuilder();
-		LPadTransform transform = new LPadTransform(2, '0');
+		LPadTransformer transform = new LPadTransformer(2, '0');
 		b.append("#");
 		b.append(transform.transform(Integer.toHexString(c.getRed()).toUpperCase()));
 		b.append(transform.transform(Integer.toHexString(c.getGreen()).toUpperCase()));

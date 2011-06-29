@@ -16,28 +16,8 @@
  */
 package net.woodstock.rockframework.util;
 
-public final class StringFormatFactory extends FormatFactory<StringFormater> {
+public interface StringTransformer {
 
-	private static StringFormatFactory	instance	= new StringFormatFactory();
+	String transform(String src);
 
-	private StringFormatFactory() {
-		super();
-	}
-
-	@Override
-	public StringFormater getFormat(final String pattern) {
-		Assert.notEmpty(pattern, "pattern");
-
-		if (this.containsOnCache(pattern)) {
-			return this.getFromCache(pattern);
-		}
-		StringFormater format = new StringFormater(pattern);
-		this.addToCache(pattern, format);
-		return format;
-	}
-
-	// Instance
-	public static StringFormatFactory getInstance() {
-		return instance;
-	}
 }

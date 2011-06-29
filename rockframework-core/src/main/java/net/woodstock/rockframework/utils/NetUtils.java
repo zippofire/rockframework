@@ -20,7 +20,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import net.woodstock.rockframework.util.Assert;
-import net.woodstock.rockframework.util.LPadTransform;
+import net.woodstock.rockframework.util.LPadTransformer;
 
 public abstract class NetUtils {
 
@@ -44,14 +44,14 @@ public abstract class NetUtils {
 			if (i < 0) {
 				i += 256;
 			}
-			bufferAddress.append(new LPadTransform(8, '0').transform(Integer.toBinaryString(i)));
+			bufferAddress.append(new LPadTransformer(8, '0').transform(Integer.toBinaryString(i)));
 		}
 		for (byte b : networkAddress.getAddress()) {
 			int i = b;
 			if (i < 0) {
 				i += 256;
 			}
-			bufferAddress.append(new LPadTransform(8, '0').transform(Integer.toBinaryString(i)));
+			bufferAddress.append(new LPadTransformer(8, '0').transform(Integer.toBinaryString(i)));
 		}
 		return bufferNetwork.toString().substring(0, mask).equals(bufferAddress.toString().subSequence(0, mask));
 	}

@@ -16,14 +16,16 @@
  */
 package net.woodstock.rockframework.util;
 
-public final class CapitalizeTransform implements StringTransform {
+public class RPadTransformer implements StringTransformer {
 
-	private static final char		SPACE		= ' ';
+	private int		size;
 
-	private static StringTransform	instance	= new CapitalizeTransform();
+	private char	pad;
 
-	private CapitalizeTransform() {
+	public RPadTransformer(final int size, final char pad) {
 		super();
+		this.size = size;
+		this.pad = pad;
 	}
 
 	@Override
@@ -31,27 +33,11 @@ public final class CapitalizeTransform implements StringTransform {
 		if (str == null) {
 			return null;
 		}
-		StringBuilder b = new StringBuilder();
-		char[] chars = str.toCharArray();
-		for (int i = 0; i < chars.length; i++) {
-			boolean capitalize = false;
-			if (i == 0) {
-				capitalize = true;
-			} else if ((i > 0) && (chars[i - 1] == CapitalizeTransform.SPACE)) {
-				capitalize = true;
-			}
-			if ((capitalize) && (Character.isLetter(chars[i]))) {
-				b.append(Character.toUpperCase(chars[i]));
-			} else if (Character.isLetter(chars[i])) {
-				b.append(Character.toLowerCase(chars[i]));
-			} else {
-				b.append(chars[i]);
-			}
+		StringBuilder builder = new StringBuilder();
+		builder.append(str);
+		while (builder.length() < this.size) {
+			builder.append(this.pad);
 		}
-		return b.toString();
-	}
-
-	public static StringTransform getInstance() {
-		return instance;
+		return builder.toString();
 	}
 }

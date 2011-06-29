@@ -22,7 +22,7 @@ import java.text.ParsePosition;
 
 import net.woodstock.rockframework.utils.ConditionUtils;
 
-public class StringFormat extends Format {
+public class StringFormater extends Format {
 
 	private static final long	serialVersionUID	= 8381540260159406826L;
 
@@ -34,11 +34,11 @@ public class StringFormat extends Format {
 
 	private final char[]		patternChars;
 
-	public StringFormat(final String pattern) {
-		this(pattern, StringFormat.DEFAULT_CHARACTER);
+	public StringFormater(final String pattern) {
+		this(pattern, StringFormater.DEFAULT_CHARACTER);
 	}
 
-	public StringFormat(final String pattern, final char character) {
+	public StringFormater(final String pattern, final char character) {
 		super();
 		Assert.notEmpty(pattern, "pattern");
 		this.pattern = pattern;

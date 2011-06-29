@@ -23,6 +23,7 @@ public class ClassSearchTest extends TestCase {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void xtest2() throws Exception {
 		String pattern = "javax";
 		ClassFinder finder = new ClassFinderImpl(pattern, null);
@@ -32,6 +33,7 @@ public class ClassSearchTest extends TestCase {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void test3() throws Exception {
 		String pattern = "net";
 		ClassFinder finder = new ClassFinderImpl(pattern, new AssignableClassFilter(Cloneable.class));
@@ -41,6 +43,7 @@ public class ClassSearchTest extends TestCase {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void xtest4() throws Exception {
 		String pattern = "net.woodstock";
 		ClassFinder finder = new ClassFinderImpl(pattern, new AnnotationClassFilter(SuppressWarnings.class));

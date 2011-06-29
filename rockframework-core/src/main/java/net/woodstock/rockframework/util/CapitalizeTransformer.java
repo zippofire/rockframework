@@ -16,16 +16,14 @@
  */
 package net.woodstock.rockframework.util;
 
-public class LPadTransform implements StringTransform {
+public final class CapitalizeTransformer implements StringTransformer {
 
-	private int		size;
+	private static final char		SPACE		= ' ';
 
-	private char	pad;
+	private static StringTransformer	instance	= new CapitalizeTransformer();
 
-	public LPadTransform(final int size, final char pad) {
+	private CapitalizeTransformer() {
 		super();
-		this.size = size;
-		this.pad = pad;
 	}
 
 	@Override
@@ -33,11 +31,27 @@ public class LPadTransform implements StringTransform {
 		if (str == null) {
 			return null;
 		}
-		StringBuilder builder = new StringBuilder();
-		while (builder.length() + str.length() < this.size) {
-			builder.append(this.pad);
+		StringBuilder b = new StringBuilder();
+		char[] chars = str.toCharArray();
+		for (int i = 0; i < chars.length; i++) {
+			boolean capitalize = false;
+			if (i == 0) {
+				capitalize = true;
+			} else if ((i > 0) && (chars[i - 1] == CapitalizeTransformer.SPACE)) {
+				capitalize = true;
+			}
+			if ((capitalize) && (Character.isLetter(chars[i]))) {
+				b.append(Character.toUpperCase(chars[i]));
+			} else if (Character.isLetter(chars[i])) {
+				b.append(Character.toLowerCase(chars[i]));
+			} else {
+				b.append(chars[i]);
+			}
 		}
-		builder.append(str);
-		return builder.toString();
+		return b.toString();
+	}
+
+	public static StringTransformer getInstance() {
+		return instance;
 	}
 }

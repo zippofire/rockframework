@@ -14,30 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.util;
+package net.woodstock.rockframework.image;
 
-public class RPadTransform implements StringTransform {
+public interface ImageTransformer {
 
-	private int		size;
+	Image transform(Image image);
 
-	private char	pad;
-
-	public RPadTransform(final int size, final char pad) {
-		super();
-		this.size = size;
-		this.pad = pad;
-	}
-
-	@Override
-	public String transform(final String str) {
-		if (str == null) {
-			return null;
-		}
-		StringBuilder builder = new StringBuilder();
-		builder.append(str);
-		while (builder.length() < this.size) {
-			builder.append(this.pad);
-		}
-		return builder.toString();
-	}
 }

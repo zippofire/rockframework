@@ -5,23 +5,23 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import junit.framework.TestCase;
-import net.woodstock.rockframework.util.CharsetTransform;
+import net.woodstock.rockframework.util.CharsetTransformer;
 import net.woodstock.rockframework.util.RandomGenerator;
 import net.woodstock.rockframework.util.RandomGenerator.RandomPattern;
-import net.woodstock.rockframework.util.StringFormat;
+import net.woodstock.rockframework.util.StringFormater;
 import net.woodstock.rockframework.util.StringFormatFactory;
 
 public class StringTest extends TestCase {
 
 	public void xtest1() throws Exception {
 		String s = "530000000012010";
-		StringFormat format = StringFormatFactory.getInstance().getFormat("#####.######/####");
+		StringFormater format = StringFormatFactory.getInstance().getFormat("#####.######/####");
 		System.out.println(format.format(s));
 	}
 
 	public void xtest2() throws Exception {
 		String s = "53000.000001/2010";
-		StringFormat format = StringFormatFactory.getInstance().getFormat("#####.######/####");
+		StringFormater format = StringFormatFactory.getInstance().getFormat("#####.######/####");
 		System.out.println(format.parse(s));
 	}
 
@@ -55,11 +55,11 @@ public class StringTest extends TestCase {
 	}
 
 	public void xtest5() throws Exception {
-		System.out.println(new CharsetTransform(Charset.forName("ISO-8859-1"), Charset.forName("UTF-8")).transform("Júnior"));
+		System.out.println(new CharsetTransformer(Charset.forName("ISO-8859-1"), Charset.forName("UTF-8")).transform("Júnior"));
 	}
 
 	public void test6() throws Exception {
-		StringFormat format = new StringFormat("999.999.999-99", '9');
+		StringFormater format = new StringFormater("999.999.999-99", '9');
 		String s = format.format("01234567890");
 		String ss = format.parse(s);
 		System.out.println(s);
