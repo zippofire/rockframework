@@ -46,14 +46,14 @@ public final class Image {
 	public void write(final File file, final ImageType type) throws IOException {
 		Assert.notNull(file, "file");
 		Assert.notNull(type, "type");
-		ImageIO.write(this.bufferedImage, type.getInternalName(), file);
+		ImageIO.write(this.bufferedImage, type.name().toLowerCase(), file);
 	}
 
 	public void write(final OutputStream outputStream, final ImageType type) throws IOException {
 		Assert.notNull(outputStream, "outputStream");
 		Assert.notNull(type, "type");
 
-		ImageIO.write(this.bufferedImage, type.getInternalName(), outputStream);
+		ImageIO.write(this.bufferedImage, type.name().toLowerCase(), outputStream);
 	}
 
 	public int getWidth() {

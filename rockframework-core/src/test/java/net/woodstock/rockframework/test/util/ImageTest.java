@@ -4,7 +4,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
+
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
 
 import junit.framework.TestCase;
 import net.woodstock.rockframework.image.ExifReader;
@@ -13,6 +18,7 @@ import net.woodstock.rockframework.image.ImageCutTransformer;
 import net.woodstock.rockframework.image.ImageResizeTransformer;
 import net.woodstock.rockframework.image.ImageTransformer;
 import net.woodstock.rockframework.image.ImageType;
+import net.woodstock.rockframework.image.JAIExifReader;
 
 public class ImageTest extends TestCase {
 
@@ -99,11 +105,19 @@ public class ImageTest extends TestCase {
 
 	}
 
-	public void test4() throws Exception {
+	public void test5() throws Exception {
 		InputStream inputStream = new FileInputStream("C:/Temp/exif/canon-ixus.jpg");
-		ExifReader reader = new ExifReader(inputStream);
-		for (Entry<String, String> entry : reader.getParams().entrySet()) {
+		ExifReader reader = JAIExifReader.getInstance();
+		Map<String, String> params = reader.getHeaders(inputStream);
+		for (Entry<String, String> entry : params.entrySet()) {
 			System.out.println(entry.getKey() + " => " + entry.getValue());
+		}
+	}
+
+	public void xtest6() throws Exception {
+		Iterator<ImageReader> readers = ImageIO.getImageReadersByFormatName("tiff");
+		while (readers.hasNext()) {
+			System.out.println(readers.next().getOriginatingProvider().getNativeImageMetadataFormatName());
 		}
 	}
 

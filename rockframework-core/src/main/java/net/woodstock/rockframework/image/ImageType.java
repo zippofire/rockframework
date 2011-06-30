@@ -18,16 +18,6 @@ package net.woodstock.rockframework.image;
 
 public enum ImageType {
 
-	JPEG("jpeg"), GIF("gif"), PNG("png"), BMP("bmp"), TIFF("tiff");
-
-	private String	internalName;
-
-	private ImageType(final String internalName) {
-		this.internalName = internalName;
-	}
-
-	public String getInternalName() {
-		return this.internalName;
-	}
+	JPEG, GIF, PNG, BMP, TIFF;
 
 }
