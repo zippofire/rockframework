@@ -16,59 +16,46 @@
  */
 package net.woodstock.rockframework.runtime;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
-import java.util.List;
+import java.io.Writer;
+import java.util.Collection;
+import java.util.Scanner;
 
 import net.woodstock.rockframework.util.Assert;
 import net.woodstock.rockframework.utils.ConditionUtils;
+import net.woodstock.rockframework.utils.SystemUtils;
 
 public class Command implements Serializable {
 
 	private static final long	serialVersionUID	= 3461506172311705253L;
 
+	private static final String	LINE_SEPARATOR		= SystemUtils.getProperty(SystemUtils.LINE_SEPARATOR_PROPERTY);
+
 	private String				command;
 
-	private List<String>		subCommands;
+	private Collection<String>	subCommands;
 
 	public Command(final String command) {
 		this(command, null);
 	}
 
-	public Command(final String command, final List<String> subCommands) {
+	public Command(final String command, final Collection<String> subCommands) {
 		super();
+		Assert.notEmpty(command, "command");
 		this.command = command;
-		this.subCommands = subCommands;
-	}
-
-	public String getCommand() {
-		return this.command;
-	}
-
-	public void setCommand(final String command) {
-		this.command = command;
-	}
-
-	public List<String> getSubCommands() {
-		return this.subCommands;
-	}
-
-	public void setSubCommands(final List<String> subCommands) {
 		this.subCommands = subCommands;
 	}
 
 	public Output execute() throws IOException {
 		Assert.notEmpty(this.command, "command");
 
-		Output output = new Output();
 		Runtime runtime = Runtime.getRuntime();
 		Process process = runtime.exec(this.command);
 
-		if ((this.subCommands != null) && (this.subCommands.size() > 0)) {
-			OutputStreamWriter writer = new OutputStreamWriter(process.getOutputStream());
+		if (ConditionUtils.isNotEmpty(this.subCommands)) {
+			Writer writer = new OutputStreamWriter(process.getOutputStream());
 			for (String sc : this.subCommands) {
 				if (ConditionUtils.isNotEmpty(sc)) {
 					writer.write(sc);
@@ -77,32 +64,32 @@ public class Command implements Serializable {
 			writer.close();
 		}
 
-		InputStreamReader errorStream = new InputStreamReader(process.getErrorStream());
-		InputStreamReader inputStream = new InputStreamReader(process.getInputStream());
-		BufferedReader readerInput = new BufferedReader(inputStream);
-		BufferedReader readerError = new BufferedReader(errorStream);
+		StringBuilder inputBuilder = new StringBuilder();
+		StringBuilder errorBuilder = new StringBuilder();
 
-		String line = readerInput.readLine();
-		while (line != null) {
+		Scanner inputStream = new Scanner(process.getInputStream());
+		Scanner errorStream = new Scanner(process.getErrorStream());
+
+		while (inputStream.hasNextLine()) {
+			String line = inputStream.nextLine();
 			if (ConditionUtils.isNotEmpty(line)) {
-				output.addOut(line.trim());
+				inputBuilder.append(line.trim());
+				inputBuilder.append(Command.LINE_SEPARATOR);
 			}
-			line = readerInput.readLine();
 		}
 
-		line = readerError.readLine();
-		while (line != null) {
+		while (errorStream.hasNextLine()) {
+			String line = errorStream.nextLine();
 			if (ConditionUtils.isNotEmpty(line)) {
-				output.addErr(line.trim());
+				errorBuilder.append(line.trim());
+				errorBuilder.append(Command.LINE_SEPARATOR);
 			}
-			line = readerError.readLine();
 		}
 
-		readerInput.close();
-		readerError.close();
 		inputStream.close();
 		errorStream.close();
 
+		Output output = new OutputImpl(inputBuilder.toString(), errorBuilder.toString());
 		return output;
 	}
 

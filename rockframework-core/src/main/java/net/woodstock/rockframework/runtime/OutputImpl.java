@@ -16,12 +16,28 @@
  */
 package net.woodstock.rockframework.runtime;
 
-import java.io.Serializable;
+class OutputImpl implements Output {
 
-public interface Output extends Serializable {
+	private static final long	serialVersionUID	= -5028254907646518037L;
 
-	String getOut();
+	private String				out;
 
-	String getErr();
+	private String				err;
+
+	public OutputImpl(final String out, final String err) {
+		super();
+		this.out = out;
+		this.err = err;
+	}
+
+	@Override
+	public String getOut() {
+		return this.out;
+	}
+
+	@Override
+	public String getErr() {
+		return this.err;
+	}
 
 }

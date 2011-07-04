@@ -16,8 +16,13 @@
  */
 package net.woodstock.rockframework.web.filter;
 
+import java.util.Collection;
+import java.util.Enumeration;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterConfig;
+
+import net.woodstock.rockframework.utils.CollectionUtils;
 
 public abstract class AbstractFilter implements Filter {
 
@@ -47,5 +52,12 @@ public abstract class AbstractFilter implements Filter {
 	// Parameter
 	protected String getInitParameter(final String name) {
 		return this.filterConfig.getInitParameter(name);
+	}
+
+	@SuppressWarnings("unchecked")
+	protected Collection<String> getInitParameterNames() {
+		Enumeration<String> names = this.filterConfig.getInitParameterNames();
+		Collection<String> collection = CollectionUtils.toCollection(names);
+		return collection;
 	}
 }

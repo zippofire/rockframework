@@ -9,12 +9,10 @@ public class CommandTest extends TestCase {
 	public void test1() throws Exception {
 		Command command = new Command("java -version");
 		Output output = command.execute();
-		for (String out : output.getOut()) {
-			System.out.println(out);
-		}
-		for (String err : output.getErr()) {
-			System.out.println(err);
-		}
+		System.out.println("===== Saida =====");
+		System.out.println(output.getOut());
+		System.out.println("===== Erro =====");
+		System.out.println(output.getErr());
 	}
 
 }

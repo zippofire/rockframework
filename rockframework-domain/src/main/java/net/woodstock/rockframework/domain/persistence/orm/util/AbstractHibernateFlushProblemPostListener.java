@@ -29,8 +29,6 @@ import org.hibernate.event.EventSource;
 
 abstract class AbstractHibernateFlushProblemPostListener {
 
-	private static final long	serialVersionUID	= 1L;
-
 	@SuppressWarnings("rawtypes")
 	public void refreshEntity(final Object src, final EventSource eventSource) {
 		if (src instanceof Entity) {
