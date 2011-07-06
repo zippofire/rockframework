@@ -17,9 +17,9 @@
 package net.woodstock.rockframework.domain.persistence.orm.impl;
 
 import java.util.Collection;
-import java.util.Map;
 
 import net.woodstock.rockframework.domain.persistence.orm.NativeSQLRepository;
+import net.woodstock.rockframework.domain.persistence.orm.QueryMetadata;
 
 public class HibernateNativeSQLRepository extends AbstractHibernateRepository implements NativeSQLRepository {
 
@@ -28,19 +28,19 @@ public class HibernateNativeSQLRepository extends AbstractHibernateRepository im
 	}
 
 	@Override
-	public void executeUpdate(final String sql, final Map<String, Object> parameters) {
-		new CommonHibernateNativeSQLRepository(this.getSession()).executeUpdate(sql, parameters);
+	public void executeUpdate(QueryMetadata query) {
+		new CommonHibernateNativeSQLRepository(this.getSession()).executeUpdate(query);
 	}
 
 	@Override
 	@SuppressWarnings("rawtypes")
-	public Collection getCollection(final String sql, final Map<String, Object> parameters) {
-		return new CommonHibernateNativeSQLRepository(this.getSession()).getCollection(sql, parameters);
+	public Collection getCollection(QueryMetadata query) {
+		return new CommonHibernateNativeSQLRepository(this.getSession()).getCollection(query);
 	}
 
 	@Override
-	public Object getSingle(final String sql, final Map<String, Object> parameters) {
-		return new CommonHibernateNativeSQLRepository(this.getSession()).getSingle(sql, parameters);
+	public Object getSingle(QueryMetadata query) {
+		return new CommonHibernateNativeSQLRepository(this.getSession()).getSingle(query);
 	}
 
 }

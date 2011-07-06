@@ -34,39 +34,41 @@ public class JPAJPQLRepository extends AbstractJPARepository implements JPQLRepo
 	}
 
 	@Override
-	public void executeUpdate(final String sql, final Map<String, Object> parameters) {
-		Query query = this.getQuery(sql, parameters);
-		query.executeUpdate();
+	public void executeUpdate(final net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
+		Query q = this.getQuery(query);
+		q.executeUpdate();
 	}
 
 	@Override
 	@SuppressWarnings("rawtypes")
-	public Collection getCollection(final String sql, final Map<String, Object> parameters) {
-		Query query = this.getQuery(sql, parameters);
-		List list = query.getResultList();
+	public Collection getCollection(final net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
+		Query q = this.getQuery(query);
+		List list = q.getResultList();
 		return list;
 	}
 
 	@Override
-	public Object getSingle(final String sql, final Map<String, Object> parameters) {
-		Query query = this.getQuery(sql, parameters);
-		Object obj = query.getSingleResult();
+	public Object getSingle(final net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
+		Query q = this.getQuery(query);
+		Object obj = q.getSingleResult();
 		return obj;
 	}
 
-	private Query getQuery(final String sql, final Map<String, Object> parameters) {
+	private Query getQuery(final net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
 		EntityManager entityManager = this.getEntityManager();
-		Query query = entityManager.createQuery(sql);
+		Query q = entityManager.createQuery(query.getQuery());
+
+		Map<String, Object> parameters = query.getParameters();
 
 		if (ConditionUtils.isNotEmpty(parameters)) {
 			for (Entry<String, Object> entry : parameters.entrySet()) {
 				String name = entry.getKey();
 				Object value = entry.getValue();
-				query.setParameter(name, value);
+				q.setParameter(name, value);
 			}
 		}
 
-		return query;
+		return q;
 	}
 
 }

@@ -18,7 +18,6 @@ package net.woodstock.rockframework.domain.persistence.orm.impl;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -32,24 +31,24 @@ abstract class AbstractJPAQueryableRepository extends AbstractQueryableRepositor
 	}
 
 	@Override
-	public void executeUpdate(final String sql, final Map<String, Object> parameters) {
-		Query query = this.getQuery(sql, parameters);
-		query.executeUpdate();
+	public void executeUpdate(final net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
+		Query q = this.getQuery(query);
+		q.executeUpdate();
 	}
 
 	@Override
 	@SuppressWarnings("rawtypes")
-	public Collection getCollection(final String sql, final Map<String, Object> parameters) {
-		Query query = this.getQuery(sql, parameters);
-		List list = query.getResultList();
+	public Collection getCollection(final net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
+		Query q = this.getQuery(query);
+		List list = q.getResultList();
 		return list;
 	}
 
 	@Override
-	public Object getSingle(final String sql, final Map<String, Object> parameters) {
+	public Object getSingle(final net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
 		try {
-			Query query = this.getQuery(sql, parameters);
-			Object obj = query.getSingleResult();
+			Query q = this.getQuery(query);
+			Object obj = q.getSingleResult();
 			return obj;
 		} catch (NoResultException e) {
 			DomainLog.getInstance().getLog().info(e.getMessage(), e);
@@ -57,5 +56,5 @@ abstract class AbstractJPAQueryableRepository extends AbstractQueryableRepositor
 		}
 	}
 
-	protected abstract Query getQuery(final String sql, final Map<String, Object> parameters);
+	protected abstract Query getQuery(net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query);
 }

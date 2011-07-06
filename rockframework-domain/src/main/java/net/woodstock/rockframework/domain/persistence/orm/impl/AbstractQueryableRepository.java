@@ -18,8 +18,8 @@ package net.woodstock.rockframework.domain.persistence.orm.impl;
 
 import java.util.Collection;
 
+import net.woodstock.rockframework.domain.persistence.orm.Constants;
 import net.woodstock.rockframework.domain.persistence.orm.QueryableRepository;
-import net.woodstock.rockframework.domain.query.Constants;
 
 abstract class AbstractQueryableRepository implements QueryableRepository {
 
@@ -41,10 +41,28 @@ abstract class AbstractQueryableRepository implements QueryableRepository {
 		if (name.equals(Constants.OPTION_CACHE_MODE)) {
 			return false;
 		}
+		if (name.equals(Constants.OPTION_COLLECTION_MODE)) {
+			return false;
+		}
+		if (name.equals(Constants.OPTION_DISABLE_CHILD)) {
+			return false;
+		}
+		if (name.equals(Constants.OPTION_DISABLE_COLLECTION)) {
+			return false;
+		}
 		if (name.equals(Constants.OPTION_FIRST_RESULT)) {
 			return false;
 		}
+		if (name.equals(Constants.OPTION_IGNORE_CASE)) {
+			return false;
+		}
+		if (name.equals(Constants.OPTION_LIKE_MODE)) {
+			return false;
+		}
 		if (name.equals(Constants.OPTION_MAX_RESULT)) {
+			return false;
+		}
+		if (name.equals(Constants.OPTION_ORDER_BY)) {
 			return false;
 		}
 		if (name.equals(Constants.OPTION_READ_ONLY)) {

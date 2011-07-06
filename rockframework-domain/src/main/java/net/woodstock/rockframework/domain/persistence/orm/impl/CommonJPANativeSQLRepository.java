@@ -23,8 +23,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import net.woodstock.rockframework.domain.Entity;
+import net.woodstock.rockframework.domain.persistence.orm.Constants;
 import net.woodstock.rockframework.domain.persistence.orm.NativeSQLRepository;
-import net.woodstock.rockframework.domain.query.Constants;
 import net.woodstock.rockframework.utils.ConditionUtils;
 
 class CommonJPANativeSQLRepository extends AbstractJPAQueryableRepository implements NativeSQLRepository {
@@ -38,39 +38,44 @@ class CommonJPANativeSQLRepository extends AbstractJPAQueryableRepository implem
 
 	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected Query getQuery(final String sql, final Map<String, Object> parameters) {
+	protected Query getQuery(final net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
 		EntityManager entityManager = this.entityManager;
-		Query query = null;
+		Query q = null;
+
+		Map<String, Object> parameters = query.getParameters();
+		Map<String, Object> options = query.getOptions();
+
+		if (ConditionUtils.isNotEmpty(options)) {
+			if (options.containsKey(Constants.OPTION_TARGET_ENTITY)) {
+				Class<Entity> clazz = (Class<Entity>) options.get(Constants.OPTION_TARGET_ENTITY);
+				q = entityManager.createNativeQuery(query.getQuery(), clazz);
+			} else {
+				q = entityManager.createNativeQuery(query.getQuery());
+			}
+
+			if (options.containsKey(Constants.OPTION_FIRST_RESULT)) {
+				Integer firstResult = (Integer) options.get(Constants.OPTION_FIRST_RESULT);
+				q.setFirstResult(firstResult.intValue());
+			}
+			if (options.containsKey(Constants.OPTION_MAX_RESULT)) {
+				Integer maxResult = (Integer) options.get(Constants.OPTION_MAX_RESULT);
+				q.setMaxResults(maxResult.intValue());
+			}
+		} else {
+			q = entityManager.createNativeQuery(query.getQuery());
+		}
 
 		if (ConditionUtils.isNotEmpty(parameters)) {
-			if (parameters.containsKey(Constants.OPTION_TARGET_ENTITY)) {
-				Class<Entity> clazz = (Class<Entity>) parameters.get(Constants.OPTION_TARGET_ENTITY);
-				query = entityManager.createNativeQuery(sql, clazz);
-			} else {
-				query = entityManager.createNativeQuery(sql);
-			}
-
-			if (parameters.containsKey(Constants.OPTION_FIRST_RESULT)) {
-				Integer firstResult = (Integer) parameters.get(Constants.OPTION_FIRST_RESULT);
-				query.setFirstResult(firstResult.intValue());
-			}
-			if (parameters.containsKey(Constants.OPTION_MAX_RESULT)) {
-				Integer maxResult = (Integer) parameters.get(Constants.OPTION_MAX_RESULT);
-				query.setMaxResults(maxResult.intValue());
-			}
-
 			for (Entry<String, Object> entry : parameters.entrySet()) {
 				String name = entry.getKey();
 				Object value = entry.getValue();
 				if (this.isValidParameter(name)) {
-					query.setParameter(name, value);
+					q.setParameter(name, value);
 				}
 			}
-		} else {
-			query = entityManager.createNativeQuery(sql);
 		}
 
-		return query;
+		return q;
 	}
 
 }

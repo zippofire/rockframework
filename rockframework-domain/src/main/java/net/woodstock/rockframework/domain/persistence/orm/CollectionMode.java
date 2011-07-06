@@ -14,19 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.query.impl;
+package net.woodstock.rockframework.domain.persistence.orm;
 
-import org.hibernate.proxy.HibernateProxy;
-
-abstract class HibernateHelper {
-
-	private HibernateHelper() {
-		//
-	}
-
-	public static boolean isProxy(final Object o) {
-		boolean b = (o instanceof HibernateProxy);
-		return b;
-	}
-
+public  enum CollectionMode {
+	AND, OR;
 }

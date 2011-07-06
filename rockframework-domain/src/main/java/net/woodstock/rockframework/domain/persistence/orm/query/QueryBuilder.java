@@ -14,24 +14,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.persistence.orm.impl;
+package net.woodstock.rockframework.domain.persistence.orm.query;
 
-import java.util.Collection;
+import net.woodstock.rockframework.domain.Entity;
 
-import net.woodstock.rockframework.domain.persistence.orm.Filter;
-import net.woodstock.rockframework.domain.persistence.orm.Page;
-import net.woodstock.rockframework.domain.persistence.orm.PagedRepository;
+public interface QueryBuilder<T> {
 
-public abstract class SpringHibernatePagedRepository extends SpringHibernateRepository implements PagedRepository {
+	// Set
+	QueryBuilder<T> setEntity(Entity<?> entity);
 
-	public SpringHibernatePagedRepository() {
-		super();
-	}
+	QueryBuilder<T> setOption(String name, Object value);
 
-	@Override
-	@SuppressWarnings("rawtypes")
-	public Collection getCollection(final Filter filter, final Page page) {
-		return new CommonHibernatePagedRepository(this.getSession()).getCollection(filter, page);
-	}
+	// Get
+	T getQuery();
 
 }

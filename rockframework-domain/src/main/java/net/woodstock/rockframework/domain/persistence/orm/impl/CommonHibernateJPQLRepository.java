@@ -20,9 +20,9 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.woodstock.rockframework.domain.persistence.orm.CacheMode;
+import net.woodstock.rockframework.domain.persistence.orm.Constants;
 import net.woodstock.rockframework.domain.persistence.orm.JPQLRepository;
-import net.woodstock.rockframework.domain.query.CacheMode;
-import net.woodstock.rockframework.domain.query.Constants;
 import net.woodstock.rockframework.utils.ConditionUtils;
 
 import org.hibernate.Query;
@@ -39,46 +39,51 @@ class CommonHibernateJPQLRepository extends AbstractHibernateQueryableRepository
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	protected Query getQuery(final String sql, final Map<String, Object> parameters) {
-		Query query = this.session.createQuery(sql);
+	protected Query getQuery(final net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
+		Query q = this.session.createQuery(query.getQuery());
+
+		Map<String, Object> parameters = query.getParameters();
+		Map<String, Object> options = query.getOptions();
 
 		if (ConditionUtils.isNotEmpty(parameters)) {
-			if ((parameters.containsKey(Constants.OPTION_CACHE_MODE)) && (parameters.get(Constants.OPTION_CACHE_MODE) instanceof CacheMode)) {
-				CacheMode cacheMode = (CacheMode) parameters.get(Constants.OPTION_CACHE_MODE);
-				if (cacheMode == CacheMode.ENABLED) {
-					query.setCacheable(true);
-					query.setCacheMode(org.hibernate.CacheMode.NORMAL);
-				}
-			}
-			if (parameters.containsKey(Constants.OPTION_FIRST_RESULT)) {
-				Integer firstResult = (Integer) parameters.get(Constants.OPTION_FIRST_RESULT);
-				query.setFirstResult(firstResult.intValue());
-			}
-			if (parameters.containsKey(Constants.OPTION_MAX_RESULT)) {
-				Integer maxResult = (Integer) parameters.get(Constants.OPTION_MAX_RESULT);
-				query.setMaxResults(maxResult.intValue());
-			}
-			if (parameters.containsKey(Constants.OPTION_READ_ONLY)) {
-				Boolean readOnly = (Boolean) parameters.get(Constants.OPTION_READ_ONLY);
-				query.setReadOnly(readOnly.booleanValue());
-			}
-
 			for (Entry<String, Object> entry : parameters.entrySet()) {
 				String name = entry.getKey();
 				Object value = entry.getValue();
 				if (this.isValidParameter(name)) {
 					if (this.isCollection(value)) {
-						query.setParameterList(name, (Collection) value);
+						q.setParameterList(name, (Collection) value);
 					} else if (this.isArray(value)) {
-						query.setParameterList(name, (Object[]) value);
+						q.setParameterList(name, (Object[]) value);
 					} else {
-						query.setParameter(name, value);
+						q.setParameter(name, value);
 					}
 				}
 			}
 
 		}
 
-		return query;
+		if (ConditionUtils.isNotEmpty(options)) {
+			if ((options.containsKey(Constants.OPTION_CACHE_MODE)) && (options.get(Constants.OPTION_CACHE_MODE) instanceof CacheMode)) {
+				CacheMode cacheMode = (CacheMode) options.get(Constants.OPTION_CACHE_MODE);
+				if (cacheMode == CacheMode.ENABLED) {
+					q.setCacheable(true);
+					q.setCacheMode(org.hibernate.CacheMode.NORMAL);
+				}
+			}
+			if (options.containsKey(Constants.OPTION_FIRST_RESULT)) {
+				Integer firstResult = (Integer) options.get(Constants.OPTION_FIRST_RESULT);
+				q.setFirstResult(firstResult.intValue());
+			}
+			if (options.containsKey(Constants.OPTION_MAX_RESULT)) {
+				Integer maxResult = (Integer) options.get(Constants.OPTION_MAX_RESULT);
+				q.setMaxResults(maxResult.intValue());
+			}
+			if (options.containsKey(Constants.OPTION_READ_ONLY)) {
+				Boolean readOnly = (Boolean) options.get(Constants.OPTION_READ_ONLY);
+				q.setReadOnly(readOnly.booleanValue());
+			}
+		}
+
+		return q;
 	}
 }

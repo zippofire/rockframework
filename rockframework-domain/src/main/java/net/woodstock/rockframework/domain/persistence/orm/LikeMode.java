@@ -14,10 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.query.impl;
+package net.woodstock.rockframework.domain.persistence.orm;
 
-import net.woodstock.rockframework.domain.query.QueryBuilder;
-
-abstract class AbstractQueryBuilder<T> implements QueryBuilder<T> {
-	//
+public enum LikeMode {
+	ALL, BEGIN, DISABLED, END;
 }

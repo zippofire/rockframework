@@ -19,10 +19,11 @@ package net.woodstock.rockframework.web.tomcat;
 import java.util.List;
 
 import net.woodstock.rockframework.utils.ArrayUtils;
+import net.woodstock.rockframework.web.security.WebPrincipal;
 
 import org.apache.catalina.realm.GenericPrincipal;
 
-public class SimplePrincipal extends GenericPrincipal {
+public class SimplePrincipal extends GenericPrincipal implements WebPrincipal {
 
 	public SimplePrincipal(final String name, final String password, final String role) {
 		super(null, name, password, ArrayUtils.toList(new String[] { role }));

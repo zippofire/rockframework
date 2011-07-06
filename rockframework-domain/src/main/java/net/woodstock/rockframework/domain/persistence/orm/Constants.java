@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.query;
+package net.woodstock.rockframework.domain.persistence.orm;
 
 public abstract class Constants {
 
@@ -37,6 +37,7 @@ public abstract class Constants {
 
 	public static final String	OPTION_DISABLE_COLLECTION	= "net.woodstock.rockframework.domain.query.Constants.OPTION_DISABLE_COLLECTION";
 
+	// Cache
 	public static final String	OPTION_CACHE_MODE			= "net.woodstock.rockframework.domain.query.Constants.OPTION_CACHE_MODE";
 
 	// Target

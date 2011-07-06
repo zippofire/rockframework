@@ -1,6 +1,6 @@
 package net.woodstock.rockframework.domain.test.test3;
 
-import net.woodstock.rockframework.domain.query.impl.JPQLQueryBuilder;
+import net.woodstock.rockframework.domain.persistence.orm.query.impl.JPQLQueryBuilder;
 
 public class TestQueryBuilder extends JPQLQueryBuilder<Object> {
 

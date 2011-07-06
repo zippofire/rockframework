@@ -17,9 +17,9 @@
 package net.woodstock.rockframework.domain.persistence.orm.impl;
 
 import java.util.Collection;
-import java.util.Map;
 
 import net.woodstock.rockframework.domain.persistence.orm.JPQLRepository;
+import net.woodstock.rockframework.domain.persistence.orm.QueryMetadata;
 
 public class HibernateJPQLRepository extends AbstractHibernateRepository implements JPQLRepository {
 
@@ -28,19 +28,19 @@ public class HibernateJPQLRepository extends AbstractHibernateRepository impleme
 	}
 
 	@Override
-	public void executeUpdate(final String sql, final Map<String, Object> parameters) {
-		new CommonHibernateJPQLRepository(this.getSession()).executeUpdate(sql, parameters);
+	public void executeUpdate(final QueryMetadata query) {
+		new CommonHibernateJPQLRepository(this.getSession()).executeUpdate(query);
 	}
 
 	@Override
 	@SuppressWarnings("rawtypes")
-	public Collection getCollection(final String sql, final Map<String, Object> parameters) {
-		return new CommonHibernateJPQLRepository(this.getSession()).getCollection(sql, parameters);
+	public Collection getCollection(final QueryMetadata query) {
+		return new CommonHibernateJPQLRepository(this.getSession()).getCollection(query);
 	}
 
 	@Override
-	public Object getSingle(final String sql, final Map<String, Object> parameters) {
-		return new CommonHibernateJPQLRepository(this.getSession()).getSingle(sql, parameters);
+	public Object getSingle(final QueryMetadata query) {
+		return new CommonHibernateJPQLRepository(this.getSession()).getSingle(query);
 	}
 
 }

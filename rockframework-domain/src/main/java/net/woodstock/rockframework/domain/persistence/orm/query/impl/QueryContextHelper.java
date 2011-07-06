@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.query.impl;
+package net.woodstock.rockframework.domain.persistence.orm.query.impl;
 
 import java.lang.reflect.Modifier;
 import java.util.Collection;
@@ -25,10 +25,10 @@ import java.util.Queue;
 
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.config.DomainLog;
-import net.woodstock.rockframework.domain.query.Constants;
-import net.woodstock.rockframework.domain.query.LikeMode;
-import net.woodstock.rockframework.domain.query.QueryException;
-import net.woodstock.rockframework.domain.query.impl.QueryContextParameter.Operator;
+import net.woodstock.rockframework.domain.persistence.orm.Constants;
+import net.woodstock.rockframework.domain.persistence.orm.LikeMode;
+import net.woodstock.rockframework.domain.persistence.orm.query.QueryException;
+import net.woodstock.rockframework.domain.persistence.orm.query.impl.QueryContextParameter.Operator;
 import net.woodstock.rockframework.reflection.BeanDescriptor;
 import net.woodstock.rockframework.reflection.PropertyDescriptor;
 import net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilder;

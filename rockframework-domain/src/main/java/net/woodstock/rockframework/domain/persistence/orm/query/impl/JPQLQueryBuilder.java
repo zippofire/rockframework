@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.query.impl;
+package net.woodstock.rockframework.domain.persistence.orm.query.impl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,9 +22,9 @@ import java.util.Map.Entry;
 
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.config.DomainLog;
-import net.woodstock.rockframework.domain.query.Constants;
-import net.woodstock.rockframework.domain.query.LikeMode;
-import net.woodstock.rockframework.domain.query.QueryBuilder;
+import net.woodstock.rockframework.domain.persistence.orm.Constants;
+import net.woodstock.rockframework.domain.persistence.orm.LikeMode;
+import net.woodstock.rockframework.domain.persistence.orm.query.QueryBuilder;
 
 public abstract class JPQLQueryBuilder<T> extends AbstractQueryBuilder<T> {
 

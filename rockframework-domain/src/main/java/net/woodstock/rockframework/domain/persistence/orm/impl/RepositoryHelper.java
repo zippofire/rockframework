@@ -18,7 +18,7 @@ package net.woodstock.rockframework.domain.persistence.orm.impl;
 
 import java.util.Map;
 
-import net.woodstock.rockframework.domain.query.Constants;
+import net.woodstock.rockframework.domain.persistence.orm.Constants;
 import net.woodstock.rockframework.utils.ConditionUtils;
 
 abstract class RepositoryHelper {

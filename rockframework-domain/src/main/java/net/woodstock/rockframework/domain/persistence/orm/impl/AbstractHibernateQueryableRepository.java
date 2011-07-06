@@ -18,7 +18,6 @@ package net.woodstock.rockframework.domain.persistence.orm.impl;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import org.hibernate.Query;
 
@@ -29,26 +28,26 @@ abstract class AbstractHibernateQueryableRepository extends AbstractQueryableRep
 	}
 
 	@Override
-	public void executeUpdate(final String sql, final Map<String, Object> parameters) {
-		Query query = this.getQuery(sql, parameters);
-		query.executeUpdate();
+	public void executeUpdate(final net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
+		Query q = this.getQuery(query);
+		q.executeUpdate();
 	}
 
 	@Override
 	@SuppressWarnings("rawtypes")
-	public Collection getCollection(final String sql, final Map<String, Object> parameters) {
-		Query query = this.getQuery(sql, parameters);
-		List list = query.list();
+	public Collection getCollection(final net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
+		Query q = this.getQuery(query);
+		List list = q.list();
 		return list;
 	}
 
 	@Override
-	public Object getSingle(final String sql, final Map<String, Object> parameters) {
-		Query query = this.getQuery(sql, parameters);
-		Object obj = query.uniqueResult();
+	public Object getSingle(final net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
+		Query q = this.getQuery(query);
+		Object obj = q.uniqueResult();
 		return obj;
 	}
 
-	protected abstract Query getQuery(final String sql, final Map<String, Object> parameters);
+	protected abstract Query getQuery(final net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query);
 
 }

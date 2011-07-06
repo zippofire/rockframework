@@ -22,8 +22,8 @@ import java.util.Map.Entry;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import net.woodstock.rockframework.domain.persistence.orm.Constants;
 import net.woodstock.rockframework.domain.persistence.orm.JPQLRepository;
-import net.woodstock.rockframework.domain.query.Constants;
 import net.woodstock.rockframework.utils.ConditionUtils;
 
 class CommonJPAJPQLRepository extends AbstractJPAQueryableRepository implements JPQLRepository {
@@ -36,30 +36,35 @@ class CommonJPAJPQLRepository extends AbstractJPAQueryableRepository implements 
 	}
 
 	@Override
-	protected Query getQuery(final String sql, final Map<String, Object> parameters) {
+	protected Query getQuery(final net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
 		EntityManager entityManager = this.entityManager;
-		Query query = entityManager.createQuery(sql);
+		Query q = entityManager.createQuery(query.getQuery());
+
+		Map<String, Object> parameters = query.getParameters();
+		Map<String, Object> options = query.getOptions();
 
 		if (ConditionUtils.isNotEmpty(parameters)) {
-			if (parameters.containsKey(Constants.OPTION_FIRST_RESULT)) {
-				Integer firstResult = (Integer) parameters.get(Constants.OPTION_FIRST_RESULT);
-				query.setFirstResult(firstResult.intValue());
-			}
-			if (parameters.containsKey(Constants.OPTION_MAX_RESULT)) {
-				Integer maxResult = (Integer) parameters.get(Constants.OPTION_MAX_RESULT);
-				query.setMaxResults(maxResult.intValue());
-			}
-
 			for (Entry<String, Object> entry : parameters.entrySet()) {
 				String name = entry.getKey();
 				Object value = entry.getValue();
 				if (this.isValidParameter(name)) {
-					query.setParameter(name, value);
+					q.setParameter(name, value);
 				}
 			}
 		}
 
-		return query;
+		if (ConditionUtils.isNotEmpty(options)) {
+			if (options.containsKey(Constants.OPTION_FIRST_RESULT)) {
+				Integer firstResult = (Integer) options.get(Constants.OPTION_FIRST_RESULT);
+				q.setFirstResult(firstResult.intValue());
+			}
+			if (options.containsKey(Constants.OPTION_MAX_RESULT)) {
+				Integer maxResult = (Integer) options.get(Constants.OPTION_MAX_RESULT);
+				q.setMaxResults(maxResult.intValue());
+			}
+		}
+
+		return q;
 	}
 
 }

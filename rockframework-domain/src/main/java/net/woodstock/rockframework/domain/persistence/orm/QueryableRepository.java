@@ -17,17 +17,16 @@
 package net.woodstock.rockframework.domain.persistence.orm;
 
 import java.util.Collection;
-import java.util.Map;
 
 import net.woodstock.rockframework.domain.persistence.Repository;
 
 public interface QueryableRepository extends Repository {
 
-	Object getSingle(String sql, Map<String, Object> parameters);
+	Object getSingle(QueryMetadata query);
 
 	@SuppressWarnings("rawtypes")
-	Collection getCollection(String sql, Map<String, Object> parameters);
+	Collection getCollection(QueryMetadata query);
 
-	void executeUpdate(String sql, Map<String, Object> parameters);
+	void executeUpdate(QueryMetadata query);
 
 }

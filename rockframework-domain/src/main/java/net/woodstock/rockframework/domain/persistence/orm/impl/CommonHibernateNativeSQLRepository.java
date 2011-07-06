@@ -20,8 +20,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import net.woodstock.rockframework.domain.Entity;
+import net.woodstock.rockframework.domain.persistence.orm.Constants;
 import net.woodstock.rockframework.domain.persistence.orm.NativeSQLRepository;
-import net.woodstock.rockframework.domain.query.Constants;
+import net.woodstock.rockframework.domain.persistence.orm.QueryMetadata;
 import net.woodstock.rockframework.utils.ConditionUtils;
 
 import org.hibernate.SQLQuery;
@@ -38,24 +39,30 @@ class CommonHibernateNativeSQLRepository extends AbstractHibernateQueryableRepos
 
 	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected SQLQuery getQuery(final String sql, final Map<String, Object> parameters) {
+	protected SQLQuery getQuery(final QueryMetadata query) {
 		Session session = this.session;
-		SQLQuery query = session.createSQLQuery(sql);
-		if (ConditionUtils.isNotEmpty(parameters)) {
-			if (parameters.containsKey(Constants.OPTION_TARGET_ENTITY)) {
-				Class<Entity> clazz = (Class<Entity>) parameters.get(Constants.OPTION_TARGET_ENTITY);
-				query.addEntity(clazz);
-			}
+		SQLQuery sqlQuery = session.createSQLQuery(query.getQuery());
 
+		Map<String, Object> parameters = query.getParameters();
+		Map<String, Object> options = query.getOptions();
+
+		if (ConditionUtils.isNotEmpty(options)) {
+			if (options.containsKey(Constants.OPTION_TARGET_ENTITY)) {
+				Class<Entity> clazz = (Class<Entity>) options.get(Constants.OPTION_TARGET_ENTITY);
+				sqlQuery.addEntity(clazz);
+			}
+		}
+
+		if (ConditionUtils.isNotEmpty(parameters)) {
 			for (Entry<String, Object> entry : parameters.entrySet()) {
 				String name = entry.getKey();
 				Object value = entry.getValue();
 				if (this.isValidParameter(name)) {
-					query.setParameter(name, value);
+					sqlQuery.setParameter(name, value);
 				}
 			}
 		}
-		return query;
+		return sqlQuery;
 	}
 
 }

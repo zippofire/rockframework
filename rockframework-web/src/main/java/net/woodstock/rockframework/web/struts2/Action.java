@@ -28,6 +28,15 @@ public abstract class Action extends ActionSupport implements Preparable {
 
 	private static final long	serialVersionUID	= 655502050649662609L;
 
+	private static final String	STORED_DATA_SUFFIX	= ".StoredData";
+
+	private String				name;
+
+	public Action() {
+		super();
+		this.name = this.getClass().getCanonicalName() + Action.STORED_DATA_SUFFIX;
+	}
+
 	@Override
 	public final void prepare() throws Exception {
 		this.prepare(this.getRequest());
@@ -44,6 +53,23 @@ public abstract class Action extends ActionSupport implements Preparable {
 
 	protected HttpSession getSession() {
 		return Struts2Utils.getSession();
+	}
+
+	// Stored Data
+	protected Object[] getStoredData() {
+		return (Object[]) this.getSession().getAttribute(this.name);
+	}
+
+	protected boolean hasStoredData() {
+		Object[] o = (Object[]) this.getSession().getAttribute(this.name);
+		if (o != null) {
+			return true;
+		}
+		return false;
+	}
+
+	protected void setStoredData(final Object[] data) {
+		this.getSession().setAttribute(this.name, data);
 	}
 
 }

@@ -14,19 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.query.impl;
+package net.woodstock.rockframework.domain.persistence.orm;
 
-import org.apache.openjpa.enhance.PersistenceCapable;
-
-abstract class OpenJPAHelper {
-
-	private OpenJPAHelper() {
-		//
-	}
-
-	public static boolean isProxy(final Object e) {
-		boolean b = (e instanceof PersistenceCapable);
-		return b;
-	}
-
+public enum CacheMode {
+	ENABLED, DISABLED;
 }

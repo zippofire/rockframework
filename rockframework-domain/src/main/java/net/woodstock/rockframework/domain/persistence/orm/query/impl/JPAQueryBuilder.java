@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.query.impl;
+package net.woodstock.rockframework.domain.persistence.orm.query.impl;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import net.woodstock.rockframework.domain.config.DomainLog;
-import net.woodstock.rockframework.domain.query.Constants;
+import net.woodstock.rockframework.domain.persistence.orm.Constants;
 
 public class JPAQueryBuilder extends JPQLQueryBuilder<Query> {
 

@@ -14,32 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.persistence.orm.impl;
+package net.woodstock.rockframework.domain.persistence.orm.query.impl;
 
-import java.util.Map;
+import net.woodstock.rockframework.domain.persistence.orm.query.QueryBuilder;
 
-import net.woodstock.rockframework.domain.persistence.orm.Filter;
-
-public class JPQLFilter implements Filter {
-
-	private static final long	serialVersionUID	= 5628711582746588279L;
-
-	private String				jpql;
-
-	private Map<String, Object>	params;
-
-	public JPQLFilter(final String jpql, final Map<String, Object> params) {
-		super();
-		this.jpql = jpql;
-		this.params = params;
-	}
-
-	public String getJpql() {
-		return this.jpql;
-	}
-
-	public Map<String, Object> getParams() {
-		return this.params;
-	}
-
+abstract class AbstractQueryBuilder<T> implements QueryBuilder<T> {
+	//
 }
