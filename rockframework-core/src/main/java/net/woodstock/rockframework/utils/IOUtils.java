@@ -16,13 +16,17 @@
  */
 package net.woodstock.rockframework.utils;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.nio.charset.Charset;
+import java.util.zip.GZIPOutputStream;
 
+import net.woodstock.rockframework.io.InputOutputStream;
 import net.woodstock.rockframework.util.Assert;
 
 public abstract class IOUtils {
@@ -34,16 +38,24 @@ public abstract class IOUtils {
 	public static void copy(final InputStream inputStream, final OutputStream outputStream) throws IOException {
 		Assert.notNull(inputStream, "inputStream");
 		Assert.notNull(outputStream, "outputStream");
-		byte[] bytes = new byte[inputStream.available()];
-		inputStream.read(bytes);
-		outputStream.write(bytes);
+
+		int i = 0;
+		do {
+			i = inputStream.read();
+			if (i != -1) {
+				outputStream.write(i);
+			}
+		} while (i != -1);
 	}
 
 	public static byte[] toByteArray(final InputStream inputStream) throws IOException {
 		Assert.notNull(inputStream, "inputStream");
-		byte[] bytes = new byte[inputStream.available()];
-		inputStream.read(bytes);
-		return bytes;
+
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+		IOUtils.copy(inputStream, outputStream);
+
+		return outputStream.toByteArray();
 	}
 
 	public static Reader toReader(final InputStream inputStream) {
@@ -59,12 +71,26 @@ public abstract class IOUtils {
 	public static String toString(final InputStream inputStream, final Charset charset) throws IOException {
 		Assert.notNull(inputStream, "inputStream");
 		Assert.notNull(charset, "charset");
-		byte[] bytes = new byte[inputStream.available()];
-		inputStream.read(bytes);
+		byte[] bytes = IOUtils.toByteArray(inputStream);
 
 		String s = new String(bytes, charset);
 
 		return s;
+	}
+
+	public static InputStream gzip(final byte[] bytes) throws IOException {
+		Assert.notNull(bytes, "bytes");
+		return IOUtils.gzip(new ByteArrayInputStream(bytes));
+	}
+
+	public static InputStream gzip(final InputStream inputStream) throws IOException {
+		Assert.notNull(inputStream, "inputStream");
+		InputOutputStream inputOutputStream = new InputOutputStream();
+		GZIPOutputStream gzipOutputStream = new GZIPOutputStream(inputOutputStream);
+		IOUtils.copy(inputStream, gzipOutputStream);
+
+		gzipOutputStream.close();
+		return inputOutputStream.getInputStream();
 	}
 
 }
