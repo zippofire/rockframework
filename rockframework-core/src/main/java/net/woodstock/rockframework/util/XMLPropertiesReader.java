@@ -16,11 +16,26 @@
  */
 package net.woodstock.rockframework.util;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public interface PropertiesFactory {
+class XMLPropertiesReader extends PropertiesReader {
 
-	Properties getProperties(InputStream inputStream);
+	public XMLPropertiesReader() {
+		super();
+	}
+
+	@Override
+	public Properties getProperties(final InputStream inputStream) {
+		try {
+			Properties properties = new Properties();
+			properties.loadFromXML(inputStream);
+			return properties;
+		} catch (IOException e) {
+			throw new net.woodstock.rockframework.io.IOException(e);
+		}
+
+	}
 
 }

@@ -19,6 +19,7 @@ import net.woodstock.rockframework.image.ImageResizeTransformer;
 import net.woodstock.rockframework.image.ImageTransformer;
 import net.woodstock.rockframework.image.ImageType;
 import net.woodstock.rockframework.image.JAIExifReader;
+import net.woodstock.rockframework.image.SanselanExifReader;
 
 public class ImageTest extends TestCase {
 
@@ -106,12 +107,25 @@ public class ImageTest extends TestCase {
 	}
 
 	public void test5() throws Exception {
+		System.out.println("=======================Nativo=======================");
 		InputStream inputStream = new FileInputStream("C:/Temp/exif/canon-ixus.jpg");
 		ExifReader reader = JAIExifReader.getInstance();
 		Map<String, String> params = reader.getHeaders(inputStream);
 		for (Entry<String, String> entry : params.entrySet()) {
 			System.out.println(entry.getKey() + " => " + entry.getValue());
 		}
+		inputStream.close();
+	}
+
+	public void test6() throws Exception {
+		System.out.println("=======================Sanselan=======================");
+		InputStream inputStream = new FileInputStream("C:/Temp/exif/canon-ixus.jpg");
+		ExifReader reader = SanselanExifReader.getInstance();
+		Map<String, String> params = reader.getHeaders(inputStream);
+		for (Entry<String, String> entry : params.entrySet()) {
+			System.out.println(entry.getKey() + " => " + entry.getValue());
+		}
+		inputStream.close();
 	}
 
 	public void xtest6() throws Exception {

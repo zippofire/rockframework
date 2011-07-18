@@ -14,28 +14,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.domain.persistence.orm.util;
+package net.woodstock.rockframework.util;
 
-import org.apache.openjpa.enhance.PersistenceCapable;
+import java.io.InputStream;
+import java.util.Properties;
 
-abstract class JPAUtil {
+public abstract class PropertiesReader {
 
-	private JPAUtil() {
-		//
+	private static final PropertiesReader	PLAIN_TEXT_INSTANCE	= new PlainPropertiesReader();
+
+	private static final PropertiesReader	XML_INSTANCE		= new XMLPropertiesReader();
+
+	public abstract Properties getProperties(InputStream inputStream);
+
+	public static PropertiesReader getPlainTextInstance() {
+		return PropertiesReader.PLAIN_TEXT_INSTANCE;
 	}
 
-	public static boolean isProxy(final Object e) {
-		boolean b = (e instanceof PersistenceCapable);
-		return b;
-	}
-
-	@SuppressWarnings("unchecked")
-	public static <E> Class<E> getRealClass(final E e) {
-		try {
-			return (Class<E>) Class.forName(e.getClass().getCanonicalName());
-		} catch (ClassNotFoundException ex) {
-			throw new RuntimeException(ex);
-		}
+	public static PropertiesReader getXMLInstance() {
+		return PropertiesReader.XML_INSTANCE;
 	}
 
 }

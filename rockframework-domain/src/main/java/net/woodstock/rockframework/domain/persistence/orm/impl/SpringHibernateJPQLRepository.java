@@ -28,18 +28,18 @@ public class SpringHibernateJPQLRepository extends SpringHibernateRepository imp
 	}
 
 	@Override
-	public void executeUpdate(QueryMetadata query) {
+	public void executeUpdate(final QueryMetadata query) {
 		new CommonHibernateJPQLRepository(this.getSession()).executeUpdate(query);
 	}
 
 	@Override
 	@SuppressWarnings("rawtypes")
-	public Collection getCollection(QueryMetadata query) {
+	public Collection getCollection(final QueryMetadata query) {
 		return new CommonHibernateJPQLRepository(this.getSession()).getCollection(query);
 	}
 
 	@Override
-	public Object getSingle(QueryMetadata query) {
+	public Object getSingle(final QueryMetadata query) {
 		return new CommonHibernateJPQLRepository(this.getSession()).getSingle(query);
 	}
 

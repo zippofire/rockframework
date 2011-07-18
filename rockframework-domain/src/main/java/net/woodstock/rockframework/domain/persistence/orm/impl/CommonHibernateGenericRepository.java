@@ -19,6 +19,7 @@ package net.woodstock.rockframework.domain.persistence.orm.impl;
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.config.DomainConfig;
 import net.woodstock.rockframework.domain.persistence.orm.GenericRepository;
+import net.woodstock.rockframework.domain.persistence.orm.util.PersistenceUtil;
 
 import org.hibernate.HibernateException;
 import org.hibernate.NonUniqueObjectException;
@@ -69,9 +70,11 @@ class CommonHibernateGenericRepository implements GenericRepository {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <E extends Entity<?>> E get(final E entity) {
+		Class<E> clazz = PersistenceUtil.getRealClass(entity);
+
 		if (CommonHibernateGenericRepository.GET_TYPE == GetType.LOAD) {
 			try {
-				E e = (E) this.session.load(entity.getClass(), entity.getId());
+				E e = (E) this.session.load(clazz, entity.getId());
 				if (e != null) {
 					this.session.refresh(e);
 				}
@@ -80,7 +83,7 @@ class CommonHibernateGenericRepository implements GenericRepository {
 				return null;
 			}
 		}
-		E e = (E) this.session.get(entity.getClass(), entity.getId());
+		E e = (E) this.session.get(clazz, entity.getId());
 		if (e != null) {
 			this.session.refresh(e);
 		}

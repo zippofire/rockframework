@@ -18,6 +18,7 @@ package net.woodstock.rockframework.domain.persistence.orm.impl;
 
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.persistence.orm.GenericRepository;
+import net.woodstock.rockframework.domain.persistence.orm.util.PersistenceUtil;
 
 public abstract class SpringHibernateGenericRepository extends SpringHibernateRepository implements GenericRepository {
 
@@ -33,7 +34,9 @@ public abstract class SpringHibernateGenericRepository extends SpringHibernateRe
 	@SuppressWarnings("unchecked")
 	@Override
 	public <E extends Entity<?>> E get(final E entity) {
-		E e = (E) this.getHibernateTemplate().get(entity.getClass(), entity.getId());
+		Class<E> clazz = PersistenceUtil.getRealClass(entity);
+
+		E e = (E) this.getHibernateTemplate().get(clazz, entity.getId());
 		if (e != null) {
 			this.getHibernateTemplate().refresh(e);
 		}

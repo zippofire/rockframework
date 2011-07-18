@@ -16,26 +16,23 @@
  */
 package net.woodstock.rockframework.domain.persistence.orm.util;
 
-import org.hibernate.Session;
+import org.hibernate.proxy.HibernateProxy;
 
-/**
- * @see HibernatePersistenceHelper
- */
-@Deprecated
-public abstract class HibernateUtil {
+abstract class HibernateUtil {
 
 	private HibernateUtil() {
 		//
 	}
 
-	@Deprecated
-	public static Session getSession() {
-		return HibernatePersistenceHelper.getInstance().get();
+	public static boolean isProxy(final Object o) {
+		boolean b = (o instanceof HibernateProxy);
+		return b;
 	}
 
-	@Deprecated
-	public static void closeSession() {
-		HibernatePersistenceHelper.getInstance().close();
+	@SuppressWarnings("unchecked")
+	public static <E> Class<E> getRealClass(final E e) {
+		HibernateProxy proxy = (HibernateProxy) e;
+		return proxy.getHibernateLazyInitializer().getPersistentClass();
 	}
 
 }

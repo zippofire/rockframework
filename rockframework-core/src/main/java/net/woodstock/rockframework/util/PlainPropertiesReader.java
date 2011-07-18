@@ -20,11 +20,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public final class XMLPropertiesFactory implements PropertiesFactory {
+class PlainPropertiesReader extends PropertiesReader {
 
-	private static PropertiesFactory	instance	= new XMLPropertiesFactory();
-
-	private XMLPropertiesFactory() {
+	public PlainPropertiesReader() {
 		super();
 	}
 
@@ -32,16 +30,12 @@ public final class XMLPropertiesFactory implements PropertiesFactory {
 	public Properties getProperties(final InputStream inputStream) {
 		try {
 			Properties properties = new Properties();
-			properties.loadFromXML(inputStream);
+			properties.load(inputStream);
 			return properties;
 		} catch (IOException e) {
 			throw new net.woodstock.rockframework.io.IOException(e);
 		}
 
-	}
-
-	public static PropertiesFactory getInstance() {
-		return instance;
 	}
 
 }

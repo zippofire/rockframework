@@ -26,7 +26,7 @@ import javax.sql.DataSource;
 import net.woodstock.rockframework.domain.persistence.orm.PersistenceException;
 import net.woodstock.rockframework.jdbc.DataSourceFactory;
 import net.woodstock.rockframework.jdbc.impl.BasicDataSourceFactory;
-import net.woodstock.rockframework.util.PlainPropertiesFactory;
+import net.woodstock.rockframework.util.PropertiesReader;
 import net.woodstock.rockframework.utils.ClassLoaderUtils;
 
 public final class JDBCPersistenceHelper implements PersistenceHelper<Connection> {
@@ -47,7 +47,7 @@ public final class JDBCPersistenceHelper implements PersistenceHelper<Connection
 				throw new PersistenceException("File " + JDBCPersistenceHelper.PROPERTIES_FILE + " not found in classpath");
 			}
 
-			Properties properties = PlainPropertiesFactory.getInstance().getProperties(inputStream);
+			Properties properties = PropertiesReader.getPlainTextInstance().getProperties(inputStream);
 			DataSourceFactory factory = new BasicDataSourceFactory();
 			this.dataSource = factory.getDataSource(properties);
 		} catch (Exception e) {

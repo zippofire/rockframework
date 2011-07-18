@@ -170,4 +170,8 @@ public abstract class NumberUtils {
 		//
 	}
 
+	public static int unsignedByteToInt(final byte b) {
+		return b & 0xff;
+	}
+
 }

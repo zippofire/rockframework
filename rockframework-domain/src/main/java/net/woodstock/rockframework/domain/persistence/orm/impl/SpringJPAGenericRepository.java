@@ -18,6 +18,7 @@ package net.woodstock.rockframework.domain.persistence.orm.impl;
 
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.persistence.orm.GenericRepository;
+import net.woodstock.rockframework.domain.persistence.orm.util.PersistenceUtil;
 
 public abstract class SpringJPAGenericRepository extends SpringJPARepository implements GenericRepository {
 
@@ -37,9 +38,10 @@ public abstract class SpringJPAGenericRepository extends SpringJPARepository imp
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public <E extends Entity<?>> E get(final E entity) {
-		E e = (E) this.getJpaTemplate().find(entity.getClass(), entity.getId());
+		Class<E> clazz = PersistenceUtil.getRealClass(entity);
+
+		E e = this.getJpaTemplate().find(clazz, entity.getId());
 		if (e != null) {
 			this.getJpaTemplate().refresh(e);
 		}

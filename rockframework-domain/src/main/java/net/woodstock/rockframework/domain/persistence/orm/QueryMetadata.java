@@ -14,34 +14,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.util;
+package net.woodstock.rockframework.domain.persistence.orm;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
+import java.util.Map;
 
-public final class PlainPropertiesFactory implements PropertiesFactory {
+import net.woodstock.rockframework.domain.Pojo;
 
-	private static PropertiesFactory	instance	= new PlainPropertiesFactory();
+public interface QueryMetadata extends Pojo {
 
-	private PlainPropertiesFactory() {
-		super();
-	}
+	String getQuery();
 
-	@Override
-	public Properties getProperties(final InputStream inputStream) {
-		try {
-			Properties properties = new Properties();
-			properties.load(inputStream);
-			return properties;
-		} catch (IOException e) {
-			throw new net.woodstock.rockframework.io.IOException(e);
-		}
+	Map<String, Object> getOptions();
 
-	}
-
-	public static PropertiesFactory getInstance() {
-		return instance;
-	}
+	Map<String, Object> getParameters();
 
 }

@@ -26,7 +26,7 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 import net.woodstock.rockframework.domain.persistence.orm.PersistenceException;
-import net.woodstock.rockframework.util.PlainPropertiesFactory;
+import net.woodstock.rockframework.util.PropertiesReader;
 import net.woodstock.rockframework.utils.ClassLoaderUtils;
 
 public final class JDBCWithJNDIPersistenceHelper implements PersistenceHelper<Connection> {
@@ -49,7 +49,7 @@ public final class JDBCWithJNDIPersistenceHelper implements PersistenceHelper<Co
 				throw new PersistenceException("File " + JDBCWithJNDIPersistenceHelper.PROPERTIES_FILE + " not found in classpath");
 			}
 
-			Properties properties = PlainPropertiesFactory.getInstance().getProperties(inputStream);
+			Properties properties = PropertiesReader.getPlainTextInstance().getProperties(inputStream);
 			String dataSource = properties.getProperty(JDBCWithJNDIPersistenceHelper.PROPERTY_DATASOURCE);
 			Context context = new InitialContext();
 			this.dataSource = (DataSource) context.lookup(dataSource);

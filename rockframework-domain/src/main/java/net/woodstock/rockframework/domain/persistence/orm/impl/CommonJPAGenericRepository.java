@@ -20,6 +20,7 @@ import javax.persistence.EntityManager;
 
 import net.woodstock.rockframework.domain.Entity;
 import net.woodstock.rockframework.domain.persistence.orm.GenericRepository;
+import net.woodstock.rockframework.domain.persistence.orm.util.PersistenceUtil;
 
 class CommonJPAGenericRepository implements GenericRepository {
 
@@ -41,10 +42,11 @@ class CommonJPAGenericRepository implements GenericRepository {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <E extends Entity<?>> E get(final E entity) {
-		E e = (E) this.entityManager.find(entity.getClass(), entity.getId());
+		Class<E> clazz = PersistenceUtil.getRealClass(entity);
+
+		E e = this.entityManager.find(clazz, entity.getId());
 		if (e != null) {
 			this.entityManager.refresh(e);
 		}

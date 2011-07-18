@@ -65,14 +65,14 @@ public class TestPDF extends TestCase {
 
 	}
 
-	public void xtest7() throws Exception {
+	public void test7() throws Exception {
 		System.out.println("Lowagie");
-		FileInputStream inputStream = new FileInputStream("/tmp/generics-tutorial.pdf");
+		FileInputStream inputStream = new FileInputStream("C:/Temp/arquivo.pdf");
 		PDFManager manager = PDFManagerImpl.getInstance();
 		InputStream[] images = manager.toImage(inputStream, "jpeg");
 		int count = 0;
 		for (InputStream image : images) {
-			FileOutputStream outputStream = new FileOutputStream("/tmp/generics-tutorial_" + count + ".jpg");
+			FileOutputStream outputStream = new FileOutputStream("C:/Temp/arquivo_" + count + ".jpg");
 			IOUtils.copy(image, outputStream);
 			count++;
 			outputStream.close();
@@ -80,7 +80,7 @@ public class TestPDF extends TestCase {
 		inputStream.close();
 	}
 
-	public void test8() throws Exception {
+	public void xtest8() throws Exception {
 		Font[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
 		for (Font font : fonts) {
 			System.out.println(font.getFontName());

@@ -171,7 +171,6 @@ public final class JAIExifReader implements ExifReader {
 						if (first) {
 							first = false;
 						}
-						builder.append(attribute);
 					}
 				}
 				map.put(name, builder.toString());
