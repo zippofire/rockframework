@@ -16,16 +16,15 @@
  */
 package net.woodstock.rockframework.domain.persistence.orm;
 
+import java.io.Serializable;
 import java.util.Map;
 
-import net.woodstock.rockframework.domain.Pojo;
-
-public interface QueryMetadata extends Pojo {
+public interface QueryMetadata extends Serializable {
 
 	String getQuery();
 
-	Map<String, Object> getOptions();
-
 	Map<String, Object> getParameters();
+
+	Map<String, Object> getOptions();
 
 }

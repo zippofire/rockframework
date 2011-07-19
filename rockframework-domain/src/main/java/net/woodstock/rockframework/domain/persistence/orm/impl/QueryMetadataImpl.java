@@ -16,13 +16,14 @@
  */
 package net.woodstock.rockframework.domain.persistence.orm.impl;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import net.woodstock.rockframework.domain.persistence.orm.QueryMetadata;
 
 public class QueryMetadataImpl implements QueryMetadata {
 
-	private static final long	serialVersionUID	= 3097734682999231894L;
+	private static final long	serialVersionUID	= 4971001334323658467L;
 
 	private String				query;
 
@@ -33,6 +34,8 @@ public class QueryMetadataImpl implements QueryMetadata {
 	public QueryMetadataImpl(final String query) {
 		super();
 		this.query = query;
+		this.parameters = new HashMap<String, Object>();
+		this.options = new HashMap<String, Object>();
 	}
 
 	public QueryMetadataImpl(final String query, final Map<String, Object> parameters, final Map<String, Object> options) {
@@ -43,17 +46,17 @@ public class QueryMetadataImpl implements QueryMetadata {
 	}
 
 	@Override
-	public final String getQuery() {
+	public String getQuery() {
 		return this.query;
 	}
 
 	@Override
-	public final Map<String, Object> getParameters() {
+	public Map<String, Object> getParameters() {
 		return this.parameters;
 	}
 
 	@Override
-	public final Map<String, Object> getOptions() {
+	public Map<String, Object> getOptions() {
 		return this.options;
 	}
 
