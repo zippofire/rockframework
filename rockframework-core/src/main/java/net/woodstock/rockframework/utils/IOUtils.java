@@ -23,13 +23,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
+import java.io.Writer;
 import java.nio.charset.Charset;
+import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import net.woodstock.rockframework.io.InputOutputStream;
 import net.woodstock.rockframework.util.Assert;
 
 public abstract class IOUtils {
+
+	private static final int	BUFFER_SIZE	= 8096;
 
 	private IOUtils() {
 		//
@@ -40,10 +44,25 @@ public abstract class IOUtils {
 		Assert.notNull(outputStream, "outputStream");
 
 		int i = 0;
+		byte[] bytes = new byte[IOUtils.BUFFER_SIZE];
 		do {
-			i = inputStream.read();
+			i = inputStream.read(bytes);
 			if (i != -1) {
-				outputStream.write(i);
+				outputStream.write(bytes, 0, i);
+			}
+		} while (i != -1);
+	}
+
+	public static void copy(final Reader reader, final Writer writer) throws IOException {
+		Assert.notNull(reader, "reader");
+		Assert.notNull(writer, "writer");
+
+		int i = 0;
+		char[] chars = new char[IOUtils.BUFFER_SIZE];
+		do {
+			i = reader.read(chars);
+			if (i != -1) {
+				writer.write(chars, 0, i);
 			}
 		} while (i != -1);
 	}
@@ -90,6 +109,14 @@ public abstract class IOUtils {
 		IOUtils.copy(inputStream, gzipOutputStream);
 
 		gzipOutputStream.close();
+		return inputOutputStream.getInputStream();
+	}
+
+	public static InputStream gunzip(final InputStream inputStream) throws IOException {
+		Assert.notNull(inputStream, "inputStream");
+		GZIPInputStream gzipInputStream = new GZIPInputStream(inputStream);
+		InputOutputStream inputOutputStream = new InputOutputStream();
+		IOUtils.copy(gzipInputStream, inputOutputStream);
 		return inputOutputStream.getInputStream();
 	}
 

@@ -23,10 +23,6 @@ import net.woodstock.rockframework.util.Assert;
 
 public abstract class SSOHelper {
 
-	public static final String	USER_PARAMETER	= "net.woodstock.rockframework.web.sso.USER";
-
-	public static final String	SSO_COOKIE_NAME	= "rockframework.sso.cookie";
-
 	private SSOHelper() {
 		//
 	}
@@ -38,7 +34,7 @@ public abstract class SSOHelper {
 
 	public static User getUser(final HttpSession session) {
 		Assert.notNull(session, "session");
-		User user = (User) session.getAttribute(SSOHelper.USER_PARAMETER);
+		User user = (User) session.getAttribute(SSOConstants.USER_PARAMETER);
 		return user;
 	}
 
@@ -51,7 +47,7 @@ public abstract class SSOHelper {
 	public static void setUser(final HttpSession session, final User user) {
 		Assert.notNull(session, "session");
 		Assert.notNull(user, "user");
-		session.setAttribute(SSOHelper.USER_PARAMETER, user);
+		session.setAttribute(SSOConstants.USER_PARAMETER, user);
 	}
 
 }

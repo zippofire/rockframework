@@ -14,31 +14,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package net.woodstock.rockframework.web.sso.client;
+package net.woodstock.rockframework.web.sso;
 
-import javax.servlet.http.HttpServletRequest;
+public abstract class SSOConstants {
 
-import net.woodstock.rockframework.util.RandomGenerator;
-import net.woodstock.rockframework.web.utils.RequestUtils;
+	public static final String	USER_PARAMETER		= "net.woodstock.rockframework.web.sso.SSOConstants.USER";
 
-abstract class SSOFilterHelper {
+	public static final String	SSO_COOKIE_NAME		= "rockframework.sso.cookie";
 
-	private static final int	ID_SIZE	= 16;
+	public static final String	HASH_PARAMETER		= "hash";
 
-	private SSOFilterHelper() {
+	public static final String	REDIRECT_PARAMETER	= "redirect";
+
+	private SSOConstants() {
 		//
-	}
-
-	public static String getRequestId() {
-		return new RandomGenerator(SSOFilterHelper.ID_SIZE).generate();
-	}
-
-	public static String getServerPath(final HttpServletRequest request) {
-		return RequestUtils.getApplicationUrl(request);
-	}
-	
-	public static String getRequestPath(final HttpServletRequest request) {
-		return RequestUtils.getFullRequestPath(request);
 	}
 
 }

@@ -30,12 +30,12 @@ import javax.servlet.http.HttpServletResponse;
 import net.woodstock.rockframework.web.filter.AbstractHttpFilter;
 import net.woodstock.rockframework.web.sso.RequestToken;
 import net.woodstock.rockframework.web.sso.ResponseToken;
+import net.woodstock.rockframework.web.sso.SSOConstants;
 import net.woodstock.rockframework.web.sso.SSOHelper;
 import net.woodstock.rockframework.web.sso.SSOUserManager;
-import net.woodstock.rockframework.web.sso.TokenHelper;
 import net.woodstock.rockframework.web.sso.User;
 
-public abstract class AbstractSSOFilter extends AbstractHttpFilter {
+public abstract class AbstractSSOClientFilter extends AbstractHttpFilter {
 
 	public static final String			APP_PARAMETER			= "app";
 
@@ -43,9 +43,7 @@ public abstract class AbstractSSOFilter extends AbstractHttpFilter {
 
 	public static final String			ERROR_PAGE_PARAMETER	= "errorPage";
 
-	private static final String			HASH_PARAMETER			= "hash";
-
-	private static final long			MAX_TIME				= 300000;
+	public static final long			MAX_TIME				= 300000;
 
 	private String						app;
 
@@ -62,9 +60,9 @@ public abstract class AbstractSSOFilter extends AbstractHttpFilter {
 	@Override
 	public void init() {
 		super.init();
-		this.app = this.getInitParameter(AbstractSSOFilter.APP_PARAMETER);
-		this.server = this.getInitParameter(AbstractSSOFilter.SERVER_PARAMETER);
-		this.errorPage = this.getInitParameter(AbstractSSOFilter.ERROR_PAGE_PARAMETER);
+		this.app = this.getInitParameter(AbstractSSOClientFilter.APP_PARAMETER);
+		this.server = this.getInitParameter(AbstractSSOClientFilter.SERVER_PARAMETER);
+		this.errorPage = this.getInitParameter(AbstractSSOClientFilter.ERROR_PAGE_PARAMETER);
 		this.mapToken = new HashMap<String, RequestToken>();
 		this.mapURL = new HashMap<String, String>();
 	}
@@ -73,10 +71,10 @@ public abstract class AbstractSSOFilter extends AbstractHttpFilter {
 	public void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain) throws IOException, ServletException {
 		User user = SSOHelper.getUser(request);
 		if (user == null) {
-			Cookie cookie = this.getSSOCookie(request);
+			Cookie cookie = SSOFilterClientHelper.getSSOCookie(request);
 			if (cookie != null) {
 				this.doRestoreCookie(request, response, cookie, chain);
-			} else if (request.getParameter(AbstractSSOFilter.HASH_PARAMETER) != null) {
+			} else if (request.getParameter(SSOConstants.HASH_PARAMETER) != null) {
 				this.doValidateHash(request, response, chain);
 			} else {
 				this.doFirstAccess(request, response);
@@ -86,27 +84,17 @@ public abstract class AbstractSSOFilter extends AbstractHttpFilter {
 		}
 	}
 
-	private Cookie getSSOCookie(final HttpServletRequest request) {
-		Cookie[] cookies = request.getCookies();
-		for (Cookie cookie : cookies) {
-			if (cookie.getName().equals(SSOHelper.SSO_COOKIE_NAME)) {
-				return cookie;
-			}
-		}
-		return null;
-	}
-
 	private void doFirstAccess(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
-		String id = SSOFilterHelper.getRequestId();
-		String url = SSOFilterHelper.getRequestPath(request);
-		String localServer = SSOFilterHelper.getServerPath(request);
+		String id = SSOFilterClientHelper.getRequestId();
+		String url = SSOFilterClientHelper.getRequestPath(request);
+		String localServer = SSOFilterClientHelper.getServerPath(request);
 
 		RequestToken token = new RequestToken(id, new Date(), this.app, localServer);
 
 		StringBuilder builder = new StringBuilder();
 		builder.append(this.server);
 		builder.append("?");
-		builder.append(AbstractSSOFilter.HASH_PARAMETER);
+		builder.append(SSOConstants.HASH_PARAMETER);
 		builder.append(token.toString());
 
 		String redirectPath = builder.toString();
@@ -117,7 +105,7 @@ public abstract class AbstractSSOFilter extends AbstractHttpFilter {
 	}
 
 	private void doRestoreCookie(final HttpServletRequest request, final HttpServletResponse response, final Cookie cookie, final FilterChain chain) throws IOException, ServletException {
-		User user = this.getUserManager().getUserByHash(cookie.getValue());
+		User user = this.getUserManager().getUserByHash(cookie.getValue(), this.app);
 
 		if (user == null) {
 			response.sendRedirect(this.errorPage);
@@ -129,18 +117,17 @@ public abstract class AbstractSSOFilter extends AbstractHttpFilter {
 	}
 
 	private void doValidateHash(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain) throws IOException, ServletException {
-		String hash = request.getParameter(AbstractSSOFilter.HASH_PARAMETER);
-		String strToken = TokenHelper.fromHash(hash);
+		String hash = request.getParameter(SSOConstants.HASH_PARAMETER);
 
-		ResponseToken responseToken = ResponseToken.fromString(strToken);
+		ResponseToken responseToken = ResponseToken.fromString(hash);
 		RequestToken requestToken = this.mapToken.get(responseToken.getId());
 
-		if (responseToken.getDate().getTime() - requestToken.getDate().getTime() > AbstractSSOFilter.MAX_TIME) {
+		if (responseToken.getDate().getTime() - requestToken.getDate().getTime() > AbstractSSOClientFilter.MAX_TIME) {
 			response.sendRedirect(this.errorPage);
 			return;
 		}
 
-		User user = this.getUserManager().getUserByHash(responseToken.getHash());
+		User user = this.getUserManager().getUserByHash(responseToken.getHash(), this.app);
 
 		if (user == null) {
 			response.sendRedirect(this.errorPage);

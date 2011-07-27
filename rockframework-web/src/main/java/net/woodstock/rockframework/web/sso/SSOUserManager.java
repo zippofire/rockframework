@@ -18,6 +18,6 @@ package net.woodstock.rockframework.web.sso;
 
 public interface SSOUserManager {
 
-	User getUserByHash(String hash);
+	User getUserByHash(String hash, String app);
 
 }

@@ -52,13 +52,13 @@ public abstract class TokenHelper {
 		return date;
 	}
 
-	public static String toHash(final String str) {
+	static String toHash(final String str) {
 		String hash = TokenHelper.BASE64_ENCODER.encode(str);
 		String newHash = hash.replaceAll(TokenHelper.NEW_LINE, TokenHelper.NEW_LINE_REPLACEMENT);
 		return newHash;
 	}
 
-	public static String fromHash(final String hash) {
+	static String fromHash(final String hash) {
 		String str = TokenHelper.BASE64_ENCODER.decode(hash);
 		String newStr = str.replaceAll(TokenHelper.NEW_LINE_REPLACEMENT, TokenHelper.NEW_LINE);
 		return newStr;
