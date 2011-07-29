@@ -26,9 +26,11 @@ import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import net.woodstock.rockframework.collection.ImmutableSet;
+
 public class ZipWriter {
 
-	public static final String	SEPARATOR	= "/";
+	private static final char	DIR_SEPARATOR	= '/';
 
 	private Set<File>			files;
 
@@ -42,76 +44,61 @@ public class ZipWriter {
 		}
 	}
 
-	public void add(final String... files) {
-		for (String s : files) {
-			File f = new File(s);
-			this.files.add(f);
-		}
-	}
-
-	public void del(final File... files) {
-		for (File f : files) {
-			this.files.remove(f);
-		}
-	}
-
-	public void del(final String... files) {
-		for (String s : files) {
-			for (File d : this.files) {
-				if (d.getName().equals(s)) {
-					this.files.remove(d);
-				}
-			}
-		}
-	}
-
-	public Collection<File> list() {
-		Collection<File> list = new LinkedHashSet<File>();
-		list.addAll(this.files);
-		return list;
-	}
-
-	public void save(final String fileName) throws IOException {
-		this.save(new File(fileName));
+	public Collection<File> getFiles() {
+		return new ImmutableSet<File>(this.files);
 	}
 
 	public void save(final File file) throws IOException {
 		ZipOutputStream out = new ZipOutputStream(new FileOutputStream(file));
 		for (File f : this.files) {
 			if (f.isDirectory()) {
-				ZipWriter.addDir(out, f);
+				this.addDir(out, f);
 			} else if (f.isFile()) {
-				ZipWriter.addFile(out, f);
+				this.addFile(out, f);
 			}
 		}
 		out.close();
 	}
 
-	private static void addDir(final ZipOutputStream out, final File dir) throws IOException {
-		ZipWriter.addDir(out, null, dir);
+	private void addDir(final ZipOutputStream out, final File dir) throws IOException {
+		this.addDir(out, null, dir);
 	}
 
-	private static void addFile(final ZipOutputStream out, final File file) throws IOException {
-		ZipWriter.addFile(out, null, file);
+	private void addFile(final ZipOutputStream out, final File file) throws IOException {
+		this.addFile(out, null, file);
 	}
 
-	private static void addDir(final ZipOutputStream out, final File parent, final File dir) throws IOException {
+	private void addDir(final ZipOutputStream out, final File parent, final File dir) throws IOException {
 		File[] files = dir.listFiles();
 		for (File f : files) {
 			if (f.isDirectory()) {
-				String name = (parent != null ? parent.getName() + ZipWriter.SEPARATOR : "") + dir.getName() + ZipWriter.SEPARATOR;
+				String name = null;
+
+				if (parent != null) {
+					name = parent.getName() + ZipWriter.DIR_SEPARATOR + dir.getName();
+				} else {
+					name = dir.getName();
+				}
+
 				ZipEntry entry = new ZipEntry(name);
 				out.putNextEntry(entry);
-				ZipWriter.addDir(out, dir, f);
+				this.addDir(out, dir, f);
 			} else if (f.isFile()) {
-				ZipWriter.addFile(out, dir, f);
+				this.addFile(out, dir, f);
 			}
 		}
 	}
 
-	private static void addFile(final ZipOutputStream out, final File parent, final File file) throws IOException {
+	private void addFile(final ZipOutputStream out, final File parent, final File file) throws IOException {
 		FileInputStream input = new FileInputStream(file);
-		String name = (parent != null ? parent.getName() + ZipWriter.SEPARATOR : "") + file.getName();
+		String name = null;
+
+		if (parent != null) {
+			name = parent.getName() + ZipWriter.DIR_SEPARATOR + file.getName();
+		} else {
+			name = file.getName();
+		}
+
 		out.putNextEntry(new ZipEntry(name));
 		byte[] buf = new byte[1024];
 		int len = input.read(buf);

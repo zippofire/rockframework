@@ -28,12 +28,15 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import net.woodstock.rockframework.collection.ImmutableSet;
+import net.woodstock.rockframework.utils.IOUtils;
 
 public class ZipReader {
 
-	private Set<String>	files;
+	private static final char	DIR_SEPARATOR	= '/';
 
-	private File		file;
+	private Set<String>			files;
+
+	private File				file;
 
 	public ZipReader(final String fileName) throws IOException {
 		this(new File(fileName));
@@ -43,122 +46,14 @@ public class ZipReader {
 		super();
 		this.file = file;
 		this.files = new LinkedHashSet<String>(0);
-		this.read();
-	}
-
-	public byte[] getBytes(final String file) throws IOException {
-		if (this.files.contains(file)) {
-			ZipInputStream input = new ZipInputStream(new FileInputStream(this.file));
-			ZipEntry entry = input.getNextEntry();
-			while (entry != null) {
-				entry = input.getNextEntry();
-				if (entry.getName().equals(file)) {
-					ByteArrayOutputStream output = new ByteArrayOutputStream();
-					int b = -1;
-					do {
-						b = input.read();
-						if (b != -1) {
-							output.write(b);
-						}
-					} while (b != -1);
-					byte[] bytes = output.toByteArray();
-					output.close();
-					input.close();
-					return bytes;
-				}
-			}
-			input.close();
-		}
-		return new byte[0];
-	}
-
-	public File getFile(final String file, final File outFile) throws IOException {
-		if (this.files.contains(file)) {
-			ZipInputStream input = new ZipInputStream(new FileInputStream(this.file));
-			ZipEntry entry = input.getNextEntry();
-			while (entry != null) {
-				entry = input.getNextEntry();
-				if (entry.getName().equals(file)) {
-					FileOutputStream output = new FileOutputStream(outFile);
-					int b = -1;
-					do {
-						b = input.read();
-						if (b != -1) {
-							output.write(b);
-						}
-					} while (b != -1);
-					output.close();
-					break;
-				}
-			}
-			input.close();
-		}
-		return outFile;
-	}
-
-	public File getFile(final String file, final String outFile) throws IOException {
-		return this.getFile(file, new File(outFile));
+		this.readMetadata();
 	}
 
 	public Collection<String> getFiles() {
 		return new ImmutableSet<String>(this.files);
 	}
 
-	public void unzipFiles(final File outDir, final String... files) throws IOException {
-		Collection<String> fileList = new LinkedHashSet<String>();
-		for (String file : files) {
-			fileList.add(file);
-		}
-		ZipInputStream input = new ZipInputStream(new FileInputStream(this.file));
-		ZipEntry entry = input.getNextEntry();
-		while (entry != null) {
-			entry = input.getNextEntry();
-			if (fileList.contains(entry.getName())) {
-				FileOutputStream output = new FileOutputStream(outDir.getAbsolutePath() + File.separator + entry.getName());
-				int b = -1;
-				do {
-					b = input.read();
-					if (b != -1) {
-						output.write(b);
-					}
-				} while (b != -1);
-				output.close();
-			}
-		}
-		input.close();
-	}
-
-	public void unzipFiles(final String outDir, final String... files) throws IOException {
-		this.unzipFiles(new File(outDir), files);
-	}
-
-	public void unzipAll(final File outDir) throws IOException {
-		ZipInputStream input = new ZipInputStream(new FileInputStream(this.file));
-		ZipEntry entry = input.getNextEntry();
-		while (entry != null) {
-			entry = input.getNextEntry();
-			FileOutputStream output = new FileOutputStream(outDir.getAbsolutePath() + File.separator + entry.getName());
-			int b = -1;
-			do {
-				b = input.read();
-				if (b != -1) {
-					output.write(b);
-				}
-			} while (b != -1);
-			output.close();
-		}
-		input.close();
-	}
-
-	public void unzipAll(final String outDir) throws IOException {
-		this.unzipAll(new File(outDir));
-	}
-
-	public Set<String> list() {
-		return this.files;
-	}
-
-	private void read() throws IOException {
+	private void readMetadata() throws IOException {
 		ZipInputStream input = new ZipInputStream(new FileInputStream(this.file));
 		ZipEntry entry = input.getNextEntry();
 		while (entry != null) {
@@ -167,4 +62,59 @@ public class ZipReader {
 		}
 		input.close();
 	}
+
+	public byte[] getFile(final String file) throws IOException {
+		if (this.files.contains(file)) {
+			ZipInputStream input = new ZipInputStream(new FileInputStream(this.file));
+			ZipEntry entry = input.getNextEntry();
+			while (entry != null) {
+				entry = input.getNextEntry();
+				if ((entry.getName().equals(file)) && (!entry.isDirectory())) {
+					ByteArrayOutputStream output = new ByteArrayOutputStream();
+					IOUtils.copy(input, output);
+					output.close();
+					input.close();
+					return output.toByteArray();
+				}
+			}
+			input.close();
+		}
+		return null;
+	}
+
+	public void unzip(final File outDir) throws IOException {
+		ZipInputStream input = new ZipInputStream(new FileInputStream(this.file));
+		ZipEntry entry = input.getNextEntry();
+		while (entry != null) {
+			entry = input.getNextEntry();
+			if (entry != null) {
+				File file = this.createFile(outDir, entry.getName());
+				if (!entry.isDirectory()) {
+					FileOutputStream output = new FileOutputStream(file);
+					IOUtils.copy(input, output);
+					output.close();
+				}
+			}
+		}
+		input.close();
+	}
+
+	private File createFile(final File outDir, final String name) {
+		if (name.indexOf(ZipReader.DIR_SEPARATOR) != -1) {
+			String parent = name.substring(0, name.indexOf(ZipReader.DIR_SEPARATOR));
+			String newName = name.substring(name.indexOf(ZipReader.DIR_SEPARATOR) + 1);
+			File newOutDir = new File(outDir, parent);
+			if (!newOutDir.exists()) {
+				newOutDir.mkdirs();
+			}
+
+			if ((newName == null) || (newName.trim().length() == 0)) {
+				return newOutDir;
+			}
+
+			return this.createFile(newOutDir, newName);
+		}
+		return new File(outDir, name);
+	}
+
 }
