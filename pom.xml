@@ -17,13 +17,10 @@
 	<mailingLists>
 		<mailingList>
 			<name>RockFramework User List</name>
-			<subscribe>rockframework.subscribe@wooodstock.net</subscribe>
-			<unsubscribe>rockframework.unsubscribe@wooodstock.net</unsubscribe>
-			<post>do not post to rockframework.users@woodstock.net unless subscribed</post>
-			<archive>http://mail.woodstock.net/rockframework-users</archive>
-			<otherArchives>
-				<otherArchive>http://mail.woodstock.net/users</otherArchive>
-			</otherArchives>
+			<subscribe>rockframework.subscribe@wooodstock.net.br</subscribe>
+			<unsubscribe>rockframework.unsubscribe@wooodstock.net.br</unsubscribe>
+			<post>do not post to rockframework.users@woodstock.net.br unless subscribed</post>
+			<archive>http://woodstock.net/rockframework-users</archive>
 		</mailingList>
 	</mailingLists>
 	<developers>
@@ -31,9 +28,11 @@
 			<id>junior</id>
 			<name>Lourival Sabino</name>
 			<email>lourival.sabino.junior@gmail.com</email>
-			<organization>Woodstock</organization>
+			<organization>Woodstock Tecnologia</organization>
 			<roles>
-				<role>PMC</role>
+				<role>owner</role>
+				<role>architect</role>
+				<role>developer</role>
 			</roles>
 		</developer>
 	</developers>
@@ -50,8 +49,8 @@
 		<url>http://code.google.com/p/rockframework/</url>
 	</scm>
 	<organization>
-		<name>Woodstock</name>
-		<url>http://www.woodstock.net</url>
+		<name>Woodstock Tecnologia</name>
+		<url>http://woodstock.net.br</url>
 	</organization>
 	<modules>
 		<module>rockframework-core</module>
