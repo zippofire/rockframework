@@ -19,13 +19,5 @@ package net.woodstock.rockframework.web.sso;
 import net.woodstock.rockframework.domain.Pojo;
 
 public interface User extends Pojo {
-
-	String getId();
-
-	String getName();
-
-	String getEmail();
-
-	Role getRole();
-
+	//
 }
