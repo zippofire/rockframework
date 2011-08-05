@@ -16,13 +16,9 @@
  */
 package net.woodstock.rockframework.web.sso.server;
 
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.woodstock.rockframework.web.sso.RequestToken;
-import net.woodstock.rockframework.web.sso.ResponseToken;
 import net.woodstock.rockframework.web.sso.SSOConstants;
 import net.woodstock.rockframework.web.struts2.Constants;
 import net.woodstock.rockframework.web.struts2.Interceptor;
@@ -35,6 +31,8 @@ public abstract class AbstractSSOServerInterceptor extends Interceptor {
 
 	public static final String	DOMAIN_PARAMETER	= "domain";
 
+	public static final String	URL_PARAMETER		= "url";
+
 	private String				domain;
 
 	@Override
@@ -42,31 +40,16 @@ public abstract class AbstractSSOServerInterceptor extends Interceptor {
 		HttpServletRequest request = this.getRequest();
 		HttpServletResponse response = this.getResponse();
 		if (request.getParameter(SSOConstants.HASH_PARAMETER) != null) {
-			this.doCheckHash(request);
+			SSOFilterServerHelper.configureHash(request);
 		}
 
 		if (request.getParameter(SSOConstants.REDIRECT_PARAMETER) != null) {
-			return this.doRedirect(request, response);
+			String url = SSOFilterServerHelper.getRedirectURL(request, response, this.domain);
+			request.setAttribute(AbstractSSOServerInterceptor.URL_PARAMETER, url);
+			return Constants.REDIRECT;
 		}
 
 		return invocation.invoke();
-	}
-
-	private void doCheckHash(final HttpServletRequest request) {
-		String hash = request.getParameter(SSOConstants.HASH_PARAMETER);
-		RequestToken token = RequestToken.fromString(hash);
-		SSOFilterServerHelper.setRequestToken(request, token);
-	}
-
-	private String doRedirect(final HttpServletRequest request, final HttpServletResponse response) {
-		RequestToken requestToken = SSOFilterServerHelper.getRequestToken(request);
-		ResponseToken responseToken = SSOFilterServerHelper.getResponseToken(request);
-
-		String url = requestToken.getUrl() + "?" + SSOConstants.HASH_PARAMETER + "=" + responseToken.toString();
-
-		SSOFilterServerHelper.setCookie(response, this.domain, responseToken.getHash());
-
-		return Constants.REDIRECT;
 	}
 
 	public void setDomain(final String domain) {

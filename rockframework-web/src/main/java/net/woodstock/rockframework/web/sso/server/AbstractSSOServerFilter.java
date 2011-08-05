@@ -24,8 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.woodstock.rockframework.web.filter.AbstractHttpFilter;
-import net.woodstock.rockframework.web.sso.RequestToken;
-import net.woodstock.rockframework.web.sso.ResponseToken;
 import net.woodstock.rockframework.web.sso.SSOConstants;
 
 public abstract class AbstractSSOServerFilter extends AbstractHttpFilter {
@@ -43,31 +41,15 @@ public abstract class AbstractSSOServerFilter extends AbstractHttpFilter {
 	@Override
 	public void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain) throws IOException, ServletException {
 		if (request.getParameter(SSOConstants.HASH_PARAMETER) != null) {
-			this.doCheckHash(request);
+			SSOFilterServerHelper.configureHash(request);
 		}
 
 		if (request.getParameter(SSOConstants.REDIRECT_PARAMETER) != null) {
-			this.doRedirect(request, response);
+			String url = SSOFilterServerHelper.getRedirectURL(request, response, this.domain);
+			response.sendRedirect(url);
 		} else {
 			chain.doFilter(request, response);
 		}
-	}
-
-	private void doCheckHash(final HttpServletRequest request) {
-		String hash = request.getParameter(SSOConstants.HASH_PARAMETER);
-		RequestToken token = RequestToken.fromString(hash);
-		SSOFilterServerHelper.setRequestToken(request, token);
-	}
-
-	private void doRedirect(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
-		RequestToken requestToken = SSOFilterServerHelper.getRequestToken(request);
-		ResponseToken responseToken = SSOFilterServerHelper.getResponseToken(request);
-
-		String url = requestToken.getUrl() + "?" + SSOConstants.HASH_PARAMETER + "=" + responseToken.toString();
-
-		SSOFilterServerHelper.setCookie(response, this.domain, responseToken.getHash());
-
-		response.sendRedirect(url);
 	}
 
 }

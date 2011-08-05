@@ -22,9 +22,9 @@ public abstract class SSOConstants {
 
 	public static final String	SSO_COOKIE_NAME		= "rockframework.sso.cookie";
 
-	public static final String	HASH_PARAMETER		= "hash";
+	public static final String	HASH_PARAMETER		= "sso.hash";
 
-	public static final String	REDIRECT_PARAMETER	= "redirect";
+	public static final String	REDIRECT_PARAMETER	= "sso.redirect";
 
 	private SSOConstants() {
 		//

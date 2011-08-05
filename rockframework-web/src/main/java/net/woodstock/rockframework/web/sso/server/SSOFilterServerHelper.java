@@ -93,4 +93,22 @@ abstract class SSOFilterServerHelper {
 		cookie.setPath(SSOFilterServerHelper.COOKIE_PATH);
 		response.addCookie(cookie);
 	}
+
+	public static void configureHash(final HttpServletRequest request) {
+		String hash = request.getParameter(SSOConstants.HASH_PARAMETER);
+		RequestToken token = RequestToken.fromString(hash);
+		SSOFilterServerHelper.setRequestToken(request, token);
+	}
+
+	public static String getRedirectURL(final HttpServletRequest request, final HttpServletResponse response, final String domain) {
+		RequestToken requestToken = SSOFilterServerHelper.getRequestToken(request);
+		ResponseToken responseToken = SSOFilterServerHelper.getResponseToken(request);
+
+		String url = requestToken.getUrl() + "?" + SSOConstants.HASH_PARAMETER + "=" + responseToken.toString();
+
+		SSOFilterServerHelper.setCookie(response, domain, responseToken.getHash());
+
+		return url;
+	}
+
 }
