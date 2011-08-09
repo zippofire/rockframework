@@ -17,6 +17,7 @@
 package net.woodstock.rockframework.web.struts2;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import net.woodstock.rockframework.web.struts2.utils.Struts2Utils;
@@ -49,6 +50,10 @@ public abstract class Action extends ActionSupport implements Preparable {
 
 	protected HttpServletRequest getRequest() {
 		return Struts2Utils.getRequest();
+	}
+
+	protected HttpServletResponse getResponse() {
+		return Struts2Utils.getResponse();
 	}
 
 	protected HttpSession getSession() {
