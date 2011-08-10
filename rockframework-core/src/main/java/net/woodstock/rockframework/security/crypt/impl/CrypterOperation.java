@@ -43,8 +43,8 @@ class CrypterOperation {
 	public byte[] execute() throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
 		Cipher cipher = Cipher.getInstance(this.key.getAlgorithm());
 		cipher.init(this.mode.getMode(), this.key);
-		cipher.update(this.data);
-		byte[] result = cipher.doFinal();
+		// cipher.update(this.data);
+		byte[] result = cipher.doFinal(this.data);
 		return result;
 	}
 
