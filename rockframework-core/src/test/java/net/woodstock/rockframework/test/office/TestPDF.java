@@ -2,10 +2,14 @@ package net.woodstock.rockframework.test.office;
 
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import javax.imageio.ImageIO;
 
 import junit.framework.TestCase;
 import net.woodstock.rockframework.office.pdf.PDFManager;
@@ -65,7 +69,7 @@ public class TestPDF extends TestCase {
 
 	}
 
-	public void test7() throws Exception {
+	public void xtest7() throws Exception {
 		System.out.println("Lowagie");
 		FileInputStream inputStream = new FileInputStream("C:/Temp/arquivo.pdf");
 		PDFManager manager = PDFManagerImpl.getInstance();
@@ -85,6 +89,24 @@ public class TestPDF extends TestCase {
 		for (Font font : fonts) {
 			System.out.println(font.getFontName());
 		}
+	}
+
+	public void test9() throws Exception {
+		InputStream inputStream = new FileInputStream("/tmp/visualizarPDF.pdf");
+		OutputStream outputStream = new FileOutputStream("/tmp/visualizarPDF-2.pdf");
+		PdfReader pdfReader = new PdfReader(inputStream);
+		PdfStamper pdfStamper = new PdfStamper(pdfReader, outputStream);
+		PdfContentByte contentByte = pdfStamper.getUnderContent(1);
+		BufferedImage bufferedImage = ImageIO.read(new File("/tmp/carimbo.png"));
+		Image image = Image.getInstance(contentByte, bufferedImage, 1);
+
+		image.setAbsolutePosition(10, 740); // a altura eh de baixo pra cima, 800 eh o topo
+		contentByte.addImage(image);
+
+		pdfStamper.close();
+		
+		inputStream.close();
+		outputStream.close();
 	}
 
 }

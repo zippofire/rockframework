@@ -114,6 +114,12 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.ws.security</groupId>
+			<artifactId>wss4j</artifactId>
+			<version>1.6.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate</artifactId>
 			<version>3.2.0.ga</version>
