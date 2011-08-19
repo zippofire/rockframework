@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 
@@ -16,10 +17,15 @@ import net.woodstock.rockframework.office.pdf.PDFManager;
 import net.woodstock.rockframework.office.pdf.impl.PDFManagerImpl;
 import net.woodstock.rockframework.utils.IOUtils;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
 import com.itextpdf.text.Image;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.Barcode;
 import com.itextpdf.text.pdf.BarcodeEAN;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfGState;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 
@@ -97,14 +103,72 @@ public class TestPDF extends TestCase {
 		PdfReader pdfReader = new PdfReader(inputStream);
 		PdfStamper pdfStamper = new PdfStamper(pdfReader, outputStream);
 		PdfContentByte contentByte = pdfStamper.getUnderContent(1);
+		Rectangle rectangle = pdfReader.getPageSize(1);
+
+		PdfGState gsState = new PdfGState();
+		gsState.setFillOpacity(0.7f);
+
+		BaseFont font = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.EMBEDDED);
+		float fontSize = 12;
+		float marginLeft = 20;
+		float marginTop = 20;
+
 		BufferedImage bufferedImage = ImageIO.read(new File("/tmp/carimbo.png"));
 		Image image = Image.getInstance(contentByte, bufferedImage, 1);
 
-		image.setAbsolutePosition(10, 740); // a altura eh de baixo pra cima, 800 eh o topo
+		float imageLeft = rectangle.getWidth() - marginLeft - image.getScaledWidth();
+		float imageTop = rectangle.getTop() - marginTop - image.getScaledHeight();
+
+		float textLeft = rectangle.getWidth() - marginLeft - (image.getScaledWidth() / 1.95f);
+		float textTop = rectangle.getTop() - marginTop - (image.getScaledHeight() / 2.05f);
+
+		image.setAbsolutePosition(imageLeft, imageTop);
+
+		contentByte.setGState(gsState);
 		contentByte.addImage(image);
 
+		contentByte.beginText();
+		contentByte.setFontAndSize(font, fontSize);
+		contentByte.showTextAligned(Element.ALIGN_LEFT, Long.toString(1), textLeft, textTop, 0);
+		contentByte.endText();
+		contentByte.stroke();
+
 		pdfStamper.close();
-		
+
+		inputStream.close();
+		outputStream.close();
+	}
+
+	public void xtest10() throws Exception {
+		File file = new File("/tmp/carimbo.png");
+		URL resource = file.toURI().toURL();
+		InputStream inputStream = new FileInputStream("/tmp/visualizarPDF.pdf");
+		OutputStream outputStream = new FileOutputStream("/tmp/visualizarPDF-3.pdf");
+		PdfReader pdfReader = new PdfReader(inputStream);
+		PdfStamper pdfStamper = new PdfStamper(pdfReader, outputStream);
+		PdfContentByte conteudo = pdfStamper.getUnderContent(1);
+		PdfGState gs = new PdfGState();
+		gs.setFillOpacity(0.8f);
+		Image img = Image.getInstance(resource);
+		Document doc = new Document();
+		BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.EMBEDDED);
+		float f = doc.getPageSize().getWidth() - img.getScaledWidth();
+		float g = doc.getPageSize().getHeight() - img.getScaledHeight();
+		img.setAbsolutePosition((f / 100) + 10, g - 60);
+
+		conteudo.beginText();
+		conteudo.setGState(gs);
+		conteudo.setTextMatrix(doc.top() - 150, doc.bottom() - 20);
+		conteudo.setFontAndSize(bf, 12);
+		float width = doc.getPageSize().getWidth() - 65;
+		float top = doc.getPageSize().getTop() - 110;
+		conteudo.showTextAligned(Element.ALIGN_LEFT, Long.toString(1), width, top + 6, 0);
+		conteudo.addImage(img, true);
+		conteudo.endText();
+		conteudo.stroke();
+
+		pdfStamper.close();
+
 		inputStream.close();
 		outputStream.close();
 	}
