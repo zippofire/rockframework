@@ -20,8 +20,6 @@ import java.util.Random;
 
 public class RandomGenerator implements StringGenerator {
 
-	private Random			random;
-
 	private int				length;
 
 	private RandomPattern	pattern;
@@ -34,27 +32,29 @@ public class RandomGenerator implements StringGenerator {
 		super();
 		this.length = length;
 		this.pattern = pattern;
-		this.random = new Random();
 	}
 
 	@Override
 	public String generate() {
 		StringBuilder builder = new StringBuilder();
 		String pattern = this.pattern.getPattern();
+		Random random = new Random();
 		int max = pattern.length();
 		for (int i = 0; i < this.length; i++) {
-			int index = this.random.nextInt(max);
+			int index = random.nextInt(max);
 			builder.append(pattern.charAt(index));
 		}
 		return builder.toString();
 	}
 
 	public static enum RandomPattern {
+		DIGITS("0123456789"),
 		LETTER_UPERCASE("ABCDEFGHIJKLMNOPQRSTUVWXYZ"),
 		LETTER_LOWERCASE("abcdefghijklmnopkrstuvwxyz"),
-		DIGITS("0123456789"),
 		LETTER(LETTER_UPERCASE.pattern + LETTER_LOWERCASE.pattern),
-		LETTER_OR_DIGIT(LETTER.pattern + DIGITS.pattern);
+		LETTER_OR_DIGIT(LETTER.pattern + DIGITS.pattern),
+		LETTER_OR_DIGIT_LOWERCASE(LETTER_LOWERCASE.pattern + DIGITS.pattern),
+		LETTER_OR_DIGIT_UPERCASE(LETTER_UPERCASE.pattern + DIGITS.pattern);
 
 		private String	pattern;
 
