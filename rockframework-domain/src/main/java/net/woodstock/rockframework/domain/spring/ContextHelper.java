@@ -23,7 +23,6 @@ import java.util.Map;
 import net.woodstock.rockframework.domain.ConfigurationNotFoundException;
 import net.woodstock.rockframework.domain.ObjectNotFoundException;
 import net.woodstock.rockframework.domain.TooManyObjectsException;
-import net.woodstock.rockframework.domain.config.DomainLog;
 import net.woodstock.rockframework.util.Assert;
 
 import org.springframework.context.ApplicationContext;
@@ -58,7 +57,6 @@ public final class ContextHelper {
 			Class.forName(ContextHelper.WEB_CONTEXT_LOADER_CLASS);
 			return WebContextHelper.isWebApplication();
 		} catch (ClassNotFoundException e) {
-			DomainLog.getInstance().getLog().info(e.getMessage(), e);
 			return false;
 		}
 	}
@@ -68,7 +66,6 @@ public final class ContextHelper {
 			Class.forName(ContextHelper.SECURITY_CONTEXT_CLASS);
 			return true;
 		} catch (ClassNotFoundException e) {
-			DomainLog.getInstance().getLog().info(e.getMessage(), e);
 			return false;
 		}
 	}
