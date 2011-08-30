@@ -41,7 +41,7 @@ public class FileMimeTypeFilter implements FilenameFilter {
 
 	@Override
 	public boolean accept(final File dir, final String name) {
-		if (ConditionUtils.isEmptyOrNull(this.types)) {
+		if (ConditionUtils.isEmpty(this.types)) {
 			return true;
 		}
 

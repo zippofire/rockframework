@@ -156,7 +156,7 @@ public abstract class ConditionUtils {
 
 	// Collections
 	@SuppressWarnings("rawtypes")
-	public static boolean isEmptyOrNull(final Collection collection) {
+	public static boolean isEmpty(final Collection collection) {
 		if ((collection == null) || (collection.isEmpty())) {
 			return true;
 		}
@@ -164,14 +164,14 @@ public abstract class ConditionUtils {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public static boolean isEmptyOrNull(final Map map) {
+	public static boolean isEmpty(final Map map) {
 		if ((map == null) || (map.isEmpty())) {
 			return true;
 		}
 		return false;
 	}
 
-	public static boolean isEmptyOrNull(final Object[] array) {
+	public static boolean isEmpty(final Object[] array) {
 		if ((array == null) || (array.length == 0)) {
 			return true;
 		}
