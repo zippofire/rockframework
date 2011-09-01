@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.woodstock.rockframework</groupId>
+	<groupId>br.net.woodstock.rockframework</groupId>
 	<artifactId>rockframework-parent</artifactId>
 	<packaging>pom</packaging>
 	<name>Rock Framework</name>
@@ -27,7 +27,7 @@
 			<subscribe>rockframework.subscribe@wooodstock.net.br</subscribe>
 			<unsubscribe>rockframework.unsubscribe@wooodstock.net.br</unsubscribe>
 			<post>do not post to rockframework.users@woodstock.net.br unless subscribed</post>
-			<archive>http://woodstock.net/rockframework-users</archive>
+			<archive>http://woodstock.net.br/rockframework-users</archive>
 		</mailingList>
 	</mailingLists>
 	<developers>

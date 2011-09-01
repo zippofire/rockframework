@@ -20,11 +20,11 @@
 	<display-name>Rock FrameWork Tags</display-name>
 	<tlib-version>2.2</tlib-version>
 	<short-name>util</short-name>
-	<uri>http://rockframework.woodstock.net/tld/util</uri>
+	<uri>http://rockframework.woodstock.net.br/tld/util</uri>
 	<tag>
 		<description>Format a text</description>
 		<name>format</name>
-		<tag-class>net.woodstock.rockframework.web.jsp.taglib.util.FormatTag</tag-class>
+		<tag-class>br.net.woodstock.rockframework.web.jsp.taglib.util.FormatTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
 			<description>Pattern to apply in the value</description>
@@ -48,7 +48,7 @@
 	<tag>
 		<description>Print StackTrace to System.out</description>
 		<name>stackTrace</name>
-		<tag-class>net.woodstock.rockframework.web.jsp.taglib.util.StackTraceTag</tag-class>
+		<tag-class>br.net.woodstock.rockframework.web.jsp.taglib.util.StackTraceTag</tag-class>
 		<body-content>empty</body-content>
 	</tag>
 </taglib>

@@ -6,7 +6,7 @@
 
 	<package name="rockframework-default" extends="struts-default" abstract="true">
 		<interceptors>
-			<interceptor name="around" class="net.woodstock.rockframework.web.struts2.util.AroundInterceptor" />
+			<interceptor name="around" class="br.net.woodstock.rockframework.web.struts2.util.AroundInterceptor" />
 			<interceptor-stack name="aroundStack">
 				<interceptor-ref name="defaultStack" />
 				<interceptor-ref name="around" />
@@ -18,7 +18,7 @@
 	
 	<package name="rockframework-tiles-default" extends="tiles-default" abstract="true">
 		<interceptors>
-			<interceptor name="around" class="net.woodstock.rockframework.web.struts2.util.AroundInterceptor" />
+			<interceptor name="around" class="br.net.woodstock.rockframework.web.struts2.util.AroundInterceptor" />
 			<interceptor-stack name="aroundStack">
 				<interceptor-ref name="defaultStack" />
 				<interceptor-ref name="around" />
