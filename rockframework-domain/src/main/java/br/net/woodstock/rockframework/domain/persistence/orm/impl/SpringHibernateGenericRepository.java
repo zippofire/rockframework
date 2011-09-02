@@ -37,9 +37,9 @@ public abstract class SpringHibernateGenericRepository extends SpringHibernateRe
 		Class<E> clazz = PersistenceUtil.getRealClass(entity);
 
 		E e = (E) this.getHibernateTemplate().get(clazz, entity.getId());
-		if (e != null) {
-			this.getHibernateTemplate().refresh(e);
-		}
+		//if (e != null) {
+		//	this.getHibernateTemplate().refresh(e);
+		//}
 		return e;
 	}
 

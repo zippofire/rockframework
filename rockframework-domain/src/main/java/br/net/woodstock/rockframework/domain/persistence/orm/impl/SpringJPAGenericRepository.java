@@ -42,9 +42,9 @@ public abstract class SpringJPAGenericRepository extends SpringJPARepository imp
 		Class<E> clazz = PersistenceUtil.getRealClass(entity);
 
 		E e = this.getJpaTemplate().find(clazz, entity.getId());
-		if (e != null) {
-			this.getJpaTemplate().refresh(e);
-		}
+		//if (e != null) {
+		//	this.getJpaTemplate().refresh(e);
+		//}
 		return e;
 	}
 

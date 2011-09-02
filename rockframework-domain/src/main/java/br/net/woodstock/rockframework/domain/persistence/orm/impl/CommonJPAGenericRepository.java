@@ -48,9 +48,9 @@ class CommonJPAGenericRepository implements GenericRepository {
 		Class<E> clazz = PersistenceUtil.getRealClass(entity);
 
 		E e = this.entityManager.find(clazz, entity.getId());
-		if (e != null) {
-			this.entityManager.refresh(e);
-		}
+		//if (e != null) {
+		//	this.entityManager.refresh(e);
+		//}
 		return e;
 	}
 
