@@ -38,7 +38,6 @@ import br.net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilder;
 import br.net.woodstock.rockframework.reflection.impl.ClassFinderImpl;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-
 public class MappingChecker {
 
 	private String	baseName;
@@ -76,6 +75,11 @@ public class MappingChecker {
 
 					if (!propertyDescriptor.isAnnotationPresent(JoinColumn.class)) {
 						collection.add("Missing @JoinColumn on " + beanDescriptor.getType().getCanonicalName() + "." + propertyDescriptor.getName());
+					} else {
+						JoinColumn joinColumn = propertyDescriptor.getAnnotation(JoinColumn.class);
+						if (manyToOne.optional() != joinColumn.nullable()) {
+							collection.add("Conflict in @ManyToOne(optional) and @JoinColumn(nullable) on " + beanDescriptor.getType().getCanonicalName() + "." + propertyDescriptor.getName());
+						}
 					}
 				}
 				if (propertyDescriptor.isAnnotationPresent(OneToMany.class)) {
@@ -100,6 +104,11 @@ public class MappingChecker {
 					if (ConditionUtils.isEmpty(mappedBy)) {
 						if (!propertyDescriptor.isAnnotationPresent(JoinColumn.class)) {
 							collection.add("Missing @OneToOne(mappedBy) or @JoinColumn on " + beanDescriptor.getType().getCanonicalName() + "." + propertyDescriptor.getName());
+						} else {
+							JoinColumn joinColumn = propertyDescriptor.getAnnotation(JoinColumn.class);
+							if (oneToOne.optional() != joinColumn.nullable()) {
+								collection.add("Conflict in @OneToOne(optional) and @JoinColumn(nullable) on " + beanDescriptor.getType().getCanonicalName() + "." + propertyDescriptor.getName());
+							}
 						}
 					}
 				}
