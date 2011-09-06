@@ -21,6 +21,57 @@
 	<tlib-version>2.2</tlib-version>
 	<short-name>util</short-name>
 	<uri>http://rockframework.woodstock.net.br/tld/util</uri>
+	
+	<tag>
+		<description>Decode a text</description>
+		<name>decode</name>
+		<tag-class>br.net.woodstock.rockframework.web.jsp.taglib.util.DecodeTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description>Encode Type(SYNC, ASYNC, MD5 or SHA1)</description>
+			<name>type</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Value to be encoded</description>
+			<name>value</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Variable to store encoded value</description>
+			<name>var</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<description>Encode a text</description>
+		<name>encode</name>
+		<tag-class>br.net.woodstock.rockframework.web.jsp.taglib.util.EncodeTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description>Encode Type(SYNC, ASYNC, MD5 or SHA1)</description>
+			<name>type</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Value to be encoded</description>
+			<name>value</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Variable to store encoded value</description>
+			<name>var</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+	</tag>
+	
 	<tag>
 		<description>Format a text</description>
 		<name>format</name>
