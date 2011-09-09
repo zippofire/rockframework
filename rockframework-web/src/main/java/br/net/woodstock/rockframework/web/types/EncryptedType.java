@@ -16,15 +16,15 @@
  */
 package br.net.woodstock.rockframework.web.types;
 
-public class EncriptedType extends TextType {
+public class EncryptedType extends TextType {
 
 	private static final long	serialVersionUID	= 842504408233992304L;
 
-	public EncriptedType() {
+	public EncryptedType() {
 		super();
 	}
 
-	public EncriptedType(final String value) {
+	public EncryptedType(final String value) {
 		super(value);
 	}
 

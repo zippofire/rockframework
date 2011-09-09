@@ -21,7 +21,7 @@ import br.net.woodstock.rockframework.security.Encoder;
 public class DecodeTag extends AbstractEncoderTag {
 
 	@Override
-	protected String encode(Encoder encoder, String text) {
+	protected String encode(final Encoder encoder, final String text) {
 		return new String(encoder.decode(text.getBytes()));
 	}
 

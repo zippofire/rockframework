@@ -16,38 +16,40 @@
  */
 package br.net.woodstock.rockframework.web.struts2.converter;
 
+import br.net.woodstock.rockframework.security.SecurityHolder;
 import br.net.woodstock.rockframework.security.crypt.Crypter;
-import br.net.woodstock.rockframework.web.types.EncriptedType;
-import br.net.woodstock.rockframework.web.util.SecurityHolder;
+import br.net.woodstock.rockframework.web.types.EncryptedType;
 
-public class EncriptedConverter extends TypeConverter<EncriptedType> {
+public class EncryptedConverter extends TypeConverter<EncryptedType> {
 
 	private Crypter	crypter;
 
-	public EncriptedConverter() {
+	public EncryptedConverter() {
 		super();
 		this.crypter = SecurityHolder.getSyncCrypter();
 	}
 
 	@Override
 	@SuppressWarnings("rawtypes")
-	protected EncriptedType convertFromString(final String s, final Class toClass) {
+	protected EncryptedType convertFromString(final String s, final Class toClass) {
+		Crypter crypter = this.crypter;
 		byte[] bytes = s.getBytes();
-		byte[] enc = this.crypter.decrypt(bytes);
+		byte[] enc = crypter.decrypt(bytes);
 		String text = new String(enc);
 		return this.wrap(text);
 	}
 
 	@Override
-	protected String convertToString(final EncriptedType o) {
+	protected String convertToString(final EncryptedType o) {
+		Crypter crypter = this.crypter;
 		byte[] bytes = o.getValue().getBytes();
-		byte[] dec = this.crypter.encrypt(bytes);
+		byte[] dec = crypter.encrypt(bytes);
 		String text = new String(dec);
 		return text;
 	}
 
-	protected EncriptedType wrap(final String text) {
-		return new EncriptedType(text);
+	protected EncryptedType wrap(final String text) {
+		return new EncryptedType(text);
 	}
 
 }

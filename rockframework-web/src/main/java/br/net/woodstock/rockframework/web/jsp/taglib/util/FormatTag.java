@@ -23,7 +23,6 @@ import br.net.woodstock.rockframework.util.StringFormater;
 import br.net.woodstock.rockframework.web.config.WebLog;
 import br.net.woodstock.rockframework.web.jsp.taglib.AbstractTag;
 
-
 public class FormatTag extends AbstractTag {
 
 	private static final String	ERROR_VALUE	= "??ERROR??";

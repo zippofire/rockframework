@@ -21,10 +21,10 @@ import java.io.Writer;
 
 import br.net.woodstock.rockframework.security.Encoder;
 import br.net.woodstock.rockframework.security.SecurityException;
+import br.net.woodstock.rockframework.security.SecurityHolder;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 import br.net.woodstock.rockframework.web.config.WebLog;
 import br.net.woodstock.rockframework.web.jsp.taglib.AbstractTag;
-import br.net.woodstock.rockframework.web.util.SecurityHolder;
 
 public abstract class AbstractEncoderTag extends AbstractTag {
 
@@ -73,7 +73,7 @@ public abstract class AbstractEncoderTag extends AbstractTag {
 
 	}
 
-	protected Encoder getEncoderFromType(String type) {
+	protected Encoder getEncoderFromType(final String type) {
 		if (type.equalsIgnoreCase(EncodeType.ASYNC.name())) {
 			return SecurityHolder.getAsyncEncoder();
 		}

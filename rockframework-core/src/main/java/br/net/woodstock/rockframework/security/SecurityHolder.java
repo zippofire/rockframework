@@ -14,9 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.web.util;
+package br.net.woodstock.rockframework.security;
 
-import br.net.woodstock.rockframework.security.Encoder;
 import br.net.woodstock.rockframework.security.crypt.Crypter;
 import br.net.woodstock.rockframework.security.crypt.KeyPairType;
 import br.net.woodstock.rockframework.security.crypt.KeyType;
