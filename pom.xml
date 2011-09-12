@@ -5,7 +5,7 @@
 	<artifactId>rockframework-parent</artifactId>
 	<packaging>pom</packaging>
 	<name>Rock Framework</name>
-	<version>1.2.2</version>
+	<version>1.2.3-SNAPSHOT</version>
 	<url>http://code.google.com/p/rockframework/</url>
 
 	<!-- Publish on maven.org -->
@@ -51,9 +51,9 @@
 		</license>
 	</licenses>
 	<scm>
-		<connection>scm:svn:http://rockframework.googlecode.com/svn/tags/rockframework-parent-1.2.2</connection>
-		<developerConnection>scm:svn:https://rockframework.googlecode.com/svn/tags/rockframework-parent-1.2.2</developerConnection>
-		<url>http://code.google.com/p/rockframework/tags/rockframework-parent-1.2.2</url>
+		<connection>scm:svn:http://rockframework.googlecode.com/svn/trunk</connection>
+		<developerConnection>scm:svn:https://rockframework.googlecode.com/svn/trunk</developerConnection>
+		<url>http://code.google.com/p/rockframework/</url>
 	</scm>
 	<organization>
 		<name>Woodstock Tecnologia</name>
