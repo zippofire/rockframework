@@ -17,6 +17,7 @@
 package br.net.woodstock.rockframework.domain.persistence.orm.check;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -120,20 +121,35 @@ public class MappingChecker {
 
 	private void checkCascade(final Collection<String> results, final Annotation annotation, final BeanDescriptor beanDescriptor, final PropertyDescriptor propertyDescriptor, final CascadeType[] cascades) {
 		if (ConditionUtils.isEmpty(cascades)) {
-			results.add("Missing value @" + annotation.getClass().getName() + "(cascade) on " + beanDescriptor.getType().getCanonicalName() + "." + propertyDescriptor.getName());
+			results.add("Missing value @" + this.getAnnotationName(annotation) + "(cascade) on " + beanDescriptor.getType().getCanonicalName() + "." + propertyDescriptor.getName());
 		}
 	}
 
 	private void checkFetch(final Collection<String> results, final Annotation annotation, final BeanDescriptor beanDescriptor, final PropertyDescriptor propertyDescriptor, final FetchType fetchType) {
 		if (fetchType != FetchType.LAZY) {
-			results.add("Illegal FetchType @" + annotation.getClass().getName() + "(fetch) on " + beanDescriptor.getType().getCanonicalName() + "." + propertyDescriptor.getName());
+			results.add("Illegal FetchType @" + this.getAnnotationName(annotation) + "(fetch) on " + beanDescriptor.getType().getCanonicalName() + "." + propertyDescriptor.getName());
 		}
 	}
 
 	private void checkMappedBy(final Collection<String> results, final Annotation annotation, final BeanDescriptor beanDescriptor, final PropertyDescriptor propertyDescriptor, final String mappedBy) {
 		if (ConditionUtils.isEmpty(mappedBy)) {
-			results.add("Missing value @" + annotation.getClass().getName() + "(mappedBy) on " + beanDescriptor.getType().getCanonicalName() + "." + propertyDescriptor.getName());
+			results.add("Missing value @" + this.getAnnotationName(annotation) + "(mappedBy) on " + beanDescriptor.getType().getCanonicalName() + "." + propertyDescriptor.getName());
 		}
+	}
+
+	private String getAnnotationName(final Annotation annotation) {
+		if (Proxy.isProxyClass(annotation.getClass())) {
+			String str = annotation.toString();
+			str = str.substring(1);
+			if (str.indexOf('.') != -1) {
+				str = str.substring(str.lastIndexOf('.') + 1);
+			}
+			if (str.indexOf('(') != -1) {
+				str = str.substring(0, str.indexOf('('));
+			}
+			return str;
+		}
+		return annotation.getClass().getCanonicalName();
 	}
 
 }

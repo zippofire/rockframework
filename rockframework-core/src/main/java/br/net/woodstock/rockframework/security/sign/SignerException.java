@@ -14,25 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.security.digest.impl;
+package br.net.woodstock.rockframework.security.sign;
 
-import br.net.woodstock.rockframework.security.Encoder;
-import br.net.woodstock.rockframework.security.digest.Digester;
+import br.net.woodstock.rockframework.security.SecurityException;
 
-public class DigesterEncoder extends DelegateDigester implements Encoder {
+public class SignerException extends SecurityException {
 
-	public DigesterEncoder(final Digester digester) {
-		super(digester);
+	private static final long	serialVersionUID	= 1L;
+
+	public SignerException(final String message) {
+		super(message);
 	}
 
-	@Override
-	public byte[] decode(final byte[] data) {
-		throw new UnsupportedOperationException();
+	public SignerException(final Throwable cause) {
+		super(cause);
 	}
 
-	@Override
-	public byte[] encode(final byte[] data) {
-		return this.digest(data);
+	public SignerException(final String message, final Throwable cause) {
+		super(message, cause);
 	}
 
 }

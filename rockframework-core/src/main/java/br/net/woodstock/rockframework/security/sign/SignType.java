@@ -14,25 +14,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.security.digest.impl;
+package br.net.woodstock.rockframework.security.sign;
 
-import br.net.woodstock.rockframework.security.Encoder;
-import br.net.woodstock.rockframework.security.digest.Digester;
+public enum SignType {
 
-public class DigesterEncoder extends DelegateDigester implements Encoder {
+	MD2_RSA("MD2withRSA"),
+	MD5_RSA("MD5withRSA"),
+	SHA1_RSA("SHA1withRSA"),
+	SHA256_RSA("SHA256withRSA"),
+	SHA384_RSA("SHA384withRSA"),
+	SHA512_RSA("SHA512withRSA"),
+	SHA1_DSA("SHA1withDSA"),
+	SHA1_ECDSA("SHA1withECDSA"),
+	SHA256_ECDSA("SHA256withECDSA"),
+	SHA384_ECDSA("SHA384withECDSA"),
+	SHA512_ECDSA("SHA512withECDSA"),
+	NONE_DSA("NONEwithDSA"),
+	NONE_ECDSA("NONEwithECDSA");
+	
+	private String	algorithm;
 
-	public DigesterEncoder(final Digester digester) {
-		super(digester);
+	private SignType(final String algorithm) {
+		this.algorithm = algorithm;
 	}
 
-	@Override
-	public byte[] decode(final byte[] data) {
-		throw new UnsupportedOperationException();
+	public String getAlgorithm() {
+		return this.algorithm;
 	}
-
-	@Override
-	public byte[] encode(final byte[] data) {
-		return this.digest(data);
-	}
-
+	
 }

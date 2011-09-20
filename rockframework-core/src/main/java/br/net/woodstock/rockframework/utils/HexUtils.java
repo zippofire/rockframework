@@ -31,6 +31,11 @@ public abstract class HexUtils {
 		return str.getBytes();
 	}
 
+	public static byte[] fromHex(final byte[] bytes) {
+		byte[] b = HexUtils.fromHexString(new String(bytes));
+		return b;
+	}
+
 	public static String toHexString(final byte[] bytes) {
 		StringBuilder builder = new StringBuilder();
 		for (byte b : bytes) {
@@ -41,6 +46,26 @@ public abstract class HexUtils {
 			builder.append(s);
 		}
 		return builder.toString();
+	}
+
+	public static byte[] fromHexString(final String str) {
+		byte[] bytes = new byte[str.length() / 2];
+		char[] chars = str.toCharArray();
+
+		int byteIndex = 0;
+		int charIndex = 0;
+
+		while (charIndex < chars.length) {
+			String hex = new String(new char[] { chars[charIndex], chars[charIndex + 1] });
+			Integer value = Integer.valueOf(hex, 16);
+
+			bytes[byteIndex] = value.byteValue();
+
+			byteIndex += 1;
+			charIndex += 2;
+		}
+
+		return bytes;
 	}
 
 }

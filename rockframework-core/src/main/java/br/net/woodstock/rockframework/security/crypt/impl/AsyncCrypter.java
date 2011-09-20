@@ -17,6 +17,7 @@
 package br.net.woodstock.rockframework.security.crypt.impl;
 
 import java.security.GeneralSecurityException;
+import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
@@ -24,22 +25,39 @@ import java.security.PublicKey;
 import java.security.SecureRandom;
 
 import br.net.woodstock.rockframework.security.crypt.CrypterException;
+import br.net.woodstock.rockframework.security.crypt.KeyPairHolder;
 import br.net.woodstock.rockframework.security.crypt.KeyPairType;
 import br.net.woodstock.rockframework.security.crypt.impl.CrypterOperation.Mode;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-
-public class AsyncCrypter extends AbstractCrypter {
+public class AsyncCrypter extends AbstractCrypter implements KeyPairHolder {
 
 	private static final int	DEFAULT_KEY_SIZE	= 1024;
 
 	private KeyPair				keyPair;
 
+	private KeyPairType			keyPairType;
+
 	public AsyncCrypter(final KeyPair keyPair) {
 		super();
 		Assert.notNull(keyPair, "keyPair");
 		this.keyPair = keyPair;
+		for (KeyPairType keyPairType : KeyPairType.values()) {
+			Key key = null;
+			if (this.keyPair.getPrivate() != null) {
+				key = this.keyPair.getPrivate();
+			} else if (this.keyPair.getPublic() != null) {
+				key = this.keyPair.getPublic();
+			}
+
+			if (key != null) {
+				if (keyPairType.getAlgorithm().equals(key.getAlgorithm())) {
+					this.keyPairType = keyPairType;
+					break;
+				}
+			}
+		}
 	}
 
 	public AsyncCrypter(final KeyPairType type) {
@@ -57,6 +75,7 @@ public class AsyncCrypter extends AbstractCrypter {
 				generator.initialize(AsyncCrypter.DEFAULT_KEY_SIZE, random);
 			}
 
+			this.keyPairType = type;
 			this.keyPair = generator.generateKeyPair();
 		} catch (GeneralSecurityException e) {
 			throw new CrypterException(e);
@@ -93,8 +112,22 @@ public class AsyncCrypter extends AbstractCrypter {
 		}
 	}
 
-	protected KeyPair getKeyPair() {
-		return this.keyPair;
+	@Override
+	public String getAlgorithm() {
+		if (this.keyPairType == null) {
+			return null;
+		}
+		return this.keyPairType.getAlgorithm();
+	}
+
+	@Override
+	public byte[] getPrivateKey() {
+		return this.keyPair.getPrivate().getEncoded();
+	}
+
+	@Override
+	public byte[] getPublicKey() {
+		return this.keyPair.getPublic().getEncoded();
 	}
 
 }

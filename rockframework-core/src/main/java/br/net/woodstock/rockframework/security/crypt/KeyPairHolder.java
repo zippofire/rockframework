@@ -14,25 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.security.digest.impl;
+package br.net.woodstock.rockframework.security.crypt;
 
-import br.net.woodstock.rockframework.security.Encoder;
-import br.net.woodstock.rockframework.security.digest.Digester;
-
-public class DigesterEncoder extends DelegateDigester implements Encoder {
-
-	public DigesterEncoder(final Digester digester) {
-		super(digester);
-	}
-
-	@Override
-	public byte[] decode(final byte[] data) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public byte[] encode(final byte[] data) {
-		return this.digest(data);
-	}
-
+public interface KeyPairHolder extends PublicKeyHolder, PrivateKeyHolder {
+	//
 }

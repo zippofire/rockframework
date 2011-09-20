@@ -24,7 +24,6 @@ import br.net.woodstock.rockframework.security.crypt.CrypterWriter;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.Base64Utils;
 
-
 public class SyncCrypterWriter implements CrypterWriter {
 
 	private SyncCrypter		crypter;
@@ -42,7 +41,7 @@ public class SyncCrypterWriter implements CrypterWriter {
 	@Override
 	public void write() {
 		try {
-			byte[] bytes = this.crypter.getKey().getEncoded();
+			byte[] bytes = this.crypter.getSecretKey();
 			byte[] base64 = Base64Utils.toBase64(bytes);
 			this.outputStream.write(base64);
 		} catch (IOException e) {

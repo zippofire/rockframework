@@ -26,12 +26,12 @@ public class CrypterEncoder extends DelegateCrypter implements Encoder {
 	}
 
 	@Override
-	public byte[] decode(byte[] data) {
+	public byte[] decode(final byte[] data) {
 		return this.decrypt(data);
 	}
 
 	@Override
-	public byte[] encode(byte[] data) {
+	public byte[] encode(final byte[] data) {
 		return this.encrypt(data);
 	}
 

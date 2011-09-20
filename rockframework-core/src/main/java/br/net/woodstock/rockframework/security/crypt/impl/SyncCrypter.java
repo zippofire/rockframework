@@ -24,19 +24,27 @@ import javax.crypto.SecretKey;
 
 import br.net.woodstock.rockframework.security.crypt.CrypterException;
 import br.net.woodstock.rockframework.security.crypt.KeyType;
+import br.net.woodstock.rockframework.security.crypt.SecretKeyHolder;
 import br.net.woodstock.rockframework.security.crypt.impl.CrypterOperation.Mode;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-
-public class SyncCrypter extends AbstractCrypter {
+public class SyncCrypter extends AbstractCrypter implements SecretKeyHolder {
 
 	private SecretKey	key;
+
+	private KeyType		keyType;
 
 	public SyncCrypter(final SecretKey key) {
 		super();
 		Assert.notNull(key, "key");
 		this.key = key;
+		for (KeyType keyType : KeyType.values()) {
+			if (keyType.getAlgorithm().equals(this.key.getAlgorithm())) {
+				this.keyType = keyType;
+				break;
+			}
+		}
 	}
 
 	public SyncCrypter(final KeyType type) {
@@ -55,6 +63,7 @@ public class SyncCrypter extends AbstractCrypter {
 				generator.init(random);
 			}
 
+			this.keyType = type;
 			this.key = generator.generateKey();
 		} catch (GeneralSecurityException e) {
 			throw new CrypterException(e);
@@ -83,8 +92,17 @@ public class SyncCrypter extends AbstractCrypter {
 		}
 	}
 
-	protected SecretKey getKey() {
-		return this.key;
+	@Override
+	public String getAlgorithm() {
+		if (this.keyType == null) {
+			return null;
+		}
+		return this.keyType.getAlgorithm();
+	}
+
+	@Override
+	public byte[] getSecretKey() {
+		return this.key.getEncoded();
 	}
 
 }

@@ -18,16 +18,12 @@ package br.net.woodstock.rockframework.security.crypt.impl;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.security.KeyPair;
-import java.security.PrivateKey;
-import java.security.PublicKey;
 
 import br.net.woodstock.rockframework.config.CoreLog;
 import br.net.woodstock.rockframework.security.crypt.CrypterException;
 import br.net.woodstock.rockframework.security.crypt.CrypterWriter;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.Base64Utils;
-
 
 public class AsyncCrypterWriter implements CrypterWriter {
 
@@ -48,19 +44,16 @@ public class AsyncCrypterWriter implements CrypterWriter {
 	@Override
 	public void write() {
 		try {
-			KeyPair keyPair = this.crypter.getKeyPair();
-			PrivateKey privateKey = keyPair.getPrivate();
-			PublicKey publicKey = keyPair.getPublic();
+			byte[] privateKey = this.crypter.getPrivateKey();
+			byte[] publicKey = this.crypter.getPublicKey();
 			if ((privateKey != null) && (this.privateKeyOutputStream != null)) {
-				byte[] bytes = privateKey.getEncoded();
-				byte[] base64 = Base64Utils.toBase64(bytes);
+				byte[] base64 = Base64Utils.toBase64(privateKey);
 				this.privateKeyOutputStream.write(base64);
 			} else {
 				CoreLog.getInstance().getLog().info("Private or privateKeyOutputStream is null and cold not be writed");
 			}
 			if ((publicKey != null) && (this.publicKeyOutputStream != null)) {
-				byte[] bytes = publicKey.getEncoded();
-				byte[] base64 = Base64Utils.toBase64(bytes);
+				byte[] base64 = Base64Utils.toBase64(publicKey);
 				this.publicKeyOutputStream.write(base64);
 			} else {
 				CoreLog.getInstance().getLog().info("Public or publicKeyOutputStream is null and cold not be writed");

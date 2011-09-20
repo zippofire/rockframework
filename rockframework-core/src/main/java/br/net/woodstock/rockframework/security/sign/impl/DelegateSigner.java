@@ -14,25 +14,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.security.digest.impl;
+package br.net.woodstock.rockframework.security.sign.impl;
 
-import br.net.woodstock.rockframework.security.Encoder;
-import br.net.woodstock.rockframework.security.digest.Digester;
+import br.net.woodstock.rockframework.security.sign.Signer;
+import br.net.woodstock.rockframework.util.Assert;
 
-public class DigesterEncoder extends DelegateDigester implements Encoder {
+public abstract class DelegateSigner implements Signer {
 
-	public DigesterEncoder(final Digester digester) {
-		super(digester);
+	private Signer	signer;
+
+	public DelegateSigner(final Signer signer) {
+		super();
+		Assert.notNull(signer, "signer");
+		this.signer = signer;
 	}
 
 	@Override
-	public byte[] decode(final byte[] data) {
-		throw new UnsupportedOperationException();
+	public byte[] sign(final byte[] data) {
+		return this.signer.sign(data);
 	}
 
 	@Override
-	public byte[] encode(final byte[] data) {
-		return this.digest(data);
+	public boolean verify(final byte[] data, final byte[] signature) {
+		return this.signer.verify(data, signature);
 	}
-
 }

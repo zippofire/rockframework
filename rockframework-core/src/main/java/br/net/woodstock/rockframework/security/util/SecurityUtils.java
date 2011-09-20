@@ -30,7 +30,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
-import br.net.woodstock.rockframework.security.crypt.CertificateType;
+import br.net.woodstock.rockframework.security.cert.CertificateType;
 import br.net.woodstock.rockframework.security.crypt.KeyPairType;
 import br.net.woodstock.rockframework.util.Assert;
 
