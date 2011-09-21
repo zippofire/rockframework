@@ -21,16 +21,45 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import br.net.woodstock.rockframework.util.RandomGenerator;
 
-
 public abstract class StringUtils {
+
+	private static final Map<Character, String>	HTML_REPLACEMENT;
+
+	static {
+		HTML_REPLACEMENT = new HashMap<Character, String>();
+		HTML_REPLACEMENT.put(Character.valueOf('<'), "&lt;");
+		HTML_REPLACEMENT.put(Character.valueOf('>'), "&gt;");
+		HTML_REPLACEMENT.put(Character.valueOf('&'), "&amp;");
+		HTML_REPLACEMENT.put(Character.valueOf('\''), "&#039;");
+		HTML_REPLACEMENT.put(Character.valueOf('"'), "&quot;");
+	}
 
 	private StringUtils() {
 		//
+	}
+
+	public static String escapeHTML(final String s) {
+		if (ConditionUtils.isEmpty(s)) {
+			return null;
+		}
+
+		StringBuilder builder = new StringBuilder();
+		for (char c : s.toCharArray()) {
+			Character wrappedChar = Character.valueOf(c);
+			if (StringUtils.HTML_REPLACEMENT.containsKey(wrappedChar)) {
+				builder.append(StringUtils.HTML_REPLACEMENT.get(wrappedChar));
+			} else {
+				builder.append(c);
+			}
+		}
+
+		return builder.toString();
 	}
 
 	public static boolean hasOnlyDigit(final String s) {

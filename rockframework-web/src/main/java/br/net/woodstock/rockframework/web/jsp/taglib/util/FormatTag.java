@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.Writer;
 
 import br.net.woodstock.rockframework.util.StringFormater;
+import br.net.woodstock.rockframework.utils.StringUtils;
 import br.net.woodstock.rockframework.web.config.WebLog;
 import br.net.woodstock.rockframework.web.jsp.taglib.AbstractTag;
 
@@ -50,6 +51,7 @@ public class FormatTag extends AbstractTag {
 
 		try {
 			formated = format.format(value);
+			formated = StringUtils.escapeHTML(formated);
 		} catch (ArrayIndexOutOfBoundsException e) {
 			WebLog.getInstance().getLog().warn("Error formating '" + value + "'  with mask '" + this.format + "'");
 			formated = FormatTag.ERROR_VALUE;

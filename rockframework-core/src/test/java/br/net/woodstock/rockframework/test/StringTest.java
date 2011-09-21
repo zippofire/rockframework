@@ -49,7 +49,7 @@ public class StringTest extends TestCase {
 		Assert.equals("nulo", "nulo", "nulo");
 	}
 
-	public void test6() throws Exception {
+	public void xtest6() throws Exception {
 		String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		String str = "Texto que sera modificado";
 		char[] chars = str.toCharArray();
@@ -74,5 +74,10 @@ public class StringTest extends TestCase {
 		System.out.println("Original: " + str);
 		System.out.println("Novo    : " + newStr);
 	}
+	
+	public void test7() throws Exception {
+		System.out.println(StringUtils.escapeHTML("<html lang=\"en\" lang='en'>consulta.jsp?x=1</html>"));
+	}
+		
 
 }
