@@ -28,18 +28,28 @@ public class Base64Crypter extends DelegateCrypter {
 
 	@Override
 	public byte[] decrypt(final byte[] data) {
+		return this.decrypt(data, null);
+	}
+
+	@Override
+	public byte[] decrypt(final byte[] data, final String seed) {
 		Assert.notNull(data, "data");
 
 		byte[] b64 = Base64Utils.fromBase64(data);
-		byte[] dec = super.decrypt(b64);
+		byte[] dec = super.decrypt(b64, seed);
 		return dec;
 	}
 
 	@Override
 	public byte[] encrypt(final byte[] data) {
+		return this.encrypt(data, null);
+	}
+
+	@Override
+	public byte[] encrypt(final byte[] data, final String seed) {
 		Assert.notNull(data, "data");
 
-		byte[] enc = super.encrypt(data);
+		byte[] enc = super.encrypt(data, seed);
 		byte[] b64 = Base64Utils.toBase64(enc);
 		return b64;
 	}

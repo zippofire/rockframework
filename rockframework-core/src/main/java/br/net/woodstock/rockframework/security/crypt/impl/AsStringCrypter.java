@@ -26,30 +26,46 @@ public class AsStringCrypter extends DelegateCrypter {
 	}
 
 	public String decryptAsString(final byte[] data) {
-		byte[] dec = super.decrypt(data);
+		return this.decryptAsString(data, null);
+	}
+
+	public String decryptAsString(final byte[] data, final String seed) {
+		byte[] dec = super.decrypt(data, seed);
 		return new String(dec);
 	}
 
 	public String decryptAsString(final String str) {
+		return this.decryptAsString(str, null);
+	}
+
+	public String decryptAsString(final String str, final String seed) {
 		Assert.notEmpty(str, "str");
 
 		byte[] data = str.getBytes();
 
-		byte[] dec = super.decrypt(data);
+		byte[] dec = super.decrypt(data, seed);
 		return new String(dec);
 	}
 
 	public String encryptAsString(final byte[] data) {
-		byte[] enc = super.encrypt(data);
+		return this.encryptAsString(data, null);
+	}
+
+	public String encryptAsString(final byte[] data, final String seed) {
+		byte[] enc = super.encrypt(data, seed);
 		return new String(enc);
 	}
 
 	public String encryptAsString(final String str) {
+		return this.encryptAsString(str, null);
+	}
+
+	public String encryptAsString(final String str, final String seed) {
 		Assert.notEmpty(str, "str");
 
 		byte[] data = str.getBytes();
 
-		byte[] enc = super.encrypt(data);
+		byte[] enc = super.encrypt(data, seed);
 		return new String(enc);
 	}
 

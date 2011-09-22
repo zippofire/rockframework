@@ -35,8 +35,18 @@ public abstract class DelegateCrypter implements Crypter {
 	}
 
 	@Override
+	public byte[] decrypt(final byte[] data, final String seed) {
+		return this.crypter.decrypt(data, seed);
+	}
+
+	@Override
 	public byte[] encrypt(final byte[] data) {
 		return this.crypter.encrypt(data);
+	}
+
+	@Override
+	public byte[] encrypt(final byte[] data, final String seed) {
+		return this.crypter.encrypt(data, seed);
 	}
 
 }

@@ -72,9 +72,14 @@ public class SyncCrypter extends AbstractCrypter implements SecretKeyHolder {
 
 	@Override
 	public byte[] encrypt(final byte[] data) {
+		return this.encrypt(data, null);
+	}
+
+	@Override
+	public byte[] encrypt(final byte[] data, final String seed) {
 		try {
 			Assert.notNull(data, "data");
-			CrypterOperation operation = new CrypterOperation(this.key, Mode.ENCRYPT, data);
+			CrypterOperation operation = new CrypterOperation(this.key, Mode.ENCRYPT, data, seed);
 			return operation.execute();
 		} catch (Exception e) {
 			throw new CrypterException(e);
@@ -83,9 +88,14 @@ public class SyncCrypter extends AbstractCrypter implements SecretKeyHolder {
 
 	@Override
 	public byte[] decrypt(final byte[] data) {
+		return this.decrypt(data, null);
+	}
+
+	@Override
+	public byte[] decrypt(final byte[] data, final String seed) {
 		try {
 			Assert.notNull(data, "data");
-			CrypterOperation operation = new CrypterOperation(this.key, Mode.DECRYPT, data);
+			CrypterOperation operation = new CrypterOperation(this.key, Mode.DECRYPT, data, seed);
 			return operation.execute();
 		} catch (Exception e) {
 			throw new CrypterException(e);

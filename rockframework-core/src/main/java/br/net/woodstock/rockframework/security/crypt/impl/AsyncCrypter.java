@@ -84,13 +84,18 @@ public class AsyncCrypter extends AbstractCrypter implements KeyPairHolder {
 
 	@Override
 	public byte[] encrypt(final byte[] data) {
+		return this.encrypt(data, null);
+	}
+
+	@Override
+	public byte[] encrypt(final byte[] data, final String seed) {
 		PrivateKey privateKey = this.keyPair.getPrivate();
 		if (privateKey == null) {
 			throw new IllegalStateException("Private key is null");
 		}
 		try {
 			Assert.notNull(data, "data");
-			CrypterOperation operation = new CrypterOperation(privateKey, Mode.ENCRYPT, data);
+			CrypterOperation operation = new CrypterOperation(privateKey, Mode.ENCRYPT, data, seed);
 			return operation.execute();
 		} catch (Exception e) {
 			throw new CrypterException(e);
@@ -99,13 +104,18 @@ public class AsyncCrypter extends AbstractCrypter implements KeyPairHolder {
 
 	@Override
 	public byte[] decrypt(final byte[] data) {
+		return this.decrypt(data, null);
+	}
+
+	@Override
+	public byte[] decrypt(final byte[] data, final String seed) {
 		PublicKey publicKey = this.keyPair.getPublic();
 		if (publicKey == null) {
 			throw new IllegalStateException("Public key is null");
 		}
 		try {
 			Assert.notNull(data, "data");
-			CrypterOperation operation = new CrypterOperation(publicKey, Mode.DECRYPT, data);
+			CrypterOperation operation = new CrypterOperation(publicKey, Mode.DECRYPT, data, seed);
 			return operation.execute();
 		} catch (Exception e) {
 			throw new CrypterException(e);

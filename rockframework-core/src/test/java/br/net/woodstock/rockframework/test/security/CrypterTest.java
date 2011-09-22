@@ -6,15 +6,19 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import junit.framework.TestCase;
+import br.net.woodstock.rockframework.security.crypt.Crypter;
 import br.net.woodstock.rockframework.security.crypt.KeyPairType;
+import br.net.woodstock.rockframework.security.crypt.KeyType;
+import br.net.woodstock.rockframework.security.crypt.impl.AsStringCrypter;
 import br.net.woodstock.rockframework.security.crypt.impl.AsyncCrypter;
 import br.net.woodstock.rockframework.security.crypt.impl.AsyncCrypterReader;
 import br.net.woodstock.rockframework.security.crypt.impl.AsyncCrypterWriter;
 import br.net.woodstock.rockframework.security.crypt.impl.Base64Crypter;
+import br.net.woodstock.rockframework.security.crypt.impl.SyncCrypter;
 
 public class CrypterTest extends TestCase {
 
-	public void test1() throws Exception {
+	public void xtest1() throws Exception {
 		System.out.println("Gravando");
 		AsyncCrypter crypter = new AsyncCrypter(KeyPairType.RSA);
 		Base64Crypter crypter64 = new Base64Crypter(crypter);
@@ -43,6 +47,16 @@ public class CrypterTest extends TestCase {
 		System.out.println("Decriptado: " + new String(bytes));
 		isPrivate.close();
 		isPublic.close();
+	}
+
+	public void xtest3() throws Exception {
+		Crypter crypter = new Base64Crypter(new SyncCrypter(KeyType.DESEDE, "12345"));
+		System.out.println(new String(crypter.encrypt("1".getBytes())));
+	}
+
+	public void xtest4() throws Exception {
+		AsStringCrypter crypter = new AsStringCrypter(new Base64Crypter(new SyncCrypter(KeyType.DESEDE, "12345")));
+		System.out.println(new String(crypter.encryptAsString("1")));
 	}
 
 }
