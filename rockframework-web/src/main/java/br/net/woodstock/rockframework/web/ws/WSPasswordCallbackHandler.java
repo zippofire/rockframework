@@ -44,6 +44,8 @@ public class WSPasswordCallbackHandler implements CallbackHandler {
 					String password = this.properties.getProperty(name);
 					passwordCallback.setPassword(password);
 				}
+			} else {
+				throw new UnsupportedCallbackException(callback);
 			}
 		}
 	}

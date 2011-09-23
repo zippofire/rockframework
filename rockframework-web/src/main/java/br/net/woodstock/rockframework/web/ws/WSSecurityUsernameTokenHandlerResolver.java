@@ -23,7 +23,7 @@ import javax.xml.ws.handler.Handler;
 import javax.xml.ws.handler.HandlerResolver;
 import javax.xml.ws.handler.PortInfo;
 
-public class WSSecurityHandlerResolver implements HandlerResolver {
+public class WSSecurityUsernameTokenHandlerResolver implements HandlerResolver {
 
 	private String	username;
 
@@ -31,7 +31,7 @@ public class WSSecurityHandlerResolver implements HandlerResolver {
 
 	private boolean	digest;
 
-	public WSSecurityHandlerResolver(final String username, final String password, final boolean digest) {
+	public WSSecurityUsernameTokenHandlerResolver(final String username, final String password, final boolean digest) {
 		super();
 		this.username = username;
 		this.password = password;

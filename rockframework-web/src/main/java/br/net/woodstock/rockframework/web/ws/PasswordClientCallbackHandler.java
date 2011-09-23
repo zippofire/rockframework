@@ -40,6 +40,8 @@ public class PasswordClientCallbackHandler implements CallbackHandler {
 				PasswordCallback passwordCallback = (PasswordCallback) callback;
 				String name = passwordCallback.getPrompt();
 				passwordCallback.setPassword(this.properties.getProperty(name).toCharArray());
+			} else {
+				throw new UnsupportedCallbackException(callback);
 			}
 		}
 	}

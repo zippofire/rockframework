@@ -44,6 +44,8 @@ public class WSPasswordClientCallbackHandler implements CallbackHandler {
 				if (usage == WSPasswordCallback.USERNAME_TOKEN) {
 					passwordCallback.setPassword(this.properties.getProperty(name));
 				}
+			} else {
+				throw new UnsupportedCallbackException(callback);
 			}
 		}
 	}
