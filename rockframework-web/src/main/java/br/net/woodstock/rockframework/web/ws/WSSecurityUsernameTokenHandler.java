@@ -34,7 +34,6 @@ import br.net.woodstock.rockframework.security.digest.impl.Base64Digester;
 import br.net.woodstock.rockframework.security.digest.impl.BasicDigester;
 import br.net.woodstock.rockframework.web.config.WebLog;
 
-
 public class WSSecurityUsernameTokenHandler implements SOAPHandler<SOAPMessageContext> {
 
 	private static final AsStringDigester	DIGESTER	= new AsStringDigester(new Base64Digester(new BasicDigester(DigestType.SHA1)));
@@ -59,12 +58,16 @@ public class WSSecurityUsernameTokenHandler implements SOAPHandler<SOAPMessageCo
 			try {
 				SOAPMessage message = smc.getMessage();
 				SOAPEnvelope envelope = message.getSOAPPart().getEnvelope();
-				SOAPHeader header = envelope.addHeader();
+				SOAPHeader header = envelope.getHeader();
+
+				if (header == null) {
+					header = envelope.addHeader();
+				}
 
 				SOAPElement security = header.addChildElement("Security", "wsse", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd");
 
 				SOAPElement usernameToken = security.addChildElement("UsernameToken", "wsse");
-				usernameToken.addAttribute(new QName("xmlns:wsu"), "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd");
+				usernameToken.addAttribute(new QName("wsu"), "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd");
 
 				SOAPElement username = usernameToken.addChildElement("Username", "wsse");
 				username.addTextNode(this.username);
