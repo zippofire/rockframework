@@ -34,18 +34,19 @@ abstract class AbstractHibernateQueryableRepository extends AbstractQueryableRep
 	}
 
 	@Override
-	@SuppressWarnings("rawtypes")
-	public Collection getCollection(final br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
+	@SuppressWarnings("unchecked")
+	public <E> Collection<E> getCollection(final br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
 		Query q = this.getQuery(query);
-		List list = q.list();
+		List<E> list = q.list();
 		return list;
 	}
 
 	@Override
-	public Object getSingle(final br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
+	@SuppressWarnings("unchecked")
+	public <E> E getSingle(final br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
 		Query q = this.getQuery(query);
 		Object obj = q.uniqueResult();
-		return obj;
+		return (E) obj;
 	}
 
 	protected abstract Query getQuery(final br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query);

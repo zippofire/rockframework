@@ -24,7 +24,6 @@ import javax.persistence.Query;
 
 import br.net.woodstock.rockframework.domain.config.DomainLog;
 
-
 abstract class AbstractJPAQueryableRepository extends AbstractQueryableRepository {
 
 	public AbstractJPAQueryableRepository() {
@@ -38,19 +37,20 @@ abstract class AbstractJPAQueryableRepository extends AbstractQueryableRepositor
 	}
 
 	@Override
-	@SuppressWarnings("rawtypes")
-	public Collection getCollection(final br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
+	@SuppressWarnings("unchecked")
+	public <E> Collection<E> getCollection(final br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
 		Query q = this.getQuery(query);
-		List list = q.getResultList();
+		List<E> list = q.getResultList();
 		return list;
 	}
 
 	@Override
-	public Object getSingle(final br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
+	@SuppressWarnings("unchecked")
+	public <E> E getSingle(final br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
 		try {
 			Query q = this.getQuery(query);
 			Object obj = q.getSingleResult();
-			return obj;
+			return (E) obj;
 		} catch (NoResultException e) {
 			DomainLog.getInstance().getLog().info(e.getMessage(), e);
 			return null;

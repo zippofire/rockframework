@@ -21,7 +21,6 @@ import java.util.Collection;
 import br.net.woodstock.rockframework.domain.persistence.orm.JPQLRepository;
 import br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata;
 
-
 public class SpringJPANativeSQLRepository extends SpringJPARepository implements JPQLRepository {
 
 	public SpringJPANativeSQLRepository() {
@@ -34,13 +33,12 @@ public class SpringJPANativeSQLRepository extends SpringJPARepository implements
 	}
 
 	@Override
-	@SuppressWarnings("rawtypes")
-	public Collection getCollection(final QueryMetadata query) {
+	public <E> Collection<E> getCollection(final QueryMetadata query) {
 		return new CommonJPANativeSQLRepository(this.getEntityManager()).getCollection(query);
 	}
 
 	@Override
-	public Object getSingle(final QueryMetadata query) {
+	public <E> E getSingle(final QueryMetadata query) {
 		return new CommonJPANativeSQLRepository(this.getEntityManager()).getSingle(query);
 	}
 

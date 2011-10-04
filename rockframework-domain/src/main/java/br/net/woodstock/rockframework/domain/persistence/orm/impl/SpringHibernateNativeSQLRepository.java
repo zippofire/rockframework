@@ -21,7 +21,6 @@ import java.util.Collection;
 import br.net.woodstock.rockframework.domain.persistence.orm.NativeSQLRepository;
 import br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata;
 
-
 public class SpringHibernateNativeSQLRepository extends SpringHibernateRepository implements NativeSQLRepository {
 
 	public SpringHibernateNativeSQLRepository() {
@@ -34,13 +33,12 @@ public class SpringHibernateNativeSQLRepository extends SpringHibernateRepositor
 	}
 
 	@Override
-	@SuppressWarnings("rawtypes")
-	public Collection getCollection(final QueryMetadata query) {
+	public <E> Collection<E> getCollection(final QueryMetadata query) {
 		return new CommonHibernateNativeSQLRepository(this.getSession()).getCollection(query);
 	}
 
 	@Override
-	public Object getSingle(final QueryMetadata query) {
+	public <E> E getSingle(final QueryMetadata query) {
 		return new CommonHibernateNativeSQLRepository(this.getSession()).getSingle(query);
 	}
 

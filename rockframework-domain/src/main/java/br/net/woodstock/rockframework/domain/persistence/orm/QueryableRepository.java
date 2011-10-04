@@ -20,13 +20,11 @@ import java.util.Collection;
 
 import br.net.woodstock.rockframework.domain.persistence.Repository;
 
-
 public interface QueryableRepository extends Repository {
 
-	Object getSingle(QueryMetadata query);
+	<E> E getSingle(QueryMetadata query);
 
-	@SuppressWarnings("rawtypes")
-	Collection getCollection(QueryMetadata query);
+	<E> Collection<E> getCollection(QueryMetadata query);
 
 	void executeUpdate(QueryMetadata query);
 

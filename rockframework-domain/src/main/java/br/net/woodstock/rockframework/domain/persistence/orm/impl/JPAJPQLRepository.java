@@ -27,7 +27,6 @@ import javax.persistence.Query;
 import br.net.woodstock.rockframework.domain.persistence.orm.JPQLRepository;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-
 public class JPAJPQLRepository extends AbstractJPARepository implements JPQLRepository {
 
 	public JPAJPQLRepository() {
@@ -41,18 +40,19 @@ public class JPAJPQLRepository extends AbstractJPARepository implements JPQLRepo
 	}
 
 	@Override
-	@SuppressWarnings("rawtypes")
-	public Collection getCollection(final br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
+	@SuppressWarnings("unchecked")
+	public <E> Collection<E> getCollection(final br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
 		Query q = this.getQuery(query);
-		List list = q.getResultList();
+		List<E> list = q.getResultList();
 		return list;
 	}
 
 	@Override
-	public Object getSingle(final br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
+	@SuppressWarnings("unchecked")
+	public <E> E getSingle(final br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
 		Query q = this.getQuery(query);
 		Object obj = q.getSingleResult();
-		return obj;
+		return (E) obj;
 	}
 
 	private Query getQuery(final br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
