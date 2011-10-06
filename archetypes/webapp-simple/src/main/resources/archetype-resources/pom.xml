@@ -1,0 +1,123 @@
+
+#set($dollar = '$')
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>${groupId}.${artifactId}</groupId>
+	<artifactId>${artifactId}-parent</artifactId>
+	<packaging>pom</packaging>
+	<version>${version}</version>
+	<name>${artifactId} Application</name>
+	<url>http://woodstock.net.br/${artifactId}</url>
+
+	<properties>
+		<!-- Maven -->
+		<project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
+		<!-- Java -->
+		<java.version>1.6</java.version>
+		<!-- Test -->
+		<test />
+		<!-- Libs -->
+		<hibernate.common.version>3.2.0.Final</hibernate.common.version>
+		<hibernate.core.version>3.6.7.Final</hibernate.core.version>
+		<hibernate.jpa.version>1.0.0.Final</hibernate.jpa.version>
+		<jsp.version>2.1</jsp.version>
+		<jstl.version>1.1.2</jstl.version>
+		<junit.version>3.8.2</junit.version>
+		<servlet.version>2.5</servlet.version>
+		<validation.version>1.0.0.GA</validation.version>
+		<!-- Plugins -->
+		<plugin.compiler.version>2.3.2</plugin.compiler.version>
+		<plugin.resources.version>2.4.3</plugin.resources.version>
+		<plugin.surefire.version>2.6</plugin.surefire.version>
+	</properties>
+
+	<modules>
+		<module>${artifactId}-api</module>
+		<module>${artifactId}-impl</module>
+		<module>${artifactId}-orm</module>
+		<module>${artifactId}-util</module>
+		<module>${artifactId}-web</module>
+	</modules>
+
+	<build>
+		<defaultGoal>package</defaultGoal>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${dollar}{plugin.compiler.version}</version>
+				<configuration>
+					<source>${dollar}{java.version}</source>
+					<target>${dollar}{java.version}</target>
+					<encoding>${dollar}{project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>${dollar}{plugin.resources.version}</version>
+				<configuration>
+					<encoding>${dollar}{project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${dollar}{plugin.surefire.version}</version>
+				<configuration>
+					<failIfNoTests>false</failIfNoTests>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>servlet-api</artifactId>
+				<version>${dollar}{servlet.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.servlet.jsp</groupId>
+				<artifactId>jsp-api</artifactId>
+				<version>${dollar}{jsp.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>jstl</artifactId>
+				<version>${dollar}{jstl.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.validation</groupId>
+				<artifactId>validation-api</artifactId>
+				<version>${dollar}{validation.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${dollar}{junit.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-commons-annotations</artifactId>
+				<version>${dollar}{hibernate.common.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-core</artifactId>
+				<version>${dollar}{hibernate.core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate.javax.persistence</groupId>
+				<artifactId>hibernate-jpa-2.0-api</artifactId>
+				<version>${dollar}{hibernate.jpa.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>taglibs</groupId>
+				<artifactId>standard</artifactId>
+				<version>${dollar}{jstl.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+</project>
