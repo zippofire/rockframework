@@ -24,7 +24,6 @@ import java.util.Set;
 
 import br.net.woodstock.rockframework.util.Assert;
 
-
 public final class ArrayUtils {
 
 	private ArrayUtils() {

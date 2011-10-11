@@ -22,7 +22,6 @@ import javax.persistence.Query;
 import br.net.woodstock.rockframework.domain.config.DomainLog;
 import br.net.woodstock.rockframework.domain.persistence.orm.Constants;
 
-
 public class JPAQueryBuilder extends JPQLQueryBuilder<Query> {
 
 	private EntityManager	entityManager;

@@ -21,7 +21,6 @@ import java.sql.ResultSet;
 
 import br.net.woodstock.rockframework.domain.Entity;
 
-
 public interface EntityMapper<E extends Entity<ID>, ID extends Serializable> {
 
 	E toEntity(ResultSet rs);

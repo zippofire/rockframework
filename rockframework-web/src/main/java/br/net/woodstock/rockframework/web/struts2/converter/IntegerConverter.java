@@ -21,7 +21,6 @@ import java.text.NumberFormat;
 import br.net.woodstock.rockframework.config.CoreConfig;
 import br.net.woodstock.rockframework.web.types.IntegerType;
 
-
 public class IntegerConverter extends NumericConverter<IntegerType> {
 
 	private static final String	INTEGER_FORMAT_PROPERTY	= "format.integer";

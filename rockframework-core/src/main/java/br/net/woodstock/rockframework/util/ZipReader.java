@@ -30,7 +30,6 @@ import java.util.zip.ZipInputStream;
 import br.net.woodstock.rockframework.collection.ImmutableSet;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
-
 public class ZipReader {
 
 	private static final char	DIR_SEPARATOR	= '/';

@@ -24,7 +24,6 @@ import java.io.Serializable;
 
 import br.net.woodstock.rockframework.util.Assert;
 
-
 public class ImageResizeTransformer implements ImageTransformer, Serializable {
 
 	private static final long	serialVersionUID	= 416003072718277672L;

@@ -21,7 +21,6 @@ import javax.persistence.EntityManager;
 import br.net.woodstock.rockframework.domain.Entity;
 import br.net.woodstock.rockframework.domain.persistence.orm.GenericRepository;
 
-
 public class JPAGenericRepository extends AbstractJPARepository implements GenericRepository {
 
 	public JPAGenericRepository() {

@@ -22,7 +22,6 @@ import java.util.Set;
 
 import br.net.woodstock.rockframework.util.Assert;
 
-
 public class DelegateMap<K, V> implements Map<K, V> {
 
 	private Map<K, V>	map;

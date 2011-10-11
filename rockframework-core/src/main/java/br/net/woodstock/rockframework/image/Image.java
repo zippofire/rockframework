@@ -27,7 +27,6 @@ import javax.imageio.ImageIO;
 
 import br.net.woodstock.rockframework.util.Assert;
 
-
 public final class Image {
 
 	private BufferedImage	bufferedImage;

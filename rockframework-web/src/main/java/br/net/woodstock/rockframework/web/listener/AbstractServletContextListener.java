@@ -21,7 +21,6 @@ import javax.servlet.ServletContextListener;
 
 import br.net.woodstock.rockframework.web.config.WebLog;
 
-
 public abstract class AbstractServletContextListener implements ServletContextListener {
 
 	@Override

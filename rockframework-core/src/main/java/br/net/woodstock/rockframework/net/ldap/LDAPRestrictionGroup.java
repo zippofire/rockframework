@@ -16,7 +16,6 @@
  */
 package br.net.woodstock.rockframework.net.ldap;
 
-
 public abstract class LDAPRestrictionGroup extends LDAPRestriction {
 
 	private static final long	serialVersionUID	= -5171462400813676484L;

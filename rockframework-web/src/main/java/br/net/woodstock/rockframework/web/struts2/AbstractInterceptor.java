@@ -16,14 +16,39 @@
  */
 package br.net.woodstock.rockframework.web.struts2;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import br.net.woodstock.rockframework.web.config.WebLog;
+import br.net.woodstock.rockframework.web.struts2.utils.Struts2Utils;
 
-abstract class AbstractInterceptor implements com.opensymphony.xwork2.interceptor.Interceptor {
+import com.opensymphony.xwork2.ActionContext;
 
-	private static final long	serialVersionUID	= -914362643212260445L;
+public abstract class AbstractInterceptor implements com.opensymphony.xwork2.interceptor.Interceptor {
+
+	private static final long		serialVersionUID	= -914362643212260445L;
+
+	protected static final String	SKIP_INTERCEPTOR	= "br.net.woodstock.rockframework.web.struts2.Interceptor.SKIP_INTERCEPTOR";
 
 	public AbstractInterceptor() {
 		super();
+	}
+
+	protected String getActionName() {
+		return ActionContext.getContext().getName();
+	}
+
+	protected HttpServletRequest getRequest() {
+		return Struts2Utils.getRequest();
+	}
+
+	protected HttpServletResponse getResponse() {
+		return Struts2Utils.getResponse();
+	}
+
+	protected HttpSession getSession() {
+		return Struts2Utils.getSession();
 	}
 
 	@Override

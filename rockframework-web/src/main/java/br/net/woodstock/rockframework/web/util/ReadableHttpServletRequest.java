@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletRequestWrapper;
 
 import br.net.woodstock.rockframework.utils.IOUtils;
 
-
 public class ReadableHttpServletRequest extends HttpServletRequestWrapper {
 
 	private byte[]	bytes;

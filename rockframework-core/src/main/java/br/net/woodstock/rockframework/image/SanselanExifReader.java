@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import org.apache.sanselan.ImageReadException;
 import org.apache.sanselan.Sanselan;
 import org.apache.sanselan.common.IImageMetadata;
@@ -106,7 +105,7 @@ public final class SanselanExifReader implements ExifReader {
 	}
 
 	public static ExifReader getInstance() {
-		return instance;
+		return SanselanExifReader.instance;
 	}
 
 }

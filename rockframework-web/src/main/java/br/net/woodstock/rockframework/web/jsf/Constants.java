@@ -18,19 +18,17 @@ package br.net.woodstock.rockframework.web.jsf;
 
 public abstract class Constants {
 
-	private static final long	serialVersionUID	= 184189110204186026L;
+	public static final String	BACK	= "back";
 
-	public static final String	BACK				= "back";
+	public static final String	ERROR	= "error";
 
-	public static final String	ERROR				= "error";
+	public static final String	INPUT	= "input";
 
-	public static final String	INPUT				= "input";
+	public static final String	LOGOFF	= "logoff";
 
-	public static final String	LOGOFF				= "logoff";
+	public static final String	LOGON	= "logon";
 
-	public static final String	LOGON				= "logon";
-
-	public static final String	SUCCESS				= "success";
+	public static final String	SUCCESS	= "success";
 
 	private Constants() {
 		super();

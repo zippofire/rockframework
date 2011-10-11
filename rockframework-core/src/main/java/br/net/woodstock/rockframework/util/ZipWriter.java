@@ -28,7 +28,6 @@ import java.util.zip.ZipOutputStream;
 
 import br.net.woodstock.rockframework.collection.ImmutableSet;
 
-
 public class ZipWriter {
 
 	private static final char	DIR_SEPARATOR	= '/';

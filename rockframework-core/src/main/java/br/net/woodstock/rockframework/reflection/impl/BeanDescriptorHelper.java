@@ -20,7 +20,6 @@ import java.lang.reflect.Method;
 
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-
 abstract class BeanDescriptorHelper {
 
 	public static final String	GET_CLASS_METHOD_NAME	= "getClass";

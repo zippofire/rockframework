@@ -28,7 +28,6 @@ import javax.mail.internet.MimeMultipart;
 
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-
 abstract class MailHelper {
 
 	private static final String	MULTIPART_TYPE		= "related";

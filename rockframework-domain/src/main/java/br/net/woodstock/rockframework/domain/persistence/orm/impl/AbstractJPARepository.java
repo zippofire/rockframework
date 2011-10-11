@@ -21,7 +21,6 @@ import javax.persistence.EntityManagerFactory;
 
 import br.net.woodstock.rockframework.util.Assert;
 
-
 abstract class AbstractJPARepository extends AbstractRepository {
 
 	private EntityManagerFactory	entityManagerFactory;

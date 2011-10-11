@@ -30,7 +30,6 @@ import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.MemoryCacheImageInputStream;
 
-
 import org.w3c.dom.NodeList;
 
 import br.net.woodstock.rockframework.util.Assert;
@@ -70,7 +69,7 @@ public final class JAIExifReader implements ExifReader {
 	}
 
 	public static ExifReader getInstance() {
-		return instance;
+		return JAIExifReader.instance;
 	}
 
 	@Override
@@ -92,7 +91,7 @@ public final class JAIExifReader implements ExifReader {
 
 			if (reader != null) {
 				reader.setInput(imageInputStream, true, false);
-				byte[] bytes = getEXIFBytes(reader.getImageMetadata(0));
+				byte[] bytes = this.getEXIFBytes(reader.getImageMetadata(0));
 				if (bytes != null) {
 					IIOMetadata metadata = this.getEXIFMetadata(bytes);
 

@@ -19,7 +19,7 @@ package br.net.woodstock.rockframework.security.sign;
 public interface Signer {
 
 	byte[] sign(byte[] data);
-	
-	boolean verify(byte [] data, byte [] signature);
+
+	boolean verify(byte[] data, byte[] signature);
 
 }

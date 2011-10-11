@@ -18,7 +18,6 @@ package br.net.woodstock.rockframework.domain.business.impl;
 
 import java.util.Collection;
 
-
 import org.springframework.util.Assert;
 
 import br.net.woodstock.rockframework.domain.Entity;

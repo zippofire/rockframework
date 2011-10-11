@@ -22,7 +22,6 @@ import br.net.woodstock.rockframework.domain.Entity;
 import br.net.woodstock.rockframework.domain.persistence.orm.GenericRepository;
 import br.net.woodstock.rockframework.domain.persistence.orm.util.PersistenceUtil;
 
-
 class CommonJPAGenericRepository implements GenericRepository {
 
 	private EntityManager	entityManager;
@@ -48,9 +47,9 @@ class CommonJPAGenericRepository implements GenericRepository {
 		Class<E> clazz = PersistenceUtil.getRealClass(entity);
 
 		E e = this.entityManager.find(clazz, entity.getId());
-		//if (e != null) {
-		//	this.entityManager.refresh(e);
-		//}
+		// if (e != null) {
+		// this.entityManager.refresh(e);
+		// }
 		return e;
 	}
 

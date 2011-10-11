@@ -16,6 +16,6 @@
  */
 package br.net.woodstock.rockframework.domain.persistence.orm;
 
-public  enum CollectionMode {
+public enum CollectionMode {
 	AND, OR;
 }

@@ -28,7 +28,6 @@ import javax.servlet.http.HttpSession;
 
 import br.net.woodstock.rockframework.web.jsf.utils.FacesUtils;
 
-
 public abstract class ManagedBean implements Serializable {
 
 	private static final long	serialVersionUID	= 184189110204186026L;

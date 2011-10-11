@@ -24,7 +24,6 @@ import br.net.woodstock.rockframework.security.digest.Digester;
 import br.net.woodstock.rockframework.security.digest.DigesterException;
 import br.net.woodstock.rockframework.util.Assert;
 
-
 public class BasicDigester implements Digester {
 
 	private DigestType	type;

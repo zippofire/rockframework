@@ -28,7 +28,6 @@ import org.springframework.util.Assert;
 import br.net.woodstock.rockframework.domain.Entity;
 import br.net.woodstock.rockframework.domain.business.BusinessResult;
 
-
 @SuppressWarnings("rawtypes")
 public abstract class AbstractJEEBusiness extends AbstractBusiness {
 

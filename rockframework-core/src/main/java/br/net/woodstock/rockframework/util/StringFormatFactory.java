@@ -38,6 +38,6 @@ public final class StringFormatFactory extends FormatFactory<StringFormater> {
 
 	// Instance
 	public static StringFormatFactory getInstance() {
-		return instance;
+		return StringFormatFactory.instance;
 	}
 }

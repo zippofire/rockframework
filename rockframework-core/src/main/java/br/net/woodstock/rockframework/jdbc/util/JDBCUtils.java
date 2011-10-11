@@ -27,7 +27,6 @@ import java.sql.SQLException;
 
 import br.net.woodstock.rockframework.util.Assert;
 
-
 public abstract class JDBCUtils {
 
 	private JDBCUtils() {

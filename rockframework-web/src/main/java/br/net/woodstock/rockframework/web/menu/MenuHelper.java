@@ -27,7 +27,6 @@ import br.net.woodstock.rockframework.reflection.impl.AnnotationClassFilter;
 import br.net.woodstock.rockframework.reflection.impl.ClassFinderImpl;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-
 public abstract class MenuHelper {
 
 	public static final char	MENU_SEPARATOR	= '/';

@@ -19,7 +19,6 @@ package br.net.woodstock.rockframework.web.tomcat;
 import java.io.IOException;
 import java.security.Principal;
 
-
 import org.apache.catalina.authenticator.Constants;
 import org.apache.catalina.authenticator.FormAuthenticator;
 import org.apache.catalina.connector.Request;

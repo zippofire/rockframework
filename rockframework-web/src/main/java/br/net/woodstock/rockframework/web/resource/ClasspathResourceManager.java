@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import br.net.woodstock.rockframework.web.utils.ResponseUtils;
 
-
 public class ClasspathResourceManager extends PathBasedResourceManager {
 
 	public static final String	PATH_PARAM	= "path";

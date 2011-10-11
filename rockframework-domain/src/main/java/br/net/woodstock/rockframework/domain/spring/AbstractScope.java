@@ -16,7 +16,6 @@
  */
 package br.net.woodstock.rockframework.domain.spring;
 
-
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.config.Scope;
 

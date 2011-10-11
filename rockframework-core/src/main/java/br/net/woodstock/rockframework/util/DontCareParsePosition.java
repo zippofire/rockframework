@@ -27,7 +27,7 @@ public final class DontCareParsePosition extends ParsePosition {
 	}
 
 	public static ParsePosition getInstance() {
-		return instance;
+		return DontCareParsePosition.instance;
 	}
 
 }

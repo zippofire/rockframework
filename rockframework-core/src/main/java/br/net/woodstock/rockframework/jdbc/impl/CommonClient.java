@@ -26,7 +26,6 @@ import br.net.woodstock.rockframework.jdbc.ParameterList;
 import br.net.woodstock.rockframework.jdbc.TypeHandler;
 import br.net.woodstock.rockframework.util.Assert;
 
-
 public class CommonClient implements Client {
 
 	private Connection	connection;

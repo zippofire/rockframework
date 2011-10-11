@@ -21,7 +21,6 @@ import java.io.InputStream;
 
 import br.net.woodstock.rockframework.utils.IOUtils;
 
-
 public class Image implements SpreadsheetElement {
 
 	private static final long	serialVersionUID	= 8304414656932408168L;

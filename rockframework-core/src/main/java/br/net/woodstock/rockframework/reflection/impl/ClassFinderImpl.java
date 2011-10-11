@@ -32,7 +32,6 @@ import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.util.ZipReader;
 import br.net.woodstock.rockframework.utils.ClassLoaderUtils;
 
-
 @SuppressWarnings("rawtypes")
 public class ClassFinderImpl implements ClassFinder {
 

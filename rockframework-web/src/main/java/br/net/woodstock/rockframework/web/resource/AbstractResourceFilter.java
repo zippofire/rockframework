@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletResponse;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.web.filter.AbstractHttpFilter;
 
-
 public abstract class AbstractResourceFilter extends AbstractHttpFilter {
 
 	private ResourceManager	resourceManager;

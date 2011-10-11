@@ -26,7 +26,6 @@ import java.util.Set;
 
 import br.net.woodstock.rockframework.collection.GenericEnumeration;
 
-
 public abstract class CollectionUtils {
 
 	private CollectionUtils() {

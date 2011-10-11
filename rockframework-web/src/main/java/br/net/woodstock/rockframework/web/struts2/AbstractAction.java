@@ -16,17 +16,37 @@
  */
 package br.net.woodstock.rockframework.web.struts2;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import br.net.woodstock.rockframework.web.struts2.utils.Struts2Utils;
 
+import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Preparable;
 
-public abstract class Result extends AbstractResult {
+public abstract class AbstractAction extends ActionSupport implements Preparable {
 
-	private static final long	serialVersionUID	= -4756169112128368396L;
+	private static final long	serialVersionUID	= 655502050649662609L;
+
+	private static final String	STORED_DATA_SUFFIX	= ".StoredData";
+
+	private String				name;
+
+	public AbstractAction() {
+		super();
+		this.name = this.getClass().getCanonicalName() + AbstractAction.STORED_DATA_SUFFIX;
+	}
+
+	@Override
+	public final void prepare() throws Exception {
+		this.prepare(this.getRequest());
+	}
+
+	@SuppressWarnings("unused")
+	public void prepare(final HttpServletRequest request) throws Exception {
+		//
+	}
 
 	protected HttpServletRequest getRequest() {
 		return Struts2Utils.getRequest();
@@ -36,12 +56,25 @@ public abstract class Result extends AbstractResult {
 		return Struts2Utils.getResponse();
 	}
 
-	protected ServletContext getServletContext() {
-		return Struts2Utils.getServletContext();
-	}
-
 	protected HttpSession getSession() {
 		return Struts2Utils.getSession();
+	}
+
+	// Stored Data
+	protected Object[] getStoredData() {
+		return (Object[]) this.getSession().getAttribute(this.name);
+	}
+
+	protected boolean hasStoredData() {
+		Object[] o = (Object[]) this.getSession().getAttribute(this.name);
+		if (o != null) {
+			return true;
+		}
+		return false;
+	}
+
+	protected void setStoredData(final Object[] data) {
+		this.getSession().setAttribute(this.name, data);
 	}
 
 }

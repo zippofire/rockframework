@@ -60,7 +60,7 @@ public class ValueObject<T> implements Pojo {
 	public int hashCode() {
 		final int prime = ObjectUtils.HASH_PRIME;
 		int result = 1;
-		result = prime * result + ((this.value == null) ? 0 : this.value.hashCode());
+		result = (prime * result) + ((this.value == null) ? 0 : this.value.hashCode());
 		return result;
 	}
 

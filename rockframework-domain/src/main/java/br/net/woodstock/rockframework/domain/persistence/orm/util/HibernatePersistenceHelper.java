@@ -16,7 +16,6 @@
  */
 package br.net.woodstock.rockframework.domain.persistence.orm.util;
 
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -63,6 +62,6 @@ public final class HibernatePersistenceHelper implements PersistenceHelper<Sessi
 	}
 
 	public static HibernatePersistenceHelper getInstance() {
-		return instance;
+		return HibernatePersistenceHelper.instance;
 	}
 }

@@ -20,7 +20,6 @@ import javax.validation.ConstraintValidatorContext;
 
 import br.net.woodstock.rockframework.domain.Entity;
 
-
 public class ReferenceValidator extends AbstractValidator<Reference, Entity<?>> {
 
 	@Override

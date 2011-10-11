@@ -25,7 +25,6 @@ import javax.servlet.jsp.PageContext;
 import br.net.woodstock.rockframework.web.config.WebLog;
 import br.net.woodstock.rockframework.web.jsp.taglib.AbstractTag;
 
-
 public class StackTraceTag extends AbstractTag {
 
 	public StackTraceTag() {

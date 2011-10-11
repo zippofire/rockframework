@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletResponse;
 import br.net.woodstock.rockframework.web.jsp.util.RequestTimeListener.RequestDebug;
 import br.net.woodstock.rockframework.web.servlet.AbstractHttpServlet;
 
-
 public class RequestTimeServlet extends AbstractHttpServlet {
 
 	private static final long	serialVersionUID	= 1186351388097961933L;

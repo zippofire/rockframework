@@ -24,7 +24,6 @@ import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.web.JSPException;
 import br.net.woodstock.rockframework.web.listener.AbstractServletContextListener;
 
-
 public class MenuListener extends AbstractServletContextListener {
 
 	public static final String	BASENAME_PARAM			= "br.net.woodstock.rockframework.web.menu.MenuListener.BASENAME";

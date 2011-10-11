@@ -20,7 +20,6 @@ import java.lang.reflect.Method;
 
 import br.net.woodstock.rockframework.reflection.PropertyDescriptor;
 
-
 class MethodBeanDescriptor extends AbstractBeanDescriptor {
 
 	public MethodBeanDescriptor(final Class<?> clazz) {

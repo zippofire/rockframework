@@ -34,7 +34,7 @@ public class LPadTransformer implements StringTransformer {
 			return null;
 		}
 		StringBuilder builder = new StringBuilder();
-		while (builder.length() + str.length() < this.size) {
+		while ((builder.length() + str.length()) < this.size) {
 			builder.append(this.pad);
 		}
 		builder.append(str);

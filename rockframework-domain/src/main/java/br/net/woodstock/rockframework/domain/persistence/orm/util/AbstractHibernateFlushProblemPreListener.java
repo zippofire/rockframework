@@ -20,7 +20,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
-
 import org.hibernate.event.AbstractPreDatabaseOperationEvent;
 import org.hibernate.event.EventSource;
 

@@ -30,10 +30,10 @@ public class Base64Signer extends DelegateSigner {
 	public byte[] sign(final byte[] data) {
 		Assert.notNull(data, "data");
 		byte[] signature = super.sign(data);
-		byte[] b64 = Base64Utils.toBase64(signature);		
+		byte[] b64 = Base64Utils.toBase64(signature);
 		return b64;
 	}
-	
+
 	@Override
 	public boolean verify(final byte[] data, final byte[] signature) {
 		Assert.notNull(data, "data");

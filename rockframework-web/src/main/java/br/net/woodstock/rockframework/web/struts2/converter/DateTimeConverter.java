@@ -24,7 +24,6 @@ import java.util.Date;
 import br.net.woodstock.rockframework.web.config.WebLog;
 import br.net.woodstock.rockframework.web.types.DateTimeType;
 
-
 public abstract class DateTimeConverter<T extends DateTimeType> extends TypeConverter<T> {
 
 	private DateFormat	format;

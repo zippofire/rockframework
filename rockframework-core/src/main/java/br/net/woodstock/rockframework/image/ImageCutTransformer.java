@@ -21,7 +21,6 @@ import java.io.Serializable;
 
 import br.net.woodstock.rockframework.util.Assert;
 
-
 public class ImageCutTransformer implements ImageTransformer, Serializable {
 
 	private static final long	serialVersionUID	= 8048865488355909521L;
@@ -58,7 +57,7 @@ public class ImageCutTransformer implements ImageTransformer, Serializable {
 		int w = this.width;
 		int h = this.height;
 
-		if (this.x + w > imageWidth) {
+		if ((this.x + w) > imageWidth) {
 			x = imageWidth - w;
 			if (x < 0) {
 				x = 0;
@@ -66,7 +65,7 @@ public class ImageCutTransformer implements ImageTransformer, Serializable {
 			}
 		}
 
-		if (this.y + h > imageHeight) {
+		if ((this.y + h) > imageHeight) {
 			y = imageHeight - h;
 			if (y < 0) {
 				y = 0;

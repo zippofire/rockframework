@@ -22,7 +22,6 @@ import java.util.Map;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 
-
 import org.springframework.beans.factory.ObjectFactory;
 
 import br.net.woodstock.rockframework.domain.spring.AbstractScope;

@@ -16,16 +16,10 @@
  */
 package br.net.woodstock.rockframework.security.digest;
 
-
 public enum DigestType {
 
-	MD2("MD2"),
-	MD5("MD5"),
-	SHA1("SHA1"),
-	SHA_256("SHA-256"),
-	SHA_384("SHA-384"),
-	SHA_512("SHA-512");
-	
+	MD2("MD2"), MD5("MD5"), SHA1("SHA1"), SHA_256("SHA-256"), SHA_384("SHA-384"), SHA_512("SHA-512");
+
 	private String	algorithm;
 
 	private DigestType(final String algorithm) {
@@ -35,5 +29,5 @@ public enum DigestType {
 	public String getAlgorithm() {
 		return this.algorithm;
 	}
-	
+
 }

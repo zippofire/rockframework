@@ -19,7 +19,6 @@ package br.net.woodstock.rockframework.office.spreadsheet.poi;
 import java.io.IOException;
 import java.io.InputStream;
 
-
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 

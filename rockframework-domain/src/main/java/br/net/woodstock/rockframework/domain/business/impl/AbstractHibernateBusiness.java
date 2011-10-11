@@ -16,7 +16,6 @@
  */
 package br.net.woodstock.rockframework.domain.business.impl;
 
-
 import org.hibernate.validator.ClassValidator;
 import org.hibernate.validator.InvalidValue;
 import org.springframework.util.Assert;

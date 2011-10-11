@@ -23,7 +23,6 @@ import java.util.LinkedList;
 import br.net.woodstock.rockframework.reflection.BeanDescriptor;
 import br.net.woodstock.rockframework.reflection.PropertyDescriptor;
 
-
 abstract class AbstractBeanDescriptor implements BeanDescriptor {
 
 	private Class<?>						type;

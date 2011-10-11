@@ -18,10 +18,9 @@ package br.net.woodstock.rockframework.web.struts2.util;
 
 import java.io.File;
 
-import br.net.woodstock.rockframework.web.struts2.Action;
+import br.net.woodstock.rockframework.web.struts2.AbstractAction;
 
-
-public abstract class UploadAction extends Action implements UploadableAction {
+public abstract class UploadAction extends AbstractAction implements UploadableAction {
 
 	private static final long	serialVersionUID	= -4881795896025336102L;
 

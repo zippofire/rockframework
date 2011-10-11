@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import br.net.woodstock.rockframework.web.utils.RequestUtils;
 
-
 public class RequestTimeListener implements ServletRequestListener {
 
 	private static Map<Integer, RequestDebug>	requests	= new HashMap<Integer, RequestDebug>();

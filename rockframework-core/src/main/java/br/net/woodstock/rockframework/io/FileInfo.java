@@ -24,7 +24,6 @@ import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 import br.net.woodstock.rockframework.utils.FileUtils;
 
-
 public class FileInfo implements Serializable, Comparable<FileInfo> {
 
 	private static final long	serialVersionUID	= 1456362383300699776L;

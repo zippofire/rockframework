@@ -30,7 +30,6 @@ import javax.naming.directory.SearchResult;
 
 import br.net.woodstock.rockframework.util.Assert;
 
-
 public class LDAPClient implements Serializable {
 
 	private static final long		serialVersionUID		= 3389854358379894685L;

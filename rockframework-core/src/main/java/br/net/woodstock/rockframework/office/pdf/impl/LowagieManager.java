@@ -21,7 +21,6 @@ import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 
-
 import br.net.woodstock.rockframework.io.InputOutputStream;
 import br.net.woodstock.rockframework.office.pdf.PDFManager;
 import br.net.woodstock.rockframework.util.Assert;
@@ -115,7 +114,7 @@ class LowagieManager implements PDFManager {
 			InputOutputStream outputStream = null;
 			PdfCopy writer = null;
 			for (int i = 1; i <= pageCount; i++) {
-				if ((document == null) || (i % size == 0)) {
+				if ((document == null) || ((i % size) == 0)) {
 					if (document != null) {
 						document.close();
 						writer.close();

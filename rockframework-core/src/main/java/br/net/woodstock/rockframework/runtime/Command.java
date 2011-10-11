@@ -27,7 +27,6 @@ import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 import br.net.woodstock.rockframework.utils.SystemUtils;
 
-
 public class Command implements Serializable {
 
 	private static final long	serialVersionUID	= 3461506172311705253L;

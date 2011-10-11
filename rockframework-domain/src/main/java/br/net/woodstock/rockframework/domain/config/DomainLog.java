@@ -22,7 +22,7 @@ public final class DomainLog extends AbstractLog {
 
 	private static final String	LOG_NAME	= "br.net.woodstock.rockframework.domain";
 
-	private static DomainLog		instance	= new DomainLog();
+	private static DomainLog	instance	= new DomainLog();
 
 	private DomainLog() {
 		super(DomainLog.LOG_NAME);

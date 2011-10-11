@@ -54,7 +54,7 @@ public class DateBuilder {
 				currentDays -= maxDays;
 				maxDays = this.calendar.getActualMaximum(java.util.Calendar.DAY_OF_YEAR);
 			}
-			if (currentDays + this.calendar.get(java.util.Calendar.DAY_OF_YEAR) > maxDays) {
+			if ((currentDays + this.calendar.get(java.util.Calendar.DAY_OF_YEAR)) > maxDays) {
 				this.addYears(1);
 				currentDays = maxDays - currentDays;
 				this.roll(currentDays, java.util.Calendar.DAY_OF_YEAR, false);
@@ -75,7 +75,7 @@ public class DateBuilder {
 				currentHours -= maxHours;
 				maxHours = this.calendar.getActualMaximum(java.util.Calendar.HOUR_OF_DAY) + 1;
 			}
-			if (currentHours + this.calendar.get(java.util.Calendar.HOUR_OF_DAY) > maxHours) {
+			if ((currentHours + this.calendar.get(java.util.Calendar.HOUR_OF_DAY)) > maxHours) {
 				this.addDays(1);
 				currentHours = maxHours - currentHours;
 				this.roll(currentHours, java.util.Calendar.HOUR_OF_DAY, false);
@@ -95,7 +95,7 @@ public class DateBuilder {
 				this.addHours(1);
 				currentMinutes -= maxMinutes;
 			}
-			if (currentMinutes + this.calendar.get(java.util.Calendar.MINUTE) > maxMinutes) {
+			if ((currentMinutes + this.calendar.get(java.util.Calendar.MINUTE)) > maxMinutes) {
 				this.addHours(1);
 				currentMinutes = maxMinutes - currentMinutes;
 				this.roll(currentMinutes, java.util.Calendar.MINUTE, false);
@@ -116,7 +116,7 @@ public class DateBuilder {
 				currentMonths -= maxMonths;
 				maxMonths = this.calendar.getActualMaximum(java.util.Calendar.MONTH) + 1;
 			}
-			if (currentMonths + this.calendar.get(java.util.Calendar.MONTH) > maxMonths) {
+			if ((currentMonths + this.calendar.get(java.util.Calendar.MONTH)) > maxMonths) {
 				this.addYears(1);
 				currentMonths = maxMonths - currentMonths;
 				this.roll(currentMonths, java.util.Calendar.MONTH, false);

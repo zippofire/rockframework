@@ -20,7 +20,6 @@ import java.util.Iterator;
 
 import br.net.woodstock.rockframework.util.Assert;
 
-
 class ImmutableIterator<E> extends DelegateIterator<E> {
 
 	public ImmutableIterator(final Iterator<E> iterator) {

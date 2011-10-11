@@ -16,7 +16,6 @@
  */
 package br.net.woodstock.rockframework.config;
 
-
 import org.apache.commons.logging.Log;
 
 import br.net.woodstock.rockframework.utils.LogUtils;

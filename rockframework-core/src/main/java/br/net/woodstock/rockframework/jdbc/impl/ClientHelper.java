@@ -41,7 +41,6 @@ import br.net.woodstock.rockframework.jdbc.ParameterList;
 import br.net.woodstock.rockframework.jdbc.Type;
 import br.net.woodstock.rockframework.jdbc.TypeHandler;
 
-
 abstract class ClientHelper {
 
 	private ClientHelper() {
@@ -63,7 +62,7 @@ abstract class ClientHelper {
 		if (args != null) {
 			for (int cont = 0; cont < args.size(); cont++) {
 				sql.append("?");
-				if (cont + 1 < args.size()) {
+				if ((cont + 1) < args.size()) {
 					sql.append(",");
 				}
 			}
@@ -84,7 +83,7 @@ abstract class ClientHelper {
 		if (args != null) {
 			for (int cont = 0; cont < args.size(); cont++) {
 				sql.append("?");
-				if (cont + 1 < args.size()) {
+				if ((cont + 1) < args.size()) {
 					sql.append(",");
 				}
 			}

@@ -20,7 +20,6 @@ import java.util.Iterator;
 
 import br.net.woodstock.rockframework.util.Assert;
 
-
 class DelegateIterator<E> implements Iterator<E> {
 
 	private Iterator<E>	iterator;

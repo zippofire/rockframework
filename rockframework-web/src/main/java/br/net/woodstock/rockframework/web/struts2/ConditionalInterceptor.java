@@ -21,8 +21,7 @@ import java.util.Map;
 
 import br.net.woodstock.rockframework.util.Assert;
 
-
-public abstract class ConditionalInterceptor<R> extends Interceptor {
+public abstract class ConditionalInterceptor<R> extends AbstractInterceptor {
 
 	private static final long	serialVersionUID	= -4699336436483961264L;
 

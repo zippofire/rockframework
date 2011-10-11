@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import br.net.woodstock.rockframework.web.utils.RequestUtils;
 
-
 public class LocalRefererFilter extends NoRefererFilter {
 
 	private String	applicationUrl;

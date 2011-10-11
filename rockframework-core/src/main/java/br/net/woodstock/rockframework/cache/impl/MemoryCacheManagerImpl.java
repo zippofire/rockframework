@@ -24,7 +24,6 @@ import br.net.woodstock.rockframework.cache.Cache;
 import br.net.woodstock.rockframework.cache.CacheManager;
 import br.net.woodstock.rockframework.util.Assert;
 
-
 class MemoryCacheManagerImpl implements CacheManager {
 
 	private List<Cache>	caches;

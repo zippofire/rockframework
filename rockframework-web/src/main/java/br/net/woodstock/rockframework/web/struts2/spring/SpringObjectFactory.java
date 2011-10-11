@@ -18,13 +18,13 @@ package br.net.woodstock.rockframework.web.struts2.spring;
 
 import java.util.Map;
 
-
 import br.net.woodstock.rockframework.domain.DomainException;
 import br.net.woodstock.rockframework.domain.spring.ContextHelper;
 import br.net.woodstock.rockframework.web.config.WebLog;
 
 import com.opensymphony.xwork2.ObjectFactory;
 
+@Deprecated
 public class SpringObjectFactory extends ObjectFactory {
 
 	private static final long	serialVersionUID	= -3223027211302424826L;

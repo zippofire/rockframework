@@ -18,13 +18,22 @@ package br.net.woodstock.rockframework.net.ldap;
 
 import javax.naming.spi.InitialContextFactory;
 
-import com.sun.jndi.ldap.LdapCtxFactory;
+import br.net.woodstock.rockframework.InitializationException;
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 class SunLDAPContextFactoryManager extends LDAPContextFactoryManager {
 
-	private static final String					SUN_FACTORY_NAME	= "com.sun.jndi.ldap.LdapCtxFactory";
+	private static final String							SUN_FACTORY_NAME	= "com.sun.jndi.ldap.LdapCtxFactory";
 
-	private static final Class<LdapCtxFactory>	SUN_FACTORY_TYPE	= LdapCtxFactory.class;
+	private static final Class<InitialContextFactory>	SUN_FACTORY_TYPE;
+
+	static {
+		try {
+			SUN_FACTORY_TYPE = (Class) Class.forName(SunLDAPContextFactoryManager.SUN_FACTORY_NAME);
+		} catch (ClassNotFoundException e) {
+			throw new InitializationException(e);
+		}
+	}
 
 	@Override
 	public String getName() {

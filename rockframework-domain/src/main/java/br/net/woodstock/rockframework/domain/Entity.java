@@ -20,7 +20,6 @@ import java.io.Serializable;
 
 import br.net.woodstock.rockframework.domain.util.Identifiable;
 
-
 public interface Entity<ID extends Serializable> extends Pojo, Identifiable<ID> {
 	//
 }

@@ -50,7 +50,7 @@ public final class CacheManagerImpl implements CacheManager {
 	}
 
 	public static CacheManager getInstance() {
-		return instance;
+		return CacheManagerImpl.instance;
 	}
 
 }

@@ -22,7 +22,6 @@ import javax.faces.context.FacesContext;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 import br.net.woodstock.rockframework.web.config.WebLog;
 
-
 public abstract class SimpleFacesConverter<T> extends FacesConverter {
 
 	@Override

@@ -20,8 +20,6 @@ import br.net.woodstock.rockframework.web.struts2.Struts2Exception;
 
 public class ParameterizedResourceFilter extends AbstractResourceFilter {
 
-	private static final long	serialVersionUID			= -8118171525668671964L;
-
 	private static final String	RESOURCE_MANAGER_PARAMETER	= "resourceManager";
 
 	public ParameterizedResourceFilter() {

@@ -24,7 +24,6 @@ import javax.persistence.Persistence;
 import br.net.woodstock.rockframework.domain.config.DomainConfig;
 import br.net.woodstock.rockframework.domain.config.DomainLog;
 
-
 public final class JPAPersistenceHelper implements PersistenceHelper<EntityManager> {
 
 	private static JPAPersistenceHelper			instance						= new JPAPersistenceHelper();
@@ -67,6 +66,6 @@ public final class JPAPersistenceHelper implements PersistenceHelper<EntityManag
 	}
 
 	public static JPAPersistenceHelper getInstance() {
-		return instance;
+		return JPAPersistenceHelper.instance;
 	}
 }

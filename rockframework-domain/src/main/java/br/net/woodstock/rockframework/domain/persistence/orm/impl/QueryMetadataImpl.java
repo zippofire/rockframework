@@ -21,7 +21,6 @@ import java.util.Map;
 
 import br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata;
 
-
 public class QueryMetadataImpl implements QueryMetadata {
 
 	private static final long	serialVersionUID	= 4971001334323658467L;

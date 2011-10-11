@@ -23,7 +23,6 @@ import java.util.regex.Pattern;
 
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-
 abstract class AbstractFileRegexFilter implements FilenameFilter {
 
 	private String	filter;

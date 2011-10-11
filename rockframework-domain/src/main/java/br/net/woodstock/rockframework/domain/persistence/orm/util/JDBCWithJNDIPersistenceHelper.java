@@ -29,7 +29,6 @@ import br.net.woodstock.rockframework.domain.persistence.orm.PersistenceExceptio
 import br.net.woodstock.rockframework.util.PropertiesReader;
 import br.net.woodstock.rockframework.utils.ClassLoaderUtils;
 
-
 public final class JDBCWithJNDIPersistenceHelper implements PersistenceHelper<Connection> {
 
 	public static final String						PROPERTIES_FILE		= "datasource.properties";
@@ -90,6 +89,6 @@ public final class JDBCWithJNDIPersistenceHelper implements PersistenceHelper<Co
 	}
 
 	public static JDBCWithJNDIPersistenceHelper getInstance() {
-		return instance;
+		return JDBCWithJNDIPersistenceHelper.instance;
 	}
 }

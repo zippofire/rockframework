@@ -16,11 +16,11 @@
  */
 package br.net.woodstock.rockframework.cache.impl;
 
+import net.sf.ehcache.Ehcache;
+import net.sf.ehcache.Element;
 import br.net.woodstock.rockframework.cache.Cache;
 import br.net.woodstock.rockframework.config.CoreLog;
 import br.net.woodstock.rockframework.util.Assert;
-import net.sf.ehcache.Ehcache;
-import net.sf.ehcache.Element;
 
 class EHCacheImpl implements Cache {
 

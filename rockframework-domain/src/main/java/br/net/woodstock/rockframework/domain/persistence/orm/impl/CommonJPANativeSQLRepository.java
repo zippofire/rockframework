@@ -27,7 +27,6 @@ import br.net.woodstock.rockframework.domain.persistence.orm.Constants;
 import br.net.woodstock.rockframework.domain.persistence.orm.NativeSQLRepository;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-
 class CommonJPANativeSQLRepository extends AbstractJPAQueryableRepository implements NativeSQLRepository {
 
 	private EntityManager	entityManager;

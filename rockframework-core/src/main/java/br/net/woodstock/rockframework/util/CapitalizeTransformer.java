@@ -18,7 +18,7 @@ package br.net.woodstock.rockframework.util;
 
 public final class CapitalizeTransformer implements StringTransformer {
 
-	private static final char		SPACE		= ' ';
+	private static final char			SPACE		= ' ';
 
 	private static StringTransformer	instance	= new CapitalizeTransformer();
 
@@ -52,6 +52,6 @@ public final class CapitalizeTransformer implements StringTransformer {
 	}
 
 	public static StringTransformer getInstance() {
-		return instance;
+		return CapitalizeTransformer.instance;
 	}
 }

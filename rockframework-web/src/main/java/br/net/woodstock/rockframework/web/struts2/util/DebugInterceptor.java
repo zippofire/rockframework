@@ -23,15 +23,14 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-
 import br.net.woodstock.rockframework.utils.ArrayUtils;
 import br.net.woodstock.rockframework.web.config.WebLog;
-import br.net.woodstock.rockframework.web.struts2.Interceptor;
+import br.net.woodstock.rockframework.web.struts2.AbstractInterceptor;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.ActionProxy;
 
-public class DebugInterceptor extends Interceptor {
+public class DebugInterceptor extends AbstractInterceptor {
 
 	private static final long	serialVersionUID	= 657049342110588586L;
 

@@ -18,14 +18,13 @@ package br.net.woodstock.rockframework.web.struts2.security;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 import br.net.woodstock.rockframework.utils.ConditionUtils;
+import br.net.woodstock.rockframework.web.struts2.AbstractInterceptor;
 import br.net.woodstock.rockframework.web.struts2.Constants;
-import br.net.woodstock.rockframework.web.struts2.Interceptor;
 
 import com.opensymphony.xwork2.ActionInvocation;
 
-public class DenyGetParamInterceptor extends Interceptor {
+public class DenyGetParamInterceptor extends AbstractInterceptor {
 
 	private static final long	serialVersionUID	= -7686764937974794750L;
 

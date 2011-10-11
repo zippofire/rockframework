@@ -18,6 +18,8 @@ package br.net.woodstock.rockframework.domain.persistence.orm.util;
 
 import org.apache.openjpa.enhance.PersistenceCapable;
 
+import br.net.woodstock.rockframework.ImprobableException;
+
 abstract class JPAUtil {
 
 	private JPAUtil() {
@@ -34,7 +36,7 @@ abstract class JPAUtil {
 		try {
 			return (Class<E>) Class.forName(e.getClass().getCanonicalName());
 		} catch (ClassNotFoundException ex) {
-			throw new RuntimeException(ex);
+			throw new ImprobableException(ex);
 		}
 	}
 

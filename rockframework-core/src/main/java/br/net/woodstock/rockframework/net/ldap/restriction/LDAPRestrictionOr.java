@@ -22,7 +22,6 @@ import java.util.LinkedHashSet;
 import br.net.woodstock.rockframework.net.ldap.LDAPRestriction;
 import br.net.woodstock.rockframework.net.ldap.LDAPRestrictionGroup;
 
-
 class LDAPRestrictionOr extends LDAPRestrictionGroup {
 
 	private static final long			serialVersionUID	= 3117224346910387931L;

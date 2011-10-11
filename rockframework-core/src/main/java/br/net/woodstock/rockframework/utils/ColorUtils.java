@@ -20,7 +20,6 @@ import java.awt.Color;
 
 import br.net.woodstock.rockframework.util.LPadTransformer;
 
-
 public abstract class ColorUtils {
 
 	private ColorUtils() {

@@ -33,7 +33,6 @@ import br.net.woodstock.rockframework.security.crypt.impl.AsStringCrypter;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-
 public class EncryptedProperties extends Properties {
 
 	private static final long	serialVersionUID	= 982155416609776739L;

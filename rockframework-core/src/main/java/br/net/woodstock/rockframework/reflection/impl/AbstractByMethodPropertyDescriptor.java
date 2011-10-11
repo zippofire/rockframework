@@ -27,7 +27,6 @@ import br.net.woodstock.rockframework.config.CoreLog;
 import br.net.woodstock.rockframework.reflection.BeanDescriptor;
 import br.net.woodstock.rockframework.reflection.ReflectionException;
 
-
 class AbstractByMethodPropertyDescriptor extends AbstractPropertyDescriptor {
 
 	private String		name;

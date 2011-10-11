@@ -38,7 +38,6 @@ import br.net.woodstock.rockframework.reflection.PropertyDescriptor;
 import br.net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilder;
 import br.net.woodstock.rockframework.util.Assert;
 
-
 public class EntityValidatorImpl extends AbstractEntityValidator {
 
 	private Operation	operation;

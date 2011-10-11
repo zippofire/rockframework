@@ -23,7 +23,6 @@ import br.net.woodstock.rockframework.reflection.BeanDescriptor;
 import br.net.woodstock.rockframework.reflection.PropertyDescriptor;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-
 final class JPAHelper {
 
 	private JPAHelper() {

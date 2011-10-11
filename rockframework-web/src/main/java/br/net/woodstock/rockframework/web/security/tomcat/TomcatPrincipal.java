@@ -18,7 +18,6 @@ package br.net.woodstock.rockframework.web.security.tomcat;
 
 import java.util.List;
 
-
 import org.apache.catalina.realm.GenericPrincipal;
 
 import br.net.woodstock.rockframework.utils.ArrayUtils;

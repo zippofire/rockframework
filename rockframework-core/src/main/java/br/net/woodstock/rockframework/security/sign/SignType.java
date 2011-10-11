@@ -18,20 +18,8 @@ package br.net.woodstock.rockframework.security.sign;
 
 public enum SignType {
 
-	MD2_RSA("MD2withRSA"),
-	MD5_RSA("MD5withRSA"),
-	SHA1_RSA("SHA1withRSA"),
-	SHA256_RSA("SHA256withRSA"),
-	SHA384_RSA("SHA384withRSA"),
-	SHA512_RSA("SHA512withRSA"),
-	SHA1_DSA("SHA1withDSA"),
-	SHA1_ECDSA("SHA1withECDSA"),
-	SHA256_ECDSA("SHA256withECDSA"),
-	SHA384_ECDSA("SHA384withECDSA"),
-	SHA512_ECDSA("SHA512withECDSA"),
-	NONE_DSA("NONEwithDSA"),
-	NONE_ECDSA("NONEwithECDSA");
-	
+	MD2_RSA("MD2withRSA"), MD5_RSA("MD5withRSA"), SHA1_RSA("SHA1withRSA"), SHA256_RSA("SHA256withRSA"), SHA384_RSA("SHA384withRSA"), SHA512_RSA("SHA512withRSA"), SHA1_DSA("SHA1withDSA"), SHA1_ECDSA("SHA1withECDSA"), SHA256_ECDSA("SHA256withECDSA"), SHA384_ECDSA("SHA384withECDSA"), SHA512_ECDSA("SHA512withECDSA"), NONE_DSA("NONEwithDSA"), NONE_ECDSA("NONEwithECDSA");
+
 	private String	algorithm;
 
 	private SignType(final String algorithm) {
@@ -41,5 +29,5 @@ public enum SignType {
 	public String getAlgorithm() {
 		return this.algorithm;
 	}
-	
+
 }

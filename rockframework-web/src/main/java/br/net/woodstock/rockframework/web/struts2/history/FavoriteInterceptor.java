@@ -20,7 +20,6 @@ import java.lang.reflect.Method;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.web.config.WebLog;
 import br.net.woodstock.rockframework.web.struts2.ConditionalInterceptor;

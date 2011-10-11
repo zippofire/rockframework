@@ -24,19 +24,18 @@ import java.util.regex.Pattern;
 import ognl.NoSuchPropertyException;
 import ognl.Ognl;
 import ognl.OgnlException;
-
 import br.net.woodstock.rockframework.domain.Entity;
 import br.net.woodstock.rockframework.reflection.BeanDescriptor;
 import br.net.woodstock.rockframework.reflection.PropertyDescriptor;
 import br.net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilder;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 import br.net.woodstock.rockframework.web.config.WebLog;
-import br.net.woodstock.rockframework.web.struts2.Interceptor;
+import br.net.woodstock.rockframework.web.struts2.AbstractInterceptor;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 
-public class EntityInterceptor extends Interceptor {
+public class EntityInterceptor extends AbstractInterceptor {
 
 	private static final long	serialVersionUID	= -535010685117263005L;
 

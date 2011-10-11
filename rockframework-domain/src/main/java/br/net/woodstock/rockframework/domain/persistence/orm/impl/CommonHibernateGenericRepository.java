@@ -16,7 +16,6 @@
  */
 package br.net.woodstock.rockframework.domain.persistence.orm.impl;
 
-
 import org.hibernate.HibernateException;
 import org.hibernate.NonUniqueObjectException;
 import org.hibernate.ObjectNotFoundException;
@@ -76,18 +75,18 @@ class CommonHibernateGenericRepository implements GenericRepository {
 		if (CommonHibernateGenericRepository.GET_TYPE == GetType.LOAD) {
 			try {
 				E e = (E) this.session.load(clazz, entity.getId());
-				//if (e != null) {
-				//	this.session.refresh(e);
-				//}
+				// if (e != null) {
+				// this.session.refresh(e);
+				// }
 				return e;
 			} catch (ObjectNotFoundException e) {
 				return null;
 			}
 		}
 		E e = (E) this.session.get(clazz, entity.getId());
-		//if (e != null) {
-		//	this.session.refresh(e);
-		//}
+		// if (e != null) {
+		// this.session.refresh(e);
+		// }
 		return e;
 	}
 

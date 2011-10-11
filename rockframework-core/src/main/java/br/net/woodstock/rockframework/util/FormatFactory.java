@@ -23,7 +23,6 @@ import br.net.woodstock.rockframework.cache.CacheManager;
 import br.net.woodstock.rockframework.cache.impl.CacheManagerImpl;
 import br.net.woodstock.rockframework.utils.ObjectUtils;
 
-
 public abstract class FormatFactory<T extends Format> {
 
 	private Cache	cache;

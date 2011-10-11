@@ -26,7 +26,6 @@ import br.net.woodstock.rockframework.config.CoreLog;
 import br.net.woodstock.rockframework.config.CoreMessage;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-
 public abstract class Assert {
 
 	private static final String	MESSAGE_BETWEEN			= "error.between";

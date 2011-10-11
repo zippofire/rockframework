@@ -33,11 +33,11 @@ public abstract class StringUtils {
 
 	static {
 		HTML_REPLACEMENT = new HashMap<Character, String>();
-		HTML_REPLACEMENT.put(Character.valueOf('<'), "&lt;");
-		HTML_REPLACEMENT.put(Character.valueOf('>'), "&gt;");
-		HTML_REPLACEMENT.put(Character.valueOf('&'), "&amp;");
-		HTML_REPLACEMENT.put(Character.valueOf('\''), "&#039;");
-		HTML_REPLACEMENT.put(Character.valueOf('"'), "&quot;");
+		StringUtils.HTML_REPLACEMENT.put(Character.valueOf('<'), "&lt;");
+		StringUtils.HTML_REPLACEMENT.put(Character.valueOf('>'), "&gt;");
+		StringUtils.HTML_REPLACEMENT.put(Character.valueOf('&'), "&amp;");
+		StringUtils.HTML_REPLACEMENT.put(Character.valueOf('\''), "&#039;");
+		StringUtils.HTML_REPLACEMENT.put(Character.valueOf('"'), "&quot;");
 	}
 
 	private StringUtils() {

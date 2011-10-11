@@ -26,7 +26,6 @@ import br.net.woodstock.rockframework.domain.persistence.orm.Constants;
 import br.net.woodstock.rockframework.domain.persistence.orm.JPQLRepository;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-
 class CommonJPAJPQLRepository extends AbstractJPAQueryableRepository implements JPQLRepository {
 
 	private EntityManager	entityManager;

@@ -25,8 +25,7 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.util.Scanner;
 
-import br.net.woodstock.rockframework.web.struts2.Action;
-
+import br.net.woodstock.rockframework.web.struts2.AbstractAction;
 
 /**
  * <pre>
@@ -37,7 +36,7 @@ import br.net.woodstock.rockframework.web.struts2.Action;
  * &lt;/result&gt;
  * </pre>
  */
-public abstract class DownloadAction extends Action implements DownloadableAction {
+public abstract class DownloadAction extends AbstractAction implements DownloadableAction {
 
 	private static final long	serialVersionUID	= 2247727504526009577L;
 

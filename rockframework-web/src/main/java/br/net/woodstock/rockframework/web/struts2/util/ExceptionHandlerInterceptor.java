@@ -19,18 +19,17 @@ package br.net.woodstock.rockframework.web.struts2.util;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import br.net.woodstock.rockframework.utils.ConditionUtils;
+import br.net.woodstock.rockframework.web.struts2.AbstractInterceptor;
 import br.net.woodstock.rockframework.web.struts2.Constants;
-import br.net.woodstock.rockframework.web.struts2.Interceptor;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.ValidationAware;
 
-public class ExceptionHandlerInterceptor extends Interceptor {
+public class ExceptionHandlerInterceptor extends AbstractInterceptor {
 
 	private static final long		serialVersionUID	= 1L;
 
@@ -68,7 +67,6 @@ public class ExceptionHandlerInterceptor extends Interceptor {
 					this.log.error(e.getMessage());
 				}
 			}
-			this.log = LogFactory.getLog(this.logName);
 		}
 	}
 

@@ -24,7 +24,7 @@ public class HibernateFlushProblemPatchListener extends DefaultFlushEventListene
 
 	private static final long	serialVersionUID	= -7413770767669684078L;
 
-	// See: https://hibernate.onjira.com/browse/HHH-2763	
+	// See: https://hibernate.onjira.com/browse/HHH-2763
 	@Override
 	protected void performExecutions(final EventSource session) {
 		session.getPersistenceContext().setFlushing(true);

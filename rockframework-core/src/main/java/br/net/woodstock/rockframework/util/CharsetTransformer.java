@@ -26,7 +26,6 @@ import java.nio.charset.CodingErrorAction;
 
 import br.net.woodstock.rockframework.io.IOException;
 
-
 public class CharsetTransformer implements StringTransformer {
 
 	private Charset			from;

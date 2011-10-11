@@ -24,7 +24,7 @@ abstract class WebContextHelper {
 	private static ApplicationContext	context	= ContextLoader.getCurrentWebApplicationContext();
 
 	private WebContextHelper() {
-		// 
+		//
 	}
 
 	public static boolean isWebApplication() {

@@ -34,7 +34,6 @@ import br.net.woodstock.rockframework.security.cert.CertificateType;
 import br.net.woodstock.rockframework.security.crypt.KeyPairType;
 import br.net.woodstock.rockframework.util.Assert;
 
-
 public abstract class SecurityUtils {
 
 	private SecurityUtils() {

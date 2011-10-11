@@ -22,7 +22,6 @@ import java.sql.Connection;
 import br.net.woodstock.rockframework.domain.Entity;
 import br.net.woodstock.rockframework.domain.persistence.jdbc.JDBCRepository;
 
-
 public abstract class AbstractJDBCRepository<E extends Entity<ID>, ID extends Serializable> implements JDBCRepository<E, ID> {
 
 	protected abstract Connection getConnection();

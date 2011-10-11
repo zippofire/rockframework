@@ -20,7 +20,6 @@ import java.util.List;
 
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-
 public class JSCookieMenuTranformer implements MenuTransformer {
 
 	private static final String	TAB	= "    ";

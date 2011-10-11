@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.nio.charset.Charset;
 
-
 import org.w3c.dom.Document;
 
 import br.net.woodstock.rockframework.config.CoreLog;

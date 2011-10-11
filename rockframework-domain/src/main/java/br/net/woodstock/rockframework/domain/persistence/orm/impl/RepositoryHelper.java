@@ -21,7 +21,6 @@ import java.util.Map;
 import br.net.woodstock.rockframework.domain.persistence.orm.Constants;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-
 abstract class RepositoryHelper {
 
 	private RepositoryHelper() {

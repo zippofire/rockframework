@@ -35,7 +35,6 @@ import br.net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilder;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-
 @SuppressWarnings("rawtypes")
 abstract class QueryContextHelper {
 

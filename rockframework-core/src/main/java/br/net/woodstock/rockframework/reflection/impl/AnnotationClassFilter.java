@@ -21,7 +21,6 @@ import java.lang.annotation.Annotation;
 import br.net.woodstock.rockframework.reflection.ClassFilter;
 import br.net.woodstock.rockframework.util.Assert;
 
-
 public class AnnotationClassFilter implements ClassFilter {
 
 	private Class<? extends Annotation>	annotation;

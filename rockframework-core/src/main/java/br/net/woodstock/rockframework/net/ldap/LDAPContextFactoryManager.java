@@ -20,7 +20,6 @@ import javax.naming.spi.InitialContextFactory;
 
 import br.net.woodstock.rockframework.config.CoreLog;
 
-
 public abstract class LDAPContextFactoryManager {
 
 	private static final String					SUN_FACTORY	= "com.sun.jndi.ldap.LdapCtxFactory";

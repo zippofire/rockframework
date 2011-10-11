@@ -18,7 +18,6 @@ package br.net.woodstock.rockframework.domain.persistence.orm.util;
 
 import java.io.Serializable;
 
-
 import org.hibernate.event.EventSource;
 
 import br.net.woodstock.rockframework.domain.Entity;

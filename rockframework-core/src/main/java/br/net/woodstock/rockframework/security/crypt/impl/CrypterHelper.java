@@ -38,7 +38,6 @@ import br.net.woodstock.rockframework.utils.Base64Utils;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
-
 abstract class CrypterHelper {
 
 	private static final String	PRIVATE_KEY_BEFORE	= "-----BEGIN PRIVATE KEY-----\n";

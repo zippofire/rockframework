@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletResponse;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.web.servlet.AbstractHttpServlet;
 
-
 public abstract class AbstractResourceServlet extends AbstractHttpServlet {
 
 	private static final long	serialVersionUID	= 5332694868752923858L;

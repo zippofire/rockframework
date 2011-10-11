@@ -18,7 +18,6 @@ package br.net.woodstock.rockframework.web.struts2.converter;
 
 import java.util.Map;
 
-
 import org.apache.struts2.util.StrutsTypeConverter;
 
 import br.net.woodstock.rockframework.utils.ConditionUtils;
@@ -61,7 +60,7 @@ public abstract class TypeConverter<T extends Type> extends StrutsTypeConverter 
 	public String toString() {
 		return super.toString();
 	}
-	
+
 	protected abstract T convertFromString(String s, Class toClass);
 
 	protected abstract String convertToString(T o);

@@ -18,12 +18,11 @@ package br.net.woodstock.rockframework.cache.impl;
 
 import java.io.InputStream;
 
+import net.sf.ehcache.Ehcache;
 import br.net.woodstock.rockframework.cache.Cache;
 import br.net.woodstock.rockframework.cache.CacheManager;
 import br.net.woodstock.rockframework.io.IOException;
 import br.net.woodstock.rockframework.utils.ClassLoaderUtils;
-
-import net.sf.ehcache.Ehcache;
 
 class EHCacheManagerImpl implements CacheManager {
 

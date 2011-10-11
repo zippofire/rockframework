@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-
 public abstract class PathBasedResourceManager implements ResourceManager {
 
 	public static final String	PATH_PARAMETER	= "path";

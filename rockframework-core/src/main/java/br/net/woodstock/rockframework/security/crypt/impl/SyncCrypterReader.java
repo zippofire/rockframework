@@ -27,7 +27,6 @@ import br.net.woodstock.rockframework.security.crypt.KeyType;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.Base64Utils;
 
-
 public class SyncCrypterReader implements CrypterReader<SyncCrypter> {
 
 	private InputStream	inputStream;
@@ -54,7 +53,7 @@ public class SyncCrypterReader implements CrypterReader<SyncCrypter> {
 
 			SecretKeySpec keySpec = new SecretKeySpec(bytes, this.type.getAlgorithm());
 			SyncCrypter crypter = new SyncCrypter(keySpec);
-			
+
 			return crypter;
 		} catch (IOException e) {
 			throw new CrypterException(e);

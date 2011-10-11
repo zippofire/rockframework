@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletResponse;
 import br.net.woodstock.rockframework.domain.persistence.orm.util.PersistenceHelper;
 import br.net.woodstock.rockframework.web.filter.AbstractHttpFilter;
 
-
 @SuppressWarnings("rawtypes")
 public abstract class OpenManagerInViewFilter extends AbstractHttpFilter {
 

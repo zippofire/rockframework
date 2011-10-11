@@ -21,7 +21,6 @@ import java.io.Serializable;
 import br.net.woodstock.rockframework.domain.Pojo;
 import br.net.woodstock.rockframework.util.Entry;
 
-
 public class KeyValue<K extends Serializable, V extends Serializable> extends Entry<K, V> implements Pojo {
 
 	private static final long	serialVersionUID	= 611990085341006973L;

@@ -27,7 +27,6 @@ import javax.naming.RefAddr;
 import javax.naming.Reference;
 import javax.sql.DataSource;
 
-
 import org.apache.commons.dbcp.BasicDataSource;
 
 import br.net.woodstock.rockframework.config.CoreLog;

@@ -24,7 +24,6 @@ import javax.faces.convert.ConverterException;
 
 import br.net.woodstock.rockframework.util.Assert;
 
-
 public abstract class NumberConverter extends SimpleFacesConverter<Number> {
 
 	private NumberFormat			format;

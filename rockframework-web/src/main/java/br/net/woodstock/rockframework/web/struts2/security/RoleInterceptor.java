@@ -18,7 +18,6 @@ package br.net.woodstock.rockframework.web.struts2.security;
 
 import java.lang.reflect.Method;
 
-
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.web.config.WebLog;
 import br.net.woodstock.rockframework.web.struts2.Constants;

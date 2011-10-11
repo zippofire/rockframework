@@ -16,15 +16,15 @@
  */
 package br.net.woodstock.rockframework.web.struts2.util;
 
-
 import br.net.woodstock.rockframework.web.config.WebLog;
+import br.net.woodstock.rockframework.web.struts2.AbstractInterceptor;
 import br.net.woodstock.rockframework.web.struts2.Constants;
-import br.net.woodstock.rockframework.web.struts2.Interceptor;
+import br.net.woodstock.rockframework.web.struts2.Struts2Exception;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.PreResultListener;
 
-public class AroundInterceptor extends Interceptor {
+public class AroundInterceptor extends AbstractInterceptor {
 
 	private static final long			serialVersionUID	= 1L;
 
@@ -61,7 +61,7 @@ public class AroundInterceptor extends Interceptor {
 			try {
 				a.after();
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				throw new Struts2Exception(e);
 			}
 		}
 

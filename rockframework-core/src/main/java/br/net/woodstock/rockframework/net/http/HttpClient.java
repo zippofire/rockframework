@@ -34,7 +34,6 @@ import java.util.Map.Entry;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-
 public class HttpClient implements Serializable {
 
 	private static final long		serialVersionUID			= -4741892532905721566L;

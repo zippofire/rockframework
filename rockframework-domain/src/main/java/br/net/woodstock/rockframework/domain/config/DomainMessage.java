@@ -20,7 +20,7 @@ import br.net.woodstock.rockframework.config.AbstractMessage;
 
 public final class DomainMessage extends AbstractMessage {
 
-	private static final String	DOMAIN_MESSAGES	= "rockframework-domain-messages";
+	private static final String		DOMAIN_MESSAGES	= "rockframework-domain-messages";
 
 	private static DomainMessage	instance		= new DomainMessage();
 

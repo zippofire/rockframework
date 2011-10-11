@@ -26,7 +26,6 @@ import br.net.woodstock.rockframework.utils.ConditionUtils;
 import br.net.woodstock.rockframework.utils.NumberUtils;
 import br.net.woodstock.rockframework.web.servlet.AbstractHttpServlet;
 
-
 public class CaptchaServlet extends AbstractHttpServlet {
 
 	private static final long	serialVersionUID		= 1L;

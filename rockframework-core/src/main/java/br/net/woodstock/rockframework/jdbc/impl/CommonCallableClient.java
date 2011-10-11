@@ -25,7 +25,6 @@ import br.net.woodstock.rockframework.jdbc.ParameterList;
 import br.net.woodstock.rockframework.jdbc.Type;
 import br.net.woodstock.rockframework.jdbc.TypeHandler;
 
-
 public class CommonCallableClient extends CommonClient implements CallableClient {
 
 	public CommonCallableClient(final Connection connection) {

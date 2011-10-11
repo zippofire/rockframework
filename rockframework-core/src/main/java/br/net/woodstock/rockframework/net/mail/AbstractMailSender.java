@@ -22,7 +22,6 @@ import javax.mail.Session;
 
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-
 public abstract class AbstractMailSender implements MailSender {
 
 	public static final String	PROTOCOL			= "smtp";

@@ -21,7 +21,6 @@ import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.Map.Entry;
 
-
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
@@ -45,13 +44,13 @@ import br.net.woodstock.rockframework.office.spreadsheet.Cell;
 import br.net.woodstock.rockframework.office.spreadsheet.CellMerge;
 import br.net.woodstock.rockframework.office.spreadsheet.Color;
 import br.net.woodstock.rockframework.office.spreadsheet.Image;
+import br.net.woodstock.rockframework.office.spreadsheet.Image.ImageType;
 import br.net.woodstock.rockframework.office.spreadsheet.IntegerCellMerge;
 import br.net.woodstock.rockframework.office.spreadsheet.Row;
 import br.net.woodstock.rockframework.office.spreadsheet.Sheet;
 import br.net.woodstock.rockframework.office.spreadsheet.SpreadsheetDocument;
 import br.net.woodstock.rockframework.office.spreadsheet.SpreadsheetDocumentWriter;
 import br.net.woodstock.rockframework.office.spreadsheet.VerticalAlignment;
-import br.net.woodstock.rockframework.office.spreadsheet.Image.ImageType;
 
 public final class HSSFSpreadsheetDocumentWriter implements SpreadsheetDocumentWriter {
 

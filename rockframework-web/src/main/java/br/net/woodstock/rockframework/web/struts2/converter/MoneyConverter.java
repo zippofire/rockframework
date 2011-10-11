@@ -21,7 +21,6 @@ import java.text.NumberFormat;
 import br.net.woodstock.rockframework.config.CoreConfig;
 import br.net.woodstock.rockframework.web.types.MoneyType;
 
-
 public class MoneyConverter extends NumericConverter<MoneyType> {
 
 	private static final String	DECIMAL_FORMAT_PROPERTY	= "format.decimal";

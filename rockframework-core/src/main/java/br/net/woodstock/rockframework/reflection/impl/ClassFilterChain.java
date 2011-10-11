@@ -22,7 +22,6 @@ import java.util.LinkedList;
 import br.net.woodstock.rockframework.reflection.ClassFilter;
 import br.net.woodstock.rockframework.util.Assert;
 
-
 public class ClassFilterChain implements ClassFilter {
 
 	private Collection<ClassFilter>	filters;

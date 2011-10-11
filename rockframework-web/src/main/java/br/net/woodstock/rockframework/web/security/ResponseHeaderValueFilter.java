@@ -29,7 +29,6 @@ import javax.servlet.http.HttpServletResponse;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 import br.net.woodstock.rockframework.web.filter.AbstractHttpFilter;
 
-
 public class ResponseHeaderValueFilter extends AbstractHttpFilter {
 
 	private Map<String, String>	headers;

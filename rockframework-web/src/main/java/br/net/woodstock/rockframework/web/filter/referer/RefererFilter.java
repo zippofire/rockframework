@@ -27,7 +27,6 @@ import br.net.woodstock.rockframework.web.config.WebLog;
 import br.net.woodstock.rockframework.web.filter.AbstractHttpFilter;
 import br.net.woodstock.rockframework.web.utils.RequestUtils;
 
-
 public abstract class RefererFilter extends AbstractHttpFilter {
 
 	protected static final int	BAD_REQUEST	= HttpServletResponse.SC_BAD_REQUEST;

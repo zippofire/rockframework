@@ -21,7 +21,6 @@ import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.Map.Entry;
 
-
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -45,13 +44,13 @@ import br.net.woodstock.rockframework.office.spreadsheet.Cell;
 import br.net.woodstock.rockframework.office.spreadsheet.CellMerge;
 import br.net.woodstock.rockframework.office.spreadsheet.Color;
 import br.net.woodstock.rockframework.office.spreadsheet.Image;
+import br.net.woodstock.rockframework.office.spreadsheet.Image.ImageType;
 import br.net.woodstock.rockframework.office.spreadsheet.IntegerCellMerge;
 import br.net.woodstock.rockframework.office.spreadsheet.Row;
 import br.net.woodstock.rockframework.office.spreadsheet.Sheet;
 import br.net.woodstock.rockframework.office.spreadsheet.SpreadsheetDocument;
 import br.net.woodstock.rockframework.office.spreadsheet.SpreadsheetDocumentWriter;
 import br.net.woodstock.rockframework.office.spreadsheet.VerticalAlignment;
-import br.net.woodstock.rockframework.office.spreadsheet.Image.ImageType;
 
 public final class XSSFSpreadsheetDocumentWriter implements SpreadsheetDocumentWriter {
 
@@ -132,8 +131,8 @@ public final class XSSFSpreadsheetDocumentWriter implements SpreadsheetDocumentW
 
 			short row = (short) image.getRow();
 			short column = (short) image.getColumn();
-			//int width = Math.abs(image.getWidth());
-			//int height = Math.abs(image.getHeight());
+			// int width = Math.abs(image.getWidth());
+			// int height = Math.abs(image.getHeight());
 
 			int index = workbook.addPicture(bytes, type);
 			XSSFClientAnchor anchor = new XSSFClientAnchor(0, 0, 0, 0, row, column, row, column);

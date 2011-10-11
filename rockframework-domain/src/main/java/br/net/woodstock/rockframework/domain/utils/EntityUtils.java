@@ -25,7 +25,6 @@ import br.net.woodstock.rockframework.reflection.PropertyDescriptor;
 import br.net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilder;
 import br.net.woodstock.rockframework.utils.ObjectUtils;
 
-
 @SuppressWarnings("rawtypes")
 public abstract class EntityUtils {
 
@@ -109,7 +108,7 @@ public abstract class EntityUtils {
 				Object value = property.getValue(entity);
 
 				if (value != null) {
-					result = ObjectUtils.HASH_PRIME * result + value.hashCode();
+					result = (ObjectUtils.HASH_PRIME * result) + value.hashCode();
 				} else {
 					result = ObjectUtils.HASH_PRIME * result;
 				}

@@ -20,7 +20,7 @@ import java.text.Normalizer;
 
 public final class NormalizerTransformer implements StringTransformer {
 
-	private static final String		ACCENT_PATTERN	= "[^\\p{ASCII}]";
+	private static final String			ACCENT_PATTERN	= "[^\\p{ASCII}]";
 
 	private static StringTransformer	instance		= new NormalizerTransformer();
 
@@ -37,6 +37,6 @@ public final class NormalizerTransformer implements StringTransformer {
 	}
 
 	public static StringTransformer getInstance() {
-		return instance;
+		return NormalizerTransformer.instance;
 	}
 }

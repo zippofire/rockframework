@@ -25,7 +25,6 @@ import java.util.Random;
 
 import br.net.woodstock.rockframework.config.CoreConfig;
 
-
 public abstract class NumberUtils {
 
 	private static final String	DECIMAL_FORMAT_PROPERTY	= "format.decimal";

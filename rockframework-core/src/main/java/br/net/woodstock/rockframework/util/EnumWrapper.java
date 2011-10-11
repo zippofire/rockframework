@@ -14,21 +14,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.domain.persistence.jdbc;
+package br.net.woodstock.rockframework.util;
 
-import java.io.Serializable;
+public class EnumWrapper<E extends Enum<E>> {
 
-import br.net.woodstock.rockframework.domain.Entity;
-import br.net.woodstock.rockframework.domain.persistence.Repository;
+	private Enum<E>	wrapped;
 
-public interface JDBCRepository<E extends Entity<ID>, ID extends Serializable> extends Repository {
+	public EnumWrapper(final Enum<E> wrapped) {
+		super();
+		Assert.notNull(wrapped, "enum");
+	}
 
-	void delete(ID id);
+	public String getName() {
+		return this.wrapped.name();
+	}
 
-	E get(ID id);
+	public String getLowerName() {
+		return this.wrapped.name().toLowerCase();
+	}
 
-	void save(E e);
+	public String getUpperName() {
+		return this.wrapped.name().toUpperCase();
+	}
 
-	void update(E e);
+	public int getOrdinal() {
+		return this.wrapped.ordinal();
+	}
 
 }

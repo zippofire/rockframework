@@ -25,7 +25,6 @@ import java.util.Date;
 import br.net.woodstock.rockframework.config.CoreConfig;
 import br.net.woodstock.rockframework.util.Assert;
 
-
 public abstract class DateUtils {
 
 	private static final String	DATE_FORMAT_PROPERTY	= "format.date";
@@ -84,8 +83,8 @@ public abstract class DateUtils {
 			cMax.setTime(date2);
 		}
 
-		if (cMax.get(Calendar.YEAR) - cMin.get(Calendar.YEAR) > 0) {
-			while (cMax.get(Calendar.YEAR) - cMin.get(Calendar.YEAR) != 0) {
+		if ((cMax.get(Calendar.YEAR) - cMin.get(Calendar.YEAR)) > 0) {
+			while ((cMax.get(Calendar.YEAR) - cMin.get(Calendar.YEAR)) != 0) {
 				diff += cMin.getActualMaximum(Calendar.DAY_OF_YEAR);
 				cMin.roll(Calendar.YEAR, true);
 			}
@@ -135,8 +134,8 @@ public abstract class DateUtils {
 			cMax.setTime(date2);
 		}
 
-		if (cMax.get(Calendar.YEAR) - cMin.get(Calendar.YEAR) > 0) {
-			while (cMax.get(Calendar.YEAR) - cMin.get(Calendar.YEAR) != 0) {
+		if ((cMax.get(Calendar.YEAR) - cMin.get(Calendar.YEAR)) > 0) {
+			while ((cMax.get(Calendar.YEAR) - cMin.get(Calendar.YEAR)) != 0) {
 				diff += cMin.getActualMaximum(Calendar.MONTH) + 1;
 				cMin.roll(Calendar.YEAR, true);
 			}

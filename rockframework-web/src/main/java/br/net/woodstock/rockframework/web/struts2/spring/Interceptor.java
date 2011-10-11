@@ -28,6 +28,13 @@ import org.springframework.stereotype.Component;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Component
+@Deprecated
+/**
+ * 
+ * @see org.springframework.stereotype.Component
+ * @see org.springframework.stereotype.Controller
+ *
+ */
 public @interface Interceptor {
 
 	String value() default "";

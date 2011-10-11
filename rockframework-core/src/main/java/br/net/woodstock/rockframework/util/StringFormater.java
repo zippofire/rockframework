@@ -22,7 +22,6 @@ import java.text.ParsePosition;
 
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-
 public class StringFormater extends Format {
 
 	private static final long	serialVersionUID	= 8381540260159406826L;

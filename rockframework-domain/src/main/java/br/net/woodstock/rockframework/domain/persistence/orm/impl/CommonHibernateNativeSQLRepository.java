@@ -19,7 +19,6 @@ package br.net.woodstock.rockframework.domain.persistence.orm.impl;
 import java.util.Map;
 import java.util.Map.Entry;
 
-
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 

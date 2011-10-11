@@ -21,7 +21,6 @@ import java.io.InputStream;
 
 import br.net.woodstock.rockframework.util.Assert;
 
-
 public class InputStreamAttachment extends AttachmentBean {
 
 	public InputStreamAttachment(final String name, final String contentType, final InputStream inputStream) {

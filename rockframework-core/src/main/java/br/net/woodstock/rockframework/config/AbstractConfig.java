@@ -27,7 +27,6 @@ import br.net.woodstock.rockframework.collection.ImmutableMap;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.ClassLoaderUtils;
 
-
 public abstract class AbstractConfig {
 
 	private Map<String, String>	config;

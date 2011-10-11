@@ -20,7 +20,6 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Signature;
 import java.security.SignatureException;
-
 import java.security.cert.Certificate;
 
 import br.net.woodstock.rockframework.security.sign.SignType;
@@ -51,10 +50,10 @@ public class CertificateSigner implements Signer {
 	public boolean verify(final byte[] data, final byte[] signature) {
 		try {
 			Signature s = Signature.getInstance(this.signType.getAlgorithm());
-			
+
 			s.initVerify(this.certificate);
 			s.update(data);
-			
+
 			boolean ok = s.verify(signature);
 			return ok;
 		} catch (NoSuchAlgorithmException e) {

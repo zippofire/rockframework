@@ -16,7 +16,6 @@
  */
 package br.net.woodstock.rockframework.domain.util;
 
-
 import org.springframework.util.Assert;
 
 import br.net.woodstock.rockframework.domain.Pojo;

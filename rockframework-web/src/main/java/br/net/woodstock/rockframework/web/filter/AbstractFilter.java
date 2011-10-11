@@ -24,7 +24,6 @@ import javax.servlet.FilterConfig;
 
 import br.net.woodstock.rockframework.utils.CollectionUtils;
 
-
 public abstract class AbstractFilter implements Filter {
 
 	private FilterConfig	filterConfig;

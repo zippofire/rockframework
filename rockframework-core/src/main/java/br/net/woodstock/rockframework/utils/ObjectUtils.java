@@ -22,7 +22,6 @@ import br.net.woodstock.rockframework.reflection.BeanDescriptor;
 import br.net.woodstock.rockframework.reflection.PropertyDescriptor;
 import br.net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilder;
 
-
 public abstract class ObjectUtils {
 
 	public static final int		HASH_PRIME		= 31;
@@ -117,7 +116,7 @@ public abstract class ObjectUtils {
 			Object value = property.getValue(obj);
 
 			if (value != null) {
-				result = ObjectUtils.HASH_PRIME * result + value.hashCode();
+				result = (ObjectUtils.HASH_PRIME * result) + value.hashCode();
 			} else {
 				result = ObjectUtils.HASH_PRIME * result;
 			}

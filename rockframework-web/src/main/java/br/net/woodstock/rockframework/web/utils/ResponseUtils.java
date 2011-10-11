@@ -32,7 +32,6 @@ import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.FileUtils;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
-
 public abstract class ResponseUtils {
 
 	public static final String	CONTENT_DISPOSITION_HEADER		= "Content-Disposition";

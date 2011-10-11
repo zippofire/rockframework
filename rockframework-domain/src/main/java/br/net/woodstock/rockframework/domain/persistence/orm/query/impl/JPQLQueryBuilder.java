@@ -26,7 +26,6 @@ import br.net.woodstock.rockframework.domain.persistence.orm.Constants;
 import br.net.woodstock.rockframework.domain.persistence.orm.LikeMode;
 import br.net.woodstock.rockframework.domain.persistence.orm.query.QueryBuilder;
 
-
 public abstract class JPQLQueryBuilder<T> extends AbstractQueryBuilder<T> {
 
 	private boolean				build;

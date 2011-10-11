@@ -23,5 +23,5 @@ public class SHA1PasswordEncoder extends DigesterPasswordEncoder {
 	public SHA1PasswordEncoder() {
 		super(DigestType.SHA1);
 	}
-	
+
 }

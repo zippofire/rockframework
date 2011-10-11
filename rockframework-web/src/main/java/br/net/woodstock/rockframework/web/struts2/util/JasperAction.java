@@ -16,7 +16,7 @@
  */
 package br.net.woodstock.rockframework.web.struts2.util;
 
-import br.net.woodstock.rockframework.web.struts2.Action;
+import br.net.woodstock.rockframework.web.struts2.AbstractAction;
 import br.net.woodstock.rockframework.web.utils.ResponseUtils;
 
 /**
@@ -29,7 +29,7 @@ import br.net.woodstock.rockframework.web.utils.ResponseUtils;
  * &lt;/result&gt;
  * </pre>
  */
-public abstract class JasperAction<T> extends Action implements JasperableAction<T> {
+public abstract class JasperAction<T> extends AbstractAction implements JasperableAction<T> {
 
 	private static final long	serialVersionUID	= -8221347113182221227L;
 

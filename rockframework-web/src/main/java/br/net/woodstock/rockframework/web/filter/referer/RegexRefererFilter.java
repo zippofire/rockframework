@@ -24,7 +24,6 @@ import br.net.woodstock.rockframework.utils.ConditionUtils;
 import br.net.woodstock.rockframework.web.JSPException;
 import br.net.woodstock.rockframework.web.utils.RequestUtils;
 
-
 public class RegexRefererFilter extends NoRefererFilter {
 
 	public static final String	REGEX_PARAMETER	= "regex";

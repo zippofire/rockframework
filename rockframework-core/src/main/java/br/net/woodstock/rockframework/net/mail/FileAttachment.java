@@ -23,7 +23,6 @@ import java.io.IOException;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.FileUtils;
 
-
 public class FileAttachment extends AttachmentBean {
 
 	public FileAttachment(final File file) {

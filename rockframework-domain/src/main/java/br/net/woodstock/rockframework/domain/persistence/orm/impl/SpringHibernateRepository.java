@@ -16,7 +16,6 @@
  */
 package br.net.woodstock.rockframework.domain.persistence.orm.impl;
 
-
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import br.net.woodstock.rockframework.domain.persistence.Repository;

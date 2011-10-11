@@ -24,7 +24,6 @@ import javax.servlet.http.HttpSession;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.web.struts2.ConditionalInterceptor;
 
-
 public abstract class AccessInterceptor<R> extends ConditionalInterceptor<R> {
 
 	private static final long	serialVersionUID	= -1770300413724957767L;

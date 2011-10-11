@@ -30,7 +30,6 @@ import br.net.woodstock.rockframework.security.crypt.KeyPairType;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.Base64Utils;
 
-
 public class AsyncCrypterReader implements CrypterReader<AsyncCrypter> {
 
 	private InputStream	privateKeyInputStream;
@@ -56,7 +55,7 @@ public class AsyncCrypterReader implements CrypterReader<AsyncCrypter> {
 			if (this.privateKeyInputStream != null) {
 				byte[] base64 = new byte[this.privateKeyInputStream.available()];
 				this.privateKeyInputStream.read(base64);
-				
+
 				byte[] bytes = Base64Utils.fromBase64(base64);
 				PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(bytes);
 				privateKey = factory.generatePrivate(keySpec);
@@ -64,7 +63,7 @@ public class AsyncCrypterReader implements CrypterReader<AsyncCrypter> {
 			if (this.publicKeyInputStream != null) {
 				byte[] base64 = new byte[this.publicKeyInputStream.available()];
 				this.publicKeyInputStream.read(base64);
-				
+
 				byte[] bytes = Base64Utils.fromBase64(base64);
 				X509EncodedKeySpec keySpec = new X509EncodedKeySpec(bytes);
 				publicKey = factory.generatePublic(keySpec);

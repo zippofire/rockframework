@@ -21,7 +21,6 @@ import java.util.Date;
 import br.net.woodstock.rockframework.config.CoreConfig;
 import br.net.woodstock.rockframework.web.types.DateType;
 
-
 public class DateConverter extends DateTimeConverter<DateType> {
 
 	private static final String	DATE_FORMAT_PROPERTY	= "format.date";

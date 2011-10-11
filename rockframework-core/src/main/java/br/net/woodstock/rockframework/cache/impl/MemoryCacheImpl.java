@@ -28,7 +28,6 @@ import br.net.woodstock.rockframework.config.CoreConfig;
 import br.net.woodstock.rockframework.config.CoreLog;
 import br.net.woodstock.rockframework.util.Assert;
 
-
 class MemoryCacheImpl implements Cache {
 
 	private static final long				serialVersionUID		= -8671956307741808591L;

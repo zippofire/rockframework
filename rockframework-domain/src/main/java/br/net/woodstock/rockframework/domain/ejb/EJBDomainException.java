@@ -4,7 +4,6 @@ import javax.ejb.ApplicationException;
 
 import br.net.woodstock.rockframework.domain.DomainException;
 
-
 @ApplicationException(rollback = true)
 public class EJBDomainException extends Exception {
 

@@ -21,7 +21,6 @@ import java.io.Serializable;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.ObjectUtils;
 
-
 public class Parameter implements Serializable {
 
 	private static final long	serialVersionUID	= -1779134234723910581L;
@@ -70,7 +69,7 @@ public class Parameter implements Serializable {
 	public int hashCode() {
 		int hash = this.type.hashCode();
 		if (this.value != null) {
-			hash = ObjectUtils.HASH_PRIME * hash + this.value.hashCode();
+			hash = (ObjectUtils.HASH_PRIME * hash) + this.value.hashCode();
 		} else {
 			hash = ObjectUtils.HASH_PRIME * hash;
 		}

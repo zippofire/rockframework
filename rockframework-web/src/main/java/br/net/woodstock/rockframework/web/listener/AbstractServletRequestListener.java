@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import br.net.woodstock.rockframework.web.config.WebLog;
 
-
 public abstract class AbstractServletRequestListener implements ServletRequestListener {
 
 	@Override

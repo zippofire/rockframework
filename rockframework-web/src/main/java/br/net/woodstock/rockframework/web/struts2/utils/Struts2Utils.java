@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.PageContext;
 
-
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.dispatcher.Dispatcher;
 
@@ -34,15 +33,15 @@ import com.opensymphony.xwork2.inject.Container;
 
 public abstract class Struts2Utils {
 
-	private static final String	METHOD_SEPARATOR_1	= "!";
+	private static final String	METHOD_SEPARATOR_CHAR	= "!";
 
-	private static final String	METHOD_SEPARATOR_2	= "%21";
+	private static final String	METHOD_SEPARATOR_CODE	= "%21";
 
-	private static final String	METHOD_REGEX_1		= "!\\w*\\.";
+	private static final String	METHOD_REGEX_CHAR		= Struts2Utils.METHOD_SEPARATOR_CHAR + "\\w*\\.";
 
-	private static final String	METHOD_REGEX_2		= "%21\\w*\\.";
+	private static final String	METHOD_REGEX_CODE		= Struts2Utils.METHOD_SEPARATOR_CODE + "\\w*\\.";
 
-	private static final String	METHOD_REPLACE		= ".";
+	private static final String	METHOD_REPLACE			= ".";
 
 	private Struts2Utils() {
 		//
@@ -81,11 +80,11 @@ public abstract class Struts2Utils {
 		String contextPath = request.getContextPath();
 		String uri = RequestUtils.getRequestPath(request);
 		String path = uri.replace(contextPath, "");
-		if (path.indexOf(Struts2Utils.METHOD_SEPARATOR_1) != -1) {
-			path = path.replaceAll(Struts2Utils.METHOD_REGEX_1, Struts2Utils.METHOD_REPLACE);
+		if (path.indexOf(Struts2Utils.METHOD_SEPARATOR_CHAR) != -1) {
+			path = path.replaceAll(Struts2Utils.METHOD_REGEX_CHAR, Struts2Utils.METHOD_REPLACE);
 		}
-		if (path.indexOf(Struts2Utils.METHOD_SEPARATOR_2) != -1) {
-			path = path.replaceAll(Struts2Utils.METHOD_REGEX_2, Struts2Utils.METHOD_REPLACE);
+		if (path.indexOf(Struts2Utils.METHOD_SEPARATOR_CODE) != -1) {
+			path = path.replaceAll(Struts2Utils.METHOD_REGEX_CODE, Struts2Utils.METHOD_REPLACE);
 		}
 		return path;
 	}

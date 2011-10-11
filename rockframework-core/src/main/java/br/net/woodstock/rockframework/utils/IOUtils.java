@@ -31,7 +31,6 @@ import java.util.zip.GZIPOutputStream;
 import br.net.woodstock.rockframework.io.InputOutputStream;
 import br.net.woodstock.rockframework.util.Assert;
 
-
 public abstract class IOUtils {
 
 	private static final int	BUFFER_SIZE	= 8096;

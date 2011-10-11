@@ -19,7 +19,6 @@ package br.net.woodstock.rockframework.domain.persistence.orm.impl;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.orm.jpa.support.JpaDaoSupport;
 

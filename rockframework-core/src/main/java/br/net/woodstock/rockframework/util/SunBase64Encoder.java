@@ -20,7 +20,9 @@ import java.io.IOException;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
+import br.net.woodstock.rockframework.ExecutionException;
 
+@SuppressWarnings("restriction")
 class SunBase64Encoder extends Base64Encoder {
 
 	private BASE64Decoder	decoder;
@@ -39,7 +41,7 @@ class SunBase64Encoder extends Base64Encoder {
 			String str = new String(this.decoder.decodeBuffer(s));
 			return str;
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new ExecutionException(e);
 		}
 	}
 
@@ -51,7 +53,7 @@ class SunBase64Encoder extends Base64Encoder {
 			byte[] bytes = str.getBytes();
 			return bytes;
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new ExecutionException(e);
 		}
 	}
 

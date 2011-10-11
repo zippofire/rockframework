@@ -20,7 +20,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 
-
 import org.hibernate.Query;
 import org.hibernate.Session;
 

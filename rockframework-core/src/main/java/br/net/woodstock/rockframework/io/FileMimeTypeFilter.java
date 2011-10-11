@@ -25,7 +25,6 @@ import java.util.Collection;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 import br.net.woodstock.rockframework.utils.FileUtils;
 
-
 public class FileMimeTypeFilter implements FilenameFilter {
 
 	private Collection<String>	types;

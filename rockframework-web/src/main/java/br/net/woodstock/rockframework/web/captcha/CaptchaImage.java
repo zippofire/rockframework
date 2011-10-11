@@ -33,7 +33,6 @@ import javax.imageio.ImageIO;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.NumberUtils;
 
-
 public class CaptchaImage {
 
 	private static final int	MAX_DRAW		= 3;

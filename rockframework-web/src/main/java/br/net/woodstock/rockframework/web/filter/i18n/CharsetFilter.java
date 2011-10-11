@@ -32,7 +32,6 @@ import br.net.woodstock.rockframework.web.filter.AbstractHttpFilter;
 import br.net.woodstock.rockframework.web.util.CachedHttpServletResponse;
 import br.net.woodstock.rockframework.web.util.CachedServletOutputStream;
 
-
 public class CharsetFilter extends AbstractHttpFilter {
 
 	public static final String	FROM_PARAMETER	= "from";

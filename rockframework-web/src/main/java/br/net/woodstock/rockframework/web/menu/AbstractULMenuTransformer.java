@@ -21,7 +21,6 @@ import java.util.List;
 import br.net.woodstock.rockframework.xml.dom.XmlDocument;
 import br.net.woodstock.rockframework.xml.dom.XmlElement;
 
-
 public abstract class AbstractULMenuTransformer implements MenuTransformer {
 
 	@Override

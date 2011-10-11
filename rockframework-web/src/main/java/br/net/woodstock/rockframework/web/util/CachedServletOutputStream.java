@@ -22,7 +22,6 @@ import javax.servlet.ServletOutputStream;
 
 import br.net.woodstock.rockframework.io.InputOutputStream;
 
-
 public class CachedServletOutputStream extends ServletOutputStream {
 
 	private InputOutputStream	outputStream;

@@ -27,7 +27,7 @@ public final class DontCareFieldPosition extends FieldPosition {
 	}
 
 	public static FieldPosition getInstance() {
-		return instance;
+		return DontCareFieldPosition.instance;
 	}
 
 }

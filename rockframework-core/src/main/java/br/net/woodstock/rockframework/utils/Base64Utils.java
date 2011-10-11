@@ -26,7 +26,6 @@ import java.io.Serializable;
 
 import br.net.woodstock.rockframework.util.Base64Encoder;
 
-
 public abstract class Base64Utils {
 
 	private static Base64Encoder	encoder	= Base64Encoder.getInstance();
@@ -36,19 +35,19 @@ public abstract class Base64Utils {
 	}
 
 	public static byte[] toBase64(final byte[] b) {
-		return encoder.encode(b);
+		return Base64Utils.encoder.encode(b);
 	}
 
 	public static byte[] fromBase64(final byte[] b) {
-		return encoder.decode(b);
+		return Base64Utils.encoder.decode(b);
 	}
 
 	public static String toBase64(final String s) {
-		return encoder.encode(s);
+		return Base64Utils.encoder.encode(s);
 	}
 
 	public static String fromBase64(final String s) {
-		return encoder.decode(s);
+		return Base64Utils.encoder.decode(s);
 	}
 
 	public static byte[] serialize(final Object o) throws IOException {
@@ -67,13 +66,13 @@ public abstract class Base64Utils {
 		output.close();
 		bos.close();
 
-		byte[] bytes = encoder.encode(bos.toByteArray());
+		byte[] bytes = Base64Utils.encoder.encode(bos.toByteArray());
 
 		return bytes;
 	}
 
 	public static Object unserialize(final byte[] bytes) throws IOException, ClassNotFoundException {
-		byte[] b = encoder.decode(bytes);
+		byte[] b = Base64Utils.encoder.decode(bytes);
 
 		ObjectInputStream input = new ObjectInputStream(new ByteArrayInputStream(b));
 		Object o = input.readUnshared();

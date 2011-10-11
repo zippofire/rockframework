@@ -28,7 +28,6 @@ import javax.servlet.http.HttpServletResponse;
 import br.net.woodstock.rockframework.utils.IOUtils;
 import br.net.woodstock.rockframework.web.util.ReadableHttpServletRequest;
 
-
 public class HttpRequestWriterFilter extends AbstractHttpFilter {
 
 	@Override

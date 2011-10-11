@@ -27,7 +27,6 @@ import br.net.woodstock.rockframework.web.config.WebLog;
 import br.net.woodstock.rockframework.xml.dom.XmlDocument;
 import br.net.woodstock.rockframework.xml.dom.XmlElement;
 
-
 class TLDBuilderImpl extends TLDBuilder {
 
 	public TLDBuilderImpl() {

@@ -16,7 +16,6 @@
  */
 package br.net.woodstock.rockframework.domain.persistence.orm.impl;
 
-
 import org.hibernate.Session;
 
 import br.net.woodstock.rockframework.domain.Entity;

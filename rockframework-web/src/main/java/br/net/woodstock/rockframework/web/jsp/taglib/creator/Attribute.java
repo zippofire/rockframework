@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
 public @interface Attribute {
 
 	String description() default "";
-	
+
 	boolean required() default false;
 
 	boolean rtexprvalue() default false;

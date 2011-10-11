@@ -21,7 +21,6 @@ import java.util.List;
 
 import br.net.woodstock.rockframework.office.Document;
 
-
 public class SpreadsheetDocument implements Document {
 
 	private static final long	serialVersionUID	= 6813958886966892724L;

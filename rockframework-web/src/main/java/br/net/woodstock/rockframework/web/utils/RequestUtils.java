@@ -26,7 +26,6 @@ import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
-
 public abstract class RequestUtils {
 
 	public static final String	HEADER_ACCEPT						= "Accept";

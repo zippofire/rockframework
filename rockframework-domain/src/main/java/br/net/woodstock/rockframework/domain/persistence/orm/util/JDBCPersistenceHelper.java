@@ -29,7 +29,6 @@ import br.net.woodstock.rockframework.jdbc.impl.BasicDataSourceFactory;
 import br.net.woodstock.rockframework.util.PropertiesReader;
 import br.net.woodstock.rockframework.utils.ClassLoaderUtils;
 
-
 public final class JDBCPersistenceHelper implements PersistenceHelper<Connection> {
 
 	public static final String				PROPERTIES_FILE	= "jdbc.properties";
@@ -87,6 +86,6 @@ public final class JDBCPersistenceHelper implements PersistenceHelper<Connection
 	}
 
 	public static JDBCPersistenceHelper getInstance() {
-		return instance;
+		return JDBCPersistenceHelper.instance;
 	}
 }

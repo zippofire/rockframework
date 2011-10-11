@@ -23,7 +23,6 @@ import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.web.config.WebLog;
 import br.net.woodstock.rockframework.web.types.NumericType;
 
-
 @SuppressWarnings("rawtypes")
 public abstract class NumericConverter<T extends NumericType> extends TypeConverter<T> {
 

@@ -16,15 +16,10 @@
  */
 package br.net.woodstock.rockframework.security.crypt;
 
-
 public enum KeyType {
 
-	ARCFOUR("ARCFOUR"),
-	DES("DES"),
-	DESEDE("DESede"),
-	AES("AES"),
-	BLOWFISH("Blowfish");
-	
+	ARCFOUR("ARCFOUR"), DES("DES"), DESEDE("DESede"), AES("AES"), BLOWFISH("Blowfish");
+
 	private String	algorithm;
 
 	private KeyType(final String algorithm) {
@@ -34,5 +29,5 @@ public enum KeyType {
 	public String getAlgorithm() {
 		return this.algorithm;
 	}
-	
+
 }

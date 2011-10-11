@@ -18,7 +18,6 @@ package br.net.woodstock.rockframework.domain.persistence.orm.impl;
 
 import java.sql.SQLException;
 
-
 import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
 

@@ -23,5 +23,5 @@ public class MD5PasswordEncoder extends DigesterPasswordEncoder {
 	public MD5PasswordEncoder() {
 		super(DigestType.MD5);
 	}
-	
+
 }

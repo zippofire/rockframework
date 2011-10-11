@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import br.net.woodstock.rockframework.util.Assert;
 
-
 public abstract class AbstractHttpFilter extends AbstractFilter {
 
 	@Override

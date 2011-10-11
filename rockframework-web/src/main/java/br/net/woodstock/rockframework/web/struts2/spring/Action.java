@@ -28,6 +28,12 @@ import org.springframework.stereotype.Component;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Component
+@Deprecated
+/**
+ * 
+ * @see org.springframework.stereotype.Controller
+ *
+ */
 public @interface Action {
 
 	String value() default "";

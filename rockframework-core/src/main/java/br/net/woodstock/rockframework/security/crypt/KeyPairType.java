@@ -16,14 +16,10 @@
  */
 package br.net.woodstock.rockframework.security.crypt;
 
-
 public enum KeyPairType {
 
-	RSA("RSA"),
-	DSA("DSA"),
-	EC("EC"),
-	DIFFIE_HELLMAN("DiffieHellman");
-	
+	RSA("RSA"), DSA("DSA"), EC("EC"), DIFFIE_HELLMAN("DiffieHellman");
+
 	private String	algorithm;
 
 	private KeyPairType(final String algorithm) {
@@ -33,5 +29,5 @@ public enum KeyPairType {
 	public String getAlgorithm() {
 		return this.algorithm;
 	}
-	
+
 }

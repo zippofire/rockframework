@@ -21,7 +21,6 @@ import java.util.Collection;
 import br.net.woodstock.rockframework.domain.persistence.orm.Constants;
 import br.net.woodstock.rockframework.domain.persistence.orm.QueryableRepository;
 
-
 abstract class AbstractQueryableRepository implements QueryableRepository {
 
 	protected boolean isCollection(final Object value) {

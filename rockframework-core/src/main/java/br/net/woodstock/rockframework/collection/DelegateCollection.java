@@ -21,7 +21,6 @@ import java.util.Iterator;
 
 import br.net.woodstock.rockframework.util.Assert;
 
-
 public class DelegateCollection<E> implements Collection<E> {
 
 	private Collection<E>	collection;
@@ -41,7 +40,7 @@ public class DelegateCollection<E> implements Collection<E> {
 	public boolean addAll(final Collection<? extends E> c) {
 		return this.collection.addAll(c);
 	}
-	
+
 	@Override
 	public void clear() {
 		this.collection.clear();
