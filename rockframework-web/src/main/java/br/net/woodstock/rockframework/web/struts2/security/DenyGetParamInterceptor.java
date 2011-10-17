@@ -16,15 +16,18 @@
  */
 package br.net.woodstock.rockframework.web.struts2.security;
 
+import java.lang.reflect.Method;
+
 import javax.servlet.http.HttpServletRequest;
 
 import br.net.woodstock.rockframework.utils.ConditionUtils;
-import br.net.woodstock.rockframework.web.struts2.AbstractInterceptor;
+import br.net.woodstock.rockframework.web.struts2.ConditionalInterceptor;
 import br.net.woodstock.rockframework.web.struts2.Constants;
 
 import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.ActionProxy;
 
-public class DenyGetParamInterceptor extends AbstractInterceptor {
+public class DenyGetParamInterceptor extends ConditionalInterceptor<String> {
 
 	private static final long	serialVersionUID	= -7686764937974794750L;
 
@@ -34,7 +37,31 @@ public class DenyGetParamInterceptor extends AbstractInterceptor {
 		String queryString = request.getQueryString();
 
 		if (ConditionUtils.isNotEmpty(queryString)) {
-			return Constants.INVALID_METHOD;
+			ActionProxy proxy = invocation.getProxy();
+			Object action = proxy.getAction();
+			Class<?> clazz = action.getClass();
+			Method method = clazz.getMethod(proxy.getMethod(), new Class[] {});
+			String rule = clazz.getCanonicalName() + "." + method.getName() + "()";
+
+			boolean allow = false;
+
+			if (this.containsRule(rule)) {
+				allow = ((Boolean) this.getRuleValue(rule)).booleanValue();
+			} else {
+				if (method.isAnnotationPresent(AllowGetParam.class)) {
+					allow = true;
+				} else if (clazz.isAnnotationPresent(AllowGetParam.class)) {
+					allow = true;
+				} else if (clazz.getPackage().isAnnotationPresent(AllowGetParam.class)) {
+					allow = true;
+				}
+				this.addRule(rule, true);
+				this.addRuleValue(rule, Boolean.valueOf(allow));
+			}
+
+			if (!allow) {
+				return Constants.INVALID_METHOD;
+			}
 		}
 
 		return invocation.invoke();

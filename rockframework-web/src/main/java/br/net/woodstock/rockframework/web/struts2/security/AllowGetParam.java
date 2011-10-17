@@ -25,8 +25,6 @@ import java.lang.annotation.Target;
 @Target({ ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Role {
-
-	String[] value() default { };
-
+public @interface AllowGetParam {
+	//
 }

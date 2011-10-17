@@ -28,6 +28,8 @@ public class FormatTag extends AbstractTag {
 
 	private static final String	ERROR_VALUE	= "??ERROR??";
 
+	private String template;
+	
 	private String				format;
 
 	private Object				value;
