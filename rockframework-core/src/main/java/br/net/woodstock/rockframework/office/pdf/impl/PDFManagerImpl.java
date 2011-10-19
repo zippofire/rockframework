@@ -62,11 +62,6 @@ public abstract class PDFManagerImpl implements PDFManager {
 	}
 
 	private static PDFManager getAvailableManager() {
-		if (PDFManagerImpl.isPDFBoxAvailable()) {
-			CoreLog.getInstance().getLog().info("Using pdfbox for PDF");
-			return new PDFBoxManager();
-		}
-
 		if (PDFManagerImpl.isLowagieAvailable()) {
 			CoreLog.getInstance().getLog().info("Using itextpdf for PDF");
 			return new ITextManager();
@@ -75,6 +70,11 @@ public abstract class PDFManagerImpl implements PDFManager {
 		if (PDFManagerImpl.isITextPDFAvailable()) {
 			CoreLog.getInstance().getLog().info("Using lowagie for PDF");
 			return new LowagieManager();
+		}
+
+		if (PDFManagerImpl.isPDFBoxAvailable()) {
+			CoreLog.getInstance().getLog().info("Using pdfbox for PDF");
+			return new PDFBoxManager();
 		}
 
 		throw new UnsupportedOperationException("No PDF library found");

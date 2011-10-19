@@ -50,6 +50,7 @@ class PDFBoxManager implements PDFManager {
 	public InputStream cut(final InputStream source, final int start, final int end) throws IOException {
 		try {
 			Assert.notNull(source, "source");
+			Assert.greaterOrEqual(start, 1, "start");
 
 			PDFParser parser = new PDFParser(source);
 			parser.parse();
@@ -73,7 +74,7 @@ class PDFBoxManager implements PDFManager {
 				endPage = pageCount;
 			}
 
-			PDDocument destination = list.get(start);
+			PDDocument destination = list.get(startPage);
 
 			PDFMergerUtility merger = new PDFMergerUtility();
 			for (int i = startPage + 1; i < endPage; i++) {

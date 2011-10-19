@@ -42,6 +42,7 @@ class ITextManager implements PDFManager {
 	public InputStream cut(final InputStream source, final int start, final int end) throws IOException {
 		try {
 			Assert.notNull(source, "source");
+			Assert.greaterOrEqual(start, 1, "start");
 
 			PdfReader reader = new PdfReader(source);
 			Document document = new Document(reader.getPageSizeWithRotation(1));

@@ -13,7 +13,6 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 
 import junit.framework.TestCase;
-
 import br.net.woodstock.rockframework.office.pdf.PDFManager;
 import br.net.woodstock.rockframework.office.pdf.impl.PDFManagerImpl;
 import br.net.woodstock.rockframework.utils.IOUtils;
@@ -98,7 +97,7 @@ public class TestPDF extends TestCase {
 		}
 	}
 
-	public void test9() throws Exception {
+	public void xtest9() throws Exception {
 		InputStream inputStream = new FileInputStream("/tmp/visualizarPDF.pdf");
 		OutputStream outputStream = new FileOutputStream("/tmp/visualizarPDF-2.pdf");
 		PdfReader pdfReader = new PdfReader(inputStream);
@@ -172,6 +171,39 @@ public class TestPDF extends TestCase {
 
 		inputStream.close();
 		outputStream.close();
+	}
+
+	public void xtest11() throws Exception {
+		PDFManager manager = PDFManagerImpl.getInstance();
+		InputStream pdf = new FileInputStream("/tmp/UML2.pdf");
+		InputStream page1 = manager.cut(pdf, 1, 1);
+
+		OutputStream outputStream = new FileOutputStream("/tmp/page.pdf");
+		IOUtils.copy(page1, outputStream);
+		outputStream.close();
+
+		// InputStream[] images = manager.toImage(page1, "png");
+
+		// for (int i = 0; i < images.length; i++) {
+		// InputStream image = images[i];
+		// OutputStream outputStream2 = new FileOutputStream("/tmp/imagem-" + i + ".png");
+		// IOUtils.copy(image, outputStream2);
+		// outputStream2.close();
+		// }
+
+		pdf.close();
+	}
+
+	public void test12() throws Exception {
+		PDFManager manager = PDFManagerImpl.getInstance();
+		InputStream pdf = new FileInputStream("/tmp/UML2.pdf");
+		InputStream page1 = manager.cut(pdf, 1, 1);
+
+		OutputStream outputStream = new FileOutputStream("/tmp/page-1.pdf");
+		IOUtils.copy(page1, outputStream);
+		outputStream.close();
+
+		pdf.close();
 	}
 
 }
