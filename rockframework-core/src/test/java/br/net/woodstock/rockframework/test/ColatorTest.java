@@ -3,9 +3,8 @@ package br.net.woodstock.rockframework.test;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 
-import br.net.woodstock.rockframework.util.NormalizerTransformer;
-
 import junit.framework.TestCase;
+import br.net.woodstock.rockframework.text.impl.NormalizerTransformer;
 
 public class ColatorTest extends TestCase {
 

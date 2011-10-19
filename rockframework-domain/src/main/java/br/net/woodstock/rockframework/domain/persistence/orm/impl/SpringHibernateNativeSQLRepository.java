@@ -29,17 +29,17 @@ public class SpringHibernateNativeSQLRepository extends SpringHibernateRepositor
 
 	@Override
 	public void executeUpdate(final QueryMetadata query) {
-		new CommonHibernateNativeSQLRepository(this.getSession()).executeUpdate(query);
+		new HibernateNativeSQLRepository(this.getSession()).executeUpdate(query);
 	}
 
 	@Override
 	public <E> Collection<E> getCollection(final QueryMetadata query) {
-		return new CommonHibernateNativeSQLRepository(this.getSession()).getCollection(query);
+		return new HibernateNativeSQLRepository(this.getSession()).getCollection(query);
 	}
 
 	@Override
 	public <E> E getSingle(final QueryMetadata query) {
-		return new CommonHibernateNativeSQLRepository(this.getSession()).getSingle(query);
+		return new HibernateNativeSQLRepository(this.getSession()).getSingle(query);
 	}
 
 }

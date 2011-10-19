@@ -34,7 +34,7 @@ public class HibernateDeleteCallback implements HibernateCallback {
 
 	@Override
 	public Object doInHibernate(final Session session) throws SQLException {
-		new CommonHibernateGenericRepository(session).delete(this.entity);
+		new HibernateGenericRepository(session).delete(this.entity);
 		return null;
 	}
 

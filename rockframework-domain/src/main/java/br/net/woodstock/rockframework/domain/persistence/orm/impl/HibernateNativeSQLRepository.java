@@ -16,30 +16,53 @@
  */
 package br.net.woodstock.rockframework.domain.persistence.orm.impl;
 
-import java.util.Collection;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
+
+import br.net.woodstock.rockframework.domain.Entity;
+import br.net.woodstock.rockframework.domain.persistence.orm.Constants;
 import br.net.woodstock.rockframework.domain.persistence.orm.NativeSQLRepository;
 import br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata;
+import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-public class HibernateNativeSQLRepository extends AbstractHibernateRepository implements NativeSQLRepository {
+public class HibernateNativeSQLRepository extends AbstractHibernateQueryableRepository implements NativeSQLRepository {
 
-	public HibernateNativeSQLRepository() {
+	private Session	session;
+
+	public HibernateNativeSQLRepository(final Session session) {
 		super();
+		this.session = session;
 	}
 
 	@Override
-	public void executeUpdate(final QueryMetadata query) {
-		new CommonHibernateNativeSQLRepository(this.getSession()).executeUpdate(query);
-	}
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	protected SQLQuery getQuery(final QueryMetadata query) {
+		Session session = this.session;
+		SQLQuery sqlQuery = session.createSQLQuery(query.getQuery());
 
-	@Override
-	public <E> Collection<E> getCollection(final QueryMetadata query) {
-		return new CommonHibernateNativeSQLRepository(this.getSession()).getCollection(query);
-	}
+		Map<String, Object> parameters = query.getParameters();
+		Map<String, Object> options = query.getOptions();
 
-	@Override
-	public <E> E getSingle(final QueryMetadata query) {
-		return new CommonHibernateNativeSQLRepository(this.getSession()).getSingle(query);
+		if (ConditionUtils.isNotEmpty(options)) {
+			if (options.containsKey(Constants.OPTION_TARGET_ENTITY)) {
+				Class<Entity> clazz = (Class<Entity>) options.get(Constants.OPTION_TARGET_ENTITY);
+				sqlQuery.addEntity(clazz);
+			}
+		}
+
+		if (ConditionUtils.isNotEmpty(parameters)) {
+			for (Entry<String, Object> entry : parameters.entrySet()) {
+				String name = entry.getKey();
+				Object value = entry.getValue();
+				if (RepositoryHelper.isValidParameter(name)) {
+					sqlQuery.setParameter(name, value);
+				}
+			}
+		}
+		return sqlQuery;
 	}
 
 }

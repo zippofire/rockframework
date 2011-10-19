@@ -34,7 +34,7 @@ public class HibernateUpdateCallback implements HibernateCallback {
 
 	@Override
 	public Object doInHibernate(final Session session) throws SQLException {
-		new CommonHibernateGenericRepository(session).update(this.entity);
+		new HibernateGenericRepository(session).update(this.entity);
 		return null;
 	}
 

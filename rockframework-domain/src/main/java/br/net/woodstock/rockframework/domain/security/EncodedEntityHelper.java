@@ -20,8 +20,8 @@ import br.net.woodstock.rockframework.security.crypt.KeyType;
 import br.net.woodstock.rockframework.security.crypt.impl.AsStringCrypter;
 import br.net.woodstock.rockframework.security.crypt.impl.Base64Crypter;
 import br.net.woodstock.rockframework.security.crypt.impl.SyncCrypter;
-import br.net.woodstock.rockframework.util.RandomGenerator;
-import br.net.woodstock.rockframework.util.StringGenerator;
+import br.net.woodstock.rockframework.text.Generator;
+import br.net.woodstock.rockframework.text.impl.RandomGenerator;
 
 public abstract class EncodedEntityHelper {
 
@@ -29,7 +29,7 @@ public abstract class EncodedEntityHelper {
 
 	private static final AsStringCrypter	KEY_CRYPTER		= new AsStringCrypter(new Base64Crypter(new SyncCrypter(KeyType.DESEDE)));
 
-	private static final StringGenerator	GENERATOR		= new RandomGenerator(8);
+	private static final Generator			GENERATOR		= new RandomGenerator(8);
 
 	private EncodedEntityHelper() {
 		//

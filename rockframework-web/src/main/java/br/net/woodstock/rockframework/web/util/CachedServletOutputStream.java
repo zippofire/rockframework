@@ -16,6 +16,7 @@
  */
 package br.net.woodstock.rockframework.web.util;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import javax.servlet.ServletOutputStream;
@@ -24,21 +25,25 @@ import br.net.woodstock.rockframework.io.InputOutputStream;
 
 public class CachedServletOutputStream extends ServletOutputStream {
 
-	private InputOutputStream	outputStream;
+	private InputOutputStream	inputOutputStream;
 
 	public CachedServletOutputStream() {
 		super();
-		this.outputStream = new InputOutputStream();
+		this.inputOutputStream = new InputOutputStream();
 	}
 
 	@Override
-	public void write(final int b) {
-		this.outputStream.write(b);
+	public void write(final int b) throws IOException {
+		this.inputOutputStream.write(b);
 	}
 
 	// Cache
-	public InputStream getCache() {
-		return this.outputStream.getInputStream();
+	public InputStream getInputStream() {
+		return this.inputOutputStream.getInputStream();
+	}
+
+	public byte[] getBytes() {
+		return this.inputOutputStream.getBytes();
 	}
 
 }

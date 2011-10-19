@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.Charset;
@@ -73,6 +74,17 @@ public abstract class IOUtils {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
 		IOUtils.copy(inputStream, outputStream);
+
+		return outputStream.toByteArray();
+	}
+
+	public static byte[] toByteArray(final Reader reader) throws IOException {
+		Assert.notNull(reader, "reader");
+
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		Writer writer = new OutputStreamWriter(outputStream);
+
+		IOUtils.copy(reader, writer);
 
 		return outputStream.toByteArray();
 	}

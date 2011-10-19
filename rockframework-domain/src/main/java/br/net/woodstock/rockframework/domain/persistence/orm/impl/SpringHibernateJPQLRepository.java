@@ -29,17 +29,17 @@ public class SpringHibernateJPQLRepository extends SpringHibernateRepository imp
 
 	@Override
 	public void executeUpdate(final QueryMetadata query) {
-		new CommonHibernateJPQLRepository(this.getSession()).executeUpdate(query);
+		new HibernateJPQLRepository(this.getSession()).executeUpdate(query);
 	}
 
 	@Override
 	public <E> Collection<E> getCollection(final QueryMetadata query) {
-		return new CommonHibernateJPQLRepository(this.getSession()).getCollection(query);
+		return new HibernateJPQLRepository(this.getSession()).getCollection(query);
 	}
 
 	@Override
 	public <E> E getSingle(final QueryMetadata query) {
-		return new CommonHibernateJPQLRepository(this.getSession()).getSingle(query);
+		return new HibernateJPQLRepository(this.getSession()).getSingle(query);
 	}
 
 }

@@ -17,29 +17,73 @@
 package br.net.woodstock.rockframework.domain.persistence.orm.impl;
 
 import java.util.Collection;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
+
+import br.net.woodstock.rockframework.domain.persistence.orm.CacheMode;
+import br.net.woodstock.rockframework.domain.persistence.orm.Constants;
 import br.net.woodstock.rockframework.domain.persistence.orm.JPQLRepository;
-import br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata;
+import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-public class HibernateJPQLRepository extends AbstractHibernateRepository implements JPQLRepository {
+public class HibernateJPQLRepository extends AbstractHibernateQueryableRepository implements JPQLRepository {
 
-	public HibernateJPQLRepository() {
+	private Session	session;
+
+	public HibernateJPQLRepository(final Session session) {
 		super();
+		this.session = session;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
-	public void executeUpdate(final QueryMetadata query) {
-		new CommonHibernateJPQLRepository(this.getSession()).executeUpdate(query);
-	}
+	protected Query getQuery(final br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
+		Query q = this.session.createQuery(query.getQuery());
 
-	@Override
-	public <E> Collection<E> getCollection(final QueryMetadata query) {
-		return new CommonHibernateJPQLRepository(this.getSession()).getCollection(query);
-	}
+		Map<String, Object> parameters = query.getParameters();
+		Map<String, Object> options = query.getOptions();
 
-	@Override
-	public <E> E getSingle(final QueryMetadata query) {
-		return new CommonHibernateJPQLRepository(this.getSession()).getSingle(query);
-	}
+		if (ConditionUtils.isNotEmpty(parameters)) {
+			for (Entry<String, Object> entry : parameters.entrySet()) {
+				String name = entry.getKey();
+				Object value = entry.getValue();
+				if (RepositoryHelper.isValidParameter(name)) {
+					if (RepositoryHelper.isCollection(value)) {
+						q.setParameterList(name, (Collection) value);
+					} else if (RepositoryHelper.isArray(value)) {
+						q.setParameterList(name, (Object[]) value);
+					} else {
+						q.setParameter(name, value);
+					}
+				}
+			}
 
+		}
+
+		if (ConditionUtils.isNotEmpty(options)) {
+			if ((options.containsKey(Constants.OPTION_CACHE_MODE)) && (options.get(Constants.OPTION_CACHE_MODE) instanceof CacheMode)) {
+				CacheMode cacheMode = (CacheMode) options.get(Constants.OPTION_CACHE_MODE);
+				if (cacheMode == CacheMode.ENABLED) {
+					q.setCacheable(true);
+					q.setCacheMode(org.hibernate.CacheMode.NORMAL);
+				}
+			}
+			if (options.containsKey(Constants.OPTION_FIRST_RESULT)) {
+				Integer firstResult = (Integer) options.get(Constants.OPTION_FIRST_RESULT);
+				q.setFirstResult(firstResult.intValue());
+			}
+			if (options.containsKey(Constants.OPTION_MAX_RESULT)) {
+				Integer maxResult = (Integer) options.get(Constants.OPTION_MAX_RESULT);
+				q.setMaxResults(maxResult.intValue());
+			}
+			if (options.containsKey(Constants.OPTION_READ_ONLY)) {
+				Boolean readOnly = (Boolean) options.get(Constants.OPTION_READ_ONLY);
+				q.setReadOnly(readOnly.booleanValue());
+			}
+		}
+
+		return q;
+	}
 }

@@ -16,56 +16,51 @@
  */
 package br.net.woodstock.rockframework.domain.persistence.orm.impl;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import br.net.woodstock.rockframework.domain.persistence.orm.Constants;
 import br.net.woodstock.rockframework.domain.persistence.orm.JPQLRepository;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-public class JPAJPQLRepository extends AbstractJPARepository implements JPQLRepository {
+public class JPAJPQLRepository extends AbstractJPAQueryableRepository implements JPQLRepository {
 
-	public JPAJPQLRepository() {
+	private EntityManager	entityManager;
+
+	public JPAJPQLRepository(final EntityManager entityManager) {
 		super();
+		this.entityManager = entityManager;
 	}
 
 	@Override
-	public void executeUpdate(final br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
-		Query q = this.getQuery(query);
-		q.executeUpdate();
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public <E> Collection<E> getCollection(final br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
-		Query q = this.getQuery(query);
-		List<E> list = q.getResultList();
-		return list;
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public <E> E getSingle(final br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
-		Query q = this.getQuery(query);
-		Object obj = q.getSingleResult();
-		return (E) obj;
-	}
-
-	private Query getQuery(final br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
-		EntityManager entityManager = this.getEntityManager();
+	protected Query getQuery(final br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
+		EntityManager entityManager = this.entityManager;
 		Query q = entityManager.createQuery(query.getQuery());
 
 		Map<String, Object> parameters = query.getParameters();
+		Map<String, Object> options = query.getOptions();
 
 		if (ConditionUtils.isNotEmpty(parameters)) {
 			for (Entry<String, Object> entry : parameters.entrySet()) {
 				String name = entry.getKey();
 				Object value = entry.getValue();
-				q.setParameter(name, value);
+				if (RepositoryHelper.isValidParameter(name)) {
+					q.setParameter(name, value);
+				}
+			}
+		}
+
+		if (ConditionUtils.isNotEmpty(options)) {
+			if (options.containsKey(Constants.OPTION_FIRST_RESULT)) {
+				Integer firstResult = (Integer) options.get(Constants.OPTION_FIRST_RESULT);
+				q.setFirstResult(firstResult.intValue());
+			}
+			if (options.containsKey(Constants.OPTION_MAX_RESULT)) {
+				Integer maxResult = (Integer) options.get(Constants.OPTION_MAX_RESULT);
+				q.setMaxResults(maxResult.intValue());
 			}
 		}
 

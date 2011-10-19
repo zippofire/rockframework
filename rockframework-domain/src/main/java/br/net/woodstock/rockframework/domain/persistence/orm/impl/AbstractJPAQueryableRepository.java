@@ -23,8 +23,9 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import br.net.woodstock.rockframework.domain.config.DomainLog;
+import br.net.woodstock.rockframework.domain.persistence.orm.QueryableRepository;
 
-abstract class AbstractJPAQueryableRepository extends AbstractQueryableRepository {
+abstract class AbstractJPAQueryableRepository implements QueryableRepository {
 
 	public AbstractJPAQueryableRepository() {
 		super();

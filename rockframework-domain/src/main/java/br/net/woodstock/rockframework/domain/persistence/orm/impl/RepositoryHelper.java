@@ -16,6 +16,7 @@
  */
 package br.net.woodstock.rockframework.domain.persistence.orm.impl;
 
+import java.util.Collection;
 import java.util.Map;
 
 import br.net.woodstock.rockframework.domain.persistence.orm.Constants;
@@ -62,6 +63,57 @@ abstract class RepositoryHelper {
 		}
 		builder.append(" WHERE id = :id");
 		return builder.toString();
+	}
+
+	public static boolean isCollection(final Object value) {
+		if (value instanceof Collection) {
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean isArray(final Object value) {
+		if ((value != null) && (value.getClass().isArray())) {
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean isValidParameter(final String name) {
+		if (name.equals(Constants.OPTION_CACHE_MODE)) {
+			return false;
+		}
+		if (name.equals(Constants.OPTION_COLLECTION_MODE)) {
+			return false;
+		}
+		if (name.equals(Constants.OPTION_DISABLE_CHILD)) {
+			return false;
+		}
+		if (name.equals(Constants.OPTION_DISABLE_COLLECTION)) {
+			return false;
+		}
+		if (name.equals(Constants.OPTION_FIRST_RESULT)) {
+			return false;
+		}
+		if (name.equals(Constants.OPTION_IGNORE_CASE)) {
+			return false;
+		}
+		if (name.equals(Constants.OPTION_LIKE_MODE)) {
+			return false;
+		}
+		if (name.equals(Constants.OPTION_MAX_RESULT)) {
+			return false;
+		}
+		if (name.equals(Constants.OPTION_ORDER_BY)) {
+			return false;
+		}
+		if (name.equals(Constants.OPTION_READ_ONLY)) {
+			return false;
+		}
+		if (name.equals(Constants.OPTION_TARGET_ENTITY)) {
+			return false;
+		}
+		return true;
 	}
 
 }

@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import br.net.woodstock.rockframework.util.RandomGenerator;
+import br.net.woodstock.rockframework.text.impl.RandomGenerator;
 
 public abstract class StringUtils {
 

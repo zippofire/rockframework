@@ -20,73 +20,47 @@ import javax.persistence.EntityManager;
 
 import br.net.woodstock.rockframework.domain.Entity;
 import br.net.woodstock.rockframework.domain.persistence.orm.GenericRepository;
+import br.net.woodstock.rockframework.domain.persistence.orm.util.PersistenceUtil;
 
-public class JPAGenericRepository extends AbstractJPARepository implements GenericRepository {
+public class JPAGenericRepository implements GenericRepository {
 
-	public JPAGenericRepository() {
+	private EntityManager	entityManager;
+
+	public JPAGenericRepository(final EntityManager entityManager) {
 		super();
+		this.entityManager = entityManager;
 	}
 
 	@Override
+	@SuppressWarnings("rawtypes")
 	public void delete(final Entity<?> e) {
-		EntityManager m = this.getEntityManager();
-
-		if (this.isTransationEnabled()) {
-			m.getTransaction().begin();
-		}
-
-		new CommonJPAGenericRepository(m).delete(e);
-
-		if (this.isTransationEnabled()) {
-			m.getTransaction().commit();
-		}
-
-		if (this.isFlushEnabled()) {
-			m.flush();
+		try {
+			this.entityManager.remove(e);
+		} catch (IllegalArgumentException ex) {
+			Entity tmp = this.entityManager.find(e.getClass(), e.getId());
+			this.entityManager.remove(tmp);
 		}
 	}
 
 	@Override
 	public <E extends Entity<?>> E get(final E entity) {
-		return new CommonJPAGenericRepository(this.getEntityManager()).get(entity);
+		Class<E> clazz = PersistenceUtil.getRealClass(entity);
+
+		E e = this.entityManager.find(clazz, entity.getId());
+		// if (e != null) {
+		// this.entityManager.refresh(e);
+		// }
+		return e;
 	}
 
 	@Override
 	public void save(final Entity<?> e) {
-		EntityManager m = this.getEntityManager();
-
-		if (this.isTransationEnabled()) {
-			m.getTransaction().begin();
-		}
-
-		new CommonJPAGenericRepository(m).save(e);
-
-		if (this.isTransationEnabled()) {
-			m.getTransaction().commit();
-		}
-
-		if (this.isFlushEnabled()) {
-			m.flush();
-		}
+		this.entityManager.persist(e);
 	}
 
 	@Override
 	public void update(final Entity<?> e) {
-		EntityManager m = this.getEntityManager();
-
-		if (this.isTransationEnabled()) {
-			m.getTransaction().begin();
-		}
-
-		new CommonJPAGenericRepository(m).update(e);
-
-		if (this.isTransationEnabled()) {
-			m.getTransaction().commit();
-		}
-
-		if (this.isFlushEnabled()) {
-			m.flush();
-		}
+		this.entityManager.merge(e);
 	}
 
 }

@@ -4,25 +4,25 @@ import java.nio.charset.Charset;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import br.net.woodstock.rockframework.util.CharsetTransformer;
-import br.net.woodstock.rockframework.util.RandomGenerator;
-import br.net.woodstock.rockframework.util.StringFormatFactory;
-import br.net.woodstock.rockframework.util.StringFormater;
-import br.net.woodstock.rockframework.util.RandomGenerator.RandomPattern;
-
 import junit.framework.TestCase;
+import br.net.woodstock.rockframework.text.StringFormat;
+import br.net.woodstock.rockframework.text.StringFormatFactory;
+import br.net.woodstock.rockframework.text.StringFormatTemplate;
+import br.net.woodstock.rockframework.text.impl.CharsetTransformer;
+import br.net.woodstock.rockframework.text.impl.RandomGenerator;
+import br.net.woodstock.rockframework.text.impl.RandomGenerator.RandomPattern;
 
 public class StringTest extends TestCase {
 
 	public void xtest1() throws Exception {
 		String s = "530000000012010";
-		StringFormater format = StringFormatFactory.getInstance().getFormat("#####.######/####");
+		StringFormat format = StringFormatFactory.getInstance().getFormat("#####.######/####");
 		System.out.println(format.format(s));
 	}
 
 	public void xtest2() throws Exception {
 		String s = "53000.000001/2010";
-		StringFormater format = StringFormatFactory.getInstance().getFormat("#####.######/####");
+		StringFormat format = StringFormatFactory.getInstance().getFormat("#####.######/####");
 		System.out.println(format.parse(s));
 	}
 
@@ -59,12 +59,22 @@ public class StringTest extends TestCase {
 		System.out.println(new CharsetTransformer(Charset.forName("ISO-8859-1"), Charset.forName("UTF-8")).transform("Júnior"));
 	}
 
-	public void test6() throws Exception {
-		StringFormater format = new StringFormater("999.999.999-99", '9');
+	public void xtest6() throws Exception {
+		StringFormat format = new StringFormat("999.999.999-99", '9');
 		String s = format.format("01234567890");
 		String ss = format.parse(s);
 		System.out.println(s);
 		System.out.println(ss);
+
+	}
+
+	public void test7() throws Exception {
+		StringFormat cpfFormat = StringFormatTemplate.getInstance().getFormat("cpf");
+		StringFormat cepFormat = StringFormatTemplate.getInstance().getFormat("cep");
+		String cpf = cpfFormat.format("12345678901");
+		String cep = cepFormat.format("12345678");
+		System.out.println(cpf);
+		System.out.println(cep);
 
 	}
 }

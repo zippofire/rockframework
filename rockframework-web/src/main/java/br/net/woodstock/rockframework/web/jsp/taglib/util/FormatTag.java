@@ -19,7 +19,9 @@ package br.net.woodstock.rockframework.web.jsp.taglib.util;
 import java.io.IOException;
 import java.io.Writer;
 
-import br.net.woodstock.rockframework.util.StringFormater;
+import br.net.woodstock.rockframework.text.StringFormat;
+import br.net.woodstock.rockframework.text.StringFormatTemplate;
+import br.net.woodstock.rockframework.utils.ConditionUtils;
 import br.net.woodstock.rockframework.utils.StringUtils;
 import br.net.woodstock.rockframework.web.config.WebLog;
 import br.net.woodstock.rockframework.web.jsp.taglib.AbstractTag;
@@ -28,8 +30,8 @@ public class FormatTag extends AbstractTag {
 
 	private static final String	ERROR_VALUE	= "??ERROR??";
 
-	private String template;
-	
+	private String				template;
+
 	private String				format;
 
 	private Object				value;
@@ -38,7 +40,7 @@ public class FormatTag extends AbstractTag {
 
 	public FormatTag() {
 		super();
-		this.character = StringFormater.DEFAULT_CHARACTER;
+		this.character = StringFormat.DEFAULT_CHARACTER;
 	}
 
 	@Override
@@ -46,8 +48,21 @@ public class FormatTag extends AbstractTag {
 		if (this.value == null) {
 			return;
 		}
+
+		StringFormat format = null;
+
+		if (ConditionUtils.isNotEmpty(this.template)) {
+			format = StringFormatTemplate.getInstance().getFormat(this.template);
+			if (format == null) {
+				throw new IllegalStateException("Template not found");
+			}
+		} else if (ConditionUtils.isNotEmpty(this.format)) {
+			format = new StringFormat(this.format, this.character);
+		} else {
+			throw new IllegalStateException("Pattern or template must be defined");
+		}
+
 		String value = this.value.toString();
-		StringFormater format = new StringFormater(this.format, this.character);
 		Writer writer = this.getJspContext().getOut();
 		String formated = "";
 

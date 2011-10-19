@@ -18,6 +18,9 @@ package br.net.woodstock.rockframework.web.jsf.utils;
 
 import java.util.ResourceBundle;
 
+import javax.el.ELContext;
+import javax.el.ExpressionFactory;
+import javax.el.ValueExpression;
 import javax.faces.application.Application;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
@@ -41,6 +44,17 @@ public abstract class FacesUtils {
 		Application application = fc.getApplication();
 		ResourceBundle resource = application.getResourceBundle(fc, name);
 		return resource;
+	}
+
+	@SuppressWarnings({ "cast", "unchecked" })
+	public static <T> T getBean(final String name, final Class<T> clazz) {
+		FacesContext fc = FacesUtils.getFacesContext();
+		Application app = fc.getApplication();
+		ELContext el = fc.getELContext();
+		ExpressionFactory factory = app.getExpressionFactory();
+		ValueExpression expression = (ValueExpression) factory.createValueExpression(el, "#{" + name + "}", clazz);
+		T value = (T) expression.getValue(el);
+		return value;
 	}
 
 	// Http

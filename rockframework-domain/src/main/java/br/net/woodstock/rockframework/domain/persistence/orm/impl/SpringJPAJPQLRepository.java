@@ -29,17 +29,17 @@ public class SpringJPAJPQLRepository extends SpringJPARepository implements JPQL
 
 	@Override
 	public void executeUpdate(final QueryMetadata query) {
-		new CommonJPAJPQLRepository(this.getEntityManager()).executeUpdate(query);
+		new JPAJPQLRepository(this.getEntityManager()).executeUpdate(query);
 	}
 
 	@Override
 	public <E> Collection<E> getCollection(final QueryMetadata query) {
-		return new CommonJPAJPQLRepository(this.getEntityManager()).getCollection(query);
+		return new JPAJPQLRepository(this.getEntityManager()).getCollection(query);
 	}
 
 	@Override
 	public <E> E getSingle(final QueryMetadata query) {
-		return new CommonJPAJPQLRepository(this.getEntityManager()).getSingle(query);
+		return new JPAJPQLRepository(this.getEntityManager()).getSingle(query);
 	}
 
 }

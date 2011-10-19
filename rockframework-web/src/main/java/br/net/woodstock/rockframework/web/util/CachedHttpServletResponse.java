@@ -47,8 +47,12 @@ public class CachedHttpServletResponse extends HttpServletResponseWrapper {
 	}
 
 	// Cache
-	public InputStream getCache() {
-		return this.outputStream.getCache();
+	public InputStream getInputStream() {
+		return this.outputStream.getInputStream();
+	}
+
+	public byte[] getBytes() {
+		return this.outputStream.getBytes();
 	}
 
 }

@@ -38,4 +38,8 @@ public class InputOutputStream extends OutputStream {
 	public InputStream getInputStream() {
 		return new ByteArrayInputStream(this.outputStream.toByteArray());
 	}
+
+	public byte[] getBytes() {
+		return this.outputStream.toByteArray();
+	}
 }

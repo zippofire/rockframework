@@ -19,8 +19,8 @@ package br.net.woodstock.rockframework.utils;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import br.net.woodstock.rockframework.text.impl.LPadTransformer;
 import br.net.woodstock.rockframework.util.Assert;
-import br.net.woodstock.rockframework.util.LPadTransformer;
 
 public abstract class NetUtils {
 

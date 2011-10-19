@@ -25,7 +25,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import br.net.woodstock.rockframework.util.CharsetTransformer;
+import br.net.woodstock.rockframework.text.impl.CharsetTransformer;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 import br.net.woodstock.rockframework.utils.IOUtils;
 import br.net.woodstock.rockframework.web.filter.AbstractHttpFilter;
@@ -65,7 +65,7 @@ public class CharsetFilter extends AbstractHttpFilter {
 
 		CachedServletOutputStream wrapper = (CachedServletOutputStream) responseWrapper.getOutputStream();
 
-		InputStream cache = wrapper.getCache();
+		InputStream cache = wrapper.getInputStream();
 		String text = IOUtils.toString(cache, this.charsetFrom);
 		String content = this.charsetTransform.transform(text);
 

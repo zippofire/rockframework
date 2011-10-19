@@ -29,17 +29,17 @@ public class SpringJPANativeSQLRepository extends SpringJPARepository implements
 
 	@Override
 	public void executeUpdate(final QueryMetadata query) {
-		new CommonJPANativeSQLRepository(this.getEntityManager()).executeUpdate(query);
+		new JPANativeSQLRepository(this.getEntityManager()).executeUpdate(query);
 	}
 
 	@Override
 	public <E> Collection<E> getCollection(final QueryMetadata query) {
-		return new CommonJPANativeSQLRepository(this.getEntityManager()).getCollection(query);
+		return new JPANativeSQLRepository(this.getEntityManager()).getCollection(query);
 	}
 
 	@Override
 	public <E> E getSingle(final QueryMetadata query) {
-		return new CommonJPANativeSQLRepository(this.getEntityManager()).getSingle(query);
+		return new JPANativeSQLRepository(this.getEntityManager()).getSingle(query);
 	}
 
 }

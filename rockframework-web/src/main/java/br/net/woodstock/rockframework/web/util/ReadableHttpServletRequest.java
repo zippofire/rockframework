@@ -17,7 +17,6 @@
 package br.net.woodstock.rockframework.web.util;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -37,13 +36,17 @@ public class ReadableHttpServletRequest extends HttpServletRequestWrapper {
 	}
 
 	@Override
-	public BufferedReader getReader() throws IOException {
-		return new BufferedReader(new InputStreamReader(new ByteArrayInputStream(this.bytes)));
+	public ServletInputStream getInputStream() throws IOException {
+		return new CachedServletInputStream(this.bytes);
 	}
 
 	@Override
-	public ServletInputStream getInputStream() throws IOException {
-		return new DelegateServletInputStream(new ByteArrayInputStream(this.bytes));
+	public BufferedReader getReader() throws IOException {
+		return new BufferedReader(new InputStreamReader(this.getInputStream()));
+	}
+
+	public byte[] getBytes() {
+		return this.bytes;
 	}
 
 }

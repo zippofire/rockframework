@@ -21,7 +21,9 @@ import java.util.List;
 
 import org.hibernate.Query;
 
-abstract class AbstractHibernateQueryableRepository extends AbstractQueryableRepository {
+import br.net.woodstock.rockframework.domain.persistence.orm.QueryableRepository;
+
+abstract class AbstractHibernateQueryableRepository implements QueryableRepository {
 
 	public AbstractHibernateQueryableRepository() {
 		super();

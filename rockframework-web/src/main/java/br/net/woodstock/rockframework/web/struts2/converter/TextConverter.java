@@ -16,21 +16,21 @@
  */
 package br.net.woodstock.rockframework.web.struts2.converter;
 
-import br.net.woodstock.rockframework.util.StringFormater;
+import br.net.woodstock.rockframework.text.StringFormat;
 import br.net.woodstock.rockframework.web.types.TextType;
 
 public abstract class TextConverter<T extends TextType> extends TypeConverter<T> {
 
-	private StringFormater	format;
+	private StringFormat	format;
 
 	public TextConverter(final String pattern) {
 		super();
-		this.format = new StringFormater(pattern);
+		this.format = new StringFormat(pattern);
 	}
 
 	public TextConverter(final String pattern, final char character) {
 		super();
-		this.format = new StringFormater(pattern, character);
+		this.format = new StringFormat(pattern, character);
 	}
 
 	@Override
