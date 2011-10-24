@@ -16,72 +16,51 @@
  */
 package br.net.woodstock.rockframework.net.mail;
 
-public abstract class AbstractMailSender implements MailSender, MailSenderConfig {
+public abstract class AbstractMailReader implements MailReader, MailReaderConfig {
 
-	private String	smtpServer;
+	private String		server;
 
-	private int		smtpPort	= Constants.DEFAULT_SMTP_PORT;
+	private int			port;
 
-	private String	user;
+	private String		user;
 
-	private String	password;
+	private String		password;
 
-	private boolean	debug;
+	private StoreType	type;
 
-	public AbstractMailSender() {
+	private boolean		debug;
+
+	public AbstractMailReader(final String server, final int port, final String user, final String password, final StoreType type) {
 		super();
-	}
-
-	public AbstractMailSender(final String smtpServer) {
-		super();
-		this.smtpServer = smtpServer;
-	}
-
-	public AbstractMailSender(final String smtpServer, final int smtpPort) {
-		super();
-		this.smtpServer = smtpServer;
-		this.smtpPort = smtpPort;
-	}
-
-	public AbstractMailSender(final String smtpServer, final int smtpPort, final String user, final String password) {
-		super();
-		this.smtpServer = smtpServer;
-		this.smtpPort = smtpPort;
+		this.server = server;
+		this.port = port;
 		this.user = user;
 		this.password = password;
+		this.type = type;
 	}
 
 	@Override
-	public void send(final Mail mail) {
-		this.doSend(mail, this);
+	public Mail[] read(final String folder) {
+		return MailHelper.read(folder, this);
+	}
+
+	// Get/Set
+	@Override
+	public String getServer() {
+		return this.server;
+	}
+
+	public void setServer(final String server) {
+		this.server = server;
 	}
 
 	@Override
-	public void send(final Mail[] mails) {
-		for (Mail mail : mails) {
-			this.doSend(mail, this);
-		}
+	public int getPort() {
+		return this.port;
 	}
 
-	protected abstract void doSend(final Mail mail, final MailSenderConfig config);
-
-	// Getters and Setters
-	@Override
-	public String getSmtpServer() {
-		return this.smtpServer;
-	}
-
-	public void setSmtpServer(final String smtpServer) {
-		this.smtpServer = smtpServer;
-	}
-
-	@Override
-	public int getSmtpPort() {
-		return this.smtpPort;
-	}
-
-	public void setSmtpPort(final int smtpPort) {
-		this.smtpPort = smtpPort;
+	public void setPort(final int port) {
+		this.port = port;
 	}
 
 	@Override
@@ -100,6 +79,15 @@ public abstract class AbstractMailSender implements MailSender, MailSenderConfig
 
 	public void setPassword(final String password) {
 		this.password = password;
+	}
+
+	@Override
+	public StoreType getType() {
+		return this.type;
+	}
+
+	public void setType(final StoreType type) {
+		this.type = type;
 	}
 
 	public boolean isDebug() {

@@ -16,11 +16,6 @@
  */
 package br.net.woodstock.rockframework.net.mail;
 
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.MimeMessage;
-
 public class RunnableMailSender extends AbstractMailSender {
 
 	public RunnableMailSender() {
@@ -40,37 +35,27 @@ public class RunnableMailSender extends AbstractMailSender {
 	}
 
 	@Override
-	protected void send(final Mail message, final Session session) {
-		try {
-			MimeMessage mimeMessage = MailHelper.toMimeMessage(message, session);
-			Transport transport = MailHelper.getTransport(session, this.getSmtpServer(), this.getSmtpPort(), this.getUser(), this.getPassword());
-			Runnable runnable = new RunnableMailSenderHelper(mimeMessage, transport);
-			Thread thread = new Thread(runnable);
-			thread.start();
-		} catch (MessagingException e) {
-			throw new MailException(e);
-		}
+	protected void doSend(final Mail mail, final MailSenderConfig config) {
+		Runnable runnable = new RunnableMailSenderHelper(mail, config);
+		Thread thread = new Thread(runnable);
+		thread.start();
 	}
 
 	public static class RunnableMailSenderHelper implements Runnable {
 
-		private MimeMessage	mimeMessage;
+		private Mail				mail;
 
-		private Transport	transport;
+		private MailSenderConfig	config;
 
-		public RunnableMailSenderHelper(final MimeMessage mimeMessage, final Transport transport) {
+		public RunnableMailSenderHelper(final Mail mail, final MailSenderConfig config) {
 			super();
-			this.mimeMessage = mimeMessage;
-			this.transport = transport;
+			this.mail = mail;
+			this.config = config;
 		}
 
 		@Override
 		public void run() {
-			try {
-				MailHelper.send(this.mimeMessage, this.transport);
-			} catch (MessagingException e) {
-				throw new MailException(e);
-			}
+			MailHelper.send(this.mail, this.config);
 		}
 
 	}

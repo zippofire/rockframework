@@ -16,27 +16,24 @@
  */
 package br.net.woodstock.rockframework.net.mail;
 
-public class SimpleMailSender extends AbstractMailSender {
+public abstract class Constants {
 
-	public SimpleMailSender() {
-		super();
-	}
+	public static final String	IMAP_STORE			= "imap";
 
-	public SimpleMailSender(final String smtpServer) {
-		super(smtpServer);
-	}
+	public static final String	POP3_STORE			= "pop3";
 
-	public SimpleMailSender(final String smtpServer, final int smtpPort) {
-		super(smtpServer, smtpPort);
-	}
+	public static final String	SMTP_PROTOCOL		= "smtp";
 
-	public SimpleMailSender(final String smtpServer, final int smtpPort, final String user, final String password) {
-		super(smtpServer, smtpPort, user, password);
-	}
+	public static final int		DEFAULT_IMAP_PORT	= 143;
 
-	@Override
-	protected void doSend(final Mail mail, final MailSenderConfig config) {
-		MailHelper.send(mail, config);
+	public static final int		DEFAULT_POP3_PORT	= 110;
+
+	public static final int		DEFAULT_SMTP_PORT	= 25;
+
+	public static final long	DEFAULT_TIMEOUT		= 15000;
+
+	private Constants() {
+		//
 	}
 
 }

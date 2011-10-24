@@ -23,27 +23,20 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.net.woodstock.rockframework.web.config.WebLog;
 import br.net.woodstock.rockframework.web.filter.AbstractHttpFilter;
 import br.net.woodstock.rockframework.web.util.CachedHttpServletResponse;
-import br.net.woodstock.rockframework.web.util.ReadableHttpServletRequest;
 
 public class DebugFilter extends AbstractHttpFilter {
 
 	@Override
 	public void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain) throws IOException, ServletException {
 		if (this.isDebugEnabled(request)) {
-			ReadableHttpServletRequest debugRequest = new ReadableHttpServletRequest(request);
 			CachedHttpServletResponse debugResponse = new CachedHttpServletResponse(response);
-
-			chain.doFilter(debugRequest, debugResponse);
-
-			String requestText = this.getRequestText(debugRequest.getBytes());
-			// WebLog.getInstance().getLog().warn(requestText);
-
+			chain.doFilter(request, debugResponse);
 			byte[] responseBytes = debugResponse.getBytes();
 			String responseText = this.getResponseText(responseBytes);
-			// WebLog.getInstance().getLog().warn(responseText);
-
+			WebLog.getInstance().getLog().warn(responseText);
 			response.getOutputStream().write(responseBytes);
 		} else {
 			chain.doFilter(request, response);

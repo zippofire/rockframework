@@ -16,27 +16,8 @@
  */
 package br.net.woodstock.rockframework.net.mail;
 
-public class SimpleMailSender extends AbstractMailSender {
+public interface MailReader {
 
-	public SimpleMailSender() {
-		super();
-	}
-
-	public SimpleMailSender(final String smtpServer) {
-		super(smtpServer);
-	}
-
-	public SimpleMailSender(final String smtpServer, final int smtpPort) {
-		super(smtpServer, smtpPort);
-	}
-
-	public SimpleMailSender(final String smtpServer, final int smtpPort, final String user, final String password) {
-		super(smtpServer, smtpPort, user, password);
-	}
-
-	@Override
-	protected void doSend(final Mail mail, final MailSenderConfig config) {
-		MailHelper.send(mail, config);
-	}
+	Mail[] read(String folder);
 
 }
