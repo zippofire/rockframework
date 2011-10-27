@@ -17,7 +17,9 @@
 package br.net.woodstock.rockframework.reflection.impl;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -36,8 +38,6 @@ import br.net.woodstock.rockframework.utils.ClassLoaderUtils;
 public class ClassFinderImpl implements ClassFinder {
 
 	private static final String	CLASS_EXTENSION	= ".class";
-
-	private static final String	JAR_PREFIX		= "jar:";
 
 	private String				baseName;
 
@@ -69,8 +69,11 @@ public class ClassFinderImpl implements ClassFinder {
 			for (URL url : urls) {
 				if (this.isJarFile(url)) {
 					this.addClassFromJar(url);
+				}
+				if (this.isVFSZipFile(url)) {
+					this.addClassFromVFSZip(url);
 				} else {
-					File dir = new File(url.toURI());
+					File dir = new File(ClassLoaderUtils.getURI(url));
 					String urlString = url.getFile();
 					String parent = urlString.substring(0, urlString.lastIndexOf(this.baseName));
 					if (dir.isDirectory()) {
@@ -82,7 +85,14 @@ public class ClassFinderImpl implements ClassFinder {
 	}
 
 	private boolean isJarFile(final URL url) {
-		if (url.toString().startsWith(ClassFinderImpl.JAR_PREFIX)) {
+		if (url.toString().startsWith(ClassLoaderUtils.JAR_PREFIX)) {
+			return true;
+		}
+		return false;
+	}
+
+	private boolean isVFSZipFile(final URL url) {
+		if (url.toString().startsWith(ClassLoaderUtils.VFSZIP_PREFIX)) {
 			return true;
 		}
 		return false;
@@ -105,19 +115,30 @@ public class ClassFinderImpl implements ClassFinder {
 	}
 
 	private void addClassFromJar(final URL url) throws IOException, URISyntaxException {
+		this.addClassFromZip(url);
+	}
+
+	private void addClassFromVFSZip(final URL url) throws IOException, URISyntaxException {
+		this.addClassFromZip(url);
+	}
+
+	private void addClassFromZip(final URL url) throws IOException, URISyntaxException {
 		URI uri = ClassLoaderUtils.getURI(url);
-		ZipReader reader = new ZipReader(uri.getPath());
+		File file = new File(uri);
+		InputStream inputStream = new FileInputStream(file);
+		ZipReader reader = new ZipReader(inputStream);
 		Collection<String> files = reader.getFiles();
 		if (files != null) {
-			for (String file : files) {
-				if (this.isValidClass(file)) {
-					Class clazz = this.getClassFromFile(file);
+			for (String s : files) {
+				if (this.isValidClass(s)) {
+					Class clazz = this.getClassFromFile(s);
 					if ((clazz != null) && (this.isAcceptable(clazz))) {
 						this.classes.add(clazz);
 					}
 				}
 			}
 		}
+		inputStream.close();
 	}
 
 	private boolean isValidClass(final String file) {

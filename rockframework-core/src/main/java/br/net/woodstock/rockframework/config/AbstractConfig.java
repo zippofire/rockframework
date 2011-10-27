@@ -41,7 +41,7 @@ public abstract class AbstractConfig {
 			if (urls != null) {
 				for (URL url : urls) {
 					String s = url.toString();
-					if (s.startsWith(ClassLoaderUtils.JAR_PREFIX)) {
+					if ((!s.startsWith(ClassLoaderUtils.FILE_PREFIX)) && (!s.startsWith(ClassLoaderUtils.VFSFILE_PREFIX))) {
 						InputStream inputStream = ClassLoaderUtils.getInputStream(url, propertiesName);
 						if (inputStream != null) {
 							Properties p = new Properties();
@@ -50,11 +50,12 @@ public abstract class AbstractConfig {
 								tmpMap.put(key.toString(), p.getProperty(key.toString()));
 							}
 						}
+						inputStream.close();
 					}
 				}
 				for (URL url : urls) {
 					String s = url.toString();
-					if (s.startsWith(ClassLoaderUtils.FILE_PREFIX)) {
+					if ((s.startsWith(ClassLoaderUtils.FILE_PREFIX)) || (s.startsWith(ClassLoaderUtils.VFSFILE_PREFIX))) {
 						InputStream inputStream = ClassLoaderUtils.getInputStream(url, propertiesName);
 						if (inputStream != null) {
 							Properties p = new Properties();
@@ -63,6 +64,7 @@ public abstract class AbstractConfig {
 								tmpMap.put(key.toString(), p.getProperty(key.toString()));
 							}
 						}
+						inputStream.close();
 					}
 				}
 			}

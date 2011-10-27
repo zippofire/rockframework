@@ -164,4 +164,9 @@ public abstract class RequestUtils {
 		String body = new String(IOUtils.toByteArray(inputStream), charset);
 		return body;
 	}
+
+	public static String getUserAgent(final HttpServletRequest request) {
+		Assert.notNull(request, "request");
+		return request.getHeader(RequestUtils.HEADER_USER_AGENT);
+	}
 }

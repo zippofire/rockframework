@@ -16,11 +16,13 @@
  */
 package br.net.woodstock.rockframework.util;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -36,16 +38,20 @@ public class ZipReader {
 
 	private Set<String>			files;
 
-	private File				file;
+	private byte[]				bytes;
 
 	public ZipReader(final String fileName) throws IOException {
 		this(new File(fileName));
 	}
 
 	public ZipReader(final File file) throws IOException {
+		this(new FileInputStream(file));
+	}
+
+	public ZipReader(final InputStream inputStream) throws IOException {
 		super();
-		this.file = file;
 		this.files = new LinkedHashSet<String>(0);
+		this.bytes = IOUtils.toByteArray(inputStream);
 		this.readMetadata();
 	}
 
@@ -54,7 +60,7 @@ public class ZipReader {
 	}
 
 	private void readMetadata() throws IOException {
-		ZipInputStream input = new ZipInputStream(new FileInputStream(this.file));
+		ZipInputStream input = new ZipInputStream(new ByteArrayInputStream(this.bytes));
 		ZipEntry entry = input.getNextEntry();
 		while (entry != null) {
 			this.files.add(entry.getName());
@@ -65,7 +71,7 @@ public class ZipReader {
 
 	public byte[] getFile(final String file) throws IOException {
 		if (this.files.contains(file)) {
-			ZipInputStream input = new ZipInputStream(new FileInputStream(this.file));
+			ZipInputStream input = new ZipInputStream(new ByteArrayInputStream(this.bytes));
 			ZipEntry entry = input.getNextEntry();
 			while (entry != null) {
 				entry = input.getNextEntry();
@@ -83,7 +89,7 @@ public class ZipReader {
 	}
 
 	public void unzip(final File outDir) throws IOException {
-		ZipInputStream input = new ZipInputStream(new FileInputStream(this.file));
+		ZipInputStream input = new ZipInputStream(new ByteArrayInputStream(this.bytes));
 		ZipEntry entry = input.getNextEntry();
 		while (entry != null) {
 			entry = input.getNextEntry();

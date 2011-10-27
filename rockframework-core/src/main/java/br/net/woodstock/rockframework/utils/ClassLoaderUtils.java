@@ -17,7 +17,6 @@
 package br.net.woodstock.rockframework.utils;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -31,15 +30,21 @@ import java.util.jar.JarFile;
 
 public abstract class ClassLoaderUtils {
 
-	public static final String	FILE_PREFIX		= "file:";
+	public static final String	FILE_PREFIX			= "file:";
 
-	public static final String	FTP_PREFIX		= "ftp:";
+	public static final String	FTP_PREFIX			= "ftp:";
 
-	public static final String	HTTP_PREFIX		= "http:";
+	public static final String	HTTP_PREFIX			= "http:";
 
-	public static final String	JAR_PREFIX		= "jar:";
+	public static final String	JAR_PREFIX			= "jar:";
 
-	public static final char	JAR_SEPARATOR	= '!';
+	public static final String	VFSFILE_PREFIX		= "vfsfile:";
+
+	public static final String	VFSZIP_PREFIX		= "vfszip:";
+
+	public static final char	JAR_SEPARATOR		= '!';
+
+	public static final char	PROTOCOL_SEPARATOR	= ':';
 
 	private ClassLoaderUtils() {
 		//
@@ -101,6 +106,14 @@ public abstract class ClassLoaderUtils {
 			int end = urlString.indexOf(ClassLoaderUtils.JAR_SEPARATOR);
 			String s = urlString.substring(start, end);
 			uri = new URI(s);
+		} else if (urlString.startsWith(ClassLoaderUtils.VFSZIP_PREFIX)) {
+			int start = urlString.indexOf(ClassLoaderUtils.PROTOCOL_SEPARATOR) + 1;
+			int end = urlString.indexOf(ClassLoaderUtils.JAR_SEPARATOR);
+			String s = ClassLoaderUtils.FILE_PREFIX + urlString.substring(start, end);
+			uri = new URI(s);
+		} else if (urlString.startsWith(ClassLoaderUtils.VFSFILE_PREFIX)) {
+			String s = urlString.replace(ClassLoaderUtils.VFSFILE_PREFIX, ClassLoaderUtils.FILE_PREFIX);
+			uri = new URI(s);
 		} else {
 			uri = new URI(urlString);
 		}
@@ -110,15 +123,23 @@ public abstract class ClassLoaderUtils {
 	public static InputStream getInputStream(final URL url, final String name) throws URISyntaxException, IOException {
 		String urlString = url.toString();
 		boolean isJar = urlString.startsWith(ClassLoaderUtils.JAR_PREFIX);
-		URI uri = ClassLoaderUtils.getURI(url);
+		boolean isVSFFile = urlString.startsWith(ClassLoaderUtils.VFSFILE_PREFIX);
+		boolean isVSFZip = urlString.startsWith(ClassLoaderUtils.VFSZIP_PREFIX);
+
+		if ((isVSFFile) || (isVSFZip)) {
+			InputStream input = url.openStream();
+			return input;
+		}
+
 		if (isJar) {
+			URI uri = ClassLoaderUtils.getURI(url);
 			JarFile file = new JarFile(new File(uri));
 			JarEntry entry = file.getJarEntry(name);
 			InputStream input = file.getInputStream(entry);
 			return input;
 		}
-		File file = new File(uri);
-		InputStream input = new FileInputStream(file);
+
+		InputStream input = url.openStream();
 		return input;
 	}
 
