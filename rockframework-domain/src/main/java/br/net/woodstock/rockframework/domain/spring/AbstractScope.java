@@ -24,7 +24,7 @@ import br.net.woodstock.rockframework.domain.config.DomainLog;
 public class AbstractScope implements Scope {
 
 	@Override
-	public Object get(final String name, final ObjectFactory objectFactory) {
+	public Object get(final String name, final ObjectFactory<?> objectFactory) {
 		DomainLog.getInstance().getLog().warn("This method must be overrided");
 		return null;
 	}
@@ -42,6 +42,12 @@ public class AbstractScope implements Scope {
 
 	@Override
 	public Object remove(final String name) {
+		DomainLog.getInstance().getLog().warn("This method must be overrided");
+		return null;
+	}
+
+	@Override
+	public Object resolveContextualObject(final String key) {
 		DomainLog.getInstance().getLog().warn("This method must be overrided");
 		return null;
 	}

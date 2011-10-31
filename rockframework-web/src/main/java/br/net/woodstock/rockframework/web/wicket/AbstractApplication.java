@@ -16,7 +16,6 @@
  */
 package br.net.woodstock.rockframework.web.wicket;
 
-import org.apache.wicket.Application;
 import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.WebApplication;
 
@@ -29,21 +28,21 @@ public abstract class AbstractApplication extends WebApplication {
 	@Override
 	public abstract Class<? extends Page> getHomePage();
 
-	@Override
-	public abstract String getConfigurationType();
-
-	public static enum ConfigurationType {
-		DEPLOYMENT(Application.DEPLOYMENT), DEVELOPMENT(Application.DEVELOPMENT);
-
-		private String	type;
-
-		private ConfigurationType(final String type) {
-			this.type = type;
-		}
-
-		public String getType() {
-			return this.type;
-		}
-	}
+	// @Override
+	// public abstract String getConfigurationType();
+	//
+	// public static enum ConfigurationType {
+	// DEPLOYMENT(Application.DEPLOYMENT), DEVELOPMENT(Application.DEVELOPMENT);
+	//
+	// private String type;
+	//
+	// private ConfigurationType(final String type) {
+	// this.type = type;
+	// }
+	//
+	// public String getType() {
+	// return this.type;
+	// }
+	// }
 
 }

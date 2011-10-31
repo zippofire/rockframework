@@ -109,8 +109,6 @@ public class DebugInterceptor extends AbstractInterceptor {
 			WebLog.getInstance().getLog().warn(message);
 		} else if (this.level.equals("ERROR")) {
 			WebLog.getInstance().getLog().error(message);
-		} else if (this.level.equals("FATAL")) {
-			WebLog.getInstance().getLog().fatal(message);
 		}
 	}
 

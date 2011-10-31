@@ -16,11 +16,18 @@
  */
 package br.net.woodstock.rockframework.domain.persistence.orm.util;
 
+import java.util.Map;
+
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.metamodel.Metamodel;
 
 public class DelegateEntityManager implements EntityManager {
 
@@ -32,89 +39,8 @@ public class DelegateEntityManager implements EntityManager {
 	}
 
 	@Override
-	public void persist(final Object entity) {
-		this.entityManager.persist(entity);
-	}
-
-	@Override
-	public <T> T merge(final T entity) {
-		return this.entityManager.merge(entity);
-	}
-
-	@Override
-	public void remove(final Object entity) {
-		this.entityManager.remove(entity);
-	}
-
-	@Override
-	public <T> T find(final Class<T> entityClass, final Object primaryKey) {
-		return this.entityManager.find(entityClass, primaryKey);
-	}
-
-	@Override
-	public <T> T getReference(final Class<T> entityClass, final Object primaryKey) {
-		return this.entityManager.getReference(entityClass, primaryKey);
-	}
-
-	@Override
-	public void flush() {
-		this.entityManager.flush();
-	}
-
-	@Override
-	public void setFlushMode(final FlushModeType flushMode) {
-		this.entityManager.setFlushMode(flushMode);
-	}
-
-	@Override
-	public FlushModeType getFlushMode() {
-		return this.entityManager.getFlushMode();
-	}
-
-	@Override
-	public void lock(final Object entity, final LockModeType lockMode) {
-		this.entityManager.lock(entity, lockMode);
-	}
-
-	@Override
-	public void refresh(final Object entity) {
-		this.entityManager.refresh(entity);
-	}
-
-	@Override
 	public void clear() {
 		this.entityManager.clear();
-	}
-
-	@Override
-	public boolean contains(final Object entity) {
-		return this.entityManager.contains(entity);
-	}
-
-	@Override
-	public Query createQuery(final String ejbqlString) {
-		return this.entityManager.createQuery(ejbqlString);
-	}
-
-	@Override
-	public Query createNamedQuery(final String name) {
-		return this.entityManager.createNamedQuery(name);
-	}
-
-	@Override
-	public Query createNativeQuery(final String sqlString) {
-		return this.entityManager.createNativeQuery(sqlString);
-	}
-
-	@Override
-	@SuppressWarnings("rawtypes")
-	public Query createNativeQuery(final String sqlString, final Class resultClass) {
-		return this.entityManager.createNativeQuery(sqlString, resultClass);
-	}
-
-	@Override
-	public Query createNativeQuery(final String sqlString, final String resultSetMapping) {
-		return this.entityManager.createNativeQuery(sqlString, resultSetMapping);
 	}
 
 	@Override
@@ -123,8 +49,119 @@ public class DelegateEntityManager implements EntityManager {
 	}
 
 	@Override
-	public boolean isOpen() {
-		return this.entityManager.isOpen();
+	public boolean contains(final Object arg0) {
+		return this.entityManager.contains(arg0);
+	}
+
+	@Override
+	public <T> TypedQuery<T> createNamedQuery(final String arg0, final Class<T> arg1) {
+		return this.entityManager.createNamedQuery(arg0, arg1);
+	}
+
+	@Override
+	public Query createNamedQuery(final String arg0) {
+		return this.entityManager.createNamedQuery(arg0);
+	}
+
+	@Override
+	@SuppressWarnings("rawtypes")
+	public Query createNativeQuery(final String arg0, final Class arg1) {
+		return this.entityManager.createNativeQuery(arg0, arg1);
+	}
+
+	@Override
+	public Query createNativeQuery(final String arg0, final String arg1) {
+		return this.entityManager.createNativeQuery(arg0, arg1);
+	}
+
+	@Override
+	public Query createNativeQuery(final String arg0) {
+		return this.entityManager.createNativeQuery(arg0);
+	}
+
+	@Override
+	public <T> TypedQuery<T> createQuery(final CriteriaQuery<T> arg0) {
+		return this.entityManager.createQuery(arg0);
+	}
+
+	@Override
+	public <T> TypedQuery<T> createQuery(final String arg0, final Class<T> arg1) {
+		return this.entityManager.createQuery(arg0, arg1);
+	}
+
+	@Override
+	public Query createQuery(final String arg0) {
+		return this.entityManager.createQuery(arg0);
+	}
+
+	@Override
+	public void detach(final Object arg0) {
+		this.entityManager.detach(arg0);
+	}
+
+	@Override
+	public <T> T find(final Class<T> arg0, final Object arg1, final LockModeType arg2, final Map<String, Object> arg3) {
+		return this.entityManager.find(arg0, arg1, arg2, arg3);
+	}
+
+	@Override
+	public <T> T find(final Class<T> arg0, final Object arg1, final LockModeType arg2) {
+		return this.entityManager.find(arg0, arg1, arg2);
+	}
+
+	@Override
+	public <T> T find(final Class<T> arg0, final Object arg1, final Map<String, Object> arg2) {
+		return this.entityManager.find(arg0, arg1, arg2);
+	}
+
+	@Override
+	public <T> T find(final Class<T> arg0, final Object arg1) {
+		return this.entityManager.find(arg0, arg1);
+	}
+
+	@Override
+	public void flush() {
+		this.entityManager.flush();
+	}
+
+	@Override
+	public CriteriaBuilder getCriteriaBuilder() {
+		return this.entityManager.getCriteriaBuilder();
+	}
+
+	@Override
+	public Object getDelegate() {
+		return this.entityManager.getDelegate();
+	}
+
+	@Override
+	public EntityManagerFactory getEntityManagerFactory() {
+		return this.entityManager.getEntityManagerFactory();
+	}
+
+	@Override
+	public FlushModeType getFlushMode() {
+		return this.entityManager.getFlushMode();
+	}
+
+	@Override
+	public LockModeType getLockMode(final Object arg0) {
+		return this.entityManager.getLockMode(arg0);
+	}
+
+	@Override
+	public Metamodel getMetamodel() {
+		return this.entityManager.getMetamodel();
+	}
+
+	@Override
+	public Map<String, Object> getProperties() {
+		return this.entityManager.getProperties();
+	}
+
+	@Override
+	public <T> T getReference(final Class<T> arg0, final Object arg1) {
+		return this.entityManager.getReference(arg0, arg1);
 	}
 
 	@Override
@@ -133,13 +170,73 @@ public class DelegateEntityManager implements EntityManager {
 	}
 
 	@Override
+	public boolean isOpen() {
+		return this.entityManager.isOpen();
+	}
+
+	@Override
 	public void joinTransaction() {
 		this.entityManager.joinTransaction();
 	}
 
 	@Override
-	public Object getDelegate() {
-		return this.entityManager.getDelegate();
+	public void lock(final Object arg0, final LockModeType arg1, final Map<String, Object> arg2) {
+		this.entityManager.lock(arg0, arg1, arg2);
+	}
+
+	@Override
+	public void lock(final Object arg0, final LockModeType arg1) {
+		this.entityManager.lock(arg0, arg1);
+	}
+
+	@Override
+	public <T> T merge(final T arg0) {
+		return this.entityManager.merge(arg0);
+	}
+
+	@Override
+	public void persist(final Object arg0) {
+		this.entityManager.persist(arg0);
+	}
+
+	@Override
+	public void refresh(final Object arg0, final LockModeType arg1, final Map<String, Object> arg2) {
+		this.entityManager.refresh(arg0, arg1, arg2);
+	}
+
+	@Override
+	public void refresh(final Object arg0, final LockModeType arg1) {
+		this.entityManager.refresh(arg0, arg1);
+	}
+
+	@Override
+	public void refresh(final Object arg0, final Map<String, Object> arg1) {
+		this.entityManager.refresh(arg0, arg1);
+	}
+
+	@Override
+	public void refresh(final Object arg0) {
+		this.entityManager.refresh(arg0);
+	}
+
+	@Override
+	public void remove(final Object arg0) {
+		this.entityManager.remove(arg0);
+	}
+
+	@Override
+	public void setFlushMode(final FlushModeType arg0) {
+		this.entityManager.setFlushMode(arg0);
+	}
+
+	@Override
+	public void setProperty(final String arg0, final Object arg1) {
+		this.entityManager.setProperty(arg0, arg1);
+	}
+
+	@Override
+	public <T> T unwrap(final Class<T> arg0) {
+		return this.entityManager.unwrap(arg0);
 	}
 
 }

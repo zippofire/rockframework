@@ -23,7 +23,7 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 
 import br.net.woodstock.rockframework.domain.Entity;
 
-public class HibernateDeleteCallback implements HibernateCallback {
+public class HibernateDeleteCallback implements HibernateCallback<Object> {
 
 	private Entity<?>	entity;
 

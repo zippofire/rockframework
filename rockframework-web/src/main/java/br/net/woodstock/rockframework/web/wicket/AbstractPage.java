@@ -16,12 +16,13 @@
  */
 package br.net.woodstock.rockframework.web.wicket;
 
-import org.apache.wicket.IPageMap;
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 public class AbstractPage extends WebPage {
+
+	private static final long	serialVersionUID	= 3988065726721018159L;
 
 	public AbstractPage() {
 		super();
@@ -29,18 +30,6 @@ public class AbstractPage extends WebPage {
 
 	public AbstractPage(final IModel<?> model) {
 		super(model);
-	}
-
-	public AbstractPage(final IPageMap pageMap, final IModel<?> model) {
-		super(pageMap, model);
-	}
-
-	public AbstractPage(final IPageMap pageMap, final PageParameters parameters) {
-		super(pageMap, parameters);
-	}
-
-	public AbstractPage(final IPageMap pageMap) {
-		super(pageMap);
 	}
 
 	public AbstractPage(final PageParameters parameters) {

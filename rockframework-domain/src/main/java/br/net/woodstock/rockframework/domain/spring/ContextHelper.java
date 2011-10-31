@@ -83,11 +83,10 @@ public final class ContextHelper {
 		return new ClassPathXmlApplicationContext(new String[] { ContextHelper.APPLICATION_CONFIGURATION });
 	}
 
-	@SuppressWarnings("unchecked")
 	public <T> T getObject(final Class<T> clazz) {
 		Assert.notNull(clazz, "clazz");
 
-		Map<String, Object> map = this.context.getBeansOfType(clazz);
+		Map<String, T> map = this.context.getBeansOfType(clazz);
 		if (map.size() == 0) {
 			throw new ObjectNotFoundException("Object not found for type " + clazz.getCanonicalName());
 		}
@@ -95,16 +94,15 @@ public final class ContextHelper {
 			throw new TooManyObjectsException("To many objects found for type " + clazz.getCanonicalName());
 		}
 
-		return (T) map.values().iterator().next();
+		return map.values().iterator().next();
 	}
 
-	@SuppressWarnings("unchecked")
 	public <T> Collection<T> getObjects(final Class<T> clazz) {
 		Assert.notNull(clazz, "clazz");
 
-		Map<String, Object> map = this.context.getBeansOfType(clazz);
+		Map<String, T> map = this.context.getBeansOfType(clazz);
 
-		return (Collection<T>) map.values();
+		return map.values();
 	}
 
 	public Object getObject(final String name) {

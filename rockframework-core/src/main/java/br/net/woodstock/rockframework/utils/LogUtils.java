@@ -16,8 +16,8 @@
  */
 package br.net.woodstock.rockframework.utils;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import br.net.woodstock.rockframework.config.CoreConfig;
 
@@ -27,21 +27,21 @@ public abstract class LogUtils {
 
 	private static final String	LOG_NAME			= CoreConfig.getInstance().getValue(LogUtils.LOG_NAME_PROPERTY);
 
-	private static Log			log					= LogFactory.getLog(LogUtils.LOG_NAME);
+	private static Logger		log					= LoggerFactory.getLogger(LogUtils.LOG_NAME);
 
 	private LogUtils() {
 		super();
 	}
 
-	public static Log getSharedLog() {
+	public static Logger getSharedLog() {
 		return LogUtils.log;
 	}
 
-	public static Log getLog(final Class<?> clazz) {
-		return LogFactory.getLog(clazz);
+	public static Logger getLog(final Class<?> clazz) {
+		return LoggerFactory.getLogger(clazz);
 	}
 
-	public static Log getLog(final String name) {
-		return LogFactory.getLog(name);
+	public static Logger getLog(final String name) {
+		return LoggerFactory.getLogger(name);
 	}
 }

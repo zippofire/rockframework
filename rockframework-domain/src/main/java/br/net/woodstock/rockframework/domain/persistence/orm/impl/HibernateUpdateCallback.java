@@ -23,7 +23,7 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 
 import br.net.woodstock.rockframework.domain.Entity;
 
-public class HibernateUpdateCallback implements HibernateCallback {
+public class HibernateUpdateCallback implements HibernateCallback<Object> {
 
 	private Entity<?>	entity;
 

@@ -26,15 +26,15 @@ import br.net.woodstock.rockframework.web.security.WebPrincipal;
 public class SimplePrincipal extends GenericPrincipal implements WebPrincipal {
 
 	public SimplePrincipal(final String name, final String password, final String role) {
-		super(null, name, password, ArrayUtils.toList(new String[] { role }));
+		super(name, password, ArrayUtils.toList(new String[] { role }), null);
 	}
 
 	public SimplePrincipal(final String name, final String password, final String[] roles) {
-		super(null, name, password, ArrayUtils.toList(roles));
+		super(name, password, ArrayUtils.toList(roles), null);
 	}
 
 	public SimplePrincipal(final String name, final String password, final List<String> roles) {
-		super(null, name, password, roles);
+		super(name, password, roles, null);
 	}
 
 }

@@ -22,6 +22,7 @@ import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
 import javax.faces.application.Application;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +36,16 @@ public abstract class FacesUtils {
 	}
 
 	// Faces
+	public static void addMessage(final String message) {
+		FacesContext fc = FacesUtils.getFacesContext();
+		fc.addMessage(null, new FacesMessage(message));
+	}
+
+	public static void addError(final Exception exception) {
+		FacesContext fc = FacesUtils.getFacesContext();
+		fc.addMessage(null, new FacesMessage(exception.getMessage()));
+	}
+
 	public static FacesContext getFacesContext() {
 		return FacesContext.getCurrentInstance();
 	}

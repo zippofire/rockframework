@@ -24,11 +24,16 @@ import javax.persistence.Query;
 
 import br.net.woodstock.rockframework.domain.persistence.orm.Constants;
 import br.net.woodstock.rockframework.domain.persistence.orm.JPQLRepository;
+import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
 public class JPAJPQLRepository extends AbstractJPAQueryableRepository implements JPQLRepository {
 
 	private EntityManager	entityManager;
+
+	public JPAJPQLRepository() {
+		super();
+	}
 
 	public JPAJPQLRepository(final EntityManager entityManager) {
 		super();
@@ -37,7 +42,13 @@ public class JPAJPQLRepository extends AbstractJPAQueryableRepository implements
 
 	@Override
 	protected Query getQuery(final br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query) {
-		EntityManager entityManager = this.entityManager;
+		return this.getQuery(query, this.entityManager);
+	}
+
+	protected Query getQuery(final br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata query, final EntityManager entityManager) {
+		Assert.notNull(query, "query");
+		Assert.notNull(this.entityManager, "entityManager");
+
 		Query q = entityManager.createQuery(query.getQuery());
 
 		Map<String, Object> parameters = query.getParameters();

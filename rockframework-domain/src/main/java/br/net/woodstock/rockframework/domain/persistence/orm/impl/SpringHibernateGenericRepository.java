@@ -31,12 +31,11 @@ public abstract class SpringHibernateGenericRepository extends SpringHibernateRe
 		this.getHibernateTemplate().execute(new HibernateDeleteCallback(e));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <E extends Entity<?>> E get(final E entity) {
 		Class<E> clazz = PersistenceUtil.getRealClass(entity);
 
-		E e = (E) this.getHibernateTemplate().get(clazz, entity.getId());
+		E e = this.getHibernateTemplate().get(clazz, entity.getId());
 		// if (e != null) {
 		// this.getHibernateTemplate().refresh(e);
 		// }

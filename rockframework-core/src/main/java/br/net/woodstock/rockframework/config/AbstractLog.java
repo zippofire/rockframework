@@ -16,20 +16,20 @@
  */
 package br.net.woodstock.rockframework.config;
 
-import org.apache.commons.logging.Log;
+import org.slf4j.Logger;
 
 import br.net.woodstock.rockframework.utils.LogUtils;
 
 public abstract class AbstractLog {
 
-	private Log	log;
+	private Logger	log;
 
 	public AbstractLog(final String name) {
 		super();
 		this.log = LogUtils.getLog(name);
 	}
 
-	public Log getLog() {
+	public Logger getLog() {
 		return this.log;
 	}
 

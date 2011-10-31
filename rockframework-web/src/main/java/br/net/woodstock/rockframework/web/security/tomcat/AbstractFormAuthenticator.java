@@ -19,10 +19,11 @@ package br.net.woodstock.rockframework.web.security.tomcat;
 import java.io.IOException;
 import java.security.Principal;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.catalina.authenticator.Constants;
 import org.apache.catalina.authenticator.FormAuthenticator;
 import org.apache.catalina.connector.Request;
-import org.apache.catalina.connector.Response;
 import org.apache.catalina.deploy.LoginConfig;
 
 import br.net.woodstock.rockframework.utils.ConditionUtils;
@@ -34,7 +35,7 @@ public abstract class AbstractFormAuthenticator extends FormAuthenticator {
 	public static final String	PASSWORD_PARAMETER	= Constants.FORM_PASSWORD;
 
 	@Override
-	public boolean authenticate(final Request request, final Response response, final LoginConfig config) throws IOException {
+	public boolean authenticate(final Request request, final HttpServletResponse response, final LoginConfig config) throws IOException {
 		Principal principal = request.getUserPrincipal();
 		String username = request.getParameter(AbstractFormAuthenticator.USERNAME_PARAMETER);
 		String password = request.getParameter(AbstractFormAuthenticator.PASSWORD_PARAMETER);
