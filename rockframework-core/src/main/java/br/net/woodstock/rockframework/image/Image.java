@@ -17,6 +17,7 @@
 package br.net.woodstock.rockframework.image;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,6 +55,13 @@ public final class Image {
 		Assert.notNull(type, "type");
 
 		ImageIO.write(this.bufferedImage, type.name().toLowerCase(), outputStream);
+	}
+
+	public byte[] toByte(final ImageType type) throws IOException {
+		Assert.notNull(type, "type");
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		ImageIO.write(this.bufferedImage, type.name().toLowerCase(), outputStream);
+		return outputStream.toByteArray();
 	}
 
 	public int getWidth() {

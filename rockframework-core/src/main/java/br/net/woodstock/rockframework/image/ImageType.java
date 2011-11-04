@@ -20,4 +20,8 @@ public enum ImageType {
 
 	JPEG, GIF, PNG, BMP, TIFF;
 
+	public String getMimeType() {
+		return "image/" + this.name().toLowerCase();
+	}
+
 }
