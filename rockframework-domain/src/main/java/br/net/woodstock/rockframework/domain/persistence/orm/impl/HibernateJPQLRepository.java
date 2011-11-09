@@ -30,7 +30,9 @@ import br.net.woodstock.rockframework.utils.ConditionUtils;
 
 public class HibernateJPQLRepository extends AbstractHibernateQueryableRepository implements JPQLRepository {
 
-	private Session	session;
+	private static final long	serialVersionUID	= 459878908923082704L;
+
+	private Session				session;
 
 	public HibernateJPQLRepository(final Session session) {
 		super();

@@ -30,6 +30,8 @@ import br.net.woodstock.rockframework.domain.validator.jpa.impl.EntityValidatorI
 @SuppressWarnings("rawtypes")
 public abstract class AbstractJPABusiness extends AbstractBusiness {
 
+	private static final long	serialVersionUID	= 5567904241262848365L;
+
 	public AbstractJPABusiness() {
 		super();
 	}

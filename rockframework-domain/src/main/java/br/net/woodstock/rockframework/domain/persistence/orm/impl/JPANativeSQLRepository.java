@@ -29,7 +29,9 @@ import br.net.woodstock.rockframework.utils.ConditionUtils;
 
 public class JPANativeSQLRepository extends AbstractJPAQueryableRepository implements NativeSQLRepository {
 
-	private EntityManager	entityManager;
+	private static final long	serialVersionUID	= -5615931026502409730L;
+
+	private EntityManager		entityManager;
 
 	public JPANativeSQLRepository(final EntityManager entityManager) {
 		super();

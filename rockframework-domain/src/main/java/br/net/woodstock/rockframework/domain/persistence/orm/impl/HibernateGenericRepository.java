@@ -28,6 +28,8 @@ import br.net.woodstock.rockframework.domain.persistence.orm.util.PersistenceUti
 
 public class HibernateGenericRepository implements GenericRepository {
 
+	private static final long		serialVersionUID	= -6733344942134234646L;
+
 	private static final String		PROPERTY_GET_TYPE	= "hibernate.getType";
 
 	private static final GetType	GET_TYPE			= GetType.valueOf(DomainConfig.getInstance().getValue(HibernateGenericRepository.PROPERTY_GET_TYPE));

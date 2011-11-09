@@ -22,6 +22,8 @@ import br.net.woodstock.rockframework.domain.persistence.Repository;
 
 public class SpringHibernateRepository extends HibernateDaoSupport implements Repository {
 
+	private static final long	serialVersionUID	= 1245924981005080286L;
+
 	public SpringHibernateRepository() {
 		super();
 	}

@@ -23,6 +23,8 @@ import br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata;
 
 public class SpringHibernateNativeSQLRepository extends SpringHibernateRepository implements NativeSQLRepository {
 
+	private static final long	serialVersionUID	= -4334899401606181305L;
+
 	public SpringHibernateNativeSQLRepository() {
 		super();
 	}

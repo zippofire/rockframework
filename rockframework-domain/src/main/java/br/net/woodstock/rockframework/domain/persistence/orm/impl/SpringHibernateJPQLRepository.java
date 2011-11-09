@@ -23,6 +23,8 @@ import br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata;
 
 public class SpringHibernateJPQLRepository extends SpringHibernateRepository implements JPQLRepository {
 
+	private static final long	serialVersionUID	= -4416940021542485066L;
+
 	public SpringHibernateJPQLRepository() {
 		super();
 	}

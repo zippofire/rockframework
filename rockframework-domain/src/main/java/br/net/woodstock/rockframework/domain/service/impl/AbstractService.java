@@ -20,6 +20,8 @@ import br.net.woodstock.rockframework.domain.service.Service;
 
 public abstract class AbstractService implements Service {
 
+	private static final long	serialVersionUID	= 7775155964489444310L;
+
 	public AbstractService() {
 		super();
 	}

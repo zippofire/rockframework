@@ -14,23 +14,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.domain.business.impl;
+package br.net.woodstock.rockframework.domain.jee;
 
-import br.net.woodstock.rockframework.domain.business.Business;
-import br.net.woodstock.rockframework.domain.config.DomainMessage;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public abstract class AbstractBusiness implements Business {
+import javax.inject.Qualifier;
 
-	private static final long	serialVersionUID	= -6487843296854967777L;
-
-	public static final String	OK_MESSAGE			= "OK";
-
-	public AbstractBusiness() {
-		super();
-	}
-
-	protected String getMessage(final String key, final Object... args) {
-		return DomainMessage.getInstance().getMessage(key, args);
-	}
-
+@Qualifier
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ ElementType.TYPE })
+public @interface Component {
+	//
 }

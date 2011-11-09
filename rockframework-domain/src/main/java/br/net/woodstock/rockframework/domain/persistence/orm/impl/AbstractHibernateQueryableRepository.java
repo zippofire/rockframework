@@ -25,6 +25,8 @@ import br.net.woodstock.rockframework.domain.persistence.orm.QueryableRepository
 
 abstract class AbstractHibernateQueryableRepository implements QueryableRepository {
 
+	private static final long	serialVersionUID	= 2841841477819364743L;
+
 	public AbstractHibernateQueryableRepository() {
 		super();
 	}

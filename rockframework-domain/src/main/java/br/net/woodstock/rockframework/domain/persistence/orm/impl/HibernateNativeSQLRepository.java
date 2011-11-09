@@ -30,7 +30,9 @@ import br.net.woodstock.rockframework.utils.ConditionUtils;
 
 public class HibernateNativeSQLRepository extends AbstractHibernateQueryableRepository implements NativeSQLRepository {
 
-	private Session	session;
+	private static final long	serialVersionUID	= -3219784477734752368L;
+
+	private Session				session;
 
 	public HibernateNativeSQLRepository(final Session session) {
 		super();

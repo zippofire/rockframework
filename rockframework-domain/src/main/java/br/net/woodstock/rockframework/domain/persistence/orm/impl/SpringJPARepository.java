@@ -26,6 +26,8 @@ import br.net.woodstock.rockframework.domain.persistence.Repository;
 
 public class SpringJPARepository extends JpaDaoSupport implements Repository {
 
+	private static final long	serialVersionUID	= -5410160703646737811L;
+
 	public SpringJPARepository() {
 		super();
 	}

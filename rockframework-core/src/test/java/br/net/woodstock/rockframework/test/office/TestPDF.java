@@ -196,10 +196,10 @@ public class TestPDF extends TestCase {
 
 	public void test12() throws Exception {
 		PDFManager manager = PDFManagerImpl.getInstance();
-		InputStream pdf = new FileInputStream("/tmp/UML2.pdf");
-		InputStream page1 = manager.cut(pdf, 1, 1);
+		InputStream pdf = new FileInputStream("/tmp/saida2.pdf");
+		InputStream page1 = manager.cut(pdf, 1, 10);
 
-		OutputStream outputStream = new FileOutputStream("/tmp/page-1.pdf");
+		OutputStream outputStream = new FileOutputStream("/tmp/saida2-1-10.pdf");
 		IOUtils.copy(page1, outputStream);
 		outputStream.close();
 

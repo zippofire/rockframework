@@ -23,12 +23,9 @@ import java.lang.reflect.Proxy;
 
 import br.net.woodstock.rockframework.utils.LogUtils;
 
-
 public final class ProxyObject implements InvocationHandler {
 
-	private static final long	serialVersionUID	= 5134816048976402977L;
-
-	private Object				object;
+	private Object	object;
 
 	private ProxyObject(final Object object) {
 		super();

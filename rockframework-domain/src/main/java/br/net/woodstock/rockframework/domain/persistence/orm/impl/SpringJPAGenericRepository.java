@@ -22,6 +22,8 @@ import br.net.woodstock.rockframework.domain.persistence.orm.util.PersistenceUti
 
 public abstract class SpringJPAGenericRepository extends SpringJPARepository implements GenericRepository {
 
+	private static final long	serialVersionUID	= 6471704234525350126L;
+
 	public SpringJPAGenericRepository() {
 		super();
 	}

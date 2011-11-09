@@ -24,6 +24,8 @@ import br.net.woodstock.rockframework.domain.persistence.jdbc.JDBCRepository;
 
 public abstract class AbstractJDBCRepository<E extends Entity<ID>, ID extends Serializable> implements JDBCRepository<E, ID> {
 
+	private static final long	serialVersionUID	= 7899320254008914731L;
+
 	protected abstract Connection getConnection();
 
 }

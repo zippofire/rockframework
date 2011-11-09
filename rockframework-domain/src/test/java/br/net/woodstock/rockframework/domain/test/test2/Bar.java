@@ -11,19 +11,17 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Bar {
 
-	private static final long	serialVersionUID	= 1L;
-
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer				id;
+	private Integer	id;
 
 	@Column(name = "value", length = 10, nullable = false)
-	private String				value;
+	private String	value;
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "id_foo", referencedColumnName = "id", nullable = false)
-	private Foo					foo;
+	private Foo		foo;
 
 	public Bar() {
 		super();

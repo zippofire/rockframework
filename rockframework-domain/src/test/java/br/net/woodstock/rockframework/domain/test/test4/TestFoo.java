@@ -1,11 +1,11 @@
 package br.net.woodstock.rockframework.domain.test.test4;
 
+import junit.framework.TestCase;
 import br.net.woodstock.rockframework.domain.Entity;
 import br.net.woodstock.rockframework.domain.business.BusinessResult;
 import br.net.woodstock.rockframework.domain.business.impl.AbstractJPABusiness;
 import br.net.woodstock.rockframework.domain.validator.jpa.Operation;
 import br.net.woodstock.rockframework.utils.DateUtils;
-import junit.framework.TestCase;
 
 public class TestFoo extends TestCase {
 
@@ -18,6 +18,8 @@ public class TestFoo extends TestCase {
 	}
 
 	public class MyBusiness extends AbstractJPABusiness {
+
+		private static final long	serialVersionUID	= 1L;
 
 		@SuppressWarnings("rawtypes")
 		@Override

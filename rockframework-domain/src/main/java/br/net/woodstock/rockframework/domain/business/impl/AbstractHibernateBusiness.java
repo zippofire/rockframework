@@ -27,6 +27,8 @@ import br.net.woodstock.rockframework.utils.ConditionUtils;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public abstract class AbstractHibernateBusiness extends AbstractBusiness {
 
+	private static final long	serialVersionUID	= -5804777131828418598L;
+
 	public AbstractHibernateBusiness() {
 		super();
 	}

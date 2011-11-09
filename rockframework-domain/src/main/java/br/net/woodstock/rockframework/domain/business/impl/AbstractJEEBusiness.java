@@ -31,6 +31,8 @@ import br.net.woodstock.rockframework.domain.business.BusinessResult;
 @SuppressWarnings("rawtypes")
 public abstract class AbstractJEEBusiness extends AbstractBusiness {
 
+	private static final long	serialVersionUID	= 731186211424712999L;
+
 	private static Validator	validator;
 
 	public AbstractJEEBusiness() {

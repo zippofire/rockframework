@@ -32,7 +32,7 @@ public class ViewScope extends AbstractScope {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public Object get(final String name, final ObjectFactory objectFactory) {
+	public Object get(final String name, final ObjectFactory<?> objectFactory) {
 		FacesContext context = FacesContext.getCurrentInstance();
 		if (context != null) {
 			UIViewRoot viewRoot = context.getViewRoot();

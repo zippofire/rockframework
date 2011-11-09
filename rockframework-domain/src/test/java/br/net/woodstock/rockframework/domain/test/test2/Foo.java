@@ -12,18 +12,16 @@ import javax.persistence.OneToMany;
 @Entity
 public class Foo {
 
-	private static final long	serialVersionUID	= 1L;
-
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer				id;
+	private Integer		id;
 
 	@Column(name = "name", length = 10, nullable = false)
-	private String				name;
+	private String		name;
 
 	@OneToMany(mappedBy = "foo")
-	private Set<Bar>			bars;
+	private Set<Bar>	bars;
 
 	public Foo() {
 		super();

@@ -58,7 +58,6 @@ public class ProxyServlet extends AbstractHttpServlet {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected void doGet(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
 		try {
 			Enumeration<String> parameterNames = req.getParameterNames();
@@ -90,7 +89,6 @@ public class ProxyServlet extends AbstractHttpServlet {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected void doPost(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
 		try {
 			Enumeration<String> parameterNames = req.getParameterNames();

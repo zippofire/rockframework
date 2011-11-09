@@ -16,6 +16,8 @@
  */
 package br.net.woodstock.rockframework.domain;
 
-public interface Layer {
+import java.io.Serializable;
+
+public interface Layer extends Serializable {
 	//
 }

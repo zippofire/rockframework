@@ -29,7 +29,9 @@ import br.net.woodstock.rockframework.utils.ConditionUtils;
 
 public class JPAJPQLRepository extends AbstractJPAQueryableRepository implements JPQLRepository {
 
-	private EntityManager	entityManager;
+	private static final long	serialVersionUID	= -4419669801803379112L;
+
+	private EntityManager		entityManager;
 
 	public JPAJPQLRepository() {
 		super();

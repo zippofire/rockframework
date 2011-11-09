@@ -27,6 +27,6 @@ import java.lang.annotation.Target;
 @Documented
 public @interface HttpMethod {
 
-	HttpMethodType[] value() default {};
+	HttpMethodType[] value() default { };
 
 }

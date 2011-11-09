@@ -23,6 +23,8 @@ import br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata;
 
 public class SpringJPANativeSQLRepository extends SpringJPARepository implements JPQLRepository {
 
+	private static final long	serialVersionUID	= -7539045548947661414L;
+
 	public SpringJPANativeSQLRepository() {
 		super();
 	}

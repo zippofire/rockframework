@@ -45,7 +45,6 @@ public class EntityInterceptor extends AbstractInterceptor {
 
 	private static final String	ENTITY_SEPARATOR	= ".";
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public String intercept(final ActionInvocation invocation) throws Exception {
 		Object action = invocation.getAction();

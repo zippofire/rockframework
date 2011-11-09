@@ -24,7 +24,9 @@ import br.net.woodstock.rockframework.domain.persistence.orm.util.PersistenceUti
 
 public class JPAGenericRepository implements GenericRepository {
 
-	private EntityManager	entityManager;
+	private static final long	serialVersionUID	= 7145981385019824074L;
+
+	private EntityManager		entityManager;
 
 	public JPAGenericRepository(final EntityManager entityManager) {
 		super();
