@@ -93,6 +93,14 @@
 		<module>rockframework-web</module>
 	</modules>
 
+	<repositories>
+                <repository>
+                        <id>Woodstock Repo</id>
+                        <url>http://maven.woodstock.net.br/repos/</url>
+                </repository>
+        </repositories>
+
+
 	<build>
 		<defaultGoal>install</defaultGoal>
 		<plugins>
