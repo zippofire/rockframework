@@ -20,19 +20,14 @@ public class WSS4JTokenCredential extends WSS4JCredential {
 
 	private static final long	serialVersionUID	= 5176282393820292834L;
 
-	private PasswordTokenType	tokenType;
+	private PasswordType		passwordType;
 
-	public WSS4JTokenCredential(final String name, final String password, final PasswordTokenType tokenType) {
+	public WSS4JTokenCredential(final String name, final String password, final PasswordType passwordType) {
 		super(name, password);
-		this.tokenType = tokenType;
+		this.passwordType = passwordType;
 	}
 
-	public PasswordTokenType getTokenType() {
-		return this.tokenType;
+	public PasswordType getPasswordType() {
+		return this.passwordType;
 	}
-
-	public void setTokenType(final PasswordTokenType tokenType) {
-		this.tokenType = tokenType;
-	}
-
 }

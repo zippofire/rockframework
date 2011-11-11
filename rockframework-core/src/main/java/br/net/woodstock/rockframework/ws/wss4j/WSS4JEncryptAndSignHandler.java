@@ -31,16 +31,12 @@ import br.net.woodstock.rockframework.util.Assert;
 
 public class WSS4JEncryptAndSignHandler implements SOAPHandler<SOAPMessageContext> {
 
-	private WSS4JCredential	client;
+	private WSS4JConfig	config;
 
-	private WSS4JCredential	server;
-
-	public WSS4JEncryptAndSignHandler(final WSS4JCredential client, final WSS4JCredential server) {
+	public WSS4JEncryptAndSignHandler(final WSS4JConfig config) {
 		super();
-		Assert.notNull(client, "client");
-		Assert.notNull(server, "server");
-		this.client = client;
-		this.server = server;
+		Assert.notNull(config, "config");
+		this.config = config;
 	}
 
 	@Override
@@ -51,10 +47,10 @@ public class WSS4JEncryptAndSignHandler implements SOAPHandler<SOAPMessageContex
 
 			if (isOutGoing.booleanValue()) {
 				WSS4JHelper.timestamp(message);
-				WSS4JHelper.encrypt(message, this.server);
-				WSS4JHelper.sign(message, this.client);
+				WSS4JHelper.encrypt(message, this.config);
+				WSS4JHelper.sign(message, this.config);
 			} else {
-				WSS4JHelper.decryptAndCheckSign(message, this.client, this.server);
+				WSS4JHelper.decryptAndCheckSign(message, this.config);
 			}
 
 		} catch (Exception e) {

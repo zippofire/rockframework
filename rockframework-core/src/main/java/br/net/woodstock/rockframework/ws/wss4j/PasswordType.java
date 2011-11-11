@@ -18,13 +18,13 @@ package br.net.woodstock.rockframework.ws.wss4j;
 
 import org.apache.ws.security.WSConstants;
 
-public enum PasswordTokenType {
+public enum PasswordType {
 
 	DIGEST(WSConstants.PASSWORD_DIGEST), PLAIN(WSConstants.PASSWORD_TEXT);
 
 	private String	type;
 
-	private PasswordTokenType(final String type) {
+	private PasswordType(final String type) {
 		this.type = type;
 	}
 

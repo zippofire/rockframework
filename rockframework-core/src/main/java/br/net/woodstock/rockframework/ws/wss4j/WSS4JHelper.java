@@ -43,7 +43,7 @@ import org.apache.ws.security.message.WSSecTimestamp;
 import org.apache.ws.security.message.WSSecUsernameToken;
 import org.w3c.dom.Document;
 
-abstract class WSS4JHelper {
+public abstract class WSS4JHelper {
 
 	private static final int	IDENTITY_TYPE	= WSConstants.BST_DIRECT_REFERENCE;
 
@@ -55,18 +55,17 @@ abstract class WSS4JHelper {
 		//
 	}
 
-	public static void decryptAndCheckSign(final SOAPMessage message, final WSS4JCredential client, final WSS4JCredential server) throws SOAPException, TransformerException, WSSecurityException {
+	public static void decryptAndCheckSign(final SOAPMessage message, final WSS4JConfig config) throws SOAPException, TransformerException, WSSecurityException {
 		WSSecurityEngine engine = new WSSecurityEngine();
 		WSSecSignature signer = new WSSecSignature();
-		signer.setUserInfo(server.getName(), server.getPassword());
+		signer.setUserInfo(config.getServer().getName(), config.getServer().getPassword());
 
-		Crypto crypto = CryptoFactory.getInstance();
 		Document document = WSS4JHelper.toDocument(message);
 
 		Map<String, String> map = new HashMap<String, String>();
-		map.put(client.getName(), client.getPassword());
+		map.put(config.getClient().getName(), config.getClient().getPassword());
 
-		List<WSSecurityEngineResult> list = engine.processSecurityHeader(document, null, new WSS4JPasswordCallbackHandler(map), crypto);
+		List<WSSecurityEngineResult> list = engine.processSecurityHeader(document, null, new WSS4JPasswordCallbackHandler(map), WSS4JHelper.getCrypto(config));
 
 		if (list == null) {
 			throw new RuntimeException("Error processing security headers");
@@ -76,15 +75,15 @@ abstract class WSS4JHelper {
 		message.getSOAPPart().setContent(source);
 	}
 
-	public static void encrypt(final SOAPMessage message, final WSS4JCredential credential) throws SOAPException, TransformerException, WSSecurityException {
+	public static void encrypt(final SOAPMessage message, final WSS4JConfig config) throws SOAPException, TransformerException, WSSecurityException {
 		Document document = WSS4JHelper.toDocument(message);
-		DOMSource domSource = WSS4JHelper.encrypt(document, credential);
+		DOMSource domSource = WSS4JHelper.encrypt(document, config);
 		message.getSOAPPart().setContent(domSource);
 	}
 
-	public static void sign(final SOAPMessage message, final WSS4JCredential credential) throws SOAPException, TransformerException, WSSecurityException {
+	public static void sign(final SOAPMessage message, final WSS4JConfig config) throws SOAPException, TransformerException, WSSecurityException {
 		Document document = WSS4JHelper.toDocument(message);
-		DOMSource domSource = WSS4JHelper.sign(document, credential);
+		DOMSource domSource = WSS4JHelper.sign(document, config);
 		message.getSOAPPart().setContent(domSource);
 	}
 
@@ -101,34 +100,30 @@ abstract class WSS4JHelper {
 	}
 
 	// Server
-	public static DOMSource encrypt(final Document document, final WSS4JCredential credential) throws WSSecurityException {
+	public static DOMSource encrypt(final Document document, final WSS4JConfig config) throws WSSecurityException {
 		WSSecHeader header = new WSSecHeader();
 		header.insertSecurityHeader(document);
 
 		WSSecEncrypt crypter = new WSSecEncrypt();
-		crypter.setUserInfo(credential.getName(), credential.getPassword());
+		crypter.setUserInfo(config.getServer().getName(), config.getServer().getPassword());
 		crypter.setKeyIdentifierType(WSS4JHelper.IDENTITY_TYPE);
 
-		Crypto crypto = CryptoFactory.getInstance();
-
-		Document encrypted = crypter.build(document, crypto, header);
+		Document encrypted = crypter.build(document, WSS4JHelper.getCrypto(config), header);
 
 		DOMSource domSource = new DOMSource(encrypted);
 		return domSource;
 	}
 
 	// Client
-	public static DOMSource sign(final Document document, final WSS4JCredential credential) throws WSSecurityException {
+	public static DOMSource sign(final Document document, final WSS4JConfig config) throws WSSecurityException {
 		WSSecHeader header = new WSSecHeader();
 		header.insertSecurityHeader(document);
 
 		WSSecSignature signer = new WSSecSignature();
-		signer.setUserInfo(credential.getName(), credential.getPassword());
+		signer.setUserInfo(config.getClient().getName(), config.getClient().getPassword());
 		signer.setKeyIdentifierType(WSS4JHelper.IDENTITY_TYPE);
 
-		Crypto crypto = CryptoFactory.getInstance();
-
-		Document signed = signer.build(document, crypto, header);
+		Document signed = signer.build(document, WSS4JHelper.getCrypto(config), header);
 
 		DOMSource domSource = new DOMSource(signed);
 		return domSource;
@@ -153,14 +148,21 @@ abstract class WSS4JHelper {
 
 		if (credential instanceof WSS4JTokenCredential) {
 			WSS4JTokenCredential tokenCredential = (WSS4JTokenCredential) credential;
-			token.setPasswordType(tokenCredential.getTokenType().getType());
+			token.setPasswordType(tokenCredential.getPasswordType().getType());
 		} else {
-			token.setPasswordType(PasswordTokenType.PLAIN.getType());
+			token.setPasswordType(PasswordType.PLAIN.getType());
 		}
 
 		Document stamped = token.build(document, header);
 		DOMSource domSource = new DOMSource(stamped);
 		return domSource;
+	}
+
+	private static Crypto getCrypto(final WSS4JConfig config) throws WSSecurityException {
+		if (config.getProperties() != null) {
+			return CryptoFactory.getInstance(config.getProperties());
+		}
+		return CryptoFactory.getInstance();
 	}
 
 	private static Document toDocument(final SOAPMessage message) throws SOAPException, TransformerException {
