@@ -20,40 +20,16 @@ import java.io.IOException;
 import java.io.Writer;
 import java.nio.charset.Charset;
 
-import org.w3c.dom.Document;
-
-import br.net.woodstock.rockframework.config.CoreLog;
+import org.w3c.dom.Node;
 
 abstract class XmlWriter {
 
-	private static final String	APACHE_XML_SERIALIZER	= "org.apache.xml.serialize.XMLSerializer";
+	private static XmlWriter	instance	= new LSXmlWriter();
 
-	private static final String	SUN_XML_SERIALIZER		= "com.sun.org.apache.xml.internal.serialize.XMLSerializer";
-
-	private static XmlWriter	instance				= XmlWriter.getAvailable();
-
-	public abstract void write(Document document, Writer writer, Charset encoding) throws IOException;
+	public abstract void write(Node node, Writer writer, Charset encoding) throws IOException;
 
 	public static XmlWriter getInstance() {
 		return XmlWriter.instance;
-	}
-
-	private static XmlWriter getAvailable() {
-		try {
-			Class.forName(XmlWriter.APACHE_XML_SERIALIZER);
-			XmlWriter xmlWriter = new ApacheXmlWriter();
-			CoreLog.getInstance().getLog().info("Using Apache XML serializer(Xerces)");
-			return xmlWriter;
-		} catch (ClassNotFoundException e) {
-			try {
-				Class.forName(XmlWriter.SUN_XML_SERIALIZER);
-				XmlWriter xmlWriter = new SunXmlWriter();
-				CoreLog.getInstance().getLog().info("Using Sun XML serializer");
-				return xmlWriter;
-			} catch (ClassNotFoundException ee) {
-				throw new UnsupportedOperationException("No XML serializer found");
-			}
-		}
 	}
 
 }

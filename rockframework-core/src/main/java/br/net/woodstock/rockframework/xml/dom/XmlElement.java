@@ -21,6 +21,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -212,10 +213,7 @@ public class XmlElement extends ElementWrapper {
 	}
 
 	public void write(final Writer writer) throws IOException {
-		Document doc = XmlDocument.getDocumentBuilder().newDocument();
-		Node node = doc.importNode(this.getElement(), true);
-		doc.appendChild(node);
-		XmlDocument.toXmlDocument(doc).write(writer);
+		XmlWriter.getInstance().write(this.getElement(), writer, Charset.defaultCharset());
 	}
 
 	public static XmlElement toXmlElement(final Element e) {

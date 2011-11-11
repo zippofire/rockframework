@@ -27,9 +27,6 @@ import java.io.Writer;
 import java.nio.charset.Charset;
 
 import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -39,19 +36,15 @@ import org.xml.sax.SAXException;
 
 public class XmlDocument extends DocumentWrapper {
 
-	private static final long				serialVersionUID	= -3892243357826950608L;
+	private static final long	serialVersionUID	= -3892243357826950608L;
 
-	public static final String				DEFAULT_NS_PREFIX	= XMLConstants.DEFAULT_NS_PREFIX;
+	public static final String	DEFAULT_NS_PREFIX	= XMLConstants.DEFAULT_NS_PREFIX;
 
-	public static final String				XML_NS_PREFIX		= XMLConstants.XML_NS_PREFIX;
+	public static final String	XML_NS_PREFIX		= XMLConstants.XML_NS_PREFIX;
 
-	public static final String				XML_NS_URI			= XMLConstants.XML_NS_URI;
+	public static final String	XML_NS_URI			= XMLConstants.XML_NS_URI;
 
-	private static DocumentBuilderFactory	factory;
-
-	private static DocumentBuilder			builder;
-
-	private XmlElement						root;
+	private XmlElement			root;
 
 	protected XmlDocument() {
 		super();
@@ -59,7 +52,7 @@ public class XmlDocument extends DocumentWrapper {
 
 	public XmlDocument(final String name) {
 		super();
-		Document doc = XmlDocument.builder.newDocument();
+		Document doc = XmlHelper.getDocumentBuilder().newDocument();
 		Element e = doc.createElement(name);
 		doc.appendChild(e);
 		this.setDocument(doc);
@@ -68,7 +61,7 @@ public class XmlDocument extends DocumentWrapper {
 
 	public XmlDocument(final Element root) {
 		super();
-		Document doc = XmlDocument.builder.newDocument();
+		Document doc = XmlHelper.getDocumentBuilder().newDocument();
 		doc.appendChild(root);
 		this.setDocument(doc);
 		this.root = XmlElement.toXmlElement(root);
@@ -92,23 +85,10 @@ public class XmlDocument extends DocumentWrapper {
 		return this.root;
 	}
 
-	// FIXME
-	public static XmlDocument read(final InputStream input) throws SAXException, IOException {
-		return XmlDocument.read(new InputStreamReader(input), Charset.defaultCharset());
-	}
-
-	public static XmlDocument read(final Reader reader) throws SAXException, IOException {
-		return XmlDocument.read(reader, Charset.defaultCharset());
-	}
-
-	public static XmlDocument read(final InputStream input, final Charset charset) throws SAXException, IOException {
-		return XmlDocument.read(new InputStreamReader(input), charset);
-	}
-
 	public static XmlDocument read(final Reader reader, final Charset charset) throws SAXException, IOException {
 		InputSource source = new InputSource(reader);
 		source.setEncoding(charset.name());
-		Document document = XmlDocument.builder.parse(source);
+		Document document = XmlHelper.getDocumentBuilder().parse(source);
 		return new XmlDocument(document);
 	}
 
@@ -125,7 +105,7 @@ public class XmlDocument extends DocumentWrapper {
 	}
 
 	public void write(final Writer writer, final Charset charset) throws IOException {
-		XmlWriter.getInstance().write(this, writer, charset);
+		XmlWriter.getInstance().write(this.getDocument(), writer, charset);
 	}
 
 	public static XmlDocument toXmlDocument(final Document d) {
@@ -175,17 +155,17 @@ public class XmlDocument extends DocumentWrapper {
 		}
 	}
 
-	static DocumentBuilder getDocumentBuilder() {
-		return XmlDocument.builder;
+	// Static
+	public static XmlDocument read(final InputStream input) throws SAXException, IOException {
+		return XmlDocument.read(new InputStreamReader(input), Charset.defaultCharset());
 	}
 
-	static {
-		try {
-			XmlDocument.factory = DocumentBuilderFactory.newInstance();
-			XmlDocument.builder = XmlDocument.factory.newDocumentBuilder();
-		} catch (ParserConfigurationException e) {
-			throw new br.net.woodstock.rockframework.io.IOException(e);
-		}
+	public static XmlDocument read(final Reader reader) throws SAXException, IOException {
+		return XmlDocument.read(reader, Charset.defaultCharset());
+	}
+
+	public static XmlDocument read(final InputStream input, final Charset charset) throws SAXException, IOException {
+		return XmlDocument.read(new InputStreamReader(input), charset);
 	}
 
 }

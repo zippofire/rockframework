@@ -47,7 +47,6 @@
 		<tomcat.version>7.0.22</tomcat.version>
 		<wicket.version>1.5.2</wicket.version>
 		<wss4j.version>1.6.3</wss4j.version>
-		<xerces.version>2.10.0</xerces.version>
 	</properties>
 	<mailingLists>
 		<mailingList>
@@ -438,12 +437,6 @@
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-core</artifactId>
 				<version>${spring.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>xerces</groupId>
-				<artifactId>xercesImpl</artifactId>
-				<version>${xerces.version}</version>
 				<scope>provided</scope>
 			</dependency>
 		</dependencies>

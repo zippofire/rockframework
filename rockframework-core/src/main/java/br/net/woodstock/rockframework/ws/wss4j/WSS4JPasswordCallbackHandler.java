@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.ws;
+package br.net.woodstock.rockframework.ws.wss4j;
 
 import java.io.IOException;
-import java.util.Properties;
+import java.util.Map;
 
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
@@ -25,27 +25,29 @@ import javax.security.auth.callback.UnsupportedCallbackException;
 
 import org.apache.ws.security.WSPasswordCallback;
 
-public class WSPasswordClientCallbackHandler implements CallbackHandler {
+import br.net.woodstock.rockframework.util.Assert;
 
-	private Properties	properties;
+public class WSS4JPasswordCallbackHandler implements CallbackHandler {
 
-	public WSPasswordClientCallbackHandler(final Properties properties) {
+	private Map<String, String>	map;
+
+	public WSS4JPasswordCallbackHandler(final Map<String, String> map) {
 		super();
-		this.properties = properties;
+		Assert.notNull(map, "map");
+		this.map = map;
 	}
 
 	@Override
 	public void handle(final Callback[] callbacks) throws IOException, UnsupportedCallbackException {
-		for (Callback callback : callbacks) {
-			if (callback instanceof WSPasswordCallback) {
-				WSPasswordCallback passwordCallback = (WSPasswordCallback) callback;
-				String name = passwordCallback.getIdentifier();
-				int usage = passwordCallback.getUsage();
-				if (usage == WSPasswordCallback.USERNAME_TOKEN) {
-					passwordCallback.setPassword(this.properties.getProperty(name));
+		for (Callback cb : callbacks) {
+			if (cb instanceof WSPasswordCallback) {
+				WSPasswordCallback pc = (WSPasswordCallback) cb;
+				String identifier = pc.getIdentifier();
+				if (identifier != null) {
+					if (this.map.containsKey(identifier)) {
+						pc.setPassword(this.map.get(identifier));
+					}
 				}
-			} else {
-				throw new UnsupportedCallbackException(callback);
 			}
 		}
 	}
