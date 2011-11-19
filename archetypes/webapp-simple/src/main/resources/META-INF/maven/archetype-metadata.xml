@@ -2,7 +2,6 @@
 	<requiredProperties>
 		<requiredProperty key="groupId" />
 		<requiredProperty key="artifactId" />
-		<requiredProperty key="package" />
 	</requiredProperties>
 	<fileSets>
 		<!-- Main -->
