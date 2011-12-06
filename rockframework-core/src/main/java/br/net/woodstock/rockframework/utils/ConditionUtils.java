@@ -201,6 +201,23 @@ public abstract class ConditionUtils {
 		return true;
 	}
 
+	// Map
+	@SuppressWarnings("rawtypes")
+	public static boolean containsKey(final Map map, final Object key) {
+		if ((map == null) || (map.isEmpty())) {
+			return false;
+		}
+		return map.containsKey(key);
+	}
+
+	@SuppressWarnings("rawtypes")
+	public static boolean containsValue(final Map map, final Object value) {
+		if ((map == null) || (map.isEmpty())) {
+			return false;
+		}
+		return map.containsValue(value);
+	}
+
 	// String
 	public static boolean isEmpty(final String s) {
 		if (s == null) {

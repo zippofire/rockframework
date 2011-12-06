@@ -19,6 +19,7 @@ package br.net.woodstock.rockframework.domain.persistence.orm.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import br.net.woodstock.rockframework.domain.persistence.orm.Page;
 import br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata;
 
 public class QueryMetadataImpl implements QueryMetadata {
@@ -27,13 +28,36 @@ public class QueryMetadataImpl implements QueryMetadata {
 
 	private String				query;
 
+	private String				countQuery;
+
+	private Page				page;
+
+	private boolean				cacheEnabled;
+
+	private boolean				named;
+
+	private boolean				nativeSQL;
+
 	private Map<String, Object>	parameters;
 
 	private Map<String, Object>	options;
 
+	public QueryMetadataImpl() {
+		super();
+	}
+
 	public QueryMetadataImpl(final String query) {
 		super();
 		this.query = query;
+		this.parameters = new HashMap<String, Object>();
+		this.options = new HashMap<String, Object>();
+	}
+
+	public QueryMetadataImpl(final String query, final String countQuery, final Page page) {
+		super();
+		this.query = query;
+		this.countQuery = countQuery;
+		this.page = page;
 		this.parameters = new HashMap<String, Object>();
 		this.options = new HashMap<String, Object>();
 	}
@@ -45,9 +69,67 @@ public class QueryMetadataImpl implements QueryMetadata {
 		this.options = options;
 	}
 
+	public QueryMetadataImpl(final String query, final String countQuery, final Page page, final Map<String, Object> parameters, final Map<String, Object> options) {
+		super();
+		this.query = query;
+		this.countQuery = countQuery;
+		this.page = page;
+		this.parameters = parameters;
+		this.options = options;
+	}
+
 	@Override
 	public String getQuery() {
 		return this.query;
+	}
+
+	public void setQuery(final String query) {
+		this.query = query;
+	}
+
+	@Override
+	public String getCountQuery() {
+		return this.countQuery;
+	}
+
+	public void setCountQuery(final String countQuery) {
+		this.countQuery = countQuery;
+	}
+
+	@Override
+	public Page getPage() {
+		return this.page;
+	}
+
+	public void setPage(final Page page) {
+		this.page = page;
+	}
+
+	@Override
+	public boolean isCacheEnabled() {
+		return this.cacheEnabled;
+	}
+
+	public void setCacheEnabled(final boolean cacheEnabled) {
+		this.cacheEnabled = cacheEnabled;
+	}
+
+	@Override
+	public boolean isNamed() {
+		return this.named;
+	}
+
+	public void setNamed(final boolean named) {
+		this.named = named;
+	}
+
+	@Override
+	public boolean isNativeSQL() {
+		return this.nativeSQL;
+	}
+
+	public void setNativeSQL(final boolean nativeSQL) {
+		this.nativeSQL = nativeSQL;
 	}
 
 	@Override
@@ -55,9 +137,17 @@ public class QueryMetadataImpl implements QueryMetadata {
 		return this.parameters;
 	}
 
+	public void setParameters(final Map<String, Object> parameters) {
+		this.parameters = parameters;
+	}
+
 	@Override
 	public Map<String, Object> getOptions() {
 		return this.options;
+	}
+
+	public void setOptions(final Map<String, Object> options) {
+		this.options = options;
 	}
 
 }

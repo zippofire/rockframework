@@ -79,41 +79,4 @@ abstract class RepositoryHelper {
 		return false;
 	}
 
-	public static boolean isValidParameter(final String name) {
-		if (name.equals(Constants.OPTION_CACHE_MODE)) {
-			return false;
-		}
-		if (name.equals(Constants.OPTION_COLLECTION_MODE)) {
-			return false;
-		}
-		if (name.equals(Constants.OPTION_DISABLE_CHILD)) {
-			return false;
-		}
-		if (name.equals(Constants.OPTION_DISABLE_COLLECTION)) {
-			return false;
-		}
-		if (name.equals(Constants.OPTION_FIRST_RESULT)) {
-			return false;
-		}
-		if (name.equals(Constants.OPTION_IGNORE_CASE)) {
-			return false;
-		}
-		if (name.equals(Constants.OPTION_LIKE_MODE)) {
-			return false;
-		}
-		if (name.equals(Constants.OPTION_MAX_RESULT)) {
-			return false;
-		}
-		if (name.equals(Constants.OPTION_ORDER_BY)) {
-			return false;
-		}
-		if (name.equals(Constants.OPTION_READ_ONLY)) {
-			return false;
-		}
-		if (name.equals(Constants.OPTION_TARGET_ENTITY)) {
-			return false;
-		}
-		return true;
-	}
-
 }

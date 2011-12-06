@@ -23,6 +23,16 @@ public interface QueryMetadata extends Serializable {
 
 	String getQuery();
 
+	String getCountQuery();
+
+	boolean isCacheEnabled();
+
+	boolean isNativeSQL();
+
+	boolean isNamed();
+
+	Page getPage();
+
 	Map<String, Object> getParameters();
 
 	Map<String, Object> getOptions();

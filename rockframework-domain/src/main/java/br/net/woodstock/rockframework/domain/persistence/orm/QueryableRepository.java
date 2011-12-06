@@ -16,15 +16,13 @@
  */
 package br.net.woodstock.rockframework.domain.persistence.orm;
 
-import java.util.Collection;
-
 import br.net.woodstock.rockframework.domain.persistence.Repository;
 
 public interface QueryableRepository extends Repository {
 
 	<E> E getSingle(QueryMetadata query);
 
-	<E> Collection<E> getCollection(QueryMetadata query);
+	QueryResult getCollection(QueryMetadata query);
 
 	void executeUpdate(QueryMetadata query);
 

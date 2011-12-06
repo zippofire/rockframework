@@ -16,32 +16,31 @@
  */
 package br.net.woodstock.rockframework.domain.persistence.orm.impl;
 
-import java.util.Collection;
-
-import br.net.woodstock.rockframework.domain.persistence.orm.JPQLRepository;
 import br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata;
+import br.net.woodstock.rockframework.domain.persistence.orm.QueryResult;
+import br.net.woodstock.rockframework.domain.persistence.orm.QueryableRepository;
 
-public class SpringJPAJPQLRepository extends SpringJPARepository implements JPQLRepository {
+public class SpringJPAQueryableRepository extends SpringJPARepository implements QueryableRepository {
 
 	private static final long	serialVersionUID	= 4080327311085358873L;
 
-	public SpringJPAJPQLRepository() {
+	public SpringJPAQueryableRepository() {
 		super();
 	}
 
 	@Override
 	public void executeUpdate(final QueryMetadata query) {
-		new JPAJPQLRepository(this.getEntityManager()).executeUpdate(query);
+		new JPAQueryableRepository(this.getEntityManager()).executeUpdate(query);
 	}
 
 	@Override
-	public <E> Collection<E> getCollection(final QueryMetadata query) {
-		return new JPAJPQLRepository(this.getEntityManager()).getCollection(query);
+	public QueryResult getCollection(final QueryMetadata query) {
+		return new JPAQueryableRepository(this.getEntityManager()).getCollection(query);
 	}
 
 	@Override
 	public <E> E getSingle(final QueryMetadata query) {
-		return new JPAJPQLRepository(this.getEntityManager()).getSingle(query);
+		return new JPAQueryableRepository(this.getEntityManager()).getSingle(query);
 	}
 
 }
