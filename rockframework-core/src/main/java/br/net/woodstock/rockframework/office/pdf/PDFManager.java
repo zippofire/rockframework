@@ -16,19 +16,23 @@
  */
 package br.net.woodstock.rockframework.office.pdf;
 
-import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 
 public interface PDFManager {
 
-	InputStream cut(InputStream source, int start, int end) throws IOException;
+	InputStream cut(InputStream source, int start, int end);
 
-	InputStream merge(InputStream[] sources) throws IOException;
+	InputStream merge(InputStream[] sources);
 
-	InputStream[] split(InputStream source, int size) throws IOException;
+	InputStream[] split(InputStream source, int size);
 
-	String getText(InputStream source) throws IOException;
+	String getText(InputStream source);
 
-	InputStream[] toImage(InputStream source, String format) throws IOException;
+	InputStream[] toImage(InputStream source, String format);
+
+	InputStream sign(InputStream source, PDFSignatureRequestData data);
+
+	Collection<PDFSignature> getSignatures(final InputStream source);
 
 }

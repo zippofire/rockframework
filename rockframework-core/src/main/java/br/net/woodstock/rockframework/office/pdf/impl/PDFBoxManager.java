@@ -21,6 +21,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -35,10 +36,13 @@ import org.apache.pdfbox.util.PDFTextStripper;
 import org.apache.pdfbox.util.Splitter;
 
 import br.net.woodstock.rockframework.office.DocumentException;
+import br.net.woodstock.rockframework.office.pdf.PDFException;
 import br.net.woodstock.rockframework.office.pdf.PDFManager;
+import br.net.woodstock.rockframework.office.pdf.PDFSignature;
+import br.net.woodstock.rockframework.office.pdf.PDFSignatureRequestData;
 import br.net.woodstock.rockframework.util.Assert;
 
-class PDFBoxManager implements PDFManager {
+public class PDFBoxManager implements PDFManager {
 
 	public static final String	GIF_FORMAT	= "gif";
 
@@ -47,7 +51,7 @@ class PDFBoxManager implements PDFManager {
 	public static final String	PNG_FORMAT	= "png";
 
 	@Override
-	public InputStream cut(final InputStream source, final int start, final int end) throws IOException {
+	public InputStream cut(final InputStream source, final int start, final int end) {
 		try {
 			Assert.notNull(source, "source");
 			Assert.greaterOrEqual(start, 1, "start");
@@ -97,13 +101,15 @@ class PDFBoxManager implements PDFManager {
 			ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
 
 			return bis;
+		} catch (IOException e) {
+			throw new PDFException(e);
 		} catch (COSVisitorException e) {
 			throw new DocumentException(e);
 		}
 	}
 
 	@Override
-	public InputStream merge(final InputStream[] sources) throws IOException {
+	public InputStream merge(final InputStream[] sources) {
 		try {
 			Assert.notEmpty(sources, "sources");
 
@@ -120,13 +126,15 @@ class PDFBoxManager implements PDFManager {
 			ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
 
 			return bis;
+		} catch (IOException e) {
+			throw new PDFException(e);
 		} catch (COSVisitorException e) {
 			throw new DocumentException(e);
 		}
 	}
 
 	@Override
-	public InputStream[] split(final InputStream source, final int size) throws IOException {
+	public InputStream[] split(final InputStream source, final int size) {
 		try {
 			Assert.notNull(source, "source");
 			Assert.greaterThan(size, 0, "size");
@@ -152,44 +160,63 @@ class PDFBoxManager implements PDFManager {
 			document.close();
 
 			return array;
+		} catch (IOException e) {
+			throw new PDFException(e);
 		} catch (COSVisitorException e) {
 			throw new DocumentException(e);
 		}
 	}
 
 	@Override
-	public String getText(final InputStream source) throws IOException {
-		Assert.notNull(source, "source");
+	public String getText(final InputStream source) {
+		try {
+			Assert.notNull(source, "source");
 
-		PDFParser parser = new PDFParser(source);
-		parser.parse();
+			PDFParser parser = new PDFParser(source);
+			parser.parse();
 
-		PDDocument document = parser.getPDDocument();
-		PDFTextStripper stripper = new PDFTextStripper();
+			PDDocument document = parser.getPDDocument();
+			PDFTextStripper stripper = new PDFTextStripper();
 
-		String text = stripper.getText(document);
+			String text = stripper.getText(document);
 
-		document.close();
+			document.close();
 
-		return text;
+			return text;
+		} catch (IOException e) {
+			throw new PDFException(e);
+		}
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public InputStream[] toImage(final InputStream source, final String format) throws IOException {
-		PDDocument document = PDDocument.load(source);
-		List<PDPage> pages = document.getDocumentCatalog().getAllPages();
-		int pageCount = pages.size();
-		int index = 0;
-		InputStream[] array = new InputStream[pageCount];
-		for (PDPage page : pages) {
-			BufferedImage image = page.convertToImage();
-			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-			ImageIO.write(image, format, outputStream);
-			InputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
-			array[index++] = inputStream;
+	public InputStream[] toImage(final InputStream source, final String format) {
+		try {
+			PDDocument document = PDDocument.load(source);
+			List<PDPage> pages = document.getDocumentCatalog().getAllPages();
+			int pageCount = pages.size();
+			int index = 0;
+			InputStream[] array = new InputStream[pageCount];
+			for (PDPage page : pages) {
+				BufferedImage image = page.convertToImage();
+				ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+				ImageIO.write(image, format, outputStream);
+				InputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+				array[index++] = inputStream;
+			}
+			return array;
+		} catch (IOException e) {
+			throw new PDFException(e);
 		}
-		return array;
 	}
 
+	@Override
+	public InputStream sign(final InputStream source, final PDFSignatureRequestData data) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Collection<PDFSignature> getSignatures(final InputStream source) {
+		throw new UnsupportedOperationException();
+	}
 }

@@ -18,11 +18,15 @@ package br.net.woodstock.rockframework.office.pdf.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
 import br.net.woodstock.rockframework.io.InputOutputStream;
+import br.net.woodstock.rockframework.office.pdf.PDFException;
 import br.net.woodstock.rockframework.office.pdf.PDFManager;
+import br.net.woodstock.rockframework.office.pdf.PDFSignature;
+import br.net.woodstock.rockframework.office.pdf.PDFSignatureRequestData;
 import br.net.woodstock.rockframework.util.Assert;
 
 import com.lowagie.text.Document;
@@ -32,14 +36,24 @@ import com.lowagie.text.pdf.PdfImportedPage;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.parser.PdfTextExtractor;
 
-class LowagieManager implements PDFManager {
+public class LowagieManager implements PDFManager {
+
+	private static final char	PDF_SIGNATURE_VERSION	= '\0';
+
+	private static final String	PDF_SIGN_TYPE			= "SAFE.PPKSF";
+
+	private static final String	PDF_SIGN_SUBTYPE		= "adbe.pkcs7.detached";
+
+	private static final String	X509_CN_ATTR			= "CN";
+
+	private static final String	PK7_ALG					= "SHA1";
 
 	@Override
-	public InputStream cut(final InputStream source, final int start, final int end) throws IOException {
+	public InputStream cut(final InputStream source, final int start, final int end) {
 		try {
 			Assert.notNull(source, "source");
 			Assert.greaterOrEqual(start, 1, "start");
-			
+
 			PdfReader reader = new PdfReader(source);
 			Document document = new Document(reader.getPageSizeWithRotation(1));
 			InputOutputStream outputStream = new InputOutputStream();
@@ -65,13 +79,15 @@ class LowagieManager implements PDFManager {
 			reader.close();
 
 			return outputStream.getInputStream();
+		} catch (IOException e) {
+			throw new PDFException(e);
 		} catch (DocumentException e) {
-			throw new br.net.woodstock.rockframework.office.DocumentException(e);
+			throw new PDFException(e);
 		}
 	}
 
 	@Override
-	public InputStream merge(final InputStream[] sources) throws IOException {
+	public InputStream merge(final InputStream[] sources) {
 		try {
 			Assert.notNull(sources, "sources");
 			Assert.notEmpty(sources, "sources");
@@ -96,13 +112,15 @@ class LowagieManager implements PDFManager {
 			writer.close();
 
 			return outputStream.getInputStream();
+		} catch (IOException e) {
+			throw new PDFException(e);
 		} catch (DocumentException e) {
-			throw new br.net.woodstock.rockframework.office.DocumentException(e);
+			throw new PDFException(e);
 		}
 	}
 
 	@Override
-	public InputStream[] split(final InputStream source, final int size) throws IOException {
+	public InputStream[] split(final InputStream source, final int size) {
 		try {
 			Assert.notNull(source, "source");
 			Assert.greaterThan(size, 0, "size");
@@ -138,30 +156,46 @@ class LowagieManager implements PDFManager {
 			reader.close();
 
 			return list.toArray(new InputStream[list.size()]);
+		} catch (IOException e) {
+			throw new PDFException(e);
 		} catch (DocumentException e) {
-			throw new br.net.woodstock.rockframework.office.DocumentException(e);
+			throw new PDFException(e);
 		}
 	}
 
 	@Override
-	public String getText(final InputStream source) throws IOException {
-		Assert.notNull(source, "source");
+	public String getText(final InputStream source) {
+		try {
+			Assert.notNull(source, "source");
 
-		PdfReader reader = new PdfReader(source);
-		int pageCount = reader.getNumberOfPages();
-		StringBuilder builder = new StringBuilder();
+			PdfReader reader = new PdfReader(source);
+			int pageCount = reader.getNumberOfPages();
+			StringBuilder builder = new StringBuilder();
 
-		for (int i = 1; i <= pageCount; i++) {
-			PdfTextExtractor extractor = new PdfTextExtractor(reader);
-			String pageText = extractor.getTextFromPage(i);
-			builder.append(pageText);
+			for (int i = 1; i <= pageCount; i++) {
+				PdfTextExtractor extractor = new PdfTextExtractor(reader);
+				String pageText = extractor.getTextFromPage(i);
+				builder.append(pageText);
+			}
+			reader.close();
+			return builder.toString();
+		} catch (IOException e) {
+			throw new PDFException(e);
 		}
-		reader.close();
-		return builder.toString();
 	}
 
 	@Override
-	public InputStream[] toImage(final InputStream source, final String format) throws IOException {
+	public InputStream[] toImage(final InputStream source, final String format) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public InputStream sign(final InputStream source, final PDFSignatureRequestData data) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Collection<PDFSignature> getSignatures(final InputStream source) {
 		throw new UnsupportedOperationException();
 	}
 
