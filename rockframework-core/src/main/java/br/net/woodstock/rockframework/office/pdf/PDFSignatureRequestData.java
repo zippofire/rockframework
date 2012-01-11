@@ -30,6 +30,8 @@ public class PDFSignatureRequestData implements Serializable {
 
 	private Certificate			certificate;
 
+	private Certificate			rootCertificate;
+
 	private String				reason;
 
 	private String				location;
@@ -39,19 +41,11 @@ public class PDFSignatureRequestData implements Serializable {
 	private PDFTSClientInfo		tsClientInfo;
 
 	public PDFSignatureRequestData(final PrivateKey privateKey, final Certificate certificate) {
-		this(privateKey, certificate, null, null, null, null);
-	}
-
-	public PDFSignatureRequestData(final PrivateKey privateKey, final Certificate certificate, final String reason, final String location, final String contactInfo, final PDFTSClientInfo tsClientInfo) {
 		super();
 		Assert.notNull(privateKey, "privateKey");
-		Assert.notNull(certificate, "certificate");
+		Assert.notEmpty(certificate, "certificate");
 		this.privateKey = privateKey;
 		this.certificate = certificate;
-		this.reason = reason;
-		this.location = location;
-		this.contactInfo = contactInfo;
-		this.tsClientInfo = tsClientInfo;
 	}
 
 	public PrivateKey getPrivateKey() {
@@ -62,20 +56,52 @@ public class PDFSignatureRequestData implements Serializable {
 		return this.certificate;
 	}
 
+	public Certificate getRootCertificate() {
+		return this.rootCertificate;
+	}
+
+	public void setRootCertificate(final Certificate rootCertificate) {
+		this.rootCertificate = rootCertificate;
+	}
+
 	public String getReason() {
 		return this.reason;
+	}
+
+	public void setReason(final String reason) {
+		this.reason = reason;
 	}
 
 	public String getLocation() {
 		return this.location;
 	}
 
+	public void setLocation(final String location) {
+		this.location = location;
+	}
+
 	public String getContactInfo() {
 		return this.contactInfo;
 	}
 
+	public void setContactInfo(final String contactInfo) {
+		this.contactInfo = contactInfo;
+	}
+
 	public PDFTSClientInfo getTsClientInfo() {
 		return this.tsClientInfo;
+	}
+
+	public void setTsClientInfo(final PDFTSClientInfo tsClientInfo) {
+		this.tsClientInfo = tsClientInfo;
+	}
+
+	// Aux
+	public Certificate[] getCertificateChain() {
+		if (this.rootCertificate != null) {
+			return new Certificate[] { this.certificate, this.rootCertificate };
+		}
+		return new Certificate[] { this.certificate };
 	}
 
 }

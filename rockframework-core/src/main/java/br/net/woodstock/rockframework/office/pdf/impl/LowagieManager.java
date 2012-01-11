@@ -16,37 +16,58 @@
  */
 package br.net.woodstock.rockframework.office.pdf.impl;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.GeneralSecurityException;
+import java.security.Principal;
+import java.security.PrivateKey;
+import java.security.cert.Certificate;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.bouncycastle.jce.X509Principal;
+
 import br.net.woodstock.rockframework.io.InputOutputStream;
 import br.net.woodstock.rockframework.office.pdf.PDFException;
-import br.net.woodstock.rockframework.office.pdf.PDFManager;
 import br.net.woodstock.rockframework.office.pdf.PDFSignature;
 import br.net.woodstock.rockframework.office.pdf.PDFSignatureRequestData;
+import br.net.woodstock.rockframework.office.pdf.PDFSigner;
+import br.net.woodstock.rockframework.office.pdf.PDFTSClientInfo;
+import br.net.woodstock.rockframework.security.digest.DigestType;
+import br.net.woodstock.rockframework.security.digest.Digester;
+import br.net.woodstock.rockframework.security.digest.impl.BasicDigester;
 import br.net.woodstock.rockframework.util.Assert;
+import br.net.woodstock.rockframework.utils.ConditionUtils;
+import br.net.woodstock.rockframework.utils.IOUtils;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
+import com.lowagie.text.pdf.AcroFields;
+import com.lowagie.text.pdf.OcspClient;
+import com.lowagie.text.pdf.OcspClientBouncyCastle;
 import com.lowagie.text.pdf.PdfCopy;
+import com.lowagie.text.pdf.PdfDate;
+import com.lowagie.text.pdf.PdfDictionary;
 import com.lowagie.text.pdf.PdfImportedPage;
+import com.lowagie.text.pdf.PdfName;
+import com.lowagie.text.pdf.PdfPKCS7;
+import com.lowagie.text.pdf.PdfPKCS7.X509Name;
 import com.lowagie.text.pdf.PdfReader;
-import com.lowagie.text.pdf.parser.PdfTextExtractor;
+import com.lowagie.text.pdf.PdfSignature;
+import com.lowagie.text.pdf.PdfSignatureAppearance;
+import com.lowagie.text.pdf.PdfStamper;
+import com.lowagie.text.pdf.PdfString;
+import com.lowagie.text.pdf.TSAClient;
+import com.lowagie.text.pdf.TSAClientBouncyCastle;
 
-public class LowagieManager implements PDFManager {
-
-	private static final char	PDF_SIGNATURE_VERSION	= '\0';
-
-	private static final String	PDF_SIGN_TYPE			= "SAFE.PPKSF";
-
-	private static final String	PDF_SIGN_SUBTYPE		= "adbe.pkcs7.detached";
-
-	private static final String	X509_CN_ATTR			= "CN";
-
-	private static final String	PK7_ALG					= "SHA1";
+public class LowagieManager extends AbstractITextManager {
 
 	@Override
 	public InputStream cut(final InputStream source, final int start, final int end) {
@@ -165,38 +186,132 @@ public class LowagieManager implements PDFManager {
 
 	@Override
 	public String getText(final InputStream source) {
-		try {
-			Assert.notNull(source, "source");
-
-			PdfReader reader = new PdfReader(source);
-			int pageCount = reader.getNumberOfPages();
-			StringBuilder builder = new StringBuilder();
-
-			for (int i = 1; i <= pageCount; i++) {
-				PdfTextExtractor extractor = new PdfTextExtractor(reader);
-				String pageText = extractor.getTextFromPage(i);
-				builder.append(pageText);
-			}
-			reader.close();
-			return builder.toString();
-		} catch (IOException e) {
-			throw new PDFException(e);
-		}
-	}
-
-	@Override
-	public InputStream[] toImage(final InputStream source, final String format) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public InputStream sign(final InputStream source, final PDFSignatureRequestData data) {
-		throw new UnsupportedOperationException();
+		Assert.notNull(source, "source");
+		Assert.notEmpty(data, "data");
+		try {
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			X509Certificate certificate = (X509Certificate) data.getCertificate();
+			X509Certificate rootCertificate = (X509Certificate) data.getRootCertificate();
+			Certificate[] chain = data.getCertificateChain();
+			PrivateKey privateKey = data.getPrivateKey();
+			DigestType digestType = this.getDigestTypeFromSignature(certificate.getSigAlgName());
+			Calendar calendar = Calendar.getInstance();
+
+			PdfReader reader = new PdfReader(source);
+			PdfStamper stamper = PdfStamper.createSignature(reader, outputStream, AbstractITextManager.PDF_SIGNATURE_VERSION, null, true);
+
+			PdfSignatureAppearance appearance = stamper.getSignatureAppearance();
+			appearance.setCrypto(privateKey, chain, null, PdfSignatureAppearance.SELF_SIGNED);
+			appearance.setContact(data.getContactInfo());
+			appearance.setLocation(data.getLocation());
+			appearance.setReason(data.getReason());
+			appearance.setSignDate(calendar);
+			// appearance.preClose();
+
+			PdfSignature signature = new PdfSignature(PdfName.ADOBE_PPKLITE, PdfName.ADBE_PKCS7_DETACHED);
+			signature.setReason(appearance.getReason());
+			signature.setLocation(appearance.getLocation());
+			signature.setContact(appearance.getContact());
+			signature.setDate(new PdfDate(appearance.getSignDate()));
+
+			appearance.setCryptoDictionary(signature);
+
+			int contentSize = 0x2502;
+			HashMap<PdfName, Integer> exc = new HashMap<PdfName, Integer>();
+			exc.put(PdfName.CONTENTS, new Integer(contentSize));
+			appearance.preClose(exc);
+
+			Digester digester = new BasicDigester(digestType);
+			byte[] rangeStream = IOUtils.toByteArray(appearance.getRangeStream());
+			byte[] hash = digester.digest(rangeStream);
+
+			TSAClient tsc = null;
+			if (data.getTsClientInfo() != null) {
+				PDFTSClientInfo rsClientInfo = data.getTsClientInfo();
+				tsc = new TSAClientBouncyCastle(rsClientInfo.getUrl(), rsClientInfo.getUsername(), rsClientInfo.getPassword());
+			}
+
+			byte[] oscp = null;
+			if (rootCertificate != null) {
+				String oscpUrl = PdfPKCS7.getOCSPURL(certificate);
+				if (ConditionUtils.isNotEmpty(oscpUrl)) {
+					OcspClient ocspClient = new OcspClientBouncyCastle(certificate, rootCertificate, oscpUrl);
+					oscp = ocspClient.getEncoded();
+				}
+			}
+
+			PdfPKCS7 pkcs7 = new PdfPKCS7(privateKey, chain, null, digestType.getAlgorithm(), null, false);
+			byte[] authenticatedAttributes = pkcs7.getAuthenticatedAttributeBytes(hash, calendar, oscp);
+			pkcs7.update(authenticatedAttributes, 0, authenticatedAttributes.length);
+			pkcs7.setLocation(data.getLocation());
+			pkcs7.setReason(data.getReason());
+
+			if (tsc == null) {
+				pkcs7.setSignDate(calendar);
+			}
+
+			byte[] encodedPkcs7 = pkcs7.getEncodedPKCS7(hash, calendar, tsc, oscp);
+
+			byte[] output = new byte[(contentSize - 2) / 2];
+
+			System.arraycopy(encodedPkcs7, 0, output, 0, encodedPkcs7.length);
+
+			PdfDictionary newDictionary = new PdfDictionary();
+			PdfString content = new PdfString(output);
+			content.setHexWriting(true);
+			newDictionary.put(PdfName.CONTENTS, content);
+			appearance.close(newDictionary);
+
+			return new ByteArrayInputStream(outputStream.toByteArray());
+		} catch (IOException e) {
+			throw new PDFException(e);
+		} catch (GeneralSecurityException e) {
+			throw new PDFException(e);
+		} catch (DocumentException e) {
+			throw new PDFException(e);
+		}
 	}
 
 	@Override
+	@SuppressWarnings({ "deprecation", "unchecked" })
 	public Collection<PDFSignature> getSignatures(final InputStream source) {
-		throw new UnsupportedOperationException();
-	}
+		try {
+			PdfReader reader = new PdfReader(source);
+			AcroFields fields = reader.getAcroFields();
+			Collection<PDFSignature> pdfSignatures = new ArrayList<PDFSignature>();
+			if (fields != null) {
+				List<String> signatures = fields.getSignatureNames();
+				if ((signatures != null) && (!signatures.isEmpty())) {
+					for (String signature : signatures) {
+						PdfPKCS7 pk = fields.verifySignature(signature);
 
+						PDFSignature pdfSignature = new PDFSignature(pk.getLocation(), pk.getReason(), pk.getSignDate().getTime());
+						Certificate[] certificates = pk.getCertificates();
+
+						for (Certificate certificate : certificates) {
+							X509Certificate x509Certificate = (X509Certificate) certificate;
+							Principal principal = x509Certificate.getSubjectDN();
+							X509Principal x509Principal = (X509Principal) principal;
+
+							String subject = this.toString(x509Principal.getValues(X509Name.CN));
+							String issuer = this.toString(x509Principal.getValues(X509Name.OU));
+
+							PDFSigner pdfSigner = new PDFSigner(subject, issuer);
+							pdfSignature.getSigners().add(pdfSigner);
+						}
+						pdfSignatures.add(pdfSignature);
+					}
+				}
+			}
+
+			return pdfSignatures;
+		} catch (IOException e) {
+			throw new PDFException(e);
+		}
+	}
 }

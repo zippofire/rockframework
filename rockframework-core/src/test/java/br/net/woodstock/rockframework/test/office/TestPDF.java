@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
 
 import junit.framework.TestCase;
 import br.net.woodstock.rockframework.office.pdf.PDFManager;
-import br.net.woodstock.rockframework.office.pdf.impl.PDFManagerImpl;
+import br.net.woodstock.rockframework.office.pdf.impl.ITextManager;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
 import com.itextpdf.text.Document;
@@ -33,7 +33,7 @@ public class TestPDF extends TestCase {
 
 	public void xtest1() throws Exception {
 		InputStream input = new FileInputStream("C:/Documentos/j931_01.pdf");
-		InputStream tmp = PDFManagerImpl.getInstance().cut(input, 3, 8);
+		InputStream tmp = new ITextManager().cut(input, 3, 8);
 
 		FileOutputStream output = new FileOutputStream("C:/temp/split.pdf");
 		IOUtils.copy(tmp, output);
@@ -46,7 +46,7 @@ public class TestPDF extends TestCase {
 	public void xtest2() throws Exception {
 		InputStream input1 = new FileInputStream("C:/Documentos/j931_01.pdf");
 		InputStream input2 = new FileInputStream("C:/Documentos/j931_02.pdf");
-		InputStream tmp = PDFManagerImpl.getInstance().merge(new InputStream[] { input1, input2 });
+		InputStream tmp = new ITextManager().merge(new InputStream[] { input1, input2 });
 
 		FileOutputStream output = new FileOutputStream("C:/temp/split.pdf");
 		IOUtils.copy(tmp, output);
@@ -78,7 +78,7 @@ public class TestPDF extends TestCase {
 	public void xtest7() throws Exception {
 		System.out.println("Lowagie");
 		FileInputStream inputStream = new FileInputStream("C:/Temp/arquivo.pdf");
-		PDFManager manager = PDFManagerImpl.getInstance();
+		PDFManager manager = new ITextManager();
 		InputStream[] images = manager.toImage(inputStream, "jpeg");
 		int count = 0;
 		for (InputStream image : images) {
@@ -174,7 +174,7 @@ public class TestPDF extends TestCase {
 	}
 
 	public void xtest11() throws Exception {
-		PDFManager manager = PDFManagerImpl.getInstance();
+		PDFManager manager = new ITextManager();
 		InputStream pdf = new FileInputStream("/tmp/UML2.pdf");
 		InputStream page1 = manager.cut(pdf, 1, 1);
 
@@ -195,7 +195,7 @@ public class TestPDF extends TestCase {
 	}
 
 	public void xtest12() throws Exception {
-		PDFManager manager = PDFManagerImpl.getInstance();
+		PDFManager manager = new ITextManager();
 		InputStream pdf = new FileInputStream("/tmp/090237098008f637.pdf");
 		InputStream page1 = manager.cut(pdf, 36, 36);
 
@@ -207,7 +207,7 @@ public class TestPDF extends TestCase {
 	}
 
 	public void test13() throws Exception {
-		PDFManager manager = PDFManagerImpl.getInstance();
+		PDFManager manager = new ITextManager();
 		InputStream pdf = new FileInputStream("/tmp/090237098008f637.pdf");
 		String str = manager.getText(pdf);
 

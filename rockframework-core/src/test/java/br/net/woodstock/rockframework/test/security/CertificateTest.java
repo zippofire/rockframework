@@ -44,7 +44,7 @@ public class CertificateTest extends TestCase {
 		System.out.println(IOUtils.toString(connection.getInputStream()));
 	}
 
-	public void xtest2() throws Exception {
+	public void test2() throws Exception {
 		CertificateBuilder builder = new CertificateBuilder("Lourival Sabino");
 		builder.withIssuer("TSE");
 		builder.withV3Extensions(true);
@@ -57,7 +57,11 @@ public class CertificateTest extends TestCase {
 		FileInputStream fileInputStream = new FileInputStream("/home/lourival/Documentos/curriculum.pdf");
 
 		PDFTSClientInfo tsClientInfo = new PDFTSClientInfo("http://tsa.safelayer.com:8093");
-		PDFSignatureRequestData data = new PDFSignatureRequestData(privateKey, certificate, "Testando", "Brasilia-DF", "lourival.sabino.junior@gmail.com", tsClientInfo);
+		PDFSignatureRequestData data = new PDFSignatureRequestData(privateKey, certificate);
+		data.setReason("Testando");
+		data.setLocation("Brasilia-DF");
+		data.setContactInfo("lourival.sabino.junior@gmail.com");
+		data.setTsClientInfo(tsClientInfo);
 
 		InputStream inputStream = manager.sign(fileInputStream, data);
 		FileOutputStream fileOutputStream = new FileOutputStream("/tmp/sign.pdf");
@@ -80,7 +84,11 @@ public class CertificateTest extends TestCase {
 		FileInputStream fileInputStream = new FileInputStream("/tmp/sign.pdf");
 
 		PDFTSClientInfo tsClientInfo = new PDFTSClientInfo("http://tsa.safelayer.com:8093");
-		PDFSignatureRequestData data = new PDFSignatureRequestData(privateKey, certificate, "Testando 2 Assinaturas", "Brasilia-DF", "lourival.sabino.junior@gmail.com", tsClientInfo);
+		PDFSignatureRequestData data = new PDFSignatureRequestData(privateKey, certificate);
+		data.setReason("Testando");
+		data.setLocation("Brasilia-DF");
+		data.setContactInfo("lourival.sabino.junior@gmail.com");
+		data.setTsClientInfo(tsClientInfo);
 
 		InputStream inputStream = manager.sign(fileInputStream, data);
 		FileOutputStream fileOutputStream = new FileOutputStream("/tmp/sign.pdf");
@@ -108,7 +116,7 @@ public class CertificateTest extends TestCase {
 		fileInputStream.close();
 	}
 
-	public void test3x1() throws Exception {
+	public void xtest3x1() throws Exception {
 		PDFManager manager = new ITextManager();
 		FileInputStream fileInputStream = new FileInputStream("/tmp/09023708800ebe95.pdf");
 		Collection<PDFSignature> signatures = manager.getSignatures(fileInputStream);
@@ -126,7 +134,7 @@ public class CertificateTest extends TestCase {
 		fileInputStream.close();
 	}
 
-	public void test3x2() throws Exception {
+	public void xtest3x2() throws Exception {
 		CertificateBuilder builder = new CertificateBuilder("Lourival Sabino da Silva Junior");
 		builder.withIssuer("TSE");
 		builder.withV3Extensions(true);
@@ -139,7 +147,11 @@ public class CertificateTest extends TestCase {
 		FileInputStream fileInputStream = new FileInputStream("/tmp/09023708800ebe95.pdf");
 
 		PDFTSClientInfo tsClientInfo = new PDFTSClientInfo("http://tsa.safelayer.com:8093");
-		PDFSignatureRequestData data = new PDFSignatureRequestData(privateKey, certificate, "Testando 2 Assinaturas", "Brasilia-DF", "lourival.sabino.junior@gmail.com", tsClientInfo);
+		PDFSignatureRequestData data = new PDFSignatureRequestData(privateKey, certificate);
+		data.setReason("Testando");
+		data.setLocation("Brasilia-DF");
+		data.setContactInfo("lourival.sabino.junior@gmail.com");
+		data.setTsClientInfo(tsClientInfo);
 
 		InputStream inputStream = manager.sign(fileInputStream, data);
 		FileOutputStream fileOutputStream = new FileOutputStream("/tmp/09023708800ebe95-2.pdf");
@@ -149,7 +161,7 @@ public class CertificateTest extends TestCase {
 		fileOutputStream.close();
 	}
 
-	public void test3x3() throws Exception {
+	public void xtest3x3() throws Exception {
 		PDFManager manager = new ITextManager();
 		FileInputStream fileInputStream = new FileInputStream("/tmp/09023708800ebe95-2.pdf");
 		Collection<PDFSignature> signatures = manager.getSignatures(fileInputStream);

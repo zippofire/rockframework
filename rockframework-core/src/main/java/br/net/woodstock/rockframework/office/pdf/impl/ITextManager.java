@@ -32,13 +32,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Vector;
 
 import org.bouncycastle.jce.X509Principal;
 
 import br.net.woodstock.rockframework.io.InputOutputStream;
 import br.net.woodstock.rockframework.office.pdf.PDFException;
-import br.net.woodstock.rockframework.office.pdf.PDFManager;
 import br.net.woodstock.rockframework.office.pdf.PDFSignature;
 import br.net.woodstock.rockframework.office.pdf.PDFSignatureRequestData;
 import br.net.woodstock.rockframework.office.pdf.PDFSigner;
@@ -46,7 +44,6 @@ import br.net.woodstock.rockframework.office.pdf.PDFTSClientInfo;
 import br.net.woodstock.rockframework.security.digest.DigestType;
 import br.net.woodstock.rockframework.security.digest.Digester;
 import br.net.woodstock.rockframework.security.digest.impl.BasicDigester;
-import br.net.woodstock.rockframework.security.sign.SignType;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 import br.net.woodstock.rockframework.utils.IOUtils;
@@ -54,6 +51,8 @@ import br.net.woodstock.rockframework.utils.IOUtils;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.AcroFields;
+import com.itextpdf.text.pdf.OcspClient;
+import com.itextpdf.text.pdf.OcspClientBouncyCastle;
 import com.itextpdf.text.pdf.PdfCopy;
 import com.itextpdf.text.pdf.PdfDate;
 import com.itextpdf.text.pdf.PdfDictionary;
@@ -72,11 +71,7 @@ import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
 import com.itextpdf.text.pdf.parser.SimpleTextExtractionStrategy;
 import com.itextpdf.text.pdf.parser.TextExtractionStrategy;
 
-public class ITextManager implements PDFManager {
-
-	// private static final String CN_FIELD = "CN";
-
-	private static final char	PDF_SIGNATURE_VERSION	= '\0';
+public class ITextManager extends AbstractITextManager {
 
 	@Override
 	public InputStream cut(final InputStream source, final int start, final int end) {
@@ -222,24 +217,20 @@ public class ITextManager implements PDFManager {
 	}
 
 	@Override
-	public InputStream[] toImage(final InputStream source, final String format) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public InputStream sign(final InputStream source, final PDFSignatureRequestData data) {
 		Assert.notNull(source, "source");
 		Assert.notEmpty(data, "data");
 		try {
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-			X509Certificate x590Certificate = (X509Certificate) data.getCertificate();
-			Certificate[] chain = new Certificate[] { x590Certificate };
+			X509Certificate certificate = (X509Certificate) data.getCertificate();
+			X509Certificate rootCertificate = (X509Certificate) data.getRootCertificate();
+			Certificate[] chain = data.getCertificateChain();
 			PrivateKey privateKey = data.getPrivateKey();
-			DigestType digestType = this.getDigestTypeFromSignature(x590Certificate.getSigAlgName());
+			DigestType digestType = this.getDigestTypeFromSignature(certificate.getSigAlgName());
 			Calendar calendar = Calendar.getInstance();
 
 			PdfReader reader = new PdfReader(source);
-			PdfStamper stamper = PdfStamper.createSignature(reader, outputStream, ITextManager.PDF_SIGNATURE_VERSION, null, true);
+			PdfStamper stamper = PdfStamper.createSignature(reader, outputStream, AbstractITextManager.PDF_SIGNATURE_VERSION, null, true);
 
 			PdfSignatureAppearance appearance = stamper.getSignatureAppearance();
 			appearance.setCrypto(privateKey, chain, null, PdfSignatureAppearance.SELF_SIGNED);
@@ -269,11 +260,21 @@ public class ITextManager implements PDFManager {
 			TSAClient tsc = null;
 			if (data.getTsClientInfo() != null) {
 				PDFTSClientInfo rsClientInfo = data.getTsClientInfo();
-				tsc = new TSAClientBouncyCastle(rsClientInfo.getUrl(), rsClientInfo.getUsername(), rsClientInfo.getPassword());
+				//tsc = new TSAClientBouncyCastle(rsClientInfo.getUrl(), rsClientInfo.getUsername(), rsClientInfo.getPassword());
+				tsc = new ITextSTFTSClient();
+			}
+
+			byte[] oscp = null;
+			if (rootCertificate != null) {
+				String oscpUrl = PdfPKCS7.getOCSPURL(certificate);
+				if (ConditionUtils.isNotEmpty(oscpUrl)) {
+					OcspClient ocspClient = new OcspClientBouncyCastle(certificate, rootCertificate, oscpUrl);
+					oscp = ocspClient.getEncoded();
+				}
 			}
 
 			PdfPKCS7 pkcs7 = new PdfPKCS7(privateKey, chain, null, digestType.getAlgorithm(), null, false);
-			byte[] authenticatedAttributes = pkcs7.getAuthenticatedAttributeBytes(hash, calendar, null);
+			byte[] authenticatedAttributes = pkcs7.getAuthenticatedAttributeBytes(hash, calendar, oscp);
 			pkcs7.update(authenticatedAttributes, 0, authenticatedAttributes.length);
 			pkcs7.setLocation(data.getLocation());
 			pkcs7.setReason(data.getReason());
@@ -282,7 +283,7 @@ public class ITextManager implements PDFManager {
 				pkcs7.setSignDate(calendar);
 			}
 
-			byte[] encodedPkcs7 = pkcs7.getEncodedPKCS7(hash, calendar, tsc, null);
+			byte[] encodedPkcs7 = pkcs7.getEncodedPKCS7(hash, calendar, tsc, oscp);
 
 			byte[] output = new byte[(contentSize - 2) / 2];
 
@@ -340,30 +341,5 @@ public class ITextManager implements PDFManager {
 		} catch (IOException e) {
 			throw new PDFException(e);
 		}
-	}
-
-	private SignType getSignatureType(final String signatureAlgorithm) {
-		SignType signType = SignType.getSignTypeFromAlgorithm(signatureAlgorithm);
-		if (signType == null) {
-			signType = SignType.SHA1_RSA;
-		}
-		return signType;
-	}
-
-	private DigestType getDigestTypeFromSignature(final String signatureAlgorithm) {
-		SignType signType = this.getSignatureType(signatureAlgorithm);
-		DigestType digestType = signType.getDigestType();
-		return digestType;
-	}
-
-	@SuppressWarnings("rawtypes")
-	private String toString(final Vector vector) {
-		StringBuilder builder = new StringBuilder();
-		if (ConditionUtils.isNotEmpty(vector)) {
-			for (Object o : vector) {
-				builder.append(o.toString());
-			}
-		}
-		return builder.toString();
 	}
 }
