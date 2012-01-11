@@ -24,7 +24,6 @@ import java.io.PrintWriter;
 import java.security.GeneralSecurityException;
 import java.security.Principal;
 import java.security.PrivateKey;
-import java.security.Signature;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -43,6 +42,7 @@ import br.net.woodstock.rockframework.office.pdf.PDFManager;
 import br.net.woodstock.rockframework.office.pdf.PDFSignature;
 import br.net.woodstock.rockframework.office.pdf.PDFSignatureRequestData;
 import br.net.woodstock.rockframework.office.pdf.PDFSigner;
+import br.net.woodstock.rockframework.office.pdf.PDFTSClientInfo;
 import br.net.woodstock.rockframework.security.digest.DigestType;
 import br.net.woodstock.rockframework.security.digest.Digester;
 import br.net.woodstock.rockframework.security.digest.impl.BasicDigester;
@@ -67,13 +67,14 @@ import com.itextpdf.text.pdf.PdfSignatureAppearance;
 import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfString;
 import com.itextpdf.text.pdf.TSAClient;
+import com.itextpdf.text.pdf.TSAClientBouncyCastle;
 import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
 import com.itextpdf.text.pdf.parser.SimpleTextExtractionStrategy;
 import com.itextpdf.text.pdf.parser.TextExtractionStrategy;
 
 public class ITextManager implements PDFManager {
 
-	private static final String	CN_FIELD				= "CN";
+	// private static final String CN_FIELD = "CN";
 
 	private static final char	PDF_SIGNATURE_VERSION	= '\0';
 
@@ -230,44 +231,68 @@ public class ITextManager implements PDFManager {
 		Assert.notNull(source, "source");
 		Assert.notEmpty(data, "data");
 		try {
-			if (true) {
-				return this.signAndStamp(source, data);
-			}
-
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-			Calendar calendar = Calendar.getInstance();
-
-			X509Certificate certificate = (X509Certificate) data.getCertificate();
+			X509Certificate x590Certificate = (X509Certificate) data.getCertificate();
+			Certificate[] chain = new Certificate[] { x590Certificate };
 			PrivateKey privateKey = data.getPrivateKey();
-			SignType signType = this.getSignatureType(certificate.getSigAlgName());
+			DigestType digestType = this.getDigestTypeFromSignature(x590Certificate.getSigAlgName());
+			Calendar calendar = Calendar.getInstance();
 
 			PdfReader reader = new PdfReader(source);
 			PdfStamper stamper = PdfStamper.createSignature(reader, outputStream, ITextManager.PDF_SIGNATURE_VERSION, null, true);
 
 			PdfSignatureAppearance appearance = stamper.getSignatureAppearance();
+			appearance.setCrypto(privateKey, chain, null, PdfSignatureAppearance.SELF_SIGNED);
 			appearance.setContact(data.getContactInfo());
-			appearance.setCrypto(null, new Certificate[] { certificate }, null, PdfSignatureAppearance.SELF_SIGNED);
-			appearance.setExternalDigest(new byte[128], null, signType.getKeyPairType().getAlgorithm());
 			appearance.setLocation(data.getLocation());
 			appearance.setReason(data.getReason());
 			appearance.setSignDate(calendar);
-			appearance.preClose();
+			// appearance.preClose();
 
+			PdfSignature signature = new PdfSignature(PdfName.ADOBE_PPKLITE, PdfName.ADBE_PKCS7_DETACHED);
+			signature.setReason(appearance.getReason());
+			signature.setLocation(appearance.getLocation());
+			signature.setContact(appearance.getContact());
+			signature.setDate(new PdfDate(appearance.getSignDate()));
+
+			appearance.setCryptoDictionary(signature);
+
+			int contentSize = 0x2502;
+			HashMap<PdfName, Integer> exc = new HashMap<PdfName, Integer>();
+			exc.put(PdfName.CONTENTS, new Integer(contentSize));
+			appearance.preClose(exc);
+
+			Digester digester = new BasicDigester(digestType);
 			byte[] rangeStream = IOUtils.toByteArray(appearance.getRangeStream());
+			byte[] hash = digester.digest(rangeStream);
 
-			Signature signature = Signature.getInstance(signType.getAlgorithm());
-			signature.initSign(privateKey);
-			signature.update(rangeStream);
+			TSAClient tsc = null;
+			if (data.getTsClientInfo() != null) {
+				PDFTSClientInfo rsClientInfo = data.getTsClientInfo();
+				tsc = new TSAClientBouncyCastle(rsClientInfo.getUrl(), rsClientInfo.getUsername(), rsClientInfo.getPassword());
+			}
 
-			PdfPKCS7 pkcs7 = appearance.getSigStandard().getSigner();
-			pkcs7.setExternalDigest(signature.sign(), null, signType.getKeyPairType().getAlgorithm());
+			PdfPKCS7 pkcs7 = new PdfPKCS7(privateKey, chain, null, digestType.getAlgorithm(), null, false);
+			byte[] authenticatedAttributes = pkcs7.getAuthenticatedAttributeBytes(hash, calendar, null);
+			pkcs7.update(authenticatedAttributes, 0, authenticatedAttributes.length);
 			pkcs7.setLocation(data.getLocation());
 			pkcs7.setReason(data.getReason());
-			pkcs7.setSignDate(calendar);
 
-			PdfDictionary dictionary = new PdfDictionary();
-			dictionary.put(PdfName.CONTENTS, new PdfString(pkcs7.getEncodedPKCS1()).setHexWriting(true));
-			appearance.close(dictionary);
+			if (tsc == null) {
+				pkcs7.setSignDate(calendar);
+			}
+
+			byte[] encodedPkcs7 = pkcs7.getEncodedPKCS7(hash, calendar, tsc, null);
+
+			byte[] output = new byte[(contentSize - 2) / 2];
+
+			System.arraycopy(encodedPkcs7, 0, output, 0, encodedPkcs7.length);
+
+			PdfDictionary newDictionary = new PdfDictionary();
+			PdfString content = new PdfString(output);
+			content.setHexWriting(true);
+			newDictionary.put(PdfName.CONTENTS, content);
+			appearance.close(newDictionary);
 
 			return new ByteArrayInputStream(outputStream.toByteArray());
 		} catch (IOException e) {
@@ -277,121 +302,6 @@ public class ITextManager implements PDFManager {
 		} catch (DocumentException e) {
 			throw new PDFException(e);
 		}
-	}
-
-	protected InputStream signComplex(final InputStream source, final PDFSignatureRequestData data) throws IOException, DocumentException, GeneralSecurityException {
-		Calendar calendar = Calendar.getInstance();
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		X509Certificate x590Certificate = (X509Certificate) data.getCertificate();
-		PrivateKey privateKey = data.getPrivateKey();
-		PdfReader reader = new PdfReader(source);
-		PdfStamper stamper = PdfStamper.createSignature(reader, outputStream, ITextManager.PDF_SIGNATURE_VERSION, null, true);
-		PdfSignatureAppearance appearance = stamper.getSignatureAppearance();
-
-		appearance.setCrypto(privateKey, new Certificate[] { x590Certificate }, null, PdfSignatureAppearance.WINCER_SIGNED);
-
-		PdfSignature signature = new PdfSignature(PdfName.ADOBE_PPKLITE, PdfName.ADBE_PKCS7_DETACHED);
-		signature.setDate(new PdfDate(calendar));
-		signature.setName(PdfPKCS7.getSubjectFields(x590Certificate).getField(ITextManager.CN_FIELD));
-		signature.setReason(data.getReason());
-		signature.setLocation(data.getLocation());
-		signature.setContact(data.getContactInfo());
-
-		appearance.setReason(data.getReason());
-		appearance.setLocation(data.getLocation());
-		appearance.setContact(data.getContactInfo());
-		appearance.setCryptoDictionary(signature);
-		appearance.setSignDate(calendar);
-		appearance.setAcro6Layers(true);
-		appearance.setRenderingMode(PdfSignatureAppearance.RenderingMode.NAME_AND_DESCRIPTION);
-
-		HashMap<PdfName, Integer> exclusionSizes = new HashMap<PdfName, Integer>();
-		exclusionSizes.put(PdfName.CONTENTS, new Integer(0x2502));
-		appearance.preClose(exclusionSizes);
-
-		DigestType digestType = this.getDigestTypeFromSignature(x590Certificate.getSigAlgName());
-
-		PdfDictionary newDictionary = new PdfDictionary();
-		Digester digester = new BasicDigester(digestType);
-
-		byte[] rangeStream = IOUtils.toByteArray(appearance.getRangeStream());
-		byte[] hash = digester.digest(rangeStream);
-
-		PdfPKCS7 pk7 = new PdfPKCS7(privateKey, new Certificate[] { x590Certificate }, null, digestType.getAlgorithm(), null, false);
-		pk7.setExternalDigest(null, hash, null);
-
-		byte[] sg = pk7.getEncodedPKCS7(hash, calendar);
-		byte[] out = new byte[(0x2500) / 2];
-
-		System.arraycopy(sg, 0, out, 0, sg.length);
-
-		newDictionary.put(PdfName.CONTENTS, new PdfString(out).setHexWriting(true));
-
-		appearance.close(newDictionary);
-
-		return new ByteArrayInputStream(outputStream.toByteArray());
-	}
-
-	protected InputStream signAndStamp(final InputStream source, final PDFSignatureRequestData data) throws IOException, DocumentException, GeneralSecurityException {
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		X509Certificate x590Certificate = (X509Certificate) data.getCertificate();
-		Certificate[] chain = new Certificate[] { x590Certificate };
-		PrivateKey privateKey = data.getPrivateKey();
-		DigestType digestType = this.getDigestTypeFromSignature(x590Certificate.getSigAlgName());
-		Calendar calendar = Calendar.getInstance();
-
-		PdfReader reader = new PdfReader(source);
-		PdfStamper stamper = PdfStamper.createSignature(reader, outputStream, ITextManager.PDF_SIGNATURE_VERSION, null, true);
-		
-		PdfSignatureAppearance appearance = stamper.getSignatureAppearance();
-		appearance.setCrypto(null, chain, null, PdfSignatureAppearance.SELF_SIGNED);
-		appearance.setContact(data.getContactInfo());
-		appearance.setLocation(data.getLocation());
-		appearance.setReason(data.getReason());
-		appearance.setSignDate(calendar);
-		appearance.preClose();
-		
-		PdfSignature signature = new PdfSignature(PdfName.ADOBE_PPKLITE, PdfName.ADBE_PKCS7_DETACHED);
-		signature.setReason(appearance.getReason());
-		signature.setLocation(appearance.getLocation());
-		signature.setContact(appearance.getContact());
-		signature.setDate(new PdfDate(appearance.getSignDate()));
-
-		appearance.setCryptoDictionary(signature);
-
-		// preserve some space for the contents
-		int contentSize = 0x2502;
-		HashMap<PdfName, Integer> exc = new HashMap<PdfName, Integer>();
-		exc.put(PdfName.CONTENTS, new Integer(contentSize));
-		appearance.preClose(exc);
-
-		// make the digest
-		Digester digester = new BasicDigester(digestType);
-		byte[] rangeStream = IOUtils.toByteArray(appearance.getRangeStream());
-		byte[] hash = digester.digest(rangeStream);
-
-		// If we add a time stamp:
-		TSAClient tsc = null; // new TSAClientBouncyCastle("http://tsa.safelayer.com:8093", null, null);
-
-		// Create the signature
-		PdfPKCS7 pkcs7 = new PdfPKCS7(privateKey, chain, null, digestType.getAlgorithm(), null, false);
-		byte[] authenticatedAttributes = pkcs7.getAuthenticatedAttributeBytes(hash, calendar, null);
-		pkcs7.update(authenticatedAttributes, 0, authenticatedAttributes.length);
-		pkcs7.setLocation(data.getLocation());
-		pkcs7.setReason(data.getReason());
-		pkcs7.setSignDate(calendar);
-		
-		byte[] encodedPkcs7 = pkcs7.getEncodedPKCS7(hash, calendar, tsc, null);
-
-		byte[] output = new byte[(contentSize - 2) / 2];
-
-		System.arraycopy(encodedPkcs7, 0, output, 0, encodedPkcs7.length);
-
-		PdfDictionary newDictionary = new PdfDictionary();
-		newDictionary.put(PdfName.CONTENTS, new PdfString(output).setHexWriting(true));
-		appearance.close(newDictionary);
-
-		return new ByteArrayInputStream(outputStream.toByteArray());
 	}
 
 	@Override
