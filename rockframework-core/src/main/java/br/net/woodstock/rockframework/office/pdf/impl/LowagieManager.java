@@ -39,7 +39,6 @@ import br.net.woodstock.rockframework.office.pdf.PDFException;
 import br.net.woodstock.rockframework.office.pdf.PDFSignature;
 import br.net.woodstock.rockframework.office.pdf.PDFSignatureRequestData;
 import br.net.woodstock.rockframework.office.pdf.PDFSigner;
-import br.net.woodstock.rockframework.office.pdf.PDFTSClientInfo;
 import br.net.woodstock.rockframework.security.digest.DigestType;
 import br.net.woodstock.rockframework.security.digest.Digester;
 import br.net.woodstock.rockframework.security.digest.impl.BasicDigester;
@@ -65,7 +64,6 @@ import com.lowagie.text.pdf.PdfSignatureAppearance;
 import com.lowagie.text.pdf.PdfStamper;
 import com.lowagie.text.pdf.PdfString;
 import com.lowagie.text.pdf.TSAClient;
-import com.lowagie.text.pdf.TSAClientBouncyCastle;
 
 public class LowagieManager extends AbstractITextManager {
 
@@ -230,11 +228,7 @@ public class LowagieManager extends AbstractITextManager {
 			byte[] rangeStream = IOUtils.toByteArray(appearance.getRangeStream());
 			byte[] hash = digester.digest(rangeStream);
 
-			TSAClient tsc = null;
-			if (data.getTsClientInfo() != null) {
-				PDFTSClientInfo rsClientInfo = data.getTsClientInfo();
-				tsc = new TSAClientBouncyCastle(rsClientInfo.getUrl(), rsClientInfo.getUsername(), rsClientInfo.getPassword());
-			}
+			TSAClient tsc = (TSAClient) data.getTsaClient();
 
 			byte[] oscp = null;
 			if (rootCertificate != null) {

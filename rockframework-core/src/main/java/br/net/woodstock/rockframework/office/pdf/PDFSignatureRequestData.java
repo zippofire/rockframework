@@ -38,7 +38,7 @@ public class PDFSignatureRequestData implements Serializable {
 
 	private String				contactInfo;
 
-	private PDFTSClientInfo		tsClientInfo;
+	private Object				tsaClient;
 
 	public PDFSignatureRequestData(final PrivateKey privateKey, final Certificate certificate) {
 		super();
@@ -88,12 +88,12 @@ public class PDFSignatureRequestData implements Serializable {
 		this.contactInfo = contactInfo;
 	}
 
-	public PDFTSClientInfo getTsClientInfo() {
-		return this.tsClientInfo;
+	public Object getTsaClient() {
+		return this.tsaClient;
 	}
 
-	public void setTsClientInfo(final PDFTSClientInfo tsClientInfo) {
-		this.tsClientInfo = tsClientInfo;
+	public void setTsaClient(final Object tsaClient) {
+		this.tsaClient = tsaClient;
 	}
 
 	// Aux

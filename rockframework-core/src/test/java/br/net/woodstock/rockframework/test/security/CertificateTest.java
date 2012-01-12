@@ -14,14 +14,23 @@ import br.net.woodstock.rockframework.office.pdf.PDFManager;
 import br.net.woodstock.rockframework.office.pdf.PDFSignature;
 import br.net.woodstock.rockframework.office.pdf.PDFSignatureRequestData;
 import br.net.woodstock.rockframework.office.pdf.PDFSigner;
-import br.net.woodstock.rockframework.office.pdf.PDFTSClientInfo;
 import br.net.woodstock.rockframework.office.pdf.impl.ITextManager;
+import br.net.woodstock.rockframework.office.pdf.impl.ITextSTFSocketTSClient;
 import br.net.woodstock.rockframework.security.cert.CertificateHolder;
 import br.net.woodstock.rockframework.security.cert.impl.CertificateBuilder;
 import br.net.woodstock.rockframework.security.cert.impl.KeyUsage;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
+import com.itextpdf.text.pdf.TSAClient;
+import com.itextpdf.text.pdf.TSAClientBouncyCastle;
+
 public class CertificateTest extends TestCase {
+
+	private static final String[]	FREE_TSA		= new String[] { "http://tsa.safelayer.com:8093", "https://tsa.aloaha.com/tsa.asp", "http://dse200.ncipher.com/TSS/HttpTspServer" };
+
+	private static final TSAClient	TSA_CLIENT_FREE	= new TSAClientBouncyCastle(FREE_TSA[0], "", "");
+
+	private static final TSAClient	TSA_CLIENT_STF	= new ITextSTFSocketTSClient("201.49.148.134", 318);
 
 	static {
 		System.setProperty("http.proxyHost", "10.28.1.12");
@@ -39,7 +48,7 @@ public class CertificateTest extends TestCase {
 	}
 
 	public void xtest1x1() throws Exception {
-		URL url = new URL("http://tsa.safelayer.com:8093");
+		URL url = new URL(CertificateTest.FREE_TSA[0]);
 		URLConnection connection = url.openConnection();
 		System.out.println(IOUtils.toString(connection.getInputStream()));
 	}
@@ -56,12 +65,11 @@ public class CertificateTest extends TestCase {
 		PDFManager manager = new ITextManager();
 		FileInputStream fileInputStream = new FileInputStream("/home/lourival/Documentos/curriculum.pdf");
 
-		PDFTSClientInfo tsClientInfo = new PDFTSClientInfo("http://tsa.safelayer.com:8093");
 		PDFSignatureRequestData data = new PDFSignatureRequestData(privateKey, certificate);
 		data.setReason("Testando");
 		data.setLocation("Brasilia-DF");
 		data.setContactInfo("lourival.sabino.junior@gmail.com");
-		data.setTsClientInfo(tsClientInfo);
+		data.setTsaClient(CertificateTest.TSA_CLIENT_STF);
 
 		InputStream inputStream = manager.sign(fileInputStream, data);
 		FileOutputStream fileOutputStream = new FileOutputStream("/tmp/sign.pdf");
@@ -83,12 +91,11 @@ public class CertificateTest extends TestCase {
 		PDFManager manager = new ITextManager();
 		FileInputStream fileInputStream = new FileInputStream("/tmp/sign.pdf");
 
-		PDFTSClientInfo tsClientInfo = new PDFTSClientInfo("http://tsa.safelayer.com:8093");
 		PDFSignatureRequestData data = new PDFSignatureRequestData(privateKey, certificate);
 		data.setReason("Testando");
 		data.setLocation("Brasilia-DF");
 		data.setContactInfo("lourival.sabino.junior@gmail.com");
-		data.setTsClientInfo(tsClientInfo);
+		data.setTsaClient(CertificateTest.TSA_CLIENT_STF);
 
 		InputStream inputStream = manager.sign(fileInputStream, data);
 		FileOutputStream fileOutputStream = new FileOutputStream("/tmp/sign.pdf");
@@ -146,12 +153,11 @@ public class CertificateTest extends TestCase {
 		PDFManager manager = new ITextManager();
 		FileInputStream fileInputStream = new FileInputStream("/tmp/09023708800ebe95.pdf");
 
-		PDFTSClientInfo tsClientInfo = new PDFTSClientInfo("http://tsa.safelayer.com:8093");
 		PDFSignatureRequestData data = new PDFSignatureRequestData(privateKey, certificate);
 		data.setReason("Testando");
 		data.setLocation("Brasilia-DF");
 		data.setContactInfo("lourival.sabino.junior@gmail.com");
-		data.setTsClientInfo(tsClientInfo);
+		data.setTsaClient(CertificateTest.TSA_CLIENT_STF);
 
 		InputStream inputStream = manager.sign(fileInputStream, data);
 		FileOutputStream fileOutputStream = new FileOutputStream("/tmp/09023708800ebe95-2.pdf");

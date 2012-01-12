@@ -40,7 +40,6 @@ import br.net.woodstock.rockframework.office.pdf.PDFException;
 import br.net.woodstock.rockframework.office.pdf.PDFSignature;
 import br.net.woodstock.rockframework.office.pdf.PDFSignatureRequestData;
 import br.net.woodstock.rockframework.office.pdf.PDFSigner;
-import br.net.woodstock.rockframework.office.pdf.PDFTSClientInfo;
 import br.net.woodstock.rockframework.security.digest.DigestType;
 import br.net.woodstock.rockframework.security.digest.Digester;
 import br.net.woodstock.rockframework.security.digest.impl.BasicDigester;
@@ -66,7 +65,6 @@ import com.itextpdf.text.pdf.PdfSignatureAppearance;
 import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfString;
 import com.itextpdf.text.pdf.TSAClient;
-import com.itextpdf.text.pdf.TSAClientBouncyCastle;
 import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
 import com.itextpdf.text.pdf.parser.SimpleTextExtractionStrategy;
 import com.itextpdf.text.pdf.parser.TextExtractionStrategy;
@@ -233,6 +231,7 @@ public class ITextManager extends AbstractITextManager {
 			PdfStamper stamper = PdfStamper.createSignature(reader, outputStream, AbstractITextManager.PDF_SIGNATURE_VERSION, null, true);
 
 			PdfSignatureAppearance appearance = stamper.getSignatureAppearance();
+			appearance.setCertificationLevel(PdfSignatureAppearance.CERTIFIED_NO_CHANGES_ALLOWED);
 			appearance.setCrypto(privateKey, chain, null, PdfSignatureAppearance.SELF_SIGNED);
 			appearance.setContact(data.getContactInfo());
 			appearance.setLocation(data.getLocation());
@@ -257,12 +256,7 @@ public class ITextManager extends AbstractITextManager {
 			byte[] rangeStream = IOUtils.toByteArray(appearance.getRangeStream());
 			byte[] hash = digester.digest(rangeStream);
 
-			TSAClient tsc = null;
-			if (data.getTsClientInfo() != null) {
-				PDFTSClientInfo rsClientInfo = data.getTsClientInfo();
-				//tsc = new TSAClientBouncyCastle(rsClientInfo.getUrl(), rsClientInfo.getUsername(), rsClientInfo.getPassword());
-				tsc = new ITextSTFTSClient();
-			}
+			TSAClient tsc = (TSAClient) data.getTsaClient();
 
 			byte[] oscp = null;
 			if (rootCertificate != null) {

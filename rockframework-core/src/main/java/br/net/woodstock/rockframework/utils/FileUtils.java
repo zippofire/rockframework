@@ -33,6 +33,12 @@ public abstract class FileUtils {
 		//
 	}
 
+	public static File createTempFile(final String name) {
+		File tmpDir = new File(SystemUtils.getProperty(SystemUtils.JAVA_IO_TMPDIR_PROPERTY));
+		File file = new File(tmpDir, name);
+		return file;
+	}
+
 	public static String getName(final String src) {
 		if (ConditionUtils.isEmpty(src)) {
 			return null;
