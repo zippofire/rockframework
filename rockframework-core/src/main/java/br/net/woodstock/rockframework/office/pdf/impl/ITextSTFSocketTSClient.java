@@ -21,65 +21,41 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.InetSocketAddress;
-import java.net.Socket;
 import java.net.SocketAddress;
 
-import org.bouncycastle.tsp.TimeStampRequest;
-
-public class ITextSTFSocketTSClient extends LoggableITextTSAClient {
-
-	private SocketAddress	address;
+public class ITextSTFSocketTSClient extends SocketITextTSClient {
 
 	public ITextSTFSocketTSClient(final SocketAddress address) {
-		super();
-		this.address = address;
+		super(address);
 	}
 
 	public ITextSTFSocketTSClient(final String address, final int port) {
-		super();
-		this.address = new InetSocketAddress(address, port);
+		super(address, port);
 	}
 
 	@Override
-	protected byte[] sendRequest(final TimeStampRequest request) throws IOException {
-		Socket socket = null;
-		try {
-			socket = new Socket();
-			socket.connect(this.address);
+	protected void writeBytes(final OutputStream outputStream, final byte[] bytes) throws IOException {
+		DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
 
-			byte[] requestBytes = request.getEncoded();
+		dataOutputStream.writeInt(bytes.length + 1);
+		dataOutputStream.writeByte(0);
+		dataOutputStream.write(bytes);
+		dataOutputStream.flush();
+	}
 
-			OutputStream outputStream = socket.getOutputStream();
-			DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
+	@Override
+	protected byte[] readBytes(final InputStream inputStream) throws IOException {
+		DataInputStream dataInputStream = new DataInputStream(inputStream);
+		int len = dataInputStream.readInt();
+		byte status = dataInputStream.readByte();
+		byte[] bytes = new byte[len - 1];
 
-			dataOutputStream.writeInt(requestBytes.length + 1);
-			dataOutputStream.writeByte(0);
-			dataOutputStream.write(requestBytes);
-			dataOutputStream.flush();
-			socket.shutdownOutput();
-
-			InputStream inputStream = socket.getInputStream();
-			DataInputStream dataInputStream = new DataInputStream(inputStream);
-			int len = dataInputStream.readInt();
-			byte status = dataInputStream.readByte();
-			byte[] bytes = new byte[len - 1];
-
-			if (status != 5) {
-				throw new IllegalStateException("Illegal Status: " + status);
-			}
-
-			dataInputStream.readFully(bytes);
-			return bytes;
-		} catch (IOException e) {
-			throw e;
-		} finally {
-			if (socket != null) {
-				if (socket.isConnected()) {
-					socket.close();
-				}
-			}
+		if (status != 5) {
+			throw new IllegalStateException("Illegal Status: " + status);
 		}
+
+		dataInputStream.readFully(bytes);
+		return bytes;
 	}
 
 }

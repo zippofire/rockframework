@@ -3,6 +3,7 @@ package br.net.woodstock.rockframework.test.security;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.PrivateKey;
@@ -16,25 +17,30 @@ import br.net.woodstock.rockframework.office.pdf.PDFSignatureRequestData;
 import br.net.woodstock.rockframework.office.pdf.PDFSigner;
 import br.net.woodstock.rockframework.office.pdf.impl.ITextManager;
 import br.net.woodstock.rockframework.office.pdf.impl.ITextSTFSocketTSClient;
+import br.net.woodstock.rockframework.office.pdf.impl.URLITextTSClient;
 import br.net.woodstock.rockframework.security.cert.CertificateHolder;
 import br.net.woodstock.rockframework.security.cert.impl.CertificateBuilder;
 import br.net.woodstock.rockframework.security.cert.impl.KeyUsage;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
 import com.itextpdf.text.pdf.TSAClient;
-import com.itextpdf.text.pdf.TSAClientBouncyCastle;
 
 public class CertificateTest extends TestCase {
 
 	private static final String[]	FREE_TSA		= new String[] { "http://tsa.safelayer.com:8093", "https://tsa.aloaha.com/tsa.asp", "http://dse200.ncipher.com/TSS/HttpTspServer" };
 
-	private static final TSAClient	TSA_CLIENT_FREE	= new TSAClientBouncyCastle(FREE_TSA[0], "", "");
-
 	private static final TSAClient	TSA_CLIENT_STF	= new ITextSTFSocketTSClient("201.49.148.134", 318);
+
+	private static final TSAClient	TSA_CLIENT_FREE;
 
 	static {
 		System.setProperty("http.proxyHost", "10.28.1.12");
 		System.setProperty("http.proxyPort", "8080");
+		try {
+			TSA_CLIENT_FREE = new URLITextTSClient(FREE_TSA[0]);
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public void xtest1() throws Exception {
@@ -69,7 +75,7 @@ public class CertificateTest extends TestCase {
 		data.setReason("Testando");
 		data.setLocation("Brasilia-DF");
 		data.setContactInfo("lourival.sabino.junior@gmail.com");
-		data.setTsaClient(CertificateTest.TSA_CLIENT_STF);
+		data.setTsaClient(CertificateTest.TSA_CLIENT_FREE);
 
 		InputStream inputStream = manager.sign(fileInputStream, data);
 		FileOutputStream fileOutputStream = new FileOutputStream("/tmp/sign.pdf");

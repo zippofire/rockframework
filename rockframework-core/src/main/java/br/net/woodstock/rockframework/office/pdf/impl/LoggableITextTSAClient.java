@@ -61,7 +61,7 @@ public abstract class LoggableITextTSAClient implements TSAClient {
 	}
 
 	@Override
-	public final byte[] getTimeStampToken(final PdfPKCS7 caller, final byte[] imprint) throws Exception {
+	public byte[] getTimeStampToken(final PdfPKCS7 caller, final byte[] imprint) throws Exception {
 		String id = System.currentTimeMillis() + StringUtils.random(LoggableITextTSAClient.ID_SIZE);
 		File dir = this.getLogDir();
 
