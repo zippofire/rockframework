@@ -14,33 +14,46 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.office.pdf.impl;
+package br.net.woodstock.rockframework.security.timestamp.impl;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.security.cert.Certificate;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.DERObject;
 import org.bouncycastle.asn1.cmp.PKIFailureInfo;
+import org.bouncycastle.asn1.oiw.OIWObjectIdentifiers;
+import org.bouncycastle.cert.X509CertificateHolder;
+import org.bouncycastle.cms.CMSSignedData;
 import org.bouncycastle.tsp.TSPException;
 import org.bouncycastle.tsp.TimeStampRequest;
 import org.bouncycastle.tsp.TimeStampRequestGenerator;
 import org.bouncycastle.tsp.TimeStampResponse;
 import org.bouncycastle.tsp.TimeStampToken;
+import org.bouncycastle.tsp.TimeStampTokenInfo;
+import org.bouncycastle.util.Store;
 
 import br.net.woodstock.rockframework.config.CoreLog;
+import br.net.woodstock.rockframework.office.pdf.PDFException;
+import br.net.woodstock.rockframework.security.cert.CertificateType;
 import br.net.woodstock.rockframework.security.digest.DigestType;
 import br.net.woodstock.rockframework.security.digest.Digester;
 import br.net.woodstock.rockframework.security.digest.impl.BasicDigester;
+import br.net.woodstock.rockframework.security.timestamp.TimeStamp;
+import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
+import br.net.woodstock.rockframework.security.util.SecurityUtils;
 import br.net.woodstock.rockframework.utils.StringUtils;
 import br.net.woodstock.rockframework.utils.SystemUtils;
 
-import com.itextpdf.text.pdf.PdfPKCS7;
-import com.itextpdf.text.pdf.TSAClient;
+public abstract class BouncyCastleTimeStampClient implements TimeStampClient {
 
-public abstract class LoggableITextTSAClient implements TSAClient {
+	public static final String	RSA_OID					= OIWObjectIdentifiers.idSHA1.getId();
 
 	private static final String	FILE_PREFIX				= "tsa-client-";
 
@@ -48,52 +61,80 @@ public abstract class LoggableITextTSAClient implements TSAClient {
 
 	private static final String	RESPONSE_FILE_SUFFIX	= "tsr";
 
-	private static final int	PADDING_SIZE			= 32;
-
 	private static final int	ID_SIZE					= 4;
 
-	private byte[]				timestamp;
-
-	private int					size;
-
-	public LoggableITextTSAClient() {
+	public BouncyCastleTimeStampClient() {
 		super();
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
-	public byte[] getTimeStampToken(final PdfPKCS7 caller, final byte[] imprint) throws Exception {
-		String id = System.currentTimeMillis() + StringUtils.random(LoggableITextTSAClient.ID_SIZE);
-		File dir = this.getLogDir();
+	public TimeStamp getTimeStamp(final byte[] data) {
+		try {
+			String id = System.currentTimeMillis() + StringUtils.random(BouncyCastleTimeStampClient.ID_SIZE);
+			File dir = this.getLogDir();
 
-		TimeStampRequest request = this.getTimeStampRequest(caller, imprint);
-		this.saveRequest(request, dir, id);
+			TimeStampRequest request = this.getTimeStampRequest(data);
+			this.saveRequest(request, dir, id);
 
-		byte[] responseBytes = this.sendRequest(request);
+			byte[] responseBytes = this.sendRequest(request);
 
-		TimeStampResponse response = this.getTimeStampResponse(request, responseBytes);
-		this.saveResponse(response, dir, id);
+			TimeStampResponse response = this.getTimeStampResponse(request, responseBytes);
+			this.saveResponse(response, dir, id);
 
-		TimeStampToken timeStampToken = response.getTimeStampToken();
+			response.validate(request);
 
-		if (timeStampToken == null) {
-			throw new IllegalStateException("TimeStampToken not found in response");
+			TimeStampToken timeStampToken = response.getTimeStampToken();
+
+			if (timeStampToken == null) {
+				throw new IllegalStateException("TimeStampToken not found in response");
+			}
+
+			TimeStampTokenInfo timeStampTokenInfo = timeStampToken.getTimeStampInfo();
+
+			TimeStamp timeStamp = new TimeStamp();
+			timeStamp.setDate(timeStampTokenInfo.getGenTime());
+			timeStamp.setEncoded(timeStampToken.getEncoded());
+			timeStamp.setHash(timeStampTokenInfo.getMessageImprintDigest());
+			timeStamp.setNonce(timeStampTokenInfo.getNonce());
+			timeStamp.setSerialNumber(timeStampTokenInfo.getSerialNumber());
+
+			CMSSignedData signedData = timeStampToken.toCMSSignedData();
+			Object signedContent = signedData.getSignedContent().getContent();
+
+			if ((signedContent != null) && (signedContent.getClass().isArray())) {
+				timeStamp.setContent((byte[]) signedContent);
+			}
+
+			Store certificatesStore = timeStampToken.getCertificates();
+			Collection certificatesCollection = certificatesStore.getMatches(null);
+			List<Certificate> certificates = new ArrayList<Certificate>();
+			for (Object obj : certificatesCollection) {
+				if (obj instanceof X509CertificateHolder) {
+					X509CertificateHolder holder = (X509CertificateHolder) obj;
+					byte[] encoded = holder.getEncoded();
+					Certificate certificate = SecurityUtils.getCertificateFromFile(encoded, CertificateType.X509);
+					certificates.add(certificate);
+				}
+			}
+			timeStamp.setCertificates(certificates.toArray(new Certificate[certificates.size()]));
+
+			return timeStamp;
+		} catch (Exception e) {
+			throw new PDFException(e);
 		}
-
-		this.timestamp = timeStampToken.getEncoded();
-		this.size = this.timestamp.length + LoggableITextTSAClient.PADDING_SIZE;
-
-		return this.timestamp;
 	}
 
-	protected TimeStampRequest getTimeStampRequest(final PdfPKCS7 caller, final byte[] imprint) {
-		Digester digester = new BasicDigester(DigestType.valueOf(caller.getHashAlgorithm()));
+	protected TimeStampRequest getTimeStampRequest(final byte[] imprint) {
+		Digester digester = new BasicDigester(DigestType.valueOf(DigestType.SHA1.getAlgorithm()));
 		byte[] digest = digester.digest(imprint);
 
 		TimeStampRequestGenerator generator = new TimeStampRequestGenerator();
 		generator.setCertReq(true);
 
 		BigInteger nonce = BigInteger.valueOf(System.currentTimeMillis());
-		TimeStampRequest request = generator.generate(caller.getDigestAlgorithmOid(), digest, nonce);
+		TimeStampRequest request = generator.generate(BouncyCastleTimeStampClient.RSA_OID, digest, nonce);
+
 		return request;
 	}
 
@@ -122,7 +163,7 @@ public abstract class LoggableITextTSAClient implements TSAClient {
 	}
 
 	protected void saveRequest(final TimeStampRequest request, final File dir, final String id) throws IOException {
-		String fileName = LoggableITextTSAClient.FILE_PREFIX + id + "." + LoggableITextTSAClient.REQUEST_FILE_SUFFIX;
+		String fileName = BouncyCastleTimeStampClient.FILE_PREFIX + id + "." + BouncyCastleTimeStampClient.REQUEST_FILE_SUFFIX;
 		File file = new File(dir, fileName);
 		FileOutputStream fileOutputStream = new FileOutputStream(file);
 		byte[] data = request.getEncoded();
@@ -132,7 +173,7 @@ public abstract class LoggableITextTSAClient implements TSAClient {
 	}
 
 	protected void saveResponse(final TimeStampResponse response, final File dir, final String id) throws IOException {
-		String fileName = LoggableITextTSAClient.FILE_PREFIX + id + "." + LoggableITextTSAClient.RESPONSE_FILE_SUFFIX;
+		String fileName = BouncyCastleTimeStampClient.FILE_PREFIX + id + "." + BouncyCastleTimeStampClient.RESPONSE_FILE_SUFFIX;
 		File file = new File(dir, fileName);
 		FileOutputStream fileOutputStream = new FileOutputStream(file);
 		byte[] data = response.getEncoded();
@@ -147,10 +188,5 @@ public abstract class LoggableITextTSAClient implements TSAClient {
 	}
 
 	protected abstract byte[] sendRequest(final TimeStampRequest request) throws IOException;
-
-	@Override
-	public int getTokenSizeEstimate() {
-		return this.size;
-	}
 
 }

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.office.pdf.impl;
+package br.net.woodstock.rockframework.security.timestamp.impl;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -23,13 +23,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.SocketAddress;
 
-public class ITextSTFSocketTSClient extends SocketITextTSClient {
+public class STFTimeStampClient extends SocketTimeStampClient {
 
-	public ITextSTFSocketTSClient(final SocketAddress address) {
+	public STFTimeStampClient(final SocketAddress address) {
 		super(address);
 	}
 
-	public ITextSTFSocketTSClient(final String address, final int port) {
+	public STFTimeStampClient(final String address, final int port) {
 		super(address, port);
 	}
 

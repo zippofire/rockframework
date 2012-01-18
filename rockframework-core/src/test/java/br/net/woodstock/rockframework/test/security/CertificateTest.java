@@ -11,33 +11,36 @@ import java.security.cert.X509Certificate;
 import java.util.Collection;
 
 import junit.framework.TestCase;
+import br.net.woodstock.rockframework.config.CoreLog;
 import br.net.woodstock.rockframework.office.pdf.PDFManager;
 import br.net.woodstock.rockframework.office.pdf.PDFSignature;
 import br.net.woodstock.rockframework.office.pdf.PDFSignatureRequestData;
 import br.net.woodstock.rockframework.office.pdf.PDFSigner;
+import br.net.woodstock.rockframework.office.pdf.impl.DelegateITextTSAClient;
 import br.net.woodstock.rockframework.office.pdf.impl.ITextManager;
-import br.net.woodstock.rockframework.office.pdf.impl.ITextSTFSocketTSClient;
-import br.net.woodstock.rockframework.office.pdf.impl.URLITextTSClient;
 import br.net.woodstock.rockframework.security.cert.CertificateHolder;
 import br.net.woodstock.rockframework.security.cert.impl.CertificateBuilder;
 import br.net.woodstock.rockframework.security.cert.impl.KeyUsage;
+import br.net.woodstock.rockframework.security.timestamp.TimeStamp;
+import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
+import br.net.woodstock.rockframework.security.timestamp.impl.STFTimeStampClient;
+import br.net.woodstock.rockframework.security.timestamp.impl.URLTimeStampClient;
+import br.net.woodstock.rockframework.utils.HexUtils;
 import br.net.woodstock.rockframework.utils.IOUtils;
-
-import com.itextpdf.text.pdf.TSAClient;
 
 public class CertificateTest extends TestCase {
 
-	private static final String[]	FREE_TSA		= new String[] { "http://tsa.safelayer.com:8093", "https://tsa.aloaha.com/tsa.asp", "http://dse200.ncipher.com/TSS/HttpTspServer" };
+	private static final String[]			FREE_TSA		= new String[] { "http://tsa.safelayer.com:8093", "https://tsa.aloaha.com/tsa.asp", "http://dse200.ncipher.com/TSS/HttpTspServer" };
 
-	private static final TSAClient	TSA_CLIENT_STF	= new ITextSTFSocketTSClient("201.49.148.134", 318);
+	private static final TimeStampClient	TSA_CLIENT_STF	= new STFTimeStampClient("201.49.148.134", 318);
 
-	private static final TSAClient	TSA_CLIENT_FREE;
+	private static final TimeStampClient	TSA_CLIENT_FREE;
 
 	static {
 		System.setProperty("http.proxyHost", "10.28.1.12");
 		System.setProperty("http.proxyPort", "8080");
 		try {
-			TSA_CLIENT_FREE = new URLITextTSClient(FREE_TSA[0]);
+			TSA_CLIENT_FREE = new URLTimeStampClient(FREE_TSA[0]);
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e);
 		}
@@ -59,9 +62,11 @@ public class CertificateTest extends TestCase {
 		System.out.println(IOUtils.toString(connection.getInputStream()));
 	}
 
-	public void test2() throws Exception {
-		CertificateBuilder builder = new CertificateBuilder("Lourival Sabino");
-		builder.withIssuer("TSE");
+	public void xtest2() throws Exception {
+		CoreLog.getInstance().getLog().info("Test 2");
+
+		CertificateBuilder builder = new CertificateBuilder("Beni Melo Temporario");
+		builder.withIssuer("TSE - Certificados Temporarios");
 		builder.withV3Extensions(true);
 		builder.withKeyUsage(KeyUsage.DIGITAL_SIGNATURE, KeyUsage.NON_REPUDIATION, KeyUsage.KEY_AGREEMENT);
 		CertificateHolder holder = builder.build();
@@ -75,7 +80,7 @@ public class CertificateTest extends TestCase {
 		data.setReason("Testando");
 		data.setLocation("Brasilia-DF");
 		data.setContactInfo("lourival.sabino.junior@gmail.com");
-		data.setTsaClient(CertificateTest.TSA_CLIENT_FREE);
+		data.setTsaClient(new DelegateITextTSAClient(CertificateTest.TSA_CLIENT_STF));
 
 		InputStream inputStream = manager.sign(fileInputStream, data);
 		FileOutputStream fileOutputStream = new FileOutputStream("/tmp/sign.pdf");
@@ -101,7 +106,35 @@ public class CertificateTest extends TestCase {
 		data.setReason("Testando");
 		data.setLocation("Brasilia-DF");
 		data.setContactInfo("lourival.sabino.junior@gmail.com");
-		data.setTsaClient(CertificateTest.TSA_CLIENT_STF);
+		data.setTsaClient(new DelegateITextTSAClient(CertificateTest.TSA_CLIENT_FREE));
+
+		InputStream inputStream = manager.sign(fileInputStream, data);
+		FileOutputStream fileOutputStream = new FileOutputStream("/tmp/sign.pdf");
+		IOUtils.copy(inputStream, fileOutputStream);
+
+		fileInputStream.close();
+		fileOutputStream.close();
+	}
+
+	public void xtest2x2() throws Exception {
+		CoreLog.getInstance().getLog().info("Test 2x2");
+
+		CertificateBuilder builder = new CertificateBuilder("Beni Melo Temporario");
+		builder.withIssuer("TSE - Certificados Temporarios");
+		builder.withV3Extensions(true);
+		builder.withKeyUsage(KeyUsage.DIGITAL_SIGNATURE, KeyUsage.NON_REPUDIATION, KeyUsage.KEY_AGREEMENT);
+		CertificateHolder holder = builder.build();
+		X509Certificate certificate = (X509Certificate) holder.getCertificate();
+		PrivateKey privateKey = holder.getPrivateKey();
+
+		PDFManager manager = new ITextManager();
+		FileInputStream fileInputStream = new FileInputStream("/home/lourival/Documentos/curriculum.pdf");
+
+		PDFSignatureRequestData data = new PDFSignatureRequestData(privateKey, certificate);
+		data.setReason("Testando");
+		data.setLocation("Brasilia-DF");
+		data.setContactInfo("lourival.sabino.junior@gmail.com");
+		data.setTsaClient(new DelegateITextTSAClient(CertificateTest.TSA_CLIENT_FREE));
 
 		InputStream inputStream = manager.sign(fileInputStream, data);
 		FileOutputStream fileOutputStream = new FileOutputStream("/tmp/sign.pdf");
@@ -189,6 +222,20 @@ public class CertificateTest extends TestCase {
 		}
 
 		fileInputStream.close();
+	}
+
+	public void test4() throws Exception {
+		FileInputStream fileInputStream = new FileInputStream("/tmp/sign.pdf");
+		TimeStampClient timeStampClient = TSA_CLIENT_STF;
+		TimeStamp timeStamp = timeStampClient.getTimeStamp(IOUtils.toByteArray(fileInputStream));
+		fileInputStream.close();
+
+		System.out.println("Date   : " + timeStamp.getDate());
+		System.out.println("Hash   : " + HexUtils.toHexString(timeStamp.getHash()));
+		System.out.println("Content: " + new String(timeStamp.getContent()));
+		System.out.println("Content: " + HexUtils.toHexString(timeStamp.getContent()));
+		System.out.println("Nonce  : " + timeStamp.getNonce());
+		System.out.println("SN     : " + timeStamp.getSerialNumber());
 	}
 
 }

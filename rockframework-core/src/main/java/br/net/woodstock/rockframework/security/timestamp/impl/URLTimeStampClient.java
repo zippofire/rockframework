@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.office.pdf.impl;
+package br.net.woodstock.rockframework.security.timestamp.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +28,7 @@ import org.bouncycastle.tsp.TimeStampRequest;
 import br.net.woodstock.rockframework.utils.Base64Utils;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
-public class URLITextTSClient extends LoggableITextTSAClient {
+public class URLTimeStampClient extends BouncyCastleTimeStampClient {
 
 	private static final String	CONTENT_TYPE_PROPERTY				= "Content-Type";
 
@@ -44,19 +44,19 @@ public class URLITextTSClient extends LoggableITextTSAClient {
 
 	private String				encoding;
 
-	public URLITextTSClient(final String url) throws MalformedURLException {
-		this(new URL(url), URLITextTSClient.CONTENT_TRANSFER_ENCODING_BINARY);
+	public URLTimeStampClient(final String url) throws MalformedURLException {
+		this(new URL(url), URLTimeStampClient.CONTENT_TRANSFER_ENCODING_BINARY);
 	}
 
-	public URLITextTSClient(final URL url) {
-		this(url, URLITextTSClient.CONTENT_TRANSFER_ENCODING_BINARY);
+	public URLTimeStampClient(final URL url) {
+		this(url, URLTimeStampClient.CONTENT_TRANSFER_ENCODING_BINARY);
 	}
 
-	public URLITextTSClient(final String url, final String encoding) throws MalformedURLException {
+	public URLTimeStampClient(final String url, final String encoding) throws MalformedURLException {
 		this(new URL(url), encoding);
 	}
 
-	public URLITextTSClient(final URL url, final String encoding) {
+	public URLTimeStampClient(final URL url, final String encoding) {
 		super();
 		this.url = url;
 		this.encoding = encoding;
@@ -94,8 +94,8 @@ public class URLITextTSClient extends LoggableITextTSAClient {
 	}
 
 	protected void setConnectionProperties(final URLConnection connection) {
-		connection.setRequestProperty(URLITextTSClient.CONTENT_TYPE_PROPERTY, URLITextTSClient.CONTENT_TYPE_VALUE);
-		connection.setRequestProperty(URLITextTSClient.CONTENT_TRANSFER_ENCODING_PROPERTY, this.encoding);
+		connection.setRequestProperty(URLTimeStampClient.CONTENT_TYPE_PROPERTY, URLTimeStampClient.CONTENT_TYPE_VALUE);
+		connection.setRequestProperty(URLTimeStampClient.CONTENT_TRANSFER_ENCODING_PROPERTY, this.encoding);
 
 	}
 
@@ -105,7 +105,7 @@ public class URLITextTSClient extends LoggableITextTSAClient {
 
 	protected byte[] readBytes(final InputStream inputStream, final String encoding) throws IOException {
 		byte[] bytes = IOUtils.toByteArray(inputStream);
-		if (URLITextTSClient.CONTENT_TRANSFER_ENCODING_BASE64.equals(encoding)) {
+		if (URLTimeStampClient.CONTENT_TRANSFER_ENCODING_BASE64.equals(encoding)) {
 			bytes = Base64Utils.fromBase64(bytes);
 		}
 		return bytes;

@@ -43,7 +43,7 @@ public class PDFSignatureRequestData implements Serializable {
 	public PDFSignatureRequestData(final PrivateKey privateKey, final Certificate certificate) {
 		super();
 		Assert.notNull(privateKey, "privateKey");
-		Assert.notEmpty(certificate, "certificate");
+		Assert.notNull(certificate, "certificate");
 		this.privateKey = privateKey;
 		this.certificate = certificate;
 	}

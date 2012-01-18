@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.office.pdf.impl;
+package br.net.woodstock.rockframework.security.timestamp.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,16 +27,16 @@ import org.bouncycastle.tsp.TimeStampRequest;
 
 import br.net.woodstock.rockframework.utils.IOUtils;
 
-public class SocketITextTSClient extends LoggableITextTSAClient {
+public class SocketTimeStampClient extends BouncyCastleTimeStampClient {
 
 	private SocketAddress	address;
 
-	public SocketITextTSClient(final SocketAddress address) {
+	public SocketTimeStampClient(final SocketAddress address) {
 		super();
 		this.address = address;
 	}
 
-	public SocketITextTSClient(final String address, final int port) {
+	public SocketTimeStampClient(final String address, final int port) {
 		super();
 		this.address = new InetSocketAddress(address, port);
 	}

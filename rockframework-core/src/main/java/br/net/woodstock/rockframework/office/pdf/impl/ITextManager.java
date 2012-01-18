@@ -217,7 +217,7 @@ public class ITextManager extends AbstractITextManager {
 	@Override
 	public InputStream sign(final InputStream source, final PDFSignatureRequestData data) {
 		Assert.notNull(source, "source");
-		Assert.notEmpty(data, "data");
+		Assert.notNull(data, "data");
 		try {
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 			X509Certificate certificate = (X509Certificate) data.getCertificate();
