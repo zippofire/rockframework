@@ -20,6 +20,7 @@ import br.net.woodstock.rockframework.security.sign.impl.Base64Signer;
 import br.net.woodstock.rockframework.security.sign.impl.BouncyCastlePKCS7Signer;
 import br.net.woodstock.rockframework.security.sign.impl.HexSigner;
 import br.net.woodstock.rockframework.security.sign.impl.KeyPairSigner;
+import br.net.woodstock.rockframework.security.timestamp.impl.STFTimeStampClient;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
 public class SignerTest extends TestCase {
@@ -73,16 +74,26 @@ public class SignerTest extends TestCase {
 		byte[] pdf = IOUtils.toByteArray(fileInputStream);
 		fileInputStream.close();
 
-		CertificateBuilder builder = new CertificateBuilder("Lourival Sabino");
-		builder.withIssuer("Woodstock Tecnologia");
-		builder.withV3Extensions(true);
-		builder.withKeyUsage(KeyUsage.DIGITAL_SIGNATURE, KeyUsage.NON_REPUDIATION, KeyUsage.KEY_AGREEMENT);
-		CertificateHolder holder = builder.build();
-		X509Certificate certificate = (X509Certificate) holder.getCertificate();
-		PrivateKey privateKey = holder.getPrivateKey();
+		CertificateBuilder builder1 = new CertificateBuilder("Lourival Sabino 1");
+		builder1.withIssuer("Woodstock Tecnologia 1");
+		builder1.withV3Extensions(true);
+		builder1.withKeyUsage(KeyUsage.DIGITAL_SIGNATURE, KeyUsage.NON_REPUDIATION, KeyUsage.KEY_AGREEMENT);
+		CertificateHolder holder1 = builder1.build();
+		X509Certificate certificate1 = (X509Certificate) holder1.getCertificate();
+		PrivateKey privateKey1 = holder1.getPrivateKey();
+		SignerInfo signerInfo1 = new SignerInfo(certificate1, privateKey1);
+		signerInfo1.setTimeStampClient(new STFTimeStampClient("201.49.148.134", 318));
 
-		SignerInfo signerInfo = new SignerInfo(certificate, privateKey);
-		PKCS7Signer signer = new BouncyCastlePKCS7Signer(signerInfo);
+		CertificateBuilder builder2 = new CertificateBuilder("Lourival Sabino 2");
+		builder2.withIssuer("Woodstock Tecnologia 2");
+		builder2.withV3Extensions(true);
+		builder2.withKeyUsage(KeyUsage.DIGITAL_SIGNATURE, KeyUsage.NON_REPUDIATION, KeyUsage.KEY_AGREEMENT);
+		CertificateHolder holder2 = builder2.build();
+		X509Certificate certificate2 = (X509Certificate) holder2.getCertificate();
+		PrivateKey privateKey2 = holder2.getPrivateKey();
+		SignerInfo signerInfo2 = new SignerInfo(certificate2, privateKey2);
+
+		PKCS7Signer signer = new BouncyCastlePKCS7Signer(new SignerInfo[] { signerInfo1, signerInfo2 });
 
 		byte[] signed = signer.sign(pdf);
 

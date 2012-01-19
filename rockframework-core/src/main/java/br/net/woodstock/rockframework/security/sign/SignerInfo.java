@@ -20,13 +20,24 @@ import java.security.PrivateKey;
 import java.security.cert.Certificate;
 
 import br.net.woodstock.rockframework.security.cert.CertificateHolder;
+import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
 
 public class SignerInfo extends CertificateHolder {
 
 	private static final long	serialVersionUID	= -4388076526792546789L;
 
+	private TimeStampClient		timeStampClient;
+
 	public SignerInfo(final Certificate certificate, final PrivateKey privateKey) {
 		super(certificate, privateKey);
+	}
+
+	public TimeStampClient getTimeStampClient() {
+		return this.timeStampClient;
+	}
+
+	public void setTimeStampClient(final TimeStampClient timeStampClient) {
+		this.timeStampClient = timeStampClient;
 	}
 
 }

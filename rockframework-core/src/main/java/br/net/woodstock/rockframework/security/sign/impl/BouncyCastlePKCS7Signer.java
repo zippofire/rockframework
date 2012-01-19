@@ -24,7 +24,15 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Hashtable;
+import java.util.List;
 
+import org.bouncycastle.asn1.ASN1InputStream;
+import org.bouncycastle.asn1.DERObject;
+import org.bouncycastle.asn1.DERSet;
+import org.bouncycastle.asn1.cms.Attribute;
+import org.bouncycastle.asn1.cms.AttributeTable;
+import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
 import org.bouncycastle.cms.CMSProcessable;
 import org.bouncycastle.cms.CMSProcessableByteArray;
 import org.bouncycastle.cms.CMSSignedData;
@@ -36,29 +44,70 @@ import org.bouncycastle.cms.SignerInformationStore;
 import br.net.woodstock.rockframework.security.sign.PKCS7Signer;
 import br.net.woodstock.rockframework.security.sign.SignerException;
 import br.net.woodstock.rockframework.security.sign.SignerInfo;
+import br.net.woodstock.rockframework.security.timestamp.TimeStamp;
+import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
 import br.net.woodstock.rockframework.security.util.BouncyCastleProviderHelper;
+import br.net.woodstock.rockframework.util.Assert;
 
 public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 
 	private static final String	CERT_STORE_TYPE	= "Collection";
 
-	private SignerInfo			signerInfo;
+	private SignerInfo[]		signersInfo;
 
 	public BouncyCastlePKCS7Signer(final SignerInfo signerInfo) {
 		super();
-		this.signerInfo = signerInfo;
+		Assert.notNull(signerInfo, "signerInfo");
+		this.signersInfo = new SignerInfo[] { signerInfo };
+	}
+
+	public BouncyCastlePKCS7Signer(final SignerInfo[] signersInfo) {
+		super();
+		Assert.notEmpty(signersInfo, "signersInfo");
+		this.signersInfo = signersInfo;
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({ "deprecation", "rawtypes", "unchecked" })
 	public byte[] sign(final byte[] data) {
+		Assert.notEmpty(data, "data");
 		try {
 			CMSSignedDataGenerator cmsSignedDataGenerator = new CMSSignedDataGenerator();
-			cmsSignedDataGenerator.addSigner(this.signerInfo.getPrivateKey(), (X509Certificate) this.signerInfo.getCertificate(), CMSSignedGenerator.ENCRYPTION_RSA, CMSSignedGenerator.DIGEST_SHA1);
-			cmsSignedDataGenerator.addCertificatesAndCRLs(this.toCertStore(this.signerInfo));
+			TimeStampClient timeStampClient = null;
+			for (SignerInfo signerInfo : this.signersInfo) {
+				if ((timeStampClient == null) && (signerInfo.getTimeStampClient() != null)) {
+					timeStampClient = signerInfo.getTimeStampClient();
+				}
+				cmsSignedDataGenerator.addSigner(signerInfo.getPrivateKey(), (X509Certificate) signerInfo.getCertificate(), CMSSignedGenerator.ENCRYPTION_RSA, CMSSignedGenerator.DIGEST_SHA1);
+			}
+
+			cmsSignedDataGenerator.addCertificatesAndCRLs(this.getCertStore());
 			CMSProcessable content = new CMSProcessableByteArray(data);
 
 			CMSSignedData signedData = cmsSignedDataGenerator.generate(content, true, BouncyCastleProviderHelper.PROVIDER_NAME);
+
+			if (timeStampClient != null) {
+				SignerInformationStore signerInformationStore = signedData.getSignerInfos();
+				List list = new ArrayList();
+				for (Object o : signerInformationStore.getSigners()) {
+					SignerInformation signerInformation = (SignerInformation) o;
+					TimeStamp timeStamp = timeStampClient.getTimeStamp(signerInformation.getSignature());
+					DERObject derObject = new ASN1InputStream(timeStamp.getEncoded()).readObject();
+					DERSet derSet = new DERSet(derObject);
+
+					Hashtable hashtable = new Hashtable();
+					Attribute unsignAtt = new Attribute(PKCSObjectIdentifiers.id_aa_signatureTimeStampToken, derSet);
+					hashtable.put(PKCSObjectIdentifiers.id_aa_signatureTimeStampToken, unsignAtt);
+
+					AttributeTable unsignedAtts = new AttributeTable(hashtable);
+
+					list.add(SignerInformation.replaceUnsignedAttributes(signerInformation, unsignedAtts));
+				}
+
+				SignerInformationStore tmpSignerInformationStore = new SignerInformationStore(list);
+
+				signedData = CMSSignedData.replaceSigners(signedData, tmpSignerInformationStore);
+			}
 
 			return signedData.getEncoded();
 		} catch (Exception e) {
@@ -69,6 +118,8 @@ public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 	@Override
 	@SuppressWarnings("deprecation")
 	public boolean verify(final byte[] data, final byte[] signature) {
+		Assert.notEmpty(data, "data");
+		Assert.notEmpty(signature, "signature");
 		try {
 			CMSSignedData signedData = new CMSSignedData(signature);
 			CertStore certStore = signedData.getCertificatesAndCRLs(BouncyCastlePKCS7Signer.CERT_STORE_TYPE, BouncyCastleProviderHelper.PROVIDER_NAME);
@@ -95,9 +146,11 @@ public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 		}
 	}
 
-	private CertStore toCertStore(final SignerInfo signerInfo) throws GeneralSecurityException {
+	private CertStore getCertStore() throws GeneralSecurityException {
 		ArrayList<Certificate> list = new ArrayList<Certificate>();
-		list.add(signerInfo.getCertificate());
+		for (SignerInfo signerInfo : this.signersInfo) {
+			list.add(signerInfo.getCertificate());
+		}
 		return CertStore.getInstance(BouncyCastlePKCS7Signer.CERT_STORE_TYPE, new CollectionCertStoreParameters(list), BouncyCastleProviderHelper.PROVIDER_NAME);
 	}
 
