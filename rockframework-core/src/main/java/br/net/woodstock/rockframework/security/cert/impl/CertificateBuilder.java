@@ -21,8 +21,6 @@ import java.security.GeneralSecurityException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
-import java.security.Provider;
-import java.security.Security;
 import java.security.cert.X509Certificate;
 import java.util.Date;
 import java.util.HashSet;
@@ -35,7 +33,6 @@ import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.asn1.x509.GeneralNames;
 import org.bouncycastle.asn1.x509.KeyPurposeId;
 import org.bouncycastle.asn1.x509.X509Extensions;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.x509.X509V1CertificateGenerator;
 import org.bouncycastle.x509.X509V3CertificateGenerator;
 import org.bouncycastle.x509.extension.SubjectKeyIdentifierStructure;
@@ -43,12 +40,11 @@ import org.bouncycastle.x509.extension.SubjectKeyIdentifierStructure;
 import br.net.woodstock.rockframework.security.cert.CertificateHolder;
 import br.net.woodstock.rockframework.security.crypt.KeyPairType;
 import br.net.woodstock.rockframework.security.sign.SignType;
+import br.net.woodstock.rockframework.security.util.BouncyCastleProviderHelper;
 import br.net.woodstock.rockframework.util.DateBuilder;
 
 @SuppressWarnings("deprecation")
 public class CertificateBuilder {
-
-	private static final String	BC_PROVIDER		= "BC";
 
 	private static final String	DEFAULT_ISSUER	= "";
 
@@ -68,13 +64,6 @@ public class CertificateBuilder {
 
 	// V3 Extensions
 	private Set<KeyUsage>		keyUsage;
-
-	static {
-		Provider provider = Security.getProvider(CertificateBuilder.BC_PROVIDER);
-		if (provider == null) {
-			Security.addProvider(new BouncyCastleProvider());
-		}
-	}
 
 	public CertificateBuilder(final String subject) {
 		this(subject, CertificateBuilder.DEFAULT_ISSUER);
@@ -186,7 +175,7 @@ public class CertificateBuilder {
 			ExtendedKeyUsage extendedKeyUsage = new ExtendedKeyUsage(KeyPurposeId.anyExtendedKeyUsage);
 			generator.addExtension(X509Extensions.ExtendedKeyUsage, false, extendedKeyUsage);
 
-			certificate = generator.generate(keyPair.getPrivate(), CertificateBuilder.BC_PROVIDER);
+			certificate = generator.generate(keyPair.getPrivate(), BouncyCastleProviderHelper.PROVIDER_NAME);
 			privateKey = keyPair.getPrivate();
 		} else {
 
@@ -199,7 +188,7 @@ public class CertificateBuilder {
 			generator.setPublicKey(keyPair.getPublic());
 			generator.setSignatureAlgorithm(signType.getAlgorithm());
 
-			certificate = generator.generate(keyPair.getPrivate(), CertificateBuilder.BC_PROVIDER);
+			certificate = generator.generate(keyPair.getPrivate(), BouncyCastleProviderHelper.PROVIDER_NAME);
 			privateKey = keyPair.getPrivate();
 		}
 

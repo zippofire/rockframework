@@ -47,11 +47,14 @@ import br.net.woodstock.rockframework.security.digest.Digester;
 import br.net.woodstock.rockframework.security.digest.impl.BasicDigester;
 import br.net.woodstock.rockframework.security.timestamp.TimeStamp;
 import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
+import br.net.woodstock.rockframework.security.util.BouncyCastleProviderHelper;
 import br.net.woodstock.rockframework.security.util.SecurityUtils;
 import br.net.woodstock.rockframework.utils.StringUtils;
 import br.net.woodstock.rockframework.utils.SystemUtils;
 
 public abstract class BouncyCastleTimeStampClient implements TimeStampClient {
+
+	public static final String	PROVIDER_NAME			= BouncyCastleProviderHelper.PROVIDER_NAME;
 
 	public static final String	RSA_OID					= OIWObjectIdentifiers.idSHA1.getId();
 
@@ -63,8 +66,18 @@ public abstract class BouncyCastleTimeStampClient implements TimeStampClient {
 
 	private static final int	ID_SIZE					= 4;
 
+	private boolean				debug;
+
 	public BouncyCastleTimeStampClient() {
 		super();
+	}
+
+	public void setDebug(final boolean debug) {
+		this.debug = debug;
+	}
+
+	public boolean isDebug() {
+		return this.debug;
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -75,12 +88,18 @@ public abstract class BouncyCastleTimeStampClient implements TimeStampClient {
 			File dir = this.getLogDir();
 
 			TimeStampRequest request = this.getTimeStampRequest(data);
-			this.saveRequest(request, dir, id);
+
+			if (this.debug) {
+				this.saveRequest(request, dir, id);
+			}
 
 			byte[] responseBytes = this.sendRequest(request);
 
 			TimeStampResponse response = this.getTimeStampResponse(request, responseBytes);
-			this.saveResponse(response, dir, id);
+
+			if (this.debug) {
+				this.saveResponse(response, dir, id);
+			}
 
 			response.validate(request);
 

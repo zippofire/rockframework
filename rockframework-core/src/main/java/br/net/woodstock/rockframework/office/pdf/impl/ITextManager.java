@@ -38,11 +38,11 @@ import org.bouncycastle.jce.X509Principal;
 import br.net.woodstock.rockframework.io.InputOutputStream;
 import br.net.woodstock.rockframework.office.pdf.PDFException;
 import br.net.woodstock.rockframework.office.pdf.PDFSignature;
-import br.net.woodstock.rockframework.office.pdf.PDFSignatureRequestData;
 import br.net.woodstock.rockframework.office.pdf.PDFSigner;
 import br.net.woodstock.rockframework.security.digest.DigestType;
 import br.net.woodstock.rockframework.security.digest.Digester;
 import br.net.woodstock.rockframework.security.digest.impl.BasicDigester;
+import br.net.woodstock.rockframework.security.sign.impl.PDFSignData;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 import br.net.woodstock.rockframework.utils.IOUtils;
@@ -215,7 +215,7 @@ public class ITextManager extends AbstractITextManager {
 	}
 
 	@Override
-	public InputStream sign(final InputStream source, final PDFSignatureRequestData data) {
+	public InputStream sign(final InputStream source, final PDFSignData data) {
 		Assert.notNull(source, "source");
 		Assert.notNull(data, "data");
 		try {
@@ -256,7 +256,11 @@ public class ITextManager extends AbstractITextManager {
 			byte[] rangeStream = IOUtils.toByteArray(appearance.getRangeStream());
 			byte[] hash = digester.digest(rangeStream);
 
-			TSAClient tsc = (TSAClient) data.getTsaClient();
+			TSAClient tsc = null;
+
+			if (data.getTimeStampClient() != null) {
+				tsc = new DelegateITextTSAClient(data.getTimeStampClient());
+			}
 
 			byte[] oscp = null;
 			if (rootCertificate != null) {

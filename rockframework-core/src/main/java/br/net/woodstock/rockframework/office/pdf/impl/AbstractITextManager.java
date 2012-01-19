@@ -16,24 +16,17 @@
  */
 package br.net.woodstock.rockframework.office.pdf.impl;
 
-import java.io.InputStream;
 import java.util.Vector;
 
-import br.net.woodstock.rockframework.office.pdf.PDFManager;
 import br.net.woodstock.rockframework.security.digest.DigestType;
 import br.net.woodstock.rockframework.security.sign.SignType;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-public abstract class AbstractITextManager implements PDFManager {
+abstract class AbstractITextManager extends AbstractManager {
 
 	// private static final String CN_FIELD = "CN";
 
 	protected static final char	PDF_SIGNATURE_VERSION	= '\0';
-
-	@Override
-	public InputStream[] toImage(final InputStream source, final String format) {
-		throw new UnsupportedOperationException();
-	}
 
 	protected SignType getSignatureType(final String signatureAlgorithm) {
 		SignType signType = SignType.getSignTypeFromAlgorithm(signatureAlgorithm);

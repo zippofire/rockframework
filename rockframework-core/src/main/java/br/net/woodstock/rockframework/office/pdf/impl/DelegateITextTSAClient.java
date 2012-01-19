@@ -22,7 +22,7 @@ import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
 import com.itextpdf.text.pdf.PdfPKCS7;
 import com.itextpdf.text.pdf.TSAClient;
 
-public class DelegateITextTSAClient implements TSAClient {
+class DelegateITextTSAClient implements TSAClient {
 
 	private static final int	PADDING_SIZE	= 32;
 

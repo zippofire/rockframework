@@ -18,7 +18,6 @@ package br.net.woodstock.rockframework.security.sign.impl;
 
 import java.io.ByteArrayInputStream;
 
-import br.net.woodstock.rockframework.office.pdf.PDFSignatureRequestData;
 import br.net.woodstock.rockframework.office.pdf.impl.ITextManager;
 import br.net.woodstock.rockframework.security.sign.DocumentSigner;
 import br.net.woodstock.rockframework.security.sign.SignerException;
@@ -38,16 +37,9 @@ public class PDFSigner implements DocumentSigner {
 	@Override
 	public byte[] sign(final byte[] data) {
 		try {
-			PDFSignatureRequestData requestData = new PDFSignatureRequestData(this.signData.getPrivateKey(), this.signData.getCertificate());
-			requestData.setContactInfo(this.signData.getContactInfo());
-			requestData.setLocation(this.signData.getLocation());
-			requestData.setReason(this.signData.getReason());
-			requestData.setRootCertificate(this.signData.getRootCertificate());
-			requestData.setTsaClient(this.signData.getTsaClient());
-
 			ByteArrayInputStream inputStream = new ByteArrayInputStream(data);
 
-			byte[] bytes = IOUtils.toByteArray(new ITextManager().sign(inputStream, requestData));
+			byte[] bytes = IOUtils.toByteArray(new ITextManager().sign(inputStream, this.signData));
 
 			return bytes;
 		} catch (Exception e) {

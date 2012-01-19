@@ -16,19 +16,15 @@
  */
 package br.net.woodstock.rockframework.security.sign.impl;
 
-import java.io.Serializable;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
 
-import br.net.woodstock.rockframework.util.Assert;
+import br.net.woodstock.rockframework.security.cert.CertificateHolder;
+import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
 
-public class PDFSignData implements Serializable {
+public class PDFSignData extends CertificateHolder {
 
 	private static final long	serialVersionUID	= 3825254674578069971L;
-
-	private PrivateKey			privateKey;
-
-	private Certificate			certificate;
 
 	private Certificate			rootCertificate;
 
@@ -38,22 +34,10 @@ public class PDFSignData implements Serializable {
 
 	private String				contactInfo;
 
-	private Object				tsaClient;
+	private TimeStampClient		timeStampClient;
 
-	public PDFSignData(final PrivateKey privateKey, final Certificate certificate) {
-		super();
-		Assert.notNull(privateKey, "privateKey");
-		Assert.notEmpty(certificate, "certificate");
-		this.privateKey = privateKey;
-		this.certificate = certificate;
-	}
-
-	public PrivateKey getPrivateKey() {
-		return this.privateKey;
-	}
-
-	public Certificate getCertificate() {
-		return this.certificate;
+	public PDFSignData(final Certificate certificate, final PrivateKey privateKey) {
+		super(certificate, privateKey);
 	}
 
 	public Certificate getRootCertificate() {
@@ -88,20 +72,20 @@ public class PDFSignData implements Serializable {
 		this.contactInfo = contactInfo;
 	}
 
-	public Object getTsaClient() {
-		return this.tsaClient;
+	public TimeStampClient getTimeStampClient() {
+		return this.timeStampClient;
 	}
 
-	public void setTsaClient(final Object tsaClient) {
-		this.tsaClient = tsaClient;
+	public void setTimeStampClient(final TimeStampClient timeStampClient) {
+		this.timeStampClient = timeStampClient;
 	}
 
 	// Aux
 	public Certificate[] getCertificateChain() {
 		if (this.rootCertificate != null) {
-			return new Certificate[] { this.certificate, this.rootCertificate };
+			return new Certificate[] { this.getCertificate(), this.rootCertificate };
 		}
-		return new Certificate[] { this.certificate };
+		return new Certificate[] { this.getCertificate() };
 	}
 
 }

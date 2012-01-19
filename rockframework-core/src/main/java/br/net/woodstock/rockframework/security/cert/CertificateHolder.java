@@ -17,14 +17,17 @@
 
 package br.net.woodstock.rockframework.security.cert;
 
+import java.io.Serializable;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
 
-public class CertificateHolder {
+public class CertificateHolder implements Serializable {
 
-	private Certificate	certificate;
+	private static final long	serialVersionUID	= -8497194259688129655L;
 
-	private PrivateKey	privateKey;
+	private Certificate			certificate;
+
+	private PrivateKey			privateKey;
 
 	public CertificateHolder() {
 		super();

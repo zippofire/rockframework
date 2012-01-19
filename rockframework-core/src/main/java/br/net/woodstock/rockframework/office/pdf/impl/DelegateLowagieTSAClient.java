@@ -22,7 +22,7 @@ import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
 import com.lowagie.text.pdf.PdfPKCS7;
 import com.lowagie.text.pdf.TSAClient;
 
-public class DelegateLowagieTSAClient implements TSAClient {
+class DelegateLowagieTSAClient implements TSAClient {
 
 	private static final int	PADDING_SIZE	= 32;
 

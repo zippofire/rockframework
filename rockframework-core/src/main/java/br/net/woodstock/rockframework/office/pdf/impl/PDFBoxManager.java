@@ -21,7 +21,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collection;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -37,12 +36,9 @@ import org.apache.pdfbox.util.Splitter;
 
 import br.net.woodstock.rockframework.office.DocumentException;
 import br.net.woodstock.rockframework.office.pdf.PDFException;
-import br.net.woodstock.rockframework.office.pdf.PDFManager;
-import br.net.woodstock.rockframework.office.pdf.PDFSignature;
-import br.net.woodstock.rockframework.office.pdf.PDFSignatureRequestData;
 import br.net.woodstock.rockframework.util.Assert;
 
-public class PDFBoxManager implements PDFManager {
+public class PDFBoxManager extends AbstractManager {
 
 	public static final String	GIF_FORMAT	= "gif";
 
@@ -210,13 +206,4 @@ public class PDFBoxManager implements PDFManager {
 		}
 	}
 
-	@Override
-	public InputStream sign(final InputStream source, final PDFSignatureRequestData data) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public Collection<PDFSignature> getSignatures(final InputStream source) {
-		throw new UnsupportedOperationException();
-	}
 }
