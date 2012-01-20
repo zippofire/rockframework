@@ -1,11 +1,13 @@
 package br.net.woodstock.rockframework.test.security;
 
+import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.Charset;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
@@ -26,6 +28,11 @@ import br.net.woodstock.rockframework.security.timestamp.impl.STFTimeStampClient
 import br.net.woodstock.rockframework.security.timestamp.impl.URLTimeStampClient;
 import br.net.woodstock.rockframework.utils.HexUtils;
 import br.net.woodstock.rockframework.utils.IOUtils;
+
+import com.lowagie.text.pdf.BaseFont;
+import com.lowagie.text.pdf.PdfContentByte;
+import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.PdfStamper;
 
 public class CertificateTest extends TestCase {
 
@@ -110,7 +117,7 @@ public class CertificateTest extends TestCase {
 		fileOutputStream.close();
 	}
 
-	public void test2x2() throws Exception {
+	public void xtest2x2() throws Exception {
 		CoreLog.getInstance().getLog().info("Test 2x2");
 
 		CertificateBuilder builder = new CertificateBuilder("Lourival Sabino");
@@ -245,4 +252,61 @@ public class CertificateTest extends TestCase {
 		System.out.println("SN     : " + timeStamp.getSerialNumber());
 	}
 
+	public void xtest5() throws Exception {
+		CertificateBuilder builder = new CertificateBuilder("Lourival Sabino");
+		builder.withIssuer("Woodstock Tecnologia");
+		builder.withV3Extensions(true);
+		builder.withKeyUsage(KeyUsage.DIGITAL_SIGNATURE, KeyUsage.NON_REPUDIATION, KeyUsage.KEY_AGREEMENT);
+		CertificateHolder holder = builder.build();
+		X509Certificate certificate = (X509Certificate) holder.getCertificate();
+		PrivateKey privateKey = holder.getPrivateKey();
+
+		PDFManager manager = new ITextManager();
+		FileInputStream fileInputStream = new FileInputStream("/home/lourival/Documentos/teste.pdf");
+
+		PDFSignData data = new PDFSignData(certificate, privateKey);
+		data.setReason("Testando");
+		data.setLocation("Brasilia-DF");
+		data.setContactInfo("lourival.sabino.junior@gmail.com");
+		data.setTimeStampClient(CertificateTest.TSA_CLIENT_STF);
+
+		InputStream inputStream = manager.sign(fileInputStream, data);
+		byte[] pdfSigned = IOUtils.toByteArray(inputStream);
+		FileOutputStream fileOutputStream = new FileOutputStream("/tmp/sign.pdf");
+		fileOutputStream.write(pdfSigned);
+
+		fileInputStream.close();
+		fileOutputStream.close();
+
+	}
+
+	public void xtest5x1() throws Exception {
+		CoreLog.getInstance().getLog().info("Test 2");
+
+		FileInputStream inputStream = new FileInputStream("/tmp/sign.pdf");
+
+		PdfReader pdfReader = new PdfReader(inputStream);
+		FileOutputStream outputStream = new FileOutputStream("/tmp/sign-m.pdf");
+
+		PdfStamper pdfStamper = new PdfStamper(pdfReader, outputStream);
+
+		PdfContentByte contentByte = pdfStamper.getUnderContent(1);
+		
+		contentByte.setColorFill(Color.BLACK);
+		contentByte.setColorStroke(Color.BLACK);
+		contentByte.setLineWidth(0.3f);
+		contentByte.rectangle(10, 670, 400, 100);
+		contentByte.fillStroke();
+		contentByte.stroke();
+		contentByte.closePathFillStroke();
+
+		contentByte.beginText();
+		contentByte.setFontAndSize(BaseFont.createFont(BaseFont.TIMES_ROMAN, Charset.defaultCharset().name(), true), 12f);
+		contentByte.setColorFill(Color.WHITE);
+		contentByte.showTextAligned(PdfContentByte.ALIGN_LEFT, "Novo Texto do documento", 60, 760, 0);
+		contentByte.endText();
+
+		pdfStamper.close();
+
+	}
 }

@@ -13,6 +13,7 @@ import br.net.woodstock.rockframework.security.cert.impl.CertificateBuilder;
 import br.net.woodstock.rockframework.security.cert.impl.KeyUsage;
 import br.net.woodstock.rockframework.security.crypt.KeyPairType;
 import br.net.woodstock.rockframework.security.sign.PKCS7Signer;
+import br.net.woodstock.rockframework.security.sign.PKCS7SignerInfo;
 import br.net.woodstock.rockframework.security.sign.SignType;
 import br.net.woodstock.rockframework.security.sign.SignerInfo;
 import br.net.woodstock.rockframework.security.sign.impl.AsStringSigner;
@@ -82,7 +83,6 @@ public class SignerTest extends TestCase {
 		X509Certificate certificate1 = (X509Certificate) holder1.getCertificate();
 		PrivateKey privateKey1 = holder1.getPrivateKey();
 		SignerInfo signerInfo1 = new SignerInfo(certificate1, privateKey1);
-		signerInfo1.setTimeStampClient(new STFTimeStampClient("201.49.148.134", 318));
 
 		CertificateBuilder builder2 = new CertificateBuilder("Lourival Sabino 2");
 		builder2.withIssuer("Woodstock Tecnologia 2");
@@ -93,7 +93,10 @@ public class SignerTest extends TestCase {
 		PrivateKey privateKey2 = holder2.getPrivateKey();
 		SignerInfo signerInfo2 = new SignerInfo(certificate2, privateKey2);
 
-		PKCS7Signer signer = new BouncyCastlePKCS7Signer(new SignerInfo[] { signerInfo1, signerInfo2 });
+		PKCS7SignerInfo signerInfo = new PKCS7SignerInfo(new SignerInfo[] { signerInfo1, signerInfo2 });
+		signerInfo.setTimeStampClient(new STFTimeStampClient("201.49.148.134", 318));
+
+		PKCS7Signer signer = new BouncyCastlePKCS7Signer(signerInfo);
 
 		byte[] signed = signer.sign(pdf);
 
@@ -102,6 +105,32 @@ public class SignerTest extends TestCase {
 		fileOutputStream.close();
 
 		System.out.println(signer.verify(pdf, signed));
+	}
+
+	public void xtest4() throws Exception {
+		FileInputStream fileInputStream = new FileInputStream("/tmp/sign.pdf");
+		byte[] pdf = IOUtils.toByteArray(fileInputStream);
+		fileInputStream.close();
+
+		CertificateBuilder builder1 = new CertificateBuilder("Lourival Sabino 1");
+		builder1.withIssuer("Woodstock Tecnologia 1");
+		builder1.withV3Extensions(true);
+		builder1.withKeyUsage(KeyUsage.DIGITAL_SIGNATURE, KeyUsage.NON_REPUDIATION, KeyUsage.KEY_AGREEMENT);
+		CertificateHolder holder1 = builder1.build();
+		X509Certificate certificate1 = (X509Certificate) holder1.getCertificate();
+		PrivateKey privateKey1 = holder1.getPrivateKey();
+		SignerInfo signerInfo1 = new SignerInfo(certificate1, privateKey1);
+
+		PKCS7SignerInfo signerInfo = new PKCS7SignerInfo(new SignerInfo[] { signerInfo1 });
+		signerInfo.setTimeStampClient(new STFTimeStampClient("201.49.148.134", 318));
+
+		PKCS7Signer signer = new BouncyCastlePKCS7Signer(signerInfo);
+
+		byte[] signed = signer.sign(pdf);
+
+		FileOutputStream fileOutputStream = new FileOutputStream("/tmp/sign.pdf.p7s");
+		fileOutputStream.write(signed);
+		fileOutputStream.close();
 	}
 
 }
