@@ -17,10 +17,9 @@
 package br.net.woodstock.rockframework.security.sign.impl;
 
 import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.security.cert.CertStore;
+import java.security.cert.CRLException;
 import java.security.cert.Certificate;
-import java.security.cert.CollectionCertStoreParameters;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,16 +39,30 @@ import org.bouncycastle.asn1.cms.CMSObjectIdentifiers;
 import org.bouncycastle.asn1.cms.ContentInfo;
 import org.bouncycastle.asn1.cms.SignedData;
 import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
+import org.bouncycastle.cert.jcajce.JcaCRLStore;
+import org.bouncycastle.cert.jcajce.JcaCertStore;
 import org.bouncycastle.cms.CMSProcessable;
 import org.bouncycastle.cms.CMSProcessableByteArray;
 import org.bouncycastle.cms.CMSSignedData;
 import org.bouncycastle.cms.CMSSignedDataGenerator;
-import org.bouncycastle.cms.CMSSignedGenerator;
+import org.bouncycastle.cms.CMSTypedData;
+import org.bouncycastle.cms.SignerInfoGenerator;
 import org.bouncycastle.cms.SignerInformation;
 import org.bouncycastle.cms.SignerInformationStore;
+import org.bouncycastle.cms.SignerInformationVerifier;
+import org.bouncycastle.cms.jcajce.JcaSignerInfoGeneratorBuilder;
+import org.bouncycastle.operator.ContentSigner;
+import org.bouncycastle.operator.ContentVerifierProvider;
+import org.bouncycastle.operator.DigestCalculatorProvider;
+import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
+import org.bouncycastle.operator.jcajce.JcaContentVerifierProviderBuilder;
+import org.bouncycastle.operator.jcajce.JcaDigestCalculatorProviderBuilder;
+import org.bouncycastle.util.CollectionStore;
+import org.bouncycastle.util.Store;
 
 import br.net.woodstock.rockframework.security.sign.PKCS7Signer;
 import br.net.woodstock.rockframework.security.sign.PKCS7SignerInfo;
+import br.net.woodstock.rockframework.security.sign.SignType;
 import br.net.woodstock.rockframework.security.sign.SignerException;
 import br.net.woodstock.rockframework.security.sign.SignerInfo;
 import br.net.woodstock.rockframework.security.timestamp.TimeStamp;
@@ -59,9 +72,7 @@ import br.net.woodstock.rockframework.util.Assert;
 
 public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 
-	private static final String	CERT_STORE_TYPE	= "Collection";
-
-	private PKCS7SignerInfo		signerInfo;
+	private PKCS7SignerInfo	signerInfo;
 
 	public BouncyCastlePKCS7Signer(final PKCS7SignerInfo signerInfo) {
 		super();
@@ -70,20 +81,32 @@ public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 	}
 
 	@Override
-	@SuppressWarnings({ "deprecation", "rawtypes", "unchecked" })
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public byte[] sign(final byte[] data) {
 		Assert.notEmpty(data, "data");
 		try {
 			CMSSignedDataGenerator cmsSignedDataGenerator = new CMSSignedDataGenerator();
 			TimeStampClient timeStampClient = this.signerInfo.getTimeStampClient();
 			for (SignerInfo signerInfo : this.signerInfo.getSignerInfos()) {
-				cmsSignedDataGenerator.addSigner(signerInfo.getPrivateKey(), (X509Certificate) signerInfo.getCertificate(), CMSSignedGenerator.ENCRYPTION_RSA, CMSSignedGenerator.DIGEST_SHA1);
+				JcaContentSignerBuilder contentSignerBuilder = new JcaContentSignerBuilder(SignType.SHA1_RSA.getAlgorithm());
+				contentSignerBuilder.setProvider(BouncyCastleProviderHelper.PROVIDER_NAME);
+
+				ContentSigner contentSigner = contentSignerBuilder.build(signerInfo.getPrivateKey());
+
+				JcaDigestCalculatorProviderBuilder digestCalculatorProviderBuilder = new JcaDigestCalculatorProviderBuilder();
+				digestCalculatorProviderBuilder.setProvider(BouncyCastleProviderHelper.PROVIDER_NAME);
+				DigestCalculatorProvider digestCalculatorProvider = digestCalculatorProviderBuilder.build();
+
+				JcaSignerInfoGeneratorBuilder signerInfoGeneratorBuilder = new JcaSignerInfoGeneratorBuilder(digestCalculatorProvider);
+
+				SignerInfoGenerator signerInfoGenerator = signerInfoGeneratorBuilder.build(contentSigner, (X509Certificate) signerInfo.getCertificate());
+				cmsSignedDataGenerator.addSignerInfoGenerator(signerInfoGenerator);
 			}
 
-			cmsSignedDataGenerator.addCertificatesAndCRLs(this.getCertStore());
-			CMSProcessable content = new CMSProcessableByteArray(data);
+			cmsSignedDataGenerator.addCertificates(this.getCertificateStore());
+			CMSTypedData content = new CMSProcessableByteArray(data);
 
-			CMSSignedData signedData = cmsSignedDataGenerator.generate(content, false, BouncyCastleProviderHelper.PROVIDER_NAME);
+			CMSSignedData signedData = cmsSignedDataGenerator.generate(content, true);
 
 			if (timeStampClient != null) {
 				SignerInformationStore signerInformationStore = signedData.getSignerInfos();
@@ -115,22 +138,38 @@ public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings("unchecked")
 	public boolean verify(final byte[] data, final byte[] signature) {
 		Assert.notEmpty(data, "data");
 		Assert.notEmpty(signature, "signature");
 		try {
 			CMSSignedData signedData = new CMSSignedData(signature);
-			CertStore certStore = signedData.getCertificatesAndCRLs(BouncyCastlePKCS7Signer.CERT_STORE_TYPE, BouncyCastleProviderHelper.PROVIDER_NAME);
+			CollectionStore certificatesStore = (CollectionStore) signedData.getCertificates();
+			// CollectionStore crlStore = (CollectionStore) signedData.getCRLs();
+
 			SignerInformationStore signerInformationStore = signedData.getSignerInfos();
-			boolean verified = false;
+			boolean verified = true;
 			for (Object o : signerInformationStore.getSigners()) {
 				SignerInformation signerInformation = (SignerInformation) o;
-				Collection<? extends Certificate> collection = certStore.getCertificates(signerInformation.getSID());
+
+				Collection<Certificate> collection = certificatesStore.getMatches(null);
 				if (!collection.isEmpty()) {
-					X509Certificate cert = (X509Certificate) collection.iterator().next();
-					if (signerInformation.verify(cert.getPublicKey(), BouncyCastleProviderHelper.PROVIDER_NAME)) {
-						verified = true;
+					for (Certificate cert : collection) {
+
+						JcaContentVerifierProviderBuilder jcaContentVerifierProviderBuilder = new JcaContentVerifierProviderBuilder();
+						jcaContentVerifierProviderBuilder.setProvider(BouncyCastleProviderHelper.PROVIDER_NAME);
+
+						ContentVerifierProvider contentVerifierProvider = jcaContentVerifierProviderBuilder.build((X509Certificate) cert);
+
+						JcaDigestCalculatorProviderBuilder digestCalculatorProviderBuilder = new JcaDigestCalculatorProviderBuilder();
+						digestCalculatorProviderBuilder.setProvider(BouncyCastleProviderHelper.PROVIDER_NAME);
+						DigestCalculatorProvider digestCalculatorProvider = digestCalculatorProviderBuilder.build();
+
+						SignerInformationVerifier signerInformationVerifier = new SignerInformationVerifier(contentVerifierProvider, digestCalculatorProvider);
+
+						if (!signerInformation.verify(signerInformationVerifier)) {
+							verified = false;
+						}
 					}
 				}
 			}
@@ -156,12 +195,23 @@ public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 		return fullContentInfo.getDEREncoded();
 	}
 
-	private CertStore getCertStore() throws GeneralSecurityException {
+	protected Store getCertificateStore() throws CertificateEncodingException {
 		ArrayList<Certificate> list = new ArrayList<Certificate>();
 		for (SignerInfo signerInfo : this.signerInfo.getSignerInfos()) {
 			list.add(signerInfo.getCertificate());
 		}
-		return CertStore.getInstance(BouncyCastlePKCS7Signer.CERT_STORE_TYPE, new CollectionCertStoreParameters(list), BouncyCastleProviderHelper.PROVIDER_NAME);
+		JcaCertStore certStore = new JcaCertStore(list);
+		return certStore;
+	}
+
+	protected Store getCRLStore() throws CRLException {
+		ArrayList<Certificate> list = new ArrayList<Certificate>();
+		// TODO
+		// for (SignerInfo signerInfo : this.signerInfo.getSignerInfos()) {
+		// list.add(signerInfo.getCertificate());
+		// }
+		JcaCRLStore crlStore = new JcaCRLStore(list);
+		return crlStore;
 	}
 
 }

@@ -10,7 +10,7 @@ import java.security.cert.X509Certificate;
 import junit.framework.TestCase;
 import br.net.woodstock.rockframework.security.cert.CertificateHolder;
 import br.net.woodstock.rockframework.security.cert.impl.CertificateBuilder;
-import br.net.woodstock.rockframework.security.cert.impl.KeyUsage;
+import br.net.woodstock.rockframework.security.cert.impl.KeyUsageType;
 import br.net.woodstock.rockframework.security.crypt.KeyPairType;
 import br.net.woodstock.rockframework.security.sign.PKCS7Signer;
 import br.net.woodstock.rockframework.security.sign.PKCS7SignerInfo;
@@ -22,6 +22,7 @@ import br.net.woodstock.rockframework.security.sign.impl.BouncyCastlePKCS7Signer
 import br.net.woodstock.rockframework.security.sign.impl.HexSigner;
 import br.net.woodstock.rockframework.security.sign.impl.KeyPairSigner;
 import br.net.woodstock.rockframework.security.timestamp.impl.STFTimeStampClient;
+import br.net.woodstock.rockframework.security.timestamp.impl.URLTimeStampClient;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
 public class SignerTest extends TestCase {
@@ -71,14 +72,14 @@ public class SignerTest extends TestCase {
 	}
 
 	public void test3() throws Exception {
-		FileInputStream fileInputStream = new FileInputStream("/home/lourival/Documentos/curriculum.pdf");
+		FileInputStream fileInputStream = new FileInputStream("/home/lourival/Documentos/2011-10.pdf");
 		byte[] pdf = IOUtils.toByteArray(fileInputStream);
 		fileInputStream.close();
 
 		CertificateBuilder builder1 = new CertificateBuilder("Lourival Sabino 1");
 		builder1.withIssuer("Woodstock Tecnologia 1");
 		builder1.withV3Extensions(true);
-		builder1.withKeyUsage(KeyUsage.DIGITAL_SIGNATURE, KeyUsage.NON_REPUDIATION, KeyUsage.KEY_AGREEMENT);
+		builder1.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
 		CertificateHolder holder1 = builder1.build();
 		X509Certificate certificate1 = (X509Certificate) holder1.getCertificate();
 		PrivateKey privateKey1 = holder1.getPrivateKey();
@@ -87,14 +88,15 @@ public class SignerTest extends TestCase {
 		CertificateBuilder builder2 = new CertificateBuilder("Lourival Sabino 2");
 		builder2.withIssuer("Woodstock Tecnologia 2");
 		builder2.withV3Extensions(true);
-		builder2.withKeyUsage(KeyUsage.DIGITAL_SIGNATURE, KeyUsage.NON_REPUDIATION, KeyUsage.KEY_AGREEMENT);
+		builder2.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
 		CertificateHolder holder2 = builder2.build();
 		X509Certificate certificate2 = (X509Certificate) holder2.getCertificate();
 		PrivateKey privateKey2 = holder2.getPrivateKey();
 		SignerInfo signerInfo2 = new SignerInfo(certificate2, privateKey2);
 
 		PKCS7SignerInfo signerInfo = new PKCS7SignerInfo(new SignerInfo[] { signerInfo1, signerInfo2 });
-		signerInfo.setTimeStampClient(new STFTimeStampClient("201.49.148.134", 318));
+		//signerInfo.setTimeStampClient(new STFTimeStampClient("201.49.148.134", 318));
+		signerInfo.setTimeStampClient(new URLTimeStampClient("http://tsa.safelayer.com:8093"));
 
 		PKCS7Signer signer = new BouncyCastlePKCS7Signer(signerInfo);
 
@@ -115,7 +117,7 @@ public class SignerTest extends TestCase {
 		CertificateBuilder builder1 = new CertificateBuilder("Lourival Sabino 1");
 		builder1.withIssuer("Woodstock Tecnologia 1");
 		builder1.withV3Extensions(true);
-		builder1.withKeyUsage(KeyUsage.DIGITAL_SIGNATURE, KeyUsage.NON_REPUDIATION, KeyUsage.KEY_AGREEMENT);
+		builder1.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
 		CertificateHolder holder1 = builder1.build();
 		X509Certificate certificate1 = (X509Certificate) holder1.getCertificate();
 		PrivateKey privateKey1 = holder1.getPrivateKey();

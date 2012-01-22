@@ -17,7 +17,6 @@
 package br.net.woodstock.rockframework.security.cert.impl;
 
 import java.math.BigInteger;
-import java.security.GeneralSecurityException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
@@ -26,24 +25,30 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.security.auth.x500.X500Principal;
-
+import org.bouncycastle.asn1.x500.X500Name;
+import org.bouncycastle.asn1.x500.X500NameBuilder;
+import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.bouncycastle.asn1.x509.ExtendedKeyUsage;
 import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.asn1.x509.GeneralNames;
 import org.bouncycastle.asn1.x509.KeyPurposeId;
-import org.bouncycastle.asn1.x509.X509Extensions;
-import org.bouncycastle.x509.X509V1CertificateGenerator;
-import org.bouncycastle.x509.X509V3CertificateGenerator;
+import org.bouncycastle.asn1.x509.X509Extension;
+import org.bouncycastle.cert.X509CertificateHolder;
+import org.bouncycastle.cert.jcajce.JcaX509v1CertificateBuilder;
+import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
+import org.bouncycastle.operator.ContentSigner;
+import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.bouncycastle.x509.extension.SubjectKeyIdentifierStructure;
 
+import br.net.woodstock.rockframework.security.cert.CertificateException;
 import br.net.woodstock.rockframework.security.cert.CertificateHolder;
+import br.net.woodstock.rockframework.security.cert.CertificateType;
 import br.net.woodstock.rockframework.security.crypt.KeyPairType;
 import br.net.woodstock.rockframework.security.sign.SignType;
 import br.net.woodstock.rockframework.security.util.BouncyCastleProviderHelper;
+import br.net.woodstock.rockframework.security.util.SecurityUtils;
 import br.net.woodstock.rockframework.util.DateBuilder;
 
-@SuppressWarnings("deprecation")
 public class CertificateBuilder {
 
 	private static final String	DEFAULT_ISSUER	= "";
@@ -58,12 +63,14 @@ public class CertificateBuilder {
 
 	private BigInteger			serialNumber;
 
-	private Date				expiresDate;
+	private Date				notBefore;
+
+	private Date				notAfter;
 
 	private boolean				v3;
 
 	// V3 Extensions
-	private Set<KeyUsage>		keyUsage;
+	private Set<KeyUsageType>	keyUsage;
 
 	public CertificateBuilder(final String subject) {
 		this(subject, CertificateBuilder.DEFAULT_ISSUER);
@@ -73,7 +80,7 @@ public class CertificateBuilder {
 		super();
 		this.subject = subject;
 		this.issuer = issuer;
-		this.keyUsage = new HashSet<KeyUsage>();
+		this.keyUsage = new HashSet<KeyUsageType>();
 	}
 
 	public CertificateBuilder withKeyPair(final KeyPair keyPair) {
@@ -96,13 +103,18 @@ public class CertificateBuilder {
 		return this;
 	}
 
-	public CertificateBuilder withExpiresDate(final Date expiresDate) {
-		this.expiresDate = expiresDate;
+	public CertificateBuilder withNotBefore(final Date notBefore) {
+		this.notBefore = notBefore;
 		return this;
 	}
 
-	public CertificateBuilder withKeyUsage(final KeyUsage... array) {
-		for (KeyUsage keyUsage : array) {
+	public CertificateBuilder withNotAfter(final Date notAfter) {
+		this.notAfter = notAfter;
+		return this;
+	}
+
+	public CertificateBuilder withKeyUsage(final KeyUsageType... array) {
+		for (KeyUsageType keyUsage : array) {
 			this.keyUsage.add(keyUsage);
 		}
 		return this;
@@ -113,93 +125,100 @@ public class CertificateBuilder {
 		return this;
 	}
 
-	public CertificateHolder build() throws GeneralSecurityException {
-		long time = System.currentTimeMillis();
-		String subject = this.subject;
-		KeyPair keyPair = this.keyPair;
-		SignType signType = this.signType;
-		String issuer = this.issuer;
-		BigInteger serialNumber = this.serialNumber;
-		Date expiresDate = this.expiresDate;
+	public CertificateHolder build() {
+		try {
+			long time = System.currentTimeMillis();
+			String subject = this.subject;
+			KeyPair keyPair = this.keyPair;
+			SignType signType = this.signType;
+			String issuer = this.issuer;
+			BigInteger serialNumber = this.serialNumber;
+			Date notBefore = this.notBefore;
+			Date notAfter = this.notAfter;
 
-		X509Certificate certificate = null;
-		PrivateKey privateKey = null;
+			X509Certificate certificate = null;
+			PrivateKey privateKey = null;
 
-		if (keyPair == null) {
-			keyPair = KeyPairGenerator.getInstance(KeyPairType.RSA.getAlgorithm()).generateKeyPair();
-		}
-
-		if (signType == null) {
-			signType = SignType.SHA1_RSA;
-		}
-
-		if (issuer == null) {
-			issuer = subject;
-		}
-
-		if (serialNumber == null) {
-			serialNumber = BigInteger.valueOf(time);
-		}
-
-		if (expiresDate == null) {
-			DateBuilder dateBuilder = new DateBuilder(time);
-			dateBuilder.addYears(1);
-			expiresDate = dateBuilder.getDate();
-		}
-
-		if (this.v3) {
-			X509V3CertificateGenerator generator = new X509V3CertificateGenerator();
-			generator.setSerialNumber(serialNumber);
-			generator.setIssuerDN(new X500Principal(this.toCN(issuer)));
-			generator.setNotBefore(new Date(time));
-			generator.setNotAfter(expiresDate);
-			generator.setSubjectDN(new X500Principal(this.toCN(subject)));
-			generator.setPublicKey(keyPair.getPublic());
-			generator.setSignatureAlgorithm(signType.getAlgorithm());
-
-			if (this.keyUsage.size() > 0) {
-				int usage = 0;
-				for (KeyUsage keyUsage : this.keyUsage) {
-					usage = usage | keyUsage.getUsage();
-				}
-				org.bouncycastle.asn1.x509.KeyUsage ku = new org.bouncycastle.asn1.x509.KeyUsage(usage);
-				generator.addExtension(X509Extensions.KeyUsage, false, ku);
+			if (keyPair == null) {
+				keyPair = KeyPairGenerator.getInstance(KeyPairType.RSA.getAlgorithm()).generateKeyPair();
 			}
 
-			GeneralNames subjectAltName = new GeneralNames(new GeneralName(GeneralName.rfc822Name, subject));
-			generator.addExtension(X509Extensions.SubjectAlternativeName, false, subjectAltName);
+			if (signType == null) {
+				signType = SignType.SHA1_RSA;
+			}
 
-			SubjectKeyIdentifierStructure subjectKeyIdentifierStructure = new SubjectKeyIdentifierStructure(keyPair.getPublic());
-			generator.addExtension(X509Extensions.SubjectKeyIdentifier, false, subjectKeyIdentifierStructure);
+			if (issuer == null) {
+				issuer = subject;
+			}
 
-			ExtendedKeyUsage extendedKeyUsage = new ExtendedKeyUsage(KeyPurposeId.anyExtendedKeyUsage);
-			generator.addExtension(X509Extensions.ExtendedKeyUsage, false, extendedKeyUsage);
+			if (serialNumber == null) {
+				serialNumber = BigInteger.valueOf(time);
+			}
 
-			certificate = generator.generate(keyPair.getPrivate(), BouncyCastleProviderHelper.PROVIDER_NAME);
-			privateKey = keyPair.getPrivate();
-		} else {
+			if (notBefore == null) {
+				DateBuilder dateBuilder = new DateBuilder(time);
+				dateBuilder.removeDays(1);
+				notBefore = dateBuilder.getDate();
+			}
 
-			X509V1CertificateGenerator generator = new X509V1CertificateGenerator();
-			generator.setSerialNumber(serialNumber);
-			generator.setIssuerDN(new X500Principal(this.toCN(issuer)));
-			generator.setNotBefore(new Date(time));
-			generator.setNotAfter(expiresDate);
-			generator.setSubjectDN(new X500Principal(this.toCN(subject)));
-			generator.setPublicKey(keyPair.getPublic());
-			generator.setSignatureAlgorithm(signType.getAlgorithm());
+			if (notAfter == null) {
+				DateBuilder dateBuilder = new DateBuilder(time);
+				dateBuilder.addYears(1);
+				notAfter = dateBuilder.getDate();
+			}
 
-			certificate = generator.generate(keyPair.getPrivate(), BouncyCastleProviderHelper.PROVIDER_NAME);
-			privateKey = keyPair.getPrivate();
+			if (this.v3) {
+				JcaX509v3CertificateBuilder builder = new JcaX509v3CertificateBuilder(this.toX500Name(issuer), serialNumber, notBefore, notAfter, this.toX500Name(subject), keyPair.getPublic());
+
+				JcaContentSignerBuilder contentSignerBuilder = new JcaContentSignerBuilder(signType.getAlgorithm());
+				contentSignerBuilder.setProvider(BouncyCastleProviderHelper.PROVIDER_NAME);
+				ContentSigner contentSigner = contentSignerBuilder.build(keyPair.getPrivate());
+
+				if (this.keyUsage.size() > 0) {
+					int usage = 0;
+					for (KeyUsageType keyUsage : this.keyUsage) {
+						usage = usage | keyUsage.getUsage();
+					}
+					org.bouncycastle.asn1.x509.KeyUsage ku = new org.bouncycastle.asn1.x509.KeyUsage(usage);
+					builder.addExtension(X509Extension.keyUsage, false, ku);
+				}
+
+				GeneralNames subjectAltName = new GeneralNames(new GeneralName(GeneralName.rfc822Name, subject));
+				builder.addExtension(X509Extension.subjectAlternativeName, false, subjectAltName);
+
+				SubjectKeyIdentifierStructure subjectKeyIdentifierStructure = new SubjectKeyIdentifierStructure(keyPair.getPublic());
+				builder.addExtension(X509Extension.subjectKeyIdentifier, false, subjectKeyIdentifierStructure);
+
+				ExtendedKeyUsage extendedKeyUsage = new ExtendedKeyUsage(KeyPurposeId.anyExtendedKeyUsage);
+				builder.addExtension(X509Extension.extendedKeyUsage, false, extendedKeyUsage);
+
+				X509CertificateHolder holder = builder.build(contentSigner);
+
+				certificate = (X509Certificate) SecurityUtils.getCertificateFromFile(holder.getEncoded(), CertificateType.X509);
+				privateKey = keyPair.getPrivate();
+			} else {
+				JcaX509v1CertificateBuilder builder = new JcaX509v1CertificateBuilder(this.toX500Name(issuer), serialNumber, notBefore, notAfter, this.toX500Name(subject), keyPair.getPublic());
+
+				JcaContentSignerBuilder contentSignerBuilder = new JcaContentSignerBuilder(signType.getAlgorithm());
+				contentSignerBuilder.setProvider(BouncyCastleProviderHelper.PROVIDER_NAME);
+				ContentSigner contentSigner = contentSignerBuilder.build(keyPair.getPrivate());
+
+				X509CertificateHolder holder = builder.build(contentSigner);
+
+				certificate = (X509Certificate) SecurityUtils.getCertificateFromFile(holder.getEncoded(), CertificateType.X509);
+				privateKey = keyPair.getPrivate();
+			}
+
+			return new CertificateHolder(certificate, privateKey);
+		} catch (Exception e) {
+			throw new CertificateException(e);
 		}
-
-		return new CertificateHolder(certificate, privateKey);
 	}
 
-	private String toCN(final String value) {
-		StringBuilder builder = new StringBuilder();
-		builder.append("CN=");
-		builder.append(value);
-		return builder.toString();
+	private X500Name toX500Name(final String value) {
+		X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
+		builder.addRDN(BCStyle.CN, value);
+		return builder.build();
 	}
 
 }

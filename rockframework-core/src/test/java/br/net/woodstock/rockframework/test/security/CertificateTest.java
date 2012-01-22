@@ -1,6 +1,5 @@
 package br.net.woodstock.rockframework.test.security;
 
-import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -20,7 +19,7 @@ import br.net.woodstock.rockframework.office.pdf.PDFSigner;
 import br.net.woodstock.rockframework.office.pdf.impl.ITextManager;
 import br.net.woodstock.rockframework.security.cert.CertificateHolder;
 import br.net.woodstock.rockframework.security.cert.impl.CertificateBuilder;
-import br.net.woodstock.rockframework.security.cert.impl.KeyUsage;
+import br.net.woodstock.rockframework.security.cert.impl.KeyUsageType;
 import br.net.woodstock.rockframework.security.sign.impl.PDFSignData;
 import br.net.woodstock.rockframework.security.timestamp.TimeStamp;
 import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
@@ -29,10 +28,11 @@ import br.net.woodstock.rockframework.security.timestamp.impl.URLTimeStampClient
 import br.net.woodstock.rockframework.utils.HexUtils;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
-import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfReader;
-import com.lowagie.text.pdf.PdfStamper;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
 
 public class CertificateTest extends TestCase {
 
@@ -47,11 +47,11 @@ public class CertificateTest extends TestCase {
 		System.setProperty("sun.net.client.defaultReadTimeout", "5000");
 	}
 
-	public void xtest1() throws Exception {
+	public void test1() throws Exception {
 		CertificateBuilder builder = new CertificateBuilder("Lourival Sabino");
 		builder.withIssuer("Woodstock Tecnologia");
 		builder.withV3Extensions(true);
-		builder.withKeyUsage(KeyUsage.DIGITAL_SIGNATURE, KeyUsage.NON_REPUDIATION, KeyUsage.KEY_AGREEMENT);
+		builder.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
 		CertificateHolder holder = builder.build();
 		X509Certificate certificate = (X509Certificate) holder.getCertificate();
 		System.out.println(certificate);
@@ -69,13 +69,13 @@ public class CertificateTest extends TestCase {
 		CertificateBuilder builder = new CertificateBuilder("Lourival Sabino");
 		builder.withIssuer("Woodstock Tecnologia");
 		builder.withV3Extensions(true);
-		builder.withKeyUsage(KeyUsage.DIGITAL_SIGNATURE, KeyUsage.NON_REPUDIATION, KeyUsage.KEY_AGREEMENT);
+		builder.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
 		CertificateHolder holder = builder.build();
 		X509Certificate certificate = (X509Certificate) holder.getCertificate();
 		PrivateKey privateKey = holder.getPrivateKey();
 
 		PDFManager manager = new ITextManager();
-		FileInputStream fileInputStream = new FileInputStream("/home/lourival/Documentos/curriculum.pdf");
+		FileInputStream fileInputStream = new FileInputStream("/home/lourival/Documentos/2011-09.pdf");
 
 		PDFSignData data = new PDFSignData(certificate, privateKey);
 		data.setReason("Testando");
@@ -95,7 +95,7 @@ public class CertificateTest extends TestCase {
 		CertificateBuilder builder = new CertificateBuilder("Lourival Sabino da Silva Junior");
 		builder.withIssuer("Woodstock Tecnologia");
 		builder.withV3Extensions(true);
-		builder.withKeyUsage(KeyUsage.DIGITAL_SIGNATURE, KeyUsage.NON_REPUDIATION, KeyUsage.KEY_AGREEMENT);
+		builder.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
 		CertificateHolder holder = builder.build();
 		X509Certificate certificate = (X509Certificate) holder.getCertificate();
 		PrivateKey privateKey = holder.getPrivateKey();
@@ -123,7 +123,7 @@ public class CertificateTest extends TestCase {
 		CertificateBuilder builder = new CertificateBuilder("Lourival Sabino");
 		builder.withIssuer("Woodstock Tecnologia");
 		builder.withV3Extensions(true);
-		builder.withKeyUsage(KeyUsage.DIGITAL_SIGNATURE, KeyUsage.NON_REPUDIATION, KeyUsage.KEY_AGREEMENT);
+		builder.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
 		CertificateHolder holder = builder.build();
 		X509Certificate certificate = (X509Certificate) holder.getCertificate();
 		PrivateKey privateKey = holder.getPrivateKey();
@@ -198,7 +198,7 @@ public class CertificateTest extends TestCase {
 		CertificateBuilder builder = new CertificateBuilder("Lourival Sabino da Silva Junior");
 		builder.withIssuer("Woodstock Tecnologia");
 		builder.withV3Extensions(true);
-		builder.withKeyUsage(KeyUsage.DIGITAL_SIGNATURE, KeyUsage.NON_REPUDIATION, KeyUsage.KEY_AGREEMENT);
+		builder.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
 		CertificateHolder holder = builder.build();
 		X509Certificate certificate = (X509Certificate) holder.getCertificate();
 		PrivateKey privateKey = holder.getPrivateKey();
@@ -256,7 +256,7 @@ public class CertificateTest extends TestCase {
 		CertificateBuilder builder = new CertificateBuilder("Lourival Sabino");
 		builder.withIssuer("Woodstock Tecnologia");
 		builder.withV3Extensions(true);
-		builder.withKeyUsage(KeyUsage.DIGITAL_SIGNATURE, KeyUsage.NON_REPUDIATION, KeyUsage.KEY_AGREEMENT);
+		builder.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
 		CertificateHolder holder = builder.build();
 		X509Certificate certificate = (X509Certificate) holder.getCertificate();
 		PrivateKey privateKey = holder.getPrivateKey();
@@ -291,9 +291,9 @@ public class CertificateTest extends TestCase {
 		PdfStamper pdfStamper = new PdfStamper(pdfReader, outputStream);
 
 		PdfContentByte contentByte = pdfStamper.getUnderContent(1);
-		
-		contentByte.setColorFill(Color.BLACK);
-		contentByte.setColorStroke(Color.BLACK);
+
+		contentByte.setColorFill(BaseColor.BLACK);
+		contentByte.setColorStroke(BaseColor.BLACK);
 		contentByte.setLineWidth(0.3f);
 		contentByte.rectangle(10, 670, 400, 100);
 		contentByte.fillStroke();
@@ -302,7 +302,7 @@ public class CertificateTest extends TestCase {
 
 		contentByte.beginText();
 		contentByte.setFontAndSize(BaseFont.createFont(BaseFont.TIMES_ROMAN, Charset.defaultCharset().name(), true), 12f);
-		contentByte.setColorFill(Color.WHITE);
+		contentByte.setColorFill(BaseColor.WHITE);
 		contentByte.showTextAligned(PdfContentByte.ALIGN_LEFT, "Novo Texto do documento", 60, 760, 0);
 		contentByte.endText();
 
