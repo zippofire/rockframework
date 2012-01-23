@@ -17,12 +17,13 @@
 package br.net.woodstock.rockframework.security.sign.impl;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.nio.charset.Charset;
 import java.security.GeneralSecurityException;
 import java.security.KeyPair;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.crypto.KeySelector;
 import javax.xml.crypto.dsig.CanonicalizationMethod;
 import javax.xml.crypto.dsig.DigestMethod;
 import javax.xml.crypto.dsig.Reference;
@@ -32,6 +33,7 @@ import javax.xml.crypto.dsig.Transform;
 import javax.xml.crypto.dsig.XMLSignature;
 import javax.xml.crypto.dsig.XMLSignatureFactory;
 import javax.xml.crypto.dsig.dom.DOMSignContext;
+import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.crypto.dsig.keyinfo.KeyInfo;
 import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory;
 import javax.xml.crypto.dsig.keyinfo.KeyValue;
@@ -40,22 +42,28 @@ import javax.xml.crypto.dsig.spec.TransformParameterSpec;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
+import br.net.woodstock.rockframework.io.ByteArrayWriter;
 import br.net.woodstock.rockframework.security.crypt.KeyPairType;
 import br.net.woodstock.rockframework.security.digest.DigestType;
 import br.net.woodstock.rockframework.security.sign.DocumentSigner;
 import br.net.woodstock.rockframework.security.sign.SignerException;
 import br.net.woodstock.rockframework.util.Assert;
+import br.net.woodstock.rockframework.xml.dom.XmlWriter;
 
 public class XMLSigner implements DocumentSigner {
 
 	private static final String		SIGNATURE_FACTORY	= "DOM";
 
 	private static final String		REFERENCE_URI		= "";
+
+	private static final String		SIGNATURE_ELEMENT	= "Signature";
 
 	private DocumentBuilderFactory	documentBuilderFactory;
 
@@ -94,7 +102,6 @@ public class XMLSigner implements DocumentSigner {
 	@Override
 	public byte[] sign(final byte[] data) {
 		Assert.notEmpty(data, "data");
-		
 		try {
 			ByteArrayInputStream inputStream = new ByteArrayInputStream(data);
 			Document document = this.documentBuilderFactory.newDocumentBuilder().parse(inputStream);
@@ -103,13 +110,38 @@ public class XMLSigner implements DocumentSigner {
 
 			signature.sign(signContext);
 
-			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			Document outputDocument = this.documentBuilderFactory.newDocumentBuilder().newDocument();
+			DOMResult domResult = new DOMResult(outputDocument);
 
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
-			transformer.transform(new DOMSource(document), new StreamResult(outputStream));
+			transformer.transform(new DOMSource(document), domResult);
 
-			return outputStream.toByteArray();
+			ByteArrayWriter writer = new ByteArrayWriter();
+			XmlWriter.getInstance().write(outputDocument, writer, Charset.defaultCharset());
+
+			return writer.toByteArray();
+		} catch (Exception e) {
+			throw new SignerException(e);
+		}
+	}
+
+	@Override
+	public boolean verify(final byte[] data, final byte[] signature) {
+		Assert.notEmpty(data, "data");
+		Assert.notEmpty(signature, "signature");
+		try {
+			ByteArrayInputStream inputStream = new ByteArrayInputStream(signature);
+			Document document = this.documentBuilderFactory.newDocumentBuilder().parse(inputStream);
+
+			NodeList nodeList = document.getElementsByTagNameNS(XMLSignature.XMLNS, XMLSigner.SIGNATURE_ELEMENT);
+			if ((nodeList != null) && (nodeList.getLength() > 0)) {
+				Node node = nodeList.item(0);
+				DOMValidateContext domValidateContext = new DOMValidateContext(KeySelector.singletonKeySelector(this.keyPair.getPrivate()), node);
+				XMLSignature xmlSignature = this.xmlSignatureFactory.unmarshalXMLSignature(domValidateContext);
+				return xmlSignature.getSignatureValue().validate(domValidateContext);
+			}
+			return false;
 		} catch (Exception e) {
 			throw new SignerException(e);
 		}

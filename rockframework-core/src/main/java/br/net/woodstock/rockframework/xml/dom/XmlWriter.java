@@ -22,7 +22,7 @@ import java.nio.charset.Charset;
 
 import org.w3c.dom.Node;
 
-abstract class XmlWriter {
+public abstract class XmlWriter {
 
 	private static XmlWriter	instance	= new LSXmlWriter();
 

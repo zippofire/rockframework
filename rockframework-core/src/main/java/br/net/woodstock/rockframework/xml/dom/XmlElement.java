@@ -80,6 +80,13 @@ public class XmlElement extends ElementWrapper {
 		return XmlElement.toXmlElement(e);
 	}
 
+	public XmlElement addElement(final String namespace, final String name) {
+		Document doc = this.getOwnerDocument();
+		Element e = doc.createElementNS(namespace, name);
+		this.appendChild(e);
+		return XmlElement.toXmlElement(e);
+	}
+
 	public void copy(final Document d) {
 		NodeList list = d.getChildNodes();
 		for (int i = 0; i < list.getLength(); i++) {

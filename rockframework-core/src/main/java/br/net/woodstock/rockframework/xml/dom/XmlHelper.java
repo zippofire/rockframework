@@ -36,7 +36,8 @@ abstract class XmlHelper {
 
 	static {
 		try {
-			XmlHelper.factory = DocumentBuilderFactory.newInstance();
+			XmlHelper.factory = DocumentBuilderFactory.newInstance();			
+			XmlHelper.factory.setNamespaceAware(true);			
 			XmlHelper.builder = XmlHelper.factory.newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
 			throw new br.net.woodstock.rockframework.io.IOException(e);

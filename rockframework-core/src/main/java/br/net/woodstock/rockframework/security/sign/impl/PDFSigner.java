@@ -17,7 +17,9 @@
 package br.net.woodstock.rockframework.security.sign.impl;
 
 import java.io.ByteArrayInputStream;
+import java.util.Collection;
 
+import br.net.woodstock.rockframework.office.pdf.PDFSignature;
 import br.net.woodstock.rockframework.office.pdf.impl.ITextManager;
 import br.net.woodstock.rockframework.security.sign.DocumentSigner;
 import br.net.woodstock.rockframework.security.sign.SignerException;
@@ -42,6 +44,23 @@ public class PDFSigner implements DocumentSigner {
 			byte[] bytes = IOUtils.toByteArray(new ITextManager().sign(inputStream, this.signData));
 
 			return bytes;
+		} catch (Exception e) {
+			throw new SignerException(e);
+		}
+	}
+
+	@Override
+	public boolean verify(final byte[] data, final byte[] signature) {
+		try {
+			ByteArrayInputStream inputStream = new ByteArrayInputStream(data);
+
+			Collection<PDFSignature> pdfSignatures = new ITextManager().getSignatures(inputStream);
+			for (PDFSignature pdfSignature : pdfSignatures) {
+				if (!pdfSignature.getValid().booleanValue()) {
+					return false;
+				}
+			}
+			return true;
 		} catch (Exception e) {
 			throw new SignerException(e);
 		}

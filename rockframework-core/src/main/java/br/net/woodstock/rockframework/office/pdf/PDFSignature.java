@@ -17,7 +17,6 @@
 package br.net.woodstock.rockframework.office.pdf;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -31,14 +30,17 @@ public class PDFSignature implements Serializable {
 
 	private Date					date;
 
+	private Boolean					valid;
+
 	private Collection<PDFSigner>	signers;
 
-	public PDFSignature(final String reason, final String location, final Date date) {
+	public PDFSignature(final String reason, final String location, final Date date, final Boolean valid, final Collection<PDFSigner> signers) {
 		super();
 		this.reason = reason;
 		this.location = location;
 		this.date = date;
-		this.signers = new ArrayList<PDFSigner>();
+		this.valid = valid;
+		this.signers = signers;
 	}
 
 	public String getReason() {
@@ -55,6 +57,10 @@ public class PDFSignature implements Serializable {
 
 	public Collection<PDFSigner> getSigners() {
 		return this.signers;
+	}
+
+	public Boolean getValid() {
+		return this.valid;
 	}
 
 }

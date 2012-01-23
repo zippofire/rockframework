@@ -16,14 +16,15 @@ import br.net.woodstock.rockframework.xml.dom.XmlElement;
 
 public class XMLSignerTest extends TestCase {
 
-	public void xtest1() throws Exception {
+	public void test1() throws Exception {
 		KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(KeyPairType.RSA.getAlgorithm());
 		keyPairGenerator.initialize(1024);
 		KeyPair keyPair = keyPairGenerator.generateKeyPair();
 
-		XmlDocument document = new XmlDocument("teste");
-		XmlElement element = document.getRoot();
-		element.addElement("nome").setData("Lourival Sabino");
+		XmlDocument document = new XmlDocument("urn:teste", "teste");
+		XmlElement root = document.getRoot();
+		XmlElement element = root.addElement("urn:nome", "nome");
+		element.setData("Lourival Sabino");
 
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		document.write(outputStream);
@@ -35,9 +36,11 @@ public class XMLSignerTest extends TestCase {
 		byte[] signed = signer.sign(bytes);
 
 		System.out.println(new String(signed));
+
+		System.out.println(signer.verify(bytes, signed));
 	}
 
-	public void test2() throws Exception {
+	public void xtest2() throws Exception {
 		KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(KeyPairType.RSA.getAlgorithm());
 		keyPairGenerator.initialize(1024);
 		KeyPair keyPair = keyPairGenerator.generateKeyPair();

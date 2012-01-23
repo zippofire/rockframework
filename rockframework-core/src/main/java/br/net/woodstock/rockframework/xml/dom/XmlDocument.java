@@ -16,6 +16,7 @@
  */
 package br.net.woodstock.rockframework.xml.dom;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,6 +29,7 @@ import java.nio.charset.Charset;
 
 import javax.xml.XMLConstants;
 
+import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -51,20 +53,16 @@ public class XmlDocument extends DocumentWrapper {
 	}
 
 	public XmlDocument(final String name) {
-		super();
-		Document doc = XmlHelper.getDocumentBuilder().newDocument();
-		Element e = doc.createElement(name);
-		doc.appendChild(e);
-		this.setDocument(doc);
-		this.root = XmlElement.toXmlElement(e);
+		this("urn:" + name, name);
 	}
 
-	public XmlDocument(final Element root) {
+	public XmlDocument(final String namespace, final String name) {
 		super();
-		Document doc = XmlHelper.getDocumentBuilder().newDocument();
-		doc.appendChild(root);
+		DOMImplementation domImplementation = XmlHelper.getDocumentBuilder().getDOMImplementation();
+		Document doc = domImplementation.createDocument(namespace, name, null);
+		Element e = doc.getDocumentElement();
 		this.setDocument(doc);
-		this.root = XmlElement.toXmlElement(root);
+		this.root = XmlElement.toXmlElement(e);
 	}
 
 	private XmlDocument(final Document d) {
@@ -156,6 +154,10 @@ public class XmlDocument extends DocumentWrapper {
 	}
 
 	// Static
+	public static XmlDocument read(final byte[] input) throws SAXException, IOException {
+		return XmlDocument.read(new InputStreamReader(new ByteArrayInputStream(input)), Charset.defaultCharset());
+	}
+
 	public static XmlDocument read(final InputStream input) throws SAXException, IOException {
 		return XmlDocument.read(new InputStreamReader(input), Charset.defaultCharset());
 	}

@@ -39,7 +39,7 @@ public class CertificateTest extends TestCase {
 	private static final String[]			FREE_TSA		= new String[] { "http://tsa.safelayer.com:8093", "https://tsa.aloaha.com/tsa.asp", "http://dse200.ncipher.com/TSS/HttpTspServer", "http://ca.signfiles.com/TSAServer.aspx" };
 
 	private static final TimeStampClient	TSA_CLIENT_STF	= new STFTimeStampClient("201.49.148.134", 318);
-
+	
 	static {
 		System.setProperty("http.proxyHost", "10.28.1.12");
 		System.setProperty("http.proxyPort", "8080");
@@ -238,7 +238,7 @@ public class CertificateTest extends TestCase {
 		fileInputStream.close();
 	}
 
-	public void xtest4() throws Exception {
+	public void test4() throws Exception {
 		FileInputStream fileInputStream = new FileInputStream("/tmp/sign.pdf");
 		TimeStampClient timeStampClient = TSA_CLIENT_STF;
 		TimeStamp timeStamp = timeStampClient.getTimeStamp(IOUtils.toByteArray(fileInputStream));

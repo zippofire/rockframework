@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.security.GeneralSecurityException;
+import java.security.KeyStore;
 import java.security.Principal;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
@@ -43,6 +44,9 @@ import br.net.woodstock.rockframework.security.digest.DigestType;
 import br.net.woodstock.rockframework.security.digest.Digester;
 import br.net.woodstock.rockframework.security.digest.impl.BasicDigester;
 import br.net.woodstock.rockframework.security.sign.impl.PDFSignData;
+import br.net.woodstock.rockframework.security.store.KeyStoreBuilder;
+import br.net.woodstock.rockframework.security.store.KeyStoreType;
+import br.net.woodstock.rockframework.security.store.impl.KeyStoreBuilderImpl;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 import br.net.woodstock.rockframework.utils.IOUtils;
@@ -316,9 +320,12 @@ public class ITextManager extends AbstractITextManager {
 					for (String signature : signatures) {
 						PdfPKCS7 pk = fields.verifySignature(signature);
 
-						PDFSignature pdfSignature = new PDFSignature(pk.getLocation(), pk.getReason(), pk.getSignDate().getTime());
 						Certificate[] certificates = pk.getCertificates();
 
+						KeyStoreBuilder keyStoreBuilder = new KeyStoreBuilderImpl(KeyStoreType.JKS);
+						KeyStore keyStore = keyStoreBuilder.build();
+
+						List<PDFSigner> signers = new ArrayList<PDFSigner>();
 						for (Certificate certificate : certificates) {
 							X509Certificate x509Certificate = (X509Certificate) certificate;
 							Principal principal = x509Certificate.getSubjectDN();
@@ -328,15 +335,26 @@ public class ITextManager extends AbstractITextManager {
 							String issuer = this.toString(x509Principal.getValues(X509Name.OU));
 
 							PDFSigner pdfSigner = new PDFSigner(subject, issuer);
-							pdfSignature.getSigners().add(pdfSigner);
+							signers.add(pdfSigner);
+
+							keyStore.setCertificateEntry(x509Certificate.getSerialNumber().toString(), x509Certificate);
 						}
+
+						Boolean valid = Boolean.TRUE;
+
+						Object[] fails = PdfPKCS7.verifyCertificates(certificates, keyStore, pk.getCRLs(), pk.getSignDate());
+						if (ConditionUtils.isNotEmpty(fails)) {
+							valid = Boolean.FALSE;
+						}
+
+						PDFSignature pdfSignature = new PDFSignature(pk.getLocation(), pk.getReason(), pk.getSignDate().getTime(), valid, signers);
 						pdfSignatures.add(pdfSignature);
 					}
 				}
 			}
 
 			return pdfSignatures;
-		} catch (IOException e) {
+		} catch (Exception e) {
 			throw new PDFException(e);
 		}
 	}

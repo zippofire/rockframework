@@ -14,8 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.security.sign;
+package br.net.woodstock.rockframework.security.store;
 
-public interface DocumentSigner extends Signer {
-	//
+import br.net.woodstock.rockframework.security.SecurityException;
+
+public class KeyStoreException extends SecurityException {
+
+	private static final long	serialVersionUID	= 1L;
+
+	public KeyStoreException(final String message) {
+		super(message);
+	}
+
+	public KeyStoreException(final Throwable cause) {
+		super(cause);
+	}
+
+	public KeyStoreException(final String message, final Throwable cause) {
+		super(message, cause);
+	}
+
 }
