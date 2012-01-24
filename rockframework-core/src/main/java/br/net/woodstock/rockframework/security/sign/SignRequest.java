@@ -14,19 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.security.sign.impl;
+package br.net.woodstock.rockframework.security.sign;
 
-import java.security.PrivateKey;
-import java.security.cert.Certificate;
+import java.io.Serializable;
 
 import br.net.woodstock.rockframework.security.cert.CertificateHolder;
 import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
 
-public class PDFSignData extends CertificateHolder {
+public class SignRequest implements Serializable {
 
-	private static final long	serialVersionUID	= 3825254674578069971L;
-
-	private Certificate			rootCertificate;
+	private static final long	serialVersionUID	= -4388076526792546789L;
 
 	private String				reason;
 
@@ -36,16 +33,10 @@ public class PDFSignData extends CertificateHolder {
 
 	private TimeStampClient		timeStampClient;
 
-	public PDFSignData(final Certificate certificate, final PrivateKey privateKey) {
-		super(certificate, privateKey);
-	}
+	private CertificateHolder[]	certificates;
 
-	public Certificate getRootCertificate() {
-		return this.rootCertificate;
-	}
-
-	public void setRootCertificate(final Certificate rootCertificate) {
-		this.rootCertificate = rootCertificate;
+	public SignRequest() {
+		super();
 	}
 
 	public String getReason() {
@@ -80,12 +71,12 @@ public class PDFSignData extends CertificateHolder {
 		this.timeStampClient = timeStampClient;
 	}
 
-	// Aux
-	public Certificate[] getCertificateChain() {
-		if (this.rootCertificate != null) {
-			return new Certificate[] { this.getCertificate(), this.rootCertificate };
-		}
-		return new Certificate[] { this.getCertificate() };
+	public CertificateHolder[] getCertificates() {
+		return this.certificates;
+	}
+
+	public void setCertificates(final CertificateHolder[] certificates) {
+		this.certificates = certificates;
 	}
 
 }

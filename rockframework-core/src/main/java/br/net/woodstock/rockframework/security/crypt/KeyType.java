@@ -30,4 +30,13 @@ public enum KeyType {
 		return this.algorithm;
 	}
 
+	public static KeyType getKeyType(final String algorithm) {
+		for (KeyType keyType : KeyType.values()) {
+			if (keyType.getAlgorithm().equalsIgnoreCase(algorithm)) {
+				return keyType;
+			}
+		}
+		return null;
+	}
+
 }

@@ -53,6 +53,7 @@ import br.net.woodstock.rockframework.io.ByteArrayWriter;
 import br.net.woodstock.rockframework.security.crypt.KeyPairType;
 import br.net.woodstock.rockframework.security.digest.DigestType;
 import br.net.woodstock.rockframework.security.sign.DocumentSigner;
+import br.net.woodstock.rockframework.security.sign.Signature;
 import br.net.woodstock.rockframework.security.sign.SignerException;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.xml.dom.XmlWriter;
@@ -145,6 +146,11 @@ public class XMLSigner implements DocumentSigner {
 		} catch (Exception e) {
 			throw new SignerException(e);
 		}
+	}
+
+	@Override
+	public Signature[] getSignatures(final byte[] data) {
+		throw new UnsupportedOperationException();
 	}
 
 	private String getDigestMethodName(final DigestType digestType) {

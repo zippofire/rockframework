@@ -29,7 +29,7 @@ abstract class AbstractITextManager extends AbstractManager {
 	protected static final char	PDF_SIGNATURE_VERSION	= '\0';
 
 	protected SignType getSignatureType(final String signatureAlgorithm) {
-		SignType signType = SignType.getSignTypeFromAlgorithm(signatureAlgorithm);
+		SignType signType = SignType.getSignType(signatureAlgorithm);
 		if (signType == null) {
 			signType = SignType.SHA1_RSA;
 		}

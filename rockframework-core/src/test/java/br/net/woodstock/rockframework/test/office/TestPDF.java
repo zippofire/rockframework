@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import junit.framework.TestCase;
 import br.net.woodstock.rockframework.office.pdf.PDFManager;
 import br.net.woodstock.rockframework.office.pdf.impl.ITextManager;
+import br.net.woodstock.rockframework.office.pdf.impl.PDFBoxManager;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
 import com.itextpdf.text.Document;
@@ -78,7 +79,7 @@ public class TestPDF extends TestCase {
 	public void xtest7() throws Exception {
 		System.out.println("Lowagie");
 		FileInputStream inputStream = new FileInputStream("C:/Temp/arquivo.pdf");
-		PDFManager manager = new ITextManager();
+		PDFBoxManager manager = new PDFBoxManager();
 		InputStream[] images = manager.toImage(inputStream, "jpeg");
 		int count = 0;
 		for (InputStream image : images) {

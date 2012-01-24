@@ -60,11 +60,12 @@ import org.bouncycastle.operator.jcajce.JcaDigestCalculatorProviderBuilder;
 import org.bouncycastle.util.CollectionStore;
 import org.bouncycastle.util.Store;
 
+import br.net.woodstock.rockframework.security.cert.CertificateHolder;
 import br.net.woodstock.rockframework.security.sign.PKCS7Signer;
-import br.net.woodstock.rockframework.security.sign.PKCS7SignerInfo;
+import br.net.woodstock.rockframework.security.sign.SignRequest;
 import br.net.woodstock.rockframework.security.sign.SignType;
+import br.net.woodstock.rockframework.security.sign.Signature;
 import br.net.woodstock.rockframework.security.sign.SignerException;
-import br.net.woodstock.rockframework.security.sign.SignerInfo;
 import br.net.woodstock.rockframework.security.timestamp.TimeStamp;
 import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
 import br.net.woodstock.rockframework.security.util.BouncyCastleProviderHelper;
@@ -72,12 +73,12 @@ import br.net.woodstock.rockframework.util.Assert;
 
 public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 
-	private PKCS7SignerInfo	signerInfo;
+	private SignRequest	signRequest;
 
-	public BouncyCastlePKCS7Signer(final PKCS7SignerInfo signerInfo) {
+	public BouncyCastlePKCS7Signer(final SignRequest signRequest) {
 		super();
-		Assert.notNull(signerInfo, "signerInfo");
-		this.signerInfo = signerInfo;
+		Assert.notNull(signRequest, "signRequest");
+		this.signRequest = signRequest;
 	}
 
 	@Override
@@ -86,12 +87,12 @@ public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 		Assert.notEmpty(data, "data");
 		try {
 			CMSSignedDataGenerator cmsSignedDataGenerator = new CMSSignedDataGenerator();
-			TimeStampClient timeStampClient = this.signerInfo.getTimeStampClient();
-			for (SignerInfo signerInfo : this.signerInfo.getSignerInfos()) {
+			TimeStampClient timeStampClient = this.signRequest.getTimeStampClient();
+			for (CertificateHolder certificateHolder : this.signRequest.getCertificates()) {
 				JcaContentSignerBuilder contentSignerBuilder = new JcaContentSignerBuilder(SignType.SHA1_RSA.getAlgorithm());
 				contentSignerBuilder.setProvider(BouncyCastleProviderHelper.PROVIDER_NAME);
 
-				ContentSigner contentSigner = contentSignerBuilder.build(signerInfo.getPrivateKey());
+				ContentSigner contentSigner = contentSignerBuilder.build(certificateHolder.getPrivateKey());
 
 				JcaDigestCalculatorProviderBuilder digestCalculatorProviderBuilder = new JcaDigestCalculatorProviderBuilder();
 				digestCalculatorProviderBuilder.setProvider(BouncyCastleProviderHelper.PROVIDER_NAME);
@@ -99,7 +100,7 @@ public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 
 				JcaSignerInfoGeneratorBuilder signerInfoGeneratorBuilder = new JcaSignerInfoGeneratorBuilder(digestCalculatorProvider);
 
-				SignerInfoGenerator signerInfoGenerator = signerInfoGeneratorBuilder.build(contentSigner, (X509Certificate) signerInfo.getCertificate());
+				SignerInfoGenerator signerInfoGenerator = signerInfoGeneratorBuilder.build(contentSigner, (X509Certificate) certificateHolder.getCertificate());
 				cmsSignedDataGenerator.addSignerInfoGenerator(signerInfoGenerator);
 			}
 
@@ -184,6 +185,11 @@ public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 		}
 	}
 
+	@Override
+	public Signature[] getSignatures(final byte[] data) {
+		throw new UnsupportedOperationException();
+	}
+
 	protected byte[] encapsulateContent(final byte[] data, final byte[] signature) throws IOException {
 		ASN1InputStream inputStream = new ASN1InputStream(signature);
 		DERSequence derSequence = (DERSequence) inputStream.readObject();
@@ -197,8 +203,8 @@ public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 
 	protected Store getCertificateStore() throws CertificateEncodingException {
 		ArrayList<Certificate> list = new ArrayList<Certificate>();
-		for (SignerInfo signerInfo : this.signerInfo.getSignerInfos()) {
-			list.add(signerInfo.getCertificate());
+		for (CertificateHolder certificateHolder : this.signRequest.getCertificates()) {
+			list.add(certificateHolder.getCertificate());
 		}
 		JcaCertStore certStore = new JcaCertStore(list);
 		return certStore;

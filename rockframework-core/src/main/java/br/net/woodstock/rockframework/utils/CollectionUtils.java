@@ -16,6 +16,7 @@
  */
 package br.net.woodstock.rockframework.utils;
 
+import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -30,6 +31,22 @@ public abstract class CollectionUtils {
 
 	private CollectionUtils() {
 		//
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <E> E[] toArray(final Collection<E> collection, final Class<E> clazz) {
+		if (collection == null) {
+			return null;
+		}
+
+		int index = 0;
+		Object array = Array.newInstance(clazz, collection.size());
+
+		for (E e : collection) {
+			Array.set(array, index++, e);
+		}
+
+		return (E[]) array;
 	}
 
 	public static <E> Collection<E> toCollection(final Enumeration<E> enumeration) {

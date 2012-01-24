@@ -17,5 +17,7 @@
 package br.net.woodstock.rockframework.security.sign;
 
 public interface DocumentSigner extends Signer {
-	//
+
+	Signature[] getSignatures(byte[] data);
+
 }

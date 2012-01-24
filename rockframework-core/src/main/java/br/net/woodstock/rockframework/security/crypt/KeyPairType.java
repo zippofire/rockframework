@@ -30,4 +30,13 @@ public enum KeyPairType {
 		return this.algorithm;
 	}
 
+	public static KeyPairType getKeyPairType(final String algorithm) {
+		for (KeyPairType keyPairType : KeyPairType.values()) {
+			if (keyPairType.getAlgorithm().equalsIgnoreCase(algorithm)) {
+				return keyPairType;
+			}
+		}
+		return null;
+	}
+
 }

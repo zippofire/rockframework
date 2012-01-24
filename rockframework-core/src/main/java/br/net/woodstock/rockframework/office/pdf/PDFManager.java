@@ -17,9 +17,6 @@
 package br.net.woodstock.rockframework.office.pdf;
 
 import java.io.InputStream;
-import java.util.Collection;
-
-import br.net.woodstock.rockframework.security.sign.impl.PDFSignData;
 
 public interface PDFManager {
 
@@ -30,11 +27,5 @@ public interface PDFManager {
 	InputStream[] split(InputStream source, int size);
 
 	String getText(InputStream source);
-
-	InputStream[] toImage(InputStream source, String format);
-
-	InputStream sign(InputStream source, PDFSignData data);
-
-	Collection<PDFSignature> getSignatures(InputStream source);
 
 }

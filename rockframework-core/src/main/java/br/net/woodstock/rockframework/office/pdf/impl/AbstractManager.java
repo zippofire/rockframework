@@ -17,11 +17,8 @@
 package br.net.woodstock.rockframework.office.pdf.impl;
 
 import java.io.InputStream;
-import java.util.Collection;
 
 import br.net.woodstock.rockframework.office.pdf.PDFManager;
-import br.net.woodstock.rockframework.office.pdf.PDFSignature;
-import br.net.woodstock.rockframework.security.sign.impl.PDFSignData;
 
 abstract class AbstractManager implements PDFManager {
 
@@ -42,21 +39,6 @@ abstract class AbstractManager implements PDFManager {
 
 	@Override
 	public String getText(final InputStream source) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public InputStream[] toImage(final InputStream source, final String format) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public InputStream sign(final InputStream source, final PDFSignData data) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public Collection<PDFSignature> getSignatures(final InputStream source) {
 		throw new UnsupportedOperationException();
 	}
 

@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.office.pdf;
+package br.net.woodstock.rockframework.security.sign;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 
-public class PDFSignature implements Serializable {
+public class Signature implements Serializable {
 
 	private static final long		serialVersionUID	= 3344909224780348665L;
 
@@ -32,9 +32,9 @@ public class PDFSignature implements Serializable {
 
 	private Boolean					valid;
 
-	private Collection<PDFSigner>	signers;
+	private Collection<Signatory>	signers;
 
-	public PDFSignature(final String reason, final String location, final Date date, final Boolean valid, final Collection<PDFSigner> signers) {
+	public Signature(final String reason, final String location, final Date date, final Boolean valid, final Collection<Signatory> signers) {
 		super();
 		this.reason = reason;
 		this.location = location;
@@ -55,12 +55,12 @@ public class PDFSignature implements Serializable {
 		return this.date;
 	}
 
-	public Collection<PDFSigner> getSigners() {
-		return this.signers;
-	}
-
 	public Boolean getValid() {
 		return this.valid;
+	}
+
+	public Collection<Signatory> getSigners() {
+		return this.signers;
 	}
 
 }

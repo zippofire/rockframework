@@ -16,11 +16,22 @@
  */
 package br.net.woodstock.rockframework.security.store;
 
-import java.security.KeyStore;
+import br.net.woodstock.rockframework.security.SecurityException;
 
+public class StoreException extends SecurityException {
 
-public interface KeyStoreBuilder {
+	private static final long	serialVersionUID	= 1L;
 
-	KeyStore build();
-	
+	public StoreException(final String message) {
+		super(message);
+	}
+
+	public StoreException(final Throwable cause) {
+		super(cause);
+	}
+
+	public StoreException(final String message, final Throwable cause) {
+		super(message, cause);
+	}
+
 }

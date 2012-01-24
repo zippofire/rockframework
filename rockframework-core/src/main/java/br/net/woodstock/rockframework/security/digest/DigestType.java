@@ -30,4 +30,13 @@ public enum DigestType {
 		return this.algorithm;
 	}
 
+	public static DigestType getDigestType(final String algorithm) {
+		for (DigestType digestType : DigestType.values()) {
+			if (digestType.getAlgorithm().equalsIgnoreCase(algorithm)) {
+				return digestType;
+			}
+		}
+		return null;
+	}
+
 }

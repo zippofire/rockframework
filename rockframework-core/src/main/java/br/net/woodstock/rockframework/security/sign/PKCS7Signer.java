@@ -16,6 +16,6 @@
  */
 package br.net.woodstock.rockframework.security.sign;
 
-public interface PKCS7Signer extends Signer {
+public interface PKCS7Signer extends DocumentSigner {
 	//
 }

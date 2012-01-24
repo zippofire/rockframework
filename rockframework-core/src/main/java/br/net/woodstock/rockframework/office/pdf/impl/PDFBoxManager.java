@@ -184,7 +184,6 @@ public class PDFBoxManager extends AbstractManager {
 		}
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	public InputStream[] toImage(final InputStream source, final String format) {
 		try {

@@ -30,4 +30,13 @@ public enum CertificateType {
 		return this.type;
 	}
 
+	public static CertificateType getCertificateType(final String type) {
+		for (CertificateType certificateType : CertificateType.values()) {
+			if (certificateType.getType().equalsIgnoreCase(type)) {
+				return certificateType;
+			}
+		}
+		return null;
+	}
+
 }

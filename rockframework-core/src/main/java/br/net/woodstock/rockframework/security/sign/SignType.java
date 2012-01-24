@@ -61,7 +61,7 @@ public enum SignType {
 		return this.digestType;
 	}
 
-	public static SignType getSignTypeFromAlgorithm(final String algorithm) {
+	public static SignType getSignType(final String algorithm) {
 		if (ConditionUtils.isNotEmpty(algorithm)) {
 			for (SignType signType : SignType.values()) {
 				if (algorithm.equalsIgnoreCase(signType.getAlgorithm())) {

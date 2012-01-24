@@ -16,59 +16,22 @@
  */
 package br.net.woodstock.rockframework.office.pdf.impl;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.security.GeneralSecurityException;
-import java.security.KeyStore;
-import java.security.Principal;
-import java.security.PrivateKey;
-import java.security.cert.Certificate;
-import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.bouncycastle.jce.X509Principal;
-
 import br.net.woodstock.rockframework.io.InputOutputStream;
 import br.net.woodstock.rockframework.office.pdf.PDFException;
-import br.net.woodstock.rockframework.office.pdf.PDFSignature;
-import br.net.woodstock.rockframework.office.pdf.PDFSigner;
-import br.net.woodstock.rockframework.security.digest.DigestType;
-import br.net.woodstock.rockframework.security.digest.Digester;
-import br.net.woodstock.rockframework.security.digest.impl.BasicDigester;
-import br.net.woodstock.rockframework.security.sign.impl.PDFSignData;
-import br.net.woodstock.rockframework.security.store.KeyStoreBuilder;
-import br.net.woodstock.rockframework.security.store.KeyStoreType;
-import br.net.woodstock.rockframework.security.store.impl.KeyStoreBuilderImpl;
 import br.net.woodstock.rockframework.util.Assert;
-import br.net.woodstock.rockframework.utils.ConditionUtils;
-import br.net.woodstock.rockframework.utils.IOUtils;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.AcroFields;
-import com.itextpdf.text.pdf.OcspClient;
-import com.itextpdf.text.pdf.OcspClientBouncyCastle;
 import com.itextpdf.text.pdf.PdfCopy;
-import com.itextpdf.text.pdf.PdfDate;
-import com.itextpdf.text.pdf.PdfDictionary;
 import com.itextpdf.text.pdf.PdfImportedPage;
-import com.itextpdf.text.pdf.PdfName;
-import com.itextpdf.text.pdf.PdfPKCS7;
-import com.itextpdf.text.pdf.PdfPKCS7.X509Name;
 import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfSignature;
-import com.itextpdf.text.pdf.PdfSignatureAppearance;
-import com.itextpdf.text.pdf.PdfStamper;
-import com.itextpdf.text.pdf.PdfString;
-import com.itextpdf.text.pdf.TSAClient;
 import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
 import com.itextpdf.text.pdf.parser.SimpleTextExtractionStrategy;
 import com.itextpdf.text.pdf.parser.TextExtractionStrategy;
@@ -214,147 +177,6 @@ public class ITextManager extends AbstractITextManager {
 			String text = new String(outputStream.toByteArray());
 			return text;
 		} catch (IOException e) {
-			throw new PDFException(e);
-		}
-	}
-
-	@Override
-	public InputStream sign(final InputStream source, final PDFSignData data) {
-		Assert.notNull(source, "source");
-		Assert.notNull(data, "data");
-		try {
-			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-			X509Certificate certificate = (X509Certificate) data.getCertificate();
-			X509Certificate rootCertificate = (X509Certificate) data.getRootCertificate();
-			Certificate[] chain = data.getCertificateChain();
-			PrivateKey privateKey = data.getPrivateKey();
-			DigestType digestType = this.getDigestTypeFromSignature(certificate.getSigAlgName());
-			Calendar calendar = Calendar.getInstance();
-
-			PdfReader reader = new PdfReader(source);
-			PdfStamper stamper = PdfStamper.createSignature(reader, outputStream, AbstractITextManager.PDF_SIGNATURE_VERSION, null, true);
-
-			PdfSignatureAppearance appearance = stamper.getSignatureAppearance();
-			appearance.setCertificationLevel(PdfSignatureAppearance.CERTIFIED_NO_CHANGES_ALLOWED);
-			appearance.setCrypto(privateKey, chain, null, PdfSignatureAppearance.SELF_SIGNED);
-			appearance.setContact(data.getContactInfo());
-			appearance.setLocation(data.getLocation());
-			appearance.setReason(data.getReason());
-			appearance.setSignDate(calendar);
-			// appearance.preClose();
-
-			PdfSignature signature = new PdfSignature(PdfName.ADOBE_PPKLITE, PdfName.ADBE_PKCS7_DETACHED);
-			signature.setReason(appearance.getReason());
-			signature.setLocation(appearance.getLocation());
-			signature.setContact(appearance.getContact());
-			signature.setDate(new PdfDate(appearance.getSignDate()));
-
-			appearance.setCryptoDictionary(signature);
-
-			int contentSize = 0x2502;
-			HashMap<PdfName, Integer> exc = new HashMap<PdfName, Integer>();
-			exc.put(PdfName.CONTENTS, new Integer(contentSize));
-			appearance.preClose(exc);
-
-			Digester digester = new BasicDigester(digestType);
-			byte[] rangeStream = IOUtils.toByteArray(appearance.getRangeStream());
-			byte[] hash = digester.digest(rangeStream);
-
-			TSAClient tsc = null;
-
-			if (data.getTimeStampClient() != null) {
-				tsc = new DelegateITextTSAClient(data.getTimeStampClient());
-			}
-
-			byte[] oscp = null;
-			if (rootCertificate != null) {
-				String oscpUrl = PdfPKCS7.getOCSPURL(certificate);
-				if (ConditionUtils.isNotEmpty(oscpUrl)) {
-					OcspClient ocspClient = new OcspClientBouncyCastle(certificate, rootCertificate, oscpUrl);
-					oscp = ocspClient.getEncoded();
-				}
-			}
-
-			PdfPKCS7 pkcs7 = new PdfPKCS7(privateKey, chain, null, digestType.getAlgorithm(), null, false);
-			byte[] authenticatedAttributes = pkcs7.getAuthenticatedAttributeBytes(hash, calendar, oscp);
-			pkcs7.update(authenticatedAttributes, 0, authenticatedAttributes.length);
-			pkcs7.setLocation(data.getLocation());
-			pkcs7.setReason(data.getReason());
-
-			if (tsc == null) {
-				pkcs7.setSignDate(calendar);
-			}
-
-			byte[] encodedPkcs7 = pkcs7.getEncodedPKCS7(hash, calendar, tsc, oscp);
-
-			byte[] output = new byte[(contentSize - 2) / 2];
-
-			System.arraycopy(encodedPkcs7, 0, output, 0, encodedPkcs7.length);
-
-			PdfDictionary newDictionary = new PdfDictionary();
-			PdfString content = new PdfString(output);
-			content.setHexWriting(true);
-			newDictionary.put(PdfName.CONTENTS, content);
-			appearance.close(newDictionary);
-
-			return new ByteArrayInputStream(outputStream.toByteArray());
-		} catch (IOException e) {
-			throw new PDFException(e);
-		} catch (GeneralSecurityException e) {
-			throw new PDFException(e);
-		} catch (DocumentException e) {
-			throw new PDFException(e);
-		}
-	}
-
-	@Override
-	@SuppressWarnings("deprecation")
-	public Collection<PDFSignature> getSignatures(final InputStream source) {
-		try {
-			PdfReader reader = new PdfReader(source);
-			AcroFields fields = reader.getAcroFields();
-			Collection<PDFSignature> pdfSignatures = new ArrayList<PDFSignature>();
-			if (fields != null) {
-				List<String> signatures = fields.getSignatureNames();
-				if ((signatures != null) && (!signatures.isEmpty())) {
-					for (String signature : signatures) {
-						PdfPKCS7 pk = fields.verifySignature(signature);
-
-						Certificate[] certificates = pk.getCertificates();
-
-						KeyStoreBuilder keyStoreBuilder = new KeyStoreBuilderImpl(KeyStoreType.JKS);
-						KeyStore keyStore = keyStoreBuilder.build();
-
-						List<PDFSigner> signers = new ArrayList<PDFSigner>();
-						for (Certificate certificate : certificates) {
-							X509Certificate x509Certificate = (X509Certificate) certificate;
-							Principal principal = x509Certificate.getSubjectDN();
-							X509Principal x509Principal = (X509Principal) principal;
-
-							String subject = this.toString(x509Principal.getValues(X509Name.CN));
-							String issuer = this.toString(x509Principal.getValues(X509Name.OU));
-
-							PDFSigner pdfSigner = new PDFSigner(subject, issuer);
-							signers.add(pdfSigner);
-
-							keyStore.setCertificateEntry(x509Certificate.getSerialNumber().toString(), x509Certificate);
-						}
-
-						Boolean valid = Boolean.TRUE;
-
-						Object[] fails = PdfPKCS7.verifyCertificates(certificates, keyStore, pk.getCRLs(), pk.getSignDate());
-						if (ConditionUtils.isNotEmpty(fails)) {
-							valid = Boolean.FALSE;
-						}
-
-						PDFSignature pdfSignature = new PDFSignature(pk.getLocation(), pk.getReason(), pk.getSignDate().getTime(), valid, signers);
-						pdfSignatures.add(pdfSignature);
-					}
-				}
-			}
-
-			return pdfSignatures;
-		} catch (Exception e) {
 			throw new PDFException(e);
 		}
 	}
