@@ -20,12 +20,17 @@ import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.Certificate;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import br.net.woodstock.rockframework.security.store.KeyStoreType;
 import br.net.woodstock.rockframework.security.store.Store;
+import br.net.woodstock.rockframework.security.store.StoreEntry;
+import br.net.woodstock.rockframework.security.store.StoreEntryType;
+import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.CollectionUtils;
 
 public abstract class MapStore implements Store {
@@ -56,86 +61,108 @@ public abstract class MapStore implements Store {
 		return this.publicKeyMap;
 	}
 
-	// Store
 	@Override
-	public Certificate getCertificate(final String alias) {
-		return this.certificateMap.get(alias);
-	}
-
-	@Override
-	public PrivateKey getPrivateKey(final String alias) {
-		return this.privateKeyMap.get(alias);
-	}
-
-	@Override
-	public PublicKey getPublicKeys(final String alias) {
-		return this.publicKeyMap.get(alias);
-	}
-
-	@Override
-	public Certificate[] getCertificates() {
-		return CollectionUtils.toArray(this.certificateMap.values(), Certificate.class);
-	}
-
-	@Override
-	public PrivateKey[] getPrivateKeys() {
-		return CollectionUtils.toArray(this.privateKeyMap.values(), PrivateKey.class);
-	}
-
-	@Override
-	public PublicKey[] getPublicKeys() {
-		return CollectionUtils.toArray(this.publicKeyMap.values(), PublicKey.class);
-	}
-
-	@Override
-	public boolean addCertificate(final Certificate certificate, final String alias) {
-		this.certificateMap.put(alias, certificate);
-		return true;
-	}
-
-	@Override
-	public boolean addPrivateKey(final PrivateKey privateKey, final String alias) {
-		this.privateKeyMap.put(alias, privateKey);
-		return true;
-	}
-
-	@Override
-	public boolean addPublicKey(final PublicKey publicKey, final String alias) {
-		this.publicKeyMap.put(alias, publicKey);
-		return true;
-	}
-
-	@Override
-	public boolean removeCertificate(final String alias) {
-		this.certificateMap.remove(alias);
-		return true;
-	}
-
-	@Override
-	public boolean removePrivateKey(final String alias) {
-		this.privateKeyMap.remove(alias);
-		return true;
-	}
-
-	@Override
-	public boolean removePublicKey(final String alias) {
-		this.publicKeyMap.remove(alias);
-		return true;
-	}
-
-	@Override
-	public KeyStore toKeyStore(final char[] storePasswd) {
-		JCAStore jcaStore = new JCAStore(KeyStoreType.JKS, storePasswd);
-		for (Entry<String, Certificate> certificates : this.certificateMap.entrySet()) {
-			jcaStore.addCertificate(certificates.getValue(), certificates.getKey());
+	public StoreEntry[] aliases() {
+		Collection<StoreEntry> aliases = new ArrayList<StoreEntry>();
+		for (Entry<String, Certificate> certificate : this.certificateMap.entrySet()) {
+			aliases.add(new StoreEntry(certificate.getKey(), null, certificate.getValue(), StoreEntryType.CERTIFICATE));
 		}
 		for (Entry<String, PrivateKey> privateKey : this.privateKeyMap.entrySet()) {
-			jcaStore.addPrivateKey(privateKey.getValue(), privateKey.getKey());
+			aliases.add(new StoreEntry(privateKey.getKey(), null, privateKey.getValue(), StoreEntryType.PRIVATE_KEY));
+		}
+		for (Entry<String, PublicKey> publicKey : this.publicKeyMap.entrySet()) {
+			aliases.add(new StoreEntry(publicKey.getKey(), null, publicKey.getValue(), StoreEntryType.PUBLIC_KEY));
+		}
+		return CollectionUtils.toArray(aliases, StoreEntry.class);
+	}
+
+	@Override
+	public StoreEntry get(final StoreEntry entry) {
+		Assert.notNull(entry, "entry");
+		Assert.notNull(entry.getAlias(), "entry.alias");
+		Assert.notNull(entry.getType(), "entry.type");
+
+		Object value = null;
+
+		switch (entry.getType()) {
+			case CERTIFICATE:
+				value = this.certificateMap.get(entry.getAlias());
+				break;
+			case PRIVATE_KEY:
+				value = this.privateKeyMap.get(entry.getAlias());
+				break;
+			case PUBLIC_KEY:
+				value = this.publicKeyMap.get(entry.getAlias());
+				break;
+			default:
+				break;
+		}
+
+		if (value != null) {
+			return new StoreEntry(entry.getAlias(), null, value, entry.getType());
+		}
+
+		return null;
+	}
+
+	@Override
+	public boolean add(final StoreEntry entry) {
+		Assert.notNull(entry, "entry");
+		Assert.notNull(entry.getAlias(), "entry.alias");
+		Assert.notNull(entry.getType(), "entry.type");
+		Assert.notNull(entry.getValue(), "entry.value");
+
+		switch (entry.getType()) {
+			case CERTIFICATE:
+				this.certificateMap.put(entry.getAlias(), (Certificate) entry.getValue());
+				break;
+			case PRIVATE_KEY:
+				this.privateKeyMap.put(entry.getAlias(), (PrivateKey) entry.getValue());
+				break;
+			case PUBLIC_KEY:
+				this.publicKeyMap.put(entry.getAlias(), (PublicKey) entry.getValue());
+				break;
+			default:
+				break;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean remove(final StoreEntry entry) {
+		Assert.notNull(entry, "entry");
+		Assert.notNull(entry.getAlias(), "entry.alias");
+		Assert.notNull(entry.getType(), "entry.type");
+
+		switch (entry.getType()) {
+			case CERTIFICATE:
+				this.certificateMap.remove(entry.getAlias());
+				break;
+			case PRIVATE_KEY:
+				this.privateKeyMap.remove(entry.getAlias());
+				break;
+			case PUBLIC_KEY:
+				this.publicKeyMap.remove(entry.getAlias());
+				break;
+			default:
+				break;
+		}
+		return true;
+	}
+
+	@Override
+	public KeyStore toKeyStore() {
+		JCAStore jcaStore = new JCAStore(KeyStoreType.JKS);
+		for (Entry<String, Certificate> certificate : this.certificateMap.entrySet()) {
+			jcaStore.add(new StoreEntry(certificate.getKey(), null, certificate.getValue(), StoreEntryType.CERTIFICATE));
 		}
 		for (Entry<String, PrivateKey> privateKey : this.privateKeyMap.entrySet()) {
-			jcaStore.addPrivateKey(privateKey.getValue(), privateKey.getKey());
+			jcaStore.add(new StoreEntry(privateKey.getKey(), null, privateKey.getValue(), StoreEntryType.PRIVATE_KEY));
 		}
-		return jcaStore.toKeyStore(storePasswd);
+		for (Entry<String, PublicKey> publicKey : this.publicKeyMap.entrySet()) {
+			jcaStore.add(new StoreEntry(publicKey.getKey(), null, publicKey.getValue(), StoreEntryType.PUBLIC_KEY));
+		}
+		return jcaStore.toKeyStore();
 	}
 
 }

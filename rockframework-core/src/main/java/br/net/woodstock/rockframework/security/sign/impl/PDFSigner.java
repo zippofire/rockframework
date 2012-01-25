@@ -47,6 +47,8 @@ import br.net.woodstock.rockframework.security.sign.Signature;
 import br.net.woodstock.rockframework.security.sign.SignerException;
 import br.net.woodstock.rockframework.security.store.KeyStoreType;
 import br.net.woodstock.rockframework.security.store.Store;
+import br.net.woodstock.rockframework.security.store.StoreEntry;
+import br.net.woodstock.rockframework.security.store.StoreEntryType;
 import br.net.woodstock.rockframework.security.store.impl.JCAStore;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.CollectionUtils;
@@ -271,8 +273,7 @@ public class PDFSigner implements DocumentSigner {
 
 						Certificate[] certificates = pk.getCertificates();
 
-						Store store = new JCAStore(KeyStoreType.JKS, null);
-						store.read(null);
+						Store store = new JCAStore(KeyStoreType.JKS);
 
 						List<Signatory> signers = new ArrayList<Signatory>();
 						for (Certificate certificate : certificates) {
@@ -286,12 +287,12 @@ public class PDFSigner implements DocumentSigner {
 							Signatory signatory = new Signatory(subject, issuer);
 							signers.add(signatory);
 
-							store.addCertificate(x509Certificate, x509Certificate.getSerialNumber().toString());
+							store.add(new StoreEntry(x509Certificate.getSerialNumber().toString(), null, x509Certificate, StoreEntryType.CERTIFICATE));
 						}
 
 						Boolean valid = Boolean.TRUE;
 
-						Object[] fails = PdfPKCS7.verifyCertificates(certificates, store.toKeyStore(null), pk.getCRLs(), pk.getSignDate());
+						Object[] fails = PdfPKCS7.verifyCertificates(certificates, store.toKeyStore(), pk.getCRLs(), pk.getSignDate());
 						if (ConditionUtils.isNotEmpty(fails)) {
 							valid = Boolean.FALSE;
 						}

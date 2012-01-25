@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
+import java.security.PrivateKey;
+import java.security.cert.Certificate;
 
 import junit.framework.TestCase;
 import br.net.woodstock.rockframework.security.cert.CertificateHolder;
@@ -21,6 +23,10 @@ import br.net.woodstock.rockframework.security.sign.impl.BouncyCastlePKCS7Signer
 import br.net.woodstock.rockframework.security.sign.impl.HexSigner;
 import br.net.woodstock.rockframework.security.sign.impl.KeyPairSigner;
 import br.net.woodstock.rockframework.security.sign.impl.PDFSigner;
+import br.net.woodstock.rockframework.security.store.KeyStoreType;
+import br.net.woodstock.rockframework.security.store.StoreEntry;
+import br.net.woodstock.rockframework.security.store.StoreEntryType;
+import br.net.woodstock.rockframework.security.store.impl.JCAStore;
 import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
 import br.net.woodstock.rockframework.security.timestamp.impl.STFTimeStampClient;
 import br.net.woodstock.rockframework.security.timestamp.impl.URLTimeStampClient;
@@ -182,7 +188,7 @@ public class SignerTest extends TestCase {
 		}
 	}
 
-	public void test2() throws Exception {
+	public void xtest6() throws Exception {
 		BouncyCastleCertificateBuilder builder = new BouncyCastleCertificateBuilder("Lourival Sabino 1");
 		builder.withIssuer("TSE");
 		builder.withV3Extensions(true);
@@ -211,7 +217,7 @@ public class SignerTest extends TestCase {
 		fileOutputStream.close();
 	}
 
-	public void test2x1() throws Exception {
+	public void xtest6x1() throws Exception {
 		BouncyCastleCertificateBuilder builder = new BouncyCastleCertificateBuilder("Lourival Sabino 2");
 		builder.withIssuer("TSE");
 		builder.withV3Extensions(true);
@@ -234,6 +240,36 @@ public class SignerTest extends TestCase {
 
 		byte[] signed = signer.sign(IOUtils.toByteArray(fileInputStream));
 		FileOutputStream fileOutputStream = new FileOutputStream("/tmp/sign2.pdf");
+		fileOutputStream.write(signed);
+
+		fileInputStream.close();
+		fileOutputStream.close();
+	}
+
+	public void test7() throws Exception {
+		JCAStore store = new JCAStore(KeyStoreType.JKS);
+		store.read(new FileInputStream("/home/lourival/Downloads/LOURIVALSABINO.jks"), "storepasswd");
+		StoreEntry entryCert = store.get(new StoreEntry("lourival sabino", "lourival", null, StoreEntryType.CERTIFICATE));
+		StoreEntry entryKey = store.get(new StoreEntry("lourival sabino", "lourival", null, StoreEntryType.PRIVATE_KEY));
+
+		CertificateHolder holder = new CertificateHolder((Certificate) entryCert.getValue(), (PrivateKey) entryKey.getValue());
+
+		FileInputStream fileInputStream = new FileInputStream("/home/lourival/Documentos/curriculum.pdf");
+
+		TimeStampClient timeStampClient = TSA_CLIENT_STF;
+		// TimeStampClient timeStampClient = new STFTimeStampClient("201.49.148.134", 318);
+		SignRequest signerInfo = new SignRequest();
+		signerInfo.setCertificates(new CertificateHolder[] { holder });
+		signerInfo.setContactInfo("ConcactInfo");
+		signerInfo.setLocation("Location");
+		signerInfo.setName("Lourival Sabino");
+		signerInfo.setReason("Reason");
+		signerInfo.setTimeStampClient(timeStampClient);
+
+		PDFSigner signer = new PDFSigner(signerInfo);
+
+		byte[] signed = signer.sign(IOUtils.toByteArray(fileInputStream));
+		FileOutputStream fileOutputStream = new FileOutputStream("/tmp/sign.pdf");
 		fileOutputStream.write(signed);
 
 		fileInputStream.close();

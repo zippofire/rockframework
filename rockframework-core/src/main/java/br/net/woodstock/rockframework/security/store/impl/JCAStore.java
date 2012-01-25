@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.GeneralSecurityException;
-import java.security.Key;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -31,120 +30,110 @@ import java.util.List;
 
 import br.net.woodstock.rockframework.security.store.KeyStoreType;
 import br.net.woodstock.rockframework.security.store.Store;
+import br.net.woodstock.rockframework.security.store.StoreEntry;
+import br.net.woodstock.rockframework.security.store.StoreEntryType;
 import br.net.woodstock.rockframework.security.store.StoreException;
+import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.CollectionUtils;
+import br.net.woodstock.rockframework.utils.ConditionUtils;
 
 public class JCAStore implements Store {
 
 	private KeyStore	keyStore;
 
-	private char[]		storePasswd;
-
-	public JCAStore(final KeyStore keyStore, final char[] storePasswd) {
+	public JCAStore(final KeyStore keyStore) {
 		super();
 		this.keyStore = keyStore;
-		this.storePasswd = storePasswd;
 	}
 
-	public JCAStore(final KeyStoreType keyStoreType, final char[] storePasswd) {
+	public JCAStore(final KeyStoreType keyStoreType) {
 		super();
 		try {
 			this.keyStore = KeyStore.getInstance(keyStoreType.getType());
-			this.storePasswd = storePasswd;
-		} catch (GeneralSecurityException e) {
+			this.keyStore.load(null, null);
+		} catch (Exception e) {
 			throw new StoreException(e);
 		}
 	}
 
 	@Override
-	public Certificate getCertificate(final String alias) {
-		try {
-			return this.keyStore.getCertificate(alias);
-		} catch (GeneralSecurityException e) {
-			throw new StoreException(e);
-		}
-	}
-
-	@Override
-	public PrivateKey getPrivateKey(final String alias) {
-		try {
-			return (PrivateKey) this.keyStore.getKey(alias, null);
-		} catch (GeneralSecurityException e) {
-			throw new StoreException(e);
-		}
-	}
-
-	@Override
-	public PublicKey getPublicKeys(final String alias) {
-		try {
-			return (PublicKey) this.keyStore.getKey(alias, null);
-		} catch (GeneralSecurityException e) {
-			throw new StoreException(e);
-		}
-	}
-
-	@Override
-	public Certificate[] getCertificates() {
+	public StoreEntry[] aliases() {
 		try {
 			Enumeration<String> aliases = this.keyStore.aliases();
-			List<Certificate> list = new ArrayList<Certificate>();
+			List<StoreEntry> list = new ArrayList<StoreEntry>();
 			while (aliases.hasMoreElements()) {
 				String alias = aliases.nextElement();
+				StoreEntryType type = null;
 				if (this.keyStore.isCertificateEntry(alias)) {
-					Certificate c = this.keyStore.getCertificate(alias);
-					list.add(c);
+					type = StoreEntryType.CERTIFICATE;
+				} else if (this.keyStore.isKeyEntry(alias)) {
+					type = StoreEntryType.PRIVATE_KEY;
 				}
+				list.add(new StoreEntry(alias, null, null, type));
 			}
-			return CollectionUtils.toArray(list, Certificate.class);
+			return CollectionUtils.toArray(list, StoreEntry.class);
 		} catch (GeneralSecurityException e) {
 			throw new StoreException(e);
 		}
 	}
 
 	@Override
-	public PrivateKey[] getPrivateKeys() {
+	public StoreEntry get(final StoreEntry entry) {
 		try {
-			Enumeration<String> aliases = this.keyStore.aliases();
-			List<PrivateKey> list = new ArrayList<PrivateKey>();
-			while (aliases.hasMoreElements()) {
-				String alias = aliases.nextElement();
-				if (this.keyStore.isKeyEntry(alias)) {
-					Key k = this.keyStore.getKey(alias, null);
-					if (k instanceof PrivateKey) {
-						list.add((PrivateKey) k);
-					}
-				}
+			Assert.notNull(entry, "entry");
+			Assert.notNull(entry.getAlias(), "entry.alias");
+			Assert.notNull(entry.getType(), "entry.type");
+
+			Object value = null;
+
+			switch (entry.getType()) {
+				case CERTIFICATE:
+					value = this.keyStore.getCertificate(entry.getAlias());
+					break;
+				case PRIVATE_KEY:
+					PrivateKey privateKey = (PrivateKey) this.keyStore.getKey(entry.getAlias(), this.toCharArray(entry.getPassword()));
+					value = privateKey;
+					break;
+				case PUBLIC_KEY:
+					PublicKey publicKey = (PublicKey) this.keyStore.getKey(entry.getAlias(), this.toCharArray(entry.getPassword()));
+					value = publicKey;
+					break;
+				default:
+					break;
 			}
-			return CollectionUtils.toArray(list, PrivateKey.class);
-		} catch (GeneralSecurityException e) {
-			throw new StoreException(e);
-		}
-	}
 
-	@Override
-	public PublicKey[] getPublicKeys() {
-		try {
-			Enumeration<String> aliases = this.keyStore.aliases();
-			List<PublicKey> list = new ArrayList<PublicKey>();
-			while (aliases.hasMoreElements()) {
-				String alias = aliases.nextElement();
-				if (this.keyStore.isKeyEntry(alias)) {
-					Key k = this.keyStore.getKey(alias, null);
-					if (k instanceof PublicKey) {
-						list.add((PublicKey) k);
-					}
-				}
+			if (value != null) {
+				return new StoreEntry(entry.getAlias(), null, value, entry.getType());
 			}
-			return CollectionUtils.toArray(list, PublicKey.class);
+
+			return null;
 		} catch (GeneralSecurityException e) {
 			throw new StoreException(e);
 		}
 	}
 
 	@Override
-	public boolean addCertificate(final Certificate certificate, final String alias) {
+	public boolean add(final StoreEntry entry) {
 		try {
-			this.keyStore.setCertificateEntry(alias, certificate);
+			Assert.notNull(entry, "entry");
+			Assert.notNull(entry.getAlias(), "entry.alias");
+			Assert.notNull(entry.getType(), "entry.type");
+			Assert.notNull(entry.getValue(), "entry.value");
+
+			switch (entry.getType()) {
+				case CERTIFICATE:
+					this.keyStore.setCertificateEntry(entry.getAlias(), (Certificate) entry.getValue());
+					break;
+				case PRIVATE_KEY:
+					this.keyStore.setKeyEntry(entry.getAlias(), (PrivateKey) entry.getValue(), this.toCharArray(entry.getPassword()), null);
+					break;
+				case PUBLIC_KEY:
+					this.keyStore.setKeyEntry(entry.getAlias(), (PublicKey) entry.getValue(), this.toCharArray(entry.getPassword()), null);
+					break;
+				default:
+					break;
+			}
+
 			return true;
 		} catch (GeneralSecurityException e) {
 			throw new StoreException(e);
@@ -152,9 +141,13 @@ public class JCAStore implements Store {
 	}
 
 	@Override
-	public boolean addPrivateKey(final PrivateKey privateKey, final String alias) {
+	public boolean remove(final StoreEntry entry) {
 		try {
-			this.keyStore.setKeyEntry(alias, privateKey, null, null);
+			Assert.notNull(entry, "entry");
+			Assert.notNull(entry.getAlias(), "entry.alias");
+
+			this.keyStore.deleteEntry(entry.getAlias());
+
 			return true;
 		} catch (GeneralSecurityException e) {
 			throw new StoreException(e);
@@ -162,65 +155,32 @@ public class JCAStore implements Store {
 	}
 
 	@Override
-	public boolean addPublicKey(final PublicKey publicKey, final String alias) {
+	public void read(final InputStream inputStream, final String password) throws IOException {
 		try {
-			this.keyStore.setKeyEntry(alias, publicKey, null, null);
-			return true;
+			this.keyStore.load(inputStream, this.toCharArray(password));
 		} catch (GeneralSecurityException e) {
 			throw new StoreException(e);
 		}
 	}
 
 	@Override
-	public boolean removeCertificate(final String alias) {
+	public void write(final OutputStream outputStream, final String password) throws IOException {
 		try {
-			this.keyStore.deleteEntry(alias);
-			return true;
+			this.keyStore.store(outputStream, this.toCharArray(password));
 		} catch (GeneralSecurityException e) {
 			throw new StoreException(e);
 		}
 	}
 
-	@Override
-	public boolean removePrivateKey(final String alias) {
-		try {
-			this.keyStore.deleteEntry(alias);
-			return true;
-		} catch (GeneralSecurityException e) {
-			throw new StoreException(e);
+	private char[] toCharArray(final String s) {
+		if (ConditionUtils.isNotEmpty(s)) {
+			return s.toCharArray();
 		}
+		return null;
 	}
 
 	@Override
-	public boolean removePublicKey(final String alias) {
-		try {
-			this.keyStore.deleteEntry(alias);
-			return true;
-		} catch (GeneralSecurityException e) {
-			throw new StoreException(e);
-		}
-	}
-
-	@Override
-	public void read(final InputStream inputStream) throws IOException {
-		try {
-			this.keyStore.load(inputStream, this.storePasswd);
-		} catch (GeneralSecurityException e) {
-			throw new StoreException(e);
-		}
-	}
-
-	@Override
-	public void write(final OutputStream outputStream) throws IOException {
-		try {
-			this.keyStore.store(outputStream, this.storePasswd);
-		} catch (GeneralSecurityException e) {
-			throw new StoreException(e);
-		}
-	}
-
-	@Override
-	public KeyStore toKeyStore(final char[] storePasswd) {
+	public KeyStore toKeyStore() {
 		return this.keyStore;
 	}
 

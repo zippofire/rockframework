@@ -16,31 +16,6 @@
  */
 package br.net.woodstock.rockframework.security.store;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.security.KeyStore;
-
-public interface Store {
-
-	// Array
-	StoreEntry[] aliases();
-
-	// Single
-	StoreEntry get(StoreEntry entry);
-
-	// Add
-	boolean add(StoreEntry entry);
-
-	// Remove
-	boolean remove(StoreEntry entry);
-
-	// IO
-	void read(InputStream inputStream, String password) throws IOException;
-
-	void write(OutputStream outputStream, String password) throws IOException;
-
-	// JCA
-	KeyStore toKeyStore();
-
+public enum StoreEntryType {
+	CERTIFICATE, PRIVATE_KEY, PUBLIC_KEY;
 }

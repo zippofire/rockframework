@@ -16,31 +16,42 @@
  */
 package br.net.woodstock.rockframework.security.store;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.security.KeyStore;
+import java.io.Serializable;
 
-public interface Store {
+public class StoreEntry implements Serializable {
 
-	// Array
-	StoreEntry[] aliases();
+	private static final long	serialVersionUID	= -4601283475496635273L;
 
-	// Single
-	StoreEntry get(StoreEntry entry);
+	private String				alias;
 
-	// Add
-	boolean add(StoreEntry entry);
+	private String				password;
 
-	// Remove
-	boolean remove(StoreEntry entry);
+	private Object				value;
 
-	// IO
-	void read(InputStream inputStream, String password) throws IOException;
+	private StoreEntryType		type;
 
-	void write(OutputStream outputStream, String password) throws IOException;
+	public StoreEntry(final String alias, final String password, final Object value, final StoreEntryType type) {
+		super();
+		this.alias = alias;
+		this.password = password;
+		this.value = value;
+		this.type = type;
+	}
 
-	// JCA
-	KeyStore toKeyStore();
+	public String getAlias() {
+		return this.alias;
+	}
+
+	public String getPassword() {
+		return this.password;
+	}
+
+	public Object getValue() {
+		return this.value;
+	}
+
+	public StoreEntryType getType() {
+		return this.type;
+	}
 
 }

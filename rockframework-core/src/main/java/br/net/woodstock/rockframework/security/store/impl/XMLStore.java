@@ -56,7 +56,7 @@ public class XMLStore extends MapStore {
 	private static final String	PUBLIC_KEY_ELEMENT		= "publicKey";
 
 	@Override
-	public void read(final InputStream inputStream) throws IOException {
+	public void read(final InputStream inputStream, final String password) throws IOException {
 		try {
 			XmlDocument document = XmlDocument.read(inputStream);
 			XmlElement root = document.getRoot();
@@ -101,7 +101,7 @@ public class XMLStore extends MapStore {
 	}
 
 	@Override
-	public void write(final OutputStream outputStream) throws IOException {
+	public void write(final OutputStream outputStream, final String password) throws IOException {
 		try {
 			XmlDocument document = new XmlDocument(XMLStore.STORE_ELEMENT);
 			XmlElement root = document.getRoot();
