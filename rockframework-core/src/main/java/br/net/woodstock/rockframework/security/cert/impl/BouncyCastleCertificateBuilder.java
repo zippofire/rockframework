@@ -32,6 +32,7 @@ import org.bouncycastle.asn1.x509.ExtendedKeyUsage;
 import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.asn1.x509.GeneralNames;
 import org.bouncycastle.asn1.x509.KeyPurposeId;
+import org.bouncycastle.asn1.x509.KeyUsage;
 import org.bouncycastle.asn1.x509.X509Extension;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.jcajce.JcaX509v1CertificateBuilder;
@@ -43,13 +44,14 @@ import org.bouncycastle.x509.extension.SubjectKeyIdentifierStructure;
 import br.net.woodstock.rockframework.security.cert.CertificateException;
 import br.net.woodstock.rockframework.security.cert.CertificateHolder;
 import br.net.woodstock.rockframework.security.cert.CertificateType;
+import br.net.woodstock.rockframework.security.cert.KeyUsageType;
 import br.net.woodstock.rockframework.security.crypt.KeyPairType;
 import br.net.woodstock.rockframework.security.sign.SignType;
 import br.net.woodstock.rockframework.security.util.BouncyCastleProviderHelper;
 import br.net.woodstock.rockframework.security.util.SecurityUtils;
 import br.net.woodstock.rockframework.util.DateBuilder;
 
-public class CertificateBuilder {
+public class BouncyCastleCertificateBuilder {
 
 	private static final String	DEFAULT_ISSUER	= "";
 
@@ -72,55 +74,55 @@ public class CertificateBuilder {
 	// V3 Extensions
 	private Set<KeyUsageType>	keyUsage;
 
-	public CertificateBuilder(final String subject) {
-		this(subject, CertificateBuilder.DEFAULT_ISSUER);
+	public BouncyCastleCertificateBuilder(final String subject) {
+		this(subject, BouncyCastleCertificateBuilder.DEFAULT_ISSUER);
 	}
 
-	public CertificateBuilder(final String subject, final String issuer) {
+	public BouncyCastleCertificateBuilder(final String subject, final String issuer) {
 		super();
 		this.subject = subject;
 		this.issuer = issuer;
 		this.keyUsage = new HashSet<KeyUsageType>();
 	}
 
-	public CertificateBuilder withKeyPair(final KeyPair keyPair) {
+	public BouncyCastleCertificateBuilder withKeyPair(final KeyPair keyPair) {
 		this.keyPair = keyPair;
 		return this;
 	}
 
-	public CertificateBuilder withSignType(final SignType signType) {
+	public BouncyCastleCertificateBuilder withSignType(final SignType signType) {
 		this.signType = signType;
 		return this;
 	}
 
-	public CertificateBuilder withIssuer(final String issuer) {
+	public BouncyCastleCertificateBuilder withIssuer(final String issuer) {
 		this.issuer = issuer;
 		return this;
 	}
 
-	public CertificateBuilder withSerialNumber(final BigInteger serialNumber) {
+	public BouncyCastleCertificateBuilder withSerialNumber(final BigInteger serialNumber) {
 		this.serialNumber = serialNumber;
 		return this;
 	}
 
-	public CertificateBuilder withNotBefore(final Date notBefore) {
+	public BouncyCastleCertificateBuilder withNotBefore(final Date notBefore) {
 		this.notBefore = notBefore;
 		return this;
 	}
 
-	public CertificateBuilder withNotAfter(final Date notAfter) {
+	public BouncyCastleCertificateBuilder withNotAfter(final Date notAfter) {
 		this.notAfter = notAfter;
 		return this;
 	}
 
-	public CertificateBuilder withKeyUsage(final KeyUsageType... array) {
+	public BouncyCastleCertificateBuilder withKeyUsage(final KeyUsageType... array) {
 		for (KeyUsageType keyUsage : array) {
 			this.keyUsage.add(keyUsage);
 		}
 		return this;
 	}
 
-	public CertificateBuilder withV3Extensions(final boolean v3) {
+	public BouncyCastleCertificateBuilder withV3Extensions(final boolean v3) {
 		this.v3 = v3;
 		return this;
 	}
@@ -177,7 +179,7 @@ public class CertificateBuilder {
 				if (this.keyUsage.size() > 0) {
 					int usage = 0;
 					for (KeyUsageType keyUsage : this.keyUsage) {
-						usage = usage | keyUsage.getUsage();
+						usage = usage | this.toKeyUsage(keyUsage);
 					}
 					org.bouncycastle.asn1.x509.KeyUsage ku = new org.bouncycastle.asn1.x509.KeyUsage(usage);
 					builder.addExtension(X509Extension.keyUsage, false, ku);
@@ -212,6 +214,31 @@ public class CertificateBuilder {
 			return new CertificateHolder(certificate, privateKey);
 		} catch (Exception e) {
 			throw new CertificateException(e);
+		}
+	}
+
+	private int toKeyUsage(final KeyUsageType keyUsageType) {
+		switch (keyUsageType) {
+			case CRL_SIGN:
+				return KeyUsage.cRLSign;
+			case DATA_ENCIPHERMENT:
+				return KeyUsage.dataEncipherment;
+			case DECIPHER_ONLY:
+				return KeyUsage.decipherOnly;
+			case DIGITAL_SIGNATURE:
+				return KeyUsage.digitalSignature;
+			case ENCIPHER_ONLY:
+				return KeyUsage.encipherOnly;
+			case KEY_AGREEMENT:
+				return KeyUsage.keyAgreement;
+			case KEY_CERT_SIGN:
+				return KeyUsage.keyCertSign;
+			case KEY_ENCIPHERMENT:
+				return KeyUsage.keyEncipherment;
+			case NON_REPUDIATION:
+				return KeyUsage.nonRepudiation;
+			default:
+				return 0;
 		}
 	}
 

@@ -17,13 +17,8 @@
 package br.net.woodstock.rockframework.security.sign.impl;
 
 import java.io.ByteArrayOutputStream;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
-import java.security.SignatureException;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -68,7 +63,6 @@ import com.itextpdf.text.pdf.PdfPKCS7;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfSignature;
 import com.itextpdf.text.pdf.PdfSignatureAppearance;
-import com.itextpdf.text.pdf.PdfSignatureAppearance.RenderingMode;
 import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfString;
 import com.itextpdf.text.pdf.TSAClient;
@@ -91,55 +85,16 @@ public class PDFSigner implements DocumentSigner {
 		try {
 			byte[] currentData = data;
 			for (CertificateHolder certificateHolder : this.signRequest.getCertificates()) {
-				ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-				X509Certificate certificate = (X509Certificate) certificateHolder.getCertificate();
-				Certificate[] chain = certificateHolder.getChain();
-				PrivateKey privateKey = certificateHolder.getPrivateKey();
-				DigestType digestType = this.getDigestTypeFromSignature(certificate.getSigAlgName());
-				Calendar calendar = Calendar.getInstance();
+				SignRequest sr = new SignRequest();
+				sr.setContactInfo(this.signRequest.getContactInfo());
+				sr.setLocation(this.signRequest.getLocation());
+				sr.setName(this.signRequest.getName());
+				sr.setReason(this.signRequest.getReason());
+				sr.setTimeStampClient(this.signRequest.getTimeStampClient());
 
-				PdfReader reader = new PdfReader(currentData);
-				PdfStamper stamper = PdfStamper.createSignature(reader, outputStream, PDFSigner.PDF_SIGNATURE_VERSION, null, true);
+				sr.setCertificates(new CertificateHolder[] { certificateHolder });
 
-				PdfSignatureAppearance appearance = stamper.getSignatureAppearance();
-				appearance.setCertificationLevel(PdfSignatureAppearance.CERTIFIED_NO_CHANGES_ALLOWED);
-				appearance.setCrypto(privateKey, chain, null, PdfSignatureAppearance.SELF_SIGNED);
-				appearance.setContact(this.signRequest.getContactInfo());
-				appearance.setLocation(this.signRequest.getLocation());
-				appearance.setReason(this.signRequest.getReason());
-				appearance.setRenderingMode(RenderingMode.NAME_AND_DESCRIPTION);
-				appearance.setSignDate(calendar);
-
-				PdfSignature signature = new PdfSignature(PdfName.ADOBE_PPKLITE, PdfName.ADBE_PKCS7_DETACHED);
-				signature.setReason(appearance.getReason());
-				signature.setLocation(appearance.getLocation());
-				signature.setContact(appearance.getContact());
-				signature.setDate(new PdfDate(appearance.getSignDate()));
-				signature.setName(appearance.getContact());
-				
-				appearance.setCryptoDictionary(signature);
-
-				int contentSize = 0x2502;
-				HashMap<PdfName, Integer> exc = new HashMap<PdfName, Integer>();
-				exc.put(PdfName.CONTENTS, new Integer(contentSize));
-				appearance.preClose(exc);
-
-				byte[] rangeStream = IOUtils.toByteArray(appearance.getRangeStream());
-
-				byte[] encodedPkcs7 = this.getITextPKCS7(certificate, privateKey, chain, rangeStream, digestType, calendar);
-				// byte[] encodedPkcs7 = this.getCMSPKCS7(certificateHolder, rangeStream, digestType);
-
-				byte[] output = new byte[(contentSize - 2) / 2];
-
-				System.arraycopy(encodedPkcs7, 0, output, 0, encodedPkcs7.length);
-
-				PdfDictionary newDictionary = new PdfDictionary();
-				PdfString content = new PdfString(output);
-				content.setHexWriting(true);
-				newDictionary.put(PdfName.CONTENTS, content);
-				appearance.close(newDictionary);
-
-				currentData = outputStream.toByteArray();
+				currentData = this.singleSign(data, sr);
 			}
 			return currentData;
 		} catch (Exception e) {
@@ -147,56 +102,143 @@ public class PDFSigner implements DocumentSigner {
 		}
 	}
 
-	protected byte[] getITextPKCS7(final X509Certificate certificate, final PrivateKey privateKey, final Certificate[] chain, final byte[] rangeStream, final DigestType digestType, final Calendar calendar) throws CertificateParsingException, InvalidKeyException, NoSuchProviderException, NoSuchAlgorithmException, SignatureException {
-		Digester digester = new BasicDigester(digestType);
-		byte[] hash = digester.digest(rangeStream);
+	private byte[] singleSign(final byte[] data, final SignRequest requestData) {
+		Assert.notEmpty(data, "data");
+		Assert.notNull(requestData, "requestData");
+		try {
+			CertificateHolder holder = requestData.getCertificates()[0];
 
-		TSAClient tsc = null;
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			X509Certificate certificate = (X509Certificate) holder.getCertificate();
+			X509Certificate rootCertificate = (X509Certificate) holder.getRootCertificate();
+			Certificate[] chain = holder.getChain();
+			PrivateKey privateKey = holder.getPrivateKey();
+			DigestType digestType = this.getDigestTypeFromSignature(certificate.getSigAlgName());
+			Calendar calendar = Calendar.getInstance();
 
-		if (this.signRequest.getTimeStampClient() != null) {
-			tsc = new DelegateITextTSAClient(this.signRequest.getTimeStampClient());
-		}
+			PdfReader reader = new PdfReader(data);
+			PdfStamper stamper = PdfStamper.createSignature(reader, outputStream, PDFSigner.PDF_SIGNATURE_VERSION, null, true);
 
-		byte[] oscp = null;
-		if (chain.length > 1) {
-			String oscpUrl = PdfPKCS7.getOCSPURL(certificate);
-			X509Certificate rootCertificate = (X509Certificate) chain[1];
-			if (ConditionUtils.isNotEmpty(oscpUrl)) {
-				OcspClient ocspClient = new OcspClientBouncyCastle(certificate, rootCertificate, oscpUrl);
-				oscp = ocspClient.getEncoded();
+			PdfSignatureAppearance appearance = stamper.getSignatureAppearance();
+			appearance.setCrypto(privateKey, chain, null, PdfSignatureAppearance.SELF_SIGNED);
+			appearance.setContact(requestData.getContactInfo());
+			appearance.setLocation(requestData.getLocation());
+			appearance.setReason(requestData.getReason());
+			appearance.setSignDate(calendar);
+
+			PdfSignature signature = new PdfSignature(PdfName.ADOBE_PPKLITE, PdfName.ADBE_PKCS7_DETACHED);
+			signature.setReason(appearance.getReason());
+			signature.setLocation(appearance.getLocation());
+			signature.setContact(appearance.getContact());
+			signature.setDate(new PdfDate(appearance.getSignDate()));
+
+			appearance.setCryptoDictionary(signature);
+
+			int contentSize = 0x2502;
+			HashMap<PdfName, Integer> exc = new HashMap<PdfName, Integer>();
+			exc.put(PdfName.CONTENTS, new Integer(contentSize));
+			appearance.preClose(exc);
+
+			Digester digester = new BasicDigester(digestType);
+			byte[] rangeStream = IOUtils.toByteArray(appearance.getRangeStream());
+			byte[] hash = digester.digest(rangeStream);
+
+			TSAClient tsc = null;
+			if (requestData.getTimeStampClient() != null) {
+				tsc = new DelegateITextTSAClient(requestData.getTimeStampClient());
 			}
+
+			byte[] oscp = null;
+			if (rootCertificate != null) {
+				String oscpUrl = PdfPKCS7.getOCSPURL(certificate);
+				if ((oscpUrl != null) && (oscpUrl.trim().length() > 0)) {
+					OcspClient ocspClient = new OcspClientBouncyCastle(certificate, rootCertificate, oscpUrl);
+					oscp = ocspClient.getEncoded();
+				}
+			}
+
+			PdfPKCS7 pkcs7 = new PdfPKCS7(privateKey, chain, null, digestType.getAlgorithm(), null, false);
+			byte[] authenticatedAttributes = pkcs7.getAuthenticatedAttributeBytes(hash, calendar, oscp);
+			pkcs7.update(authenticatedAttributes, 0, authenticatedAttributes.length);
+			pkcs7.setLocation(requestData.getLocation());
+			pkcs7.setReason(requestData.getReason());
+
+			if (tsc == null) {
+				pkcs7.setSignDate(calendar);
+			}
+
+			byte[] encodedPkcs7 = pkcs7.getEncodedPKCS7(hash, calendar, tsc, oscp);
+
+			byte[] output = new byte[(contentSize - 2) / 2];
+
+			System.arraycopy(encodedPkcs7, 0, output, 0, encodedPkcs7.length);
+
+			PdfDictionary newDictionary = new PdfDictionary();
+			PdfString content = new PdfString(output);
+			content.setHexWriting(true);
+			newDictionary.put(PdfName.CONTENTS, content);
+			appearance.close(newDictionary);
+
+			return outputStream.toByteArray();
+		} catch (Exception e) {
+			throw new SignerException(e);
 		}
-
-		PdfPKCS7 pkcs7 = new PdfPKCS7(privateKey, chain, null, digestType.getAlgorithm(), null, false);
-		byte[] authenticatedAttributes = pkcs7.getAuthenticatedAttributeBytes(hash, calendar, oscp);
-		pkcs7.update(authenticatedAttributes, 0, authenticatedAttributes.length);
-		pkcs7.setLocation(this.signRequest.getLocation());
-		pkcs7.setReason(this.signRequest.getReason());
-
-		if (tsc == null) {
-			pkcs7.setSignDate(calendar);
-		}
-
-		byte[] encodedPkcs7 = pkcs7.getEncodedPKCS7(hash, calendar, tsc, oscp);
-		return encodedPkcs7;
 	}
 
-	protected byte[] getCMSPKCS7(final CertificateHolder certificateHolder, final byte[] rangeStream, final DigestType digestType) {
-		Digester digester = new BasicDigester(digestType);
-
-		SignRequest sr = new SignRequest();
-
-		sr.setContactInfo(this.signRequest.getContactInfo());
-		sr.setLocation(this.signRequest.getLocation());
-		sr.setReason(this.signRequest.getReason());
-		sr.setTimeStampClient(this.signRequest.getTimeStampClient());
-		sr.setCertificates(new CertificateHolder[] { certificateHolder });
-
-		BouncyCastlePKCS7Signer signer = new BouncyCastlePKCS7Signer(sr);
-
-		byte[] encodedPkcs7 = signer.sign(digester.digest(rangeStream));
-		return encodedPkcs7;
-	}
+	// protected byte[] getITextPKCS7(final X509Certificate certificate, final PrivateKey privateKey, final
+	// Certificate[] chain, final byte[] rangeStream, final DigestType digestType, final Calendar calendar)
+	// throws CertificateParsingException, InvalidKeyException, NoSuchProviderException,
+	// NoSuchAlgorithmException, SignatureException {
+	// Digester digester = new BasicDigester(digestType);
+	// byte[] hash = digester.digest(rangeStream);
+	//
+	// TSAClient tsc = null;
+	//
+	// if (this.signRequest.getTimeStampClient() != null) {
+	// tsc = new DelegateITextTSAClient(this.signRequest.getTimeStampClient());
+	// }
+	//
+	// byte[] oscp = null;
+	// if (chain.length > 1) {
+	// String oscpUrl = PdfPKCS7.getOCSPURL(certificate);
+	// X509Certificate rootCertificate = (X509Certificate) chain[1];
+	// if (ConditionUtils.isNotEmpty(oscpUrl)) {
+	// OcspClient ocspClient = new OcspClientBouncyCastle(certificate, rootCertificate, oscpUrl);
+	// oscp = ocspClient.getEncoded();
+	// }
+	// }
+	//
+	// PdfPKCS7 pkcs7 = new PdfPKCS7(privateKey, chain, null, digestType.getAlgorithm(), null, false);
+	// byte[] authenticatedAttributes = pkcs7.getAuthenticatedAttributeBytes(hash, calendar, oscp);
+	// pkcs7.update(authenticatedAttributes, 0, authenticatedAttributes.length);
+	// pkcs7.setLocation(this.signRequest.getLocation());
+	// pkcs7.setReason(this.signRequest.getReason());
+	//
+	// if (tsc == null) {
+	// pkcs7.setSignDate(calendar);
+	// }
+	//
+	// byte[] encodedPkcs7 = pkcs7.getEncodedPKCS7(hash, calendar, tsc, oscp);
+	// return encodedPkcs7;
+	// }
+	//
+	// protected byte[] getCMSPKCS7(final CertificateHolder certificateHolder, final byte[] rangeStream, final
+	// DigestType digestType) {
+	// Digester digester = new BasicDigester(digestType);
+	//
+	// SignRequest sr = new SignRequest();
+	//
+	// sr.setContactInfo(this.signRequest.getContactInfo());
+	// sr.setLocation(this.signRequest.getLocation());
+	// sr.setReason(this.signRequest.getReason());
+	// sr.setTimeStampClient(this.signRequest.getTimeStampClient());
+	// sr.setCertificates(new CertificateHolder[] { certificateHolder });
+	//
+	// BouncyCastlePKCS7Signer signer = new BouncyCastlePKCS7Signer(sr);
+	//
+	// byte[] encodedPkcs7 = signer.sign(digester.digest(rangeStream));
+	// return encodedPkcs7;
+	// }
 
 	@Override
 	public boolean verify(final byte[] data, final byte[] signature) {

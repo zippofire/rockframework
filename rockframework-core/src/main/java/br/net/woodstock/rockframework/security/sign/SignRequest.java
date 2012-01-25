@@ -25,6 +25,8 @@ public class SignRequest implements Serializable {
 
 	private static final long	serialVersionUID	= -4388076526792546789L;
 
+	private String				name;
+
 	private String				reason;
 
 	private String				location;
@@ -37,6 +39,14 @@ public class SignRequest implements Serializable {
 
 	public SignRequest() {
 		super();
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(final String name) {
+		this.name = name;
 	}
 
 	public String getReason() {

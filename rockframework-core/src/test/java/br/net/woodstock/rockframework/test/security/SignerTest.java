@@ -7,8 +7,8 @@ import java.security.KeyPairGenerator;
 
 import junit.framework.TestCase;
 import br.net.woodstock.rockframework.security.cert.CertificateHolder;
-import br.net.woodstock.rockframework.security.cert.impl.CertificateBuilder;
-import br.net.woodstock.rockframework.security.cert.impl.KeyUsageType;
+import br.net.woodstock.rockframework.security.cert.KeyUsageType;
+import br.net.woodstock.rockframework.security.cert.impl.BouncyCastleCertificateBuilder;
 import br.net.woodstock.rockframework.security.crypt.KeyPairType;
 import br.net.woodstock.rockframework.security.sign.PKCS7Signer;
 import br.net.woodstock.rockframework.security.sign.SignRequest;
@@ -88,13 +88,13 @@ public class SignerTest extends TestCase {
 		byte[] pdf = IOUtils.toByteArray(fileInputStream);
 		fileInputStream.close();
 
-		CertificateBuilder builder1 = new CertificateBuilder("Lourival Sabino 1");
+		BouncyCastleCertificateBuilder builder1 = new BouncyCastleCertificateBuilder("Lourival Sabino 1");
 		builder1.withIssuer("Woodstock Tecnologia 1");
 		builder1.withV3Extensions(true);
 		builder1.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
 		CertificateHolder holder1 = builder1.build();
 
-		CertificateBuilder builder2 = new CertificateBuilder("Lourival Sabino 2");
+		BouncyCastleCertificateBuilder builder2 = new BouncyCastleCertificateBuilder("Lourival Sabino 2");
 		builder2.withIssuer("Woodstock Tecnologia 2");
 		builder2.withV3Extensions(true);
 		builder2.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
@@ -122,7 +122,7 @@ public class SignerTest extends TestCase {
 		byte[] pdf = IOUtils.toByteArray(fileInputStream);
 		fileInputStream.close();
 
-		CertificateBuilder builder1 = new CertificateBuilder("Lourival Sabino 1");
+		BouncyCastleCertificateBuilder builder1 = new BouncyCastleCertificateBuilder("Lourival Sabino 1");
 		builder1.withIssuer("Woodstock Tecnologia 1");
 		builder1.withV3Extensions(true);
 		builder1.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
@@ -143,37 +143,32 @@ public class SignerTest extends TestCase {
 		fileOutputStream.close();
 	}
 
-	public void test5() throws Exception {
-		FileInputStream fileInputStream = new FileInputStream("/home/lourival/Documentos/curriculum.pdf");
+	public void xtest5() throws Exception {
+		FileInputStream fileInputStream = new FileInputStream("/tmp/sign1.pdf");
 		byte[] pdf = IOUtils.toByteArray(fileInputStream);
 		fileInputStream.close();
 
-		CertificateBuilder builder1 = new CertificateBuilder("Lourival Sabino 1");
+		BouncyCastleCertificateBuilder builder1 = new BouncyCastleCertificateBuilder("Lourival Sabino 1");
 		builder1.withIssuer("Woodstock Tecnologia 1");
 		builder1.withV3Extensions(true);
 		builder1.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
 		CertificateHolder holder1 = builder1.build();
 
-		CertificateBuilder builder2 = new CertificateBuilder("Lourival Sabino 2");
-		builder2.withIssuer("Woodstock Tecnologia 2");
-		builder2.withV3Extensions(true);
-		builder2.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
-		CertificateHolder holder2 = builder2.build();
-
 		TimeStampClient timeStampClient = TSA_CLIENT_STF;
 		// TimeStampClient timeStampClient = new STFTimeStampClient("201.49.148.134", 318);
 		SignRequest signerInfo = new SignRequest();
-		signerInfo.setLocation("Location");
+		signerInfo.setCertificates(new CertificateHolder[] { holder1 });
 		signerInfo.setContactInfo("ConcactInfo");
+		signerInfo.setLocation("Location");
+		signerInfo.setName("Lourival Sabino");
 		signerInfo.setReason("Reason");
-		signerInfo.setCertificates(new CertificateHolder[] { holder1, holder2 });
 		signerInfo.setTimeStampClient(timeStampClient);
 
 		PDFSigner signer = new PDFSigner(signerInfo);
 
 		byte[] signed = signer.sign(pdf);
 
-		FileOutputStream fileOutputStream = new FileOutputStream("/tmp/signed2.pdf");
+		FileOutputStream fileOutputStream = new FileOutputStream("/tmp/sign2.pdf");
 		fileOutputStream.write(signed);
 		fileOutputStream.close();
 
@@ -186,4 +181,63 @@ public class SignerTest extends TestCase {
 			}
 		}
 	}
+
+	public void test2() throws Exception {
+		BouncyCastleCertificateBuilder builder = new BouncyCastleCertificateBuilder("Lourival Sabino 1");
+		builder.withIssuer("TSE");
+		builder.withV3Extensions(true);
+		builder.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
+		CertificateHolder holder = builder.build();
+
+		FileInputStream fileInputStream = new FileInputStream("/home/lourival/Documentos/curriculum.pdf");
+
+		TimeStampClient timeStampClient = TSA_CLIENT_STF;
+		// TimeStampClient timeStampClient = new STFTimeStampClient("201.49.148.134", 318);
+		SignRequest signerInfo = new SignRequest();
+		signerInfo.setCertificates(new CertificateHolder[] { holder });
+		signerInfo.setContactInfo("ConcactInfo");
+		signerInfo.setLocation("Location");
+		signerInfo.setName("Lourival Sabino");
+		signerInfo.setReason("Reason");
+		signerInfo.setTimeStampClient(timeStampClient);
+
+		PDFSigner signer = new PDFSigner(signerInfo);
+
+		byte[] signed = signer.sign(IOUtils.toByteArray(fileInputStream));
+		FileOutputStream fileOutputStream = new FileOutputStream("/tmp/sign.pdf");
+		fileOutputStream.write(signed);
+
+		fileInputStream.close();
+		fileOutputStream.close();
+	}
+
+	public void test2x1() throws Exception {
+		BouncyCastleCertificateBuilder builder = new BouncyCastleCertificateBuilder("Lourival Sabino 2");
+		builder.withIssuer("TSE");
+		builder.withV3Extensions(true);
+		builder.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
+		CertificateHolder holder = builder.build();
+
+		FileInputStream fileInputStream = new FileInputStream("/tmp/sign.pdf");
+
+		TimeStampClient timeStampClient = TSA_CLIENT_STF;
+		// TimeStampClient timeStampClient = new STFTimeStampClient("201.49.148.134", 318);
+		SignRequest signerInfo = new SignRequest();
+		signerInfo.setCertificates(new CertificateHolder[] { holder });
+		signerInfo.setContactInfo("ConcactInfo");
+		signerInfo.setLocation("Location");
+		signerInfo.setName("Lourival Sabino");
+		signerInfo.setReason("Reason");
+		signerInfo.setTimeStampClient(timeStampClient);
+
+		PDFSigner signer = new PDFSigner(signerInfo);
+
+		byte[] signed = signer.sign(IOUtils.toByteArray(fileInputStream));
+		FileOutputStream fileOutputStream = new FileOutputStream("/tmp/sign2.pdf");
+		fileOutputStream.write(signed);
+
+		fileInputStream.close();
+		fileOutputStream.close();
+	}
+
 }

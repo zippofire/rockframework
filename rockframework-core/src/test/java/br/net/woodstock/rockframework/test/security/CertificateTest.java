@@ -9,8 +9,8 @@ import java.security.cert.X509Certificate;
 
 import junit.framework.TestCase;
 import br.net.woodstock.rockframework.security.cert.CertificateHolder;
-import br.net.woodstock.rockframework.security.cert.impl.CertificateBuilder;
-import br.net.woodstock.rockframework.security.cert.impl.KeyUsageType;
+import br.net.woodstock.rockframework.security.cert.KeyUsageType;
+import br.net.woodstock.rockframework.security.cert.impl.BouncyCastleCertificateBuilder;
 import br.net.woodstock.rockframework.security.store.Store;
 import br.net.woodstock.rockframework.security.store.impl.XMLStore;
 
@@ -24,7 +24,7 @@ public class CertificateTest extends TestCase {
 	}
 
 	public void xtest1() throws Exception {
-		CertificateBuilder builder = new CertificateBuilder("Lourival Sabino");
+		BouncyCastleCertificateBuilder builder = new BouncyCastleCertificateBuilder("Lourival Sabino");
 		builder.withIssuer("Woodstock Tecnologia");
 		builder.withV3Extensions(true);
 		builder.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
@@ -34,7 +34,7 @@ public class CertificateTest extends TestCase {
 	}
 
 	public void xtest6() throws Exception {
-		CertificateBuilder builder = new CertificateBuilder("Lourival Sabino da Silva Junior");
+		BouncyCastleCertificateBuilder builder = new BouncyCastleCertificateBuilder("Lourival Sabino da Silva Junior");
 		builder.withIssuer("Woodstock Tecnologia");
 		builder.withV3Extensions(true);
 		builder.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
