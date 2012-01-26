@@ -19,7 +19,7 @@ public class TimeStampTest extends TestCase {
 		System.setProperty("sun.net.client.defaultReadTimeout", "5000");
 	}
 
-	public void test1() throws Exception {
+	public void xtest1() throws Exception {
 		TimeStampClient client = new STFTimeStampClient("201.49.148.134", 318);
 		FileInputStream inputStream = new FileInputStream("/home/lourival/Documentos/curriculum.pdf");
 		byte[] input = IOUtils.toByteArray(inputStream);

@@ -27,6 +27,7 @@ import br.net.woodstock.rockframework.security.store.KeyStoreType;
 import br.net.woodstock.rockframework.security.store.StoreEntry;
 import br.net.woodstock.rockframework.security.store.StoreEntryType;
 import br.net.woodstock.rockframework.security.store.impl.JCAStore;
+import br.net.woodstock.rockframework.security.timestamp.TimeStamp;
 import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
 import br.net.woodstock.rockframework.security.timestamp.impl.STFTimeStampClient;
 import br.net.woodstock.rockframework.security.timestamp.impl.URLTimeStampClient;
@@ -36,8 +37,10 @@ public class SignerTest extends TestCase {
 
 	public static final String[]		FREE_TSA		= new String[] { "http://tsa.safelayer.com:8093", "https://tsa.aloaha.com/tsa.asp", "http://dse200.ncipher.com/TSS/HttpTspServer", "http://ca.signfiles.com/TSAServer.aspx" };
 
-	public static final TimeStampClient	TSA_CLIENT_STF	= new STFTimeStampClient("201.49.148.134", 318);
+	//public static final TimeStampClient	TSA_CLIENT_STF	= new STFTimeStampClient("201.49.148.134", 318);
 
+	public static final TimeStampClient	TSA_CLIENT_STF	= new STFTimeStampClient("200.143.0.158", 318);
+	
 	static {
 		System.setProperty("http.proxyHost", "10.28.1.12");
 		System.setProperty("http.proxyPort", "8080");
@@ -256,8 +259,8 @@ public class SignerTest extends TestCase {
 
 		FileInputStream fileInputStream = new FileInputStream("/home/lourival/Documentos/curriculum.pdf");
 
-		TimeStampClient timeStampClient = TSA_CLIENT_STF;
-		// TimeStampClient timeStampClient = new STFTimeStampClient("201.49.148.134", 318);
+		//TimeStampClient timeStampClient = TSA_CLIENT_STF;
+		TimeStampClient timeStampClient =  new URLTimeStampClient("http://tsa.safelayer.com:8093");
 		SignRequest signerInfo = new SignRequest();
 		signerInfo.setCertificates(new CertificateHolder[] { holder });
 		signerInfo.setContactInfo("ConcactInfo");
@@ -269,11 +272,36 @@ public class SignerTest extends TestCase {
 		PDFSigner signer = new PDFSigner(signerInfo);
 
 		byte[] signed = signer.sign(IOUtils.toByteArray(fileInputStream));
-		FileOutputStream fileOutputStream = new FileOutputStream("/tmp/sign.pdf");
+		FileOutputStream fileOutputStream = new FileOutputStream("/tmp/sign2.pdf");
 		fileOutputStream.write(signed);
 
 		fileInputStream.close();
 		fileOutputStream.close();
+	}
+
+	public void test8() throws Exception {
+		PDFSigner signer = new PDFSigner(null);
+		FileInputStream inputStream = new FileInputStream("/tmp/sign2.pdf");
+		Signature[] signatures = signer.getSignatures(IOUtils.toByteArray(inputStream));
+		for (Signature signature : signatures) {
+			System.out.println(signature.getLocation());
+			for (Signatory signatory : signature.getSigners()) {
+				System.out.println("\t" + signatory.getSubject());
+				System.out.println("\t" + signatory.getIssuer());
+			}
+			TimeStamp timeStamp = signature.getTimeStamp();
+			if (timeStamp != null) {
+				System.out.println("Salvando o timeStamp");
+				FileOutputStream outputStream = new FileOutputStream("/tmp/sign2.pdf.p7m");
+				outputStream.write(timeStamp.getEncoded());
+				outputStream.close();
+			}
+			System.out.println("Salvando a assinatura");
+			FileOutputStream outputStream = new FileOutputStream("/tmp/sign2.pdf.p7s");
+			outputStream.write(signature.getEncoded());
+			outputStream.close();
+		}
+		inputStream.close();
 	}
 
 }

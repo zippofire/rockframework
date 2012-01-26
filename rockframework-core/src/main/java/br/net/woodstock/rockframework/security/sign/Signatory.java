@@ -17,6 +17,7 @@
 package br.net.woodstock.rockframework.security.sign;
 
 import java.io.Serializable;
+import java.security.cert.Certificate;
 
 public class Signatory implements Serializable {
 
@@ -26,22 +27,34 @@ public class Signatory implements Serializable {
 
 	private String				issuer;
 
+	private Certificate			certificate;
+
 	public Signatory() {
 		super();
-	}
-
-	public Signatory(final String subject, final String issuer) {
-		super();
-		this.subject = subject;
-		this.issuer = issuer;
 	}
 
 	public String getSubject() {
 		return this.subject;
 	}
 
+	public void setSubject(final String subject) {
+		this.subject = subject;
+	}
+
 	public String getIssuer() {
 		return this.issuer;
+	}
+
+	public void setIssuer(final String issuer) {
+		this.issuer = issuer;
+	}
+
+	public Certificate getCertificate() {
+		return this.certificate;
+	}
+
+	public void setCertificate(final Certificate certificate) {
+		this.certificate = certificate;
 	}
 
 }

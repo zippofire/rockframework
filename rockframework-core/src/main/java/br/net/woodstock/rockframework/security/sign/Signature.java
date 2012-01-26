@@ -20,6 +20,8 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 
+import br.net.woodstock.rockframework.security.timestamp.TimeStamp;
+
 public class Signature implements Serializable {
 
 	private static final long		serialVersionUID	= 3344909224780348665L;
@@ -32,35 +34,70 @@ public class Signature implements Serializable {
 
 	private Boolean					valid;
 
+	private byte[]					encoded;
+
+	private TimeStamp				timeStamp;
+
 	private Collection<Signatory>	signers;
 
-	public Signature(final String reason, final String location, final Date date, final Boolean valid, final Collection<Signatory> signers) {
+	public Signature() {
 		super();
-		this.reason = reason;
-		this.location = location;
-		this.date = date;
-		this.valid = valid;
-		this.signers = signers;
 	}
 
 	public String getReason() {
 		return this.reason;
 	}
 
+	public void setReason(final String reason) {
+		this.reason = reason;
+	}
+
 	public String getLocation() {
 		return this.location;
+	}
+
+	public void setLocation(final String location) {
+		this.location = location;
 	}
 
 	public Date getDate() {
 		return this.date;
 	}
 
+	public void setDate(final Date date) {
+		this.date = date;
+	}
+
 	public Boolean getValid() {
 		return this.valid;
 	}
 
+	public void setValid(final Boolean valid) {
+		this.valid = valid;
+	}
+
+	public byte[] getEncoded() {
+		return this.encoded;
+	}
+
+	public void setEncoded(final byte[] encoded) {
+		this.encoded = encoded;
+	}
+
+	public TimeStamp getTimeStamp() {
+		return this.timeStamp;
+	}
+
+	public void setTimeStamp(final TimeStamp timeStamp) {
+		this.timeStamp = timeStamp;
+	}
+
 	public Collection<Signatory> getSigners() {
 		return this.signers;
+	}
+
+	public void setSigners(final Collection<Signatory> signers) {
+		this.signers = signers;
 	}
 
 }
