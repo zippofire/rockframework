@@ -18,32 +18,27 @@ package br.net.woodstock.rockframework.security.store;
 
 import java.io.Serializable;
 
+import br.net.woodstock.rockframework.security.Alias;
+
 public class StoreEntry implements Serializable {
 
 	private static final long	serialVersionUID	= -4601283475496635273L;
 
-	private String				alias;
-
-	private String				password;
+	private Alias				alias;
 
 	private Object				value;
 
 	private StoreEntryType		type;
 
-	public StoreEntry(final String alias, final String password, final Object value, final StoreEntryType type) {
+	public StoreEntry(final Alias alias, final Object value, final StoreEntryType type) {
 		super();
 		this.alias = alias;
-		this.password = password;
 		this.value = value;
 		this.type = type;
 	}
 
-	public String getAlias() {
+	public Alias getAlias() {
 		return this.alias;
-	}
-
-	public String getPassword() {
-		return this.password;
 	}
 
 	public Object getValue() {
@@ -52,6 +47,14 @@ public class StoreEntry implements Serializable {
 
 	public StoreEntryType getType() {
 		return this.type;
+	}
+
+	@Override
+	public String toString() {
+		if (this.value != null) {
+			return this.value.toString();
+		}
+		return super.toString();
 	}
 
 }

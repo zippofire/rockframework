@@ -14,13 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.security.cert;
+package br.net.woodstock.rockframework.security.store.impl;
 
-import br.net.woodstock.rockframework.security.Alias;
-import br.net.woodstock.rockframework.security.store.Store;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
-public interface CertificateBuilder {
+public class MemoryStore extends MapStore {
 
-	Store build(Alias alias);
+	@Override
+	public void read(final InputStream inputStream, final String password) throws IOException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void write(final OutputStream outputStream, final String password) throws IOException {
+		throw new UnsupportedOperationException();
+	}
 
 }

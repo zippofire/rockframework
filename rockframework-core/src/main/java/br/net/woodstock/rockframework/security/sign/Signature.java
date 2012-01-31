@@ -38,7 +38,7 @@ public class Signature implements Serializable {
 
 	private TimeStamp				timeStamp;
 
-	private Collection<Signatory>	signers;
+	private Collection<Signatory>	signatories;
 
 	public Signature() {
 		super();
@@ -92,12 +92,12 @@ public class Signature implements Serializable {
 		this.timeStamp = timeStamp;
 	}
 
-	public Collection<Signatory> getSigners() {
-		return this.signers;
+	public Collection<Signatory> getSignatories() {
+		return this.signatories;
 	}
 
-	public void setSigners(final Collection<Signatory> signers) {
-		this.signers = signers;
+	public void setSignatories(final Collection<Signatory> signatories) {
+		this.signatories = signatories;
 	}
 
 }

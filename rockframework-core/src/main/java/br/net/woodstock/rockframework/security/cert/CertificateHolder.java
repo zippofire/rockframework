@@ -29,8 +29,6 @@ public class CertificateHolder implements Serializable {
 
 	private PrivateKey			privateKey;
 
-	private Certificate			rootCertificate;
-
 	public CertificateHolder() {
 		super();
 	}
@@ -55,22 +53,6 @@ public class CertificateHolder implements Serializable {
 
 	public void setPrivateKey(final PrivateKey privateKey) {
 		this.privateKey = privateKey;
-	}
-
-	public Certificate getRootCertificate() {
-		return this.rootCertificate;
-	}
-
-	public void setRootCertificate(final Certificate rootCertificate) {
-		this.rootCertificate = rootCertificate;
-	}
-
-	// Aux
-	public Certificate[] getChain() {
-		if (this.rootCertificate != null) {
-			return new Certificate[] { this.certificate, this.rootCertificate };
-		}
-		return new Certificate[] { this.certificate };
 	}
 
 }

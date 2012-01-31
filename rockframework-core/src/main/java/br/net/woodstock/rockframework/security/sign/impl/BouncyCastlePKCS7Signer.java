@@ -17,6 +17,7 @@
 package br.net.woodstock.rockframework.security.sign.impl;
 
 import java.io.IOException;
+import java.security.PrivateKey;
 import java.security.cert.CRLException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
@@ -60,12 +61,14 @@ import org.bouncycastle.operator.jcajce.JcaDigestCalculatorProviderBuilder;
 import org.bouncycastle.util.CollectionStore;
 import org.bouncycastle.util.Store;
 
-import br.net.woodstock.rockframework.security.cert.CertificateHolder;
+import br.net.woodstock.rockframework.security.Alias;
 import br.net.woodstock.rockframework.security.sign.PKCS7Signer;
 import br.net.woodstock.rockframework.security.sign.SignRequest;
 import br.net.woodstock.rockframework.security.sign.SignType;
 import br.net.woodstock.rockframework.security.sign.Signature;
 import br.net.woodstock.rockframework.security.sign.SignerException;
+import br.net.woodstock.rockframework.security.store.StoreEntry;
+import br.net.woodstock.rockframework.security.store.StoreEntryType;
 import br.net.woodstock.rockframework.security.timestamp.TimeStamp;
 import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
 import br.net.woodstock.rockframework.security.util.BouncyCastleProviderHelper;
@@ -88,11 +91,21 @@ public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 		try {
 			CMSSignedDataGenerator cmsSignedDataGenerator = new CMSSignedDataGenerator();
 			TimeStampClient timeStampClient = this.signRequest.getTimeStampClient();
-			for (CertificateHolder certificateHolder : this.signRequest.getCertificates()) {
+
+			for (Alias alias : this.signRequest.getAliases()) {
+				System.out.println(alias);
+				
+				
+				StoreEntry certificateEntry = this.signRequest.getStore().get(alias, StoreEntryType.CERTIFICATE);
+				StoreEntry privateKeyEntry = this.signRequest.getStore().get(alias, StoreEntryType.PRIVATE_KEY);
+
+				Certificate certificate = (Certificate) certificateEntry.getValue();
+				PrivateKey privateKey = (PrivateKey) privateKeyEntry.getValue();
+
 				JcaContentSignerBuilder contentSignerBuilder = new JcaContentSignerBuilder(SignType.SHA1_RSA.getAlgorithm());
 				contentSignerBuilder.setProvider(BouncyCastleProviderHelper.PROVIDER_NAME);
 
-				ContentSigner contentSigner = contentSignerBuilder.build(certificateHolder.getPrivateKey());
+				ContentSigner contentSigner = contentSignerBuilder.build(privateKey);
 
 				JcaDigestCalculatorProviderBuilder digestCalculatorProviderBuilder = new JcaDigestCalculatorProviderBuilder();
 				digestCalculatorProviderBuilder.setProvider(BouncyCastleProviderHelper.PROVIDER_NAME);
@@ -100,7 +113,7 @@ public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 
 				JcaSignerInfoGeneratorBuilder signerInfoGeneratorBuilder = new JcaSignerInfoGeneratorBuilder(digestCalculatorProvider);
 
-				SignerInfoGenerator signerInfoGenerator = signerInfoGeneratorBuilder.build(contentSigner, (X509Certificate) certificateHolder.getCertificate());
+				SignerInfoGenerator signerInfoGenerator = signerInfoGeneratorBuilder.build(contentSigner, (X509Certificate) certificate);
 				cmsSignedDataGenerator.addSignerInfoGenerator(signerInfoGenerator);
 			}
 
@@ -203,9 +216,10 @@ public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 
 	protected Store getCertificateStore() throws CertificateEncodingException {
 		ArrayList<Certificate> list = new ArrayList<Certificate>();
-		for (CertificateHolder certificateHolder : this.signRequest.getCertificates()) {
-			list.add(certificateHolder.getCertificate());
-		}
+		// TODO
+		// for (CertificateHolder certificateHolder : this.signRequest.getCertificates()) {
+		// list.add(certificateHolder.getCertificate());
+		// }
 		JcaCertStore certStore = new JcaCertStore(list);
 		return certStore;
 	}

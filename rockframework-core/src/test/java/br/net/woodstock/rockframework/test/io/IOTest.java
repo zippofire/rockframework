@@ -6,9 +6,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 
-import br.net.woodstock.rockframework.utils.IOUtils;
-
 import junit.framework.TestCase;
+import br.net.woodstock.rockframework.utils.IOUtils;
 
 public class IOTest extends TestCase {
 
@@ -16,7 +15,7 @@ public class IOTest extends TestCase {
 
 	private static final String	FILE	= "C:/Temp/66_anos_tse.mp4";
 
-	public void testURL1() throws Exception {
+	public void xtestURL1() throws Exception {
 		URL url = new URL(IOTest.URL);
 		InputStream inputStream = url.openStream();
 		OutputStream outputStream = new FileOutputStream("C:/Temp/testURL1.mp4");
@@ -27,7 +26,7 @@ public class IOTest extends TestCase {
 		outputStream.close();
 	}
 
-	public void testURL2() throws Exception {
+	public void xtestURL2() throws Exception {
 		URL url = new URL(IOTest.URL);
 		InputStream inputStream = url.openStream();
 		OutputStream outputStream = new FileOutputStream("C:/Temp/testURL2.mp4");
@@ -56,6 +55,20 @@ public class IOTest extends TestCase {
 
 		inputStream.close();
 		outputStream.close();
+	}
+
+	public void test3() throws Exception {
+		FileInputStream fileInputStream = new FileInputStream("/tmp/carimbo.p7s");
+		FileOutputStream fileOutputStream1 = new FileOutputStream("/tmp/carimbo2.p7s");
+		FileOutputStream fileOutputStream2 = new FileOutputStream("/tmp/carimbo3.p7s");
+		byte[] bytes = IOUtils.toByteArray(fileInputStream);
+		byte[] newBytes = new byte[bytes.length - 1];
+
+		fileOutputStream1.write(newBytes);
+		fileOutputStream2.write(newBytes);
+
+		System.arraycopy(bytes, 0, newBytes, 0, newBytes.length);
+		System.arraycopy(bytes, 1, newBytes, 0, newBytes.length);
 	}
 
 }

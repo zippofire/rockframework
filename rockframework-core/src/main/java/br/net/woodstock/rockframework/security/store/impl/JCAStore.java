@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+import br.net.woodstock.rockframework.security.Alias;
 import br.net.woodstock.rockframework.security.store.KeyStoreType;
 import br.net.woodstock.rockframework.security.store.Store;
 import br.net.woodstock.rockframework.security.store.StoreEntry;
@@ -57,45 +58,45 @@ public class JCAStore implements Store {
 	}
 
 	@Override
-	public StoreEntry[] aliases() {
+	public Alias[] aliases() {
 		try {
 			Enumeration<String> aliases = this.keyStore.aliases();
-			List<StoreEntry> list = new ArrayList<StoreEntry>();
+			List<Alias> list = new ArrayList<Alias>();
 			while (aliases.hasMoreElements()) {
 				String alias = aliases.nextElement();
-				StoreEntryType type = null;
-				if (this.keyStore.isCertificateEntry(alias)) {
-					type = StoreEntryType.CERTIFICATE;
-				} else if (this.keyStore.isKeyEntry(alias)) {
-					type = StoreEntryType.PRIVATE_KEY;
-				}
-				list.add(new StoreEntry(alias, null, null, type));
+				list.add(new Alias(alias));
 			}
-			return CollectionUtils.toArray(list, StoreEntry.class);
+			return CollectionUtils.toArray(list, Alias.class);
 		} catch (GeneralSecurityException e) {
 			throw new StoreException(e);
 		}
 	}
 
 	@Override
-	public StoreEntry get(final StoreEntry entry) {
+	public StoreEntry get(final Alias alias, final StoreEntryType type) {
 		try {
-			Assert.notNull(entry, "entry");
-			Assert.notNull(entry.getAlias(), "entry.alias");
-			Assert.notNull(entry.getType(), "entry.type");
+			Assert.notNull(alias, "alias");
+			Assert.notNull(type, "type");
 
+			String name = alias.getName();
 			Object value = null;
+			String password = null;
 
-			switch (entry.getType()) {
+			if (alias instanceof PasswordAlias) {
+				PasswordAlias pa = (PasswordAlias) alias;
+				password = pa.getPassword();
+			}
+
+			switch (type) {
 				case CERTIFICATE:
-					value = this.keyStore.getCertificate(entry.getAlias());
+					value = this.keyStore.getCertificate(alias.getName());
 					break;
 				case PRIVATE_KEY:
-					PrivateKey privateKey = (PrivateKey) this.keyStore.getKey(entry.getAlias(), this.toCharArray(entry.getPassword()));
+					PrivateKey privateKey = (PrivateKey) this.keyStore.getKey(name, this.toCharArray(password));
 					value = privateKey;
 					break;
 				case PUBLIC_KEY:
-					PublicKey publicKey = (PublicKey) this.keyStore.getKey(entry.getAlias(), this.toCharArray(entry.getPassword()));
+					PublicKey publicKey = (PublicKey) this.keyStore.getKey(name, this.toCharArray(password));
 					value = publicKey;
 					break;
 				default:
@@ -103,7 +104,28 @@ public class JCAStore implements Store {
 			}
 
 			if (value != null) {
-				return new StoreEntry(entry.getAlias(), null, value, entry.getType());
+				return new StoreEntry(alias, value, type);
+			}
+
+			return null;
+		} catch (GeneralSecurityException e) {
+			throw new StoreException(e);
+		}
+	}
+
+	@Override
+	public StoreEntry[] getChain(final Alias alias) {
+		try {
+			Assert.notNull(alias, "alias");
+
+			Certificate[] chain = this.keyStore.getCertificateChain(alias.getName());
+
+			if (chain != null) {
+				List<StoreEntry> list = new ArrayList<StoreEntry>();
+				for (Certificate certificate : chain) {
+					list.add(new StoreEntry(alias, certificate, StoreEntryType.CERTIFICATE));
+				}
+				return CollectionUtils.toArray(list, StoreEntry.class);
 			}
 
 			return null;
@@ -120,15 +142,25 @@ public class JCAStore implements Store {
 			Assert.notNull(entry.getType(), "entry.type");
 			Assert.notNull(entry.getValue(), "entry.value");
 
+			Alias alias = entry.getAlias();
+			String name = alias.getName();
+			Object value = entry.getValue();
+			String password = null;
+
+			if (alias instanceof PasswordAlias) {
+				PasswordAlias pa = (PasswordAlias) alias;
+				password = pa.getPassword();
+			}
+
 			switch (entry.getType()) {
 				case CERTIFICATE:
-					this.keyStore.setCertificateEntry(entry.getAlias(), (Certificate) entry.getValue());
+					this.keyStore.setCertificateEntry(name, (Certificate) value);
 					break;
 				case PRIVATE_KEY:
-					this.keyStore.setKeyEntry(entry.getAlias(), (PrivateKey) entry.getValue(), this.toCharArray(entry.getPassword()), null);
+					this.keyStore.setKeyEntry(name, (PrivateKey) value, this.toCharArray(password), null);
 					break;
 				case PUBLIC_KEY:
-					this.keyStore.setKeyEntry(entry.getAlias(), (PublicKey) entry.getValue(), this.toCharArray(entry.getPassword()), null);
+					this.keyStore.setKeyEntry(name, (PublicKey) value, this.toCharArray(password), null);
 					break;
 				default:
 					break;
@@ -141,12 +173,11 @@ public class JCAStore implements Store {
 	}
 
 	@Override
-	public boolean remove(final StoreEntry entry) {
+	public boolean remove(final Alias alias) {
 		try {
-			Assert.notNull(entry, "entry");
-			Assert.notNull(entry.getAlias(), "entry.alias");
+			Assert.notNull(alias, "alias");
 
-			this.keyStore.deleteEntry(entry.getAlias());
+			this.keyStore.deleteEntry(alias.getName());
 
 			return true;
 		} catch (GeneralSecurityException e) {

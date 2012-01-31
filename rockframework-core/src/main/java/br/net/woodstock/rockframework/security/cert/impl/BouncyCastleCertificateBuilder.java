@@ -41,17 +41,22 @@ import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.bouncycastle.x509.extension.SubjectKeyIdentifierStructure;
 
+import br.net.woodstock.rockframework.security.Alias;
+import br.net.woodstock.rockframework.security.cert.CertificateBuilder;
 import br.net.woodstock.rockframework.security.cert.CertificateException;
-import br.net.woodstock.rockframework.security.cert.CertificateHolder;
 import br.net.woodstock.rockframework.security.cert.CertificateType;
 import br.net.woodstock.rockframework.security.cert.KeyUsageType;
 import br.net.woodstock.rockframework.security.crypt.KeyPairType;
 import br.net.woodstock.rockframework.security.sign.SignType;
+import br.net.woodstock.rockframework.security.store.Store;
+import br.net.woodstock.rockframework.security.store.StoreEntry;
+import br.net.woodstock.rockframework.security.store.StoreEntryType;
+import br.net.woodstock.rockframework.security.store.impl.MemoryStore;
 import br.net.woodstock.rockframework.security.util.BouncyCastleProviderHelper;
 import br.net.woodstock.rockframework.security.util.SecurityUtils;
 import br.net.woodstock.rockframework.util.DateBuilder;
 
-public class BouncyCastleCertificateBuilder {
+public class BouncyCastleCertificateBuilder implements CertificateBuilder {
 
 	private static final String	DEFAULT_ISSUER	= "";
 
@@ -127,7 +132,8 @@ public class BouncyCastleCertificateBuilder {
 		return this;
 	}
 
-	public CertificateHolder build() {
+	@Override
+	public Store build(final Alias alias) {
 		try {
 			long time = System.currentTimeMillis();
 			String subject = this.subject;
@@ -211,7 +217,10 @@ public class BouncyCastleCertificateBuilder {
 				privateKey = keyPair.getPrivate();
 			}
 
-			return new CertificateHolder(certificate, privateKey);
+			Store store = new MemoryStore();
+			store.add(new StoreEntry(alias, certificate, StoreEntryType.CERTIFICATE));
+			store.add(new StoreEntry(alias, privateKey, StoreEntryType.PRIVATE_KEY));
+			return store;
 		} catch (Exception e) {
 			throw new CertificateException(e);
 		}

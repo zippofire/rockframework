@@ -18,7 +18,8 @@ package br.net.woodstock.rockframework.security.sign;
 
 import java.io.Serializable;
 
-import br.net.woodstock.rockframework.security.cert.CertificateHolder;
+import br.net.woodstock.rockframework.security.Alias;
+import br.net.woodstock.rockframework.security.store.Store;
 import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
 
 public class SignRequest implements Serializable {
@@ -35,7 +36,9 @@ public class SignRequest implements Serializable {
 
 	private TimeStampClient		timeStampClient;
 
-	private CertificateHolder[]	certificates;
+	private Alias[]				aliases;
+
+	private Store				store;
 
 	public SignRequest() {
 		super();
@@ -81,12 +84,20 @@ public class SignRequest implements Serializable {
 		this.timeStampClient = timeStampClient;
 	}
 
-	public CertificateHolder[] getCertificates() {
-		return this.certificates;
+	public Alias[] getAliases() {
+		return this.aliases;
 	}
 
-	public void setCertificates(final CertificateHolder[] certificates) {
-		this.certificates = certificates;
+	public void setAliases(final Alias[] aliases) {
+		this.aliases = aliases;
+	}
+
+	public Store getStore() {
+		return this.store;
+	}
+
+	public void setStore(final Store store) {
+		this.store = store;
 	}
 
 }

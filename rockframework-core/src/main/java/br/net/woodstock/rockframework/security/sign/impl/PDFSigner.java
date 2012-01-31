@@ -38,7 +38,7 @@ import org.bouncycastle.jce.X509Principal;
 import org.bouncycastle.tsp.TimeStampToken;
 
 import br.net.woodstock.rockframework.office.pdf.PDFException;
-import br.net.woodstock.rockframework.security.cert.CertificateHolder;
+import br.net.woodstock.rockframework.security.Alias;
 import br.net.woodstock.rockframework.security.digest.DigestType;
 import br.net.woodstock.rockframework.security.digest.Digester;
 import br.net.woodstock.rockframework.security.digest.impl.BasicDigester;
@@ -91,17 +91,8 @@ public class PDFSigner implements DocumentSigner {
 		Assert.notNull(this.signRequest, "signRequest");
 		try {
 			byte[] currentData = data;
-			for (CertificateHolder certificateHolder : this.signRequest.getCertificates()) {
-				SignRequest sr = new SignRequest();
-				sr.setContactInfo(this.signRequest.getContactInfo());
-				sr.setLocation(this.signRequest.getLocation());
-				sr.setName(this.signRequest.getName());
-				sr.setReason(this.signRequest.getReason());
-				sr.setTimeStampClient(this.signRequest.getTimeStampClient());
-
-				sr.setCertificates(new CertificateHolder[] { certificateHolder });
-
-				currentData = this.singleSign(data, sr);
+			for (Alias alias : this.signRequest.getAliases()) {
+				currentData = this.singleSign(data, alias);
 			}
 			return currentData;
 		} catch (Exception e) {
@@ -109,17 +100,35 @@ public class PDFSigner implements DocumentSigner {
 		}
 	}
 
-	private byte[] singleSign(final byte[] data, final SignRequest requestData) {
+	private byte[] singleSign(final byte[] data, final Alias alias) {
 		Assert.notEmpty(data, "data");
-		Assert.notNull(requestData, "requestData");
 		try {
-			CertificateHolder holder = requestData.getCertificates()[0];
+			Store store = this.signRequest.getStore();
+			StoreEntry certificateEntry = store.get(alias, StoreEntryType.CERTIFICATE);
+			StoreEntry privateEntry = store.get(alias, StoreEntryType.PRIVATE_KEY);
+
+			if (certificateEntry == null) {
+				throw new SignerException("Certificate '" + alias.getName() + " not found in store");
+			}
+
+			if (privateEntry == null) {
+				throw new SignerException("Private key '" + alias.getName() + " not found in store");
+			}
+
+			StoreEntry[] chainEntry = store.getChain(alias);
 
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-			X509Certificate certificate = (X509Certificate) holder.getCertificate();
-			X509Certificate rootCertificate = (X509Certificate) holder.getRootCertificate();
-			Certificate[] chain = holder.getChain();
-			PrivateKey privateKey = holder.getPrivateKey();
+			X509Certificate certificate = (X509Certificate) certificateEntry.getValue();
+			PrivateKey privateKey = (PrivateKey) privateEntry.getValue();
+			Certificate[] chain = null;
+
+			if (ConditionUtils.isNotEmpty(chainEntry)) {
+				chain = new Certificate[chainEntry.length];
+				for (int i = 0; i < chainEntry.length; i++) {
+					chain[i] = (Certificate) chainEntry[i].getValue();
+				}
+			}
+
 			DigestType digestType = this.getDigestTypeFromSignature(certificate.getSigAlgName());
 			Calendar calendar = Calendar.getInstance();
 
@@ -128,9 +137,9 @@ public class PDFSigner implements DocumentSigner {
 
 			PdfSignatureAppearance appearance = stamper.getSignatureAppearance();
 			appearance.setCrypto(privateKey, chain, null, PdfSignatureAppearance.SELF_SIGNED);
-			appearance.setContact(requestData.getContactInfo());
-			appearance.setLocation(requestData.getLocation());
-			appearance.setReason(requestData.getReason());
+			appearance.setContact(this.signRequest.getContactInfo());
+			appearance.setLocation(this.signRequest.getLocation());
+			appearance.setReason(this.signRequest.getReason());
 			appearance.setSignDate(calendar);
 
 			PdfSignature signature = new PdfSignature(PdfName.ADOBE_PPKLITE, PdfName.ADBE_PKCS7_DETACHED);
@@ -139,8 +148,8 @@ public class PDFSigner implements DocumentSigner {
 			signature.setContact(appearance.getContact());
 			signature.setDate(new PdfDate(appearance.getSignDate()));
 
-			if (ConditionUtils.isNotEmpty(requestData.getName())) {
-				signature.setName(requestData.getName());
+			if (ConditionUtils.isNotEmpty(this.signRequest.getName())) {
+				signature.setName(this.signRequest.getName());
 			} else {
 				signature.setName(this.getValue(certificate.getSubjectX500Principal()));
 			}
@@ -157,24 +166,35 @@ public class PDFSigner implements DocumentSigner {
 			byte[] hash = digester.digest(rangeStream);
 
 			TSAClient tsc = null;
-			if (requestData.getTimeStampClient() != null) {
-				tsc = new DelegateITextTSAClient(requestData.getTimeStampClient());
+			if (this.signRequest.getTimeStampClient() != null) {
+				tsc = new DelegateITextTSAClient(this.signRequest.getTimeStampClient());
 			}
 
 			byte[] oscp = null;
-			if (rootCertificate != null) {
+			if (ConditionUtils.isNotEmpty(chain)) {
 				String oscpUrl = PdfPKCS7.getOCSPURL(certificate);
-				if ((oscpUrl != null) && (oscpUrl.trim().length() > 0)) {
-					OcspClient ocspClient = new OcspClientBouncyCastle(certificate, rootCertificate, oscpUrl);
-					oscp = ocspClient.getEncoded();
+				X509Certificate parentCertificate = null;
+
+				for (Certificate c : chain) {
+					if (!certificate.equals(c)) {
+						parentCertificate = (X509Certificate) c;
+						break;
+					}
+				}
+
+				if (parentCertificate != null) {
+					if ((oscpUrl != null) && (oscpUrl.trim().length() > 0)) {
+						OcspClient ocspClient = new OcspClientBouncyCastle(certificate, parentCertificate, oscpUrl);
+						oscp = ocspClient.getEncoded();
+					}
 				}
 			}
 
 			PdfPKCS7 pkcs7 = new PdfPKCS7(privateKey, chain, null, digestType.getAlgorithm(), null, false);
 			byte[] authenticatedAttributes = pkcs7.getAuthenticatedAttributeBytes(hash, calendar, oscp);
 			pkcs7.update(authenticatedAttributes, 0, authenticatedAttributes.length);
-			pkcs7.setLocation(requestData.getLocation());
-			pkcs7.setReason(requestData.getReason());
+			pkcs7.setLocation(this.signRequest.getLocation());
+			pkcs7.setReason(this.signRequest.getReason());
 
 			if (tsc == null) {
 				pkcs7.setSignDate(calendar);
@@ -285,36 +305,20 @@ public class PDFSigner implements DocumentSigner {
 						PdfString string = fields.getSignatureDictionary(str).getAsString(PdfName.CONTENTS);
 						byte[] content = string.getBytes();
 
-						Certificate[] certificates = pk.getCertificates();
+						X509Certificate certificate = pk.getSigningCertificate();
+						Certificate[] chain = pk.getSignCertificateChain();
 
-						Store store = new JCAStore(KeyStoreType.JKS);
-
-						List<Signatory> signers = new ArrayList<Signatory>();
 						byte[] encoded = content;
 						TimeStamp timeStamp = null;
 						String location = pk.getLocation();
 						String reason = pk.getReason();
 						Date date = pk.getSignDate().getTime();
 						Boolean valid = Boolean.TRUE;
+						Signatory signatory = this.toSignatory(certificate);
 
-						for (Certificate certificate : certificates) {
-							X509Certificate x509Certificate = (X509Certificate) certificate;
-							X509Principal x509Subject = (X509Principal) x509Certificate.getSubjectDN();
-							X509Principal x509Issuer = (X509Principal) x509Certificate.getIssuerDN();
-
-							String subject = this.getValue(x509Subject);
-							String issuer = this.getValue(x509Issuer);
-
-							Signatory signatory = new Signatory();
-							signatory.setCertificate(x509Certificate);
-							signatory.setIssuer(issuer);
-							signatory.setSubject(subject);
-							signers.add(signatory);
-
-							store.add(new StoreEntry(x509Certificate.getSerialNumber().toString(), null, x509Certificate, StoreEntryType.CERTIFICATE));
-						}
-
-						Object[] fails = PdfPKCS7.verifyCertificates(certificates, store.toKeyStore(), pk.getCRLs(), pk.getSignDate());
+						Store store = new JCAStore(KeyStoreType.JKS);
+						store.add(new StoreEntry(new Alias(certificate.getSerialNumber().toString()), certificate, StoreEntryType.CERTIFICATE));
+						Object[] fails = PdfPKCS7.verifyCertificates(chain, store.toKeyStore(), pk.getCRLs(), pk.getSignDate());
 						if (ConditionUtils.isNotEmpty(fails)) {
 							valid = Boolean.FALSE;
 						}
@@ -334,7 +338,8 @@ public class PDFSigner implements DocumentSigner {
 						sig.setEncoded(encoded);
 						sig.setLocation(location);
 						sig.setReason(reason);
-						sig.setSigners(signers);
+						sig.setSignatories(new ArrayList<Signatory>());
+						sig.getSignatories().add(signatory);
 						sig.setTimeStamp(timeStamp);
 						sig.setValid(valid);
 						signatures.add(sig);
@@ -346,6 +351,20 @@ public class PDFSigner implements DocumentSigner {
 		} catch (Exception e) {
 			throw new PDFException(e);
 		}
+	}
+
+	protected Signatory toSignatory(final X509Certificate certificate) {
+		X509Principal x509Subject = (X509Principal) certificate.getSubjectDN();
+		X509Principal x509Issuer = (X509Principal) certificate.getIssuerDN();
+
+		String subject = this.getValue(x509Subject);
+		String issuer = this.getValue(x509Issuer);
+
+		Signatory signatory = new Signatory();
+		signatory.setCertificate(certificate);
+		signatory.setIssuer(issuer);
+		signatory.setSubject(subject);
+		return signatory;
 	}
 
 	protected SignType getSignatureType(final String signatureAlgorithm) {

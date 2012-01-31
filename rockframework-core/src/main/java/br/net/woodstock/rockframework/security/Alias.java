@@ -14,13 +14,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.security.cert;
+package br.net.woodstock.rockframework.security;
 
-import br.net.woodstock.rockframework.security.Alias;
-import br.net.woodstock.rockframework.security.store.Store;
+import java.io.Serializable;
 
-public interface CertificateBuilder {
+import br.net.woodstock.rockframework.util.Assert;
 
-	Store build(Alias alias);
+public class Alias implements Serializable {
+
+	private static final long	serialVersionUID	= -2523432179685932324L;
+
+	private String				name;
+
+	public Alias(final String name) {
+		super();
+		Assert.notEmpty(name, "name");
+		this.name = name;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(final String name) {
+		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return this.name;
+	}
 
 }

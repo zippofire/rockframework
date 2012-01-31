@@ -21,19 +21,23 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.KeyStore;
 
+import br.net.woodstock.rockframework.security.Alias;
+
 public interface Store {
 
 	// Array
-	StoreEntry[] aliases();
+	Alias[] aliases();
+
+	StoreEntry[] getChain(Alias alias);
 
 	// Single
-	StoreEntry get(StoreEntry entry);
+	StoreEntry get(Alias alias, StoreEntryType type);
 
 	// Add
 	boolean add(StoreEntry entry);
 
 	// Remove
-	boolean remove(StoreEntry entry);
+	boolean remove(Alias alias);
 
 	// IO
 	void read(InputStream inputStream, String password) throws IOException;
