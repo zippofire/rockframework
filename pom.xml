@@ -92,8 +92,23 @@
 		<module>rockframework-web</module>
 	</modules>
 
+	<!--
+	<distributionManagement>
+		<repository>
+			<id>woodstock</id>
+			<name>Woodstock Releases</name>
+			<url>http://maven.woodstock.net.br/nexus/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>woodstock</id>
+			<name>Woodstock Snatpshots</name>
+			<url>http://maven.woodstock.net.br/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+	-->
+
 	<build>
-		<defaultGoal>install</defaultGoal>
+		<defaultGoal>package</defaultGoal>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -105,8 +120,20 @@
 					<encoding>ISO-8859-1</encoding>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.8.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<!-- Included on Sonatype -->
-			<!--
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
@@ -121,7 +148,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
@@ -165,6 +191,19 @@
 						</plugin>
 					</reportPlugins>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.1.2</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
