@@ -17,5 +17,5 @@
 package br.net.woodstock.rockframework.security.store;
 
 public enum StoreEntryType {
-	CERTIFICATE, PRIVATE_KEY, PUBLIC_KEY;
+	CERTIFICATE, PRIVATE_KEY, PUBLIC_KEY, SECRET_KEY;
 }

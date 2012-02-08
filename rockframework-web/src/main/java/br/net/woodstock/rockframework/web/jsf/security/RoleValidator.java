@@ -14,27 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.security.store.impl;
+package br.net.woodstock.rockframework.web.jsf.security;
 
-import br.net.woodstock.rockframework.security.Alias;
-
-public class PasswordAlias extends Alias {
-
-	private static final long	serialVersionUID	= -8023340152377324432L;
-
-	private String				password;
-
-	public PasswordAlias(final String name, final String password) {
-		super(name);
-		this.password = password;
-	}
-
-	public String getPassword() {
-		return this.password;
-	}
-
-	public void setPassword(final String password) {
-		this.password = password;
-	}
-
+public interface RoleValidator extends SecurityValidator {
+	//
 }

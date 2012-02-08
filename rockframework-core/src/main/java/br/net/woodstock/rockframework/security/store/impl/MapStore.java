@@ -26,8 +26,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.crypto.SecretKey;
+
 import br.net.woodstock.rockframework.security.Alias;
+import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
+import br.net.woodstock.rockframework.security.store.CertificateEntry;
 import br.net.woodstock.rockframework.security.store.KeyStoreType;
+import br.net.woodstock.rockframework.security.store.PrivateKeyEntry;
+import br.net.woodstock.rockframework.security.store.PublicKeyEntry;
+import br.net.woodstock.rockframework.security.store.SecretKeyEntry;
 import br.net.woodstock.rockframework.security.store.Store;
 import br.net.woodstock.rockframework.security.store.StoreEntry;
 import br.net.woodstock.rockframework.security.store.StoreEntryType;
@@ -36,17 +43,20 @@ import br.net.woodstock.rockframework.utils.CollectionUtils;
 
 public abstract class MapStore implements Store {
 
-	private Map<String, Certificate>	certificateMap;
+	private Map<String, Certificate>		certificateMap;
 
-	private Map<String, PrivateKey>		privateKeyMap;
+	private Map<String, PrivateKeyHolder>	privateKeyMap;
 
-	private Map<String, PublicKey>		publicKeyMap;
+	private Map<String, PublicKey>			publicKeyMap;
+
+	private Map<String, SecretKey>			secretKeyMap;
 
 	public MapStore() {
 		super();
 		this.certificateMap = new HashMap<String, Certificate>();
-		this.privateKeyMap = new HashMap<String, PrivateKey>();
+		this.privateKeyMap = new HashMap<String, PrivateKeyHolder>();
 		this.publicKeyMap = new HashMap<String, PublicKey>();
+		this.secretKeyMap = new HashMap<String, SecretKey>();
 	}
 
 	// Aux
@@ -54,12 +64,16 @@ public abstract class MapStore implements Store {
 		return this.certificateMap;
 	}
 
-	protected Map<String, PrivateKey> getPrivateKeyMap() {
+	protected Map<String, PrivateKeyHolder> getPrivateKeyMap() {
 		return this.privateKeyMap;
 	}
 
 	protected Map<String, PublicKey> getPublicKeyMap() {
 		return this.publicKeyMap;
+	}
+
+	protected Map<String, SecretKey> getSecretKeyMap() {
+		return this.secretKeyMap;
 	}
 
 	@Override
@@ -68,7 +82,7 @@ public abstract class MapStore implements Store {
 		for (Entry<String, Certificate> entry : this.certificateMap.entrySet()) {
 			aliases.add(new Alias(entry.getKey()));
 		}
-		for (Entry<String, PrivateKey> entry : this.privateKeyMap.entrySet()) {
+		for (Entry<String, PrivateKeyHolder> entry : this.privateKeyMap.entrySet()) {
 			aliases.add(new Alias(entry.getKey()));
 		}
 		for (Entry<String, PublicKey> entry : this.publicKeyMap.entrySet()) {
@@ -82,27 +96,37 @@ public abstract class MapStore implements Store {
 		Assert.notNull(alias, "alias");
 		Assert.notNull(type, "type");
 
-		Object value = null;
+		StoreEntry entry = null;
 
 		switch (type) {
 			case CERTIFICATE:
-				value = this.certificateMap.get(alias.getName());
+				Certificate certificate = this.certificateMap.get(alias.getName());
+				if (certificate != null) {
+					entry = new CertificateEntry(alias, certificate);
+				}
 				break;
 			case PRIVATE_KEY:
-				value = this.privateKeyMap.get(alias.getName());
+				PrivateKeyHolder holder = this.privateKeyMap.get(alias.getName());
+				if (holder != null) {
+					entry = new PrivateKeyEntry(alias, holder.getPrivateKey(), holder.getChain());
+				}
 				break;
 			case PUBLIC_KEY:
-				value = this.publicKeyMap.get(alias.getName());
+				PublicKey publicKey = this.publicKeyMap.get(alias.getName());
+				if (publicKey != null) {
+					entry = new PublicKeyEntry(alias, publicKey);
+				}
+				break;
+			case SECRET_KEY:
+				SecretKey secretKey = this.secretKeyMap.get(alias.getName());
+				if (secretKey != null) {
+					entry = new SecretKeyEntry(alias, secretKey);
+				}
 				break;
 			default:
 				break;
 		}
-
-		if (value != null) {
-			return new StoreEntry(alias, value, type);
-		}
-
-		return null;
+		return entry;
 	}
 
 	@Override
@@ -121,15 +145,22 @@ public abstract class MapStore implements Store {
 		Assert.notNull(entry.getType(), "entry.type");
 		Assert.notNull(entry.getValue(), "entry.value");
 
+		Alias alias = entry.getAlias();
+		String name = alias.getName();
+		Object value = entry.getValue();
+
 		switch (entry.getType()) {
 			case CERTIFICATE:
-				this.certificateMap.put(entry.getAlias().getName(), (Certificate) entry.getValue());
+				this.certificateMap.put(name, (Certificate) value);
 				break;
 			case PRIVATE_KEY:
-				this.privateKeyMap.put(entry.getAlias().getName(), (PrivateKey) entry.getValue());
+				this.privateKeyMap.put(name, new PrivateKeyHolder((PrivateKey) value, ((PrivateKeyEntry) entry).getChain()));
 				break;
 			case PUBLIC_KEY:
-				this.publicKeyMap.put(entry.getAlias().getName(), (PublicKey) entry.getValue());
+				this.publicKeyMap.put(name, (PublicKey) value);
+				break;
+			case SECRET_KEY:
+				this.secretKeyMap.put(name, (SecretKey) value);
 				break;
 			default:
 				break;
@@ -150,13 +181,16 @@ public abstract class MapStore implements Store {
 	public KeyStore toKeyStore() {
 		JCAStore jcaStore = new JCAStore(KeyStoreType.JKS);
 		for (Entry<String, Certificate> entry : this.certificateMap.entrySet()) {
-			jcaStore.add(new StoreEntry(new Alias(entry.getKey()), entry.getValue(), StoreEntryType.CERTIFICATE));
+			jcaStore.add(new CertificateEntry(new Alias(entry.getKey()), entry.getValue()));
 		}
-		for (Entry<String, PrivateKey> entry : this.privateKeyMap.entrySet()) {
-			jcaStore.add(new StoreEntry(new Alias(entry.getKey()), entry.getValue(), StoreEntryType.PRIVATE_KEY));
+		for (Entry<String, PrivateKeyHolder> entry : this.privateKeyMap.entrySet()) {
+			jcaStore.add(new PrivateKeyEntry(new Alias(entry.getKey()), entry.getValue().getPrivateKey(), entry.getValue().getChain()));
 		}
 		for (Entry<String, PublicKey> entry : this.publicKeyMap.entrySet()) {
-			jcaStore.add(new StoreEntry(new Alias(entry.getKey()), entry.getValue(), StoreEntryType.PUBLIC_KEY));
+			jcaStore.add(new PublicKeyEntry(new Alias(entry.getKey()), entry.getValue()));
+		}
+		for (Entry<String, SecretKey> entry : this.secretKeyMap.entrySet()) {
+			jcaStore.add(new SecretKeyEntry(new Alias(entry.getKey()), entry.getValue()));
 		}
 		return jcaStore.toKeyStore();
 	}

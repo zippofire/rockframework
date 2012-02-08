@@ -96,7 +96,6 @@ public class URLTimeStampClient extends BouncyCastleTimeStampClient {
 	protected void setConnectionProperties(final URLConnection connection) {
 		connection.setRequestProperty(URLTimeStampClient.CONTENT_TYPE_PROPERTY, URLTimeStampClient.CONTENT_TYPE_VALUE);
 		connection.setRequestProperty(URLTimeStampClient.CONTENT_TRANSFER_ENCODING_PROPERTY, this.encoding);
-
 	}
 
 	protected void writeBytes(final OutputStream outputStream, final byte[] bytes) throws IOException {

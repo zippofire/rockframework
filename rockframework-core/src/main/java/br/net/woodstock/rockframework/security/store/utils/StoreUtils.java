@@ -28,24 +28,31 @@ public abstract class StoreUtils {
 		//
 	}
 
-	public static void copy(final Store from, final Store to) {
+	public static void copy(final Store from, final Store to, final Alias[] aliases) {
 		Assert.notNull(from, "from");
 		Assert.notNull(to, "to");
+		Assert.notEmpty(aliases, "aliases");
 
-		for (Alias alias : from.aliases()) {
-			StoreEntry entry = null;
+		for (Alias alias : aliases) {
 
-			entry = from.get(alias, StoreEntryType.CERTIFICATE);
+			StoreEntry entry = from.get(alias, StoreEntryType.PRIVATE_KEY);
 			if (entry != null) {
 				to.add(entry);
-			}
-			entry = from.get(alias, StoreEntryType.PRIVATE_KEY);
-			if (entry != null) {
-				to.add(entry);
-			}
-			entry = from.get(alias, StoreEntryType.PUBLIC_KEY);
-			if (entry != null) {
-				to.add(entry);
+			} else {
+				entry = from.get(alias, StoreEntryType.CERTIFICATE);
+				if (entry != null) {
+					to.add(entry);
+				} else {
+					entry = from.get(alias, StoreEntryType.PUBLIC_KEY);
+					if (entry != null) {
+						to.add(entry);
+					} else {
+						entry = from.get(alias, StoreEntryType.PUBLIC_KEY);
+						if (entry != null) {
+							to.add(entry);
+						}
+					}
+				}
 			}
 		}
 	}

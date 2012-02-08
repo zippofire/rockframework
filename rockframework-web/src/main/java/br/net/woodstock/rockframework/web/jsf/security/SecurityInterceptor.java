@@ -14,12 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.security.crypt;
+package br.net.woodstock.rockframework.web.jsf.security;
 
-public interface PrivateKeyHolder {
+import java.io.Serializable;
 
-	String getAlgorithm();
+import javax.interceptor.InvocationContext;
 
-	byte[] getPrivateKey();
+public interface SecurityInterceptor extends Serializable {
+
+	Object intercept(final InvocationContext context) throws Exception;
 
 }

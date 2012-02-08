@@ -19,6 +19,8 @@ package br.net.woodstock.rockframework.security.crypt.impl;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import javax.crypto.SecretKey;
+
 import br.net.woodstock.rockframework.security.crypt.CrypterException;
 import br.net.woodstock.rockframework.security.crypt.CrypterWriter;
 import br.net.woodstock.rockframework.util.Assert;
@@ -41,8 +43,8 @@ public class SyncCrypterWriter implements CrypterWriter {
 	@Override
 	public void write() {
 		try {
-			byte[] bytes = this.crypter.getSecretKey();
-			byte[] base64 = Base64Utils.toBase64(bytes);
+			SecretKey key = this.crypter.getSecretKey();
+			byte[] base64 = Base64Utils.toBase64(key.getEncoded());
 			this.outputStream.write(base64);
 		} catch (IOException e) {
 			throw new CrypterException(e);

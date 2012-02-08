@@ -42,9 +42,9 @@ public class LogInterceptor implements Serializable {
 	@AroundInvoke
 	public Object intercept(final InvocationContext context) throws Exception {
 		StringBuilder builder = new StringBuilder();
-		builder.append(context.getTarget().getClass());
+		builder.append(context.getTarget().getClass().getCanonicalName());
 		builder.append(LogInterceptor.METHOD_SEPARATOR);
-		builder.append(context.getMethod());
+		builder.append(context.getMethod().getName());
 		builder.append(LogInterceptor.METHOD_START);
 		if (ConditionUtils.isNotEmpty(context.getParameters())) {
 			boolean first = true;
@@ -59,7 +59,7 @@ public class LogInterceptor implements Serializable {
 			}
 		}
 		builder.append(LogInterceptor.METHOD_END);
-		WebLog.getInstance().getLog().warn(builder.toString());
+		WebLog.getInstance().getLog().info(builder.toString());
 		return context.proceed();
 	}
 }

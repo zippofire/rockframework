@@ -8,6 +8,7 @@ import java.security.KeyPairGenerator;
 import junit.framework.TestCase;
 import br.net.woodstock.rockframework.security.Alias;
 import br.net.woodstock.rockframework.security.cert.KeyUsageType;
+import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
 import br.net.woodstock.rockframework.security.cert.impl.BouncyCastleCertificateBuilder;
 import br.net.woodstock.rockframework.security.crypt.KeyPairType;
 import br.net.woodstock.rockframework.security.sign.PKCS7Signer;
@@ -22,10 +23,11 @@ import br.net.woodstock.rockframework.security.sign.impl.HexSigner;
 import br.net.woodstock.rockframework.security.sign.impl.KeyPairSigner;
 import br.net.woodstock.rockframework.security.sign.impl.PDFSigner;
 import br.net.woodstock.rockframework.security.store.KeyStoreType;
+import br.net.woodstock.rockframework.security.store.PasswordAlias;
+import br.net.woodstock.rockframework.security.store.PrivateKeyEntry;
 import br.net.woodstock.rockframework.security.store.Store;
 import br.net.woodstock.rockframework.security.store.impl.JCAStore;
-import br.net.woodstock.rockframework.security.store.impl.PasswordAlias;
-import br.net.woodstock.rockframework.security.store.utils.StoreUtils;
+import br.net.woodstock.rockframework.security.store.impl.MemoryStore;
 import br.net.woodstock.rockframework.security.timestamp.TimeStamp;
 import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
 import br.net.woodstock.rockframework.security.timestamp.impl.STFTimeStampClient;
@@ -100,15 +102,17 @@ public class SignerTest extends TestCase {
 		builder1.withIssuer("Woodstock Tecnologia 1");
 		builder1.withV3Extensions(true);
 		builder1.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
-		Store store1 = builder1.build(new Alias("mycert1"));
+		PrivateKeyHolder holder1 = builder1.build();
 
 		BouncyCastleCertificateBuilder builder2 = new BouncyCastleCertificateBuilder("Lourival Sabino 2");
 		builder2.withIssuer("Woodstock Tecnologia 2");
 		builder2.withV3Extensions(true);
 		builder2.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
-		Store store2 = builder2.build(new Alias("mycert2"));
+		PrivateKeyHolder holder2 = builder2.build();
 
-		StoreUtils.copy(store2, store1);
+		Store store = new MemoryStore();
+		store.add(new PrivateKeyEntry(new PasswordAlias("mykey1", "mypasswd"), holder1.getPrivateKey(), holder1.getChain()));
+		store.add(new PrivateKeyEntry(new PasswordAlias("mykey2", "mypasswd"), holder2.getPrivateKey(), holder2.getChain()));
 
 		TimeStampClient timeStampClient = new URLTimeStampClient("http://tsa.safelayer.com:8093");
 		// TimeStampClient timeStampClient = new STFTimeStampClient("201.49.148.134", 318);
@@ -118,7 +122,7 @@ public class SignerTest extends TestCase {
 		signerInfo.setLocation("Location");
 		signerInfo.setName("Lourival Sabino");
 		signerInfo.setReason("Reason");
-		signerInfo.setStore(store1);
+		signerInfo.setStore(store);
 		signerInfo.setTimeStampClient(timeStampClient);
 
 		PKCS7Signer signer = new BouncyCastlePKCS7Signer(signerInfo);
@@ -141,7 +145,9 @@ public class SignerTest extends TestCase {
 		builder1.withIssuer("Woodstock Tecnologia 1");
 		builder1.withV3Extensions(true);
 		builder1.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
-		Store store1 = builder1.build(new Alias("cert1"));
+		PrivateKeyHolder holder1 = builder1.build();
+		Store store1 = new MemoryStore();
+		store1.add(new PrivateKeyEntry(new PasswordAlias("mykey1", "mypasswd"), holder1.getPrivateKey(), holder1.getChain()));
 
 		TimeStampClient timeStampClient = new URLTimeStampClient("http://tsa.safelayer.com:8093");
 		// TimeStampClient timeStampClient = new STFTimeStampClient("201.49.148.134", 318);
@@ -167,7 +173,9 @@ public class SignerTest extends TestCase {
 		builder.withIssuer("Woodstock Tecnologia 1");
 		builder.withV3Extensions(true);
 		builder.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
-		Store store = builder.build(new Alias("cert1"));
+		PrivateKeyHolder holder = builder.build();
+		Store store = new MemoryStore();
+		store.add(new PrivateKeyEntry(new PasswordAlias("mykey1", "mypasswd"), holder.getPrivateKey(), holder.getChain()));
 
 		// TimeStampClient timeStampClient = TSA_CLIENT_STF;
 		// TimeStampClient timeStampClient = new STFTimeStampClient("201.49.148.134", 318);
@@ -204,7 +212,9 @@ public class SignerTest extends TestCase {
 		builder.withIssuer("TSE");
 		builder.withV3Extensions(true);
 		builder.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
-		Store store = builder.build(new Alias("cert1"));
+		PrivateKeyHolder holder = builder.build();
+		Store store = new MemoryStore();
+		store.add(new PrivateKeyEntry(new PasswordAlias("mykey1", "mypasswd"), holder.getPrivateKey(), holder.getChain()));
 
 		FileInputStream fileInputStream = new FileInputStream("/home/lourival/Documentos/curriculum.pdf");
 
@@ -233,7 +243,9 @@ public class SignerTest extends TestCase {
 		builder.withIssuer("TSE");
 		builder.withV3Extensions(true);
 		builder.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
-		Store store = builder.build(new Alias("cert1"));
+		PrivateKeyHolder holder = builder.build();
+		Store store = new MemoryStore();
+		store.add(new PrivateKeyEntry(new PasswordAlias("mykey1", "mypasswd"), holder.getPrivateKey(), holder.getChain()));
 
 		FileInputStream fileInputStream = new FileInputStream("/tmp/sign.pdf");
 
@@ -257,7 +269,7 @@ public class SignerTest extends TestCase {
 		fileOutputStream.close();
 	}
 
-	public void xtest7() throws Exception {
+	public void test7() throws Exception {
 		JCAStore store = new JCAStore(KeyStoreType.JKS);
 		store.read(new FileInputStream("/home/lourival/Downloads/LOURIVALSABINO.jks"), "storepasswd");
 
@@ -284,7 +296,7 @@ public class SignerTest extends TestCase {
 		fileOutputStream.close();
 	}
 
-	public void test8() throws Exception {
+	public void xtest8() throws Exception {
 		PDFSigner signer = new PDFSigner(null);
 		FileInputStream inputStream = new FileInputStream("/tmp/sign2.pdf");
 		Signature[] signatures = signer.getSignatures(IOUtils.toByteArray(inputStream));

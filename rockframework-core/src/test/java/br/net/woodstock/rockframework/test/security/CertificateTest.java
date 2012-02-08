@@ -3,12 +3,9 @@ package br.net.woodstock.rockframework.test.security;
 import java.security.cert.X509Certificate;
 
 import junit.framework.TestCase;
-import br.net.woodstock.rockframework.security.Alias;
 import br.net.woodstock.rockframework.security.cert.KeyUsageType;
+import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
 import br.net.woodstock.rockframework.security.cert.impl.BouncyCastleCertificateBuilder;
-import br.net.woodstock.rockframework.security.store.Store;
-import br.net.woodstock.rockframework.security.store.StoreEntry;
-import br.net.woodstock.rockframework.security.store.StoreEntryType;
 
 public class CertificateTest extends TestCase {
 
@@ -24,10 +21,8 @@ public class CertificateTest extends TestCase {
 		builder.withIssuer("Woodstock Tecnologia");
 		builder.withV3Extensions(true);
 		builder.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
-		Alias alias = new Alias("mycert");
-		Store store = builder.build(alias);
-		StoreEntry storeEntry = store.get(alias, StoreEntryType.CERTIFICATE);
-		X509Certificate certificate = (X509Certificate) storeEntry.getValue();
+		PrivateKeyHolder holder = builder.build();
+		X509Certificate certificate = (X509Certificate) holder.getChain()[0];
 		System.out.println(certificate);
 	}
 }

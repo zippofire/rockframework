@@ -24,12 +24,12 @@ import javax.crypto.SecretKey;
 
 import br.net.woodstock.rockframework.security.crypt.CrypterException;
 import br.net.woodstock.rockframework.security.crypt.KeyType;
-import br.net.woodstock.rockframework.security.crypt.SecretKeyHolder;
+import br.net.woodstock.rockframework.security.crypt.SecretKeySupport;
 import br.net.woodstock.rockframework.security.crypt.impl.CrypterOperation.Mode;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-public class SyncCrypter extends AbstractCrypter implements SecretKeyHolder {
+public class SyncCrypter extends AbstractCrypter implements SecretKeySupport {
 
 	private SecretKey	key;
 
@@ -102,7 +102,6 @@ public class SyncCrypter extends AbstractCrypter implements SecretKeyHolder {
 		}
 	}
 
-	@Override
 	public String getAlgorithm() {
 		if (this.keyType == null) {
 			return null;
@@ -111,8 +110,8 @@ public class SyncCrypter extends AbstractCrypter implements SecretKeyHolder {
 	}
 
 	@Override
-	public byte[] getSecretKey() {
-		return this.key.getEncoded();
+	public SecretKey getSecretKey() {
+		return this.key;
 	}
 
 }

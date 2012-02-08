@@ -16,40 +16,26 @@
  */
 package br.net.woodstock.rockframework.security.store;
 
-import java.io.Serializable;
+import javax.crypto.SecretKey;
 
 import br.net.woodstock.rockframework.security.Alias;
 
-public abstract class StoreEntry implements Serializable {
+public class SecretKeyEntry extends StoreEntry {
 
-	private static final long	serialVersionUID	= -4601283475496635273L;
+	private static final long	serialVersionUID	= 5783495875177323733L;
 
-	private Alias				alias;
-
-	private Object				value;
-
-	public StoreEntry(final Alias alias, final Object value) {
-		super();
-		this.alias = alias;
-		this.value = value;
+	public SecretKeyEntry(final Alias alias, final SecretKey value) {
+		super(alias, value);
 	}
-
-	public Alias getAlias() {
-		return this.alias;
-	}
-
-	public Object getValue() {
-		return this.value;
-	}
-
-	public abstract StoreEntryType getType();
 
 	@Override
-	public String toString() {
-		if (this.value != null) {
-			return this.value.toString();
-		}
-		return super.toString();
+	public SecretKey getValue() {
+		return (SecretKey) super.getValue();
+	}
+
+	@Override
+	public StoreEntryType getType() {
+		return StoreEntryType.SECRET_KEY;
 	}
 
 }

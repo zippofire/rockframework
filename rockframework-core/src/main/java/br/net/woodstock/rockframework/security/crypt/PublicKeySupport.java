@@ -16,10 +16,10 @@
  */
 package br.net.woodstock.rockframework.security.crypt;
 
-public interface PublicKeyHolder {
+import java.security.PublicKey;
 
-	String getAlgorithm();
+public interface PublicKeySupport {
 
-	byte[] getPublicKey();
+	PublicKey getPublicKey();
 
 }

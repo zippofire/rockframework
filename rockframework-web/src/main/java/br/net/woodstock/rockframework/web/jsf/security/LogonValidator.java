@@ -16,27 +16,6 @@
  */
 package br.net.woodstock.rockframework.web.jsf.security;
 
-import javax.inject.Inject;
-import javax.interceptor.AroundInvoke;
-import javax.interceptor.Interceptor;
-import javax.interceptor.InvocationContext;
-
-@Interceptor
-@Log
-public class LogonInterceptor implements SecurityInterceptor {
-
-	private static final long	serialVersionUID	= 3471332654974977295L;
-
-	@Inject
-	private LogonValidator		validator;
-
-	@Override
-	@AroundInvoke
-	public Object intercept(final InvocationContext context) throws Exception {
-		if (this.validator.isValid(context)) {
-			return context.proceed();
-		}
-		return this.validator.onInvalid(context);
-	}
-
+public interface LogonValidator extends SecurityValidator {
+	//
 }

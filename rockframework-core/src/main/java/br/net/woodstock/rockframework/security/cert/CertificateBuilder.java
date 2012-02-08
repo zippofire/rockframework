@@ -16,11 +16,8 @@
  */
 package br.net.woodstock.rockframework.security.cert;
 
-import br.net.woodstock.rockframework.security.Alias;
-import br.net.woodstock.rockframework.security.store.Store;
-
 public interface CertificateBuilder {
 
-	Store build(Alias alias);
+	PrivateKeyHolder build();
 
 }

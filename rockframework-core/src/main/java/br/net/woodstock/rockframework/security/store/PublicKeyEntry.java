@@ -14,12 +14,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.security.crypt;
+package br.net.woodstock.rockframework.security.store;
 
-public interface SecretKeyHolder {
+import java.security.PublicKey;
 
-	String getAlgorithm();
+import br.net.woodstock.rockframework.security.Alias;
 
-	byte[] getSecretKey();
+public class PublicKeyEntry extends StoreEntry {
+
+	private static final long	serialVersionUID	= 2300047698660222407L;
+
+	public PublicKeyEntry(final Alias alias, final PublicKey value) {
+		super(alias, value);
+	}
+
+	@Override
+	public PublicKey getValue() {
+		return (PublicKey) super.getValue();
+	}
+
+	@Override
+	public StoreEntryType getType() {
+		return StoreEntryType.PUBLIC_KEY;
+	}
 
 }

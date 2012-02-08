@@ -10,13 +10,14 @@ import java.util.Collection;
 import junit.framework.TestCase;
 import br.net.woodstock.rockframework.security.Alias;
 import br.net.woodstock.rockframework.security.cert.KeyUsageType;
+import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
 import br.net.woodstock.rockframework.security.cert.impl.BouncyCastleCertificateBuilder;
 import br.net.woodstock.rockframework.security.store.KeyStoreType;
+import br.net.woodstock.rockframework.security.store.PasswordAlias;
+import br.net.woodstock.rockframework.security.store.PrivateKeyEntry;
 import br.net.woodstock.rockframework.security.store.Store;
-import br.net.woodstock.rockframework.security.store.StoreEntry;
 import br.net.woodstock.rockframework.security.store.StoreEntryType;
 import br.net.woodstock.rockframework.security.store.impl.JCAStore;
-import br.net.woodstock.rockframework.security.store.impl.PasswordAlias;
 import br.net.woodstock.rockframework.security.store.impl.XMLStore;
 import br.net.woodstock.rockframework.security.store.utils.StoreUtils;
 import br.net.woodstock.rockframework.utils.CollectionUtils;
@@ -30,14 +31,12 @@ public class KeystoreTest extends TestCase {
 			System.out.println(alias.getName());
 		}
 
-		StoreEntry entry = store.get(new PasswordAlias("lourival sabino", "lourival"), StoreEntryType.CERTIFICATE);
-		System.out.println(entry.getValue());
-
-		entry = store.get(new PasswordAlias("lourival sabino", "lourival"), StoreEntryType.PRIVATE_KEY);
-		System.out.println(entry.getValue());
+		PrivateKeyEntry entry = (PrivateKeyEntry) store.get(new PasswordAlias("lourival sabino", "lourival"), StoreEntryType.PRIVATE_KEY);
+		System.out.println("Private Key: " + entry.getValue());
+		System.out.println("Certificate: " + entry.getChain()[0]);
 	}
 
-	public void test2x0() throws Exception {
+	public void xtest2x0() throws Exception {
 		KeyStore keyStore = KeyStore.getInstance(KeyStoreType.PKCS12.getType());
 		keyStore.load(new FileInputStream("/home/lourival/Downloads/LOURIVALSABINO2.pfx"), "storepasswd".toCharArray());
 
@@ -63,12 +62,9 @@ public class KeystoreTest extends TestCase {
 			System.out.println("Alias: '" + alias.getName() + "'");
 		}
 
-		StoreEntry entry = store.get(new Alias("lourival sabino"), StoreEntryType.CERTIFICATE);
-		X509Certificate certificate = (X509Certificate) entry.getValue();
-		System.out.println(certificate);
-
-		entry = store.get(new PasswordAlias("lourival sabino", "lourival"), StoreEntryType.PRIVATE_KEY);
-		System.out.println(entry.getValue());
+		PrivateKeyEntry entry = (PrivateKeyEntry) store.get(new PasswordAlias("lourival sabino", "lourival"), StoreEntryType.PRIVATE_KEY);
+		System.out.println("Private Key: " + entry.getValue());
+		System.out.println("Certificate: " + entry.getChain()[0]);
 	}
 
 	public void xtest6() throws Exception {
@@ -77,12 +73,12 @@ public class KeystoreTest extends TestCase {
 		builder.withV3Extensions(true);
 		builder.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
 
-		Store store = builder.build(new Alias("mycert"));
+		PrivateKeyHolder holder = builder.build();
 
-		Store xmlStore = new XMLStore();
-		StoreUtils.copy(store, xmlStore);
+		Store store = new XMLStore();
+		store.add(new PrivateKeyEntry(new PasswordAlias("mykey", "mypasswd"), holder.getPrivateKey(), holder.getChain()));
 
-		xmlStore.write(new FileOutputStream("/tmp/cert.xml"), null);
+		store.write(new FileOutputStream("/tmp/cert.xml"), null);
 	}
 
 	public void xtest6x1() throws Exception {
@@ -90,9 +86,23 @@ public class KeystoreTest extends TestCase {
 		store.read(new FileInputStream("/tmp/cert.xml"), null);
 
 		store.write(System.out, null);
-		for (Alias alias : store.aliases()) {
+	}
+
+	public void test7() throws Exception {
+		JCAStore store1 = new JCAStore(KeyStoreType.PKCS12);
+		store1.read(new FileInputStream("/home/lourival/Downloads/LOURIVALSABINO2.pfx"), "storepasswd");
+		for (Alias alias : store1.aliases()) {
 			System.out.println(alias.getName());
 		}
+
+		JCAStore store2 = new JCAStore(KeyStoreType.JKS);
+		StoreUtils.copy(store1, store2, new Alias[] { new PasswordAlias("lourival sabino", "lourival") });
+
+		PrivateKeyEntry entry = (PrivateKeyEntry) store2.get(new PasswordAlias("lourival sabino", "lourival"), StoreEntryType.PRIVATE_KEY);
+		System.out.println("Private Key: " + entry.getValue());
+		System.out.println("Certificate: " + entry.getChain()[0]);
+
+		store2.write(new FileOutputStream("/tmp/store.jks"), "store");
 	}
 
 }

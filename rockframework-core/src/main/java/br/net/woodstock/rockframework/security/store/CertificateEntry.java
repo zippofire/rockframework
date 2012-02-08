@@ -16,40 +16,26 @@
  */
 package br.net.woodstock.rockframework.security.store;
 
-import java.io.Serializable;
+import java.security.cert.Certificate;
 
 import br.net.woodstock.rockframework.security.Alias;
 
-public abstract class StoreEntry implements Serializable {
+public class CertificateEntry extends StoreEntry {
 
-	private static final long	serialVersionUID	= -4601283475496635273L;
+	private static final long	serialVersionUID	= -2741343153166060563L;
 
-	private Alias				alias;
-
-	private Object				value;
-
-	public StoreEntry(final Alias alias, final Object value) {
-		super();
-		this.alias = alias;
-		this.value = value;
+	public CertificateEntry(final Alias alias, final Certificate value) {
+		super(alias, value);
 	}
-
-	public Alias getAlias() {
-		return this.alias;
-	}
-
-	public Object getValue() {
-		return this.value;
-	}
-
-	public abstract StoreEntryType getType();
 
 	@Override
-	public String toString() {
-		if (this.value != null) {
-			return this.value.toString();
-		}
-		return super.toString();
+	public Certificate getValue() {
+		return (Certificate) super.getValue();
+	}
+
+	@Override
+	public StoreEntryType getType() {
+		return StoreEntryType.CERTIFICATE;
 	}
 
 }

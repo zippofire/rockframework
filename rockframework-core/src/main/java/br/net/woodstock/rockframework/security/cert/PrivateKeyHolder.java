@@ -14,45 +14,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-
 package br.net.woodstock.rockframework.security.cert;
 
 import java.io.Serializable;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
 
-public class CertificateHolder implements Serializable {
+public class PrivateKeyHolder implements Serializable {
 
-	private static final long	serialVersionUID	= -8497194259688129655L;
-
-	private Certificate			certificate;
+	private static final long	serialVersionUID	= -4586160741947727987L;
 
 	private PrivateKey			privateKey;
 
-	public CertificateHolder() {
-		super();
-	}
+	private Certificate[]		chain;
 
-	public CertificateHolder(final Certificate certificate, final PrivateKey privateKey) {
+	public PrivateKeyHolder(final PrivateKey privateKey, final Certificate[] chain) {
 		super();
-		this.certificate = certificate;
 		this.privateKey = privateKey;
-	}
-
-	public Certificate getCertificate() {
-		return this.certificate;
-	}
-
-	public void setCertificate(final Certificate certificate) {
-		this.certificate = certificate;
+		this.chain = chain;
 	}
 
 	public PrivateKey getPrivateKey() {
 		return this.privateKey;
 	}
 
-	public void setPrivateKey(final PrivateKey privateKey) {
-		this.privateKey = privateKey;
+	public Certificate[] getChain() {
+		return this.chain;
 	}
 
 }

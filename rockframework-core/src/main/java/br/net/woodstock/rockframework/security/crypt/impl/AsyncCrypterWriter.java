@@ -18,6 +18,8 @@ package br.net.woodstock.rockframework.security.crypt.impl;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 
 import br.net.woodstock.rockframework.config.CoreLog;
 import br.net.woodstock.rockframework.security.crypt.CrypterException;
@@ -44,16 +46,16 @@ public class AsyncCrypterWriter implements CrypterWriter {
 	@Override
 	public void write() {
 		try {
-			byte[] privateKey = this.crypter.getPrivateKey();
-			byte[] publicKey = this.crypter.getPublicKey();
+			PrivateKey privateKey = this.crypter.getPrivateKey();
+			PublicKey publicKey = this.crypter.getPublicKey();
 			if ((privateKey != null) && (this.privateKeyOutputStream != null)) {
-				byte[] base64 = Base64Utils.toBase64(privateKey);
+				byte[] base64 = Base64Utils.toBase64(privateKey.getEncoded());
 				this.privateKeyOutputStream.write(base64);
 			} else {
 				CoreLog.getInstance().getLog().info("Private or privateKeyOutputStream is null and cold not be writed");
 			}
 			if ((publicKey != null) && (this.publicKeyOutputStream != null)) {
-				byte[] base64 = Base64Utils.toBase64(publicKey);
+				byte[] base64 = Base64Utils.toBase64(publicKey.getEncoded());
 				this.publicKeyOutputStream.write(base64);
 			} else {
 				CoreLog.getInstance().getLog().info("Public or publicKeyOutputStream is null and cold not be writed");

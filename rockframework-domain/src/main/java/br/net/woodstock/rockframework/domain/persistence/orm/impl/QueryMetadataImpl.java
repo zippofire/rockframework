@@ -19,54 +19,46 @@ package br.net.woodstock.rockframework.domain.persistence.orm.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import br.net.woodstock.rockframework.domain.persistence.orm.Constants;
 import br.net.woodstock.rockframework.domain.persistence.orm.Page;
 import br.net.woodstock.rockframework.domain.persistence.orm.QueryMetadata;
 
 public class QueryMetadataImpl implements QueryMetadata {
 
-	private static final long	serialVersionUID	= 4971001334323658467L;
+	private static final long		serialVersionUID	= 4971001334323658467L;
 
-	private String				query;
+	private static final Integer	MAX_RESULT			= Integer.valueOf(50);
 
-	private String				countQuery;
+	private String					query;
 
-	private Page				page;
+	private String					countQuery;
 
-	private boolean				cacheEnabled;
+	private Page					page;
 
-	private boolean				named;
+	private boolean					cacheEnabled;
 
-	private boolean				nativeSQL;
+	private boolean					named;
 
-	private Map<String, Object>	parameters;
+	private boolean					nativeSQL;
 
-	private Map<String, Object>	options;
+	private Map<String, Object>		parameters;
+
+	private Map<String, Object>		options;
 
 	public QueryMetadataImpl() {
 		super();
 	}
 
 	public QueryMetadataImpl(final String query) {
-		super();
-		this.query = query;
-		this.parameters = new HashMap<String, Object>();
-		this.options = new HashMap<String, Object>();
+		this(query, null, null, null, null);
 	}
 
 	public QueryMetadataImpl(final String query, final String countQuery, final Page page) {
-		super();
-		this.query = query;
-		this.countQuery = countQuery;
-		this.page = page;
-		this.parameters = new HashMap<String, Object>();
-		this.options = new HashMap<String, Object>();
+		this(query, countQuery, page, null, null);
 	}
 
 	public QueryMetadataImpl(final String query, final Map<String, Object> parameters, final Map<String, Object> options) {
-		super();
-		this.query = query;
-		this.parameters = parameters;
-		this.options = options;
+		this(query, null, null, parameters, options);
 	}
 
 	public QueryMetadataImpl(final String query, final String countQuery, final Page page, final Map<String, Object> parameters, final Map<String, Object> options) {
@@ -76,6 +68,14 @@ public class QueryMetadataImpl implements QueryMetadata {
 		this.page = page;
 		this.parameters = parameters;
 		this.options = options;
+
+		if (this.options == null) {
+			this.options = new HashMap<String, Object>();
+		}
+
+		if (!this.options.containsKey(Constants.OPTION_MAX_RESULT)) {
+			this.options.put(Constants.OPTION_MAX_RESULT, QueryMetadataImpl.MAX_RESULT);
+		}
 	}
 
 	@Override

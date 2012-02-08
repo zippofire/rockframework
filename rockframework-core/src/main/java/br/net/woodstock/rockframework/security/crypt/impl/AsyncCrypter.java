@@ -25,13 +25,13 @@ import java.security.PublicKey;
 import java.security.SecureRandom;
 
 import br.net.woodstock.rockframework.security.crypt.CrypterException;
-import br.net.woodstock.rockframework.security.crypt.KeyPairHolder;
+import br.net.woodstock.rockframework.security.crypt.KeyPairSupport;
 import br.net.woodstock.rockframework.security.crypt.KeyPairType;
 import br.net.woodstock.rockframework.security.crypt.impl.CrypterOperation.Mode;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-public class AsyncCrypter extends AbstractCrypter implements KeyPairHolder {
+public class AsyncCrypter extends AbstractCrypter implements KeyPairSupport {
 
 	private static final int	DEFAULT_KEY_SIZE	= 1024;
 
@@ -122,7 +122,6 @@ public class AsyncCrypter extends AbstractCrypter implements KeyPairHolder {
 		}
 	}
 
-	@Override
 	public String getAlgorithm() {
 		if (this.keyPairType == null) {
 			return null;
@@ -131,13 +130,13 @@ public class AsyncCrypter extends AbstractCrypter implements KeyPairHolder {
 	}
 
 	@Override
-	public byte[] getPrivateKey() {
-		return this.keyPair.getPrivate().getEncoded();
+	public PrivateKey getPrivateKey() {
+		return this.keyPair.getPrivate();
 	}
 
 	@Override
-	public byte[] getPublicKey() {
-		return this.keyPair.getPublic().getEncoded();
+	public PublicKey getPublicKey() {
+		return this.keyPair.getPublic();
 	}
 
 }

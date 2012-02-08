@@ -48,6 +48,7 @@ import br.net.woodstock.rockframework.security.sign.SignType;
 import br.net.woodstock.rockframework.security.sign.Signatory;
 import br.net.woodstock.rockframework.security.sign.Signature;
 import br.net.woodstock.rockframework.security.sign.SignerException;
+import br.net.woodstock.rockframework.security.store.CertificateEntry;
 import br.net.woodstock.rockframework.security.store.KeyStoreType;
 import br.net.woodstock.rockframework.security.store.Store;
 import br.net.woodstock.rockframework.security.store.StoreEntry;
@@ -317,7 +318,7 @@ public class PDFSigner implements DocumentSigner {
 						Signatory signatory = this.toSignatory(certificate);
 
 						Store store = new JCAStore(KeyStoreType.JKS);
-						store.add(new StoreEntry(new Alias(certificate.getSerialNumber().toString()), certificate, StoreEntryType.CERTIFICATE));
+						store.add(new CertificateEntry(new Alias(certificate.getSerialNumber().toString()), certificate));
 						Object[] fails = PdfPKCS7.verifyCertificates(chain, store.toKeyStore(), pk.getCRLs(), pk.getSignDate());
 						if (ConditionUtils.isNotEmpty(fails)) {
 							valid = Boolean.FALSE;

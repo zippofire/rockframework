@@ -30,8 +30,12 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+
 import br.net.woodstock.rockframework.security.cert.CertificateType;
 import br.net.woodstock.rockframework.security.crypt.KeyPairType;
+import br.net.woodstock.rockframework.security.crypt.KeyType;
 import br.net.woodstock.rockframework.util.Assert;
 
 public abstract class SecurityUtils {
@@ -94,6 +98,14 @@ public abstract class SecurityUtils {
 		KeyFactory factory = KeyFactory.getInstance(type.getAlgorithm());
 		PublicKey privateKey = factory.generatePublic(specPublic);
 		return privateKey;
+	}
+
+	public static SecretKey getSecretKeyFromFile(final byte[] bytes, final KeyType type) {
+		Assert.notEmpty(bytes, "bytes");
+		Assert.notNull(type, "type");
+
+		SecretKeySpec secretKeySpec = new SecretKeySpec(bytes, type.getAlgorithm());
+		return secretKeySpec;
 	}
 
 }

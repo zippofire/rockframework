@@ -14,42 +14,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.security.store;
+package br.net.woodstock.rockframework.web.jsf.security;
 
-import java.io.Serializable;
+import javax.inject.Inject;
+import javax.interceptor.AroundInvoke;
+import javax.interceptor.Interceptor;
+import javax.interceptor.InvocationContext;
 
-import br.net.woodstock.rockframework.security.Alias;
+@Interceptor
+@Log
+public class RoleInterceptor implements SecurityInterceptor {
 
-public abstract class StoreEntry implements Serializable {
+	private static final long	serialVersionUID	= -982725715956751626L;
 
-	private static final long	serialVersionUID	= -4601283475496635273L;
-
-	private Alias				alias;
-
-	private Object				value;
-
-	public StoreEntry(final Alias alias, final Object value) {
-		super();
-		this.alias = alias;
-		this.value = value;
-	}
-
-	public Alias getAlias() {
-		return this.alias;
-	}
-
-	public Object getValue() {
-		return this.value;
-	}
-
-	public abstract StoreEntryType getType();
+	@Inject
+	private LogonValidator		validator;
 
 	@Override
-	public String toString() {
-		if (this.value != null) {
-			return this.value.toString();
+	@AroundInvoke
+	public Object intercept(final InvocationContext context) throws Exception {
+		if (this.validator.isValid(context)) {
+			return context.proceed();
 		}
-		return super.toString();
+		return this.validator.onInvalid(context);
 	}
 
 }

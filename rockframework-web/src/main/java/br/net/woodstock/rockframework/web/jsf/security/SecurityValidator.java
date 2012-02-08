@@ -14,8 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.security.crypt;
+package br.net.woodstock.rockframework.web.jsf.security;
 
-public interface KeyPairHolder extends PublicKeyHolder, PrivateKeyHolder {
-	//
+import java.io.Serializable;
+
+import javax.interceptor.InvocationContext;
+
+public interface SecurityValidator extends Serializable {
+
+	boolean isValid(InvocationContext context);
+
+	Object onInvalid(InvocationContext context);
+
 }

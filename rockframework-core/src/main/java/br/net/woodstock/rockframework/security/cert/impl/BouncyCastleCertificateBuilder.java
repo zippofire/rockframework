@@ -20,6 +20,7 @@ import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
+import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.Date;
 import java.util.HashSet;
@@ -41,17 +42,13 @@ import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.bouncycastle.x509.extension.SubjectKeyIdentifierStructure;
 
-import br.net.woodstock.rockframework.security.Alias;
 import br.net.woodstock.rockframework.security.cert.CertificateBuilder;
 import br.net.woodstock.rockframework.security.cert.CertificateException;
 import br.net.woodstock.rockframework.security.cert.CertificateType;
 import br.net.woodstock.rockframework.security.cert.KeyUsageType;
+import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
 import br.net.woodstock.rockframework.security.crypt.KeyPairType;
 import br.net.woodstock.rockframework.security.sign.SignType;
-import br.net.woodstock.rockframework.security.store.Store;
-import br.net.woodstock.rockframework.security.store.StoreEntry;
-import br.net.woodstock.rockframework.security.store.StoreEntryType;
-import br.net.woodstock.rockframework.security.store.impl.MemoryStore;
 import br.net.woodstock.rockframework.security.util.BouncyCastleProviderHelper;
 import br.net.woodstock.rockframework.security.util.SecurityUtils;
 import br.net.woodstock.rockframework.util.DateBuilder;
@@ -133,7 +130,7 @@ public class BouncyCastleCertificateBuilder implements CertificateBuilder {
 	}
 
 	@Override
-	public Store build(final Alias alias) {
+	public PrivateKeyHolder build() {
 		try {
 			long time = System.currentTimeMillis();
 			String subject = this.subject;
@@ -217,10 +214,9 @@ public class BouncyCastleCertificateBuilder implements CertificateBuilder {
 				privateKey = keyPair.getPrivate();
 			}
 
-			Store store = new MemoryStore();
-			store.add(new StoreEntry(alias, certificate, StoreEntryType.CERTIFICATE));
-			store.add(new StoreEntry(alias, privateKey, StoreEntryType.PRIVATE_KEY));
-			return store;
+			PrivateKeyHolder privateKeyHolder = new PrivateKeyHolder(privateKey, new Certificate[] { certificate });
+
+			return privateKeyHolder;
 		} catch (Exception e) {
 			throw new CertificateException(e);
 		}
