@@ -27,16 +27,25 @@ public abstract class HexUtils {
 	}
 
 	public static byte[] toHex(final byte[] bytes) {
+		if (bytes == null) {
+			return null;
+		}
 		String str = HexUtils.toHexString(bytes);
 		return str.getBytes();
 	}
 
 	public static byte[] fromHex(final byte[] bytes) {
+		if (bytes == null) {
+			return null;
+		}
 		byte[] b = HexUtils.fromHexString(new String(bytes));
 		return b;
 	}
 
 	public static String toHexString(final byte[] bytes) {
+		if (bytes == null) {
+			return null;
+		}
 		StringBuilder builder = new StringBuilder();
 		for (byte b : bytes) {
 			String s = Integer.toHexString(HexUtils.BIT_COMPARATOR & b);
@@ -49,6 +58,9 @@ public abstract class HexUtils {
 	}
 
 	public static byte[] fromHexString(final String str) {
+		if (ConditionUtils.isEmpty(str)) {
+			return null;
+		}
 		byte[] bytes = new byte[str.length() / 2];
 		char[] chars = str.toCharArray();
 

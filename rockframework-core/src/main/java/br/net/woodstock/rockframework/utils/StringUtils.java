@@ -128,6 +128,17 @@ public abstract class StringUtils {
 		return ss;
 	}
 
+	public static String repeat(final String s, final int times) {
+		if (ConditionUtils.isEmpty(s)) {
+			return null;
+		}
+		StringBuilder b = new StringBuilder();
+		for (int i = 0; i < times; i++) {
+			b.append(s);
+		}
+		return b.toString();
+	}
+
 	public static String reverse(final String s) {
 		if (s == null) {
 			return null;
