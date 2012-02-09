@@ -14,20 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.security.store;
+package br.net.woodstock.rockframework.security.util;
 
-public enum KeyStoreType {
+import java.security.Provider;
+import java.security.Security;
 
-	JKS("JKS"), JCEKS("JCEKS"), PKCS11("PKCS11"), PKCS12("PKCS12"), WINDOWS_MY("Windows-MY"), WINDOWS_ROOT("Windows-ROOT");
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
-	private String	type;
+import br.net.woodstock.rockframework.config.CoreLog;
 
-	private KeyStoreType(final String type) {
-		this.type = type;
-	}
+public abstract class SunMSCAPIProviderHelper {
 
-	public String getType() {
-		return this.type;
+	public static final String	PROVIDER_NAME;
+
+	static {
+		PROVIDER_NAME = "SunMSCAPI";
+		Provider provider = Security.getProvider(SunMSCAPIProviderHelper.PROVIDER_NAME);
+		if (provider == null) {
+			CoreLog.getInstance().getLog().info("Adding Sun MSCAPI Security Provider");
+			Security.addProvider(new BouncyCastleProvider());
+		}
 	}
 
 }

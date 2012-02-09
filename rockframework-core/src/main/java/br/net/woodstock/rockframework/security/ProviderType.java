@@ -14,15 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.security.store;
+package br.net.woodstock.rockframework.security;
 
-public enum KeyStoreType {
+public enum ProviderType {
 
-	JKS("JKS"), JCEKS("JCEKS"), PKCS11("PKCS11"), PKCS12("PKCS12"), WINDOWS_MY("Windows-MY"), WINDOWS_ROOT("Windows-ROOT");
+	SUN("SUN"), SUN_JSSE("SunJSSE"), SUN_JCE("SunJCE"), SUN_MSCAPI("SunMSCAPI"), BOUNCY_CASTLE("BC");
 
 	private String	type;
 
-	private KeyStoreType(final String type) {
+	private ProviderType(final String type) {
 		this.type = type;
 	}
 
