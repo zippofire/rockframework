@@ -17,26 +17,31 @@
 package br.net.woodstock.rockframework.util;
 
 import java.text.MessageFormat;
+import java.util.Enumeration;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class MessageBundle {
+public final class MessageBundle extends ResourceBundle {
 
 	private ResourceBundle	resource;
 
-	protected MessageBundle(final String baseName) {
+	private MessageBundle(final String baseName) {
 		super();
+		Assert.notNull(baseName, "baseName");
 		this.resource = ResourceBundle.getBundle(baseName, Locale.getDefault());
 	}
 
-	protected MessageBundle(final String baseName, final Locale locale) {
+	private MessageBundle(final String baseName, final Locale locale) {
 		super();
+		Assert.notNull(baseName, "baseName");
+		Assert.notNull(locale, "locale");
 		this.resource = ResourceBundle.getBundle(baseName, locale);
 	}
 
-	public String getString(final String key) {
-		String msg = this.resource.getString(key);
-		return msg;
+	private MessageBundle(final ResourceBundle resource) {
+		super();
+		Assert.notNull(resource, "resource");
+		this.resource = resource;
 	}
 
 	public String getString(final String key, final Object... arguments) {
@@ -45,17 +50,26 @@ public class MessageBundle {
 		return msg;
 	}
 
-	public Object getObject(final String key) {
-		Object obj = this.resource.getObject(key);
-		return obj;
+	@Override
+	public Enumeration<String> getKeys() {
+		return this.resource.getKeys();
 	}
 
-	public static MessageBundle getBundle(final String baseName) {
-		return new MessageBundle(baseName, Locale.getDefault());
+	@Override
+	protected Object handleGetObject(final String key) {
+		return this.handleGetObject(key);
 	}
 
-	public static MessageBundle getBundle(final String baseName, final Locale locale) {
+	public static MessageBundle getMessageBundle(final String baseName) {
+		return new MessageBundle(baseName);
+	}
+
+	public static MessageBundle getMessageBundle(final String baseName, final Locale locale) {
 		return new MessageBundle(baseName, locale);
+	}
+
+	public static MessageBundle getMessageBundle(final ResourceBundle resource) {
+		return new MessageBundle(resource);
 	}
 
 }

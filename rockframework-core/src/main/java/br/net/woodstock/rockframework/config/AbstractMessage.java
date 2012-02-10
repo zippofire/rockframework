@@ -24,7 +24,7 @@ public abstract class AbstractMessage {
 
 	public AbstractMessage(final String bundleName) {
 		super();
-		this.messages = MessageBundle.getBundle(bundleName);
+		this.messages = MessageBundle.getMessageBundle(bundleName);
 	}
 
 	public String getMessage(final String key) {

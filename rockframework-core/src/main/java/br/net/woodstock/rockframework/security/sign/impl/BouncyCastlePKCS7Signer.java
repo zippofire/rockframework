@@ -62,10 +62,10 @@ import org.bouncycastle.util.CollectionStore;
 import org.bouncycastle.util.Store;
 
 import br.net.woodstock.rockframework.security.Alias;
+import br.net.woodstock.rockframework.security.sign.PKCS7SignatureRequest;
 import br.net.woodstock.rockframework.security.sign.PKCS7Signer;
-import br.net.woodstock.rockframework.security.sign.SignRequest;
-import br.net.woodstock.rockframework.security.sign.SignType;
 import br.net.woodstock.rockframework.security.sign.Signature;
+import br.net.woodstock.rockframework.security.sign.SignatureType;
 import br.net.woodstock.rockframework.security.sign.SignerException;
 import br.net.woodstock.rockframework.security.store.StoreEntry;
 import br.net.woodstock.rockframework.security.store.StoreEntryType;
@@ -76,12 +76,12 @@ import br.net.woodstock.rockframework.util.Assert;
 
 public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 
-	private SignRequest	signRequest;
+	private PKCS7SignatureRequest	request;
 
-	public BouncyCastlePKCS7Signer(final SignRequest signRequest) {
+	public BouncyCastlePKCS7Signer(final PKCS7SignatureRequest request) {
 		super();
-		Assert.notNull(signRequest, "signRequest");
-		this.signRequest = signRequest;
+		Assert.notNull(request, "request");
+		this.request = request;
 	}
 
 	@Override
@@ -90,19 +90,16 @@ public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 		Assert.notEmpty(data, "data");
 		try {
 			CMSSignedDataGenerator cmsSignedDataGenerator = new CMSSignedDataGenerator();
-			TimeStampClient timeStampClient = this.signRequest.getTimeStampClient();
+			TimeStampClient timeStampClient = this.request.getTimeStampClient();
 
-			for (Alias alias : this.signRequest.getAliases()) {
-				System.out.println(alias);
-				
-				
-				StoreEntry certificateEntry = this.signRequest.getStore().get(alias, StoreEntryType.CERTIFICATE);
-				StoreEntry privateKeyEntry = this.signRequest.getStore().get(alias, StoreEntryType.PRIVATE_KEY);
+			for (Alias alias : this.request.getAliases()) {
+				StoreEntry certificateEntry = this.request.getStore().get(alias, StoreEntryType.CERTIFICATE);
+				StoreEntry privateKeyEntry = this.request.getStore().get(alias, StoreEntryType.PRIVATE_KEY);
 
 				Certificate certificate = (Certificate) certificateEntry.getValue();
 				PrivateKey privateKey = (PrivateKey) privateKeyEntry.getValue();
 
-				JcaContentSignerBuilder contentSignerBuilder = new JcaContentSignerBuilder(SignType.SHA1_RSA.getAlgorithm());
+				JcaContentSignerBuilder contentSignerBuilder = new JcaContentSignerBuilder(SignatureType.SHA1_RSA.getAlgorithm());
 				contentSignerBuilder.setProvider(BouncyCastleProviderHelper.PROVIDER_NAME);
 
 				ContentSigner contentSigner = contentSignerBuilder.build(privateKey);

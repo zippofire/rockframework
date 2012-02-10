@@ -22,7 +22,7 @@ import java.security.PublicKey;
 import java.security.Signature;
 import java.security.SignatureException;
 
-import br.net.woodstock.rockframework.security.sign.SignType;
+import br.net.woodstock.rockframework.security.sign.SignatureType;
 import br.net.woodstock.rockframework.security.sign.Signer;
 import br.net.woodstock.rockframework.security.sign.SignerException;
 import br.net.woodstock.rockframework.util.Assert;
@@ -31,9 +31,9 @@ public class PublicKeySigner implements Signer {
 
 	private PublicKey	publicKey;
 
-	private SignType	signType;
+	private SignatureType	signType;
 
-	public PublicKeySigner(final PublicKey publicKey, final SignType signType) {
+	public PublicKeySigner(final PublicKey publicKey, final SignatureType signType) {
 		super();
 		Assert.notNull(publicKey, "publicKey");
 		Assert.notNull(signType, "signType");

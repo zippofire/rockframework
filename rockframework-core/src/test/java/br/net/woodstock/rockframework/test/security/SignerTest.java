@@ -11,11 +11,11 @@ import br.net.woodstock.rockframework.security.cert.KeyUsageType;
 import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
 import br.net.woodstock.rockframework.security.cert.impl.BouncyCastleCertificateBuilder;
 import br.net.woodstock.rockframework.security.crypt.KeyPairType;
+import br.net.woodstock.rockframework.security.sign.PKCS7SignatureRequest;
 import br.net.woodstock.rockframework.security.sign.PKCS7Signer;
-import br.net.woodstock.rockframework.security.sign.SignRequest;
-import br.net.woodstock.rockframework.security.sign.SignType;
 import br.net.woodstock.rockframework.security.sign.Signatory;
 import br.net.woodstock.rockframework.security.sign.Signature;
+import br.net.woodstock.rockframework.security.sign.SignatureType;
 import br.net.woodstock.rockframework.security.sign.impl.AsStringSigner;
 import br.net.woodstock.rockframework.security.sign.impl.Base64Signer;
 import br.net.woodstock.rockframework.security.sign.impl.BouncyCastlePKCS7Signer;
@@ -24,10 +24,7 @@ import br.net.woodstock.rockframework.security.sign.impl.KeyPairSigner;
 import br.net.woodstock.rockframework.security.sign.impl.PDFSigner;
 import br.net.woodstock.rockframework.security.store.KeyStoreType;
 import br.net.woodstock.rockframework.security.store.PasswordAlias;
-import br.net.woodstock.rockframework.security.store.PrivateKeyEntry;
-import br.net.woodstock.rockframework.security.store.Store;
 import br.net.woodstock.rockframework.security.store.impl.JCAStore;
-import br.net.woodstock.rockframework.security.store.impl.MemoryStore;
 import br.net.woodstock.rockframework.security.timestamp.TimeStamp;
 import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
 import br.net.woodstock.rockframework.security.timestamp.impl.STFTimeStampClient;
@@ -53,7 +50,7 @@ public class SignerTest extends TestCase {
 		KeyPairGenerator generator = KeyPairGenerator.getInstance(KeyPairType.RSA.getAlgorithm());
 		KeyPair keyPair = generator.generateKeyPair();
 
-		AsStringSigner signer = new AsStringSigner(new Base64Signer(new KeyPairSigner(keyPair, SignType.SHA1_RSA)));
+		AsStringSigner signer = new AsStringSigner(new Base64Signer(new KeyPairSigner(keyPair, SignatureType.SHA1_RSA)));
 
 		FileInputStream inputStream = new FileInputStream("/home/lourival/.m2/repository/br/net/woodstock/rockframework/rockframework-core/1.2.2/rockframework-core-1.2.2.jar");
 
@@ -75,7 +72,7 @@ public class SignerTest extends TestCase {
 		KeyPairGenerator generator = KeyPairGenerator.getInstance(KeyPairType.RSA.getAlgorithm());
 		KeyPair keyPair = generator.generateKeyPair();
 
-		AsStringSigner signer = new AsStringSigner(new HexSigner(new KeyPairSigner(keyPair, SignType.SHA1_RSA)));
+		AsStringSigner signer = new AsStringSigner(new HexSigner(new KeyPairSigner(keyPair, SignatureType.SHA1_RSA)));
 
 		FileInputStream inputStream = new FileInputStream("/home/lourival/.m2/repository/br/net/woodstock/rockframework/rockframework-core/1.2.2/rockframework-core-1.2.2.jar");
 
@@ -104,25 +101,13 @@ public class SignerTest extends TestCase {
 		builder1.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
 		PrivateKeyHolder holder1 = builder1.build();
 
-		BouncyCastleCertificateBuilder builder2 = new BouncyCastleCertificateBuilder("Lourival Sabino 2");
-		builder2.withIssuer("Woodstock Tecnologia 2");
-		builder2.withV3Extensions(true);
-		builder2.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
-		PrivateKeyHolder holder2 = builder2.build();
-
-		Store store = new MemoryStore();
-		store.add(new PrivateKeyEntry(new PasswordAlias("mykey1", "mypasswd"), holder1.getPrivateKey(), holder1.getChain()));
-		store.add(new PrivateKeyEntry(new PasswordAlias("mykey2", "mypasswd"), holder2.getPrivateKey(), holder2.getChain()));
-
 		TimeStampClient timeStampClient = new URLTimeStampClient("http://tsa.safelayer.com:8093");
 		// TimeStampClient timeStampClient = new STFTimeStampClient("201.49.148.134", 318);
-		SignRequest signerInfo = new SignRequest();
-		signerInfo.setAliases(new Alias[] { new Alias("mycert1"), new Alias("mycert2") });
+		PKCS7SignatureRequest signerInfo = new PKCS7SignatureRequest(holder1);
 		signerInfo.setContactInfo("ConcactInfo");
 		signerInfo.setLocation("Location");
 		signerInfo.setName("Lourival Sabino");
 		signerInfo.setReason("Reason");
-		signerInfo.setStore(store);
 		signerInfo.setTimeStampClient(timeStampClient);
 
 		PKCS7Signer signer = new BouncyCastlePKCS7Signer(signerInfo);
@@ -146,13 +131,10 @@ public class SignerTest extends TestCase {
 		builder1.withV3Extensions(true);
 		builder1.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
 		PrivateKeyHolder holder1 = builder1.build();
-		Store store1 = new MemoryStore();
-		store1.add(new PrivateKeyEntry(new PasswordAlias("mykey1", "mypasswd"), holder1.getPrivateKey(), holder1.getChain()));
 
 		TimeStampClient timeStampClient = new URLTimeStampClient("http://tsa.safelayer.com:8093");
 		// TimeStampClient timeStampClient = new STFTimeStampClient("201.49.148.134", 318);
-		SignRequest signerInfo = new SignRequest();
-		signerInfo.setStore(store1);
+		PKCS7SignatureRequest signerInfo = new PKCS7SignatureRequest(holder1);
 		signerInfo.setTimeStampClient(timeStampClient);
 
 		PKCS7Signer signer = new BouncyCastlePKCS7Signer(signerInfo);
@@ -174,19 +156,15 @@ public class SignerTest extends TestCase {
 		builder.withV3Extensions(true);
 		builder.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
 		PrivateKeyHolder holder = builder.build();
-		Store store = new MemoryStore();
-		store.add(new PrivateKeyEntry(new PasswordAlias("mykey1", "mypasswd"), holder.getPrivateKey(), holder.getChain()));
 
 		// TimeStampClient timeStampClient = TSA_CLIENT_STF;
 		// TimeStampClient timeStampClient = new STFTimeStampClient("201.49.148.134", 318);
 		TimeStampClient timeStampClient = null;
-		SignRequest signerInfo = new SignRequest();
-		signerInfo.setAliases(new Alias[] { new Alias("cert1") });
+		PKCS7SignatureRequest signerInfo = new PKCS7SignatureRequest(holder);
 		signerInfo.setContactInfo("ConcactInfo");
 		signerInfo.setLocation("Location");
 		signerInfo.setName("Lourival Sabino");
 		signerInfo.setReason("Reason");
-		signerInfo.setStore(store);
 		signerInfo.setTimeStampClient(timeStampClient);
 
 		PDFSigner signer = new PDFSigner(signerInfo);
@@ -213,15 +191,12 @@ public class SignerTest extends TestCase {
 		builder.withV3Extensions(true);
 		builder.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
 		PrivateKeyHolder holder = builder.build();
-		Store store = new MemoryStore();
-		store.add(new PrivateKeyEntry(new PasswordAlias("mykey1", "mypasswd"), holder.getPrivateKey(), holder.getChain()));
 
 		FileInputStream fileInputStream = new FileInputStream("/home/lourival/Documentos/curriculum.pdf");
 
 		TimeStampClient timeStampClient = TSA_CLIENT_STF;
 		// TimeStampClient timeStampClient = new STFTimeStampClient("201.49.148.134", 318);
-		SignRequest signerInfo = new SignRequest();
-		signerInfo.setStore(store);
+		PKCS7SignatureRequest signerInfo = new PKCS7SignatureRequest(holder);
 		signerInfo.setContactInfo("ConcactInfo");
 		signerInfo.setLocation("Location");
 		signerInfo.setName("Lourival Sabino");
@@ -244,15 +219,12 @@ public class SignerTest extends TestCase {
 		builder.withV3Extensions(true);
 		builder.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
 		PrivateKeyHolder holder = builder.build();
-		Store store = new MemoryStore();
-		store.add(new PrivateKeyEntry(new PasswordAlias("mykey1", "mypasswd"), holder.getPrivateKey(), holder.getChain()));
 
 		FileInputStream fileInputStream = new FileInputStream("/tmp/sign.pdf");
 
 		TimeStampClient timeStampClient = TSA_CLIENT_STF;
 		// TimeStampClient timeStampClient = new STFTimeStampClient("201.49.148.134", 318);
-		SignRequest signerInfo = new SignRequest();
-		signerInfo.setStore(store);
+		PKCS7SignatureRequest signerInfo = new PKCS7SignatureRequest(holder);
 		signerInfo.setContactInfo("ConcactInfo");
 		signerInfo.setLocation("Location");
 		signerInfo.setName("Lourival Sabino");
@@ -277,9 +249,7 @@ public class SignerTest extends TestCase {
 
 		// TimeStampClient timeStampClient = TSA_CLIENT_STF;
 		TimeStampClient timeStampClient = new URLTimeStampClient("http://tsa.safelayer.com:8093");
-		SignRequest signerInfo = new SignRequest();
-		signerInfo.setAliases(new Alias[] { new PasswordAlias("lourival sabino", "lourival") });
-		signerInfo.setStore(store);
+		PKCS7SignatureRequest signerInfo = new PKCS7SignatureRequest(new Alias[] { new PasswordAlias("lourival sabino", "lourival") }, store);
 		signerInfo.setContactInfo("ConcactInfo");
 		signerInfo.setLocation("Location");
 		signerInfo.setName("Lourival Sabino");

@@ -43,11 +43,6 @@ public class ImmutableStore implements Store {
 	}
 
 	@Override
-	public StoreEntry[] getChain(final Alias alias) {
-		return this.store.getChain(alias);
-	}
-
-	@Override
 	public StoreEntry get(final Alias alias, final StoreEntryType type) {
 		return this.store.get(alias, type);
 	}

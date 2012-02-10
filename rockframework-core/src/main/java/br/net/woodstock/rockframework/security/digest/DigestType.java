@@ -16,18 +16,31 @@
  */
 package br.net.woodstock.rockframework.security.digest;
 
+import javax.xml.crypto.dsig.DigestMethod;
+
 public enum DigestType {
 
-	MD2("MD2"), MD5("MD5"), SHA1("SHA1"), SHA_256("SHA-256"), SHA_384("SHA-384"), SHA_512("SHA-512");
+	MD2("MD2"), MD5("MD5"), SHA1("SHA1", DigestMethod.SHA1), SHA_256("SHA-256", DigestMethod.SHA256), SHA_384("SHA-384"), SHA_512("SHA-512", DigestMethod.SHA512);
 
 	private String	algorithm;
+
+	private String	digestMethod;
 
 	private DigestType(final String algorithm) {
 		this.algorithm = algorithm;
 	}
 
+	private DigestType(final String algorithm, final String digestMethod) {
+		this.algorithm = algorithm;
+		this.digestMethod = digestMethod;
+	}
+
 	public String getAlgorithm() {
 		return this.algorithm;
+	}
+
+	public String getDigestMethod() {
+		return this.digestMethod;
 	}
 
 	public static DigestType getDigestType(final String algorithm) {

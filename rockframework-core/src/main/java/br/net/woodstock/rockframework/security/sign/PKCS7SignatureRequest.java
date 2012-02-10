@@ -16,15 +16,14 @@
  */
 package br.net.woodstock.rockframework.security.sign;
 
-import java.io.Serializable;
-
 import br.net.woodstock.rockframework.security.Alias;
+import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
 import br.net.woodstock.rockframework.security.store.Store;
 import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
 
-public class SignRequest implements Serializable {
+public class PKCS7SignatureRequest extends SignatureRequest {
 
-	private static final long	serialVersionUID	= -4388076526792546789L;
+	private static final long	serialVersionUID	= -6981088435915238029L;
 
 	private String				name;
 
@@ -36,12 +35,12 @@ public class SignRequest implements Serializable {
 
 	private TimeStampClient		timeStampClient;
 
-	private Alias[]				aliases;
+	public PKCS7SignatureRequest(final Alias[] aliases, final Store store) {
+		super(aliases, store);
+	}
 
-	private Store				store;
-
-	public SignRequest() {
-		super();
+	public PKCS7SignatureRequest(final PrivateKeyHolder privateKeyHolder) {
+		super(privateKeyHolder);
 	}
 
 	public String getName() {
@@ -82,22 +81,6 @@ public class SignRequest implements Serializable {
 
 	public void setTimeStampClient(final TimeStampClient timeStampClient) {
 		this.timeStampClient = timeStampClient;
-	}
-
-	public Alias[] getAliases() {
-		return this.aliases;
-	}
-
-	public void setAliases(final Alias[] aliases) {
-		this.aliases = aliases;
-	}
-
-	public Store getStore() {
-		return this.store;
-	}
-
-	public void setStore(final Store store) {
-		this.store = store;
 	}
 
 }

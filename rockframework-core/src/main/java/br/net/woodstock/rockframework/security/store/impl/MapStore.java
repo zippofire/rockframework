@@ -130,15 +130,6 @@ public abstract class MapStore implements Store {
 	}
 
 	@Override
-	public StoreEntry[] getChain(final Alias alias) {
-		StoreEntry entry = this.get(alias, StoreEntryType.CERTIFICATE);
-		if (entry != null) {
-			return new StoreEntry[] { entry };
-		}
-		return null;
-	}
-
-	@Override
 	public boolean add(final StoreEntry entry) {
 		Assert.notNull(entry, "entry");
 		Assert.notNull(entry.getAlias(), "entry.alias");

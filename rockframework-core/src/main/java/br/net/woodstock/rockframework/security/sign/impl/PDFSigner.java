@@ -43,15 +43,15 @@ import br.net.woodstock.rockframework.security.digest.DigestType;
 import br.net.woodstock.rockframework.security.digest.Digester;
 import br.net.woodstock.rockframework.security.digest.impl.BasicDigester;
 import br.net.woodstock.rockframework.security.sign.DocumentSigner;
-import br.net.woodstock.rockframework.security.sign.SignRequest;
-import br.net.woodstock.rockframework.security.sign.SignType;
+import br.net.woodstock.rockframework.security.sign.PKCS7SignatureRequest;
 import br.net.woodstock.rockframework.security.sign.Signatory;
 import br.net.woodstock.rockframework.security.sign.Signature;
+import br.net.woodstock.rockframework.security.sign.SignatureType;
 import br.net.woodstock.rockframework.security.sign.SignerException;
 import br.net.woodstock.rockframework.security.store.CertificateEntry;
 import br.net.woodstock.rockframework.security.store.KeyStoreType;
+import br.net.woodstock.rockframework.security.store.PrivateKeyEntry;
 import br.net.woodstock.rockframework.security.store.Store;
-import br.net.woodstock.rockframework.security.store.StoreEntry;
 import br.net.woodstock.rockframework.security.store.StoreEntryType;
 import br.net.woodstock.rockframework.security.store.impl.JCAStore;
 import br.net.woodstock.rockframework.security.timestamp.TimeStamp;
@@ -77,22 +77,22 @@ import com.itextpdf.text.pdf.TSAClient;
 
 public class PDFSigner implements DocumentSigner {
 
-	private static final char	PDF_SIGNATURE_VERSION	= '\0';
+	private static final char		PDF_SIGNATURE_VERSION	= '\0';
 
-	private SignRequest			signRequest;
+	private PKCS7SignatureRequest	request;
 
-	public PDFSigner(final SignRequest signRequest) {
+	public PDFSigner(final PKCS7SignatureRequest request) {
 		super();
-		this.signRequest = signRequest;
+		Assert.notNull(this.request, "request");
+		this.request = request;
 	}
 
 	@Override
 	public byte[] sign(final byte[] data) {
 		Assert.notNull(data, "data");
-		Assert.notNull(this.signRequest, "signRequest");
 		try {
 			byte[] currentData = data;
-			for (Alias alias : this.signRequest.getAliases()) {
+			for (Alias alias : this.request.getAliases()) {
 				currentData = this.singleSign(data, alias);
 			}
 			return currentData;
@@ -104,9 +104,9 @@ public class PDFSigner implements DocumentSigner {
 	private byte[] singleSign(final byte[] data, final Alias alias) {
 		Assert.notEmpty(data, "data");
 		try {
-			Store store = this.signRequest.getStore();
-			StoreEntry certificateEntry = store.get(alias, StoreEntryType.CERTIFICATE);
-			StoreEntry privateEntry = store.get(alias, StoreEntryType.PRIVATE_KEY);
+			Store store = this.request.getStore();
+			CertificateEntry certificateEntry = (CertificateEntry) store.get(alias, StoreEntryType.CERTIFICATE);
+			PrivateKeyEntry privateEntry = (PrivateKeyEntry) store.get(alias, StoreEntryType.PRIVATE_KEY);
 
 			if (certificateEntry == null) {
 				throw new SignerException("Certificate '" + alias.getName() + " not found in store");
@@ -116,19 +116,10 @@ public class PDFSigner implements DocumentSigner {
 				throw new SignerException("Private key '" + alias.getName() + " not found in store");
 			}
 
-			StoreEntry[] chainEntry = store.getChain(alias);
-
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 			X509Certificate certificate = (X509Certificate) certificateEntry.getValue();
-			PrivateKey privateKey = (PrivateKey) privateEntry.getValue();
-			Certificate[] chain = null;
-
-			if (ConditionUtils.isNotEmpty(chainEntry)) {
-				chain = new Certificate[chainEntry.length];
-				for (int i = 0; i < chainEntry.length; i++) {
-					chain[i] = (Certificate) chainEntry[i].getValue();
-				}
-			}
+			PrivateKey privateKey = privateEntry.getValue();
+			Certificate[] chain = privateEntry.getChain();
 
 			DigestType digestType = this.getDigestTypeFromSignature(certificate.getSigAlgName());
 			Calendar calendar = Calendar.getInstance();
@@ -138,9 +129,9 @@ public class PDFSigner implements DocumentSigner {
 
 			PdfSignatureAppearance appearance = stamper.getSignatureAppearance();
 			appearance.setCrypto(privateKey, chain, null, PdfSignatureAppearance.SELF_SIGNED);
-			appearance.setContact(this.signRequest.getContactInfo());
-			appearance.setLocation(this.signRequest.getLocation());
-			appearance.setReason(this.signRequest.getReason());
+			appearance.setContact(this.request.getContactInfo());
+			appearance.setLocation(this.request.getLocation());
+			appearance.setReason(this.request.getReason());
 			appearance.setSignDate(calendar);
 
 			PdfSignature signature = new PdfSignature(PdfName.ADOBE_PPKLITE, PdfName.ADBE_PKCS7_DETACHED);
@@ -149,8 +140,8 @@ public class PDFSigner implements DocumentSigner {
 			signature.setContact(appearance.getContact());
 			signature.setDate(new PdfDate(appearance.getSignDate()));
 
-			if (ConditionUtils.isNotEmpty(this.signRequest.getName())) {
-				signature.setName(this.signRequest.getName());
+			if (ConditionUtils.isNotEmpty(this.request.getName())) {
+				signature.setName(this.request.getName());
 			} else {
 				signature.setName(this.getValue(certificate.getSubjectX500Principal()));
 			}
@@ -167,8 +158,8 @@ public class PDFSigner implements DocumentSigner {
 			byte[] hash = digester.digest(rangeStream);
 
 			TSAClient tsc = null;
-			if (this.signRequest.getTimeStampClient() != null) {
-				tsc = new DelegateITextTSAClient(this.signRequest.getTimeStampClient());
+			if (this.request.getTimeStampClient() != null) {
+				tsc = new DelegateITextTSAClient(this.request.getTimeStampClient());
 			}
 
 			byte[] oscp = null;
@@ -194,8 +185,8 @@ public class PDFSigner implements DocumentSigner {
 			PdfPKCS7 pkcs7 = new PdfPKCS7(privateKey, chain, null, digestType.getAlgorithm(), null, false);
 			byte[] authenticatedAttributes = pkcs7.getAuthenticatedAttributeBytes(hash, calendar, oscp);
 			pkcs7.update(authenticatedAttributes, 0, authenticatedAttributes.length);
-			pkcs7.setLocation(this.signRequest.getLocation());
-			pkcs7.setReason(this.signRequest.getReason());
+			pkcs7.setLocation(this.request.getLocation());
+			pkcs7.setReason(this.request.getReason());
 
 			if (tsc == null) {
 				pkcs7.setSignDate(calendar);
@@ -218,61 +209,6 @@ public class PDFSigner implements DocumentSigner {
 			throw new SignerException(e);
 		}
 	}
-
-	// protected byte[] getITextPKCS7(final X509Certificate certificate, final PrivateKey privateKey, final
-	// Certificate[] chain, final byte[] rangeStream, final DigestType digestType, final Calendar calendar)
-	// throws CertificateParsingException, InvalidKeyException, NoSuchProviderException,
-	// NoSuchAlgorithmException, SignatureException {
-	// Digester digester = new BasicDigester(digestType);
-	// byte[] hash = digester.digest(rangeStream);
-	//
-	// TSAClient tsc = null;
-	//
-	// if (this.signRequest.getTimeStampClient() != null) {
-	// tsc = new DelegateITextTSAClient(this.signRequest.getTimeStampClient());
-	// }
-	//
-	// byte[] oscp = null;
-	// if (chain.length > 1) {
-	// String oscpUrl = PdfPKCS7.getOCSPURL(certificate);
-	// X509Certificate rootCertificate = (X509Certificate) chain[1];
-	// if (ConditionUtils.isNotEmpty(oscpUrl)) {
-	// OcspClient ocspClient = new OcspClientBouncyCastle(certificate, rootCertificate, oscpUrl);
-	// oscp = ocspClient.getEncoded();
-	// }
-	// }
-	//
-	// PdfPKCS7 pkcs7 = new PdfPKCS7(privateKey, chain, null, digestType.getAlgorithm(), null, false);
-	// byte[] authenticatedAttributes = pkcs7.getAuthenticatedAttributeBytes(hash, calendar, oscp);
-	// pkcs7.update(authenticatedAttributes, 0, authenticatedAttributes.length);
-	// pkcs7.setLocation(this.signRequest.getLocation());
-	// pkcs7.setReason(this.signRequest.getReason());
-	//
-	// if (tsc == null) {
-	// pkcs7.setSignDate(calendar);
-	// }
-	//
-	// byte[] encodedPkcs7 = pkcs7.getEncodedPKCS7(hash, calendar, tsc, oscp);
-	// return encodedPkcs7;
-	// }
-	//
-	// protected byte[] getCMSPKCS7(final CertificateHolder certificateHolder, final byte[] rangeStream, final
-	// DigestType digestType) {
-	// Digester digester = new BasicDigester(digestType);
-	//
-	// SignRequest sr = new SignRequest();
-	//
-	// sr.setContactInfo(this.signRequest.getContactInfo());
-	// sr.setLocation(this.signRequest.getLocation());
-	// sr.setReason(this.signRequest.getReason());
-	// sr.setTimeStampClient(this.signRequest.getTimeStampClient());
-	// sr.setCertificates(new CertificateHolder[] { certificateHolder });
-	//
-	// BouncyCastlePKCS7Signer signer = new BouncyCastlePKCS7Signer(sr);
-	//
-	// byte[] encodedPkcs7 = signer.sign(digester.digest(rangeStream));
-	// return encodedPkcs7;
-	// }
 
 	@Override
 	public boolean verify(final byte[] data, final byte[] signature) {
@@ -368,17 +304,17 @@ public class PDFSigner implements DocumentSigner {
 		return signatory;
 	}
 
-	protected SignType getSignatureType(final String signatureAlgorithm) {
-		SignType signType = SignType.getSignType(signatureAlgorithm);
-		if (signType == null) {
-			signType = SignType.SHA1_RSA;
+	protected SignatureType getSignatureType(final String signatureAlgorithm) {
+		SignatureType type = SignatureType.getSignType(signatureAlgorithm);
+		if (type == null) {
+			type = SignatureType.SHA1_RSA;
 		}
-		return signType;
+		return type;
 	}
 
 	protected DigestType getDigestTypeFromSignature(final String signatureAlgorithm) {
-		SignType signType = this.getSignatureType(signatureAlgorithm);
-		DigestType digestType = signType.getDigestType();
+		SignatureType signatureType = this.getSignatureType(signatureAlgorithm);
+		DigestType digestType = signatureType.getDigestType();
 		return digestType;
 	}
 

@@ -19,7 +19,7 @@ package br.net.woodstock.rockframework.office.pdf.impl;
 import java.util.Vector;
 
 import br.net.woodstock.rockframework.security.digest.DigestType;
-import br.net.woodstock.rockframework.security.sign.SignType;
+import br.net.woodstock.rockframework.security.sign.SignatureType;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
 abstract class AbstractITextManager extends AbstractManager {
@@ -28,16 +28,16 @@ abstract class AbstractITextManager extends AbstractManager {
 
 	protected static final char	PDF_SIGNATURE_VERSION	= '\0';
 
-	protected SignType getSignatureType(final String signatureAlgorithm) {
-		SignType signType = SignType.getSignType(signatureAlgorithm);
+	protected SignatureType getSignatureType(final String signatureAlgorithm) {
+		SignatureType signType = SignatureType.getSignType(signatureAlgorithm);
 		if (signType == null) {
-			signType = SignType.SHA1_RSA;
+			signType = SignatureType.SHA1_RSA;
 		}
 		return signType;
 	}
 
 	protected DigestType getDigestTypeFromSignature(final String signatureAlgorithm) {
-		SignType signType = this.getSignatureType(signatureAlgorithm);
+		SignatureType signType = this.getSignatureType(signatureAlgorithm);
 		DigestType digestType = signType.getDigestType();
 		return digestType;
 	}

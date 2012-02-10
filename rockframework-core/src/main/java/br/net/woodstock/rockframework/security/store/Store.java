@@ -28,8 +28,6 @@ public interface Store {
 	// Array
 	Alias[] aliases();
 
-	StoreEntry[] getChain(Alias alias);
-
 	// Single
 	StoreEntry get(Alias alias, StoreEntryType type);
 

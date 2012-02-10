@@ -48,7 +48,7 @@ import br.net.woodstock.rockframework.security.cert.CertificateType;
 import br.net.woodstock.rockframework.security.cert.KeyUsageType;
 import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
 import br.net.woodstock.rockframework.security.crypt.KeyPairType;
-import br.net.woodstock.rockframework.security.sign.SignType;
+import br.net.woodstock.rockframework.security.sign.SignatureType;
 import br.net.woodstock.rockframework.security.util.BouncyCastleProviderHelper;
 import br.net.woodstock.rockframework.security.util.SecurityUtils;
 import br.net.woodstock.rockframework.util.DateBuilder;
@@ -61,7 +61,7 @@ public class BouncyCastleCertificateBuilder implements CertificateBuilder {
 
 	private KeyPair				keyPair;
 
-	private SignType			signType;
+	private SignatureType			signType;
 
 	private String				issuer;
 
@@ -92,7 +92,7 @@ public class BouncyCastleCertificateBuilder implements CertificateBuilder {
 		return this;
 	}
 
-	public BouncyCastleCertificateBuilder withSignType(final SignType signType) {
+	public BouncyCastleCertificateBuilder withSignType(final SignatureType signType) {
 		this.signType = signType;
 		return this;
 	}
@@ -135,7 +135,7 @@ public class BouncyCastleCertificateBuilder implements CertificateBuilder {
 			long time = System.currentTimeMillis();
 			String subject = this.subject;
 			KeyPair keyPair = this.keyPair;
-			SignType signType = this.signType;
+			SignatureType signType = this.signType;
 			String issuer = this.issuer;
 			BigInteger serialNumber = this.serialNumber;
 			Date notBefore = this.notBefore;
@@ -149,7 +149,7 @@ public class BouncyCastleCertificateBuilder implements CertificateBuilder {
 			}
 
 			if (signType == null) {
-				signType = SignType.SHA1_RSA;
+				signType = SignatureType.SHA1_RSA;
 			}
 
 			if (issuer == null) {

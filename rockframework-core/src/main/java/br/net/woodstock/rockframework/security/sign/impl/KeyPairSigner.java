@@ -22,7 +22,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Signature;
 import java.security.SignatureException;
 
-import br.net.woodstock.rockframework.security.sign.SignType;
+import br.net.woodstock.rockframework.security.sign.SignatureType;
 import br.net.woodstock.rockframework.security.sign.Signer;
 import br.net.woodstock.rockframework.security.sign.SignerException;
 import br.net.woodstock.rockframework.util.Assert;
@@ -31,9 +31,9 @@ public class KeyPairSigner implements Signer {
 
 	private KeyPair		keyPair;
 
-	private SignType	signType;
+	private SignatureType	signType;
 
-	public KeyPairSigner(final KeyPair keyPair, final SignType signType) {
+	public KeyPairSigner(final KeyPair keyPair, final SignatureType signType) {
 		super();
 		Assert.notNull(keyPair, "keyPair");
 		Assert.notNull(signType, "signType");

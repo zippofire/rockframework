@@ -22,7 +22,7 @@ import java.security.Signature;
 import java.security.SignatureException;
 import java.security.cert.Certificate;
 
-import br.net.woodstock.rockframework.security.sign.SignType;
+import br.net.woodstock.rockframework.security.sign.SignatureType;
 import br.net.woodstock.rockframework.security.sign.Signer;
 import br.net.woodstock.rockframework.security.sign.SignerException;
 import br.net.woodstock.rockframework.util.Assert;
@@ -31,9 +31,9 @@ public class CertificateSigner implements Signer {
 
 	private Certificate	certificate;
 
-	private SignType	signType;
+	private SignatureType	signType;
 
-	public CertificateSigner(final Certificate certificate, final SignType signType) {
+	public CertificateSigner(final Certificate certificate, final SignatureType signType) {
 		super();
 		Assert.notNull(certificate, "certificate");
 		Assert.notNull(signType, "signType");

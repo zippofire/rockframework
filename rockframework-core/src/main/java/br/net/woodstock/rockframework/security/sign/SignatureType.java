@@ -16,19 +16,21 @@
  */
 package br.net.woodstock.rockframework.security.sign;
 
+import javax.xml.crypto.dsig.SignatureMethod;
+
 import br.net.woodstock.rockframework.security.crypt.KeyPairType;
 import br.net.woodstock.rockframework.security.digest.DigestType;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-public enum SignType {
+public enum SignatureType {
 
 	MD2_RSA("MD2withRSA", KeyPairType.RSA, DigestType.MD2),
 	MD5_RSA("MD5withRSA", KeyPairType.RSA, DigestType.MD5),
-	SHA1_RSA("SHA1withRSA", KeyPairType.RSA, DigestType.SHA1),
+	SHA1_RSA("SHA1withRSA", KeyPairType.RSA, DigestType.SHA1, SignatureMethod.RSA_SHA1),
 	SHA256_RSA("SHA256withRSA", KeyPairType.RSA, DigestType.SHA_256),
 	SHA384_RSA("SHA384withRSA", KeyPairType.RSA, DigestType.SHA_384),
 	SHA512_RSA("SHA512withRSA", KeyPairType.RSA, DigestType.SHA_512),
-	SHA1_DSA("SHA1withDSA", KeyPairType.DSA, DigestType.SHA1),
+	SHA1_DSA("SHA1withDSA", KeyPairType.DSA, DigestType.SHA1, SignatureMethod.DSA_SHA1),
 	SHA1_ECDSA("SHA1withECDSA", KeyPairType.EC, DigestType.SHA1),
 	SHA256_ECDSA("SHA256withECDSA", KeyPairType.EC, DigestType.SHA_256),
 	SHA384_ECDSA("SHA384withECDSA", KeyPairType.EC, DigestType.SHA_384),
@@ -41,11 +43,20 @@ public enum SignType {
 	private KeyPairType keyPairType;
 	
 	private DigestType	digestType;
+	
+	private String signatureMethod;
 
-	private SignType(final String algorithm, final KeyPairType keyPairType, final DigestType digestType) {
+	private SignatureType(final String algorithm, final KeyPairType keyPairType, final DigestType digestType) {
 		this.algorithm = algorithm;
 		this.keyPairType = keyPairType;
 		this.digestType = digestType;
+	}
+	
+	private SignatureType(final String algorithm, final KeyPairType keyPairType, final DigestType digestType, final String signatureMethod) {
+		this.algorithm = algorithm;
+		this.keyPairType = keyPairType;
+		this.digestType = digestType;
+		this.signatureMethod = signatureMethod;		
 	}
 
 	public String getAlgorithm() {
@@ -60,10 +71,14 @@ public enum SignType {
 	public DigestType getDigestType() {
 		return this.digestType;
 	}
-
-	public static SignType getSignType(final String algorithm) {
+	
+	public String getSignatureMethod() {
+		return this.signatureMethod;
+	}
+	
+	public static SignatureType getSignType(final String algorithm) {
 		if (ConditionUtils.isNotEmpty(algorithm)) {
-			for (SignType signType : SignType.values()) {
+			for (SignatureType signType : SignatureType.values()) {
 				if (algorithm.equalsIgnoreCase(signType.getAlgorithm())) {
 					return signType;
 				}

@@ -18,8 +18,10 @@ package br.net.woodstock.rockframework.security.sign.impl;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.Charset;
-import java.security.GeneralSecurityException;
-import java.security.KeyPair;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.cert.Certificate;
+import java.security.cert.X509Certificate;
 import java.util.Collections;
 import java.util.List;
 
@@ -50,11 +52,16 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import br.net.woodstock.rockframework.io.ByteArrayWriter;
-import br.net.woodstock.rockframework.security.crypt.KeyPairType;
+import br.net.woodstock.rockframework.security.Alias;
 import br.net.woodstock.rockframework.security.digest.DigestType;
 import br.net.woodstock.rockframework.security.sign.DocumentSigner;
 import br.net.woodstock.rockframework.security.sign.Signature;
+import br.net.woodstock.rockframework.security.sign.SignatureRequest;
+import br.net.woodstock.rockframework.security.sign.SignatureType;
 import br.net.woodstock.rockframework.security.sign.SignerException;
+import br.net.woodstock.rockframework.security.store.PrivateKeyEntry;
+import br.net.woodstock.rockframework.security.store.Store;
+import br.net.woodstock.rockframework.security.store.StoreEntryType;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.xml.dom.XmlWriter;
 
@@ -74,54 +81,69 @@ public class XMLSigner implements DocumentSigner {
 
 	private KeyInfo					keyInfo;
 
-	private KeyPair					keyPair;
+	private SignatureRequest		request;
 
-	public XMLSigner(final KeyPair keyPair, final DigestType digestType) throws GeneralSecurityException {
+	public XMLSigner(final SignatureRequest request) {
 		super();
-		Assert.notNull(keyPair, "keyPair");
-		Assert.notNull(digestType, "digestType");
+		Assert.notNull(request, "request");
+
+		this.request = request;
 
 		this.xmlSignatureFactory = XMLSignatureFactory.getInstance(XMLSigner.SIGNATURE_FACTORY);
 		this.documentBuilderFactory = DocumentBuilderFactory.newInstance();
-
-		this.keyPair = keyPair;
-
-		DigestMethod digestMethod = this.xmlSignatureFactory.newDigestMethod(this.getDigestMethodName(digestType), null);
-		List<Transform> transforms = Collections.singletonList(this.xmlSignatureFactory.newTransform(Transform.ENVELOPED, (TransformParameterSpec) null));
-		Reference reference = this.xmlSignatureFactory.newReference(XMLSigner.REFERENCE_URI, digestMethod, transforms, null, null);
-
-		CanonicalizationMethod canonicalizationMethod = this.xmlSignatureFactory.newCanonicalizationMethod(CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS, (C14NMethodParameterSpec) null);
-		SignatureMethod signatureMethod = this.xmlSignatureFactory.newSignatureMethod(this.getSignatureMethodName(this.keyPair), null);
-
-		this.signedInfo = this.xmlSignatureFactory.newSignedInfo(canonicalizationMethod, signatureMethod, Collections.singletonList(reference));
-
-		KeyInfoFactory keyInfoFactory = this.xmlSignatureFactory.getKeyInfoFactory();
-		KeyValue keyValue = keyInfoFactory.newKeyValue(this.keyPair.getPublic());
-		this.keyInfo = keyInfoFactory.newKeyInfo(Collections.singletonList(keyValue));
 	}
 
 	@Override
 	public byte[] sign(final byte[] data) {
 		Assert.notEmpty(data, "data");
 		try {
-			ByteArrayInputStream inputStream = new ByteArrayInputStream(data);
-			Document document = this.documentBuilderFactory.newDocumentBuilder().parse(inputStream);
-			DOMSignContext signContext = new DOMSignContext(this.keyPair.getPrivate(), document.getDocumentElement());
-			XMLSignature signature = this.xmlSignatureFactory.newXMLSignature(this.signedInfo, this.keyInfo);
+			Store store = this.request.getStore();
+			Alias[] aliases = this.request.getAliases();
 
-			signature.sign(signContext);
+			byte[] currentData = data;
 
-			Document outputDocument = this.documentBuilderFactory.newDocumentBuilder().newDocument();
-			DOMResult domResult = new DOMResult(outputDocument);
+			for (Alias alias : aliases) {
+				PrivateKeyEntry privateKeyEntry = (PrivateKeyEntry) store.get(alias, StoreEntryType.PRIVATE_KEY);
+				PrivateKey privateKey = privateKeyEntry.getValue();
+				Certificate[] chain = privateKeyEntry.getChain();
+				X509Certificate certificate = (X509Certificate) chain[0];
+				PublicKey publicKey = certificate.getPublicKey();
 
-			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			Transformer transformer = transformerFactory.newTransformer();
-			transformer.transform(new DOMSource(document), domResult);
+				String digestType = this.getDigestMethodName(certificate.getSigAlgName());
+				DigestMethod digestMethod = this.xmlSignatureFactory.newDigestMethod(digestType, null);
+				List<Transform> transforms = Collections.singletonList(this.xmlSignatureFactory.newTransform(Transform.ENVELOPED, (TransformParameterSpec) null));
+				Reference reference = this.xmlSignatureFactory.newReference(XMLSigner.REFERENCE_URI, digestMethod, transforms, null, null);
 
-			ByteArrayWriter writer = new ByteArrayWriter();
-			XmlWriter.getInstance().write(outputDocument, writer, Charset.defaultCharset());
+				CanonicalizationMethod canonicalizationMethod = this.xmlSignatureFactory.newCanonicalizationMethod(CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS, (C14NMethodParameterSpec) null);
+				SignatureMethod signatureMethod = this.xmlSignatureFactory.newSignatureMethod(this.getSignatureDigestName(certificate.getSigAlgName()), null);
 
-			return writer.toByteArray();
+				this.signedInfo = this.xmlSignatureFactory.newSignedInfo(canonicalizationMethod, signatureMethod, Collections.singletonList(reference));
+
+				KeyInfoFactory keyInfoFactory = this.xmlSignatureFactory.getKeyInfoFactory();
+				KeyValue keyValue = keyInfoFactory.newKeyValue(publicKey);
+				this.keyInfo = keyInfoFactory.newKeyInfo(Collections.singletonList(keyValue));
+
+				ByteArrayInputStream inputStream = new ByteArrayInputStream(currentData);
+
+				Document document = this.documentBuilderFactory.newDocumentBuilder().parse(inputStream);
+				DOMSignContext signContext = new DOMSignContext(privateKey, document.getDocumentElement());
+				XMLSignature signature = this.xmlSignatureFactory.newXMLSignature(this.signedInfo, this.keyInfo);
+
+				signature.sign(signContext);
+
+				Document outputDocument = this.documentBuilderFactory.newDocumentBuilder().newDocument();
+				DOMResult domResult = new DOMResult(outputDocument);
+
+				TransformerFactory transformerFactory = TransformerFactory.newInstance();
+				Transformer transformer = transformerFactory.newTransformer();
+				transformer.transform(new DOMSource(document), domResult);
+
+				ByteArrayWriter writer = new ByteArrayWriter();
+				XmlWriter.getInstance().write(outputDocument, writer, Charset.defaultCharset());
+
+				currentData = writer.toByteArray();
+			}
+			return currentData;
 		} catch (Exception e) {
 			throw new SignerException(e);
 		}
@@ -132,17 +154,35 @@ public class XMLSigner implements DocumentSigner {
 		Assert.notEmpty(data, "data");
 		Assert.notEmpty(signature, "signature");
 		try {
-			ByteArrayInputStream inputStream = new ByteArrayInputStream(signature);
-			Document document = this.documentBuilderFactory.newDocumentBuilder().parse(inputStream);
+			Store store = this.request.getStore();
+			Alias[] aliases = this.request.getAliases();
 
-			NodeList nodeList = document.getElementsByTagNameNS(XMLSignature.XMLNS, XMLSigner.SIGNATURE_ELEMENT);
-			if ((nodeList != null) && (nodeList.getLength() > 0)) {
-				Node node = nodeList.item(0);
-				DOMValidateContext domValidateContext = new DOMValidateContext(KeySelector.singletonKeySelector(this.keyPair.getPrivate()), node);
-				XMLSignature xmlSignature = this.xmlSignatureFactory.unmarshalXMLSignature(domValidateContext);
-				return xmlSignature.getSignatureValue().validate(domValidateContext);
+			boolean valid = true;
+
+			for (Alias alias : aliases) {
+				PrivateKeyEntry privateKeyEntry = (PrivateKeyEntry) store.get(alias, StoreEntryType.PRIVATE_KEY);
+				Certificate[] chain = privateKeyEntry.getChain();
+				X509Certificate certificate = (X509Certificate) chain[0];
+				PublicKey publicKey = certificate.getPublicKey();
+
+				ByteArrayInputStream inputStream = new ByteArrayInputStream(signature);
+				Document document = this.documentBuilderFactory.newDocumentBuilder().parse(inputStream);
+
+				NodeList nodeList = document.getElementsByTagNameNS(XMLSignature.XMLNS, XMLSigner.SIGNATURE_ELEMENT);
+				if ((nodeList != null) && (nodeList.getLength() > 0)) {
+					Node node = nodeList.item(0);
+					DOMValidateContext domValidateContext = new DOMValidateContext(KeySelector.singletonKeySelector(publicKey), node);
+					XMLSignature xmlSignature = this.xmlSignatureFactory.unmarshalXMLSignature(domValidateContext);
+					valid = xmlSignature.getSignatureValue().validate(domValidateContext);
+					if (!valid) {
+						break;
+					}
+				} else {
+					valid = false;
+					break;
+				}
 			}
-			return false;
+			return valid;
 		} catch (Exception e) {
 			throw new SignerException(e);
 		}
@@ -153,25 +193,15 @@ public class XMLSigner implements DocumentSigner {
 		throw new UnsupportedOperationException();
 	}
 
-	private String getDigestMethodName(final DigestType digestType) {
-		switch (digestType) {
-			case SHA_256:
-				return DigestMethod.SHA256;
-			case SHA_512:
-				return DigestMethod.SHA512;
-			default:
-				return DigestMethod.SHA1;
-		}
+	private String getDigestMethodName(final String name) {
+		SignatureType signatureType = SignatureType.getSignType(name);
+		DigestType digestType = signatureType.getDigestType();
+		return digestType.getDigestMethod();
 	}
 
-	private String getSignatureMethodName(final KeyPair keyPair) {
-		KeyPairType keyPairType = KeyPairType.valueOf(keyPair.getPrivate().getAlgorithm());
-		switch (keyPairType) {
-			case DSA:
-				return SignatureMethod.DSA_SHA1;
-			default:
-				return SignatureMethod.RSA_SHA1;
-		}
+	private String getSignatureDigestName(final String name) {
+		SignatureType signatureType = SignatureType.getSignType(name);
+		return signatureType.getSignatureMethod();
 	}
 
 }

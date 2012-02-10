@@ -132,27 +132,6 @@ public class JCAStore implements Store {
 	}
 
 	@Override
-	public StoreEntry[] getChain(final Alias alias) {
-		try {
-			Assert.notNull(alias, "alias");
-
-			Certificate[] chain = this.keyStore.getCertificateChain(alias.getName());
-
-			if (chain != null) {
-				List<StoreEntry> list = new ArrayList<StoreEntry>();
-				for (Certificate certificate : chain) {
-					list.add(new CertificateEntry(alias, certificate));
-				}
-				return CollectionUtils.toArray(list, StoreEntry.class);
-			}
-
-			return null;
-		} catch (GeneralSecurityException e) {
-			throw new StoreException(e);
-		}
-	}
-
-	@Override
 	public boolean add(final StoreEntry entry) {
 		try {
 			Assert.notNull(entry, "entry");
