@@ -17,6 +17,7 @@
 package br.net.woodstock.rockframework.security.sign.impl;
 
 import java.io.ByteArrayInputStream;
+import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -48,6 +49,7 @@ import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -72,6 +74,8 @@ public class XMLSigner implements DocumentSigner {
 	private static final String		REFERENCE_URI		= "";
 
 	private static final String		SIGNATURE_ELEMENT	= "Signature";
+
+	private static final String		XMLNS_ATTRIBUTE		= "xmlns";
 
 	private DocumentBuilderFactory	documentBuilderFactory;
 
@@ -168,14 +172,22 @@ public class XMLSigner implements DocumentSigner {
 				ByteArrayInputStream inputStream = new ByteArrayInputStream(signature);
 				Document document = this.documentBuilderFactory.newDocumentBuilder().parse(inputStream);
 
-				NodeList nodeList = document.getElementsByTagNameNS(XMLSignature.XMLNS, XMLSigner.SIGNATURE_ELEMENT);
+				NodeList nodeList = document.getElementsByTagName(XMLSigner.SIGNATURE_ELEMENT);
 				if ((nodeList != null) && (nodeList.getLength() > 0)) {
 					Node node = nodeList.item(0);
-					DOMValidateContext domValidateContext = new DOMValidateContext(KeySelector.singletonKeySelector(publicKey), node);
-					XMLSignature xmlSignature = this.xmlSignatureFactory.unmarshalXMLSignature(domValidateContext);
-					valid = xmlSignature.getSignatureValue().validate(domValidateContext);
-					if (!valid) {
-						break;
+					if (node instanceof Element) {
+						Element element = (Element) node;
+						String attribute = element.getAttribute(XMLSigner.XMLNS_ATTRIBUTE);
+						if (XMLSignature.XMLNS.equals(attribute)) {
+							XmlWriter.getInstance().write(element, new OutputStreamWriter(System.out), Charset.defaultCharset());
+
+							DOMValidateContext domValidateContext = new DOMValidateContext(KeySelector.singletonKeySelector(publicKey), element);
+							XMLSignature xmlSignature = this.xmlSignatureFactory.unmarshalXMLSignature(domValidateContext);
+							valid = xmlSignature.getSignatureValue().validate(domValidateContext);
+							if (!valid) {
+								break;
+							}
+						}
 					}
 				} else {
 					valid = false;
