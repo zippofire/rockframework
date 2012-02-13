@@ -63,6 +63,18 @@ public abstract class CollectionUtils {
 		return iterator;
 	}
 
+	public static <E> List<E> toList(final Collection<E> collection) {
+		if (collection == null) {
+			return null;
+		}
+		if (collection instanceof List) {
+			return (List<E>) collection;
+		}
+		List<E> list = new LinkedList<E>();
+		list.addAll(collection);
+		return list;
+	}
+
 	public static <E> List<E> toList(final Enumeration<E> enumeration) {
 		if (enumeration == null) {
 			return null;

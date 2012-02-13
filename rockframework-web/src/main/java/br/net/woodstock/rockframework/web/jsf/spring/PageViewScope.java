@@ -16,48 +16,51 @@
  */
 package br.net.woodstock.rockframework.web.jsf.spring;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.ObjectFactory;
 
 import br.net.woodstock.rockframework.config.CoreLog;
 import br.net.woodstock.rockframework.domain.spring.AbstractScope;
 
-public class ViewScope extends AbstractScope {
+public class PageViewScope extends AbstractScope {
 
-	private static final String	VIEW_SCOPE_KEY	= "br.net.woodstock.rockframework.web.jsf.spring.ViewScope.VIEW_SCOPE_KEY";
+	private static final String	PAGE_VIEW_SCOPE_KEY	= "br.net.woodstock.rockframework.web.jsf.spring.PageViewScope.PAGE_VIEW_SCOPE";
 
-	public static final String	VIEW_SCOPE		= "view";
+	public static final String	PAGE_VIEW_SCOPE		= "pageView";
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public Object get(final String name, final ObjectFactory<?> objectFactory) {
 		FacesContext context = FacesContext.getCurrentInstance();
 		if (context != null) {
 			UIViewRoot viewRoot = context.getViewRoot();
 			if (viewRoot != null) {
-				Map<String, Object> attributes = viewRoot.getAttributes();
-				Map<String, Object> viewScope = null;
+				HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+				HttpSession session = request.getSession();
 				String viewId = viewRoot.getViewId();
-				if (attributes.containsKey(ViewScope.VIEW_SCOPE_KEY)) {
-					viewScope = (Map<String, Object>) attributes.get(ViewScope.VIEW_SCOPE_KEY);
+				PageView pageView = (PageView) session.getAttribute(PageViewScope.PAGE_VIEW_SCOPE_KEY);
+				if (pageView != null) {
+					if (!pageView.getViewId().equals(viewId)) {
+						CoreLog.getInstance().getLog().debug("Replacing view " + pageView.getViewId() + " by " + viewId);
+						pageView.setViewId(viewId);
+						pageView.getAttributes().clear();
+					}
 				} else {
-					viewScope = new HashMap<String, Object>();
-					attributes.put(ViewScope.VIEW_SCOPE_KEY, viewScope);
+					pageView = new PageView(viewId);
+					session.setAttribute(PageViewScope.PAGE_VIEW_SCOPE_KEY, pageView);
 				}
 
-				if (viewScope.containsKey(name)) {
+				if (pageView.getAttributes().containsKey(name)) {
 					CoreLog.getInstance().getLog().debug("Getting " + name + " for view " + viewId);
-					return viewScope.get(name);
+					return pageView.getAttributes().get(name);
 				}
 
 				CoreLog.getInstance().getLog().debug("Creating " + name + " for view " + viewId);
 				Object obj = objectFactory.getObject();
-				viewScope.put(name, obj);
+				pageView.getAttributes().put(name, obj);
 				return obj;
 			}
 		}
@@ -65,17 +68,19 @@ public class ViewScope extends AbstractScope {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public Object remove(final String name) {
 		CoreLog.getInstance().getLog().info("Removing " + name);
 		FacesContext context = FacesContext.getCurrentInstance();
 		if (context != null) {
 			UIViewRoot viewRoot = context.getViewRoot();
 			if (viewRoot != null) {
-				Map<String, Object> attributes = viewRoot.getAttributes();
-				if (attributes.containsKey(ViewScope.VIEW_SCOPE_KEY)) {
-					Map<String, Object> viewScope = (Map<String, Object>) attributes.get(ViewScope.VIEW_SCOPE_KEY);
-					return viewScope.remove(name);
+				HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+				HttpSession session = request.getSession();
+				String viewId = viewRoot.getViewId();
+				PageView pageView = (PageView) session.getAttribute(PageViewScope.PAGE_VIEW_SCOPE_KEY);
+				if (pageView == null) {
+					pageView = new PageView(viewId);
+					session.removeAttribute(name);
 				}
 			}
 		}
