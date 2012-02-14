@@ -55,13 +55,13 @@ import br.net.woodstock.rockframework.util.DateBuilder;
 
 public class BouncyCastleCertificateBuilder implements CertificateBuilder {
 
-	private static final String	DEFAULT_ISSUER	= "";
+	private static final String	DEFAULT_ISSUER	= "Woodstock Tecnologia";
 
 	private String				subject;
 
 	private KeyPair				keyPair;
 
-	private SignatureType			signType;
+	private SignatureType		signType;
 
 	private String				issuer;
 
