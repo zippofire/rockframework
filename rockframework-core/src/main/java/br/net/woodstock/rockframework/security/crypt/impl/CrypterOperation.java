@@ -28,7 +28,7 @@ import javax.crypto.NoSuchPaddingException;
 
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-class CrypterOperation {
+public class CrypterOperation {
 
 	private Key		key;
 
@@ -62,7 +62,7 @@ class CrypterOperation {
 		return result;
 	}
 
-	enum Mode {
+	public static enum Mode {
 		ENCRYPT(Cipher.ENCRYPT_MODE), DECRYPT(Cipher.DECRYPT_MODE);
 
 		private int	mode;
