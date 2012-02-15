@@ -84,30 +84,36 @@ public abstract class ResponseUtils {
 			return;
 		}
 
-		response.setContentType(ResponseUtils.DOWNLOAD_CONTENT_TYPE);
-		response.setContentLength(FileUtils.getSize(file));
+		InputStream inputStream = new FileInputStream(file);
+		byte[] bytes = IOUtils.toByteArray(inputStream);
+		String fileName = FileUtils.getName(file);
 
-		response.setHeader(ResponseUtils.CONTENT_DISPOSITION_HEADER, ResponseUtils.getAttachmentContentDisposition(FileUtils.getName(file)));
-
-		InputStream input = new FileInputStream(file);
-		OutputStream output = response.getOutputStream();
-
-		IOUtils.copy(input, output);
+		ResponseUtils.downloadFile(response, bytes, fileName);
 	}
 
 	public static void downloadFile(final HttpServletResponse response, final URL url) throws IOException {
 		Assert.notNull(response, "response");
 		Assert.notNull(url, "url");
 
+		InputStream inputStream = url.openStream();
+		byte[] bytes = IOUtils.toByteArray(inputStream);
+		String fileName = FileUtils.getName(url);
+
+		ResponseUtils.downloadFile(response, bytes, fileName);
+	}
+
+	public static void downloadFile(final HttpServletResponse response, final byte[] bytes, final String fileName) throws IOException {
+		Assert.notNull(response, "response");
+		Assert.notNull(bytes, "bytes");
+		Assert.notEmpty(fileName, "fileName");
+
 		response.setContentType(ResponseUtils.DOWNLOAD_CONTENT_TYPE);
-		response.setContentLength(FileUtils.getSize(url));
+		response.setContentLength(bytes.length);
 
-		response.setHeader(ResponseUtils.CONTENT_DISPOSITION_HEADER, ResponseUtils.getAttachmentContentDisposition(FileUtils.getName(url)));
+		response.setHeader(ResponseUtils.CONTENT_DISPOSITION_HEADER, ResponseUtils.getAttachmentContentDisposition(fileName));
 
-		InputStream input = url.openStream();
 		OutputStream output = response.getOutputStream();
-
-		IOUtils.copy(input, output);
+		output.write(bytes);
 	}
 
 	public static String getAttachmentContentDisposition(final String fileName) {

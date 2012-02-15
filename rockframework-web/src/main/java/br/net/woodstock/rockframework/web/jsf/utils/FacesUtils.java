@@ -16,6 +16,7 @@
  */
 package br.net.woodstock.rockframework.web.jsf.utils;
 
+import java.io.IOException;
 import java.util.ResourceBundle;
 
 import javax.el.ELContext;
@@ -28,6 +29,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import br.net.woodstock.rockframework.web.utils.ResponseUtils;
 
 public abstract class FacesUtils {
 
@@ -87,6 +90,14 @@ public abstract class FacesUtils {
 	public static ServletContext getServletContext() {
 		FacesContext fc = FacesUtils.getFacesContext();
 		return (ServletContext) fc.getExternalContext().getContext();
+	}
+
+	// Utils
+	public static void download(final byte[] bytes, final String fileName) throws IOException {
+		FacesContext fc = FacesUtils.getFacesContext();
+		HttpServletResponse response = FacesUtils.getResponse();
+		ResponseUtils.downloadFile(response, bytes, fileName);
+		fc.responseComplete();
 	}
 
 }
