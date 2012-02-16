@@ -16,16 +16,13 @@
  */
 package br.net.woodstock.rockframework.security.crypt.impl;
 
-import java.security.InvalidKeyException;
+import java.security.GeneralSecurityException;
 import java.security.Key;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 
+import br.net.woodstock.rockframework.security.crypt.CrypterException;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
 public class CrypterOperation {
@@ -50,16 +47,20 @@ public class CrypterOperation {
 		this.seed = seed;
 	}
 
-	public byte[] execute() throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-		Cipher cipher = Cipher.getInstance(this.key.getAlgorithm());
-		if (ConditionUtils.isNotEmpty(this.seed)) {
-			SecureRandom random = new SecureRandom(this.seed.getBytes());
-			cipher.init(this.mode.getMode(), this.key, random);
-		} else {
-			cipher.init(this.mode.getMode(), this.key);
+	public byte[] execute() {
+		try {
+			Cipher cipher = Cipher.getInstance(this.key.getAlgorithm());
+			if (ConditionUtils.isNotEmpty(this.seed)) {
+				SecureRandom random = new SecureRandom(this.seed.getBytes());
+				cipher.init(this.mode.getMode(), this.key, random);
+			} else {
+				cipher.init(this.mode.getMode(), this.key);
+			}
+			byte[] result = cipher.doFinal(this.data);
+			return result;
+		} catch (GeneralSecurityException e) {
+			throw new CrypterException(e);
 		}
-		byte[] result = cipher.doFinal(this.data);
-		return result;
 	}
 
 	public static enum Mode {

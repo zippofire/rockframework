@@ -265,13 +265,6 @@
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
-				<groupId>com.sun</groupId>
-				<artifactId>rt</artifactId>
-				<version>${java.version}</version>
-				<scope>system</scope>
-				<systemPath>${java.home}/lib/rt.jar</systemPath>
-			</dependency>
-			<dependency>
 				<groupId>com.sun.media</groupId>
 				<artifactId>jai_imageio</artifactId>
 				<version>${jai.imageio.version}</version>
