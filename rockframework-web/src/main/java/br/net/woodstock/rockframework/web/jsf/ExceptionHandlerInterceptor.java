@@ -14,29 +14,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.web.jsf.security;
+package br.net.woodstock.rockframework.web.jsf;
 
-import javax.inject.Inject;
+import java.io.Serializable;
+
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 
+import br.net.woodstock.rockframework.web.jsf.utils.FacesUtils;
+
 @Interceptor
-@Logon
-public class LogonInterceptor implements SecurityInterceptor {
+@ExceptionHandler
+public class ExceptionHandlerInterceptor implements Serializable {
 
-	private static final long	serialVersionUID	= 3471332654974977295L;
+	private static final long	serialVersionUID	= -2287074502520388653L;
 
-	@Inject
-	private LogonValidator		validator;
+	public static final String	ERROR_PAGE			= "/error.xhtml";
 
-	@Override
 	@AroundInvoke
 	public Object intercept(final InvocationContext context) throws Exception {
-		if (this.validator.isValid(context)) {
-			return context.proceed();
+		try {
+			Object obj = context.proceed();
+			return obj;
+		} catch (Exception e) {
+			FacesUtils.addError(e);
+			return ExceptionHandlerInterceptor.ERROR_PAGE;
 		}
-		return this.validator.onInvalid(context);
 	}
-
 }

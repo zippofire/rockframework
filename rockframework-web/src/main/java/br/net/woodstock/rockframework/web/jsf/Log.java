@@ -14,29 +14,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.web.jsf.security;
+package br.net.woodstock.rockframework.web.jsf;
 
-import javax.inject.Inject;
-import javax.interceptor.AroundInvoke;
-import javax.interceptor.Interceptor;
-import javax.interceptor.InvocationContext;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@Interceptor
-@Logon
-public class LogonInterceptor implements SecurityInterceptor {
+import javax.interceptor.InterceptorBinding;
 
-	private static final long	serialVersionUID	= 3471332654974977295L;
-
-	@Inject
-	private LogonValidator		validator;
-
-	@Override
-	@AroundInvoke
-	public Object intercept(final InvocationContext context) throws Exception {
-		if (this.validator.isValid(context)) {
-			return context.proceed();
-		}
-		return this.validator.onInvalid(context);
-	}
-
+@InterceptorBinding
+@Target(value = { ElementType.METHOD, ElementType.PACKAGE, ElementType.TYPE })
+@Retention(value = RetentionPolicy.RUNTIME)
+public @interface Log {
+	//
 }

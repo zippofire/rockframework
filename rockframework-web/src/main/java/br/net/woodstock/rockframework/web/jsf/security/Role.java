@@ -22,6 +22,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import javax.enterprise.util.Nonbinding;
 import javax.interceptor.InterceptorBinding;
 
 @InterceptorBinding
@@ -30,6 +31,7 @@ import javax.interceptor.InterceptorBinding;
 @Documented
 public @interface Role {
 
+	@Nonbinding
 	String[] value() default { };
 
 }

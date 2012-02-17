@@ -22,7 +22,7 @@ import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 
 @Interceptor
-@Log
+@Role
 public class RoleInterceptor implements SecurityInterceptor {
 
 	private static final long	serialVersionUID	= -982725715956751626L;

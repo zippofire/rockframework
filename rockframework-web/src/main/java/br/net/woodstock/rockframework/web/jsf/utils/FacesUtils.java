@@ -71,6 +71,15 @@ public abstract class FacesUtils {
 		return value;
 	}
 
+	public static String getMessage(final String key) {
+		FacesContext context = FacesContext.getCurrentInstance();
+		Application application = context.getApplication();
+		String name = application.getMessageBundle();
+		ResourceBundle bundle = application.getResourceBundle(context, name);
+		String message = bundle.getString(key);
+		return message;
+	}
+
 	// Http
 	public static HttpServletRequest getRequest() {
 		FacesContext fc = FacesUtils.getFacesContext();
