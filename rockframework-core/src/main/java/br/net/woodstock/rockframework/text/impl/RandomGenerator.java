@@ -50,7 +50,14 @@ public class RandomGenerator implements Generator {
 	}
 
 	public static enum RandomPattern {
-		DIGITS("0123456789"), LETTER_UPERCASE("ABCDEFGHIJKLMNOPQRSTUVWXYZ"), LETTER_LOWERCASE("abcdefghijklmnopkrstuvwxyz"), LETTER(LETTER_UPERCASE.pattern + LETTER_LOWERCASE.pattern), LETTER_OR_DIGIT(LETTER.pattern + DIGITS.pattern), LETTER_OR_DIGIT_LOWERCASE(LETTER_LOWERCASE.pattern + DIGITS.pattern), LETTER_OR_DIGIT_UPERCASE(LETTER_UPERCASE.pattern + DIGITS.pattern);
+		DIGITS("0123456789"),
+		HEX("0123456789abcdef"),
+		LETTER_UPERCASE("ABCDEFGHIJKLMNOPQRSTUVWXYZ"),
+		LETTER_LOWERCASE("abcdefghijklmnopkrstuvwxyz"),
+		LETTER(LETTER_UPERCASE.pattern + LETTER_LOWERCASE.pattern),
+		LETTER_OR_DIGIT(LETTER.pattern + DIGITS.pattern),
+		LETTER_OR_DIGIT_LOWERCASE(LETTER_LOWERCASE.pattern + DIGITS.pattern),
+		LETTER_OR_DIGIT_UPERCASE(LETTER_UPERCASE.pattern + DIGITS.pattern);
 
 		private String	pattern;
 

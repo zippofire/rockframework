@@ -22,6 +22,7 @@ import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 
+import br.net.woodstock.rockframework.web.config.WebLog;
 import br.net.woodstock.rockframework.web.jsf.utils.FacesUtils;
 
 @Interceptor
@@ -38,6 +39,7 @@ public class ExceptionHandlerInterceptor implements Serializable {
 			Object obj = context.proceed();
 			return obj;
 		} catch (Exception e) {
+			WebLog.getInstance().getLog().error(e.getMessage(), e);
 			FacesUtils.addError(e);
 			return ExceptionHandlerInterceptor.ERROR_PAGE;
 		}

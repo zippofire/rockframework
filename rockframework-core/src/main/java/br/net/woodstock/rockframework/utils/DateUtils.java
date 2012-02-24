@@ -21,6 +21,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import br.net.woodstock.rockframework.config.CoreConfig;
 import br.net.woodstock.rockframework.util.Assert;
@@ -51,6 +52,22 @@ public abstract class DateUtils {
 		return df.format(date);
 	}
 
+	public static String format(final Date date, final String format, final Locale locale) {
+		if (date == null) {
+			return null;
+		}
+		DateFormat df = new SimpleDateFormat(format, locale);
+		return df.format(date);
+	}
+
+	public static String formatRFC2822(final Date date) {
+		if (date == null) {
+			return null;
+		}
+		DateFormat df = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.US);
+		return df.format(date);
+	}
+
 	public static Date parse(final String date) throws ParseException {
 		if (ConditionUtils.isEmpty(date)) {
 			return null;
@@ -64,6 +81,22 @@ public abstract class DateUtils {
 			return null;
 		}
 		DateFormat df = new SimpleDateFormat(format);
+		return df.parse(date);
+	}
+
+	public static Date parse(final String date, final String format, final Locale locale) throws ParseException {
+		if (ConditionUtils.isEmpty(date)) {
+			return null;
+		}
+		DateFormat df = new SimpleDateFormat(format, locale);
+		return df.parse(date);
+	}
+
+	public static Date parseRFC2822(final String date) throws ParseException {
+		if (ConditionUtils.isEmpty(date)) {
+			return null;
+		}
+		DateFormat df = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.US);
 		return df.parse(date);
 	}
 
