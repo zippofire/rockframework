@@ -71,10 +71,9 @@ public abstract class FacesUtils {
 		return value;
 	}
 
-	public static String getMessage(final String key) {
+	public static String getMessage(final String name, final String key) {
 		FacesContext context = FacesContext.getCurrentInstance();
 		Application application = context.getApplication();
-		String name = application.getMessageBundle();
 		ResourceBundle bundle = application.getResourceBundle(context, name);
 		String message = bundle.getString(key);
 		return message;

@@ -38,7 +38,7 @@ public class RoleInterceptor implements SecurityInterceptor {
 	@Override
 	@AroundInvoke
 	public Object intercept(final InvocationContext context) throws Exception {
-		WebLog.getInstance().getLog().info("Checking is user is in role");
+		WebLog.getInstance().getLog().debug("Checking is user is in role");
 		Role annotation = null;
 		Method method = context.getMethod();
 		if (method.isAnnotationPresent(Role.class)) {

@@ -22,6 +22,7 @@ import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 
+import br.net.woodstock.rockframework.domain.DomainException;
 import br.net.woodstock.rockframework.web.config.WebLog;
 import br.net.woodstock.rockframework.web.jsf.utils.FacesUtils;
 
@@ -39,6 +40,11 @@ public class ExceptionHandlerInterceptor implements Serializable {
 			Object obj = context.proceed();
 			return obj;
 		} catch (Exception e) {
+			if ((e instanceof DomainException) || (e.getCause() instanceof DomainException)) {
+				WebLog.getInstance().getLog().error(e.getMessage(), e);
+				FacesUtils.addError(e);
+				return null;
+			}
 			WebLog.getInstance().getLog().error(e.getMessage(), e);
 			FacesUtils.addError(e);
 			return ExceptionHandlerInterceptor.ERROR_PAGE;
