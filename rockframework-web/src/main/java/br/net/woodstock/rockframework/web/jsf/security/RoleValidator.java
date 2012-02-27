@@ -16,6 +16,10 @@
  */
 package br.net.woodstock.rockframework.web.jsf.security;
 
+import javax.interceptor.InvocationContext;
+
 public interface RoleValidator extends SecurityValidator {
-	//
+
+	boolean isValid(InvocationContext context, String[] roles);
+
 }

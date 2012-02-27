@@ -21,6 +21,8 @@ import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 
+import br.net.woodstock.rockframework.web.config.WebLog;
+
 @Interceptor
 @Logon
 public class LogonInterceptor implements SecurityInterceptor {
@@ -33,6 +35,7 @@ public class LogonInterceptor implements SecurityInterceptor {
 	@Override
 	@AroundInvoke
 	public Object intercept(final InvocationContext context) throws Exception {
+		WebLog.getInstance().getLog().info("Checking is user is logged");
 		if (this.validator.isValid(context)) {
 			return context.proceed();
 		}

@@ -22,8 +22,6 @@ import javax.interceptor.InvocationContext;
 
 public interface SecurityValidator extends Serializable {
 
-	boolean isValid(InvocationContext context);
-
 	Object onInvalid(InvocationContext context);
 
 }

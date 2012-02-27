@@ -26,7 +26,7 @@ import javax.enterprise.util.Nonbinding;
 import javax.interceptor.InterceptorBinding;
 
 @InterceptorBinding
-@Target({ ElementType.TYPE, ElementType.METHOD })
+@Target({ ElementType.PACKAGE, ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Role {
