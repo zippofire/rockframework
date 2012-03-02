@@ -19,13 +19,13 @@ public class TimeStampTest extends TestCase {
 		System.setProperty("sun.net.client.defaultReadTimeout", "5000");
 	}
 
-	public void xtest1() throws Exception {
+	public void test1() throws Exception {
 		TimeStampClient client = new STFTimeStampClient("201.49.148.134", 318);
 		FileInputStream inputStream = new FileInputStream("/home/lourival/Documentos/curriculum.pdf");
 		byte[] input = IOUtils.toByteArray(inputStream);
 		TimeStamp timeStamp = client.getTimeStamp(input);
-		byte[] bytes = timeStamp.getContent();
-		FileOutputStream outputStream = new FileOutputStream("/tmp/test4.tsr");
+		byte[] bytes = timeStamp.getEncoded();
+		FileOutputStream outputStream = new FileOutputStream("/tmp/curriculum2.pdf.p7s");
 		outputStream.write(bytes);
 		outputStream.close();
 	}

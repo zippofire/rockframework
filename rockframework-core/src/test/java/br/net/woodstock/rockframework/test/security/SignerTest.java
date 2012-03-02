@@ -40,10 +40,10 @@ public class SignerTest extends TestCase {
 	// public static final TimeStampClient TSA_CLIENT_STF = new STFTimeStampClient("200.143.0.158", 318);
 
 	static {
-		System.setProperty("http.proxyHost", "10.28.1.12");
-		System.setProperty("http.proxyPort", "8080");
-		System.setProperty("sun.net.client.defaultConnectTimeout", "5000");
-		System.setProperty("sun.net.client.defaultReadTimeout", "5000");
+		//System.setProperty("http.proxyHost", "10.28.1.12");
+		//System.setProperty("http.proxyPort", "8080");
+		//System.setProperty("sun.net.client.defaultConnectTimeout", "5000");
+		//System.setProperty("sun.net.client.defaultReadTimeout", "5000");
 	}
 
 	public void xtest1() throws Exception {
@@ -241,7 +241,7 @@ public class SignerTest extends TestCase {
 		fileOutputStream.close();
 	}
 
-	public void test7() throws Exception {
+	public void xtest7() throws Exception {
 		JCAStore store = new JCAStore(KeyStoreType.JKS);
 		store.read(new FileInputStream("/home/lourival/Downloads/LOURIVALSABINO.jks"), "storepasswd");
 
@@ -289,6 +289,31 @@ public class SignerTest extends TestCase {
 			outputStream.close();
 		}
 		inputStream.close();
+	}
+	
+	public void test9() throws Exception {
+		JCAStore store = new JCAStore(KeyStoreType.JKS);
+		store.read(new FileInputStream("/home/lourival/Downloads/LOURIVALSABINO.jks"), "storepasswd");
+
+		FileInputStream fileInputStream = new FileInputStream("/home/lourival/Documentos/teste.pdf");
+
+		// TimeStampClient timeStampClient = TSA_CLIENT_STF;
+		TimeStampClient timeStampClient = new URLTimeStampClient("http://localhost:18080/carimbador-web/carimbador");
+		PKCS7SignatureRequest signerInfo = new PKCS7SignatureRequest(new Alias[] { new PasswordAlias("lourival sabino", "lourival") }, store);
+		signerInfo.setContactInfo("ConcactInfo");
+		signerInfo.setLocation("Location");
+		signerInfo.setName("Lourival Sabino");
+		signerInfo.setReason("Reason");
+		signerInfo.setTimeStampClient(timeStampClient);
+
+		PDFSigner signer = new PDFSigner(signerInfo);
+
+		byte[] signed = signer.sign(IOUtils.toByteArray(fileInputStream));
+		FileOutputStream fileOutputStream = new FileOutputStream("/tmp/teste-demo-local.pdf");
+		fileOutputStream.write(signed);
+
+		fileInputStream.close();
+		fileOutputStream.close();
 	}
 
 }

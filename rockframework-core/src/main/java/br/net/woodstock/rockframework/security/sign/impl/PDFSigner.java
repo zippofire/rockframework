@@ -83,7 +83,7 @@ public class PDFSigner implements DocumentSigner {
 
 	public PDFSigner(final PKCS7SignatureRequest request) {
 		super();
-		Assert.notNull(this.request, "request");
+		Assert.notNull(request, "request");
 		this.request = request;
 	}
 
