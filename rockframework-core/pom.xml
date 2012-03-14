@@ -43,8 +43,8 @@
 			<artifactId>commons-net</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-api</artifactId>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
