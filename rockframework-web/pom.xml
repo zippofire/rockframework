@@ -3,6 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>rockframework-web</artifactId>
 	<name>Rock Framework - Web</name>
+	<description>Rock Framework - Web</description>
 	<parent>
 		<groupId>br.net.woodstock.rockframework</groupId>
 		<artifactId>rockframework-parent</artifactId>

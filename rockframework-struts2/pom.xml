@@ -3,6 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>rockframework-struts2</artifactId>
 	<name>Rock Framework - Struts2</name>
+	<description>Rock Framework - Struts2</description>
 	<parent>
 		<groupId>br.net.woodstock.rockframework</groupId>
 		<artifactId>rockframework-parent</artifactId>

@@ -3,6 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>rockframework-security</artifactId>
 	<name>Rock Framework - Security</name>
+	<description>Rock Framework - Security</description>
 	<parent>
 		<groupId>br.net.woodstock.rockframework</groupId>
 		<artifactId>rockframework-parent</artifactId>

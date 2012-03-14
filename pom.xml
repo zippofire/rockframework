@@ -4,7 +4,8 @@
 	<groupId>br.net.woodstock.rockframework</groupId>
 	<artifactId>rockframework-parent</artifactId>
 	<packaging>pom</packaging>
-	<name>Rock Framework</name>
+	<name>Rock Framework  - Parent</name>
+	<description>Rock Framework - Parent</description>
 	<version>2.0.0-SNAPSHOT</version>
 	<url>http://code.google.com/p/rockframework/</url>
 

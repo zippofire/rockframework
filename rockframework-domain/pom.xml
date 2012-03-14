@@ -3,6 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>rockframework-domain</artifactId>
 	<name>Rock Framework - Domain</name>
+	<description>Rock Framework - Domain</description>
 	<parent>
 		<groupId>br.net.woodstock.rockframework</groupId>
 		<artifactId>rockframework-parent</artifactId>
