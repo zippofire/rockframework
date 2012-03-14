@@ -23,6 +23,7 @@ import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 
+import br.net.woodstock.rockframework.utils.ArrayUtils;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 import br.net.woodstock.rockframework.web.config.WebLog;
 
@@ -38,23 +39,32 @@ public class RoleInterceptor implements SecurityInterceptor {
 	@Override
 	@AroundInvoke
 	public Object intercept(final InvocationContext context) throws Exception {
-		WebLog.getInstance().getLog().info("Checking is user is in role");
+		WebLog.getInstance().getLog().fine("Checking is user is in role");
 		Role annotation = null;
 		Method method = context.getMethod();
+		Class<?> methodClass = method.getDeclaringClass();
+
 		if (method.isAnnotationPresent(Role.class)) {
 			annotation = method.getAnnotation(Role.class);
-		} else if (method.getDeclaringClass().isAnnotationPresent(Role.class)) {
-			annotation = method.getDeclaringClass().getAnnotation(Role.class);
-		} else if (method.getDeclaringClass().getPackage().isAnnotationPresent(Role.class)) {
-			annotation = method.getDeclaringClass().getPackage().getAnnotation(Role.class);
+		} else {
+			annotation = this.getAnnotation(methodClass, methodClass);
+		}
+
+		if (annotation == null) {
+			Class<?> targetClass = context.getTarget().getClass();
+			if (methodClass.isAssignableFrom(targetClass)) {
+				annotation = this.getAnnotation(targetClass, methodClass);
+			}
 		}
 
 		if (annotation != null) {
 			String[] roles = annotation.value();
+			WebLog.getInstance().getLog().fine("Checking is user is in roles " + ArrayUtils.toString(roles));
 			if (ConditionUtils.isNotEmpty(roles)) {
 				if (this.validator.isValid(context, roles)) {
 					return context.proceed();
 				}
+				WebLog.getInstance().getLog().fine("User inst in roles " + ArrayUtils.toString(roles));
 				return this.validator.onInvalid(context);
 			}
 		}
@@ -62,4 +72,17 @@ public class RoleInterceptor implements SecurityInterceptor {
 		return context.proceed();
 	}
 
+	private Role getAnnotation(final Class<?> clazz, final Class<?> topClazz) {
+		WebLog.getInstance().getLog().fine("Searching for @Role in class " + clazz.getCanonicalName());
+		if (clazz.isAnnotationPresent(Role.class)) {
+			return clazz.getAnnotation(Role.class);
+		} else if (clazz.getPackage().isAnnotationPresent(Role.class)) {
+			return clazz.getPackage().getAnnotation(Role.class);
+		}
+		Class<?> parent = clazz.getSuperclass();
+		if ((parent != null) && (topClazz.isAssignableFrom(parent))) {
+			return this.getAnnotation(parent, topClazz);
+		}
+		return null;
+	}
 }

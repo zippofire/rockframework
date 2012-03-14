@@ -35,7 +35,7 @@ public class LogonInterceptor implements SecurityInterceptor {
 	@Override
 	@AroundInvoke
 	public Object intercept(final InvocationContext context) throws Exception {
-		WebLog.getInstance().getLog().info("Checking is user is logged");
+		WebLog.getInstance().getLog().fine("Checking is user is logged");
 		if (this.validator.isValid(context)) {
 			return context.proceed();
 		}
