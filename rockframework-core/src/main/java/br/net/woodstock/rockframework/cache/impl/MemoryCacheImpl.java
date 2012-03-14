@@ -59,7 +59,7 @@ class MemoryCacheImpl implements Cache {
 	public synchronized boolean add(final String name, final Object object) {
 		Assert.notEmpty(name, "name");
 		if (object == null) {
-			CoreLog.getInstance().getLog().warn("Cache not supports null objects");
+			CoreLog.getInstance().getLog().warning("Cache not supports null objects");
 			return false;
 		}
 		if (this.map.size() > MemoryCacheImpl.MAX_CACHE_SIZE) {

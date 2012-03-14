@@ -16,7 +16,7 @@
  */
 package br.net.woodstock.rockframework.config;
 
-import org.slf4j.Logger;
+import java.util.logging.Logger;
 
 import br.net.woodstock.rockframework.utils.LogUtils;
 

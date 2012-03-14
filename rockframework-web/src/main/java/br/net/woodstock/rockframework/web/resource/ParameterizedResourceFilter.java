@@ -16,7 +16,7 @@
  */
 package br.net.woodstock.rockframework.web.resource;
 
-import br.net.woodstock.rockframework.web.struts2.Struts2Exception;
+import br.net.woodstock.rockframework.web.JSPException;
 
 public class ParameterizedResourceFilter extends AbstractResourceFilter {
 
@@ -37,7 +37,7 @@ public class ParameterizedResourceFilter extends AbstractResourceFilter {
 			ResourceManager resourceManager = (ResourceManager) clazz.newInstance();
 			this.setResourceManager(resourceManager);
 		} catch (Exception e) {
-			throw new Struts2Exception(e);
+			throw new JSPException(e);
 		}
 	}
 }

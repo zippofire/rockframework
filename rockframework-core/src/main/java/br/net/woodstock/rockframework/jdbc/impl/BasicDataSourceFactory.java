@@ -85,14 +85,14 @@ public class BasicDataSourceFactory implements DataSourceFactory {
 	@SuppressWarnings("rawtypes")
 	public Object getObjectInstance(final Object object, final Name name, final Context context, final Hashtable table) throws Exception {
 		if ((object == null) || !(object instanceof Reference)) {
-			CoreLog.getInstance().getLog().warn("Object is null or not is a Reference");
+			CoreLog.getInstance().getLog().warning("Object is null or not is a Reference");
 			return null;
 		}
 
 		Reference ref = (Reference) object;
 
 		if (!(ref.getClassName().equals(DataSource.class.getName()))) {
-			CoreLog.getInstance().getLog().warn("Object ins't a Data Source '" + ref.getClassName() + "'");
+			CoreLog.getInstance().getLog().warning("Object ins't a Data Source '" + ref.getClassName() + "'");
 			return null;
 		}
 

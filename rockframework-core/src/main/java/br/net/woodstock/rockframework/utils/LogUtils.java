@@ -16,8 +16,7 @@
  */
 package br.net.woodstock.rockframework.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Logger;
 
 import br.net.woodstock.rockframework.config.CoreConfig;
 
@@ -27,7 +26,7 @@ public abstract class LogUtils {
 
 	private static final String	LOG_NAME			= CoreConfig.getInstance().getValue(LogUtils.LOG_NAME_PROPERTY);
 
-	private static Logger		log					= LoggerFactory.getLogger(LogUtils.LOG_NAME);
+	private static Logger		log					= Logger.getLogger(LogUtils.LOG_NAME);
 
 	private LogUtils() {
 		super();
@@ -37,11 +36,7 @@ public abstract class LogUtils {
 		return LogUtils.log;
 	}
 
-	public static Logger getLog(final Class<?> clazz) {
-		return LoggerFactory.getLogger(clazz);
-	}
-
 	public static Logger getLog(final String name) {
-		return LoggerFactory.getLogger(name);
+		return Logger.getLogger(name);
 	}
 }

@@ -14,6 +14,10 @@
 			<artifactId>rockframework-core</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>br.net.woodstock.rockframework</groupId>
+			<artifactId>rockframework-security</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>commons-dbcp</groupId>
 			<artifactId>commons-dbcp</artifactId>
 		</dependency>

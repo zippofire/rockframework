@@ -19,6 +19,7 @@ package br.net.woodstock.rockframework.web.jsp.taglib.util;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.logging.Level;
 
 import javax.servlet.jsp.PageContext;
 
@@ -49,7 +50,7 @@ public class StackTraceTag extends AbstractTag {
 
 		String str = sw.getBuffer().toString();
 
-		WebLog.getInstance().getLog().info(exception.getMessage(), exception);
+		WebLog.getInstance().getLog().log(Level.INFO, exception.getMessage(), exception);
 		context.getOut().write(str);
 	}
 

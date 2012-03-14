@@ -16,6 +16,8 @@
  */
 package br.net.woodstock.rockframework;
 
+import java.util.logging.Level;
+
 import br.net.woodstock.rockframework.config.CoreLog;
 import br.net.woodstock.rockframework.util.Assert;
 
@@ -26,20 +28,20 @@ public class ImprobableException extends DelegateException {
 	public ImprobableException(final Throwable cause) {
 		super(cause);
 		Assert.notNull(cause, "cause");
-		CoreLog.getInstance().getLog().error(cause.getMessage(), cause);
+		CoreLog.getInstance().getLog().log(Level.SEVERE, cause.getMessage(), cause);
 	}
 
 	public ImprobableException(final String message) {
 		super(message);
 		Assert.notEmpty(message, "message");
-		CoreLog.getInstance().getLog().error(message);
+		CoreLog.getInstance().getLog().severe(message);
 	}
 
 	public ImprobableException(final String message, final Throwable cause) {
 		super(message, cause);
 		Assert.notEmpty(message, "message");
 		Assert.notNull(cause, "cause");
-		CoreLog.getInstance().getLog().error(message, cause);
+		CoreLog.getInstance().getLog().log(Level.SEVERE, message, cause);
 	}
 
 }

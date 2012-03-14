@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<!-- This file is part of rockapi. rockapi is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version. rockapi is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program. If not, see <http://www.gnu.org/licenses/>;. -->
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd">
+	<description>Rock Framework Tags</description>
+	<display-name>Rock FrameWork Tags</display-name>
+	<tlib-version>2.2</tlib-version>
+	<short-name>util</short-name>
+	<uri>http://rockframework.woodstock.net.br/tld/util</uri>
+
+	<tag>
+		<description>Decode a text</description>
+		<name>decode</name>
+		<tag-class>br.net.woodstock.rockframework.web.jsp.taglib.util.DecodeTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description>Encode Type(SYNC, ASYNC, MD5 or SHA1)</description>
+			<name>type</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Value to be encoded</description>
+			<name>value</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Variable to store encoded value</description>
+			<name>var</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+	</tag>
+
+	<tag>
+		<description>Encode a text</description>
+		<name>encode</name>
+		<tag-class>br.net.woodstock.rockframework.web.jsp.taglib.util.EncodeTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description>Encode Type(SYNC, ASYNC, MD5 or SHA1)</description>
+			<name>type</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Value to be encoded</description>
+			<name>value</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Variable to store encoded value</description>
+			<name>var</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+	</tag>
+
+	<tag>
+		<description>Format a text</description>
+		<name>format</name>
+		<tag-class>br.net.woodstock.rockframework.web.jsp.taglib.util.FormatTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description>Character used in the mask, default '#'</description>
+			<name>character</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Pattern to apply in the value</description>
+			<name>format</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Value to be formated</description>
+			<name>value</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Template used to format</description>
+			<name>template</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+
+	</tag>
+	<tag>
+		<description>Print StackTrace to System.out</description>
+		<name>stackTrace</name>
+		<tag-class>br.net.woodstock.rockframework.web.jsp.taglib.util.StackTraceTag</tag-class>
+		<body-content>empty</body-content>
+	</tag>
+</taglib>

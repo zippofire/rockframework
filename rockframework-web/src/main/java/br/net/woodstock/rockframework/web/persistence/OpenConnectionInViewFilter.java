@@ -16,7 +16,7 @@
  */
 package br.net.woodstock.rockframework.web.persistence;
 
-import br.net.woodstock.rockframework.domain.persistence.orm.util.JDBCPersistenceHelper;
+import br.net.woodstock.rockframework.persistence.orm.util.JDBCPersistenceHelper;
 
 public class OpenConnectionInViewFilter extends OpenManagerInViewFilter {
 

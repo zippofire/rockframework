@@ -74,7 +74,7 @@ public final class StringFormatTemplate {
 				StringFormat format = new StringFormat(pattern, character);
 				this.map.put(key, format);
 			} else {
-				CoreLog.getInstance().getLog().warn("Invalid template " + key + " = " + value);
+				CoreLog.getInstance().getLog().finest("Invalid template " + key + " = " + value);
 			}
 
 		}

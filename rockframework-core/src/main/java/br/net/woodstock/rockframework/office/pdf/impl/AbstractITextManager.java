@@ -18,29 +18,9 @@ package br.net.woodstock.rockframework.office.pdf.impl;
 
 import java.util.Vector;
 
-import br.net.woodstock.rockframework.security.digest.DigestType;
-import br.net.woodstock.rockframework.security.sign.SignatureType;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
 abstract class AbstractITextManager extends AbstractManager {
-
-	// private static final String CN_FIELD = "CN";
-
-	protected static final char	PDF_SIGNATURE_VERSION	= '\0';
-
-	protected SignatureType getSignatureType(final String signatureAlgorithm) {
-		SignatureType signType = SignatureType.getSignType(signatureAlgorithm);
-		if (signType == null) {
-			signType = SignatureType.SHA1_RSA;
-		}
-		return signType;
-	}
-
-	protected DigestType getDigestTypeFromSignature(final String signatureAlgorithm) {
-		SignatureType signType = this.getSignatureType(signatureAlgorithm);
-		DigestType digestType = signType.getDigestType();
-		return digestType;
-	}
 
 	@SuppressWarnings("rawtypes")
 	protected String toString(final Vector vector) {

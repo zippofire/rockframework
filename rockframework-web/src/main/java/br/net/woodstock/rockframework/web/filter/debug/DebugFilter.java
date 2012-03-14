@@ -36,7 +36,7 @@ public class DebugFilter extends AbstractHttpFilter {
 			chain.doFilter(request, debugResponse);
 			byte[] responseBytes = debugResponse.getBytes();
 			String responseText = this.getResponseText(responseBytes);
-			WebLog.getInstance().getLog().warn(responseText);
+			WebLog.getInstance().getLog().warning(responseText);
 			response.getOutputStream().write(responseBytes);
 		} else {
 			chain.doFilter(request, response);

@@ -243,7 +243,7 @@ public abstract class Assert {
 				throw new AssertionFailedException(CoreMessage.getInstance().getMessage(Assert.MESSAGE_NOT_EMPTY, name));
 			}
 		} else {
-			CoreLog.getInstance().getLog().warn("Object is not an array. Call notNull() instead " + name + " : " + array);
+			CoreLog.getInstance().getLog().warning("Object is not an array. Call notNull() instead " + name + " : " + array);
 		}
 	}
 

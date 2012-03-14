@@ -89,23 +89,13 @@
 	<modules>
 		<module>rockframework-core</module>
 		<module>rockframework-domain</module>
+		<module>rockframework-faces</module>
+		<module>rockframework-persistence</module>
+		<module>rockframework-security</module>
+		<module>rockframework-struts</module>
+		<module>rockframework-struts2</module>
 		<module>rockframework-web</module>
 	</modules>
-
-	<!--
-	<distributionManagement>
-		<repository>
-			<id>woodstock</id>
-			<name>Woodstock Releases</name>
-			<url>http://maven.woodstock.net.br/nexus/content/repositories/releases/</url>
-		</repository>
-		<snapshotRepository>
-			<id>woodstock</id>
-			<name>Woodstock Snatpshots</name>
-			<url>http://maven.woodstock.net.br/nexus/content/repositories/snapshots/</url>
-		</snapshotRepository>
-	</distributionManagement>
-	-->
 
 	<build>
 		<defaultGoal>package</defaultGoal>
@@ -249,6 +239,36 @@
 			<dependency>
 				<groupId>br.net.woodstock.rockframework</groupId>
 				<artifactId>rockframework-domain</artifactId>
+				<version>${project.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>br.net.woodstock.rockframework</groupId>
+				<artifactId>rockframework-faces</artifactId>
+				<version>${project.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>br.net.woodstock.rockframework</groupId>
+				<artifactId>rockframework-persistence</artifactId>
+				<version>${project.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>br.net.woodstock.rockframework</groupId>
+				<artifactId>rockframework-security</artifactId>
+				<version>${project.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>br.net.woodstock.rockframework</groupId>
+				<artifactId>rockframework-struts</artifactId>
+				<version>${project.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>br.net.woodstock.rockframework</groupId>
+				<artifactId>rockframework-struts2</artifactId>
 				<version>${project.version}</version>
 				<scope>compile</scope>
 			</dependency>

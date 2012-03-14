@@ -23,7 +23,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import br.net.woodstock.rockframework.domain.persistence.orm.util.PersistenceHelper;
+import br.net.woodstock.rockframework.persistence.orm.util.PersistenceHelper;
 import br.net.woodstock.rockframework.web.filter.AbstractHttpFilter;
 
 @SuppressWarnings("rawtypes")

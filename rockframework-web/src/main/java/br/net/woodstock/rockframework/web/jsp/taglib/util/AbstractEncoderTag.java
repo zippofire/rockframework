@@ -60,7 +60,7 @@ public abstract class AbstractEncoderTag extends AbstractTag {
 		try {
 			encoded = this.encode(encoder, value);
 		} catch (SecurityException e) {
-			WebLog.getInstance().getLog().warn("Error encoding '" + value + "'  with type '" + this.type + "'");
+			WebLog.getInstance().getLog().warning("Error encoding '" + value + "'  with type '" + this.type + "'");
 			encoded = AbstractEncoderTag.ERROR_VALUE;
 		}
 
