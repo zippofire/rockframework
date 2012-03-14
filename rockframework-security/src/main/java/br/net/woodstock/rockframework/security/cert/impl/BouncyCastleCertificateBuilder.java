@@ -16,6 +16,7 @@
  */
 package br.net.woodstock.rockframework.security.cert.impl;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -26,6 +27,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;
+
+import javax.security.auth.x500.X500Principal;
 
 import org.bouncycastle.asn1.DERObject;
 import org.bouncycastle.asn1.x500.X500Name;
@@ -65,7 +68,9 @@ public class BouncyCastleCertificateBuilder implements CertificateBuilder {
 
 	private SignatureType				signType;
 
-	private String						issuer;
+	private String						issuerName;
+
+	private Certificate					issuerCertificate;
 
 	private BigInteger					serialNumber;
 
@@ -87,7 +92,7 @@ public class BouncyCastleCertificateBuilder implements CertificateBuilder {
 	public BouncyCastleCertificateBuilder(final String subject, final String issuer) {
 		super();
 		this.subject = subject;
-		this.issuer = issuer;
+		this.issuerName = issuer;
 		this.keyUsage = new HashSet<KeyUsageType>();
 		this.extendedKeyUsage = new HashSet<ExtendedKeyUsageType>();
 	}
@@ -103,7 +108,12 @@ public class BouncyCastleCertificateBuilder implements CertificateBuilder {
 	}
 
 	public BouncyCastleCertificateBuilder withIssuer(final String issuer) {
-		this.issuer = issuer;
+		this.issuerName = issuer;
+		return this;
+	}
+
+	public BouncyCastleCertificateBuilder withIssuer(final Certificate issuer) {
+		this.issuerCertificate = issuer;
 		return this;
 	}
 
@@ -148,7 +158,7 @@ public class BouncyCastleCertificateBuilder implements CertificateBuilder {
 			String subject = this.subject;
 			KeyPair keyPair = this.keyPair;
 			SignatureType signType = this.signType;
-			String issuer = this.issuer;
+			String issuer = this.issuerName;
 			BigInteger serialNumber = this.serialNumber;
 			Date notBefore = this.notBefore;
 			Date notAfter = this.notAfter;
@@ -165,7 +175,7 @@ public class BouncyCastleCertificateBuilder implements CertificateBuilder {
 			}
 
 			if (issuer == null) {
-				issuer = subject;
+				issuer = BouncyCastleCertificateBuilder.DEFAULT_ISSUER;
 			}
 
 			if (serialNumber == null) {
@@ -185,7 +195,12 @@ public class BouncyCastleCertificateBuilder implements CertificateBuilder {
 			}
 
 			if (this.v3) {
-				JcaX509v3CertificateBuilder builder = new JcaX509v3CertificateBuilder(this.toX500Name(issuer), serialNumber, notBefore, notAfter, this.toX500Name(subject), keyPair.getPublic());
+				JcaX509v3CertificateBuilder builder = null;
+				if (this.issuerCertificate != null) {
+					builder = new JcaX509v3CertificateBuilder((X509Certificate) this.issuerCertificate, serialNumber, notBefore, notAfter, this.toX500Principal(subject), keyPair.getPublic());
+				} else {
+					builder = new JcaX509v3CertificateBuilder(this.toX500Name(issuer), serialNumber, notBefore, notAfter, this.toX500Name(subject), keyPair.getPublic());
+				}
 
 				JcaContentSignerBuilder contentSignerBuilder = new JcaContentSignerBuilder(signType.getAlgorithm());
 				contentSignerBuilder.setProvider(BouncyCastleProviderHelper.PROVIDER_NAME);
@@ -329,6 +344,18 @@ public class BouncyCastleCertificateBuilder implements CertificateBuilder {
 		X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
 		builder.addRDN(BCStyle.CN, value);
 		return builder.build();
+	}
+
+	private X500Principal toX500Principal(final String value) throws IOException {
+		X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
+		builder.addRDN(BCStyle.CN, value);
+		X500Name name = builder.build();
+		return this.toX500Principal(name);
+	}
+
+	private X500Principal toX500Principal(final X500Name name) throws IOException {
+		X500Principal principal = new X500Principal(name.getEncoded());
+		return principal;
 	}
 
 }
