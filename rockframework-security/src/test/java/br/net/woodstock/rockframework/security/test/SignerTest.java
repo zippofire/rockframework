@@ -12,11 +12,11 @@ import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.DERObject;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.cms.Attribute;
-import org.bouncycastle.asn1.cms.ContentInfo;
 import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
 import org.bouncycastle.cms.CMSSignedData;
 import org.bouncycastle.cms.SignerInformation;
 import org.bouncycastle.cms.SignerInformationStore;
+import org.bouncycastle.tsp.TimeStampResponse;
 import org.bouncycastle.tsp.TimeStampToken;
 
 import br.net.woodstock.rockframework.security.Alias;
@@ -42,6 +42,7 @@ import br.net.woodstock.rockframework.security.timestamp.TimeStamp;
 import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
 import br.net.woodstock.rockframework.security.timestamp.impl.STFTimeStampClient;
 import br.net.woodstock.rockframework.security.timestamp.impl.URLTimeStampClient;
+import br.net.woodstock.rockframework.utils.Base64Utils;
 import br.net.woodstock.rockframework.utils.IOUtils;
 
 public class SignerTest extends TestCase {
@@ -53,10 +54,10 @@ public class SignerTest extends TestCase {
 	// public static final TimeStampClient TSA_CLIENT_STF = new STFTimeStampClient("200.143.0.158", 318);
 
 	static {
-		// System.setProperty("http.proxyHost", "10.28.1.12");
-		// System.setProperty("http.proxyPort", "8080");
-		// System.setProperty("sun.net.client.defaultConnectTimeout", "5000");
-		// System.setProperty("sun.net.client.defaultReadTimeout", "5000");
+		System.setProperty("http.proxyHost", "10.30.1.12");
+		System.setProperty("http.proxyPort", "8080");
+		System.setProperty("sun.net.client.defaultConnectTimeout", "5000");
+		System.setProperty("sun.net.client.defaultReadTimeout", "5000");
 	}
 
 	public void xtest1() throws Exception {
@@ -143,7 +144,8 @@ public class SignerTest extends TestCase {
 		builder1.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
 		PrivateKeyHolder holder1 = builder1.build();
 
-		TimeStampClient timeStampClient = new URLTimeStampClient("http://tsa.safelayer.com:8093");
+		URLTimeStampClient timeStampClient = new URLTimeStampClient("http://tsa.safelayer.com:8093");
+		timeStampClient.setDebug(true);
 		// TimeStampClient timeStampClient = new STFTimeStampClient("201.49.148.134", 318);
 		PKCS7SignatureRequest signerInfo = new PKCS7SignatureRequest(holder1);
 		signerInfo.setTimeStampClient(timeStampClient);
@@ -327,7 +329,7 @@ public class SignerTest extends TestCase {
 		fileOutputStream.close();
 	}
 
-	public void test10() throws Exception {
+	public void xtest10() throws Exception {
 		FileInputStream fileOutputStream = new FileInputStream("/tmp/sign.pdf.p7s");
 		byte[] data = IOUtils.toByteArray(fileOutputStream);
 		CMSSignedData signedData = new CMSSignedData(data);
@@ -359,22 +361,15 @@ public class SignerTest extends TestCase {
 			System.out.println("TOKEN: " + derSequence.getEncoded().length);
 			for (int i = 0; i < derSequence.size(); i++) {
 				DERObject derObject = (DERObject) derSequence.getObjectAt(i);
-				System.out.println("TOKEN: " + derObject.getEncoded().length);
-				try {
-					TimeStampToken token = new TimeStampToken(new ContentInfo();
-					System.out.println("Token: " + token);
-				} catch (Exception e) {
-					//
-				}
-				try {
-					TimeStampToken token = new TimeStampToken(new CMSSignedData(derObject.getEncoded()));
-					System.out.println("Token: " + token);
-				} catch (Exception e) {
-					//
-				}
+				System.out.println(new String(Base64Utils.toBase64(derObject.getEncoded())));
 			}
 
 		}
+
+		System.out.println("Token Original");
+		TimeStampResponse timeStampResponse = new TimeStampResponse(IOUtils.toByteArray(new FileInputStream("/tmp/tsa-client-1332419788210WnRO.tsr")));
+		TimeStampToken timeStampToken = timeStampResponse.getTimeStampToken();
+		System.out.println(new String(Base64Utils.toBase64(timeStampToken.getEncoded())));
 
 		// signedData.get
 	}

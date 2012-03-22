@@ -29,9 +29,13 @@ import java.util.Hashtable;
 import java.util.List;
 
 import org.bouncycastle.asn1.ASN1InputStream;
+import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.ASN1Sequence;
+import org.bouncycastle.asn1.ASN1UTCTime;
 import org.bouncycastle.asn1.BERConstructedOctetString;
+import org.bouncycastle.asn1.DEREncodable;
 import org.bouncycastle.asn1.DERObject;
+import org.bouncycastle.asn1.DERObjectIdentifier;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DERSet;
 import org.bouncycastle.asn1.cms.Attribute;
@@ -58,6 +62,7 @@ import org.bouncycastle.operator.DigestCalculatorProvider;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.bouncycastle.operator.jcajce.JcaContentVerifierProviderBuilder;
 import org.bouncycastle.operator.jcajce.JcaDigestCalculatorProviderBuilder;
+import org.bouncycastle.tsp.TimeStampToken;
 import org.bouncycastle.util.CollectionStore;
 import org.bouncycastle.util.Store;
 
@@ -71,8 +76,11 @@ import br.net.woodstock.rockframework.security.store.PrivateKeyEntry;
 import br.net.woodstock.rockframework.security.store.StoreEntryType;
 import br.net.woodstock.rockframework.security.timestamp.TimeStamp;
 import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
+import br.net.woodstock.rockframework.security.timestamp.impl.BouncyCastleTimeStampHelper;
 import br.net.woodstock.rockframework.security.util.BouncyCastleProviderHelper;
 import br.net.woodstock.rockframework.util.Assert;
+import br.net.woodstock.rockframework.utils.CollectionUtils;
+import br.net.woodstock.rockframework.utils.ConditionUtils;
 
 public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 
@@ -196,8 +204,70 @@ public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 	}
 
 	@Override
+	@SuppressWarnings({ "unchecked" })
 	public Signature[] getSignatures(final byte[] data) {
-		throw new UnsupportedOperationException();
+		try {
+			CMSSignedData signedData = new CMSSignedData(data);
+			SignerInformationStore signerInformationStore = signedData.getSignerInfos();
+			Collection<SignerInformation> informations = signerInformationStore.getSigners();
+			Collection<Signature> signatures = new ArrayList<Signature>();
+
+			// 1.2.840.113549.1.9.3 -- content type
+			// 1.2.840.113549.1.9.4 -- messagedigest
+			// 1.2.840.113549.1.9.5 -- sign time
+			// 1.2.840.113549.1.9.16.2.12 -- signcertificate
+
+			if (ConditionUtils.isNotEmpty(informations)) {
+				for (SignerInformation information : informations) {
+					Signature signature = new Signature();
+					signature.setEncoded(null); // FIXME
+					signature.setLocation(null); // FIXME
+					signature.setReason(null); // FIXME
+					signature.setSignatories(null); // FIXME
+					signature.setValid(Boolean.TRUE);
+
+					// TimeStamp
+					AttributeTable signedAttributeTable = information.getSignedAttributes();
+					AttributeTable unsignedAttributeTable = information.getUnsignedAttributes();
+
+					DERSequence timeStampDerSequence = this.getAttribute(signedAttributeTable, unsignedAttributeTable, PKCSObjectIdentifiers.id_aa_signatureTimeStampToken);
+					// DERSequence contentTypeDerSequence = this.getAttribute(signedAttributeTable, unsignedAttributeTable, PKCSObjectIdentifiers.pkcs_9_at_contentType);
+					// DERSequence messageDigestDerSequence = this.getAttribute(signedAttributeTable, unsignedAttributeTable, PKCSObjectIdentifiers.pkcs_9_at_messageDigest);
+					DERSequence signTimeDerSequence = this.getAttribute(signedAttributeTable, unsignedAttributeTable, PKCSObjectIdentifiers.pkcs_9_at_signingTime);
+
+					if (timeStampDerSequence != null) {
+						if (timeStampDerSequence.size() == 2) {
+							DERObject derObjectIdentifier = ((DERObject) timeStampDerSequence.getObjectAt(0)).toASN1Object();
+							DERObject derObjectValue = ((DERObject) timeStampDerSequence.getObjectAt(1)).toASN1Object();
+							if ((derObjectIdentifier instanceof ASN1ObjectIdentifier) && (derObjectValue instanceof DERSet)) {
+								// ASN1ObjectIdentifier asn1ObjectIdentifier = (ASN1ObjectIdentifier) derObjectIdentifier;
+								DERSet set = (DERSet) derObjectValue;
+								DEREncodable encodable = set.getObjectAt(0);
+								TimeStampToken timeStampToken = new TimeStampToken(new CMSSignedData(encodable.getDERObject().getEncoded()));
+								TimeStamp timeStamp = BouncyCastleTimeStampHelper.toTimeStamp(timeStampToken);
+								signature.setTimeStamp(timeStamp);
+							}
+						}
+					}
+
+					if (signTimeDerSequence != null) {
+						DERObject derObjectIdentifier = ((DERObject) signTimeDerSequence.getObjectAt(0)).toASN1Object();
+						DERObject derObjectValue = ((DERObject) signTimeDerSequence.getObjectAt(1)).toASN1Object();
+						if ((derObjectIdentifier instanceof ASN1ObjectIdentifier) && (derObjectValue instanceof DERSet)) {
+							DERSet set = (DERSet) derObjectValue;
+							ASN1UTCTime time = (ASN1UTCTime) set.getObjectAt(0);
+							signature.setDate(time.getAdjustedDate());
+						}
+					}
+
+					signatures.add(signature);
+				}
+			}
+
+			return CollectionUtils.toArray(signatures, Signature.class);
+		} catch (Exception e) {
+			throw new SignerException(e);
+		}
 	}
 
 	protected byte[] encapsulateContent(final byte[] data, final byte[] signature) throws IOException {
@@ -229,6 +299,16 @@ public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 		// }
 		JcaCRLStore crlStore = new JcaCRLStore(list);
 		return crlStore;
+	}
+
+	private DERSequence getAttribute(final AttributeTable signedAttributeTable, final AttributeTable unsignedAttributeTable, final DERObjectIdentifier identifier) {
+		DERSequence object = null;
+		if ((signedAttributeTable != null) && (signedAttributeTable.get(identifier) != null)) {
+			object = (DERSequence) signedAttributeTable.get(identifier).getDERObject();
+		} else if ((unsignedAttributeTable != null) && (unsignedAttributeTable.get(identifier) != null)) {
+			object = (DERSequence) unsignedAttributeTable.get(identifier).getDERObject();
+		}
+		return object;
 	}
 
 }
