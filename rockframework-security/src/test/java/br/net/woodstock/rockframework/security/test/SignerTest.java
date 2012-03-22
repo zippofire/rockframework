@@ -4,8 +4,21 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
+import java.util.Hashtable;
 
 import junit.framework.TestCase;
+
+import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+import org.bouncycastle.asn1.DERObject;
+import org.bouncycastle.asn1.DERSequence;
+import org.bouncycastle.asn1.cms.Attribute;
+import org.bouncycastle.asn1.cms.ContentInfo;
+import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
+import org.bouncycastle.cms.CMSSignedData;
+import org.bouncycastle.cms.SignerInformation;
+import org.bouncycastle.cms.SignerInformationStore;
+import org.bouncycastle.tsp.TimeStampToken;
+
 import br.net.woodstock.rockframework.security.Alias;
 import br.net.woodstock.rockframework.security.cert.KeyUsageType;
 import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
@@ -40,10 +53,10 @@ public class SignerTest extends TestCase {
 	// public static final TimeStampClient TSA_CLIENT_STF = new STFTimeStampClient("200.143.0.158", 318);
 
 	static {
-		//System.setProperty("http.proxyHost", "10.28.1.12");
-		//System.setProperty("http.proxyPort", "8080");
-		//System.setProperty("sun.net.client.defaultConnectTimeout", "5000");
-		//System.setProperty("sun.net.client.defaultReadTimeout", "5000");
+		// System.setProperty("http.proxyHost", "10.28.1.12");
+		// System.setProperty("http.proxyPort", "8080");
+		// System.setProperty("sun.net.client.defaultConnectTimeout", "5000");
+		// System.setProperty("sun.net.client.defaultReadTimeout", "5000");
 	}
 
 	public void xtest1() throws Exception {
@@ -122,9 +135,7 @@ public class SignerTest extends TestCase {
 	}
 
 	public void xtest4() throws Exception {
-		FileInputStream fileInputStream = new FileInputStream("/tmp/sign.pdf");
-		byte[] pdf = IOUtils.toByteArray(fileInputStream);
-		fileInputStream.close();
+		byte[] pdf = "Lourival Sabino da Silva Júnior".getBytes();
 
 		BouncyCastleCertificateBuilder builder1 = new BouncyCastleCertificateBuilder("Lourival Sabino 1");
 		builder1.withIssuer("Woodstock Tecnologia 1");
@@ -290,8 +301,8 @@ public class SignerTest extends TestCase {
 		}
 		inputStream.close();
 	}
-	
-	public void test9() throws Exception {
+
+	public void xtest9() throws Exception {
 		JCAStore store = new JCAStore(KeyStoreType.JKS);
 		store.read(new FileInputStream("/home/lourival/Downloads/LOURIVALSABINO.jks"), "storepasswd");
 
@@ -316,4 +327,55 @@ public class SignerTest extends TestCase {
 		fileOutputStream.close();
 	}
 
+	public void test10() throws Exception {
+		FileInputStream fileOutputStream = new FileInputStream("/tmp/sign.pdf.p7s");
+		byte[] data = IOUtils.toByteArray(fileOutputStream);
+		CMSSignedData signedData = new CMSSignedData(data);
+		System.out.println(signedData.getSignedContentTypeOID());
+		byte[] content = (byte[]) signedData.getSignedContent().getContent();
+		System.out.println(data.length);
+		System.out.println(new String(content));
+		SignerInformationStore signerInformationStore = signedData.getSignerInfos();
+		SignerInformation signerInformation = (SignerInformation) signerInformationStore.getSigners().iterator().next();
+		System.out.println("Signed");
+		Hashtable signedTable = signerInformation.getSignedAttributes().toHashtable();
+		for (Object o : signedTable.keySet()) {
+			ASN1ObjectIdentifier identifier = (ASN1ObjectIdentifier) o;
+			Attribute attribute = (Attribute) signedTable.get(o);
+			System.out.println(identifier + " => " + attribute.getAttrType() + " => " + attribute.getAttrValues());
+		}
+		System.out.println("Unsigned");
+		Hashtable unsignedTable = signerInformation.getUnsignedAttributes().toHashtable();
+		for (Object o : unsignedTable.keySet()) {
+			ASN1ObjectIdentifier identifier = (ASN1ObjectIdentifier) o;
+			Attribute attribute = (Attribute) signedTable.get(o);
+			System.out.println(identifier + " => " + attribute);
+			System.out.println(identifier + " => " + signerInformation.getUnsignedAttributes().get(identifier).getAttrType());
+			System.out.println(identifier + " => " + signerInformation.getUnsignedAttributes().get(identifier).getDERObject());
+			System.out.println(identifier + " => " + signerInformation.getUnsignedAttributes().getAll(identifier));
+		}
+		if (unsignedTable.containsKey(PKCSObjectIdentifiers.id_aa_signatureTimeStampToken)) {
+			DERSequence derSequence = (DERSequence) signerInformation.getUnsignedAttributes().get(PKCSObjectIdentifiers.id_aa_signatureTimeStampToken).getDERObject();
+			System.out.println("TOKEN: " + derSequence.getEncoded().length);
+			for (int i = 0; i < derSequence.size(); i++) {
+				DERObject derObject = (DERObject) derSequence.getObjectAt(i);
+				System.out.println("TOKEN: " + derObject.getEncoded().length);
+				try {
+					TimeStampToken token = new TimeStampToken(new ContentInfo();
+					System.out.println("Token: " + token);
+				} catch (Exception e) {
+					//
+				}
+				try {
+					TimeStampToken token = new TimeStampToken(new CMSSignedData(derObject.getEncoded()));
+					System.out.println("Token: " + token);
+				} catch (Exception e) {
+					//
+				}
+			}
+
+		}
+
+		// signedData.get
+	}
 }

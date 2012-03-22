@@ -67,7 +67,7 @@ import br.net.woodstock.rockframework.security.sign.PKCS7Signer;
 import br.net.woodstock.rockframework.security.sign.Signature;
 import br.net.woodstock.rockframework.security.sign.SignatureType;
 import br.net.woodstock.rockframework.security.sign.SignerException;
-import br.net.woodstock.rockframework.security.store.StoreEntry;
+import br.net.woodstock.rockframework.security.store.PrivateKeyEntry;
 import br.net.woodstock.rockframework.security.store.StoreEntryType;
 import br.net.woodstock.rockframework.security.timestamp.TimeStamp;
 import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
@@ -93,11 +93,11 @@ public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 			TimeStampClient timeStampClient = this.request.getTimeStampClient();
 
 			for (Alias alias : this.request.getAliases()) {
-				StoreEntry certificateEntry = this.request.getStore().get(alias, StoreEntryType.CERTIFICATE);
-				StoreEntry privateKeyEntry = this.request.getStore().get(alias, StoreEntryType.PRIVATE_KEY);
+				PrivateKeyEntry privateKeyEntry = (PrivateKeyEntry) this.request.getStore().get(alias, StoreEntryType.PRIVATE_KEY);
 
-				Certificate certificate = (Certificate) certificateEntry.getValue();
-				PrivateKey privateKey = (PrivateKey) privateKeyEntry.getValue();
+				PrivateKey privateKey = privateKeyEntry.getValue();
+				Certificate[] chain = privateKeyEntry.getChain();
+				Certificate certificate = chain[0];
 
 				JcaContentSignerBuilder contentSignerBuilder = new JcaContentSignerBuilder(SignatureType.SHA1_RSA.getAlgorithm());
 				contentSignerBuilder.setProvider(BouncyCastleProviderHelper.PROVIDER_NAME);
