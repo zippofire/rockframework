@@ -47,6 +47,7 @@ import br.net.woodstock.rockframework.security.timestamp.TimeStampServer;
 import br.net.woodstock.rockframework.security.util.BouncyCastleProviderHelper;
 import br.net.woodstock.rockframework.text.impl.RandomGenerator;
 import br.net.woodstock.rockframework.text.impl.RandomGenerator.RandomPattern;
+import br.net.woodstock.rockframework.util.Assert;
 
 public class BouncyCastleTimeStampServer implements TimeStampServer {
 
@@ -58,10 +59,26 @@ public class BouncyCastleTimeStampServer implements TimeStampServer {
 
 	public BouncyCastleTimeStampServer(final Store store, final Alias alias) {
 		super();
+		Assert.notNull(store, "store");
+		Assert.notNull(alias, "alias");
+		PrivateKeyEntry privateKeyEntry = (PrivateKeyEntry) store.get(alias, StoreEntryType.PRIVATE_KEY);
+		if (privateKeyEntry == null) {
+			throw new TimeStampException("Private key not found for " + alias);
+		}
+		PrivateKey privateKey = privateKeyEntry.getValue();
+		Certificate[] chain = privateKeyEntry.getChain();
+		this.init(privateKey, chain);
+	}
+
+	public BouncyCastleTimeStampServer(final PrivateKey privateKey, final Certificate[] chain) {
+		super();
+		Assert.notNull(privateKey, "privateKey");
+		Assert.notEmpty(chain, "chain");
+		this.init(privateKey, chain);
+	}
+
+	private void init(final PrivateKey privateKey, final Certificate[] chain) {
 		try {
-			PrivateKeyEntry privateKeyEntry = (PrivateKeyEntry) store.get(alias, StoreEntryType.PRIVATE_KEY);
-			PrivateKey privateKey = privateKeyEntry.getValue();
-			Certificate[] chain = privateKeyEntry.getChain();
 			Certificate certificate = chain[0];
 
 			JcaContentSignerBuilder contentSignerBuilder = new JcaContentSignerBuilder(SignatureType.SHA1_RSA.getAlgorithm());

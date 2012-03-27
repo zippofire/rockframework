@@ -33,9 +33,15 @@
 		<hibernate.validator.legacy.version>4.0.2.GA</hibernate.validator.legacy.version>
 		<itextpdf.version>5.1.2</itextpdf.version>
 		<java.version>1.6</java.version>
-		<jee.version>6.0</jee.version>
+		<javax.cdi.version>1.0</javax.cdi.version>
+		<javax.ejb.version>3.0</javax.ejb.version>
+		<javax.faces.version>2.0</javax.faces.version>
+		<javax.jsp.version>2.1</javax.jsp.version>
 		<junit.version>3.8.2</junit.version>
-		<mail.version>1.4</mail.version>
+		<javax.mail.version>1.4</javax.mail.version>
+		<javax.persistence.version>1.0.2</javax.persistence.version>
+		<javax.servlet.version>2.5</javax.servlet.version>
+		<javax.validation.version>1.0.0.GA</javax.validation.version>
 		<openjpa.version>2.1.1</openjpa.version>
 		<pdfbox.version>1.6.0</pdfbox.version>
 		<poi.version>3.7</poi.version>
@@ -313,27 +319,51 @@
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
-				<groupId>javax</groupId>
-				<artifactId>javaee-api</artifactId>
-				<version>${jee.version}</version>
+				<groupId>javax.ejb</groupId>
+				<artifactId>ejb-api</artifactId>
+				<version>${javax.ejb.version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
-				<groupId>javax</groupId>
-				<artifactId>javaee-endorsed-api</artifactId>
-				<version>${jee.version}</version>
+				<groupId>javax.enterprise</groupId>
+				<artifactId>cdi-api</artifactId>
+				<version>${javax.cdi.version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
-				<groupId>javax</groupId>
-				<artifactId>javaee-web-api</artifactId>
-				<version>${jee.version}</version>
+				<groupId>javax.faces</groupId>
+				<artifactId>jsf-api</artifactId>
+				<version>${javax.faces.version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>javax.mail</groupId>
 				<artifactId>mail</artifactId>
-				<version>${mail.version}</version>
+				<version>${javax.mail.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>javax.persistence</groupId>
+				<artifactId>persistence-api</artifactId>
+				<version>${javax.persistence.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>servlet-api</artifactId>
+				<version>${javax.servlet.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>javax.servlet.jsp</groupId>
+				<artifactId>jsp-api</artifactId>
+				<version>${javax.jsp.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>javax.validation</groupId>
+				<artifactId>validation-api</artifactId>
+				<version>${javax.validation.version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>

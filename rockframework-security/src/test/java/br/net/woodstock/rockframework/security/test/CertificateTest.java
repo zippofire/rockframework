@@ -2,6 +2,8 @@ package br.net.woodstock.rockframework.security.test;
 
 import java.security.cert.X509Certificate;
 
+import javax.security.auth.x500.X500Principal;
+
 import junit.framework.TestCase;
 import br.net.woodstock.rockframework.security.cert.KeyUsageType;
 import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
@@ -23,6 +25,9 @@ public class CertificateTest extends TestCase {
 		builder.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
 		PrivateKeyHolder holder = builder.build();
 		X509Certificate certificate = (X509Certificate) holder.getChain()[0];
+		X500Principal principal = certificate.getSubjectX500Principal();
 		System.out.println(certificate);
+		System.out.println(principal);
+		System.out.println(principal.getName(X500Principal.CANONICAL));
 	}
 }
