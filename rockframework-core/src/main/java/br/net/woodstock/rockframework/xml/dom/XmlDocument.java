@@ -36,6 +36,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import br.net.woodstock.rockframework.ExecutionException;
+
 public class XmlDocument extends DocumentWrapper {
 
 	private static final long	serialVersionUID	= -3892243357826950608L;
@@ -149,7 +151,7 @@ public class XmlDocument extends DocumentWrapper {
 			this.write(writer);
 			return writer.toString();
 		} catch (IOException e) {
-			throw new br.net.woodstock.rockframework.io.IOException(e);
+			throw new ExecutionException(e);
 		}
 	}
 

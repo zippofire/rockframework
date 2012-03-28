@@ -9,7 +9,7 @@ import br.net.woodstock.rockframework.security.cert.ExtendedKeyUsageType;
 import br.net.woodstock.rockframework.security.cert.KeyUsageType;
 import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
 import br.net.woodstock.rockframework.security.cert.impl.BouncyCastleCertificateBuilder;
-import br.net.woodstock.rockframework.security.sign.PKCS7SignatureRequest;
+import br.net.woodstock.rockframework.security.sign.PKCS7SignatureParameters;
 import br.net.woodstock.rockframework.security.sign.Signature;
 import br.net.woodstock.rockframework.security.sign.impl.PDFSigner;
 import br.net.woodstock.rockframework.security.store.KeyStoreType;
@@ -69,7 +69,7 @@ public class TimeStampServerTest extends TestCase {
 
 		TimeStampServer timeStampServer = this.getTimeStampServer();
 		TimeStampClient timeStampClient = new LocalTimeStampClient(timeStampServer);
-		PKCS7SignatureRequest signerInfo = new PKCS7SignatureRequest(new Alias[] { new PasswordAlias("lourival sabino", "lourival") }, store);
+		PKCS7SignatureParameters signerInfo = new PKCS7SignatureParameters(new Alias[] { new PasswordAlias("lourival sabino", "lourival") }, store);
 		signerInfo.setContactInfo("ConcactInfo");
 		signerInfo.setLocation("Location");
 		signerInfo.setName("Lourival Sabino");

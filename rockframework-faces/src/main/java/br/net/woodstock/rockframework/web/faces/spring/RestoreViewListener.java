@@ -30,6 +30,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 public class RestoreViewListener implements HttpSessionActivationListener {
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public void sessionDidActivate(final HttpSessionEvent event) {
 		HttpSession session = event.getSession();
 		ServletContext servletContext = session.getServletContext();

@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 
+import br.net.woodstock.rockframework.ExecutionException;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 import br.net.woodstock.rockframework.utils.FileUtils;
 
@@ -54,7 +55,7 @@ public class FileMimeTypeFilter implements FilenameFilter {
 			String mimeType = FileUtils.getType(f);
 			return this.types.contains(mimeType);
 		} catch (IOException e) {
-			throw new br.net.woodstock.rockframework.io.IOException(e);
+			throw new ExecutionException(e);
 		}
 	}
 

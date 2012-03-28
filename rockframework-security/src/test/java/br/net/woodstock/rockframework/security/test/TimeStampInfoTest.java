@@ -24,7 +24,7 @@ import org.bouncycastle.tsp.TimeStampToken;
 import br.net.woodstock.rockframework.security.cert.KeyUsageType;
 import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
 import br.net.woodstock.rockframework.security.cert.impl.BouncyCastleCertificateBuilder;
-import br.net.woodstock.rockframework.security.sign.PKCS7SignatureRequest;
+import br.net.woodstock.rockframework.security.sign.PKCS7SignatureParameters;
 import br.net.woodstock.rockframework.security.sign.PKCS7Signer;
 import br.net.woodstock.rockframework.security.sign.Signature;
 import br.net.woodstock.rockframework.security.sign.impl.BouncyCastlePKCS7Signer;
@@ -47,7 +47,7 @@ public class TimeStampInfoTest extends TestCase {
 		URLTimeStampClient timeStampClient = new URLTimeStampClient("http://tsa.safelayer.com:8093");
 		timeStampClient.setDebug(true);
 		// TimeStampClient timeStampClient = new STFTimeStampClient("201.49.148.134", 318);
-		PKCS7SignatureRequest signerInfo = new PKCS7SignatureRequest(holder1);
+		PKCS7SignatureParameters signerInfo = new PKCS7SignatureParameters(holder1);
 		signerInfo.setTimeStampClient(timeStampClient);
 
 		PKCS7Signer signer = new BouncyCastlePKCS7Signer(signerInfo);
@@ -193,7 +193,7 @@ public class TimeStampInfoTest extends TestCase {
 		}
 	}
 
-	public void test6() throws Exception {
+	public void xtest6() throws Exception {
 		// FileInputStream fileOutputStream = new FileInputStream("/tmp/sign.pdf.p7s");
 		FileInputStream fileOutputStream = new FileInputStream("/tmp/carimboDeTempo2.p7s");
 		byte[] data = IOUtils.toByteArray(fileOutputStream);

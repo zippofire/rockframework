@@ -26,15 +26,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Vector;
 
 import javax.security.auth.x500.X500Principal;
 
-import org.bouncycastle.asn1.x500.RDN;
-import org.bouncycastle.asn1.x500.X500Name;
-import org.bouncycastle.asn1.x500.style.BCStyle;
-import org.bouncycastle.asn1.x500.style.IETFUtils;
-import org.bouncycastle.jce.X509Principal;
 import org.bouncycastle.tsp.TimeStampToken;
 
 import br.net.woodstock.rockframework.office.pdf.PDFException;
@@ -43,7 +37,7 @@ import br.net.woodstock.rockframework.security.digest.DigestType;
 import br.net.woodstock.rockframework.security.digest.Digester;
 import br.net.woodstock.rockframework.security.digest.impl.BasicDigester;
 import br.net.woodstock.rockframework.security.sign.DocumentSigner;
-import br.net.woodstock.rockframework.security.sign.PKCS7SignatureRequest;
+import br.net.woodstock.rockframework.security.sign.PKCS7SignatureParameters;
 import br.net.woodstock.rockframework.security.sign.Signatory;
 import br.net.woodstock.rockframework.security.sign.Signature;
 import br.net.woodstock.rockframework.security.sign.SignatureType;
@@ -56,7 +50,9 @@ import br.net.woodstock.rockframework.security.store.StoreEntryType;
 import br.net.woodstock.rockframework.security.store.impl.JCAStore;
 import br.net.woodstock.rockframework.security.timestamp.TimeStamp;
 import br.net.woodstock.rockframework.security.timestamp.impl.BouncyCastleTimeStampHelper;
+import br.net.woodstock.rockframework.security.util.BouncyCastleProviderHelper;
 import br.net.woodstock.rockframework.util.Assert;
+import br.net.woodstock.rockframework.util.Require;
 import br.net.woodstock.rockframework.utils.CollectionUtils;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 import br.net.woodstock.rockframework.utils.IOUtils;
@@ -77,22 +73,22 @@ import com.itextpdf.text.pdf.TSAClient;
 
 public class PDFSigner implements DocumentSigner {
 
-	private static final char		PDF_SIGNATURE_VERSION	= '\0';
+	private static final char			PDF_SIGNATURE_VERSION	= '\0';
 
-	private PKCS7SignatureRequest	request;
+	private PKCS7SignatureParameters	parameters;
 
-	public PDFSigner(final PKCS7SignatureRequest request) {
+	public PDFSigner(final PKCS7SignatureParameters parameters) {
 		super();
-		Assert.notNull(request, "request");
-		this.request = request;
+		this.parameters = parameters;
 	}
 
 	@Override
 	public byte[] sign(final byte[] data) {
+		Require.notNull(this.parameters, "parameters");
 		Assert.notNull(data, "data");
 		try {
 			byte[] currentData = data;
-			for (Alias alias : this.request.getAliases()) {
+			for (Alias alias : this.parameters.getAliases()) {
 				currentData = this.singleSign(data, alias);
 			}
 			return currentData;
@@ -104,7 +100,7 @@ public class PDFSigner implements DocumentSigner {
 	private byte[] singleSign(final byte[] data, final Alias alias) {
 		Assert.notEmpty(data, "data");
 		try {
-			Store store = this.request.getStore();
+			Store store = this.parameters.getStore();
 			CertificateEntry certificateEntry = (CertificateEntry) store.get(alias, StoreEntryType.CERTIFICATE);
 			PrivateKeyEntry privateEntry = (PrivateKeyEntry) store.get(alias, StoreEntryType.PRIVATE_KEY);
 
@@ -129,9 +125,9 @@ public class PDFSigner implements DocumentSigner {
 
 			PdfSignatureAppearance appearance = stamper.getSignatureAppearance();
 			appearance.setCrypto(privateKey, chain, null, PdfSignatureAppearance.SELF_SIGNED);
-			appearance.setContact(this.request.getContactInfo());
-			appearance.setLocation(this.request.getLocation());
-			appearance.setReason(this.request.getReason());
+			appearance.setContact(this.parameters.getContactInfo());
+			appearance.setLocation(this.parameters.getLocation());
+			appearance.setReason(this.parameters.getReason());
 			appearance.setSignDate(calendar);
 
 			PdfSignature signature = new PdfSignature(PdfName.ADOBE_PPKLITE, PdfName.ADBE_PKCS7_DETACHED);
@@ -140,10 +136,10 @@ public class PDFSigner implements DocumentSigner {
 			signature.setContact(appearance.getContact());
 			signature.setDate(new PdfDate(appearance.getSignDate()));
 
-			if (ConditionUtils.isNotEmpty(this.request.getName())) {
-				signature.setName(this.request.getName());
+			if (ConditionUtils.isNotEmpty(this.parameters.getName())) {
+				signature.setName(this.parameters.getName());
 			} else {
-				signature.setName(this.getValue(certificate.getSubjectX500Principal()));
+				signature.setName(BouncyCastleProviderHelper.getName(certificate.getSubjectX500Principal()));
 			}
 
 			appearance.setCryptoDictionary(signature);
@@ -158,8 +154,8 @@ public class PDFSigner implements DocumentSigner {
 			byte[] hash = digester.digest(rangeStream);
 
 			TSAClient tsc = null;
-			if (this.request.getTimeStampClient() != null) {
-				tsc = new DelegateITextTSAClient(this.request.getTimeStampClient());
+			if (this.parameters.getTimeStampClient() != null) {
+				tsc = new DelegateITextTSAClient(this.parameters.getTimeStampClient());
 			}
 
 			byte[] oscp = null;
@@ -185,8 +181,8 @@ public class PDFSigner implements DocumentSigner {
 			PdfPKCS7 pkcs7 = new PdfPKCS7(privateKey, chain, null, digestType.getAlgorithm(), null, false);
 			byte[] authenticatedAttributes = pkcs7.getAuthenticatedAttributeBytes(hash, calendar, oscp);
 			pkcs7.update(authenticatedAttributes, 0, authenticatedAttributes.length);
-			pkcs7.setLocation(this.request.getLocation());
-			pkcs7.setReason(this.request.getReason());
+			pkcs7.setLocation(this.parameters.getLocation());
+			pkcs7.setReason(this.parameters.getReason());
 
 			if (tsc == null) {
 				pkcs7.setSignDate(calendar);
@@ -291,11 +287,11 @@ public class PDFSigner implements DocumentSigner {
 	}
 
 	protected Signatory toSignatory(final X509Certificate certificate) {
-		X509Principal x509Subject = (X509Principal) certificate.getSubjectDN();
-		X509Principal x509Issuer = (X509Principal) certificate.getIssuerDN();
+		X500Principal x500Subject = certificate.getSubjectX500Principal();
+		X500Principal x500Issuer = certificate.getIssuerX500Principal();
 
-		String subject = this.getValue(x509Subject);
-		String issuer = this.getValue(x509Issuer);
+		String subject = BouncyCastleProviderHelper.getName(x500Subject);
+		String issuer = BouncyCastleProviderHelper.getName(x500Issuer);
 
 		Signatory signatory = new Signatory();
 		signatory.setCertificate(certificate);
@@ -316,29 +312,6 @@ public class PDFSigner implements DocumentSigner {
 		SignatureType signatureType = this.getSignatureType(signatureAlgorithm);
 		DigestType digestType = signatureType.getDigestType();
 		return digestType;
-	}
-
-	protected String getValue(final X509Principal principal) {
-		X500Name x500Name = new X500Name(principal.getName());
-		RDN rdn = x500Name.getRDNs(BCStyle.CN)[0];
-		return IETFUtils.valueToString(rdn.getFirst().getValue());
-	}
-
-	protected String getValue(final X500Principal principal) {
-		X500Name x500Name = new X500Name(principal.getName());
-		RDN rdn = x500Name.getRDNs(BCStyle.CN)[0];
-		return IETFUtils.valueToString(rdn.getFirst().getValue());
-	}
-
-	@SuppressWarnings("rawtypes")
-	protected String toString(final Vector vector) {
-		StringBuilder builder = new StringBuilder();
-		if (ConditionUtils.isNotEmpty(vector)) {
-			for (Object o : vector) {
-				builder.append(o.toString());
-			}
-		}
-		return builder.toString();
 	}
 
 }

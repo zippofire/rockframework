@@ -36,6 +36,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
+import br.net.woodstock.rockframework.ExecutionException;
+
 public class XmlElement extends ElementWrapper {
 
 	private static final long	serialVersionUID	= 8642703359069757721L;
@@ -261,7 +263,7 @@ public class XmlElement extends ElementWrapper {
 			this.write(writer);
 			return writer.toString();
 		} catch (IOException e) {
-			throw new br.net.woodstock.rockframework.io.IOException(e);
+			throw new ExecutionException(e);
 		}
 	}
 }

@@ -43,13 +43,13 @@ public class BouncyCastleTimeStampServlet extends AbstractTimeStampServlet {
 	public void init(final ServletConfig config) throws ServletException {
 		super.init(config);
 		try {
-			BouncyCastleTimeStampProperties properties = this.getProperties();
-			InputStream inputStream = ClassLoaderUtils.getResourceAsStream(properties.getStoreResource());
+			BouncyCastleTimeStampConfig timeStampConfig = this.getConfig();
+			InputStream inputStream = ClassLoaderUtils.getResourceAsStream(timeStampConfig.getStoreResource());
 
-			Store store = new JCAStore(KeyStoreType.valueOf(properties.getStoreType()));
-			store.read(inputStream, properties.getStorePassword());
+			Store store = new JCAStore(KeyStoreType.valueOf(timeStampConfig.getStoreType()));
+			store.read(inputStream, timeStampConfig.getStorePassword());
 
-			Alias alias = new PasswordAlias(properties.getKeyAlias(), properties.getKeyPassword());
+			Alias alias = new PasswordAlias(timeStampConfig.getKeyAlias(), timeStampConfig.getKeyPassword());
 
 			this.timeStampServer = new BouncyCastleTimeStampServer(store, alias);
 		} catch (Exception e) {
@@ -57,8 +57,8 @@ public class BouncyCastleTimeStampServlet extends AbstractTimeStampServlet {
 		}
 	}
 
-	protected BouncyCastleTimeStampProperties getProperties() throws IOException {
-		return new BouncyCastleTimeStampProperties(BouncyCastleTimeStampServlet.DEFAULT_PROPERTIES_FILE);
+	protected BouncyCastleTimeStampConfig getConfig() throws IOException {
+		return new DefaultBouncyCastleTimeStampConfig(BouncyCastleTimeStampServlet.DEFAULT_PROPERTIES_FILE);
 	}
 
 	@Override

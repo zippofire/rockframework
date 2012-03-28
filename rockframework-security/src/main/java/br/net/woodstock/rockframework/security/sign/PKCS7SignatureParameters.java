@@ -21,7 +21,7 @@ import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
 import br.net.woodstock.rockframework.security.store.Store;
 import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
 
-public class PKCS7SignatureRequest extends SignatureRequest {
+public class PKCS7SignatureParameters extends SignatureParameters {
 
 	private static final long	serialVersionUID	= -6981088435915238029L;
 
@@ -35,12 +35,43 @@ public class PKCS7SignatureRequest extends SignatureRequest {
 
 	private TimeStampClient		timeStampClient;
 
-	public PKCS7SignatureRequest(final Alias[] aliases, final Store store) {
+	public PKCS7SignatureParameters(final Alias alias, final Store store) {
+		super(new Alias[] { alias }, store);
+	}
+
+	public PKCS7SignatureParameters(final Alias alias, final Store store, final String name, final String reason, final String location, final String contactInfo, final TimeStampClient timeStampClient) {
+		super(new Alias[] { alias }, store);
+		this.name = name;
+		this.reason = reason;
+		this.location = location;
+		this.contactInfo = contactInfo;
+		this.timeStampClient = timeStampClient;
+	}
+
+	public PKCS7SignatureParameters(final Alias[] aliases, final Store store) {
 		super(aliases, store);
 	}
 
-	public PKCS7SignatureRequest(final PrivateKeyHolder privateKeyHolder) {
+	public PKCS7SignatureParameters(final Alias[] aliases, final Store store, final String name, final String reason, final String location, final String contactInfo, final TimeStampClient timeStampClient) {
+		super(aliases, store);
+		this.name = name;
+		this.reason = reason;
+		this.location = location;
+		this.contactInfo = contactInfo;
+		this.timeStampClient = timeStampClient;
+	}
+
+	public PKCS7SignatureParameters(final PrivateKeyHolder privateKeyHolder) {
 		super(privateKeyHolder);
+	}
+
+	public PKCS7SignatureParameters(final PrivateKeyHolder privateKeyHolder, final String name, final String reason, final String location, final String contactInfo, final TimeStampClient timeStampClient) {
+		super(privateKeyHolder);
+		this.name = name;
+		this.reason = reason;
+		this.location = location;
+		this.contactInfo = contactInfo;
+		this.timeStampClient = timeStampClient;
 	}
 
 	public String getName() {

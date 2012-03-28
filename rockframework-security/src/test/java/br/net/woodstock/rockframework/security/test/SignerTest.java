@@ -24,7 +24,7 @@ import br.net.woodstock.rockframework.security.cert.KeyUsageType;
 import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
 import br.net.woodstock.rockframework.security.cert.impl.BouncyCastleCertificateBuilder;
 import br.net.woodstock.rockframework.security.crypt.KeyPairType;
-import br.net.woodstock.rockframework.security.sign.PKCS7SignatureRequest;
+import br.net.woodstock.rockframework.security.sign.PKCS7SignatureParameters;
 import br.net.woodstock.rockframework.security.sign.PKCS7Signer;
 import br.net.woodstock.rockframework.security.sign.Signatory;
 import br.net.woodstock.rockframework.security.sign.Signature;
@@ -117,7 +117,7 @@ public class SignerTest extends TestCase {
 
 		TimeStampClient timeStampClient = new URLTimeStampClient("http://tsa.safelayer.com:8093");
 		// TimeStampClient timeStampClient = new STFTimeStampClient("201.49.148.134", 318);
-		PKCS7SignatureRequest signerInfo = new PKCS7SignatureRequest(holder1);
+		PKCS7SignatureParameters signerInfo = new PKCS7SignatureParameters(holder1);
 		signerInfo.setContactInfo("ConcactInfo");
 		signerInfo.setLocation("Location");
 		signerInfo.setName("Lourival Sabino");
@@ -147,7 +147,7 @@ public class SignerTest extends TestCase {
 		URLTimeStampClient timeStampClient = new URLTimeStampClient("http://tsa.safelayer.com:8093");
 		timeStampClient.setDebug(true);
 		// TimeStampClient timeStampClient = new STFTimeStampClient("201.49.148.134", 318);
-		PKCS7SignatureRequest signerInfo = new PKCS7SignatureRequest(holder1);
+		PKCS7SignatureParameters signerInfo = new PKCS7SignatureParameters(holder1);
 		signerInfo.setTimeStampClient(timeStampClient);
 
 		PKCS7Signer signer = new BouncyCastlePKCS7Signer(signerInfo);
@@ -173,7 +173,7 @@ public class SignerTest extends TestCase {
 		// TimeStampClient timeStampClient = TSA_CLIENT_STF;
 		// TimeStampClient timeStampClient = new STFTimeStampClient("201.49.148.134", 318);
 		TimeStampClient timeStampClient = null;
-		PKCS7SignatureRequest signerInfo = new PKCS7SignatureRequest(holder);
+		PKCS7SignatureParameters signerInfo = new PKCS7SignatureParameters(holder);
 		signerInfo.setContactInfo("ConcactInfo");
 		signerInfo.setLocation("Location");
 		signerInfo.setName("Lourival Sabino");
@@ -209,7 +209,7 @@ public class SignerTest extends TestCase {
 
 		TimeStampClient timeStampClient = TSA_CLIENT_STF;
 		// TimeStampClient timeStampClient = new STFTimeStampClient("201.49.148.134", 318);
-		PKCS7SignatureRequest signerInfo = new PKCS7SignatureRequest(holder);
+		PKCS7SignatureParameters signerInfo = new PKCS7SignatureParameters(holder);
 		signerInfo.setContactInfo("ConcactInfo");
 		signerInfo.setLocation("Location");
 		signerInfo.setName("Lourival Sabino");
@@ -237,7 +237,7 @@ public class SignerTest extends TestCase {
 
 		TimeStampClient timeStampClient = TSA_CLIENT_STF;
 		// TimeStampClient timeStampClient = new STFTimeStampClient("201.49.148.134", 318);
-		PKCS7SignatureRequest signerInfo = new PKCS7SignatureRequest(holder);
+		PKCS7SignatureParameters signerInfo = new PKCS7SignatureParameters(holder);
 		signerInfo.setContactInfo("ConcactInfo");
 		signerInfo.setLocation("Location");
 		signerInfo.setName("Lourival Sabino");
@@ -262,7 +262,7 @@ public class SignerTest extends TestCase {
 
 		// TimeStampClient timeStampClient = TSA_CLIENT_STF;
 		TimeStampClient timeStampClient = new URLTimeStampClient("http://tsa.safelayer.com:8093");
-		PKCS7SignatureRequest signerInfo = new PKCS7SignatureRequest(new Alias[] { new PasswordAlias("lourival sabino", "lourival") }, store);
+		PKCS7SignatureParameters signerInfo = new PKCS7SignatureParameters(new Alias[] { new PasswordAlias("lourival sabino", "lourival") }, store);
 		signerInfo.setContactInfo("ConcactInfo");
 		signerInfo.setLocation("Location");
 		signerInfo.setName("Lourival Sabino");
@@ -312,7 +312,7 @@ public class SignerTest extends TestCase {
 
 		// TimeStampClient timeStampClient = TSA_CLIENT_STF;
 		TimeStampClient timeStampClient = new URLTimeStampClient("http://localhost:18080/carimbador-web/carimbador");
-		PKCS7SignatureRequest signerInfo = new PKCS7SignatureRequest(new Alias[] { new PasswordAlias("lourival sabino", "lourival") }, store);
+		PKCS7SignatureParameters signerInfo = new PKCS7SignatureParameters(new Alias[] { new PasswordAlias("lourival sabino", "lourival") }, store);
 		signerInfo.setContactInfo("ConcactInfo");
 		signerInfo.setLocation("Location");
 		signerInfo.setName("Lourival Sabino");

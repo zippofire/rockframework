@@ -20,6 +20,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import br.net.woodstock.rockframework.ExecutionException;
+
 abstract class XmlHelper {
 
 	private static DocumentBuilderFactory	factory;
@@ -36,11 +38,11 @@ abstract class XmlHelper {
 
 	static {
 		try {
-			XmlHelper.factory = DocumentBuilderFactory.newInstance();			
-			XmlHelper.factory.setNamespaceAware(true);			
+			XmlHelper.factory = DocumentBuilderFactory.newInstance();
+			XmlHelper.factory.setNamespaceAware(true);
 			XmlHelper.builder = XmlHelper.factory.newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
-			throw new br.net.woodstock.rockframework.io.IOException(e);
+			throw new ExecutionException(e);
 		}
 	}
 }

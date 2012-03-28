@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import br.net.woodstock.rockframework.ExecutionException;
+
 class PlainPropertiesReader extends PropertiesReader {
 
 	public PlainPropertiesReader() {
@@ -33,7 +35,7 @@ class PlainPropertiesReader extends PropertiesReader {
 			properties.load(inputStream);
 			return properties;
 		} catch (IOException e) {
-			throw new br.net.woodstock.rockframework.io.IOException(e);
+			throw new ExecutionException(e);
 		}
 
 	}

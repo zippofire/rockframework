@@ -17,6 +17,7 @@
 package br.net.woodstock.rockframework.security.sign.impl;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.security.PrivateKey;
 import java.security.cert.CRLException;
 import java.security.cert.Certificate;
@@ -44,6 +45,7 @@ import org.bouncycastle.asn1.cms.CMSObjectIdentifiers;
 import org.bouncycastle.asn1.cms.ContentInfo;
 import org.bouncycastle.asn1.cms.SignedData;
 import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
+import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.jcajce.JcaCRLStore;
 import org.bouncycastle.cert.jcajce.JcaCertStore;
 import org.bouncycastle.cms.CMSProcessable;
@@ -51,6 +53,7 @@ import org.bouncycastle.cms.CMSProcessableByteArray;
 import org.bouncycastle.cms.CMSSignedData;
 import org.bouncycastle.cms.CMSSignedDataGenerator;
 import org.bouncycastle.cms.CMSTypedData;
+import org.bouncycastle.cms.SignerId;
 import org.bouncycastle.cms.SignerInfoGenerator;
 import org.bouncycastle.cms.SignerInformation;
 import org.bouncycastle.cms.SignerInformationStore;
@@ -67,8 +70,9 @@ import org.bouncycastle.util.CollectionStore;
 import org.bouncycastle.util.Store;
 
 import br.net.woodstock.rockframework.security.Alias;
-import br.net.woodstock.rockframework.security.sign.PKCS7SignatureRequest;
+import br.net.woodstock.rockframework.security.sign.PKCS7SignatureParameters;
 import br.net.woodstock.rockframework.security.sign.PKCS7Signer;
+import br.net.woodstock.rockframework.security.sign.Signatory;
 import br.net.woodstock.rockframework.security.sign.Signature;
 import br.net.woodstock.rockframework.security.sign.SignatureType;
 import br.net.woodstock.rockframework.security.sign.SignerException;
@@ -79,29 +83,34 @@ import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
 import br.net.woodstock.rockframework.security.timestamp.impl.BouncyCastleTimeStampHelper;
 import br.net.woodstock.rockframework.security.util.BouncyCastleProviderHelper;
 import br.net.woodstock.rockframework.util.Assert;
+import br.net.woodstock.rockframework.util.Require;
 import br.net.woodstock.rockframework.utils.CollectionUtils;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
 public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 
-	private PKCS7SignatureRequest	request;
+	private PKCS7SignatureParameters	parameters;
 
-	public BouncyCastlePKCS7Signer(final PKCS7SignatureRequest request) {
+	public BouncyCastlePKCS7Signer(final PKCS7SignatureParameters parameters) {
 		super();
-		Assert.notNull(request, "request");
-		this.request = request;
+		this.parameters = parameters;
 	}
 
 	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public byte[] sign(final byte[] data) {
+		Require.notNull(this.parameters, "parameters");
 		Assert.notEmpty(data, "data");
 		try {
 			CMSSignedDataGenerator cmsSignedDataGenerator = new CMSSignedDataGenerator();
-			TimeStampClient timeStampClient = this.request.getTimeStampClient();
+			TimeStampClient timeStampClient = this.parameters.getTimeStampClient();
 
-			for (Alias alias : this.request.getAliases()) {
-				PrivateKeyEntry privateKeyEntry = (PrivateKeyEntry) this.request.getStore().get(alias, StoreEntryType.PRIVATE_KEY);
+			for (Alias alias : this.parameters.getAliases()) {
+				PrivateKeyEntry privateKeyEntry = (PrivateKeyEntry) this.parameters.getStore().get(alias, StoreEntryType.PRIVATE_KEY);
+
+				if (privateKeyEntry == null) {
+					throw new SignerException("PrivateKey not found for alias '" + alias.getName() + "'");
+				}
 
 				PrivateKey privateKey = privateKeyEntry.getValue();
 				Certificate[] chain = privateKeyEntry.getChain();
@@ -118,11 +127,25 @@ public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 
 				JcaSignerInfoGeneratorBuilder signerInfoGeneratorBuilder = new JcaSignerInfoGeneratorBuilder(digestCalculatorProvider);
 
+				// if (timeStampClient == null) {
+				// DERObject derObject = new ASN1UTCTime(new Date());
+				// DERSet derSet = new DERSet(derObject);
+				//
+				// Attribute attribute = new Attribute(PKCSObjectIdentifiers.pkcs_9_at_signingTime, derSet);
+				// Hashtable hashtable = new Hashtable();
+				// hashtable.put(PKCSObjectIdentifiers.pkcs_9_at_signingTime, attribute);
+				//
+				// AttributeTable table = new AttributeTable(hashtable);
+				// CMSAttributeTableGenerator attributeTableGenerator = new DefaultSignedAttributeTableGenerator(table);
+				// signerInfoGeneratorBuilder.setSignedAttributeGenerator(attributeTableGenerator);
+				// }
+
 				SignerInfoGenerator signerInfoGenerator = signerInfoGeneratorBuilder.build(contentSigner, (X509Certificate) certificate);
+
 				cmsSignedDataGenerator.addSignerInfoGenerator(signerInfoGenerator);
+				cmsSignedDataGenerator.addCertificates(this.getCertificateStore(chain));
 			}
 
-			cmsSignedDataGenerator.addCertificates(this.getCertificateStore());
 			CMSTypedData content = new CMSProcessableByteArray(data);
 
 			CMSSignedData signedData = cmsSignedDataGenerator.generate(content, true);
@@ -137,8 +160,8 @@ public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 					DERSet derSet = new DERSet(derObject);
 
 					Hashtable hashtable = new Hashtable();
-					Attribute unsignAtt = new Attribute(PKCSObjectIdentifiers.id_aa_signatureTimeStampToken, derSet);
-					hashtable.put(PKCSObjectIdentifiers.id_aa_signatureTimeStampToken, unsignAtt);
+					Attribute attribute = new Attribute(PKCSObjectIdentifiers.id_aa_signatureTimeStampToken, derSet);
+					hashtable.put(PKCSObjectIdentifiers.id_aa_signatureTimeStampToken, attribute);
 
 					AttributeTable unsignedAtts = new AttributeTable(hashtable);
 
@@ -208,6 +231,7 @@ public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 	public Signature[] getSignatures(final byte[] data) {
 		try {
 			CMSSignedData signedData = new CMSSignedData(data);
+			Collection<X509CertificateHolder> certificates = signedData.getCertificates().getMatches(null);
 			SignerInformationStore signerInformationStore = signedData.getSignerInfos();
 			Collection<SignerInformation> informations = signerInformationStore.getSigners();
 			Collection<Signature> signatures = new ArrayList<Signature>();
@@ -223,7 +247,7 @@ public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 					signature.setEncoded(null); // FIXME
 					signature.setLocation(null); // FIXME
 					signature.setReason(null); // FIXME
-					signature.setSignatories(null); // FIXME
+					signature.setSignatories(new ArrayList<Signatory>());
 					signature.setValid(Boolean.TRUE);
 
 					// TimeStamp
@@ -260,6 +284,26 @@ public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 						}
 					}
 
+					SignerId signerId = information.getSID();
+					if (signerId != null) {
+						BigInteger serialNumber = signerId.getSerialNumber();
+						X509CertificateHolder certificateHolder = null;
+						for (X509CertificateHolder tmp : certificates) {
+							if (tmp.getSerialNumber().equals(serialNumber)) {
+								certificateHolder = tmp;
+								break;
+							}
+						}
+
+						if (certificateHolder != null) {
+							Signatory signatory = new Signatory();
+							signatory.setSubject(BouncyCastleProviderHelper.getName(certificateHolder.getSubject()));
+							signatory.setIssuer(BouncyCastleProviderHelper.getName(certificateHolder.getIssuer()));
+							signatory.setCertificate(BouncyCastleProviderHelper.getCertificate(certificateHolder));
+							signature.getSignatories().add(signatory);
+						}
+					}
+
 					signatures.add(signature);
 				}
 			}
@@ -281,22 +325,14 @@ public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 		return fullContentInfo.getDEREncoded();
 	}
 
-	protected Store getCertificateStore() throws CertificateEncodingException {
-		ArrayList<Certificate> list = new ArrayList<Certificate>();
-		// TODO
-		// for (CertificateHolder certificateHolder : this.signRequest.getCertificates()) {
-		// list.add(certificateHolder.getCertificate());
-		// }
+	protected Store getCertificateStore(final Certificate[] chain) throws CertificateEncodingException {
+		List<Certificate> list = Arrays.asList(chain);
 		JcaCertStore certStore = new JcaCertStore(list);
 		return certStore;
 	}
 
 	protected Store getCRLStore() throws CRLException {
 		ArrayList<Certificate> list = new ArrayList<Certificate>();
-		// TODO
-		// for (SignerInfo signerInfo : this.signerInfo.getSignerInfos()) {
-		// list.add(signerInfo.getCertificate());
-		// }
 		JcaCRLStore crlStore = new JcaCRLStore(list);
 		return crlStore;
 	}

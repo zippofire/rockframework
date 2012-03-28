@@ -14,16 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.io;
+package br.net.woodstock.rockframework.util;
 
-import br.net.woodstock.rockframework.DelegateException;
+public class RequiredException extends RuntimeException {
 
-public class IOException extends DelegateException {
+	private static final long	serialVersionUID	= 1L;
 
-	private static final long	serialVersionUID	= -3715069512420057305L;
+	public RequiredException() {
+		super();
+	}
 
-	public IOException(final Throwable cause) {
+	public RequiredException(final String message) {
+		super(message);
+	}
+
+	public RequiredException(final Throwable cause) {
 		super(cause);
+	}
+
+	public RequiredException(final String message, final Throwable cause) {
+		super(message, cause);
 	}
 
 }

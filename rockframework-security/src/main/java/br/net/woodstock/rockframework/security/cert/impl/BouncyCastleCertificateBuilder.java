@@ -16,7 +16,6 @@
  */
 package br.net.woodstock.rockframework.security.cert.impl;
 
-import java.io.IOException;
 import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -28,12 +27,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;
 
-import javax.security.auth.x500.X500Principal;
-
 import org.bouncycastle.asn1.DERObject;
-import org.bouncycastle.asn1.x500.X500Name;
-import org.bouncycastle.asn1.x500.X500NameBuilder;
-import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.asn1.x509.GeneralNames;
 import org.bouncycastle.asn1.x509.KeyPurposeId;
@@ -197,9 +191,9 @@ public class BouncyCastleCertificateBuilder implements CertificateBuilder {
 			if (this.v3) {
 				JcaX509v3CertificateBuilder builder = null;
 				if (this.issuerCertificate != null) {
-					builder = new JcaX509v3CertificateBuilder((X509Certificate) this.issuerCertificate, serialNumber, notBefore, notAfter, this.toX500Principal(subject), keyPair.getPublic());
+					builder = new JcaX509v3CertificateBuilder((X509Certificate) this.issuerCertificate, serialNumber, notBefore, notAfter, BouncyCastleProviderHelper.toX500Principal(subject), keyPair.getPublic());
 				} else {
-					builder = new JcaX509v3CertificateBuilder(this.toX500Name(issuer), serialNumber, notBefore, notAfter, this.toX500Name(subject), keyPair.getPublic());
+					builder = new JcaX509v3CertificateBuilder(BouncyCastleProviderHelper.toX500Name(issuer), serialNumber, notBefore, notAfter, BouncyCastleProviderHelper.toX500Name(subject), keyPair.getPublic());
 				}
 
 				JcaContentSignerBuilder contentSignerBuilder = new JcaContentSignerBuilder(signType.getAlgorithm());
@@ -246,7 +240,7 @@ public class BouncyCastleCertificateBuilder implements CertificateBuilder {
 				certificate = (X509Certificate) SecurityUtils.getCertificateFromFile(holder.getEncoded(), CertificateType.X509);
 				privateKey = keyPair.getPrivate();
 			} else {
-				JcaX509v1CertificateBuilder builder = new JcaX509v1CertificateBuilder(this.toX500Name(issuer), serialNumber, notBefore, notAfter, this.toX500Name(subject), keyPair.getPublic());
+				JcaX509v1CertificateBuilder builder = new JcaX509v1CertificateBuilder(BouncyCastleProviderHelper.toX500Name(issuer), serialNumber, notBefore, notAfter, BouncyCastleProviderHelper.toX500Name(subject), keyPair.getPublic());
 
 				JcaContentSignerBuilder contentSignerBuilder = new JcaContentSignerBuilder(signType.getAlgorithm());
 				contentSignerBuilder.setProvider(BouncyCastleProviderHelper.PROVIDER_NAME);
@@ -338,24 +332,6 @@ public class BouncyCastleCertificateBuilder implements CertificateBuilder {
 			default:
 				return null;
 		}
-	}
-
-	private X500Name toX500Name(final String value) {
-		X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
-		builder.addRDN(BCStyle.CN, value);
-		return builder.build();
-	}
-
-	private X500Principal toX500Principal(final String value) throws IOException {
-		X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
-		builder.addRDN(BCStyle.CN, value);
-		X500Name name = builder.build();
-		return this.toX500Principal(name);
-	}
-
-	private X500Principal toX500Principal(final X500Name name) throws IOException {
-		X500Principal principal = new X500Principal(name.getEncoded());
-		return principal;
 	}
 
 }

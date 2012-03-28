@@ -24,9 +24,9 @@ import br.net.woodstock.rockframework.security.store.PrivateKeyEntry;
 import br.net.woodstock.rockframework.security.store.Store;
 import br.net.woodstock.rockframework.security.store.impl.MemoryStore;
 
-public class SignatureRequest implements Serializable {
+public class SignatureParameters implements Serializable {
 
-	private static final long	serialVersionUID	= -4388076526792546789L;
+	private static final long	serialVersionUID	= 2714570283755226372L;
 
 	private static final String	DEFAULT_ALIAS_NAME	= "unnammed";
 
@@ -34,15 +34,15 @@ public class SignatureRequest implements Serializable {
 
 	private Store				store;
 
-	public SignatureRequest(final Alias[] aliases, final Store store) {
+	public SignatureParameters(final Alias[] aliases, final Store store) {
 		super();
 		this.aliases = aliases;
 		this.store = store;
 	}
 
-	public SignatureRequest(final PrivateKeyHolder privateKeyHolder) {
+	public SignatureParameters(final PrivateKeyHolder privateKeyHolder) {
 		super();
-		Alias alias = new Alias(SignatureRequest.DEFAULT_ALIAS_NAME);
+		Alias alias = new Alias(SignatureParameters.DEFAULT_ALIAS_NAME);
 		this.store = new MemoryStore();
 		this.aliases = new Alias[] { alias };
 		this.store.add(new PrivateKeyEntry(alias, privateKeyHolder.getPrivateKey(), privateKeyHolder.getChain()));

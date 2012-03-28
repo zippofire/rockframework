@@ -19,9 +19,9 @@ package br.net.woodstock.rockframework.cache.impl;
 import java.io.InputStream;
 
 import net.sf.ehcache.Ehcache;
+import br.net.woodstock.rockframework.InitializationException;
 import br.net.woodstock.rockframework.cache.Cache;
 import br.net.woodstock.rockframework.cache.CacheManager;
-import br.net.woodstock.rockframework.io.IOException;
 import br.net.woodstock.rockframework.utils.ClassLoaderUtils;
 
 class EHCacheManagerImpl implements CacheManager {
@@ -36,7 +36,7 @@ class EHCacheManagerImpl implements CacheManager {
 			InputStream inputStream = ClassLoaderUtils.getResourceAsStream(EHCacheManagerImpl.CACHE_FILE);
 			this.manager = net.sf.ehcache.CacheManager.create(inputStream);
 		} catch (Exception e) {
-			throw new IOException(e);
+			throw new InitializationException(e);
 		}
 	}
 

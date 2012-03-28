@@ -58,7 +58,7 @@ import br.net.woodstock.rockframework.security.Alias;
 import br.net.woodstock.rockframework.security.digest.DigestType;
 import br.net.woodstock.rockframework.security.sign.DocumentSigner;
 import br.net.woodstock.rockframework.security.sign.Signature;
-import br.net.woodstock.rockframework.security.sign.SignatureRequest;
+import br.net.woodstock.rockframework.security.sign.SignatureParameters;
 import br.net.woodstock.rockframework.security.sign.SignatureType;
 import br.net.woodstock.rockframework.security.sign.SignerException;
 import br.net.woodstock.rockframework.security.store.PrivateKeyEntry;
@@ -85,9 +85,9 @@ public class XMLSigner implements DocumentSigner {
 
 	private KeyInfo					keyInfo;
 
-	private SignatureRequest		request;
+	private SignatureParameters		request;
 
-	public XMLSigner(final SignatureRequest request) {
+	public XMLSigner(final SignatureParameters request) {
 		super();
 		Assert.notNull(request, "request");
 

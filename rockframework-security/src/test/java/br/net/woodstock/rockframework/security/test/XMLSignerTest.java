@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 import br.net.woodstock.rockframework.security.cert.KeyUsageType;
 import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
 import br.net.woodstock.rockframework.security.cert.impl.BouncyCastleCertificateBuilder;
-import br.net.woodstock.rockframework.security.sign.SignatureRequest;
+import br.net.woodstock.rockframework.security.sign.SignatureParameters;
 import br.net.woodstock.rockframework.security.sign.impl.XMLSigner;
 import br.net.woodstock.rockframework.utils.IOUtils;
 import br.net.woodstock.rockframework.xml.dom.XmlDocument;
@@ -34,7 +34,7 @@ public class XMLSignerTest extends TestCase {
 		byte[] bytes = outputStream.toByteArray();
 		System.out.println(new String(bytes));
 
-		XMLSigner signer = new XMLSigner(new SignatureRequest(holder1));
+		XMLSigner signer = new XMLSigner(new SignatureParameters(holder1));
 		byte[] signed = signer.sign(bytes);
 
 		System.out.println(new String(signed));
@@ -54,7 +54,7 @@ public class XMLSignerTest extends TestCase {
 		byte[] bytes = IOUtils.toByteArray(fileInputStream);
 		System.out.println(new String(bytes));
 
-		XMLSigner signer = new XMLSigner(new SignatureRequest(holder1));
+		XMLSigner signer = new XMLSigner(new SignatureParameters(holder1));
 		byte[] signed = signer.sign(bytes);
 
 		System.out.println(new String(signed));

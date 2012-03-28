@@ -24,7 +24,7 @@ import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
 import java.nio.charset.CodingErrorAction;
 
-import br.net.woodstock.rockframework.io.IOException;
+import br.net.woodstock.rockframework.ExecutionException;
 import br.net.woodstock.rockframework.text.Transformer;
 import br.net.woodstock.rockframework.util.Assert;
 
@@ -68,7 +68,7 @@ public class CharsetTransformer implements Transformer {
 
 			return s;
 		} catch (CharacterCodingException e) {
-			throw new IOException(e);
+			throw new ExecutionException(e);
 		}
 	}
 }
