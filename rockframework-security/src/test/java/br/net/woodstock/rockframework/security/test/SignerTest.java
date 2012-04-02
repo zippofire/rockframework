@@ -198,7 +198,7 @@ public class SignerTest extends TestCase {
 		}
 	}
 
-	public void xtest6() throws Exception {
+	public void test6() throws Exception {
 		BouncyCastleCertificateBuilder builder = new BouncyCastleCertificateBuilder("Lourival Sabino 1");
 		builder.withIssuer("TSE");
 		builder.withV3Extensions(true);

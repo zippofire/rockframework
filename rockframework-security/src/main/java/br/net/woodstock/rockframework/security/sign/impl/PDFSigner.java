@@ -101,21 +101,17 @@ public class PDFSigner implements DocumentSigner {
 		Assert.notEmpty(data, "data");
 		try {
 			Store store = this.parameters.getStore();
-			CertificateEntry certificateEntry = (CertificateEntry) store.get(alias, StoreEntryType.CERTIFICATE);
 			PrivateKeyEntry privateEntry = (PrivateKeyEntry) store.get(alias, StoreEntryType.PRIVATE_KEY);
-
-			if (certificateEntry == null) {
-				throw new SignerException("Certificate '" + alias.getName() + " not found in store");
-			}
-
+			
 			if (privateEntry == null) {
 				throw new SignerException("Private key '" + alias.getName() + " not found in store");
 			}
 
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-			X509Certificate certificate = (X509Certificate) certificateEntry.getValue();
+			
 			PrivateKey privateKey = privateEntry.getValue();
 			Certificate[] chain = privateEntry.getChain();
+			X509Certificate certificate = (X509Certificate) chain[0];
 
 			DigestType digestType = this.getDigestTypeFromSignature(certificate.getSigAlgName());
 			Calendar calendar = Calendar.getInstance();
