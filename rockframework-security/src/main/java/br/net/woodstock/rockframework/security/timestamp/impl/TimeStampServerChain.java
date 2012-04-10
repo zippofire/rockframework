@@ -16,12 +16,40 @@
  */
 package br.net.woodstock.rockframework.security.timestamp.impl;
 
+import br.net.woodstock.rockframework.security.timestamp.TimeStampException;
 import br.net.woodstock.rockframework.security.timestamp.TimeStampServer;
+import br.net.woodstock.rockframework.util.Assert;
 
-public class LocalTimeStampClient extends BouncyCastleTimeStampClient {
+public class TimeStampServerChain implements TimeStampServer {
 
-	public LocalTimeStampClient(final TimeStampServer server) {
-		super(new LocalTimeStampProcessor(server));
+	private TimeStampServer[]	chain;
+
+	public TimeStampServerChain(final TimeStampServer[] chain) {
+		super();
+		Assert.notEmpty(chain, "chain");
+		this.chain = chain;
+	}
+
+	@Override
+	public byte[] getTimeStamp(final byte[] request) {
+		Exception error = null;
+		byte[] ts = null;
+		boolean ok = false;
+		for (TimeStampServer server : this.chain) {
+			try {
+				ts = server.getTimeStamp(request);
+				ok = true;
+				break;
+			} catch (Exception e) {
+				error = e;
+			}
+		}
+		if (!ok) {
+			if (error != null) {
+				throw new TimeStampException(error);
+			}
+		}
+		return ts;
 	}
 
 }

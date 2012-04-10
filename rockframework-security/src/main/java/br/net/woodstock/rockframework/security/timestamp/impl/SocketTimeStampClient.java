@@ -16,67 +16,16 @@
  */
 package br.net.woodstock.rockframework.security.timestamp.impl;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.InetSocketAddress;
-import java.net.Socket;
 import java.net.SocketAddress;
-
-import org.bouncycastle.tsp.TimeStampRequest;
-
-import br.net.woodstock.rockframework.utils.IOUtils;
 
 public class SocketTimeStampClient extends BouncyCastleTimeStampClient {
 
-	private SocketAddress	address;
-
 	public SocketTimeStampClient(final SocketAddress address) {
-		super();
-		this.address = address;
+		super(new SocketTimeStampProcessor(address));
 	}
 
 	public SocketTimeStampClient(final String address, final int port) {
-		super();
-		this.address = new InetSocketAddress(address, port);
-	}
-
-	@Override
-	protected byte[] sendRequest(final TimeStampRequest request) throws IOException {
-		Socket socket = null;
-		try {
-			socket = new Socket();
-			socket.connect(this.address);
-
-			byte[] requestBytes = request.getEncoded();
-
-			OutputStream outputStream = socket.getOutputStream();
-
-			this.writeBytes(outputStream, requestBytes);
-
-			socket.shutdownOutput();
-
-			InputStream inputStream = socket.getInputStream();
-
-			byte[] bytes = this.readBytes(inputStream);
-			return bytes;
-		} catch (IOException e) {
-			throw e;
-		} finally {
-			if (socket != null) {
-				if (socket.isConnected()) {
-					socket.close();
-				}
-			}
-		}
-	}
-
-	protected void writeBytes(final OutputStream outputStream, final byte[] bytes) throws IOException {
-		outputStream.write(bytes);
-	}
-
-	protected byte[] readBytes(final InputStream inputStream) throws IOException {
-		return IOUtils.toByteArray(inputStream);
+		super(new SocketTimeStampProcessor(address, port));
 	}
 
 }

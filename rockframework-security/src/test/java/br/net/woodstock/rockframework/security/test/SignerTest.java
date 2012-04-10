@@ -40,7 +40,6 @@ import br.net.woodstock.rockframework.security.store.PasswordAlias;
 import br.net.woodstock.rockframework.security.store.impl.JCAStore;
 import br.net.woodstock.rockframework.security.timestamp.TimeStamp;
 import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
-import br.net.woodstock.rockframework.security.timestamp.impl.STFTimeStampClient;
 import br.net.woodstock.rockframework.security.timestamp.impl.URLTimeStampClient;
 import br.net.woodstock.rockframework.utils.Base64Utils;
 import br.net.woodstock.rockframework.utils.IOUtils;
@@ -160,7 +159,7 @@ public class SignerTest extends TestCase {
 	}
 
 	public void xtest5() throws Exception {
-		FileInputStream fileInputStream = new FileInputStream("/tmp/sign1.pdf");
+		FileInputStream fileInputStream = new FileInputStream("/tmp/sign.pdf");
 		byte[] pdf = IOUtils.toByteArray(fileInputStream);
 		fileInputStream.close();
 
@@ -198,7 +197,22 @@ public class SignerTest extends TestCase {
 		}
 	}
 
-	public void test6() throws Exception {
+	public void test5x1() throws Exception {
+		PDFSigner signer = new PDFSigner(null);
+
+		byte[] signed = IOUtils.toByteArray(new FileInputStream("/tmp/sign2.pdf"));
+
+		Signature[] signatures = signer.getSignatures(signed);
+		for (Signature s : signatures) {
+			System.out.println(s.getLocation());
+			for (Signatory ss : s.getSignatories()) {
+				System.out.println("\t" + ss.getIssuer());
+				System.out.println("\t" + ss.getSubject());
+			}
+		}
+	}
+
+	public void xtest6() throws Exception {
 		BouncyCastleCertificateBuilder builder = new BouncyCastleCertificateBuilder("Lourival Sabino 1");
 		builder.withIssuer("TSE");
 		builder.withV3Extensions(true);

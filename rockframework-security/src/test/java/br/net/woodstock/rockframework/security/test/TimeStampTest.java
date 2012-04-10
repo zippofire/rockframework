@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import junit.framework.TestCase;
 import br.net.woodstock.rockframework.security.timestamp.TimeStamp;
 import br.net.woodstock.rockframework.security.timestamp.TimeStampClient;
-import br.net.woodstock.rockframework.security.timestamp.impl.STFTimeStampClient;
 import br.net.woodstock.rockframework.security.timestamp.impl.URLTimeStampClient;
 import br.net.woodstock.rockframework.utils.IOUtils;
 

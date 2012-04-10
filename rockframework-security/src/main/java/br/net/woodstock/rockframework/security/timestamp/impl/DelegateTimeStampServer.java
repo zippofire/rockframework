@@ -16,25 +16,23 @@
  */
 package br.net.woodstock.rockframework.security.timestamp.impl;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import br.net.woodstock.rockframework.security.timestamp.TimeStampProcessor;
+import br.net.woodstock.rockframework.security.timestamp.TimeStampServer;
+import br.net.woodstock.rockframework.util.Assert;
 
-public class URLTimeStampClient extends BouncyCastleTimeStampClient {
+public class DelegateTimeStampServer implements TimeStampServer {
 
-	public URLTimeStampClient(final String url) throws MalformedURLException {
-		super(new URLTimeStampProcessor(url));
+	private TimeStampProcessor	processor;
+
+	public DelegateTimeStampServer(final TimeStampProcessor processor) {
+		super();
+		Assert.notNull(processor, "processor");
+		this.processor = processor;
 	}
 
-	public URLTimeStampClient(final URL url) {
-		super(new URLTimeStampProcessor(url));
-	}
-
-	public URLTimeStampClient(final String url, final String encoding) throws MalformedURLException {
-		super(new URLTimeStampProcessor(url, encoding));
-	}
-
-	public URLTimeStampClient(final URL url, final String encoding) {
-		super(new URLTimeStampProcessor(url, encoding));
+	@Override
+	public byte[] getTimeStamp(final byte[] request) {
+		return this.processor.getBinaryResponse(request);
 	}
 
 }
