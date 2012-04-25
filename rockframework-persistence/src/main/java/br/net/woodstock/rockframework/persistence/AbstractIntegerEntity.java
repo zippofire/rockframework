@@ -20,4 +20,12 @@ public abstract class AbstractIntegerEntity extends AbstractEntity<Integer> {
 
 	private static final long	serialVersionUID	= 3944969317514186297L;
 
+	public AbstractIntegerEntity() {
+		super();
+	}
+
+	public AbstractIntegerEntity(final Integer id) {
+		super(id);
+	}
+	
 }
