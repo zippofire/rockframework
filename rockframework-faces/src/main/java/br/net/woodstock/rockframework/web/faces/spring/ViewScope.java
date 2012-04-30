@@ -29,7 +29,7 @@ import br.net.woodstock.rockframework.domain.spring.AbstractScope;
 
 public class ViewScope extends AbstractScope {
 
-	private static final String	VIEW_SCOPE_KEY	= "br.net.woodstock.rockframework.web.jsf.spring.ViewScope.VIEW_SCOPE_KEY";
+	private static final String	VIEW_SCOPE_KEY	= "br.net.woodstock.rockframework.web.faces.spring.ViewScope.VIEW_SCOPE_KEY";
 
 	public static final String	VIEW_SCOPE		= "view";
 

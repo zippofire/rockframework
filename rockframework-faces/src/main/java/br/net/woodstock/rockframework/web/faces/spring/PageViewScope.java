@@ -28,7 +28,7 @@ import br.net.woodstock.rockframework.domain.spring.AbstractScope;
 
 public class PageViewScope extends AbstractScope {
 
-	private static final String	PAGE_VIEW_SCOPE_KEY	= "br.net.woodstock.rockframework.web.jsf.spring.PageViewScope.PAGE_VIEW_SCOPE";
+	private static final String	PAGE_VIEW_SCOPE_KEY	= "br.net.woodstock.rockframework.web.faces.spring.PageViewScope.PAGE_VIEW_SCOPE";
 
 	public static final String	PAGE_VIEW_SCOPE		= "pageView";
 
