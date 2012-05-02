@@ -25,6 +25,7 @@ import org.springframework.beans.factory.ObjectFactory;
 
 import br.net.woodstock.rockframework.config.CoreLog;
 import br.net.woodstock.rockframework.domain.spring.AbstractScope;
+import br.net.woodstock.rockframework.utils.ConditionUtils;
 
 public class PageViewScope extends AbstractScope {
 
@@ -41,26 +42,52 @@ public class PageViewScope extends AbstractScope {
 				HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
 				HttpSession session = request.getSession();
 				String viewId = viewRoot.getViewId();
-				PageView pageView = (PageView) session.getAttribute(PageViewScope.PAGE_VIEW_SCOPE_KEY);
-				if (pageView != null) {
-					if (!pageView.getViewId().equals(viewId)) {
-						CoreLog.getInstance().getLog().fine("Replacing view " + pageView.getViewId() + " by " + viewId);
-						pageView.setViewId(viewId);
-						pageView.getAttributes().clear();
-					}
+				PageViewBean pageViewBean = (PageViewBean) session.getAttribute(PageViewScope.PAGE_VIEW_SCOPE_KEY);
+
+				if (pageViewBean == null) {
+					CoreLog.getInstance().getLog().fine("Creating new PageViewBean");
+					pageViewBean = new PageViewBean(viewId);
+					session.setAttribute(PageViewScope.PAGE_VIEW_SCOPE_KEY, pageViewBean);
 				} else {
-					pageView = new PageView(viewId);
-					session.setAttribute(PageViewScope.PAGE_VIEW_SCOPE_KEY, pageView);
+					pageViewBean.setViewId(viewId);
+					for (String key : pageViewBean.getAttributes().keySet()) {
+						PageViewAttribute pageViewAttribute = pageViewBean.getAttributes().get(key);
+						boolean remove = true;
+						for (String s : pageViewAttribute.getViews()) {
+							if (s.equals(viewId)) {
+								remove = false;
+								break;
+							}
+						}
+						if (remove) {
+							CoreLog.getInstance().getLog().fine("Removing " + name + " from view " + viewId);
+							pageViewBean.getAttributes().remove(key);
+						}
+					}
 				}
 
-				if (pageView.getAttributes().containsKey(name)) {
+				if (pageViewBean.getAttributes().containsKey(name)) {
 					CoreLog.getInstance().getLog().fine("Getting " + name + " for view " + viewId);
-					return pageView.getAttributes().get(name);
+					PageViewAttribute pageViewAttribute = pageViewBean.getAttributes().get(name);
+					return pageViewAttribute.getValue();
 				}
 
 				CoreLog.getInstance().getLog().fine("Creating " + name + " for view " + viewId);
 				Object obj = objectFactory.getObject();
-				pageView.getAttributes().put(name, obj);
+				String[] views = null;
+
+				if ((obj != null) && (obj.getClass().isAnnotationPresent(PageView.class))) {
+					PageView pageView = obj.getClass().getAnnotation(PageView.class);
+					views = pageView.value();
+				}
+
+				if (ConditionUtils.isEmpty(views)) {
+					views = new String[] { viewId };
+				}
+
+				PageViewAttribute pageViewAttribute = new PageViewAttribute(views, name, obj);
+				pageViewBean.getAttributes().put(name, pageViewAttribute);
+
 				return obj;
 			}
 		}
@@ -77,11 +104,12 @@ public class PageViewScope extends AbstractScope {
 				HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
 				HttpSession session = request.getSession();
 				String viewId = viewRoot.getViewId();
-				PageView pageView = (PageView) session.getAttribute(PageViewScope.PAGE_VIEW_SCOPE_KEY);
-				if (pageView == null) {
-					pageView = new PageView(viewId);
-					session.removeAttribute(name);
+				PageViewBean pageViewBean = (PageViewBean) session.getAttribute(PageViewScope.PAGE_VIEW_SCOPE_KEY);
+				if (pageViewBean == null) {
+					pageViewBean = new PageViewBean(viewId);
+					session.setAttribute(PageViewScope.PAGE_VIEW_SCOPE_KEY, pageViewBean);
 				}
+				pageViewBean.getAttributes().remove(name);
 			}
 		}
 

@@ -174,4 +174,22 @@ public abstract class NumberUtils {
 		return b & 0xff;
 	}
 
+	public static byte[] intToByteArray(final int i) {
+		byte[] array = new byte[4];
+		array[0] = (byte) (i >>> 24);
+		array[1] = (byte) (i >>> 16);
+		array[2] = (byte) (i >>> 8);
+		array[3] = (byte) (i);
+		return array;
+	}
+
+	public static int byteArrayToInt(final byte[] array) {
+		int i = 0;
+		i += (array[0] << 24);
+		i += (NumberUtils.unsignedByteToInt(array[1]) << 16);
+		i += (NumberUtils.unsignedByteToInt(array[2]) << 8);
+		i += (NumberUtils.unsignedByteToInt(array[3]));
+		return i;
+	}
+
 }

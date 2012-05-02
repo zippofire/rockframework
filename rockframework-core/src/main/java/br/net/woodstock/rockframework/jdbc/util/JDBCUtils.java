@@ -24,6 +24,7 @@ import java.io.Writer;
 import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import br.net.woodstock.rockframework.util.Assert;
@@ -35,6 +36,7 @@ public abstract class JDBCUtils {
 		//
 	}
 
+	// Blob
 	public static Blob createBlob(final Connection connection, final Reader reader) throws SQLException, IOException {
 		Assert.notNull(connection, "connection");
 		Assert.notNull(reader, "reader");
@@ -64,6 +66,7 @@ public abstract class JDBCUtils {
 		return blob;
 	}
 
+	// Clob
 	public static Clob createClob(final Connection connection, final String data) throws SQLException, IOException {
 		Assert.notNull(connection, "connection");
 		Assert.notEmpty(data, "data");
@@ -102,6 +105,84 @@ public abstract class JDBCUtils {
 		outputStream.write(data);
 
 		return clob;
+	}
+
+	// Get
+	public static Boolean getBoolean(final ResultSet rs, final String name) throws SQLException {
+		Boolean value = Boolean.valueOf(rs.getBoolean(name));
+		return JDBCUtils.getNullValue(rs, value);
+	}
+
+	public static Boolean getBoolean(final ResultSet rs, final int index) throws SQLException {
+		Boolean value = Boolean.valueOf(rs.getBoolean(index));
+		return JDBCUtils.getNullValue(rs, value);
+	}
+
+	public static Byte getByte(final ResultSet rs, final String name) throws SQLException {
+		Byte value = Byte.valueOf(rs.getByte(name));
+		return JDBCUtils.getNullValue(rs, value);
+	}
+
+	public static Byte getByte(final ResultSet rs, final int index) throws SQLException {
+		Byte value = Byte.valueOf(rs.getByte(index));
+		return JDBCUtils.getNullValue(rs, value);
+	}
+
+	public static Double getDouble(final ResultSet rs, final String name) throws SQLException {
+		Double value = Double.valueOf(rs.getDouble(name));
+		return JDBCUtils.getNullValue(rs, value);
+	}
+
+	public static Double getDouble(final ResultSet rs, final int index) throws SQLException {
+		Double value = Double.valueOf(rs.getDouble(index));
+		return JDBCUtils.getNullValue(rs, value);
+	}
+
+	public static Float getFloat(final ResultSet rs, final String name) throws SQLException {
+		Float value = Float.valueOf(rs.getFloat(name));
+		return JDBCUtils.getNullValue(rs, value);
+	}
+
+	public static Float getFloat(final ResultSet rs, final int index) throws SQLException {
+		Float value = Float.valueOf(rs.getFloat(index));
+		return JDBCUtils.getNullValue(rs, value);
+	}
+
+	public static Integer getInteger(final ResultSet rs, final String name) throws SQLException {
+		Integer value = Integer.valueOf(rs.getInt(name));
+		return JDBCUtils.getNullValue(rs, value);
+	}
+
+	public static Integer getInteger(final ResultSet rs, final int index) throws SQLException {
+		Integer value = Integer.valueOf(rs.getInt(index));
+		return JDBCUtils.getNullValue(rs, value);
+	}
+
+	public static Long getLong(final ResultSet rs, final String name) throws SQLException {
+		Long value = Long.valueOf(rs.getLong(name));
+		return JDBCUtils.getNullValue(rs, value);
+	}
+
+	public static Long getLong(final ResultSet rs, final int index) throws SQLException {
+		Long value = Long.valueOf(rs.getLong(index));
+		return JDBCUtils.getNullValue(rs, value);
+	}
+
+	public static Short getShort(final ResultSet rs, final String name) throws SQLException {
+		Short value = Short.valueOf(rs.getShort(name));
+		return JDBCUtils.getNullValue(rs, value);
+	}
+
+	public static Short getShort(final ResultSet rs, final int index) throws SQLException {
+		Short value = Short.valueOf(rs.getShort(index));
+		return JDBCUtils.getNullValue(rs, value);
+	}
+
+	private static <T> T getNullValue(final ResultSet rs, final T value) throws SQLException {
+		if (rs.wasNull()) {
+			return null;
+		}
+		return value;
 	}
 
 }

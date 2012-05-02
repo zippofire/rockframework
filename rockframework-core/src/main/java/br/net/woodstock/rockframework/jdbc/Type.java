@@ -20,7 +20,29 @@ import java.sql.Types;
 
 public enum Type {
 
-	ARRAY(Types.ARRAY), BIGINT(Types.BIGINT), BLOB(Types.BLOB), BOOLEAN(Types.BOOLEAN), CHAR(Types.CHAR), CLOB(Types.CLOB), DATE(Types.DATE), DECIMAL(Types.DECIMAL), DOUBLE(Types.DOUBLE), FLOAT(Types.FLOAT), INTEGER(Types.INTEGER), NUMERIC(Types.NUMERIC), OBJECT(Types.OTHER), OTHER(Types.OTHER), REAL(Types.REAL), REF(Types.REF), RESULTSET(Types.OTHER), SMALLINT(Types.SMALLINT), STRUCT(Types.STRUCT), TIME(Types.TIME), TIMESTAMP(Types.TIMESTAMP), TINYINT(Types.TINYINT), VARCHAR(Types.VARCHAR);
+	ARRAY(Types.ARRAY), /**/
+	BIGINT(Types.BIGINT), /**/
+	BLOB(Types.BLOB), /**/
+	BOOLEAN(Types.BOOLEAN), /**/
+	CHAR(Types.CHAR), /**/
+	CLOB(Types.CLOB), /**/
+	DATE(Types.DATE), /**/
+	DECIMAL(Types.DECIMAL), /**/
+	DOUBLE(Types.DOUBLE), /**/
+	FLOAT(Types.FLOAT), /**/
+	INTEGER(Types.INTEGER), /**/
+	NUMERIC(Types.NUMERIC), /**/
+	OBJECT(Types.OTHER), /**/
+	OTHER(Types.OTHER), /**/
+	REAL(Types.REAL), /**/
+	REF(Types.REF), /**/
+	RESULTSET(Types.OTHER), /**/
+	SMALLINT(Types.SMALLINT), /**/
+	STRUCT(Types.STRUCT), /**/
+	TIME(Types.TIME), /**/
+	TIMESTAMP(Types.TIMESTAMP), /**/
+	TINYINT(Types.TINYINT), /**/
+	VARCHAR(Types.VARCHAR);
 
 	private int	type;
 
@@ -30,6 +52,15 @@ public enum Type {
 
 	public int getType() {
 		return this.type;
+	}
+
+	public static Type fromType(final int type) {
+		for (Type t : Type.values()) {
+			if (t.getType() == type) {
+				return t;
+			}
+		}
+		return null;
 	}
 
 }

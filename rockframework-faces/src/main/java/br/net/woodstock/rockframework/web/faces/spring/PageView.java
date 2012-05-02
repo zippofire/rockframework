@@ -16,38 +16,17 @@
  */
 package br.net.woodstock.rockframework.web.faces.spring;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public class PageView implements Serializable {
+@Target({ ElementType.TYPE })
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface PageView {
 
-	private static final long	serialVersionUID	= 4243010108100828052L;
-
-	private String				viewId;
-
-	private Map<String, Object>	attributes;
-
-	public PageView(final String viewId) {
-		super();
-		this.viewId = viewId;
-		this.attributes = new HashMap<String, Object>();
-	}
-
-	public String getViewId() {
-		return this.viewId;
-	}
-
-	public void setViewId(final String viewId) {
-		this.viewId = viewId;
-	}
-
-	public Map<String, Object> getAttributes() {
-		return this.attributes;
-	}
-
-	public void setAttributes(final Map<String, Object> attributes) {
-		this.attributes = attributes;
-	}
+	String[] value() default {};
 
 }
