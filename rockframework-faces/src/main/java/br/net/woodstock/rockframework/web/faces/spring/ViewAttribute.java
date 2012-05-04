@@ -18,7 +18,7 @@ package br.net.woodstock.rockframework.web.faces.spring;
 
 import java.io.Serializable;
 
-class PageViewAttribute implements Serializable {
+class ViewAttribute implements Serializable {
 
 	private static final long	serialVersionUID	= 1734820659448540052L;
 
@@ -28,11 +28,11 @@ class PageViewAttribute implements Serializable {
 
 	private Object				value;
 
-	public PageViewAttribute() {
+	public ViewAttribute() {
 		super();
 	}
 
-	public PageViewAttribute(final String[] views, final String name, final Object value) {
+	public ViewAttribute(final String[] views, final String name, final Object value) {
 		super();
 		this.views = views;
 		this.name = name;

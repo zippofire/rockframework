@@ -20,18 +20,18 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-class PageViewBean implements Serializable {
+class ViewBean implements Serializable {
 
 	private static final long				serialVersionUID	= 4243010108100828052L;
 
 	private String							viewId;
 
-	private Map<String, PageViewAttribute>	attributes;
+	private Map<String, ViewAttribute>	attributes;
 
-	public PageViewBean(final String viewId) {
+	public ViewBean(final String viewId) {
 		super();
 		this.viewId = viewId;
-		this.attributes = new HashMap<String, PageViewAttribute>();
+		this.attributes = new HashMap<String, ViewAttribute>();
 	}
 
 	public String getViewId() {
@@ -42,11 +42,11 @@ class PageViewBean implements Serializable {
 		this.viewId = viewId;
 	}
 
-	public Map<String, PageViewAttribute> getAttributes() {
+	public Map<String, ViewAttribute> getAttributes() {
 		return this.attributes;
 	}
 
-	public void setAttributes(final Map<String, PageViewAttribute> attributes) {
+	public void setAttributes(final Map<String, ViewAttribute> attributes) {
 		this.attributes = attributes;
 	}
 
