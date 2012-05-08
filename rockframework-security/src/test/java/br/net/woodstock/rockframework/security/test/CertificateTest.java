@@ -23,8 +23,8 @@ public class CertificateTest extends TestCase {
 	static {
 		System.setProperty("http.proxyHost", "10.30.1.12");
 		System.setProperty("http.proxyPort", "8080");
-		System.setProperty("sun.net.client.defaultConnectTimeout", "5000");
-		System.setProperty("sun.net.client.defaultReadTimeout", "5000");
+		System.setProperty("sun.net.client.defaultConnectTimeout", "15000");
+		System.setProperty("sun.net.client.defaultReadTimeout", "15000");
 	}
 
 	public void xtestCreate() throws Exception {
@@ -48,9 +48,9 @@ public class CertificateTest extends TestCase {
 
 		CertificateVerifier cv1 = new DateCertificateVerifier();
 		CertificateVerifier cv2 = new CRLCertificateVerifier();
-		CertificateVerifier cv3 = new PKIXCertificateVerifier(new Certificate[] { certificate }, new Certificate[] { certificate });
+		//CertificateVerifier cv3 = new PKIXCertificateVerifier(new Certificate[] { certificate }, new Certificate[] { certificate });
 
-		CertificateVerifier certificateVerifier = new CertificateVerifierChain(new CertificateVerifier[] { cv1, cv2, cv3 });
+		CertificateVerifier certificateVerifier = new CertificateVerifierChain(new CertificateVerifier[] { cv1, cv2 });
 		boolean ok = certificateVerifier.verify(certificate);
 		System.out.println("OK: " + ok);
 	}

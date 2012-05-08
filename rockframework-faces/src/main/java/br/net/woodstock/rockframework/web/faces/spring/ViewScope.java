@@ -122,7 +122,7 @@ public class ViewScope extends AbstractScope {
 
 	@Override
 	public void registerDestructionCallback(final String name, final Runnable callback) {
-		System.out.println(name + " => " + callback);
+		CoreLog.getInstance().getLog().fine("registerDestructionCallback " + name + " => " + callback);
 	}
 
 }
