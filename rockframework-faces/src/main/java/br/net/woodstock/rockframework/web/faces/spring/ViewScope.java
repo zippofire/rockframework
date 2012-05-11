@@ -16,6 +16,9 @@
  */
 package br.net.woodstock.rockframework.web.faces.spring;
 
+import java.util.Iterator;
+import java.util.Map.Entry;
+
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
@@ -50,8 +53,11 @@ public class ViewScope extends AbstractScope {
 					session.setAttribute(ViewScope.VIEW_SCOPE_KEY, viewBean);
 				} else {
 					viewBean.setViewId(viewId);
-					for (String key : viewBean.getAttributes().keySet()) {
-						ViewAttribute viewAttribute = viewBean.getAttributes().get(key);
+
+					Iterator<Entry<String, ViewAttribute>> iterator = viewBean.getAttributes().entrySet().iterator();
+					while (iterator.hasNext()) {
+						Entry<String, ViewAttribute> entry = iterator.next();
+						ViewAttribute viewAttribute = entry.getValue();
 						boolean remove = true;
 						for (String grantedViewId : viewAttribute.getViews()) {
 							if (grantedViewId.equals(viewId)) {
@@ -60,10 +66,11 @@ public class ViewScope extends AbstractScope {
 							}
 						}
 						if (remove) {
-							CoreLog.getInstance().getLog().fine("Removing " + name + " from view " + viewId);
-							viewBean.getAttributes().remove(key);
+							CoreLog.getInstance().getLog().fine("Removing " + entry.getKey() + " from view " + viewId);
+							iterator.remove();
 						}
 					}
+
 				}
 
 				if (viewBean.getAttributes().containsKey(name)) {
