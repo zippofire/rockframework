@@ -26,9 +26,9 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.ObjectFactory;
 
-import br.net.woodstock.rockframework.config.CoreLog;
 import br.net.woodstock.rockframework.domain.spring.AbstractScope;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
+import br.net.woodstock.rockframework.web.config.WebLog;
 
 public class ViewScope extends AbstractScope {
 
@@ -48,7 +48,7 @@ public class ViewScope extends AbstractScope {
 				ViewBean viewBean = (ViewBean) session.getAttribute(ViewScope.VIEW_SCOPE_KEY);
 
 				if (viewBean == null) {
-					CoreLog.getInstance().getLog().fine("Creating new PageViewBean");
+					WebLog.getInstance().getLog().fine("Creating new PageViewBean");
 					viewBean = new ViewBean(viewId);
 					session.setAttribute(ViewScope.VIEW_SCOPE_KEY, viewBean);
 				} else {
@@ -66,7 +66,7 @@ public class ViewScope extends AbstractScope {
 							}
 						}
 						if (remove) {
-							CoreLog.getInstance().getLog().fine("Removing " + entry.getKey() + " from view " + viewId);
+							WebLog.getInstance().getLog().fine("Removing " + entry.getKey() + " from view " + viewId);
 							iterator.remove();
 						}
 					}
@@ -74,12 +74,12 @@ public class ViewScope extends AbstractScope {
 				}
 
 				if (viewBean.getAttributes().containsKey(name)) {
-					CoreLog.getInstance().getLog().fine("Getting " + name + " for view " + viewId);
+					WebLog.getInstance().getLog().fine("Getting " + name + " for view " + viewId);
 					ViewAttribute viewAttribute = viewBean.getAttributes().get(name);
 					return viewAttribute.getValue();
 				}
 
-				CoreLog.getInstance().getLog().fine("Creating " + name + " for view " + viewId);
+				WebLog.getInstance().getLog().fine("Creating " + name + " for view " + viewId);
 				Object obj = objectFactory.getObject();
 				String[] views = null;
 
@@ -114,7 +114,7 @@ public class ViewScope extends AbstractScope {
 
 	@Override
 	public Object remove(final String name) {
-		CoreLog.getInstance().getLog().info("Removing " + name);
+		WebLog.getInstance().getLog().info("Removing " + name);
 		FacesContext context = FacesContext.getCurrentInstance();
 		if (context != null) {
 			HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
@@ -129,7 +129,7 @@ public class ViewScope extends AbstractScope {
 
 	@Override
 	public void registerDestructionCallback(final String name, final Runnable callback) {
-		CoreLog.getInstance().getLog().fine("registerDestructionCallback " + name + " => " + callback);
+		WebLog.getInstance().getLog().fine("registerDestructionCallback " + name + " => " + callback);
 	}
 
 }

@@ -16,6 +16,7 @@
  */
 package br.net.woodstock.rockframework.utils;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import br.net.woodstock.rockframework.config.CoreConfig;
@@ -26,7 +27,13 @@ public abstract class LogUtils {
 
 	private static final String	LOG_NAME			= CoreConfig.getInstance().getValue(LogUtils.LOG_NAME_PROPERTY);
 
+	private static final String	LOG_LEVEL_PROPERTY	= "logging.level";
+
+	private static final String	LOG_LEVEL			= CoreConfig.getInstance().getValue(LogUtils.LOG_LEVEL_PROPERTY);
+
 	private static Logger		log					= Logger.getLogger(LogUtils.LOG_NAME);
+
+	private static Level		level				= Level.parse(LogUtils.LOG_LEVEL);
 
 	private LogUtils() {
 		super();
@@ -38,5 +45,9 @@ public abstract class LogUtils {
 
 	public static Logger getLog(final String name) {
 		return Logger.getLogger(name);
+	}
+
+	public static Level getDefaultLevel() {
+		return LogUtils.level;
 	}
 }
