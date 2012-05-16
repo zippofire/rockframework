@@ -20,11 +20,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import junit.framework.TestCase;
 import br.net.woodstock.rockframework.util.DateBuilder;
 import br.net.woodstock.rockframework.utils.DateUtils;
 import br.net.woodstock.rockframework.utils.TimeUtils;
-
-import junit.framework.TestCase;
 
 public class DateTest extends TestCase {
 
@@ -68,6 +67,16 @@ public class DateTest extends TestCase {
 		System.out.println(format.format(builder.getDate()));
 	}
 
+	public void test4() throws Exception {
+		long l = System.currentTimeMillis();
+		DateBuilder builder = new DateBuilder(new Date());
+		for (int i = 0; i < 2000; i++) {
+			builder.addDays(1);
+		}
+		System.out.println(builder.getDate());
+		System.out.println(System.currentTimeMillis() - l);
+	}
+
 	public void xtest4() throws Exception {
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		Date d1 = format.parse("01/12/2010");
@@ -80,8 +89,8 @@ public class DateTest extends TestCase {
 		System.out.println(DateUtils.diffYears(d1, d2));
 		System.out.println(DateUtils.diffYears(d2, d1));
 	}
-	
-	public void test5() throws Exception {
+
+	public void xtest5() throws Exception {
 		Date d = this.addDays(150);
 		System.out.println(d);
 	}

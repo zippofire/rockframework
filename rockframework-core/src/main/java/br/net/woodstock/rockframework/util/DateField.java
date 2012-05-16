@@ -20,7 +20,13 @@ import java.util.Calendar;
 
 public enum DateField {
 
-	DAY_OF_MONTH(Calendar.DAY_OF_MONTH, false), DAY_OF_WEEK(Calendar.DAY_OF_WEEK, true), HOUR(Calendar.HOUR_OF_DAY, false), MINUTE(Calendar.MINUTE, false), MONTH(Calendar.MONTH, false), SECOND(Calendar.SECOND, false), YEAR(Calendar.YEAR, false);
+	DAY_OF_MONTH(Calendar.DAY_OF_MONTH, false), /**/
+	DAY_OF_WEEK(Calendar.DAY_OF_WEEK, true), /**/
+	HOUR(Calendar.HOUR_OF_DAY, false), /**/
+	MINUTE(Calendar.MINUTE, false), /**/
+	MONTH(Calendar.MONTH, false), /**/
+	SECOND(Calendar.SECOND, false), /**/
+	YEAR(Calendar.YEAR, false);
 
 	private int		calendarField;
 
