@@ -23,9 +23,9 @@ public class XMLSignerTest extends TestCase {
 		builder1.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
 		PrivateKeyHolder holder1 = builder1.build();
 
-		XmlDocument document = new XmlDocument("urn:teste", "teste");
+		XmlDocument document = new XmlDocument("teste");
 		XmlElement root = document.getRoot();
-		XmlElement element = root.addElement("urn:nome", "nome");
+		XmlElement element = root.addElement("nome");
 		element.setData("Lourival Sabino");
 
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

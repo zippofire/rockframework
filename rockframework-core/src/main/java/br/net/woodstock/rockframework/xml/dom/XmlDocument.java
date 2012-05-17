@@ -42,11 +42,9 @@ public class XmlDocument extends DocumentWrapper {
 
 	private static final long	serialVersionUID	= -3892243357826950608L;
 
-	public static final String	DEFAULT_NS_PREFIX	= XMLConstants.DEFAULT_NS_PREFIX;
+	private static final String	XMLNS_XSI			= "xmlns:xsi";
 
-	public static final String	XML_NS_PREFIX		= XMLConstants.XML_NS_PREFIX;
-
-	public static final String	XML_NS_URI			= XMLConstants.XML_NS_URI;
+	private static final String	XSI_SCHEMA_LOCATION	= "xsi:schemaLocation";
 
 	private XmlElement			root;
 
@@ -55,14 +53,21 @@ public class XmlDocument extends DocumentWrapper {
 	}
 
 	public XmlDocument(final String name) {
-		this("urn:" + name, name);
+		super();
+		DOMImplementation domImplementation = XmlHelper.getDocumentBuilder().getDOMImplementation();
+		Document doc = domImplementation.createDocument(null, name, null);
+		Element e = doc.getDocumentElement();
+		this.setDocument(doc);
+		this.root = XmlElement.toXmlElement(e);
 	}
 
-	public XmlDocument(final String namespace, final String name) {
+	public XmlDocument(final String namespace, final String location, final String name) {
 		super();
 		DOMImplementation domImplementation = XmlHelper.getDocumentBuilder().getDOMImplementation();
 		Document doc = domImplementation.createDocument(namespace, name, null);
 		Element e = doc.getDocumentElement();
+		e.setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, XmlDocument.XMLNS_XSI, XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI);
+		e.setAttribute(XmlDocument.XSI_SCHEMA_LOCATION, location);
 		this.setDocument(doc);
 		this.root = XmlElement.toXmlElement(e);
 	}

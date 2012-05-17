@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.persistence.orm.check;
+package br.net.woodstock.rockframework.persistence.orm.tools;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
