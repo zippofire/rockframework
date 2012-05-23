@@ -54,15 +54,17 @@ abstract class AbstractSpreadsheetDocumentReader implements SpreadsheetDocumentR
 	}
 
 	private void handleRow(final Sheet sheet, final org.apache.poi.ss.usermodel.Row row) {
-		Row r = new Row();
-		if (row.getPhysicalNumberOfCells() > 0) {
-			int numCells = row.getLastCellNum();
-			for (int cellIndex = 0; cellIndex < numCells; cellIndex++) {
-				org.apache.poi.ss.usermodel.Cell cell = row.getCell(cellIndex);
-				this.handleCell(r, cell);
+		if (row != null) {
+			Row r = new Row();
+			if (row.getPhysicalNumberOfCells() > 0) {
+				int numCells = row.getLastCellNum();
+				for (int cellIndex = 0; cellIndex < numCells; cellIndex++) {
+					org.apache.poi.ss.usermodel.Cell cell = row.getCell(cellIndex);
+					this.handleCell(r, cell);
+				}
 			}
+			sheet.getRows().add(r);
 		}
-		sheet.getRows().add(r);
 	}
 
 	private void handleCell(final Row row, final org.apache.poi.ss.usermodel.Cell cell) {
