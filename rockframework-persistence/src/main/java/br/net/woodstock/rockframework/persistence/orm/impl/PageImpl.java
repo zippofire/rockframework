@@ -18,6 +18,7 @@ package br.net.woodstock.rockframework.persistence.orm.impl;
 
 import br.net.woodstock.rockframework.persistence.orm.Page;
 import br.net.woodstock.rockframework.util.Assert;
+import br.net.woodstock.rockframework.utils.ObjectUtils;
 
 public class PageImpl implements Page {
 
@@ -55,6 +56,35 @@ public class PageImpl implements Page {
 
 	public void setResultsPerPage(final int resultsPerPage) {
 		this.resultsPerPage = resultsPerPage;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = 1;
+		result = (ObjectUtils.HASH_PRIME * result) + this.pageNumber;
+		result = (ObjectUtils.HASH_PRIME * result) + this.resultsPerPage;
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		PageImpl other = (PageImpl) obj;
+		if (this.pageNumber != other.pageNumber) {
+			return false;
+		}
+		if (this.resultsPerPage != other.resultsPerPage) {
+			return false;
+		}
+		return true;
 	}
 
 }
