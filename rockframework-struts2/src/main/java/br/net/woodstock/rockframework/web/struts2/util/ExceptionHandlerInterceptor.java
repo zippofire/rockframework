@@ -59,7 +59,7 @@ public class ExceptionHandlerInterceptor extends AbstractInterceptor {
 			String[] array = this.exceptions.split(ExceptionHandlerInterceptor.SEPARATOR);
 			for (String s : array) {
 				try {
-					Class c = Class.forName(s);
+					Class c = Class.forName(s.trim());
 					if (Exception.class.isAssignableFrom(c)) {
 						this.exceptionsList.add(c);
 					}
@@ -76,7 +76,7 @@ public class ExceptionHandlerInterceptor extends AbstractInterceptor {
 			String result = invocation.invoke();
 			return result;
 		} catch (Exception e) {
-			if (this.exceptionsList.contains(e.getClass())) {
+			if (this.isHandled(e)) {
 				Object action = invocation.getAction();
 				if (action instanceof ValidationAware) {
 					ValidationAware va = (ValidationAware) action;
@@ -87,6 +87,16 @@ public class ExceptionHandlerInterceptor extends AbstractInterceptor {
 			}
 			throw e;
 		}
+	}
+
+	protected boolean isHandled(final Exception e) {
+		Class<? extends Exception> clazz = e.getClass();
+		for (Class<Exception> c : this.exceptionsList) {
+			if (c.isAssignableFrom(clazz)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void setLogName(final String logName) {
