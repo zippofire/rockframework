@@ -80,7 +80,15 @@ public class ExceptionHandlerInterceptor extends AbstractInterceptor {
 				Object action = invocation.getAction();
 				if (action instanceof ValidationAware) {
 					ValidationAware va = (ValidationAware) action;
-					va.addActionError(e.getMessage());
+					Throwable cause = e.getCause();
+					if (cause != null) {
+						while (cause.getCause() != null) {
+							cause = cause.getCause();
+						}
+						va.addActionError(cause.getMessage());
+					} else {
+						va.addActionError(e.getMessage());
+					}
 				}
 				this.log.warn(e.getMessage(), e);
 				return Struts2Constants.ERROR;
