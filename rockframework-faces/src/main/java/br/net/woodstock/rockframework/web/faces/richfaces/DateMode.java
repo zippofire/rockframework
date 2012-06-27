@@ -16,15 +16,8 @@
  */
 package br.net.woodstock.rockframework.web.faces.richfaces;
 
-import java.io.Serializable;
+public enum DateMode {
 
-import br.net.woodstock.rockframework.persistence.orm.Page;
-import br.net.woodstock.rockframework.persistence.orm.QueryResult;
-
-public interface EntityRepository extends Serializable {
-
-	QueryResult getResult(final Page page);
-
-	Object getEntity(final Object id);
+	PAST_WITH_WEEKEND, PAST_WITHOUT_WEEKEND, FUTURE_WITH_WEEKEND, FUTURE_WITHOUT_WEEKEND, ANY_WITH_WEEKEND, ANY_WITHOUT_WEEKEND;
 
 }
