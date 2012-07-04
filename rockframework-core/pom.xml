@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>rockframework-core</artifactId>
 	<name>Rock Framework - Core</name>
@@ -77,6 +78,14 @@
 				<exclusion>
 					<artifactId>dom4j</artifactId>
 					<groupId>dom4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>stax-api</artifactId>
+					<groupId>stax</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>geronimo-stax-api_1.0_spec</artifactId>
+					<groupId>org.apache.geronimo.specs</groupId>
 				</exclusion>
 			</exclusions>
 		</dependency>
