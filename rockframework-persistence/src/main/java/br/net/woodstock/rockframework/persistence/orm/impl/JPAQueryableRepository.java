@@ -149,6 +149,35 @@ public class JPAQueryableRepository implements QueryableRepository {
 			q.setMaxResults(page.getResultsPerPage());
 		}
 
+		if (ConditionUtils.isNotEmpty(options)) {
+			if (query.getPage() == null) {
+				if ((ConditionUtils.containsKey(options, Constants.OPTION_FIRST_RESULT))) {
+					Object obj = options.get(Constants.OPTION_FIRST_RESULT);
+					int i = -1;
+					if (obj instanceof Number) {
+						i = ((Number) obj).intValue();
+					} else if (obj instanceof String) {
+						i = Integer.parseInt((String) obj);
+					}
+					if (i != -1) {
+						q.setFirstResult(i);
+					}
+				}
+				if ((ConditionUtils.containsKey(options, Constants.OPTION_MAX_RESULT))) {
+					Object obj = options.get(Constants.OPTION_MAX_RESULT);
+					int i = -1;
+					if (obj instanceof Number) {
+						i = ((Number) obj).intValue();
+					} else if (obj instanceof String) {
+						i = Integer.parseInt((String) obj);
+					}
+					if (i != -1) {
+						q.setMaxResults(i);
+					}
+				}
+			}
+		}
+
 		return q;
 	}
 

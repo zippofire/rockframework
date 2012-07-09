@@ -2,6 +2,7 @@ package br.net.woodstock.rockframework.core.test.net;
 
 import java.io.FileInputStream;
 
+import junit.framework.TestCase;
 import br.net.woodstock.rockframework.net.mail.ByteArrayAttachment;
 import br.net.woodstock.rockframework.net.mail.Disposition;
 import br.net.woodstock.rockframework.net.mail.InputStreamAttachment;
@@ -9,34 +10,23 @@ import br.net.woodstock.rockframework.net.mail.RunnableMailSender;
 import br.net.woodstock.rockframework.net.mail.SimpleMail;
 import br.net.woodstock.rockframework.net.mail.SimpleMailSender;
 
-import junit.framework.TestCase;
-
 public class MailTest extends TestCase {
 
-	public void test1() throws Exception {
+	public void xtest1() throws Exception {
 		SimpleMail mail = new SimpleMail();
-		mail.setFrom("SCE <sissce@mc.gov.br>");
-		mail.addTo("lourival.junior@mc.gov.br");
+		mail.setFrom("Carmen Lucia <carmen.lucia@tse.jus.br>");
+		mail.addTo("fernando.lustosa@tse.jus.br");
 		mail.setHtml(true);
-		mail.setSubject("Teste Runnable");
-		mail.setText("<html><body>Foto do sarney</body></html>");
+		mail.setSubject("Urgente!!!");
+		mail.setText("Favor comparecer no meu gabinete. Traga o Rodrigo Mazoni junto.");
 
-		FileInputStream inputStream = new FileInputStream("C:/Temp/split.pdf");
-
-		byte[] bytes = new byte[inputStream.available()];
-		inputStream.read(bytes);
-
-		inputStream.close();
-
-		mail.addAttach(new ByteArrayAttachment("split.pdf", "application/pdf", bytes));
-
-		RunnableMailSender mailSender = new RunnableMailSender("10.209.64.105");
+		SimpleMailSender mailSender = new SimpleMailSender("smtp.tse.jus.br");
 		mailSender.setDebug(false);
 
 		mailSender.send(mail);
 	}
 
-	public void test11() throws Exception {
+	public void xtest11() throws Exception {
 		SimpleMail mail = new SimpleMail();
 		mail.setFrom("SCE <sissce@mc.gov.br>");
 		mail.addTo("lourival.junior@mc.gov.br");
