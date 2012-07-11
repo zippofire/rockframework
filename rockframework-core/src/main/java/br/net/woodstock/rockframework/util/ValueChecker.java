@@ -24,7 +24,9 @@ import java.util.regex.Pattern;
 
 import br.net.woodstock.rockframework.config.CoreLog;
 import br.net.woodstock.rockframework.config.CoreMessage;
+import br.net.woodstock.rockframework.utils.ArrayUtils;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
+import br.net.woodstock.rockframework.utils.EnumUtils;
 
 public class ValueChecker {
 
@@ -51,6 +53,8 @@ public class ValueChecker {
 	private static final String		MESSAGE_NOT_NULL		= "error.notNull";
 
 	private static final String		MESSAGE_VALID_REGEX		= "error.validRegex";
+
+	private static final String		MESSAGE_VALID_ENUM		= "error.validEnum";
 
 	private ValueExceptionBuilder	exceptionBuilder;
 
@@ -263,6 +267,17 @@ public class ValueChecker {
 
 		if (!Pattern.matches(pattern, value)) {
 			throw this.exceptionBuilder.newException(CoreMessage.getInstance().getMessage(ValueChecker.MESSAGE_VALID_REGEX, name));
+		}
+	}
+
+	// Enum
+	public <E extends Enum<?>> void validEnum(final String value, final Class<E> enumType, final String name) {
+		this.notEmpty(value, name);
+		this.notEmpty(enumType, name);
+
+		E e = EnumUtils.getEnumByName(enumType, value);
+		if (e == null) {
+			throw this.exceptionBuilder.newException(CoreMessage.getInstance().getMessage(ValueChecker.MESSAGE_VALID_ENUM, name, ArrayUtils.toString(EnumUtils.getEnumValues(enumType))));
 		}
 	}
 

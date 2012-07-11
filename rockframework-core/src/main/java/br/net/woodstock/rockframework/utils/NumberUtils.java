@@ -37,6 +37,10 @@ public abstract class NumberUtils {
 
 	private static final Random	RANDOM					= new Random();
 
+	private NumberUtils() {
+		//
+	}
+
 	public static String format(final BigDecimal value) {
 		if (value == null) {
 			return null;
@@ -164,10 +168,6 @@ public abstract class NumberUtils {
 			return Math.cbrt(value);
 		}
 		return Math.pow(value, 1.0 / root);
-	}
-
-	private NumberUtils() {
-		//
 	}
 
 	public static int unsignedByteToInt(final byte b) {

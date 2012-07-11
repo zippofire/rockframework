@@ -146,5 +146,10 @@ public abstract class Assert {
 	public static void validRegex(final String value, final String pattern, final String name) {
 		Assert.VALUE_CHECKER.validRegex(value, pattern, name);
 	}
+	
+	// Enum
+	public static <E extends Enum<?>> void validEnum(final String value, final Class<E> enumType, final String name) {
+		Assert.VALUE_CHECKER.validEnum(value, enumType, name);
+	}
 
 }

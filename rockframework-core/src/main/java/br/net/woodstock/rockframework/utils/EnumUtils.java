@@ -78,4 +78,14 @@ public abstract class EnumUtils {
 		return null;
 	}
 
+	@SuppressWarnings({ "rawtypes" })
+	public static <T extends Enum> T[] getEnumValues(final Class<T> clazz) {
+		Assert.notNull(clazz, "clazz");
+		if (clazz.isEnum()) {
+			T[] array = clazz.getEnumConstants();
+			return array;
+		}
+		return null;
+	}
+
 }
