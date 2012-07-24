@@ -20,6 +20,7 @@ import org.bouncycastle.tsp.TimeStampResponse;
 import org.bouncycastle.tsp.TimeStampToken;
 
 import br.net.woodstock.rockframework.security.Alias;
+import br.net.woodstock.rockframework.security.cert.CertificateBuilderRequest;
 import br.net.woodstock.rockframework.security.cert.KeyUsageType;
 import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
 import br.net.woodstock.rockframework.security.cert.impl.BouncyCastleCertificateBuilder;
@@ -108,11 +109,12 @@ public class SignerTest extends TestCase {
 		byte[] pdf = IOUtils.toByteArray(fileInputStream);
 		fileInputStream.close();
 
-		BouncyCastleCertificateBuilder builder1 = new BouncyCastleCertificateBuilder("Lourival Sabino 1");
-		builder1.withIssuer("Woodstock Tecnologia 1");
-		builder1.withV3Extensions(true);
-		builder1.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
-		PrivateKeyHolder holder1 = builder1.build();
+		CertificateBuilderRequest request = new CertificateBuilderRequest("Lourival Sabino");
+		request.withEmail("junior@woodstock.net.br");
+		request.withIssuer("Woodstock Tecnologia");
+		request.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
+
+		PrivateKeyHolder holder1 = BouncyCastleCertificateBuilder.getInstance().build(request);
 
 		TimeStampClient timeStampClient = new URLTimeStampClient("http://tsa.safelayer.com:8093");
 		// TimeStampClient timeStampClient = new STFTimeStampClient("201.49.148.134", 318);
@@ -137,11 +139,12 @@ public class SignerTest extends TestCase {
 	public void xtest4() throws Exception {
 		byte[] pdf = "Lourival Sabino da Silva Júnior".getBytes();
 
-		BouncyCastleCertificateBuilder builder1 = new BouncyCastleCertificateBuilder("Lourival Sabino 1");
-		builder1.withIssuer("Woodstock Tecnologia 1");
-		builder1.withV3Extensions(true);
-		builder1.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
-		PrivateKeyHolder holder1 = builder1.build();
+		CertificateBuilderRequest request = new CertificateBuilderRequest("Lourival Sabino");
+		request.withEmail("junior@woodstock.net.br");
+		request.withIssuer("Woodstock Tecnologia");
+		request.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
+
+		PrivateKeyHolder holder1 = BouncyCastleCertificateBuilder.getInstance().build(request);
 
 		URLTimeStampClient timeStampClient = new URLTimeStampClient("http://tsa.safelayer.com:8093");
 		timeStampClient.setDebug(true);
@@ -163,11 +166,12 @@ public class SignerTest extends TestCase {
 		byte[] pdf = IOUtils.toByteArray(fileInputStream);
 		fileInputStream.close();
 
-		BouncyCastleCertificateBuilder builder = new BouncyCastleCertificateBuilder("Lourival Sabino 1");
-		builder.withIssuer("Woodstock Tecnologia 1");
-		builder.withV3Extensions(true);
-		builder.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
-		PrivateKeyHolder holder = builder.build();
+		CertificateBuilderRequest request = new CertificateBuilderRequest("Lourival Sabino");
+		request.withEmail("junior@woodstock.net.br");
+		request.withIssuer("Woodstock Tecnologia");
+		request.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
+
+		PrivateKeyHolder holder = BouncyCastleCertificateBuilder.getInstance().build(request);
 
 		// TimeStampClient timeStampClient = TSA_CLIENT_STF;
 		// TimeStampClient timeStampClient = new STFTimeStampClient("201.49.148.134", 318);
@@ -213,11 +217,12 @@ public class SignerTest extends TestCase {
 	}
 
 	public void xtest6() throws Exception {
-		BouncyCastleCertificateBuilder builder = new BouncyCastleCertificateBuilder("Lourival Sabino 1");
-		builder.withIssuer("TSE");
-		builder.withV3Extensions(true);
-		builder.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
-		PrivateKeyHolder holder = builder.build();
+		CertificateBuilderRequest request = new CertificateBuilderRequest("Lourival Sabino");
+		request.withEmail("junior@woodstock.net.br");
+		request.withIssuer("Woodstock Tecnologia");
+		request.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
+
+		PrivateKeyHolder holder = BouncyCastleCertificateBuilder.getInstance().build(request);
 
 		FileInputStream fileInputStream = new FileInputStream("/home/lourival/Documentos/curriculum.pdf");
 
@@ -241,11 +246,12 @@ public class SignerTest extends TestCase {
 	}
 
 	public void xtest6x1() throws Exception {
-		BouncyCastleCertificateBuilder builder = new BouncyCastleCertificateBuilder("Lourival Sabino 2");
-		builder.withIssuer("TSE");
-		builder.withV3Extensions(true);
-		builder.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
-		PrivateKeyHolder holder = builder.build();
+		CertificateBuilderRequest request = new CertificateBuilderRequest("Lourival Sabino");
+		request.withEmail("junior@woodstock.net.br");
+		request.withIssuer("Woodstock Tecnologia");
+		request.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
+
+		PrivateKeyHolder holder = BouncyCastleCertificateBuilder.getInstance().build(request);
 
 		FileInputStream fileInputStream = new FileInputStream("/tmp/sign.pdf");
 

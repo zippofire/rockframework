@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 import junit.framework.TestCase;
+import br.net.woodstock.rockframework.security.cert.CertificateBuilderRequest;
 import br.net.woodstock.rockframework.security.cert.KeyUsageType;
 import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
 import br.net.woodstock.rockframework.security.cert.impl.BouncyCastleCertificateBuilder;
@@ -17,11 +18,12 @@ import br.net.woodstock.rockframework.xml.dom.XmlElement;
 public class XMLSignerTest extends TestCase {
 
 	public void test1() throws Exception {
-		BouncyCastleCertificateBuilder builder1 = new BouncyCastleCertificateBuilder("Lourival Sabino 1");
-		builder1.withIssuer("Woodstock Tecnologia 1");
-		builder1.withV3Extensions(true);
-		builder1.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
-		PrivateKeyHolder holder1 = builder1.build();
+		CertificateBuilderRequest request = new CertificateBuilderRequest("Lourival Sabino");
+		request.withEmail("junior@woodstock.net.br");
+		request.withIssuer("Woodstock Tecnologia");
+		request.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
+
+		PrivateKeyHolder holder1 = BouncyCastleCertificateBuilder.getInstance().build(request);
 
 		XmlDocument document = new XmlDocument("teste");
 		XmlElement root = document.getRoot();
@@ -43,11 +45,12 @@ public class XMLSignerTest extends TestCase {
 	}
 
 	public void xtest2() throws Exception {
-		BouncyCastleCertificateBuilder builder1 = new BouncyCastleCertificateBuilder("Lourival Sabino 1");
-		builder1.withIssuer("Woodstock Tecnologia 1");
-		builder1.withV3Extensions(true);
-		builder1.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
-		PrivateKeyHolder holder1 = builder1.build();
+		CertificateBuilderRequest request = new CertificateBuilderRequest("Lourival Sabino");
+		request.withEmail("junior@woodstock.net.br");
+		request.withIssuer("Woodstock Tecnologia");
+		request.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
+
+		PrivateKeyHolder holder1 = BouncyCastleCertificateBuilder.getInstance().build(request);
 
 		FileInputStream fileInputStream = new FileInputStream("/home/lourival/Documentos/sign-test.fodt");
 

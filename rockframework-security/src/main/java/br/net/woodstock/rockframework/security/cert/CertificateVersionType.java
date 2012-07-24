@@ -16,8 +16,8 @@
  */
 package br.net.woodstock.rockframework.security.cert;
 
-public interface CertificateBuilder {
+public enum CertificateVersionType {
 
-	PrivateKeyHolder build(CertificateBuilderRequest request);
+	V1, V3;
 
 }

@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.security.cert.X509Certificate;
 
 import junit.framework.TestCase;
+import br.net.woodstock.rockframework.security.cert.CertificateBuilderRequest;
 import br.net.woodstock.rockframework.security.cert.KeyUsageType;
 import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
 import br.net.woodstock.rockframework.security.cert.impl.BouncyCastleCertificateBuilder;
@@ -33,11 +34,11 @@ public class PKCS7SignerTest extends TestCase {
 	}
 
 	public void xtestCreateCert() throws Exception {
-		BouncyCastleCertificateBuilder builder1 = new BouncyCastleCertificateBuilder("Lourival Sabino");
-		builder1.withIssuer("Woodstock Tecnologia");
-		builder1.withV3Extensions(true);
-		builder1.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
-		PrivateKeyHolder holder1 = builder1.build();
+		CertificateBuilderRequest request = new CertificateBuilderRequest("Lourival Sabino");
+		request.withEmail("junior@woodstock.net.br");
+		request.withIssuer("Woodstock Tecnologia");
+		request.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
+		PrivateKeyHolder holder1 = BouncyCastleCertificateBuilder.getInstance().build(request);
 		Store store = new JCAStore(KeyStoreType.PKCS12);
 		store.add(new PrivateKeyEntry(new PasswordAlias("lourival", "lourival"), holder1.getPrivateKey(), holder1.getChain()));
 		store.write(new FileOutputStream("/tmp/lourival.pfx"), "lourival");
@@ -84,7 +85,7 @@ public class PKCS7SignerTest extends TestCase {
 		}
 	}
 
-	public void test3() throws Exception {
+	public void xtest3() throws Exception {
 		PKCS7Signer signer = new BouncyCastlePKCS7Signer(null);
 
 		for (String s : new String[] { "/tmp/sign.pdf.p7s", "/tmp/carimboDeTempo.p7s", "/tmp/carimboDeTempo2.p7s" }) {

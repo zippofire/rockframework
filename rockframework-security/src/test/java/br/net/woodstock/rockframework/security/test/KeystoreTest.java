@@ -9,6 +9,7 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 import br.net.woodstock.rockframework.security.Alias;
+import br.net.woodstock.rockframework.security.cert.CertificateBuilderRequest;
 import br.net.woodstock.rockframework.security.cert.KeyUsageType;
 import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
 import br.net.woodstock.rockframework.security.cert.impl.BouncyCastleCertificateBuilder;
@@ -68,12 +69,12 @@ public class KeystoreTest extends TestCase {
 	}
 
 	public void xtest6() throws Exception {
-		BouncyCastleCertificateBuilder builder = new BouncyCastleCertificateBuilder("Lourival Sabino da Silva Junior");
-		builder.withIssuer("Woodstock Tecnologia");
-		builder.withV3Extensions(true);
-		builder.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
+		CertificateBuilderRequest request = new CertificateBuilderRequest("Lourival Sabino");
+		request.withEmail("junior@woodstock.net.br");
+		request.withIssuer("Woodstock Tecnologia");
+		request.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
 
-		PrivateKeyHolder holder = builder.build();
+		PrivateKeyHolder holder = BouncyCastleCertificateBuilder.getInstance().build(request);
 
 		Store store = new XMLStore();
 		store.add(new PrivateKeyEntry(new PasswordAlias("mykey", "mypasswd"), holder.getPrivateKey(), holder.getChain()));

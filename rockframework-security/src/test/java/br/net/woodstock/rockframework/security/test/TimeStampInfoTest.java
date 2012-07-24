@@ -21,6 +21,7 @@ import org.bouncycastle.cms.SignerInformationStore;
 import org.bouncycastle.tsp.TimeStampResponse;
 import org.bouncycastle.tsp.TimeStampToken;
 
+import br.net.woodstock.rockframework.security.cert.CertificateBuilderRequest;
 import br.net.woodstock.rockframework.security.cert.KeyUsageType;
 import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
 import br.net.woodstock.rockframework.security.cert.impl.BouncyCastleCertificateBuilder;
@@ -38,11 +39,12 @@ public class TimeStampInfoTest extends TestCase {
 	public void xtest1() throws Exception {
 		byte[] pdf = "Lourival Sabino da Silva Júnior".getBytes();
 
-		BouncyCastleCertificateBuilder builder1 = new BouncyCastleCertificateBuilder("Lourival Sabino 1");
-		builder1.withIssuer("Woodstock Tecnologia 1");
-		builder1.withV3Extensions(true);
-		builder1.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
-		PrivateKeyHolder holder1 = builder1.build();
+		CertificateBuilderRequest request = new CertificateBuilderRequest("Lourival Sabino");
+		request.withEmail("junior@woodstock.net.br");
+		request.withIssuer("Woodstock Tecnologia");
+		request.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
+
+		PrivateKeyHolder holder1 = BouncyCastleCertificateBuilder.getInstance().build(request);
 
 		URLTimeStampClient timeStampClient = new URLTimeStampClient("http://tsa.safelayer.com:8093");
 		timeStampClient.setDebug(true);

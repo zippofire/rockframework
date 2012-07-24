@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 
 import junit.framework.TestCase;
 import br.net.woodstock.rockframework.security.Alias;
+import br.net.woodstock.rockframework.security.cert.CertificateBuilderRequest;
 import br.net.woodstock.rockframework.security.cert.ExtendedKeyUsageType;
 import br.net.woodstock.rockframework.security.cert.KeyUsageType;
 import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
@@ -35,12 +36,13 @@ public class TimeStampServerTest extends TestCase {
 	}
 
 	public void xtestCreateCert() throws Exception {
-		BouncyCastleCertificateBuilder builder1 = new BouncyCastleCertificateBuilder("Lourival Sabino - TSA Server");
-		builder1.withIssuer("Woodstock Tecnologia");
-		builder1.withV3Extensions(true);
-		builder1.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
-		builder1.withExtendedKeyUsage(ExtendedKeyUsageType.TIMESTAMPING);
-		PrivateKeyHolder holder = builder1.build();
+		CertificateBuilderRequest request = new CertificateBuilderRequest("Lourival Sabino");
+		request.withEmail("junior@woodstock.net.br");
+		request.withIssuer("Woodstock Tecnologia");
+		request.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
+		request.withExtendedKeyUsage(ExtendedKeyUsageType.TIMESTAMPING);
+		PrivateKeyHolder holder = BouncyCastleCertificateBuilder.getInstance().build(request);
+
 		Store store = new JCAStore(KeyStoreType.PKCS12);
 		Alias alias = new PasswordAlias("tsaserver", "tsaserver");
 		PrivateKeyEntry privateKeyEntry = new PrivateKeyEntry(alias, holder.getPrivateKey(), holder.getChain());
