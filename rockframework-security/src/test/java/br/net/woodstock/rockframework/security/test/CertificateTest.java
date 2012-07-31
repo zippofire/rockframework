@@ -54,6 +54,11 @@ public class CertificateTest extends TestCase {
 		request.withRg("44444");
 		request.withTituloEleitor("555555555555");
 
+		// CA
+		FileInputStream inputStream = new FileInputStream("/tmp/woodstock.cer");
+		X509Certificate issuer = (X509Certificate) SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
+		request.withIssuer(issuer);
+
 		PrivateKeyHolder holder = PessoaFisicaCertificateBuilder.getInstance().build(request);
 
 		Store store = new JCAStore(KeyStoreType.PKCS12);
@@ -70,6 +75,47 @@ public class CertificateTest extends TestCase {
 		System.out.println(principal.getName(X500Principal.CANONICAL));
 	}
 
+	public void xtestCreateCA() throws Exception {
+		CertificateBuilderRequest request = new CertificateBuilderRequest("Woodstock Tecnologia CA");
+		request.withCa(true);
+		request.withComment("Woodstock Tecnologia CA");
+		request.withEmail("ca@woodstock.net.br");
+
+		PrivateKeyHolder holder = BouncyCastleCertificateBuilder.getInstance().build(request);
+
+		Store store = new JCAStore(KeyStoreType.PKCS12);
+		store.add(new PrivateKeyEntry(new PasswordAlias("woodstock", "woodstock"), holder.getPrivateKey(), holder.getChain()));
+		store.write(new FileOutputStream("/tmp/woodstock.pfx"), "woodstock");
+
+		FileOutputStream outputStream = new FileOutputStream("/tmp/woodstock.cer");
+		outputStream.write(holder.getChain()[0].getEncoded());
+	}
+
+	public void xtestCheckCert() throws Exception {
+		String[] files = new String[] { "/tmp/woodstock.cer", "/home/lourival/Dropbox/cacert/root.crt" };
+		for (String file : files) {
+			System.out.println("\n\nFile: " + file);
+			FileInputStream inputStream = new FileInputStream(file);
+			X509Certificate certificate = (X509Certificate) SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
+			boolean[] keyUsage = certificate.getKeyUsage();
+			if (keyUsage != null) {
+				System.out.println("digitalSignature: " + keyUsage[0]);
+				System.out.println("nonRepudiation: " + keyUsage[1]);
+				System.out.println("keyEncipherment: " + keyUsage[2]);
+				System.out.println("dataEncipherment: " + keyUsage[3]);
+				System.out.println("keyAgreement: " + keyUsage[4]);
+				System.out.println("keyCertSign: " + keyUsage[5]);
+				System.out.println("cRLSign: " + keyUsage[6]);
+				System.out.println("encipherOnly: " + keyUsage[7]);
+				System.out.println("decipherOnly: " + keyUsage[8]);
+			}
+			System.out.println(certificate.getExtendedKeyUsage());
+			System.out.println(certificate.getBasicConstraints());
+			System.out.println(certificate.getCriticalExtensionOIDs());
+			System.out.println(certificate.getNonCriticalExtensionOIDs());
+		}
+	}
+
 	public void xtestValidateCA() throws Exception {
 		FileInputStream inputStream = new FileInputStream("/tmp/cert5.cert");
 		Certificate certificate = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
@@ -78,7 +124,8 @@ public class CertificateTest extends TestCase {
 
 		CertificateVerifier cv1 = new DateCertificateVerifier();
 		CertificateVerifier cv2 = new CRLCertificateVerifier();
-		// CertificateVerifier cv3 = new PKIXCertificateVerifier(new Certificate[] { certificate }, new Certificate[] { certificate });
+		// CertificateVerifier cv3 = new PKIXCertificateVerifier(new Certificate[] { certificate }, new
+		// Certificate[] { certificate });
 
 		CertificateVerifier certificateVerifier = new CertificateVerifierChain(new CertificateVerifier[] { cv1, cv2 });
 		boolean ok = certificateVerifier.verify(certificate);

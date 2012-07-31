@@ -54,6 +54,16 @@ public class CertificateBuilderRequest implements Serializable {
 
 	private CertificateVersionType		version;
 
+	private String						comment;
+
+	private String						crlDistPoint;
+
+	private String						ocspURL;
+
+	private String						policyURL;
+
+	private boolean						ca;
+
 	private Set<KeyUsageType>			keyUsage;
 
 	private Set<ExtendedKeyUsageType>	extendedKeyUsage;
@@ -120,6 +130,26 @@ public class CertificateBuilderRequest implements Serializable {
 		return this.version;
 	}
 
+	public String getComment() {
+		return this.comment;
+	}
+
+	public String getCrlDistPoint() {
+		return this.crlDistPoint;
+	}
+
+	public String getOcspURL() {
+		return this.ocspURL;
+	}
+
+	public String getPolicyURL() {
+		return this.policyURL;
+	}
+
+	public boolean isCa() {
+		return this.ca;
+	}
+
 	public Set<KeyUsageType> getKeyUsage() {
 		return this.keyUsage;
 	}
@@ -166,6 +196,30 @@ public class CertificateBuilderRequest implements Serializable {
 	public CertificateBuilderRequest withNotAfter(final Date notAfter) {
 		this.notAfter = notAfter;
 		return this;
+	}
+
+	public CertificateBuilderRequest withComment(final String comment) {
+		this.comment = comment;
+		return this;
+	}
+
+	public CertificateBuilderRequest withCrlDistPoint(final String crlDistPoint) {
+		this.crlDistPoint = crlDistPoint;
+		return this;
+	}
+
+	public CertificateBuilderRequest withOcspURL(final String ocspURL) {
+		this.ocspURL = ocspURL;
+		return this;
+	}
+
+	public CertificateBuilderRequest withPolicyURL(final String policyURL) {
+		this.policyURL = policyURL;
+		return this;
+	}
+
+	public void withCa(final boolean ca) {
+		this.ca = ca;
 	}
 
 	public CertificateBuilderRequest withKeyUsage(final KeyUsageType... array) {

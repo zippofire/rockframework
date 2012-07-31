@@ -29,20 +29,29 @@ import java.util.Vector;
 import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1EncodableVector;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+import org.bouncycastle.asn1.DERIA5String;
 import org.bouncycastle.asn1.DERObject;
 import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DERTaggedObject;
 import org.bouncycastle.asn1.DERTags;
+import org.bouncycastle.asn1.misc.MiscObjectIdentifiers;
+import org.bouncycastle.asn1.x509.AuthorityInformationAccess;
+import org.bouncycastle.asn1.x509.BasicConstraints;
+import org.bouncycastle.asn1.x509.CRLDistPoint;
+import org.bouncycastle.asn1.x509.DistributionPoint;
+import org.bouncycastle.asn1.x509.DistributionPointName;
 import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.asn1.x509.GeneralNames;
 import org.bouncycastle.asn1.x509.KeyPurposeId;
 import org.bouncycastle.asn1.x509.X509Extension;
+import org.bouncycastle.asn1.x509.X509ObjectIdentifiers;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.jcajce.JcaX509v1CertificateBuilder;
 import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
+import org.bouncycastle.x509.extension.AuthorityKeyIdentifierStructure;
 import org.bouncycastle.x509.extension.SubjectKeyIdentifierStructure;
 
 import br.net.woodstock.rockframework.security.cert.CertificateBuilder;
@@ -112,6 +121,7 @@ public class BouncyCastleCertificateBuilder implements CertificateBuilder {
 				JcaX509v3CertificateBuilder builder = null;
 				if (request.getIssuerCertificate() != null) {
 					builder = new JcaX509v3CertificateBuilder((X509Certificate) request.getIssuerCertificate(), serialNumber, notBefore, notAfter, BouncyCastleProviderHelper.toX500Principal(subject), keyPair.getPublic());
+					builder.addExtension(X509Extension.authorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure((X509Certificate) request.getIssuerCertificate()));
 				} else {
 					builder = new JcaX509v3CertificateBuilder(BouncyCastleProviderHelper.toX500Name(issuer), serialNumber, notBefore, notAfter, BouncyCastleProviderHelper.toX500Name(subject), keyPair.getPublic());
 				}
@@ -120,13 +130,27 @@ public class BouncyCastleCertificateBuilder implements CertificateBuilder {
 				contentSignerBuilder.setProvider(BouncyCastleProviderHelper.PROVIDER_NAME);
 				ContentSigner contentSigner = contentSignerBuilder.build(keyPair.getPrivate());
 
-				if (!request.getKeyUsage().isEmpty()) {
+				if (request.isCa()) {
 					int usage = 0;
-					for (KeyUsageType keyUsage : request.getKeyUsage()) {
-						usage = usage | BouncyCastleCertificateHelper.toKeyUsage(keyUsage);
-					}
+					usage = usage | BouncyCastleCertificateHelper.toKeyUsage(KeyUsageType.CRL_SIGN);
+					usage = usage | BouncyCastleCertificateHelper.toKeyUsage(KeyUsageType.DATA_ENCIPHERMENT);
+					usage = usage | BouncyCastleCertificateHelper.toKeyUsage(KeyUsageType.DIGITAL_SIGNATURE);
+					usage = usage | BouncyCastleCertificateHelper.toKeyUsage(KeyUsageType.KEY_AGREEMENT);
+					usage = usage | BouncyCastleCertificateHelper.toKeyUsage(KeyUsageType.KEY_CERT_SIGN);
+					usage = usage | BouncyCastleCertificateHelper.toKeyUsage(KeyUsageType.KEY_ENCIPHERMENT);
+					usage = usage | BouncyCastleCertificateHelper.toKeyUsage(KeyUsageType.NON_REPUDIATION);
+
 					org.bouncycastle.asn1.x509.KeyUsage ku = new org.bouncycastle.asn1.x509.KeyUsage(usage);
-					builder.addExtension(X509Extension.keyUsage, false, ku);
+					builder.addExtension(X509Extension.keyUsage, true, ku);
+				} else {
+					if (!request.getKeyUsage().isEmpty()) {
+						int usage = 0;
+						for (KeyUsageType keyUsage : request.getKeyUsage()) {
+							usage = usage | BouncyCastleCertificateHelper.toKeyUsage(keyUsage);
+						}
+						org.bouncycastle.asn1.x509.KeyUsage ku = new org.bouncycastle.asn1.x509.KeyUsage(usage);
+						builder.addExtension(X509Extension.keyUsage, true, ku);
+					}
 				}
 
 				if (!request.getExtendedKeyUsage().isEmpty()) {
@@ -176,6 +200,40 @@ public class BouncyCastleCertificateBuilder implements CertificateBuilder {
 
 				SubjectKeyIdentifierStructure subjectKeyIdentifierStructure = new SubjectKeyIdentifierStructure(keyPair.getPublic());
 				builder.addExtension(X509Extension.subjectKeyIdentifier, false, subjectKeyIdentifierStructure);
+
+				if (ConditionUtils.isNotEmpty(request.getComment())) {
+					builder.addExtension(MiscObjectIdentifiers.netscapeCertComment, false, new DERIA5String(request.getComment()));
+				}
+
+				if (ConditionUtils.isNotEmpty(request.getCrlDistPoint())) {
+					GeneralName gn = new GeneralName(6, new DERIA5String(request.getCrlDistPoint()));
+
+					ASN1EncodableVector vec = new ASN1EncodableVector();
+					vec.add(gn);
+
+					GeneralNames generalNames = new GeneralNames(new DERSequence(vec));
+					DistributionPointName distributionPointName = new DistributionPointName(0, generalNames);
+					CRLDistPoint crlDistPoint = new CRLDistPoint(new DistributionPoint[] { new DistributionPoint(distributionPointName, null, null) });
+
+					builder.addExtension(X509Extension.cRLDistributionPoints, false, crlDistPoint);
+					builder.addExtension(MiscObjectIdentifiers.netscapeCApolicyURL, false, new DERIA5String(request.getCrlDistPoint()));
+				}
+
+				if (ConditionUtils.isNotEmpty(request.getOcspURL())) {
+					GeneralName ocspLocation = new GeneralName(6, new DERIA5String(request.getOcspURL()));
+					builder.addExtension(X509Extension.authorityInfoAccess, false, new AuthorityInformationAccess(X509ObjectIdentifiers.ocspAccessMethod, ocspLocation));
+				}
+
+				if (ConditionUtils.isNotEmpty(request.getPolicyURL())) {
+					builder.addExtension(MiscObjectIdentifiers.netscapeCApolicyURL, false, new DERIA5String(request.getPolicyURL()));
+				}
+
+				if (request.isCa()) {
+					builder.addExtension(X509Extension.basicConstraints, true, new BasicConstraints(true));
+				}
+
+				// builder.addExtension(MiscObjectIdentifiers.netscapeCertType, false, new
+				// NetscapeCertType(NetscapeCertType.objectSigning | NetscapeCertType.smime));
 
 				X509CertificateHolder holder = builder.build(contentSigner);
 
