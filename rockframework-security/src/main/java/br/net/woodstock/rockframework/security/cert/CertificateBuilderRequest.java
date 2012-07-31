@@ -19,7 +19,6 @@ package br.net.woodstock.rockframework.security.cert;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.security.KeyPair;
-import java.security.cert.Certificate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -44,7 +43,7 @@ public class CertificateBuilderRequest implements Serializable {
 
 	private String						issuerName;
 
-	private Certificate					issuerCertificate;
+	private PrivateKeyHolder			issuerKeyHolder;
 
 	private BigInteger					serialNumber;
 
@@ -110,8 +109,8 @@ public class CertificateBuilderRequest implements Serializable {
 		return this.issuerName;
 	}
 
-	public Certificate getIssuerCertificate() {
-		return this.issuerCertificate;
+	public PrivateKeyHolder getIssuerKeyHolder() {
+		return this.issuerKeyHolder;
 	}
 
 	public BigInteger getSerialNumber() {
@@ -178,8 +177,8 @@ public class CertificateBuilderRequest implements Serializable {
 		return this;
 	}
 
-	public CertificateBuilderRequest withIssuer(final Certificate issuer) {
-		this.issuerCertificate = issuer;
+	public CertificateBuilderRequest withIssuerKeyHolder(final PrivateKeyHolder issuerKeyHolder) {
+		this.issuerKeyHolder = issuerKeyHolder;
 		return this;
 	}
 

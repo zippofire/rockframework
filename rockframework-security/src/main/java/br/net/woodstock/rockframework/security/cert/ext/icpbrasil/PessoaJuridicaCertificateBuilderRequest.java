@@ -18,13 +18,13 @@ package br.net.woodstock.rockframework.security.cert.ext.icpbrasil;
 
 import java.math.BigInteger;
 import java.security.KeyPair;
-import java.security.cert.Certificate;
 import java.util.Date;
 
 import br.net.woodstock.rockframework.security.cert.CertificateBuilderRequest;
 import br.net.woodstock.rockframework.security.cert.CertificateVersionType;
 import br.net.woodstock.rockframework.security.cert.ExtendedKeyUsageType;
 import br.net.woodstock.rockframework.security.cert.KeyUsageType;
+import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
 import br.net.woodstock.rockframework.security.sign.SignatureType;
 
 public class PessoaJuridicaCertificateBuilderRequest extends CertificateBuilderRequest {
@@ -146,8 +146,8 @@ public class PessoaJuridicaCertificateBuilderRequest extends CertificateBuilderR
 	}
 
 	@Override
-	public PessoaJuridicaCertificateBuilderRequest withIssuer(Certificate issuer) {
-		return (PessoaJuridicaCertificateBuilderRequest) super.withIssuer(issuer);
+	public PessoaFisicaCertificateBuilderRequest withIssuerKeyHolder(PrivateKeyHolder issuerKeyHolder) {
+		return (PessoaFisicaCertificateBuilderRequest) super.withIssuerKeyHolder(issuerKeyHolder);
 	}
 
 	@Override

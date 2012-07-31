@@ -69,27 +69,27 @@ public class DateBuilder {
 	}
 
 	public DateBuilder removeDays(final int days) {
-		this.calendar.add(Calendar.DAY_OF_YEAR, Math.abs(days));
+		this.calendar.add(Calendar.DAY_OF_YEAR, -Math.abs(days));
 		return this;
 	}
 
 	public DateBuilder removeHours(final int hours) {
-		this.calendar.add(Calendar.HOUR_OF_DAY, Math.abs(hours));
+		this.calendar.add(Calendar.HOUR_OF_DAY, -Math.abs(hours));
 		return this;
 	}
 
 	public DateBuilder removeMinutes(final int minutes) {
-		this.calendar.add(Calendar.MINUTE, Math.abs(minutes));
+		this.calendar.add(Calendar.MINUTE, -Math.abs(minutes));
 		return this;
 	}
 
 	public DateBuilder removeMonths(final int months) {
-		this.calendar.add(Calendar.MONTH, Math.abs(months));
+		this.calendar.add(Calendar.MONTH, -Math.abs(months));
 		return this;
 	}
 
 	public DateBuilder removeYears(final int years) {
-		this.calendar.add(Calendar.YEAR, Math.abs(years));
+		this.calendar.add(Calendar.YEAR, -Math.abs(years));
 		return this;
 	}
 

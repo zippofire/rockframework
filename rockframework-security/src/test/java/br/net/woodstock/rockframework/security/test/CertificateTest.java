@@ -6,8 +6,6 @@ import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 
-import javax.security.auth.x500.X500Principal;
-
 import junit.framework.TestCase;
 import br.net.woodstock.rockframework.security.cert.CertificateBuilderRequest;
 import br.net.woodstock.rockframework.security.cert.CertificateType;
@@ -26,8 +24,10 @@ import br.net.woodstock.rockframework.security.store.KeyStoreType;
 import br.net.woodstock.rockframework.security.store.PasswordAlias;
 import br.net.woodstock.rockframework.security.store.PrivateKeyEntry;
 import br.net.woodstock.rockframework.security.store.Store;
+import br.net.woodstock.rockframework.security.store.StoreEntryType;
 import br.net.woodstock.rockframework.security.store.impl.JCAStore;
 import br.net.woodstock.rockframework.security.util.SecurityUtils;
+import br.net.woodstock.rockframework.util.DateBuilder;
 
 public class CertificateTest extends TestCase {
 
@@ -38,7 +38,7 @@ public class CertificateTest extends TestCase {
 		System.setProperty("sun.net.client.defaultReadTimeout", "15000");
 	}
 
-	public void testCreate() throws Exception {
+	public void xtestCreate() throws Exception {
 		PessoaFisicaCertificateBuilderRequest request = new PessoaFisicaCertificateBuilderRequest("Lourival Sabino");
 		request.withEmail("junior@woodstock.net.br");
 		request.withIssuer("Woodstock Tecnologia");
@@ -54,25 +54,31 @@ public class CertificateTest extends TestCase {
 		request.withRg("44444");
 		request.withTituloEleitor("555555555555");
 
+		DateBuilder builder = new DateBuilder();
+		request.withNotBefore(builder.removeDays(1).getDate());
+		request.withNotAfter(builder.addYears(1).getDate());
+
 		// CA
-		FileInputStream inputStream = new FileInputStream("/tmp/woodstock.cer");
-		X509Certificate issuer = (X509Certificate) SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
-		request.withIssuer(issuer);
+		FileInputStream inputStream = new FileInputStream("/tmp/woodstock.pfx");
+		Store caStore = new JCAStore(KeyStoreType.PKCS12);
+		caStore.read(inputStream, "woodstock");
+		PrivateKeyEntry entry = (PrivateKeyEntry) caStore.get(new PasswordAlias("woodstock", "woodstock"), StoreEntryType.PRIVATE_KEY);
+		request.withIssuerKeyHolder(new PrivateKeyHolder(entry.getValue(), entry.getChain()));
 
 		PrivateKeyHolder holder = PessoaFisicaCertificateBuilder.getInstance().build(request);
 
 		Store store = new JCAStore(KeyStoreType.PKCS12);
-		store.add(new PrivateKeyEntry(new PasswordAlias("lourival", "lourival"), holder.getPrivateKey(), holder.getChain()));
-		store.write(new FileOutputStream("/tmp/lourival.pfx"), "lourival");
+		store.add(new PrivateKeyEntry(new PasswordAlias("rosana", "rosana"), holder.getPrivateKey(), holder.getChain()));
+		store.write(new FileOutputStream("/tmp/rosana.pfx"), "rosana");
 
-		FileOutputStream outputStream = new FileOutputStream("/tmp/lourival.cer");
-		outputStream.write(holder.getChain()[0].getEncoded());
+		// FileOutputStream outputStream = new FileOutputStream("/tmp/lourival.cer");
+		// outputStream.write(holder.getChain()[0].getEncoded());
 
-		X509Certificate certificate = (X509Certificate) holder.getChain()[0];
-		X500Principal principal = certificate.getSubjectX500Principal();
-		System.out.println(certificate);
-		System.out.println(principal);
-		System.out.println(principal.getName(X500Principal.CANONICAL));
+		// X509Certificate certificate = (X509Certificate) holder.getChain()[0];
+		// X500Principal principal = certificate.getSubjectX500Principal();
+		// System.out.println(certificate);
+		// System.out.println(principal);
+		// System.out.println(principal.getName(X500Principal.CANONICAL));
 	}
 
 	public void xtestCreateCA() throws Exception {
@@ -86,9 +92,6 @@ public class CertificateTest extends TestCase {
 		Store store = new JCAStore(KeyStoreType.PKCS12);
 		store.add(new PrivateKeyEntry(new PasswordAlias("woodstock", "woodstock"), holder.getPrivateKey(), holder.getChain()));
 		store.write(new FileOutputStream("/tmp/woodstock.pfx"), "woodstock");
-
-		FileOutputStream outputStream = new FileOutputStream("/tmp/woodstock.cer");
-		outputStream.write(holder.getChain()[0].getEncoded());
 	}
 
 	public void xtestCheckCert() throws Exception {
