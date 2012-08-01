@@ -27,7 +27,7 @@ import java.util.Set;
 
 import br.net.woodstock.rockframework.security.sign.SignatureType;
 
-public class CertificateBuilderRequest implements Serializable {
+public class CertificateBuilderRequest implements Serializable, Cloneable {
 
 	private static final long			serialVersionUID	= -3581355246568074311L;
 
@@ -243,6 +243,12 @@ public class CertificateBuilderRequest implements Serializable {
 	public CertificateBuilderRequest withOtherName(final String oid, final String value) {
 		this.otherNames.put(oid, value);
 		return this;
+	}
+
+	// Object
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		return super.clone();
 	}
 
 }

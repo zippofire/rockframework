@@ -19,6 +19,7 @@ package br.net.woodstock.rockframework.security.cert.ext.icpbrasil;
 import java.math.BigInteger;
 import java.security.KeyPair;
 import java.util.Date;
+import java.util.Map;
 
 import br.net.woodstock.rockframework.security.cert.CertificateBuilderRequest;
 import br.net.woodstock.rockframework.security.cert.CertificateVersionType;
@@ -29,7 +30,15 @@ import br.net.woodstock.rockframework.security.sign.SignatureType;
 
 public class PessoaJuridicaCertificateBuilderRequest extends CertificateBuilderRequest {
 
-	private static final long	serialVersionUID	= 3115100870385480942L;
+	private static final long	serialVersionUID		= 3115100870385480942L;
+
+	private static final String	OID_NOME_RESPONSAVEL	= "2.16.76.1.3.2";
+
+	private static final String	OID_NUMERO_CNPJ			= "2.16.76.1.3.3";
+
+	private static final String	OID_DADOS_RESPONSAVEL	= "2.16.76.1.3.4";
+
+	private static final String	OID_NUMERO_CEI			= "2.16.76.1.3.7";
 
 	private String				responsavel;
 
@@ -86,6 +95,30 @@ public class PessoaJuridicaCertificateBuilderRequest extends CertificateBuilderR
 
 	public String getCei() {
 		return this.cei;
+	}
+
+	@Override
+	public Map<String, String> getOtherNames() {
+		Map<String, String> map = super.getOtherNames();
+
+		String responsavel = ICPBrasilHelper.getValue(this.getResponsavel());
+		String cnpj = ICPBrasilHelper.getNumericValue(this.getCnpj(), 14);
+		String dataNascimentoResponsavel = ICPBrasilHelper.getDateValue(this.getDataNascimentoResponsavel());
+		String cpfResponsavel = ICPBrasilHelper.getNumericValue(this.getCpfResponsavel(), 11);
+		String pisResponsavel = ICPBrasilHelper.getNumericValue(this.getPisResponsavel(), 11);
+		String rgResponsavel = ICPBrasilHelper.getNumericValue(this.getRgResponsavel(), 15);
+		String emissorRGResponsavel = ICPBrasilHelper.getTextValue(this.getEmissorRGResponsavel(), 15);
+
+		String cei = ICPBrasilHelper.getNumericValue(this.getCei(), 12);
+
+		String dadosResponsavel = dataNascimentoResponsavel + cpfResponsavel + pisResponsavel + rgResponsavel + emissorRGResponsavel;
+
+		map.put(PessoaJuridicaCertificateBuilderRequest.OID_NOME_RESPONSAVEL, responsavel);
+		map.put(PessoaJuridicaCertificateBuilderRequest.OID_NUMERO_CNPJ, cnpj);
+		map.put(PessoaJuridicaCertificateBuilderRequest.OID_DADOS_RESPONSAVEL, dadosResponsavel);
+		map.put(PessoaJuridicaCertificateBuilderRequest.OID_NUMERO_CEI, cei);
+
+		return map;
 	}
 
 	// Set

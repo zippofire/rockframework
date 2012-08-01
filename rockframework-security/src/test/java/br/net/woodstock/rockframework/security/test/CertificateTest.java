@@ -13,7 +13,6 @@ import br.net.woodstock.rockframework.security.cert.CertificateVerifier;
 import br.net.woodstock.rockframework.security.cert.ExtendedKeyUsageType;
 import br.net.woodstock.rockframework.security.cert.KeyUsageType;
 import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
-import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.PessoaFisicaCertificateBuilder;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.PessoaFisicaCertificateBuilderRequest;
 import br.net.woodstock.rockframework.security.cert.impl.BouncyCastleCertificateBuilder;
 import br.net.woodstock.rockframework.security.cert.impl.CRLCertificateVerifier;
@@ -38,7 +37,7 @@ public class CertificateTest extends TestCase {
 		System.setProperty("sun.net.client.defaultReadTimeout", "15000");
 	}
 
-	public void xtestCreate() throws Exception {
+	public void testCreate() throws Exception {
 		PessoaFisicaCertificateBuilderRequest request = new PessoaFisicaCertificateBuilderRequest("Lourival Sabino");
 		request.withEmail("junior@woodstock.net.br");
 		request.withIssuer("Woodstock Tecnologia");
@@ -65,14 +64,14 @@ public class CertificateTest extends TestCase {
 		PrivateKeyEntry entry = (PrivateKeyEntry) caStore.get(new PasswordAlias("woodstock", "woodstock"), StoreEntryType.PRIVATE_KEY);
 		request.withIssuerKeyHolder(new PrivateKeyHolder(entry.getValue(), entry.getChain()));
 
-		PrivateKeyHolder holder = PessoaFisicaCertificateBuilder.getInstance().build(request);
+		PrivateKeyHolder holder = BouncyCastleCertificateBuilder.getInstance().build(request);
 
 		Store store = new JCAStore(KeyStoreType.PKCS12);
-		store.add(new PrivateKeyEntry(new PasswordAlias("rosana", "rosana"), holder.getPrivateKey(), holder.getChain()));
-		store.write(new FileOutputStream("/tmp/rosana.pfx"), "rosana");
+		store.add(new PrivateKeyEntry(new PasswordAlias("lourival", "lourival"), holder.getPrivateKey(), holder.getChain()));
+		store.write(new FileOutputStream("/tmp/lourival.pfx"), "lourival");
 
-		// FileOutputStream outputStream = new FileOutputStream("/tmp/lourival.cer");
-		// outputStream.write(holder.getChain()[0].getEncoded());
+		FileOutputStream outputStream = new FileOutputStream("/tmp/lourival.cer");
+		outputStream.write(holder.getChain()[0].getEncoded());
 
 		// X509Certificate certificate = (X509Certificate) holder.getChain()[0];
 		// X500Principal principal = certificate.getSubjectX500Principal();

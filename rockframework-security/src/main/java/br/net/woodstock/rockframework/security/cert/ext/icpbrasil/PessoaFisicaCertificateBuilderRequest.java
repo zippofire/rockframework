@@ -19,6 +19,7 @@ package br.net.woodstock.rockframework.security.cert.ext.icpbrasil;
 import java.math.BigInteger;
 import java.security.KeyPair;
 import java.util.Date;
+import java.util.Map;
 
 import br.net.woodstock.rockframework.security.cert.CertificateBuilderRequest;
 import br.net.woodstock.rockframework.security.cert.CertificateVersionType;
@@ -26,10 +27,19 @@ import br.net.woodstock.rockframework.security.cert.ExtendedKeyUsageType;
 import br.net.woodstock.rockframework.security.cert.KeyUsageType;
 import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
 import br.net.woodstock.rockframework.security.sign.SignatureType;
+import br.net.woodstock.rockframework.utils.ConditionUtils;
 
 public class PessoaFisicaCertificateBuilderRequest extends CertificateBuilderRequest {
 
 	private static final long	serialVersionUID	= 2206868473296076668L;
+
+	private static final String	OID_DADOS_TITULAR	= "2.16.76.1.3.1";
+
+	private static final String	OID_TITULO_ELEITOR	= "2.16.76.1.3.5";
+
+	private static final String	OID_NUMERO_CEI		= "2.16.76.1.3.6";
+
+	private static final String	OID_REGISTRO_OAB	= "2.16.76.1.4.2.1";
 
 	private Date				dataNascimento;
 
@@ -86,6 +96,32 @@ public class PessoaFisicaCertificateBuilderRequest extends CertificateBuilderReq
 
 	public String getRegistroOAB() {
 		return this.registroOAB;
+	}
+
+	// Override
+	@Override
+	public Map<String, String> getOtherNames() {
+		Map<String, String> map = super.getOtherNames();
+
+		String dataNascimento = ICPBrasilHelper.getDateValue(this.getDataNascimento());
+		String cpf = ICPBrasilHelper.getNumericValue(this.getCpf(), 11);
+		String pis = ICPBrasilHelper.getNumericValue(this.getPis(), 11);
+		String rg = ICPBrasilHelper.getNumericValue(this.getRg(), 15);
+		String emissorRG = ICPBrasilHelper.getValue(this.getEmissorRG());
+		String tituloEleitor = ICPBrasilHelper.getNumericValue(this.getTituloEleitor(), 12);
+		String cei = ICPBrasilHelper.getNumericValue(this.getCei(), 12);
+
+		String dadosTitular = dataNascimento + cpf + pis + rg + emissorRG;
+
+		map.put(PessoaFisicaCertificateBuilderRequest.OID_DADOS_TITULAR, dadosTitular);
+		map.put(PessoaFisicaCertificateBuilderRequest.OID_TITULO_ELEITOR, tituloEleitor);
+		map.put(PessoaFisicaCertificateBuilderRequest.OID_NUMERO_CEI, cei);
+
+		if (ConditionUtils.isNotEmpty(this.getRegistroOAB())) {
+			map.put(PessoaFisicaCertificateBuilderRequest.OID_REGISTRO_OAB, this.getRegistroOAB());
+		}
+
+		return map;
 	}
 
 	// Set
