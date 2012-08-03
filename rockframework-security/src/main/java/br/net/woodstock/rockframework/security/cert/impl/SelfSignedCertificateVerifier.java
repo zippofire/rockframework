@@ -16,45 +16,41 @@
  */
 package br.net.woodstock.rockframework.security.cert.impl;
 
+import java.security.GeneralSecurityException;
+import java.security.PublicKey;
+import java.security.SignatureException;
 import java.security.cert.Certificate;
+import java.security.cert.X509Certificate;
 
-import br.net.woodstock.rockframework.config.CoreLog;
+import br.net.woodstock.rockframework.security.cert.CertificateException;
 import br.net.woodstock.rockframework.security.cert.CertificateVerifier;
 import br.net.woodstock.rockframework.util.Assert;
 
-public class CertificateVerifierChain implements CertificateVerifier {
-
-	private CertificateVerifier[]	chain;
-
-	private boolean					debug;
-
-	public CertificateVerifierChain(final CertificateVerifier[] chain) {
-		super();
-		Assert.notEmpty(chain, "chain");
-		this.chain = chain;
-		this.debug = true;
-	}
-
-	public void setDebug(boolean debug) {
-		this.debug = debug;
-	}
+public class SelfSignedCertificateVerifier implements CertificateVerifier {
 
 	@Override
 	public boolean verify(final Certificate[] chain) {
 		Assert.notEmpty(chain, "chain");
-		boolean result = true;
-		for (CertificateVerifier verifier : this.chain) {
-			CoreLog.getInstance().getLog().info("Verify using " + verifier.getClass().getCanonicalName());
-			boolean status = verifier.verify(chain);
-			CoreLog.getInstance().getLog().info("Status of " + verifier.getClass().getCanonicalName() + " " + (status ? "ok" : "fail"));
-			if (!status) {
-				result = false;
-				if (!this.debug) {
-					break;
-				}
+		try {
+			X509Certificate x509Certificate = (X509Certificate) chain[0];
+			if (this.isSelfSigned(x509Certificate)) {
+				return false;
 			}
+
+			return true;
+		} catch (GeneralSecurityException e) {
+			throw new CertificateException(e);
 		}
-		return result;
+	}
+
+	protected boolean isSelfSigned(final X509Certificate certificate) throws GeneralSecurityException {
+		try {
+			PublicKey publicKey = certificate.getPublicKey();
+			certificate.verify(publicKey);
+			return true;
+		} catch (SignatureException e) {
+			return false;
+		}
 	}
 
 }

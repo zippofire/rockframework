@@ -14,47 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.security.cert.impl;
+package br.net.woodstock.rockframework.security.cert.ext.icpbrasil;
 
 import java.security.cert.Certificate;
+import java.security.cert.X509Certificate;
 
-import br.net.woodstock.rockframework.config.CoreLog;
 import br.net.woodstock.rockframework.security.cert.CertificateVerifier;
 import br.net.woodstock.rockframework.util.Assert;
 
-public class CertificateVerifierChain implements CertificateVerifier {
-
-	private CertificateVerifier[]	chain;
-
-	private boolean					debug;
-
-	public CertificateVerifierChain(final CertificateVerifier[] chain) {
-		super();
-		Assert.notEmpty(chain, "chain");
-		this.chain = chain;
-		this.debug = true;
-	}
-
-	public void setDebug(boolean debug) {
-		this.debug = debug;
-	}
+public class ICPBrasilCertificateVerifier implements CertificateVerifier {
 
 	@Override
 	public boolean verify(final Certificate[] chain) {
 		Assert.notEmpty(chain, "chain");
-		boolean result = true;
-		for (CertificateVerifier verifier : this.chain) {
-			CoreLog.getInstance().getLog().info("Verify using " + verifier.getClass().getCanonicalName());
-			boolean status = verifier.verify(chain);
-			CoreLog.getInstance().getLog().info("Status of " + verifier.getClass().getCanonicalName() + " " + (status ? "ok" : "fail"));
-			if (!status) {
-				result = false;
-				if (!this.debug) {
-					break;
-				}
-			}
-		}
-		return result;
-	}
+		X509Certificate x509Certificate = (X509Certificate) chain[0];
+		CertificadoICPBrasil certificadoICPBrasil = CertificadoICPBrasil.getInstance(x509Certificate);
 
+		if (certificadoICPBrasil.getICPBrasilType() == CertificadoICPBrasilType.INVALIDO) {
+			return false;
+		}
+
+		return true;
+	}
 }

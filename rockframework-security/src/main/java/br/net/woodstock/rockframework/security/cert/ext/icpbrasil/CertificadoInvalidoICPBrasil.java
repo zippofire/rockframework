@@ -14,12 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.security.cert;
+package br.net.woodstock.rockframework.security.cert.ext.icpbrasil;
 
-import java.security.cert.Certificate;
+import java.security.cert.X509Certificate;
 
-public interface CertificateVerifier {
+public class CertificadoInvalidoICPBrasil extends CertificadoICPBrasil {
 
-	boolean verify(Certificate[] chain);
+	public CertificadoInvalidoICPBrasil(final X509Certificate certificate) {
+		super(certificate, CertificadoICPBrasilType.INVALIDO);
+	}
 
 }

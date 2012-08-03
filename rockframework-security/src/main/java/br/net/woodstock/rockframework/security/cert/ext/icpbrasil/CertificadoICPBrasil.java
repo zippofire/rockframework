@@ -14,36 +14,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.security.cert.impl;
+package br.net.woodstock.rockframework.security.cert.ext.icpbrasil;
 
 import java.security.cert.Certificate;
-import java.security.cert.CertificateExpiredException;
-import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
-import java.util.Date;
 
 import br.net.woodstock.rockframework.security.cert.CertificateException;
-import br.net.woodstock.rockframework.security.cert.CertificateVerifier;
-import br.net.woodstock.rockframework.util.Assert;
+import br.net.woodstock.rockframework.security.cert.DelegateX509Certificate;
 
-public class DateCertificateVerifier implements CertificateVerifier {
+public abstract class CertificadoICPBrasil extends DelegateX509Certificate {
 
-	@Override
-	public boolean verify(final Certificate[] chain) {
-		Assert.notEmpty(chain, "chain");
+	private CertificadoICPBrasilType	type;
+
+	public CertificadoICPBrasil(final X509Certificate certificate, final CertificadoICPBrasilType type) {
+		super(certificate);
+		this.type = type;
+	}
+
+	public CertificadoICPBrasilType getICPBrasilType() {
+		return this.type;
+	}
+
+	public static CertificadoICPBrasil getInstance(final Certificate certificate) {
+		return CertificadoICPBrasil.getInstance((X509Certificate) certificate);
+	}
+
+	public static CertificadoICPBrasil getInstance(final X509Certificate certificate) {
 		try {
-			X509Certificate x509Certificate = (X509Certificate) chain[0];
-			Date current = new Date();
-
-			x509Certificate.checkValidity(current);
-
-			return true;
-		} catch (CertificateExpiredException e) {
-			return false;
-		} catch (CertificateNotYetValidException e) {
-			return false;
+			return ICPBrasilHelper.getCertificadoICPBrasil(certificate);
 		} catch (Exception e) {
 			throw new CertificateException(e);
 		}
 	}
+
 }

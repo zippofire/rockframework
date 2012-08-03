@@ -13,12 +13,20 @@ import br.net.woodstock.rockframework.security.cert.CertificateVerifier;
 import br.net.woodstock.rockframework.security.cert.ExtendedKeyUsageType;
 import br.net.woodstock.rockframework.security.cert.KeyUsageType;
 import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
+import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.CertificadoICPBrasil;
+import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.CertificadoICPBrasilType;
+import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.CertificadoPessoaFisicaICPBrasil;
+import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.CertificadoPessoaJuridicaICPBrasil;
+import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.ICPBrasilCertificateVerifier;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.PessoaFisicaCertificateBuilderRequest;
 import br.net.woodstock.rockframework.security.cert.impl.BouncyCastleCertificateBuilder;
 import br.net.woodstock.rockframework.security.cert.impl.CRLCertificateVerifier;
 import br.net.woodstock.rockframework.security.cert.impl.CertificateVerifierChain;
 import br.net.woodstock.rockframework.security.cert.impl.DateCertificateVerifier;
+import br.net.woodstock.rockframework.security.cert.impl.HierarchyCertificateVerifier;
+import br.net.woodstock.rockframework.security.cert.impl.OCSPCertificateVerifier;
 import br.net.woodstock.rockframework.security.cert.impl.PKIXCertificateVerifier;
+import br.net.woodstock.rockframework.security.cert.impl.SelfSignedCertificateVerifier;
 import br.net.woodstock.rockframework.security.store.KeyStoreType;
 import br.net.woodstock.rockframework.security.store.PasswordAlias;
 import br.net.woodstock.rockframework.security.store.PrivateKeyEntry;
@@ -31,13 +39,15 @@ import br.net.woodstock.rockframework.util.DateBuilder;
 public class CertificateTest extends TestCase {
 
 	static {
-		System.setProperty("http.proxyHost", "10.30.1.12");
+		System.setProperty("http.proxyHost", "10.30.1.10");
 		System.setProperty("http.proxyPort", "8080");
+		System.setProperty("http.proxyUser", "lourival.junior");
+		System.setProperty("http.proxyPassword", "******"); // FIXME
 		System.setProperty("sun.net.client.defaultConnectTimeout", "15000");
 		System.setProperty("sun.net.client.defaultReadTimeout", "15000");
 	}
 
-	public void testCreate() throws Exception {
+	public void xtestCreate() throws Exception {
 		PessoaFisicaCertificateBuilderRequest request = new PessoaFisicaCertificateBuilderRequest("Lourival Sabino");
 		request.withEmail("junior@woodstock.net.br");
 		request.withIssuer("Woodstock Tecnologia");
@@ -130,7 +140,7 @@ public class CertificateTest extends TestCase {
 		// Certificate[] { certificate });
 
 		CertificateVerifier certificateVerifier = new CertificateVerifierChain(new CertificateVerifier[] { cv1, cv2 });
-		boolean ok = certificateVerifier.verify(certificate);
+		boolean ok = certificateVerifier.verify(new Certificate[] { certificate });
 		System.out.println("OK: " + ok);
 	}
 
@@ -144,10 +154,115 @@ public class CertificateTest extends TestCase {
 
 		CertificateVerifier cv1 = new DateCertificateVerifier();
 		CertificateVerifier cv2 = new CRLCertificateVerifier();
-		CertificateVerifier cv3 = new PKIXCertificateVerifier(holder.getChain(), holder.getChain());
+		CertificateVerifier cv3 = new PKIXCertificateVerifier();
 
 		CertificateVerifier certificateVerifier = new CertificateVerifierChain(new CertificateVerifier[] { cv1, cv2, cv3 });
-		boolean ok = certificateVerifier.verify(holder.getChain()[0]);
+		boolean ok = certificateVerifier.verify(holder.getChain());
 		System.out.println("OK: " + ok);
+	}
+
+	public void xtestICPBrasil() throws Exception {
+		FileInputStream inputStream = new FileInputStream("/tmp/lourival.cer");
+		Certificate certificate = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
+		CertificadoICPBrasil certificadoICPBrasil = CertificadoICPBrasil.getInstance(certificate);
+		System.out.println(certificadoICPBrasil.getICPBrasilType());
+		if (certificadoICPBrasil.getICPBrasilType() == CertificadoICPBrasilType.PESSOA_FISICA) {
+			CertificadoPessoaFisicaICPBrasil certPF = (CertificadoPessoaFisicaICPBrasil) certificadoICPBrasil;
+			System.out.println("Certificado de PF");
+			System.out.println("CEI             : " + certPF.getCei());
+			System.out.println("CPF             : " + certPF.getCpf());
+			System.out.println("Data Nascimento : " + certPF.getDataNascimento());
+			System.out.println("Emissor RG      : " + certPF.getEmissorRG());
+			System.out.println("PIS             : " + certPF.getPis());
+			System.out.println("Registro OAB    : " + certPF.getRegistroOAB());
+			System.out.println("RG              : " + certPF.getRg());
+			System.out.println("Titulo Eleitor  : " + certPF.getTituloEleitor());
+		} else if (certificadoICPBrasil.getICPBrasilType() == CertificadoICPBrasilType.PESSOA_FISICA) {
+			CertificadoPessoaJuridicaICPBrasil certPJ = (CertificadoPessoaJuridicaICPBrasil) certificadoICPBrasil;
+			System.out.println("Certificado de PF");
+			System.out.println("CEI             : " + certPJ.getCei());
+			System.out.println("CNPJ            : " + certPJ.getCnpj());
+			System.out.println("CPF             : " + certPJ.getCpfResponsavel());
+			System.out.println("Data Nascimento : " + certPJ.getDataNascimentoResponsavel());
+			System.out.println("Emissor RG      : " + certPJ.getEmissorRGResponsavel());
+			System.out.println("PIS             : " + certPJ.getPisResponsavel());
+			System.out.println("Responsavel     : " + certPJ.getResponsavel());
+			System.out.println("RG              : " + certPJ.getRgResponsavel());
+		}
+	}
+
+	public void xtestVerifyOK() throws Exception {
+		FileInputStream inputStream = new FileInputStream("/home/lourival/tmp/cert/adelci.cer");
+		Certificate certificate = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
+
+		inputStream = new FileInputStream("/home/lourival/tmp/cert/serasa.cer");
+		Certificate issuer1 = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
+
+		inputStream = new FileInputStream("/home/lourival/tmp/cert/receita.cer");
+		Certificate issuer2 = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
+
+		inputStream = new FileInputStream("/home/lourival/tmp/cert/icp-brasil.cer");
+		Certificate issuer3 = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
+
+		CertificateVerifier cv1 = new DateCertificateVerifier();
+		CertificateVerifier cv4 = new SelfSignedCertificateVerifier();
+		CertificateVerifier cv2 = new CRLCertificateVerifier();
+		CertificateVerifier cv3 = new PKIXCertificateVerifier();
+		CertificateVerifier cv5 = new OCSPCertificateVerifier();
+		CertificateVerifier cv6 = new ICPBrasilCertificateVerifier();
+		CertificateVerifier cv7 = new HierarchyCertificateVerifier(issuer3);
+
+		CertificateVerifier certificateVerifier = new CertificateVerifierChain(new CertificateVerifier[] { cv1, cv2, cv3, cv4, cv5, cv6, cv7 });
+		// boolean status = certificateVerifier.verify(new Certificate[] { certificate, issuer1, issuer2, issuer3 });
+		boolean status = certificateVerifier.verify(new Certificate[] { certificate, issuer1, issuer2, issuer3 });
+		System.out.println(status);
+	}
+
+	public void testVerifyLocalCA() throws Exception {
+		FileInputStream inputStream = new FileInputStream("/home/lourival/tmp/cert/lourival.cer");
+		Certificate certificate = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
+
+		inputStream = new FileInputStream("/home/lourival/tmp/cert/woodstock.cer");
+		Certificate issuer1 = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
+
+		inputStream = new FileInputStream("/home/lourival/tmp/cert/icp-brasil.cer");
+		Certificate issuerX = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
+
+		CertificateVerifier cv1 = new DateCertificateVerifier();
+		CertificateVerifier cv4 = new SelfSignedCertificateVerifier();
+		CertificateVerifier cv2 = new CRLCertificateVerifier();
+		CertificateVerifier cv3 = new PKIXCertificateVerifier();
+		CertificateVerifier cv5 = new OCSPCertificateVerifier();
+		CertificateVerifier cv6 = new ICPBrasilCertificateVerifier();
+		CertificateVerifier cv7 = new HierarchyCertificateVerifier(issuerX);
+
+		CertificateVerifierChain certificateVerifier = new CertificateVerifierChain(new CertificateVerifier[] { cv1, cv2, cv3, cv4, cv5, cv6, cv7 });
+
+		certificateVerifier.setDebug(true);
+
+		boolean status = certificateVerifier.verify(new Certificate[] { certificate, issuer1, issuerX });
+		System.out.println(status);
+
+		status = certificateVerifier.verify(new Certificate[] { certificate, issuer1 });
+		System.out.println(status);
+	}
+
+	public void xtestVerifySelfSigned() throws Exception {
+		FileInputStream inputStream = new FileInputStream("/home/lourival/tmp/cert/lourival2.cer");
+		Certificate certificate = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
+
+		CertificateVerifier cv1 = new DateCertificateVerifier();
+		CertificateVerifier cv4 = new SelfSignedCertificateVerifier();
+		CertificateVerifier cv2 = new CRLCertificateVerifier();
+		CertificateVerifier cv3 = new PKIXCertificateVerifier();
+		CertificateVerifier cv5 = new OCSPCertificateVerifier();
+		CertificateVerifier cv6 = new ICPBrasilCertificateVerifier();
+
+		CertificateVerifierChain certificateVerifier = new CertificateVerifierChain(new CertificateVerifier[] { cv1, cv2, cv3, cv4, cv5, cv6 });
+
+		certificateVerifier.setDebug(true);
+
+		boolean status = certificateVerifier.verify(new Certificate[] { certificate });
+		System.out.println(status);
 	}
 }

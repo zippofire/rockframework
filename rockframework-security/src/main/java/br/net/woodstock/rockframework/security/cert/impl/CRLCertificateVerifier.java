@@ -25,9 +25,8 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.DERIA5String;
@@ -40,47 +39,72 @@ import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.asn1.x509.GeneralNames;
 import org.bouncycastle.asn1.x509.X509Extension;
 
+import br.net.woodstock.rockframework.config.CoreLog;
 import br.net.woodstock.rockframework.security.cert.CertificateException;
 import br.net.woodstock.rockframework.security.cert.CertificateType;
 import br.net.woodstock.rockframework.security.cert.CertificateVerifier;
 import br.net.woodstock.rockframework.util.Assert;
+import br.net.woodstock.rockframework.utils.ConditionUtils;
 
 public class CRLCertificateVerifier implements CertificateVerifier {
 
+	private URL	url;
+
+	public CRLCertificateVerifier() {
+		super();
+	}
+
+	public CRLCertificateVerifier(final URL url) {
+		super();
+		Assert.notNull(url, "url");
+		this.url = url;
+	}
+
 	@Override
-	public boolean verify(final Certificate certificate) {
-		Assert.notNull(certificate, "certificate");
+	public boolean verify(final Certificate[] chain) {
+		Assert.notEmpty(chain, "chain");
 		try {
-			X509Certificate x509Certificate = (X509Certificate) certificate;
-			boolean ok = true;
-			List<String> urls = this.getCrlDistributionPointsURL(x509Certificate);
-			for (String url : urls) {
-				X509CRL x509crl = this.getCRLFromURL(url);
-				if (x509crl.isRevoked(x509Certificate)) {
-					ok = false;
-					break;
+			X509Certificate x509Certificate = (X509Certificate) chain[0];
+			URL url = null;
+
+			if (this.url == null) {
+				URL[] urls = CRLCertificateVerifier.getCrlDistributionPointsURL(x509Certificate);
+				if (ConditionUtils.isNotEmpty(urls)) {
+					url = urls[0];
 				}
+			} else {
+				url = this.url;
 			}
-			return ok;
+
+			if (url == null) {
+				CoreLog.getInstance().getLog().info("No url found for validation");
+				return false;
+			}
+
+			X509CRL x509crl = this.getCRLFromURL(url);
+			if (x509crl.isRevoked(x509Certificate)) {
+				return false;
+			}
+			return true;
 		} catch (Exception e) {
 			throw new CertificateException(e);
 		}
 	}
 
-	private X509CRL getCRLFromURL(final String url) throws GeneralSecurityException, IOException {
+	private X509CRL getCRLFromURL(final URL url) throws GeneralSecurityException, IOException {
 		CertificateFactory factory = CertificateFactory.getInstance(CertificateType.X509.getType());
-		URL u = new URL(url);
-		InputStream inputStream = u.openStream();
+		InputStream inputStream = url.openStream();
 		X509CRL x509crl = (X509CRL) factory.generateCRL(inputStream);
 		inputStream.close();
 		return x509crl;
 	}
 
-	private List<String> getCrlDistributionPointsURL(final X509Certificate certificate) throws IOException {
-		byte[] crldistribuitionPointsBytes = certificate.getExtensionValue(X509Extension.cRLDistributionPoints.getId());
+	public static URL[] getCrlDistributionPointsURL(final Certificate certificate) throws IOException {
+		X509Certificate x509Certificate = (X509Certificate) certificate;
+		byte[] crldistribuitionPointsBytes = x509Certificate.getExtensionValue(X509Extension.cRLDistributionPoints.getId());
 
 		if (crldistribuitionPointsBytes == null) {
-			return Collections.emptyList();
+			return new URL[0];
 		}
 
 		ASN1InputStream crldistribuitionPointsBytesStream = new ASN1InputStream(new ByteArrayInputStream(crldistribuitionPointsBytes));
@@ -91,7 +115,7 @@ public class CRLCertificateVerifier implements CertificateVerifier {
 		crldistribuitionPointsObject = crldistribuitionPointsBytesStream.readObject();
 		CRLDistPoint distPoint = CRLDistPoint.getInstance(crldistribuitionPointsObject);
 
-		List<String> urls = new ArrayList<String>();
+		Set<URL> urls = new HashSet<URL>();
 
 		for (DistributionPoint distribuitionPoint : distPoint.getDistributionPoints()) {
 			DistributionPointName distribuitionPointName = distribuitionPoint.getDistributionPoint();
@@ -99,13 +123,13 @@ public class CRLCertificateVerifier implements CertificateVerifier {
 				GeneralName[] genNames = GeneralNames.getInstance(distribuitionPointName.getName()).getNames();
 				for (int i = 0; i < genNames.length; i++) {
 					if (genNames[i].getTagNo() == GeneralName.uniformResourceIdentifier) {
-						String url = DERIA5String.getInstance(genNames[i].getName()).getString();
+						String urlStr = DERIA5String.getInstance(genNames[i].getName()).getString();
+						URL url = new URL(urlStr);
 						urls.add(url);
 					}
 				}
 			}
 		}
-		return urls;
-
+		return urls.toArray(new URL[urls.size()]);
 	}
 }

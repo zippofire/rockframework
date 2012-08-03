@@ -17,9 +17,7 @@
 package br.net.woodstock.rockframework.security.cert.impl;
 
 import java.security.GeneralSecurityException;
-import java.security.PublicKey;
 import java.security.Security;
-import java.security.SignatureException;
 import java.security.cert.CertPathBuilder;
 import java.security.cert.CertPathBuilderException;
 import java.security.cert.CertPathValidator;
@@ -32,8 +30,9 @@ import java.security.cert.PKIXCertPathValidatorResult;
 import java.security.cert.TrustAnchor;
 import java.security.cert.X509CertSelector;
 import java.security.cert.X509Certificate;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import br.net.woodstock.rockframework.config.CoreLog;
@@ -55,89 +54,60 @@ public class PKIXCertificateVerifier implements CertificateVerifier {
 
 	private static final String	OSCP_SUBJECT_PROPERTY	= "ocsp.responderCertSubjectName";
 
-	private Certificate[]		trustedCertificates;
-
-	private Certificate[]		chain;
-
 	private OCSP				ocsp;
 
-	public PKIXCertificateVerifier(final Certificate[] trustedCertificates) {
+	public PKIXCertificateVerifier() {
 		super();
-		Assert.notEmpty(trustedCertificates, "trustedCertificates");
-		this.trustedCertificates = trustedCertificates;
 	}
 
-	public PKIXCertificateVerifier(final Certificate[] trustedCertificates, final OCSP ocsp) {
+	public PKIXCertificateVerifier(final OCSP ocsp) {
 		super();
-		Assert.notEmpty(trustedCertificates, "trustedCertificates");
 		Assert.notNull(ocsp, "ocsp");
-		this.trustedCertificates = trustedCertificates;
-		this.ocsp = ocsp;
-	}
-
-	public PKIXCertificateVerifier(final Certificate[] trustedCertificates, final Certificate[] chain) {
-		super();
-		Assert.notEmpty(trustedCertificates, "trustedCertificates");
-		Assert.notEmpty(chain, "chain");
-		this.trustedCertificates = trustedCertificates;
-		this.chain = chain;
-	}
-
-	public PKIXCertificateVerifier(final Certificate[] trustedCertificates, final Certificate[] chain, final OCSP ocsp) {
-		super();
-		Assert.notEmpty(trustedCertificates, "trustedCertificates");
-		Assert.notEmpty(chain, "chain");
-		Assert.notNull(ocsp, "ocsp");
-		this.trustedCertificates = trustedCertificates;
-		this.chain = chain;
 		this.ocsp = ocsp;
 	}
 
 	@Override
-	public boolean verify(final Certificate certificate) {
-		Assert.notNull(certificate, "certificate");
+	public boolean verify(final Certificate[] chain) {
+		Assert.notEmpty(chain, "chain");
+		if (chain.length < 2) {
+			CoreLog.getInstance().getLog().info("Certificate chain must be greater than 1(certificate and issuer certificate)");
+			return false;
+		}
 		try {
-			X509Certificate x509Certificate = (X509Certificate) certificate;
-			if (this.isSelfSigned(x509Certificate)) {
-				return false;
-			}
+			PKIXCertPathValidatorResult validatorResult = this.getValidatorResult(chain);
 
-			PKIXCertPathValidatorResult validatorResult = this.getValidatorResult(x509Certificate, this.trustedCertificates, this.chain);
-
-			CoreLog.getInstance().getLog().info("Result: " + validatorResult);
+			// CoreLog.getInstance().getLog().info("Result: " + validatorResult);
 
 			return true;
 		} catch (CertPathBuilderException e) {
-			throw new CertificateException(e);
+			CoreLog.getInstance().getLog().info("Validation error: " + e.getMessage());
+			return false;
 		} catch (Exception e) {
 			throw new CertificateException(e);
 		}
 	}
 
-	protected boolean isSelfSigned(final X509Certificate certificate) throws GeneralSecurityException {
-		try {
-			PublicKey publicKey = certificate.getPublicKey();
-			certificate.verify(publicKey);
-			return true;
-		} catch (SignatureException e) {
-			return false;
-		}
-	}
-
-	protected PKIXCertPathValidatorResult getValidatorResult(final X509Certificate certificate, final Certificate[] caCertificates, final Certificate[] certificateChain) throws GeneralSecurityException {
+	protected PKIXCertPathValidatorResult getValidatorResult(final Certificate[] chain) throws GeneralSecurityException {
+		X509Certificate certificate = (X509Certificate) chain[0];
 		X509CertSelector selector = new X509CertSelector();
 		selector.setCertificate(certificate);
 
 		Set<TrustAnchor> trustAnchors = new HashSet<TrustAnchor>();
-		for (Certificate trustedRootCert : caCertificates) {
-			trustAnchors.add(new TrustAnchor((X509Certificate) trustedRootCert, null));
+		if (chain.length > 1) {
+			for (int i = 1; i < chain.length; i++) {
+				trustAnchors.add(new TrustAnchor((X509Certificate) chain[i], null));
+			}
 		}
 
 		PKIXBuilderParameters pkixParameters = new PKIXBuilderParameters(trustAnchors, selector);
 		pkixParameters.setRevocationEnabled(false);
 
-		if (this.chain != null) {
-			CertStore intermediateCertStore = CertStore.getInstance(PKIXCertificateVerifier.CERTSTORE_TYPE, new CollectionCertStoreParameters(Arrays.asList(certificateChain)));
+		if (chain.length > 1) {
+			List<Certificate> list = new ArrayList<Certificate>();
+			for (int i = 1; i < chain.length; i++) {
+				list.add(chain[i]);
+			}
+			CertStore intermediateCertStore = CertStore.getInstance(PKIXCertificateVerifier.CERTSTORE_TYPE, new CollectionCertStoreParameters(list));
 			pkixParameters.addCertStore(intermediateCertStore);
 		}
 
