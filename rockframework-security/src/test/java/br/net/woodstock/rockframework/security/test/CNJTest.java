@@ -3,7 +3,6 @@ package br.net.woodstock.rockframework.security.test;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.security.cert.Certificate;
-import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 
 import junit.framework.TestCase;
@@ -36,24 +35,49 @@ import br.net.woodstock.rockframework.security.store.impl.JCAStore;
 import br.net.woodstock.rockframework.security.util.SecurityUtils;
 import br.net.woodstock.rockframework.util.DateBuilder;
 
-public class CertificateTest extends TestCase {
+public class CNJTest extends TestCase {
 
+	// Se a rede utilizar proxy descomentar e ajustar as seguintes linhas
 	static {
-		System.setProperty("http.proxyHost", "10.30.1.10");
-		System.setProperty("http.proxyPort", "8080");
-		System.setProperty("http.proxyUser", "lourival.junior");
-		System.setProperty("http.proxyPassword", "******"); // FIXME
-		System.setProperty("sun.net.client.defaultConnectTimeout", "15000");
-		System.setProperty("sun.net.client.defaultReadTimeout", "15000");
+		// System.setProperty("http.proxyHost", "10.30.1.10");
+		// System.setProperty("http.proxyPort", "8080");
+		// System.setProperty("http.proxyUser", "lourival.junior");
+		// System.setProperty("http.proxyPassword", "******"); // FIXME
+		// System.setProperty("sun.net.client.defaultConnectTimeout", "15000");
+		// System.setProperty("sun.net.client.defaultReadTimeout", "15000");
 	}
 
-	public void xtestCreate() throws Exception {
+	// Teste que cria o certificado para uma 'unidade certificadora'
+	public void xtestCriarCA() throws Exception {
+		// Inicia a criacao do certificado
+		CertificateBuilderRequest request = new CertificateBuilderRequest("Woodstock Tecnologia CA"); // Assunto no construtor
+		request.withCa(true); // Sera de CA
+		request.withComment("Woodstock Tecnologia CA"); // Comentario Netscape
+		request.withEmail("lourival.sabino.junior@gmail.com"); // RFC822
+
+		// Contem a chave privada e o certificado
+		PrivateKeyHolder holder = BouncyCastleCertificateBuilder.getInstance().build(request);
+
+		// Cria o local para armazenar o certificado
+		Store store = new JCAStore(KeyStoreType.PKCS12);
+
+		// Adiciona a chave privada o certificado digital, alias 'woodstock' e senha 'woodstock'
+		store.add(new PrivateKeyEntry(new PasswordAlias("woodstock", "woodstock"), holder.getPrivateKey(), holder.getChain()));
+
+		// Grava no arquivo
+		FileOutputStream outputStream = new FileOutputStream("/home/lourival/tmp/cert/woodstock.pfx");
+		store.write(outputStream, "woodstock"); // Senha do keystore 'woodstock'
+		outputStream.close();
+	}
+
+	// Teste que cria um certificado de pessoa fisica
+	public void xtestCriarPF() throws Exception {
 		PessoaFisicaCertificateBuilderRequest request = new PessoaFisicaCertificateBuilderRequest("Lourival Sabino");
 		request.withEmail("junior@woodstock.net.br");
 		request.withIssuer("Woodstock Tecnologia");
 		request.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_ENCIPHERMENT);
 		request.withExtendedKeyUsage(ExtendedKeyUsageType.CLIENT_AUTH, ExtendedKeyUsageType.EMAIL_PROTECTION);
-		// ICP Brasil
+		// Dados do ICP Brasil
 		request.withCei("111111111111");
 		request.withCpf("22222222222");
 		request.withDataNascimento(new SimpleDateFormat("dd/MM/yyyy").parse("24/05/1979"));
@@ -63,12 +87,14 @@ public class CertificateTest extends TestCase {
 		request.withRg("44444");
 		request.withTituloEleitor("555555555555");
 
+		// Define a data de validade do certificado para 'ontem' e para daqui 1 ano
 		DateBuilder builder = new DateBuilder();
 		request.withNotBefore(builder.removeDays(1).getDate());
 		request.withNotAfter(builder.addYears(1).getDate());
 
-		// CA
-		FileInputStream inputStream = new FileInputStream("/tmp/woodstock.pfx");
+		// Recupera a chave privada e certificado criado no test anterior para
+		// usar como autoridade certificadora desse certificado
+		FileInputStream inputStream = new FileInputStream("/home/lourival/tmp/cert/woodstock.pfx");
 		Store caStore = new JCAStore(KeyStoreType.PKCS12);
 		caStore.read(inputStream, "woodstock");
 		PrivateKeyEntry entry = (PrivateKeyEntry) caStore.get(new PasswordAlias("woodstock", "woodstock"), StoreEntryType.PRIVATE_KEY);
@@ -76,93 +102,23 @@ public class CertificateTest extends TestCase {
 
 		PrivateKeyHolder holder = BouncyCastleCertificateBuilder.getInstance().build(request);
 
+		// Grava o PKCS12 do certificado gerado
+		// A senha do arquivo sera 'lourival'
+		FileOutputStream outputStream = new FileOutputStream("/home/lourival/tmp/cert/lourival.pfx");
 		Store store = new JCAStore(KeyStoreType.PKCS12);
 		store.add(new PrivateKeyEntry(new PasswordAlias("lourival", "lourival"), holder.getPrivateKey(), holder.getChain()));
-		store.write(new FileOutputStream("/tmp/lourival.pfx"), "lourival");
+		store.write(outputStream, "lourival");
+		outputStream.close();
 
-		FileOutputStream outputStream = new FileOutputStream("/tmp/lourival.cer");
+		// Grava o certificado gerado em um arquivo, somente para visualizacao
+		outputStream = new FileOutputStream("/home/lourival/tmp/cert/lourival.cer");
 		outputStream.write(holder.getChain()[0].getEncoded());
-
-		// X509Certificate certificate = (X509Certificate) holder.getChain()[0];
-		// X500Principal principal = certificate.getSubjectX500Principal();
-		// System.out.println(certificate);
-		// System.out.println(principal);
-		// System.out.println(principal.getName(X500Principal.CANONICAL));
+		outputStream.close();
 	}
 
-	public void xtestCreateCA() throws Exception {
-		CertificateBuilderRequest request = new CertificateBuilderRequest("Woodstock Tecnologia CA");
-		request.withCa(true);
-		request.withComment("Woodstock Tecnologia CA");
-		request.withEmail("ca@woodstock.net.br");
-
-		PrivateKeyHolder holder = BouncyCastleCertificateBuilder.getInstance().build(request);
-
-		Store store = new JCAStore(KeyStoreType.PKCS12);
-		store.add(new PrivateKeyEntry(new PasswordAlias("woodstock", "woodstock"), holder.getPrivateKey(), holder.getChain()));
-		store.write(new FileOutputStream("/tmp/woodstock.pfx"), "woodstock");
-	}
-
-	public void xtestCheckCert() throws Exception {
-		String[] files = new String[] { "/tmp/woodstock.cer", "/home/lourival/Dropbox/cacert/root.crt" };
-		for (String file : files) {
-			System.out.println("\n\nFile: " + file);
-			FileInputStream inputStream = new FileInputStream(file);
-			X509Certificate certificate = (X509Certificate) SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
-			boolean[] keyUsage = certificate.getKeyUsage();
-			if (keyUsage != null) {
-				System.out.println("digitalSignature: " + keyUsage[0]);
-				System.out.println("nonRepudiation: " + keyUsage[1]);
-				System.out.println("keyEncipherment: " + keyUsage[2]);
-				System.out.println("dataEncipherment: " + keyUsage[3]);
-				System.out.println("keyAgreement: " + keyUsage[4]);
-				System.out.println("keyCertSign: " + keyUsage[5]);
-				System.out.println("cRLSign: " + keyUsage[6]);
-				System.out.println("encipherOnly: " + keyUsage[7]);
-				System.out.println("decipherOnly: " + keyUsage[8]);
-			}
-			System.out.println(certificate.getExtendedKeyUsage());
-			System.out.println(certificate.getBasicConstraints());
-			System.out.println(certificate.getCriticalExtensionOIDs());
-			System.out.println(certificate.getNonCriticalExtensionOIDs());
-		}
-	}
-
-	public void xtestValidateCA() throws Exception {
-		FileInputStream inputStream = new FileInputStream("/tmp/cert5.cert");
-		Certificate certificate = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
-
-		inputStream.close();
-
-		CertificateVerifier cv1 = new DateCertificateVerifier();
-		CertificateVerifier cv2 = new CRLCertificateVerifier();
-		// CertificateVerifier cv3 = new PKIXCertificateVerifier(new Certificate[] { certificate }, new
-		// Certificate[] { certificate });
-
-		CertificateVerifier certificateVerifier = new CertificateVerifierChain(new CertificateVerifier[] { cv1, cv2 });
-		boolean ok = certificateVerifier.verify(new Certificate[] { certificate });
-		System.out.println("OK: " + ok);
-	}
-
-	public void xtestValidateBC() throws Exception {
-		CertificateBuilderRequest request = new CertificateBuilderRequest("Lourival Sabino");
-		request.withEmail("junior@woodstock.net.br");
-		request.withIssuer("Woodstock Tecnologia");
-		request.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_AGREEMENT);
-
-		PrivateKeyHolder holder = BouncyCastleCertificateBuilder.getInstance().build(request);
-
-		CertificateVerifier cv1 = new DateCertificateVerifier();
-		CertificateVerifier cv2 = new CRLCertificateVerifier();
-		CertificateVerifier cv3 = new PKIXCertificateVerifier();
-
-		CertificateVerifier certificateVerifier = new CertificateVerifierChain(new CertificateVerifier[] { cv1, cv2, cv3 });
-		boolean ok = certificateVerifier.verify(holder.getChain());
-		System.out.println("OK: " + ok);
-	}
-
-	public void testICPBrasil() throws Exception {
-		FileInputStream inputStream = new FileInputStream("/tmp/lourival.cer");
+	// Apenas exibe os dados do certificado digital
+	public void xtestExibirCertificado() throws Exception {
+		FileInputStream inputStream = new FileInputStream("/home/lourival/tmp/cert/lourival.cer");
 		Certificate certificate = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
 		CertificadoICPBrasil certificadoICPBrasil = CertificadoICPBrasil.getInstance(certificate);
 		System.out.println(certificadoICPBrasil.getICPBrasilType());
@@ -193,50 +149,59 @@ public class CertificateTest extends TestCase {
 		}
 	}
 
+	// Testa um certificado real
 	public void xtestVerifyOK() throws Exception {
+		// O certificado que sera validado
 		FileInputStream inputStream = new FileInputStream("/home/lourival/tmp/cert/adelci.cer");
 		Certificate certificate = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
 
+		// A hierarquia do certificado, SERASA>RECEITA>ICP-Brasil
+		// SERASA
 		inputStream = new FileInputStream("/home/lourival/tmp/cert/serasa.cer");
 		Certificate issuer1 = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
-
+		// RECEITA
 		inputStream = new FileInputStream("/home/lourival/tmp/cert/receita.cer");
 		Certificate issuer2 = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
-
+		// ICP-BRASIL
 		inputStream = new FileInputStream("/home/lourival/tmp/cert/icp-brasil.cer");
 		Certificate issuer3 = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
 
-		CertificateVerifier cv1 = new DateCertificateVerifier();
-		CertificateVerifier cv4 = new SelfSignedCertificateVerifier();
-		CertificateVerifier cv2 = new CRLCertificateVerifier();
-		CertificateVerifier cv3 = new PKIXCertificateVerifier();
-		CertificateVerifier cv5 = new OCSPCertificateVerifier();
-		CertificateVerifier cv6 = new ICPBrasilCertificateVerifier();
-		CertificateVerifier cv7 = new HierarchyCertificateVerifier(issuer3);
+		CertificateVerifier cv1 = new DateCertificateVerifier(); // Valida a data de validade
+		CertificateVerifier cv4 = new SelfSignedCertificateVerifier(); // Certificado auto assinado
+		CertificateVerifier cv2 = new CRLCertificateVerifier(); // Lista de certificados revogados(dentro do certificado)
+		CertificateVerifier cv3 = new PKIXCertificateVerifier(); // Hierarquia do certificado
+		CertificateVerifier cv5 = new OCSPCertificateVerifier(); // Validacao usando OCSP
+		CertificateVerifier cv6 = new ICPBrasilCertificateVerifier(); // Verifica se tem os OID do ICP-Brasil
+		CertificateVerifier cv7 = new HierarchyCertificateVerifier(issuer3); // Verifica se o certificado possui o ICP-Brasil em sua hieraquia(issuer3)
 
-		CertificateVerifier certificateVerifier = new CertificateVerifierChain(new CertificateVerifier[] { cv1, cv2, cv3, cv4, cv5, cv6, cv7 });
-		// boolean status = certificateVerifier.verify(new Certificate[] { certificate, issuer1, issuer2, issuer3 });
+		CertificateVerifier certificateVerifier = new CertificateVerifierChain(new CertificateVerifier[] { cv1, cv2, cv3, cv4, cv5, cv6, cv7 }); // Une todas as validacoes
+
+		// Retorna true caso todas as validacoes executem corretamente
 		boolean status = certificateVerifier.verify(new Certificate[] { certificate, issuer1, issuer2, issuer3 });
 		System.out.println(status);
 	}
 
-	public void xtestVerifyLocalCA() throws Exception {
+	// Testa um certificado gerado pela 'CA' de testes
+	public void testVerifyLocalCA() throws Exception {
+		// O certificado que sera validado
 		FileInputStream inputStream = new FileInputStream("/home/lourival/tmp/cert/lourival.cer");
 		Certificate certificate = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
 
+		// O certificado so tem o emissor na hierarquia
 		inputStream = new FileInputStream("/home/lourival/tmp/cert/woodstock.cer");
 		Certificate issuer1 = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
 
+		// Adicionei o ICP-Brasil para forcar o erro na hierarquia
 		inputStream = new FileInputStream("/home/lourival/tmp/cert/icp-brasil.cer");
 		Certificate issuerX = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
 
-		CertificateVerifier cv1 = new DateCertificateVerifier();
-		CertificateVerifier cv4 = new SelfSignedCertificateVerifier();
-		CertificateVerifier cv2 = new CRLCertificateVerifier();
-		CertificateVerifier cv3 = new PKIXCertificateVerifier();
-		CertificateVerifier cv5 = new OCSPCertificateVerifier();
-		CertificateVerifier cv6 = new ICPBrasilCertificateVerifier();
-		CertificateVerifier cv7 = new HierarchyCertificateVerifier(issuerX);
+		CertificateVerifier cv1 = new DateCertificateVerifier(); // Passa OK, ainda esta no periodo de validade
+		CertificateVerifier cv4 = new SelfSignedCertificateVerifier(); // Passa OK, nao e auto assinado
+		CertificateVerifier cv2 = new CRLCertificateVerifier(); // Erro, nao possui a URL da CRL no certificado
+		CertificateVerifier cv3 = new PKIXCertificateVerifier(); // Passa OK, a hieraquia do certificado e valida
+		CertificateVerifier cv5 = new OCSPCertificateVerifier(); // Erro, nao possui a URL do OCSP no certificado
+		CertificateVerifier cv6 = new ICPBrasilCertificateVerifier(); // Passa OK, possui os OID do ICP-Brasil
+		CertificateVerifier cv7 = new HierarchyCertificateVerifier(issuerX); // Erro, o certificado do ICP-Brasil
 
 		CertificateVerifierChain certificateVerifier = new CertificateVerifierChain(new CertificateVerifier[] { cv1, cv2, cv3, cv4, cv5, cv6, cv7 });
 
@@ -247,24 +212,10 @@ public class CertificateTest extends TestCase {
 
 		status = certificateVerifier.verify(new Certificate[] { certificate, issuer1 });
 		System.out.println(status);
-	}
 
-	public void xtestVerifySelfSigned() throws Exception {
-		FileInputStream inputStream = new FileInputStream("/home/lourival/tmp/cert/lourival2.cer");
-		Certificate certificate = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
-
-		CertificateVerifier cv1 = new DateCertificateVerifier();
-		CertificateVerifier cv4 = new SelfSignedCertificateVerifier();
-		CertificateVerifier cv2 = new CRLCertificateVerifier();
-		CertificateVerifier cv3 = new PKIXCertificateVerifier();
-		CertificateVerifier cv5 = new OCSPCertificateVerifier();
-		CertificateVerifier cv6 = new ICPBrasilCertificateVerifier();
-
-		CertificateVerifierChain certificateVerifier = new CertificateVerifierChain(new CertificateVerifier[] { cv1, cv2, cv3, cv4, cv5, cv6 });
-
-		certificateVerifier.setDebug(true);
-
-		boolean status = certificateVerifier.verify(new Certificate[] { certificate });
+		// Nesse teste vai dar erro no PKIXCertificateVerifier
+		status = certificateVerifier.verify(new Certificate[] { certificate, issuerX });
 		System.out.println(status);
 	}
+
 }

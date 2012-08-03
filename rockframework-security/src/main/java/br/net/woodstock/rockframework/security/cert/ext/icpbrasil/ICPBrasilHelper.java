@@ -27,13 +27,16 @@ import java.util.Date;
 import java.util.List;
 
 import org.bouncycastle.asn1.ASN1InputStream;
+import org.bouncycastle.asn1.DERIA5String;
 import org.bouncycastle.asn1.DERObjectIdentifier;
 import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DERString;
 import org.bouncycastle.asn1.DERTaggedObject;
 import org.bouncycastle.asn1.DERTags;
+import org.bouncycastle.asn1.x509.GeneralName;
 
+import br.net.woodstock.rockframework.config.CoreLog;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
@@ -126,6 +129,9 @@ abstract class ICPBrasilHelper {
 		Collection<List<?>> alternativeNames = certificate.getSubjectAlternativeNames();
 		if (ConditionUtils.isNotEmpty(alternativeNames)) {
 			CertificadoICPBrasilType type = CertificadoICPBrasilType.INVALIDO;
+			// Comum
+			String email = null;
+
 			// PF
 			Date dataNascimentoPF = null;
 			String cpfPF = null;
@@ -147,8 +153,9 @@ abstract class ICPBrasilHelper {
 			String ceiPJ = null;
 
 			for (List<?> list : alternativeNames) {
-				Integer id = (Integer) list.get(0);
-				if ((id != null) && (id.intValue() == 0)) {
+				Integer tmp = (Integer) list.get(0);
+				int id = tmp != null ? tmp.intValue() : -1;
+				if (id == GeneralName.otherName) {
 					byte[] bytes = (byte[]) list.get(1);
 					DERSequence sequence = ICPBrasilHelper.toDerSequence(bytes);
 					DERObjectIdentifier identifier = (DERObjectIdentifier) sequence.getObjectAt(0);
@@ -198,6 +205,15 @@ abstract class ICPBrasilHelper {
 					} else if (ICPBrasilHelper.OID_PJ_NUMERO_CEI.equals(oid)) {
 						ceiPJ = ICPBrasilHelper.getValueFromNumeric(value);
 					}
+				} else if (id == GeneralName.rfc822Name) {
+					Object obj = list.get(1);
+					if (obj instanceof String) {
+						email = (String) obj;
+					} else if (obj instanceof DERIA5String) {
+						email = ((DERIA5String) obj).getString();
+					} else {
+						CoreLog.getInstance().getLog().warning("Unknow RFC822 value " + obj);
+					}
 				}
 			}
 
@@ -206,6 +222,7 @@ abstract class ICPBrasilHelper {
 				certPF.setCei(ceiPF);
 				certPF.setCpf(cpfPF);
 				certPF.setDataNascimento(dataNascimentoPF);
+				certPF.setEmail(email);
 				certPF.setEmissorRG(emissorRGPF);
 				certPF.setPis(pisPF);
 				certPF.setRegistroOAB(registroOABPF);
@@ -218,6 +235,7 @@ abstract class ICPBrasilHelper {
 				certPJ.setCnpj(cnpjPJ);
 				certPJ.setCpfResponsavel(cpfResponsavelPJ);
 				certPJ.setDataNascimentoResponsavel(dataNascimentoResponsavelPJ);
+				certPJ.setEmail(email);
 				certPJ.setEmissorRGResponsavel(emissorRGResponsavelPJ);
 				certPJ.setPisResponsavel(pisResponsavelPJ);
 				certPJ.setResponsavel(responsavelPJ);

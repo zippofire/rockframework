@@ -26,6 +26,8 @@ public abstract class CertificadoICPBrasil extends DelegateX509Certificate {
 
 	private CertificadoICPBrasilType	type;
 
+	private String						email;
+
 	public CertificadoICPBrasil(final X509Certificate certificate, final CertificadoICPBrasilType type) {
 		super(certificate);
 		this.type = type;
@@ -33,6 +35,14 @@ public abstract class CertificadoICPBrasil extends DelegateX509Certificate {
 
 	public CertificadoICPBrasilType getICPBrasilType() {
 		return this.type;
+	}
+
+	public String getEmail() {
+		return this.email;
+	}
+
+	public void setEmail(final String email) {
+		this.email = email;
 	}
 
 	public static CertificadoICPBrasil getInstance(final Certificate certificate) {
