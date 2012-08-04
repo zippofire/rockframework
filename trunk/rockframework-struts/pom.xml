@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>rockframework-struts</artifactId>
+	<name>Rock Framework - Struts</name>
+	<description>Rock Framework - Struts</description>
+	<parent>
+		<groupId>br.net.woodstock.rockframework</groupId>
+		<artifactId>rockframework-parent</artifactId>
+		<version>2.0.5</version>
+	</parent>
+	<dependencies>
+		<dependency>
+			<groupId>br.net.woodstock.rockframework</groupId>
+			<artifactId>rockframework-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>br.net.woodstock.rockframework</groupId>
+			<artifactId>rockframework-domain</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>br.net.woodstock.rockframework</groupId>
+			<artifactId>rockframework-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.struts</groupId>
+			<artifactId>struts-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.struts</groupId>
+			<artifactId>struts-extras</artifactId>
+		</dependency>
+	</dependencies>
+</project>

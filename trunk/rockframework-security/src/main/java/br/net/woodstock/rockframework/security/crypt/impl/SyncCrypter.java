@@ -1,0 +1,117 @@
+/*
+ * This file is part of rockframework.
+ * 
+ * rockframework is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * rockframework is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
+ */
+package br.net.woodstock.rockframework.security.crypt.impl;
+
+import java.security.GeneralSecurityException;
+import java.security.SecureRandom;
+
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+
+import br.net.woodstock.rockframework.security.crypt.CrypterException;
+import br.net.woodstock.rockframework.security.crypt.KeyType;
+import br.net.woodstock.rockframework.security.crypt.SecretKeySupport;
+import br.net.woodstock.rockframework.security.crypt.impl.CrypterOperation.Mode;
+import br.net.woodstock.rockframework.util.Assert;
+import br.net.woodstock.rockframework.utils.ConditionUtils;
+
+public class SyncCrypter extends AbstractCrypter implements SecretKeySupport {
+
+	private SecretKey	key;
+
+	private KeyType		keyType;
+
+	public SyncCrypter(final SecretKey key) {
+		super();
+		Assert.notNull(key, "key");
+		this.key = key;
+		for (KeyType keyType : KeyType.values()) {
+			if (keyType.getAlgorithm().equals(this.key.getAlgorithm())) {
+				this.keyType = keyType;
+				break;
+			}
+		}
+	}
+
+	public SyncCrypter(final KeyType type) {
+		this(type, null);
+	}
+
+	public SyncCrypter(final KeyType type, final String seed) {
+		super();
+		Assert.notNull(type, "type");
+
+		try {
+			KeyGenerator generator = KeyGenerator.getInstance(type.getAlgorithm());
+
+			if (ConditionUtils.isNotEmpty(seed)) {
+				SecureRandom random = new SecureRandom(seed.getBytes());
+				generator.init(random);
+			}
+
+			this.keyType = type;
+			this.key = generator.generateKey();
+		} catch (GeneralSecurityException e) {
+			throw new CrypterException(e);
+		}
+	}
+
+	@Override
+	public byte[] encrypt(final byte[] data) {
+		return this.encrypt(data, null);
+	}
+
+	@Override
+	public byte[] encrypt(final byte[] data, final String seed) {
+		try {
+			Assert.notNull(data, "data");
+			CrypterOperation operation = new CrypterOperation(this.key, Mode.ENCRYPT, data, seed);
+			return operation.execute();
+		} catch (Exception e) {
+			throw new CrypterException(e);
+		}
+	}
+
+	@Override
+	public byte[] decrypt(final byte[] data) {
+		return this.decrypt(data, null);
+	}
+
+	@Override
+	public byte[] decrypt(final byte[] data, final String seed) {
+		try {
+			Assert.notNull(data, "data");
+			CrypterOperation operation = new CrypterOperation(this.key, Mode.DECRYPT, data, seed);
+			return operation.execute();
+		} catch (Exception e) {
+			throw new CrypterException(e);
+		}
+	}
+
+	public String getAlgorithm() {
+		if (this.keyType == null) {
+			return null;
+		}
+		return this.keyType.getAlgorithm();
+	}
+
+	@Override
+	public SecretKey getSecretKey() {
+		return this.key;
+	}
+
+}

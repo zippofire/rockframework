@@ -1,0 +1,24 @@
+<?xml version="${version}" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="${artifactId}">
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/target/classes"/>
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp"/>
+        <dependent-module archiveName="${rootArtifactId}-api-${version}.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/${rootArtifactId}-api/${rootArtifactId}-api">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="${rootArtifactId}-impl-${version}.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/${rootArtifactId}-impl/${rootArtifactId}-impl">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="${rootArtifactId}-orm-${version}.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/${rootArtifactId}-orm/${rootArtifactId}-orm">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="${rootArtifactId}-util-${version}.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/${rootArtifactId}-util/${rootArtifactId}-util">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="${artifactId}"/>
+        <property name="java-output-path" value="/${artifactId}/target/classes"/>
+    </wb-module>
+</project-modules>

@@ -1,0 +1,37 @@
+ #set($dollar = '$')
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>${artifactId}</artifactId>
+	<packaging>jar</packaging>
+	<parent>
+		<groupId>${groupId}.${rootArtifactId}</groupId>
+		<artifactId>${rootArtifactId}-parent</artifactId>
+		<relativePath>../</relativePath>
+		<version>${version}</version>
+	</parent>
+	<dependencies>
+		<dependency>
+			<groupId>${groupId}.${rootArtifactId}</groupId>
+			<artifactId>${rootArtifactId}-api</artifactId>
+			<version>${dollar}{project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>${groupId}.${rootArtifactId}</groupId>
+			<artifactId>${rootArtifactId}-orm</artifactId>
+			<version>${dollar}{project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>${groupId}.${rootArtifactId}</groupId>
+			<artifactId>${rootArtifactId}-util</artifactId>
+			<version>${dollar}{project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>

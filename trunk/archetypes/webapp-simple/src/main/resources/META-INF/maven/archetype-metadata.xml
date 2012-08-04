@@ -1,0 +1,245 @@
+<archetype-descriptor xmlns="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0 http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd" name="webapp-simple">
+	<requiredProperties>
+		<requiredProperty key="groupId" />
+		<requiredProperty key="artifactId" />
+	</requiredProperties>
+	<fileSets>
+		<!-- Main -->
+		<fileSet filtered="true" packaged="false">
+			<directory></directory>
+			<includes>
+				<include>.project</include>
+				<include>pom.xml</include>
+			</includes>
+		</fileSet>
+		<fileSet filtered="true" packaged="false">
+			<directory>.settings</directory>
+			<includes>
+				<include>**/*</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+	<modules>
+		<!-- API -->
+		<module id="${rootArtifactId}-api" name="${rootArtifactId}-api" dir="__rootArtifactId__-api">
+			<fileSets>
+				<fileSet filtered="true" packaged="false">
+					<directory></directory>
+					<includes>
+						<include>.classpath</include>
+						<include>.project</include>
+						<include>pom.xml</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" packaged="false">
+					<directory>.settings</directory>
+					<includes>
+						<include>**/*</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" packaged="true">
+					<directory>src/main/java</directory>
+					<includes>
+						<include>**/*</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" packaged="false">
+					<directory>src/main/resources</directory>
+					<includes>
+						<include>**/*</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" packaged="true">
+					<directory>src/test/java</directory>
+					<includes>
+						<include>**/*</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" packaged="false">
+					<directory>src/test/resources</directory>
+					<includes>
+						<include>**/*</include>
+					</includes>
+				</fileSet>
+			</fileSets>
+		</module>
+		<!-- IMPL -->
+		<module id="${rootArtifactId}-impl" name="${rootArtifactId}-impl" dir="__rootArtifactId__-impl">
+			<fileSets>
+				<fileSet filtered="true" packaged="false">
+					<directory></directory>
+					<includes>
+						<include>.classpath</include>
+						<include>.project</include>
+						<include>pom.xml</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" packaged="false">
+					<directory>.settings</directory>
+					<includes>
+						<include>**/*</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" packaged="true">
+					<directory>src/main/java</directory>
+					<includes>
+						<include>**/*</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" packaged="false">
+					<directory>src/main/resources</directory>
+					<includes>
+						<include>**/*</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" packaged="true">
+					<directory>src/test/java</directory>
+					<includes>
+						<include>**/*</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" packaged="false">
+					<directory>src/test/resources</directory>
+					<includes>
+						<include>**/*</include>
+					</includes>
+				</fileSet>
+			</fileSets>
+		</module>
+		<!-- ORM -->
+		<module id="${rootArtifactId}-orm" name="${rootArtifactId}-orm" dir="__rootArtifactId__-orm">
+			<fileSets>
+				<fileSet filtered="true" packaged="false">
+					<directory></directory>
+					<includes>
+						<include>.classpath</include>
+						<include>.project</include>
+						<include>pom.xml</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" packaged="false">
+					<directory>.settings</directory>
+					<includes>
+						<include>**/*</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" packaged="true">
+					<directory>src/main/java</directory>
+					<includes>
+						<include>**/*</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" packaged="false">
+					<directory>src/main/resources</directory>
+					<includes>
+						<include>**/*</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" packaged="true">
+					<directory>src/test/java</directory>
+					<includes>
+						<include>**/*</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" packaged="false">
+					<directory>src/test/resources</directory>
+					<includes>
+						<include>**/*</include>
+					</includes>
+				</fileSet>
+			</fileSets>
+		</module>
+		<!-- UTIL -->
+		<module id="${rootArtifactId}-util" name="${rootArtifactId}-util" dir="__rootArtifactId__-util">
+			<fileSets>
+				<fileSet filtered="true" packaged="false">
+					<directory></directory>
+					<includes>
+						<include>.classpath</include>
+						<include>.project</include>
+						<include>pom.xml</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" packaged="false">
+					<directory>.settings</directory>
+					<includes>
+						<include>**/*</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" packaged="true">
+					<directory>src/main/java</directory>
+					<includes>
+						<include>**/*</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" packaged="false">
+					<directory>src/main/resources</directory>
+					<includes>
+						<include>**/*</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" packaged="true">
+					<directory>src/test/java</directory>
+					<includes>
+						<include>**/*</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" packaged="false">
+					<directory>src/test/resources</directory>
+					<includes>
+						<include>**/*</include>
+					</includes>
+				</fileSet>
+			</fileSets>
+		</module>
+		<!-- WEB -->
+		<module id="${rootArtifactId}-web" name="${rootArtifactId}-web" dir="__rootArtifactId__-web">
+			<fileSets>
+				<fileSet filtered="true" packaged="false">
+					<directory></directory>
+					<includes>
+						<include>.classpath</include>
+						<include>.project</include>
+						<include>pom.xml</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" packaged="false">
+					<directory>.settings</directory>
+					<includes>
+						<include>**/*</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" packaged="true">
+					<directory>src/main/java</directory>
+					<includes>
+						<include>**/*</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" packaged="false">
+					<directory>src/main/resources</directory>
+					<includes>
+						<include>**/*</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" packaged="false">
+					<directory>src/main/webapp</directory>
+					<includes>
+						<include>**/*</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" packaged="true">
+					<directory>src/test/java</directory>
+					<includes>
+						<include>**/*</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" packaged="false">
+					<directory>src/test/resources</directory>
+					<includes>
+						<include>**/*</include>
+					</includes>
+				</fileSet>
+			</fileSets>
+		</module>
+	</modules>
+</archetype-descriptor>

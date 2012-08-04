@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>br.net.woodstock.rockframework.archetypes</groupId>
+	<artifactId>webapp-simple</artifactId>
+	<version>1.0</version>
+	<name>Modularized Webapp</name>
+
+	<!-- Publish on maven.org -->
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.4.3</version>
+				<configuration>
+					<includeEmptyDirs>true</includeEmptyDirs>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+
+  <scm>
+    <connection>scm:svn:http://svn.sonatype.org/spice/tags/webapp-simple-1.0</connection>
+    <developerConnection>scm:svn:https://svn.sonatype.org/spice/tags/webapp-simple-1.0</developerConnection>
+    <url>http://svn.sonatype.org/spice/tags/webapp-simple-1.0</url>
+  </scm>
+</project>
