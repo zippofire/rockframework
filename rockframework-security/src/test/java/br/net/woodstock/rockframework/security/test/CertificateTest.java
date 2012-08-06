@@ -2,6 +2,7 @@ package br.net.woodstock.rockframework.security.test;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.net.URL;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
@@ -161,7 +162,7 @@ public class CertificateTest extends TestCase {
 		System.out.println("OK: " + ok);
 	}
 
-	public void testICPBrasil() throws Exception {
+	public void xtestICPBrasil() throws Exception {
 		FileInputStream inputStream = new FileInputStream("/tmp/lourival.cer");
 		Certificate certificate = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
 		CertificadoICPBrasil certificadoICPBrasil = CertificadoICPBrasil.getInstance(certificate);
@@ -266,5 +267,23 @@ public class CertificateTest extends TestCase {
 
 		boolean status = certificateVerifier.verify(new Certificate[] { certificate });
 		System.out.println(status);
+	}
+
+	public void testOIDs() throws Exception {
+		FileInputStream inputStream = new FileInputStream("/home/lourival/tmp/cert/adelci.cer");
+		Certificate certificate = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
+		X509Certificate x509Certificate = (X509Certificate) certificate;
+		System.out.println(x509Certificate);
+		for (String oid : x509Certificate.getCriticalExtensionOIDs()) {
+			System.out.println("CRI  : " + oid);
+		}
+		for (String oid : x509Certificate.getNonCriticalExtensionOIDs()) {
+			System.out.println("N-CRI: " + oid);
+		}
+
+		URL[] urls = OCSPCertificateVerifier.getOCSPUrl(certificate);
+		for (URL url : urls) {
+			System.out.println(url);
+		}
 	}
 }

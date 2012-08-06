@@ -194,13 +194,17 @@ public class OCSPCertificateVerifier implements CertificateVerifier {
 		ASN1Sequence sequence = (ASN1Sequence) new ASN1InputStream(octetString.getOctets()).readObject();
 		AuthorityInformationAccess informationAccess = new AuthorityInformationAccess(sequence);
 		AccessDescription[] accessDescriptions = informationAccess.getAccessDescriptions();
+
+		// Colocar aqui 1.3.6.1.5.5.7.48.1
 		for (AccessDescription description : accessDescriptions) {
-			GeneralName generalName = description.getAccessLocation();
-			DERTaggedObject taggedObject = (DERTaggedObject) generalName.getDERObject();
-			DERIA5String ia5String = DERIA5String.getInstance(taggedObject.getObject());
-			String urlStr = ia5String.getString();
-			URL url = new URL(urlStr);
-			urls.add(url);
+			if (description.getAccessMethod().getId().equals(OCSPObjectIdentifiers.pkix_ocsp)) {
+				GeneralName generalName = description.getAccessLocation();
+				DERTaggedObject taggedObject = (DERTaggedObject) generalName.getDERObject();
+				DERIA5String ia5String = DERIA5String.getInstance(taggedObject.getObject());
+				String urlStr = ia5String.getString();
+				URL url = new URL(urlStr);
+				urls.add(url);
+			}
 		}
 		return urls.toArray(new URL[urls.size()]);
 	}
