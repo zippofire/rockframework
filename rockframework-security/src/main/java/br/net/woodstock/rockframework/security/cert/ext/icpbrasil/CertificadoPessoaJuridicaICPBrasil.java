@@ -38,8 +38,8 @@ public class CertificadoPessoaJuridicaICPBrasil extends CertificadoICPBrasil {
 
 	private String	cei;
 
-	public CertificadoPessoaJuridicaICPBrasil(final X509Certificate certificate) {
-		super(certificate, CertificadoICPBrasilType.PESSOA_JURIDICA);
+	public CertificadoPessoaJuridicaICPBrasil(final X509Certificate certificate, final FormatoICPBrasilType formato) {
+		super(certificate, TipoICPBrasilType.PESSOA_JURIDICA, formato);
 	}
 
 	public String getResponsavel() {

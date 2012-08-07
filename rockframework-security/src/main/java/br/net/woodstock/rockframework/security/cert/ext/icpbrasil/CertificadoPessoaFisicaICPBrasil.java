@@ -38,8 +38,8 @@ public class CertificadoPessoaFisicaICPBrasil extends CertificadoICPBrasil {
 
 	private String	registroOAB;
 
-	public CertificadoPessoaFisicaICPBrasil(final X509Certificate certificate) {
-		super(certificate, CertificadoICPBrasilType.PESSOA_FISICA);
+	public CertificadoPessoaFisicaICPBrasil(final X509Certificate certificate, final FormatoICPBrasilType formato) {
+		super(certificate, TipoICPBrasilType.PESSOA_FISICA, formato);
 	}
 
 	public Date getDataNascimento() {

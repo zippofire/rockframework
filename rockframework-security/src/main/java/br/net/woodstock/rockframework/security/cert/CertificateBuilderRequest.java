@@ -63,6 +63,8 @@ public class CertificateBuilderRequest implements Serializable, Cloneable {
 
 	private boolean						ca;
 
+	private int							keySize;
+
 	private Set<KeyUsageType>			keyUsage;
 
 	private Set<ExtendedKeyUsageType>	extendedKeyUsage;
@@ -149,6 +151,10 @@ public class CertificateBuilderRequest implements Serializable, Cloneable {
 		return this.ca;
 	}
 
+	public int getKeySize() {
+		return this.keySize;
+	}
+
 	public Set<KeyUsageType> getKeyUsage() {
 		return this.keyUsage;
 	}
@@ -217,8 +223,14 @@ public class CertificateBuilderRequest implements Serializable, Cloneable {
 		return this;
 	}
 
-	public void withCa(final boolean ca) {
+	public CertificateBuilderRequest withCa(final boolean ca) {
 		this.ca = ca;
+		return this;
+	}
+
+	public CertificateBuilderRequest withKeySize(final int keySize) {
+		this.keySize = keySize;
+		return this;
 	}
 
 	public CertificateBuilderRequest withKeyUsage(final KeyUsageType... array) {

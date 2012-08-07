@@ -13,7 +13,7 @@ import br.net.woodstock.rockframework.security.cert.ExtendedKeyUsageType;
 import br.net.woodstock.rockframework.security.cert.KeyUsageType;
 import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.CertificadoICPBrasil;
-import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.CertificadoICPBrasilType;
+import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.TipoICPBrasilType;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.CertificadoPessoaFisicaICPBrasil;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.CertificadoPessoaJuridicaICPBrasil;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.ICPBrasilCertificateVerifier;
@@ -121,8 +121,8 @@ public class CNJTest extends TestCase {
 		FileInputStream inputStream = new FileInputStream("/home/lourival/tmp/cert/lourival.cer");
 		Certificate certificate = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
 		CertificadoICPBrasil certificadoICPBrasil = CertificadoICPBrasil.getInstance(certificate);
-		System.out.println(certificadoICPBrasil.getICPBrasilType());
-		if (certificadoICPBrasil.getICPBrasilType() == CertificadoICPBrasilType.PESSOA_FISICA) {
+		System.out.println(certificadoICPBrasil.getTipo());
+		if (certificadoICPBrasil.getTipo() == TipoICPBrasilType.PESSOA_FISICA) {
 			CertificadoPessoaFisicaICPBrasil certPF = (CertificadoPessoaFisicaICPBrasil) certificadoICPBrasil;
 			System.out.println("Certificado de PF");
 			System.out.println("CEI             : " + certPF.getCei());
@@ -134,7 +134,7 @@ public class CNJTest extends TestCase {
 			System.out.println("Registro OAB    : " + certPF.getRegistroOAB());
 			System.out.println("RG              : " + certPF.getRg());
 			System.out.println("Titulo Eleitor  : " + certPF.getTituloEleitor());
-		} else if (certificadoICPBrasil.getICPBrasilType() == CertificadoICPBrasilType.PESSOA_FISICA) {
+		} else if (certificadoICPBrasil.getTipo() == TipoICPBrasilType.PESSOA_FISICA) {
 			CertificadoPessoaJuridicaICPBrasil certPJ = (CertificadoPessoaJuridicaICPBrasil) certificadoICPBrasil;
 			System.out.println("Certificado de PF");
 			System.out.println("CEI             : " + certPJ.getCei());

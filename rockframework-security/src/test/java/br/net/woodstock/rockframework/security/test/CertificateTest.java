@@ -15,11 +15,11 @@ import br.net.woodstock.rockframework.security.cert.ExtendedKeyUsageType;
 import br.net.woodstock.rockframework.security.cert.KeyUsageType;
 import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.CertificadoICPBrasil;
-import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.CertificadoICPBrasilType;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.CertificadoPessoaFisicaICPBrasil;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.CertificadoPessoaJuridicaICPBrasil;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.ICPBrasilCertificateVerifier;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.PessoaFisicaCertificateBuilderRequest;
+import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.TipoICPBrasilType;
 import br.net.woodstock.rockframework.security.cert.impl.BouncyCastleCertificateBuilder;
 import br.net.woodstock.rockframework.security.cert.impl.CRLCertificateVerifier;
 import br.net.woodstock.rockframework.security.cert.impl.CertificateVerifierChain;
@@ -48,10 +48,11 @@ public class CertificateTest extends TestCase {
 		System.setProperty("sun.net.client.defaultReadTimeout", "15000");
 	}
 
-	public void xtestCreate() throws Exception {
+	public void testCreate() throws Exception {
 		PessoaFisicaCertificateBuilderRequest request = new PessoaFisicaCertificateBuilderRequest("Lourival Sabino");
 		request.withEmail("junior@woodstock.net.br");
 		request.withIssuer("Woodstock Tecnologia");
+		request.withKeySize(2048);
 		request.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_ENCIPHERMENT);
 		request.withExtendedKeyUsage(ExtendedKeyUsageType.CLIENT_AUTH, ExtendedKeyUsageType.EMAIL_PROTECTION);
 		// ICP Brasil
@@ -81,8 +82,8 @@ public class CertificateTest extends TestCase {
 		store.add(new PrivateKeyEntry(new PasswordAlias("lourival", "lourival"), holder.getPrivateKey(), holder.getChain()));
 		store.write(new FileOutputStream("/tmp/lourival.pfx"), "lourival");
 
-		FileOutputStream outputStream = new FileOutputStream("/tmp/lourival.cer");
-		outputStream.write(holder.getChain()[0].getEncoded());
+		// FileOutputStream outputStream = new FileOutputStream("/tmp/lourival.cer");
+		// outputStream.write(holder.getChain()[0].getEncoded());
 
 		// X509Certificate certificate = (X509Certificate) holder.getChain()[0];
 		// X500Principal principal = certificate.getSubjectX500Principal();
@@ -96,6 +97,7 @@ public class CertificateTest extends TestCase {
 		request.withCa(true);
 		request.withComment("Woodstock Tecnologia CA");
 		request.withEmail("ca@woodstock.net.br");
+		request.withKeySize(4096);
 
 		PrivateKeyHolder holder = BouncyCastleCertificateBuilder.getInstance().build(request);
 
@@ -166,8 +168,8 @@ public class CertificateTest extends TestCase {
 		FileInputStream inputStream = new FileInputStream("/tmp/lourival.cer");
 		Certificate certificate = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
 		CertificadoICPBrasil certificadoICPBrasil = CertificadoICPBrasil.getInstance(certificate);
-		System.out.println(certificadoICPBrasil.getICPBrasilType());
-		if (certificadoICPBrasil.getICPBrasilType() == CertificadoICPBrasilType.PESSOA_FISICA) {
+		System.out.println(certificadoICPBrasil.getTipo());
+		if (certificadoICPBrasil.getTipo() == TipoICPBrasilType.PESSOA_FISICA) {
 			CertificadoPessoaFisicaICPBrasil certPF = (CertificadoPessoaFisicaICPBrasil) certificadoICPBrasil;
 			System.out.println("Certificado de PF");
 			System.out.println("CEI             : " + certPF.getCei());
@@ -179,7 +181,7 @@ public class CertificateTest extends TestCase {
 			System.out.println("Registro OAB    : " + certPF.getRegistroOAB());
 			System.out.println("RG              : " + certPF.getRg());
 			System.out.println("Titulo Eleitor  : " + certPF.getTituloEleitor());
-		} else if (certificadoICPBrasil.getICPBrasilType() == CertificadoICPBrasilType.PESSOA_FISICA) {
+		} else if (certificadoICPBrasil.getTipo() == TipoICPBrasilType.PESSOA_FISICA) {
 			CertificadoPessoaJuridicaICPBrasil certPJ = (CertificadoPessoaJuridicaICPBrasil) certificadoICPBrasil;
 			System.out.println("Certificado de PF");
 			System.out.println("CEI             : " + certPJ.getCei());
@@ -216,7 +218,8 @@ public class CertificateTest extends TestCase {
 		CertificateVerifier cv7 = new HierarchyCertificateVerifier(issuer3);
 
 		CertificateVerifier certificateVerifier = new CertificateVerifierChain(new CertificateVerifier[] { cv1, cv2, cv3, cv4, cv5, cv6, cv7 });
-		// boolean status = certificateVerifier.verify(new Certificate[] { certificate, issuer1, issuer2, issuer3 });
+		// boolean status = certificateVerifier.verify(new Certificate[] { certificate, issuer1, issuer2,
+		// issuer3 });
 		boolean status = certificateVerifier.verify(new Certificate[] { certificate, issuer1, issuer2, issuer3 });
 		System.out.println(status);
 	}
@@ -269,7 +272,7 @@ public class CertificateTest extends TestCase {
 		System.out.println(status);
 	}
 
-	public void testOIDs() throws Exception {
+	public void xtestOIDs() throws Exception {
 		FileInputStream inputStream = new FileInputStream("/home/lourival/tmp/cert/adelci.cer");
 		Certificate certificate = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
 		X509Certificate x509Certificate = (X509Certificate) certificate;

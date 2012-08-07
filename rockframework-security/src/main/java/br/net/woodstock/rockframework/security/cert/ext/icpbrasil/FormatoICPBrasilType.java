@@ -16,24 +16,8 @@
  */
 package br.net.woodstock.rockframework.security.cert.ext.icpbrasil;
 
-import java.security.cert.Certificate;
-import java.security.cert.X509Certificate;
+public enum FormatoICPBrasilType {
 
-import br.net.woodstock.rockframework.security.cert.CertificateVerifier;
-import br.net.woodstock.rockframework.util.Assert;
+	A1, A2, A3, A4, INVALIDO;
 
-public class ICPBrasilCertificateVerifier implements CertificateVerifier {
-
-	@Override
-	public boolean verify(final Certificate[] chain) {
-		Assert.notEmpty(chain, "chain");
-		X509Certificate x509Certificate = (X509Certificate) chain[0];
-		CertificadoICPBrasil certificadoICPBrasil = CertificadoICPBrasil.getInstance(x509Certificate);
-
-		if (certificadoICPBrasil.getTipo() == TipoICPBrasilType.INVALIDO) {
-			return false;
-		}
-
-		return true;
-	}
 }

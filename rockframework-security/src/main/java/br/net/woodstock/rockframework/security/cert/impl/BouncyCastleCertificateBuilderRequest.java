@@ -32,6 +32,8 @@ public class BouncyCastleCertificateBuilderRequest implements Serializable {
 
 	private static final long			serialVersionUID	= 8225561861029220298L;
 
+	private static final int			DEFAULT_KEY_SIZE	= 1024;
+
 	private long						time;
 
 	private String						subject;
@@ -96,7 +98,13 @@ public class BouncyCastleCertificateBuilderRequest implements Serializable {
 		this.ca = request.isCa();
 
 		if (this.keyPair == null) {
-			this.keyPair = KeyPairGenerator.getInstance(KeyPairType.RSA.getAlgorithm()).generateKeyPair();
+			KeyPairGenerator generator = KeyPairGenerator.getInstance(KeyPairType.RSA.getAlgorithm());
+			int keySize = request.getKeySize();
+			if (!((keySize >= BouncyCastleCertificateBuilderRequest.DEFAULT_KEY_SIZE) && (keySize % BouncyCastleCertificateBuilderRequest.DEFAULT_KEY_SIZE == 0))) {
+				keySize = BouncyCastleCertificateBuilderRequest.DEFAULT_KEY_SIZE;
+			}
+			generator.initialize(keySize);
+			this.keyPair = generator.generateKeyPair();
 		}
 
 		if (this.signType == null) {

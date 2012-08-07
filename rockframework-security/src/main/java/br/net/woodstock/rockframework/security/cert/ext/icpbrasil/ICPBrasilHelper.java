@@ -60,6 +60,14 @@ abstract class ICPBrasilHelper {
 
 	public static final String	OID_PJ_NUMERO_CEI			= "2.16.76.1.3.7";
 
+	public static final String	PREFIX_OID_A1				= "2.16.76.1.2.1.";
+
+	public static final String	PREFIX_OID_A2				= "2.16.76.1.2.2.";
+
+	public static final String	PREFIX_OID_A3				= "2.16.76.1.2.3.";
+
+	public static final String	PREFIX_OID_A4				= "2.16.76.1.2.4.";
+
 	private static final String	DATE_FORMAT					= "ddMMyyyy";
 
 	private static final char	NUMBER_PAD					= '0';
@@ -127,8 +135,11 @@ abstract class ICPBrasilHelper {
 
 	public static CertificadoICPBrasil getCertificadoICPBrasil(final X509Certificate certificate) throws GeneralSecurityException, IOException, ParseException {
 		Collection<List<?>> alternativeNames = certificate.getSubjectAlternativeNames();
+		TipoICPBrasilType tipo = TipoICPBrasilType.INVALIDO;
+		FormatoICPBrasilType formato = FormatoICPBrasilType.INVALIDO;
+		CertificadoICPBrasil certificadoICPBrasil = null;
+
 		if (ConditionUtils.isNotEmpty(alternativeNames)) {
-			CertificadoICPBrasilType type = CertificadoICPBrasilType.INVALIDO;
 			// Comum
 			String email = null;
 
@@ -181,7 +192,7 @@ abstract class ICPBrasilHelper {
 						rgPF = (String) dadoTitular[3];
 						emissorRGPF = (String) dadoTitular[4];
 
-						type = CertificadoICPBrasilType.PESSOA_FISICA;
+						tipo = TipoICPBrasilType.PESSOA_FISICA;
 					} else if (ICPBrasilHelper.OID_PF_TITULO_ELEITOR.equals(oid)) {
 						tituloEleitorPF = ICPBrasilHelper.getValueFromNumeric(value);
 					} else if (ICPBrasilHelper.OID_PF_NUMERO_CEI.equals(oid)) {
@@ -194,7 +205,7 @@ abstract class ICPBrasilHelper {
 						responsavelPJ = value;
 					} else if (ICPBrasilHelper.OID_PJ_NUMERO_CNPJ.equals(oid)) {
 						cnpjPJ = value;
-						type = CertificadoICPBrasilType.PESSOA_JURIDICA;
+						tipo = TipoICPBrasilType.PESSOA_JURIDICA;
 					} else if (ICPBrasilHelper.OID_PJ_DADOS_RESPONSAVEL.equals(oid)) {
 						Object[] dadoResponsavel = ICPBrasilHelper.toDadoPessoal(value);
 						dataNascimentoResponsavelPJ = (Date) dadoResponsavel[0];
@@ -217,8 +228,16 @@ abstract class ICPBrasilHelper {
 				}
 			}
 
-			if (type == CertificadoICPBrasilType.PESSOA_FISICA) {
-				CertificadoPessoaFisicaICPBrasil certPF = new CertificadoPessoaFisicaICPBrasil(certificate);
+			for (String oid : certificate.getNonCriticalExtensionOIDs()) {
+				System.out.println("NC: " + oid);
+			}
+
+			for (String oid : certificate.getCriticalExtensionOIDs()) {
+				System.out.println("NC: " + oid);
+			}
+
+			if (tipo == TipoICPBrasilType.PESSOA_FISICA) {
+				CertificadoPessoaFisicaICPBrasil certPF = new CertificadoPessoaFisicaICPBrasil(certificate, formato);
 				certPF.setCei(ceiPF);
 				certPF.setCpf(cpfPF);
 				certPF.setDataNascimento(dataNascimentoPF);
@@ -228,9 +247,9 @@ abstract class ICPBrasilHelper {
 				certPF.setRegistroOAB(registroOABPF);
 				certPF.setRg(rgPF);
 				certPF.setTituloEleitor(tituloEleitorPF);
-				return certPF;
-			} else if (type == CertificadoICPBrasilType.PESSOA_JURIDICA) {
-				CertificadoPessoaJuridicaICPBrasil certPJ = new CertificadoPessoaJuridicaICPBrasil(certificate);
+				certificadoICPBrasil = certPF;
+			} else if (tipo == TipoICPBrasilType.PESSOA_JURIDICA) {
+				CertificadoPessoaJuridicaICPBrasil certPJ = new CertificadoPessoaJuridicaICPBrasil(certificate, formato);
 				certPJ.setCei(ceiPJ);
 				certPJ.setCnpj(cnpjPJ);
 				certPJ.setCpfResponsavel(cpfResponsavelPJ);
@@ -240,11 +259,16 @@ abstract class ICPBrasilHelper {
 				certPJ.setPisResponsavel(pisResponsavelPJ);
 				certPJ.setResponsavel(responsavelPJ);
 				certPJ.setRgResponsavel(rgResponsavelPJ);
-				return certPJ;
+				certificadoICPBrasil = certPJ;
+			} else {
+				certificadoICPBrasil = new CertificadoInvalidoICPBrasil(certificate, formato);
+				certificadoICPBrasil.setEmail(email);
 			}
+		} else {
+			certificadoICPBrasil = new CertificadoInvalidoICPBrasil(certificate, formato);
 		}
 
-		return new CertificadoInvalidoICPBrasil(certificate);
+		return certificadoICPBrasil;
 	}
 
 	private static Object[] toDadoPessoal(final String value) throws ParseException {
@@ -258,7 +282,8 @@ abstract class ICPBrasilHelper {
 			dadoPessoal[4] = value.substring(45).trim(); // Emissor RG
 
 			if ((ConditionUtils.isNotEmpty(dataStr)) && (ConditionUtils.isNotEmpty(dataStr.replaceAll("0", "")))) {
-				dadoPessoal[0] = new SimpleDateFormat(ICPBrasilHelper.DATE_FORMAT).parse(dataStr); // Data Nascimento
+				dadoPessoal[0] = new SimpleDateFormat(ICPBrasilHelper.DATE_FORMAT).parse(dataStr); // Data
+																									// Nascimento
 			}
 		}
 

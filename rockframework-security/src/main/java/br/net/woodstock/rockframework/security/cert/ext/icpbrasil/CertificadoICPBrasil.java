@@ -24,17 +24,24 @@ import br.net.woodstock.rockframework.security.cert.DelegateX509Certificate;
 
 public abstract class CertificadoICPBrasil extends DelegateX509Certificate {
 
-	private CertificadoICPBrasilType	type;
+	private TipoICPBrasilType		tipo;
 
-	private String						email;
+	private FormatoICPBrasilType	formato;
 
-	public CertificadoICPBrasil(final X509Certificate certificate, final CertificadoICPBrasilType type) {
+	private String					email;
+
+	public CertificadoICPBrasil(final X509Certificate certificate, final TipoICPBrasilType tipo, final FormatoICPBrasilType formato) {
 		super(certificate);
-		this.type = type;
+		this.tipo = tipo;
+		this.formato = formato;
 	}
 
-	public CertificadoICPBrasilType getICPBrasilType() {
-		return this.type;
+	public TipoICPBrasilType getTipo() {
+		return this.tipo;
+	}
+
+	public FormatoICPBrasilType getFormato() {
+		return this.formato;
 	}
 
 	public String getEmail() {
