@@ -2,7 +2,6 @@ package br.net.woodstock.rockframework.security.test;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.net.URL;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
@@ -17,6 +16,7 @@ import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.CertificadoICPBrasil;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.CertificadoPessoaFisicaICPBrasil;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.CertificadoPessoaJuridicaICPBrasil;
+import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.DadoPessoa;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.ICPBrasilCertificateVerifier;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.PessoaFisicaCertificateBuilderRequest;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.TipoICPBrasilType;
@@ -48,21 +48,27 @@ public class CertificateTest extends TestCase {
 		System.setProperty("sun.net.client.defaultReadTimeout", "15000");
 	}
 
-	public void testCreate() throws Exception {
+	public void xtestCreate() throws Exception {
 		PessoaFisicaCertificateBuilderRequest request = new PessoaFisicaCertificateBuilderRequest("Lourival Sabino");
 		request.withEmail("junior@woodstock.net.br");
 		request.withIssuer("Woodstock Tecnologia");
 		request.withKeySize(2048);
 		request.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_ENCIPHERMENT);
 		request.withExtendedKeyUsage(ExtendedKeyUsageType.CLIENT_AUTH, ExtendedKeyUsageType.EMAIL_PROTECTION);
+
 		// ICP Brasil
+		DadoPessoa dadoPessoa = new DadoPessoa();
+		dadoPessoa.setCpf("22222222222");
+		dadoPessoa.setDataNascimento(new SimpleDateFormat("dd/MM/yyyy").parse("24/05/1979"));
+		dadoPessoa.setEmissorRG("SSP/DF");
+		dadoPessoa.setPis("33333333333");
+		dadoPessoa.setRg("44444");
+
 		request.withCei("111111111111");
-		request.withCpf("22222222222");
-		request.withDataNascimento(new SimpleDateFormat("dd/MM/yyyy").parse("24/05/1979"));
-		request.withEmissorRG("SSP/DF");
-		request.withPis("33333333333");
+		request.withDadoTitular(dadoPessoa);
 		request.withRegistroOAB("123456DF");
-		request.withRg("44444");
+		request.withRegistroSINCOR("123456DF");
+		request.withRic("66666666666");
 		request.withTituloEleitor("555555555555");
 
 		DateBuilder builder = new DateBuilder();
@@ -169,31 +175,7 @@ public class CertificateTest extends TestCase {
 		Certificate certificate = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
 		CertificadoICPBrasil certificadoICPBrasil = CertificadoICPBrasil.getInstance(certificate);
 		System.out.println(certificadoICPBrasil.getTipo());
-		if (certificadoICPBrasil.getTipo() == TipoICPBrasilType.PESSOA_FISICA) {
-			CertificadoPessoaFisicaICPBrasil certPF = (CertificadoPessoaFisicaICPBrasil) certificadoICPBrasil;
-			System.out.println("Certificado de PF");
-			System.out.println("CEI             : " + certPF.getCei());
-			System.out.println("CPF             : " + certPF.getCpf());
-			System.out.println("Data Nascimento : " + certPF.getDataNascimento());
-			System.out.println("Email           : " + certPF.getEmail());
-			System.out.println("Emissor RG      : " + certPF.getEmissorRG());
-			System.out.println("PIS             : " + certPF.getPis());
-			System.out.println("Registro OAB    : " + certPF.getRegistroOAB());
-			System.out.println("RG              : " + certPF.getRg());
-			System.out.println("Titulo Eleitor  : " + certPF.getTituloEleitor());
-		} else if (certificadoICPBrasil.getTipo() == TipoICPBrasilType.PESSOA_FISICA) {
-			CertificadoPessoaJuridicaICPBrasil certPJ = (CertificadoPessoaJuridicaICPBrasil) certificadoICPBrasil;
-			System.out.println("Certificado de PF");
-			System.out.println("CEI             : " + certPJ.getCei());
-			System.out.println("CNPJ            : " + certPJ.getCnpj());
-			System.out.println("CPF             : " + certPJ.getCpfResponsavel());
-			System.out.println("Data Nascimento : " + certPJ.getDataNascimentoResponsavel());
-			System.out.println("Email           : " + certPJ.getEmail());
-			System.out.println("Emissor RG      : " + certPJ.getEmissorRGResponsavel());
-			System.out.println("PIS             : " + certPJ.getPisResponsavel());
-			System.out.println("Responsavel     : " + certPJ.getResponsavel());
-			System.out.println("RG              : " + certPJ.getRgResponsavel());
-		}
+		this.print(certificadoICPBrasil);
 	}
 
 	public void xtestVerifyOK() throws Exception {
@@ -272,21 +254,47 @@ public class CertificateTest extends TestCase {
 		System.out.println(status);
 	}
 
-	public void xtestOIDs() throws Exception {
+	public void testOIDs() throws Exception {
 		FileInputStream inputStream = new FileInputStream("/home/lourival/tmp/cert/adelci.cer");
 		Certificate certificate = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
 		X509Certificate x509Certificate = (X509Certificate) certificate;
 		System.out.println(x509Certificate);
-		for (String oid : x509Certificate.getCriticalExtensionOIDs()) {
-			System.out.println("CRI  : " + oid);
-		}
-		for (String oid : x509Certificate.getNonCriticalExtensionOIDs()) {
-			System.out.println("N-CRI: " + oid);
-		}
+		CertificadoICPBrasil certificadoICPBrasil = CertificadoICPBrasil.getInstance(x509Certificate);
+		this.print(certificadoICPBrasil);
+	}
 
-		URL[] urls = OCSPCertificateVerifier.getOCSPUrl(certificate);
-		for (URL url : urls) {
-			System.out.println(url);
+	private void print(final CertificadoICPBrasil certificado) {
+		if (certificado.getTipo() == TipoICPBrasilType.PESSOA_FISICA) {
+			CertificadoPessoaFisicaICPBrasil certPF = (CertificadoPessoaFisicaICPBrasil) certificado;
+			System.out.println("Certificado de PF");
+			System.out.println("CEI             : " + certPF.getCei());
+			System.out.println("CPF             : " + certPF.getCpf());
+			System.out.println("Data Nascimento : " + certPF.getDataNascimento());
+			System.out.println("Email           : " + certPF.getEmail());
+			System.out.println("Emissor RG      : " + certPF.getEmissorRG());
+			System.out.println("Formato         : " + certPF.getFormato());
+			System.out.println("PIS             : " + certPF.getPis());
+			System.out.println("Registro OAB    : " + certPF.getRegistroOAB());
+			System.out.println("Registro SINCOR : " + certPF.getRegistroSINCOR());
+			System.out.println("Ric             : " + certPF.getRic());
+			System.out.println("RG              : " + certPF.getRg());
+			System.out.println("Titulo Eleitor  : " + certPF.getTituloEleitor());
+		} else if (certificado.getTipo() == TipoICPBrasilType.PESSOA_FISICA) {
+			CertificadoPessoaJuridicaICPBrasil certPJ = (CertificadoPessoaJuridicaICPBrasil) certificado;
+			System.out.println("Certificado de PF");
+			System.out.println("CEI             : " + certPJ.getCei());
+			System.out.println("CNPJ            : " + certPJ.getCnpj());
+			System.out.println("CPF             : " + certPJ.getCpfResponsavel());
+			System.out.println("Data Nascimento : " + certPJ.getDataNascimentoResponsavel());
+			System.out.println("Email           : " + certPJ.getEmail());
+			System.out.println("Emissor RG      : " + certPJ.getEmissorRGResponsavel());
+			System.out.println("Formato         : " + certPJ.getFormato());
+			System.out.println("Nome            : " + certPJ.getNomeEmpresarial());
+			System.out.println("PIS             : " + certPJ.getPisResponsavel());
+			System.out.println("Responsavel     : " + certPJ.getResponsavel());
+			System.out.println("RG              : " + certPJ.getRgResponsavel());
+		} else {
+			System.out.println("Certificado INVALIDO");
 		}
 	}
 }

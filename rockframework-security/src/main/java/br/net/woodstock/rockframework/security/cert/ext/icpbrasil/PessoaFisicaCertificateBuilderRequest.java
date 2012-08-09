@@ -33,27 +33,15 @@ public class PessoaFisicaCertificateBuilderRequest extends CertificateBuilderReq
 
 	private static final long	serialVersionUID	= 2206868473296076668L;
 
-	private static final String	OID_DADOS_TITULAR	= "2.16.76.1.3.1";
-
-	private static final String	OID_TITULO_ELEITOR	= "2.16.76.1.3.5";
-
-	private static final String	OID_NUMERO_CEI		= "2.16.76.1.3.6";
-
-	private static final String	OID_REGISTRO_OAB	= "2.16.76.1.4.2.1";
-
-	private Date				dataNascimento;
-
-	private String				cpf;
-
-	private String				pis;
-
-	private String				rg;
-
-	private String				emissorRG;
+	private DadoPessoa			dadoTitular;
 
 	private String				tituloEleitor;
 
 	private String				cei;
+
+	private String				ric;
+
+	private String				registroSINCOR;
 
 	private String				registroOAB;
 
@@ -66,24 +54,8 @@ public class PessoaFisicaCertificateBuilderRequest extends CertificateBuilderReq
 	}
 
 	// Get
-	public Date getDataNascimento() {
-		return this.dataNascimento;
-	}
-
-	public String getCpf() {
-		return this.cpf;
-	}
-
-	public String getPis() {
-		return this.pis;
-	}
-
-	public String getRg() {
-		return this.rg;
-	}
-
-	public String getEmissorRG() {
-		return this.emissorRG;
+	public DadoPessoa getDadoTitular() {
+		return this.dadoTitular;
 	}
 
 	public String getTituloEleitor() {
@@ -92,6 +64,14 @@ public class PessoaFisicaCertificateBuilderRequest extends CertificateBuilderReq
 
 	public String getCei() {
 		return this.cei;
+	}
+
+	public String getRic() {
+		return this.ric;
+	}
+
+	public String getRegistroSINCOR() {
+		return this.registroSINCOR;
 	}
 
 	public String getRegistroOAB() {
@@ -103,50 +83,30 @@ public class PessoaFisicaCertificateBuilderRequest extends CertificateBuilderReq
 	public Map<String, String> getOtherNames() {
 		Map<String, String> map = super.getOtherNames();
 
-		String dataNascimento = ICPBrasilHelper.getDateValue(this.getDataNascimento());
-		String cpf = ICPBrasilHelper.getNumericValue(this.getCpf(), 11);
-		String pis = ICPBrasilHelper.getNumericValue(this.getPis(), 11);
-		String rg = ICPBrasilHelper.getNumericValue(this.getRg(), 15);
-		String emissorRG = ICPBrasilHelper.getValue(this.getEmissorRG());
+		String dadosTitular = DadoPessoa.toOtherNameString(this.getDadoTitular());
 		String tituloEleitor = ICPBrasilHelper.getNumericValue(this.getTituloEleitor(), 12);
 		String cei = ICPBrasilHelper.getNumericValue(this.getCei(), 12);
+		String ric = ICPBrasilHelper.getTextValue(this.getRic(), 11);
 
-		String dadosTitular = dataNascimento + cpf + pis + rg + emissorRG;
+		map.put(ICPBrasilHelper.OID_PF_DADOS_TITULAR, dadosTitular);
+		map.put(ICPBrasilHelper.OID_PF_TITULO_ELEITOR, tituloEleitor);
+		map.put(ICPBrasilHelper.OID_PF_NUMERO_CEI, cei);
+		map.put(ICPBrasilHelper.OID_PF_NUMERO_RIC, ric);
 
-		map.put(PessoaFisicaCertificateBuilderRequest.OID_DADOS_TITULAR, dadosTitular);
-		map.put(PessoaFisicaCertificateBuilderRequest.OID_TITULO_ELEITOR, tituloEleitor);
-		map.put(PessoaFisicaCertificateBuilderRequest.OID_NUMERO_CEI, cei);
+		if (ConditionUtils.isNotEmpty(this.getRegistroSINCOR())) {
+			map.put(ICPBrasilHelper.OID_PF_REGISTRO_SINCOR, this.getRegistroSINCOR());
+		}
 
 		if (ConditionUtils.isNotEmpty(this.getRegistroOAB())) {
-			map.put(PessoaFisicaCertificateBuilderRequest.OID_REGISTRO_OAB, this.getRegistroOAB());
+			map.put(ICPBrasilHelper.OID_PF_REGISTRO_OAB, this.getRegistroOAB());
 		}
 
 		return map;
 	}
 
 	// Set
-	public PessoaFisicaCertificateBuilderRequest withDataNascimento(final Date dataNascimento) {
-		this.dataNascimento = dataNascimento;
-		return this;
-	}
-
-	public PessoaFisicaCertificateBuilderRequest withCpf(final String cpf) {
-		this.cpf = cpf;
-		return this;
-	}
-
-	public PessoaFisicaCertificateBuilderRequest withPis(final String pis) {
-		this.pis = pis;
-		return this;
-	}
-
-	public PessoaFisicaCertificateBuilderRequest withRg(final String rg) {
-		this.rg = rg;
-		return this;
-	}
-
-	public PessoaFisicaCertificateBuilderRequest withEmissorRG(final String emissorRG) {
-		this.emissorRG = emissorRG;
+	public PessoaFisicaCertificateBuilderRequest withDadoTitular(final DadoPessoa dadoTitular) {
+		this.dadoTitular = dadoTitular;
 		return this;
 	}
 
@@ -160,6 +120,16 @@ public class PessoaFisicaCertificateBuilderRequest extends CertificateBuilderReq
 		return this;
 	}
 
+	public PessoaFisicaCertificateBuilderRequest withRic(final String ric) {
+		this.ric = ric;
+		return this;
+	}
+
+	public PessoaFisicaCertificateBuilderRequest withRegistroSINCOR(final String registroSINCOR) {
+		this.registroSINCOR = registroSINCOR;
+		return this;
+	}
+
 	public PessoaFisicaCertificateBuilderRequest withRegistroOAB(final String registroOAB) {
 		this.registroOAB = registroOAB;
 		return this;
@@ -167,62 +137,62 @@ public class PessoaFisicaCertificateBuilderRequest extends CertificateBuilderReq
 
 	// Over
 	@Override
-	public PessoaFisicaCertificateBuilderRequest withEmail(String email) {
+	public PessoaFisicaCertificateBuilderRequest withEmail(final String email) {
 		return (PessoaFisicaCertificateBuilderRequest) super.withEmail(email);
 	}
 
 	@Override
-	public PessoaFisicaCertificateBuilderRequest withKeyPair(KeyPair keyPair) {
+	public PessoaFisicaCertificateBuilderRequest withKeyPair(final KeyPair keyPair) {
 		return (PessoaFisicaCertificateBuilderRequest) super.withKeyPair(keyPair);
 	}
 
 	@Override
-	public PessoaFisicaCertificateBuilderRequest withSignType(SignatureType signType) {
+	public PessoaFisicaCertificateBuilderRequest withSignType(final SignatureType signType) {
 		return (PessoaFisicaCertificateBuilderRequest) super.withSignType(signType);
 	}
 
 	@Override
-	public PessoaFisicaCertificateBuilderRequest withIssuer(String issuer) {
+	public PessoaFisicaCertificateBuilderRequest withIssuer(final String issuer) {
 		return (PessoaFisicaCertificateBuilderRequest) super.withIssuer(issuer);
 	}
 
 	@Override
-	public PessoaFisicaCertificateBuilderRequest withIssuerKeyHolder(PrivateKeyHolder issuerKeyHolder) {
+	public PessoaFisicaCertificateBuilderRequest withIssuerKeyHolder(final PrivateKeyHolder issuerKeyHolder) {
 		return (PessoaFisicaCertificateBuilderRequest) super.withIssuerKeyHolder(issuerKeyHolder);
 	}
 
 	@Override
-	public PessoaFisicaCertificateBuilderRequest withSerialNumber(BigInteger serialNumber) {
+	public PessoaFisicaCertificateBuilderRequest withSerialNumber(final BigInteger serialNumber) {
 		return (PessoaFisicaCertificateBuilderRequest) super.withSerialNumber(serialNumber);
 	}
 
 	@Override
-	public PessoaFisicaCertificateBuilderRequest withNotBefore(Date notBefore) {
+	public PessoaFisicaCertificateBuilderRequest withNotBefore(final Date notBefore) {
 		return (PessoaFisicaCertificateBuilderRequest) super.withNotBefore(notBefore);
 	}
 
 	@Override
-	public PessoaFisicaCertificateBuilderRequest withNotAfter(Date notAfter) {
+	public PessoaFisicaCertificateBuilderRequest withNotAfter(final Date notAfter) {
 		return (PessoaFisicaCertificateBuilderRequest) super.withNotAfter(notAfter);
 	}
 
 	@Override
-	public PessoaFisicaCertificateBuilderRequest withKeyUsage(KeyUsageType... array) {
+	public PessoaFisicaCertificateBuilderRequest withKeyUsage(final KeyUsageType... array) {
 		return (PessoaFisicaCertificateBuilderRequest) super.withKeyUsage(array);
 	}
 
 	@Override
-	public PessoaFisicaCertificateBuilderRequest withExtendedKeyUsage(ExtendedKeyUsageType... array) {
+	public PessoaFisicaCertificateBuilderRequest withExtendedKeyUsage(final ExtendedKeyUsageType... array) {
 		return (PessoaFisicaCertificateBuilderRequest) super.withExtendedKeyUsage(array);
 	}
 
 	@Override
-	public PessoaFisicaCertificateBuilderRequest withVersion(CertificateVersionType version) {
+	public PessoaFisicaCertificateBuilderRequest withVersion(final CertificateVersionType version) {
 		return (PessoaFisicaCertificateBuilderRequest) super.withVersion(version);
 	}
 
 	@Override
-	public PessoaFisicaCertificateBuilderRequest withOtherName(String oid, String value) {
+	public PessoaFisicaCertificateBuilderRequest withOtherName(final String oid, final String value) {
 		return (PessoaFisicaCertificateBuilderRequest) super.withOtherName(oid, value);
 	}
 

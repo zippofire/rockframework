@@ -16,7 +16,6 @@
  */
 package br.net.woodstock.rockframework.utils;
 
-import br.net.woodstock.rockframework.utils.ConditionUtils;
 
 public abstract class PrimitiveUtils {
 

@@ -13,11 +13,12 @@ import br.net.woodstock.rockframework.security.cert.ExtendedKeyUsageType;
 import br.net.woodstock.rockframework.security.cert.KeyUsageType;
 import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.CertificadoICPBrasil;
-import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.TipoICPBrasilType;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.CertificadoPessoaFisicaICPBrasil;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.CertificadoPessoaJuridicaICPBrasil;
+import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.DadoPessoa;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.ICPBrasilCertificateVerifier;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.PessoaFisicaCertificateBuilderRequest;
+import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.TipoICPBrasilType;
 import br.net.woodstock.rockframework.security.cert.impl.BouncyCastleCertificateBuilder;
 import br.net.woodstock.rockframework.security.cert.impl.CRLCertificateVerifier;
 import br.net.woodstock.rockframework.security.cert.impl.CertificateVerifierChain;
@@ -78,13 +79,16 @@ public class CNJTest extends TestCase {
 		request.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_ENCIPHERMENT);
 		request.withExtendedKeyUsage(ExtendedKeyUsageType.CLIENT_AUTH, ExtendedKeyUsageType.EMAIL_PROTECTION);
 		// Dados do ICP Brasil
+		DadoPessoa dadoPessoa = new DadoPessoa();
+		dadoPessoa.setCpf("22222222222");
+		dadoPessoa.setDataNascimento(new SimpleDateFormat("dd/MM/yyyy").parse("24/05/1979"));
+		dadoPessoa.setEmissorRG("SSP/DF");
+		dadoPessoa.setPis("33333333333");
+		dadoPessoa.setRg("44444");
+
 		request.withCei("111111111111");
-		request.withCpf("22222222222");
-		request.withDataNascimento(new SimpleDateFormat("dd/MM/yyyy").parse("24/05/1979"));
-		request.withEmissorRG("SSP/DF");
-		request.withPis("33333333333");
+		request.withDadoTitular(dadoPessoa);
 		request.withRegistroOAB("123456DF");
-		request.withRg("44444");
 		request.withTituloEleitor("555555555555");
 
 		// Define a data de validade do certificado para 'ontem' e para daqui 1 ano

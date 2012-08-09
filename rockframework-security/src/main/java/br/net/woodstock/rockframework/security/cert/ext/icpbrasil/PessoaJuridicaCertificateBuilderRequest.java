@@ -30,31 +30,17 @@ import br.net.woodstock.rockframework.security.sign.SignatureType;
 
 public class PessoaJuridicaCertificateBuilderRequest extends CertificateBuilderRequest {
 
-	private static final long	serialVersionUID		= 3115100870385480942L;
-
-	private static final String	OID_NOME_RESPONSAVEL	= "2.16.76.1.3.2";
-
-	private static final String	OID_NUMERO_CNPJ			= "2.16.76.1.3.3";
-
-	private static final String	OID_DADOS_RESPONSAVEL	= "2.16.76.1.3.4";
-
-	private static final String	OID_NUMERO_CEI			= "2.16.76.1.3.7";
+	private static final long	serialVersionUID	= 3115100870385480942L;
 
 	private String				responsavel;
 
 	private String				cnpj;
 
-	private Date				dataNascimentoResponsavel;
-
-	private String				cpfResponsavel;
-
-	private String				pisResponsavel;
-
-	private String				rgResponsavel;
-
-	private String				emissorRGResponsavel;
+	private DadoPessoa			dadoResponsavel;
 
 	private String				cei;
+
+	private String				nomeEmpresarial;
 
 	public PessoaJuridicaCertificateBuilderRequest(final String subject) {
 		super(subject);
@@ -73,28 +59,16 @@ public class PessoaJuridicaCertificateBuilderRequest extends CertificateBuilderR
 		return this.cnpj;
 	}
 
-	public Date getDataNascimentoResponsavel() {
-		return this.dataNascimentoResponsavel;
-	}
-
-	public String getCpfResponsavel() {
-		return this.cpfResponsavel;
-	}
-
-	public String getPisResponsavel() {
-		return this.pisResponsavel;
-	}
-
-	public String getRgResponsavel() {
-		return this.rgResponsavel;
-	}
-
-	public String getEmissorRGResponsavel() {
-		return this.emissorRGResponsavel;
+	public DadoPessoa getDadoResponsavel() {
+		return this.dadoResponsavel;
 	}
 
 	public String getCei() {
 		return this.cei;
+	}
+
+	public String getNomeEmpresarial() {
+		return this.nomeEmpresarial;
 	}
 
 	@Override
@@ -103,20 +77,15 @@ public class PessoaJuridicaCertificateBuilderRequest extends CertificateBuilderR
 
 		String responsavel = ICPBrasilHelper.getValue(this.getResponsavel());
 		String cnpj = ICPBrasilHelper.getNumericValue(this.getCnpj(), 14);
-		String dataNascimentoResponsavel = ICPBrasilHelper.getDateValue(this.getDataNascimentoResponsavel());
-		String cpfResponsavel = ICPBrasilHelper.getNumericValue(this.getCpfResponsavel(), 11);
-		String pisResponsavel = ICPBrasilHelper.getNumericValue(this.getPisResponsavel(), 11);
-		String rgResponsavel = ICPBrasilHelper.getNumericValue(this.getRgResponsavel(), 15);
-		String emissorRGResponsavel = ICPBrasilHelper.getTextValue(this.getEmissorRGResponsavel(), 15);
-
+		String dadosResponsavel = DadoPessoa.toOtherNameString(this.getDadoResponsavel());
 		String cei = ICPBrasilHelper.getNumericValue(this.getCei(), 12);
+		String nomeEmpresarial = ICPBrasilHelper.getValue(this.getNomeEmpresarial());
 
-		String dadosResponsavel = dataNascimentoResponsavel + cpfResponsavel + pisResponsavel + rgResponsavel + emissorRGResponsavel;
-
-		map.put(PessoaJuridicaCertificateBuilderRequest.OID_NOME_RESPONSAVEL, responsavel);
-		map.put(PessoaJuridicaCertificateBuilderRequest.OID_NUMERO_CNPJ, cnpj);
-		map.put(PessoaJuridicaCertificateBuilderRequest.OID_DADOS_RESPONSAVEL, dadosResponsavel);
-		map.put(PessoaJuridicaCertificateBuilderRequest.OID_NUMERO_CEI, cei);
+		map.put(ICPBrasilHelper.OID_PJ_NOME_RESPONSAVEL, responsavel);
+		map.put(ICPBrasilHelper.OID_PJ_NUMERO_CNPJ, cnpj);
+		map.put(ICPBrasilHelper.OID_PJ_DADOS_RESPONSAVEL, dadosResponsavel);
+		map.put(ICPBrasilHelper.OID_PJ_NUMERO_CEI, cei);
+		map.put(ICPBrasilHelper.OID_PJ_NOME_EMPRESARIAL, nomeEmpresarial);
 
 		return map;
 	}
@@ -132,23 +101,8 @@ public class PessoaJuridicaCertificateBuilderRequest extends CertificateBuilderR
 		return this;
 	}
 
-	public PessoaJuridicaCertificateBuilderRequest withDataNascimentoResponsavel(final Date dataNascimentoResponsavel) {
-		this.dataNascimentoResponsavel = dataNascimentoResponsavel;
-		return this;
-	}
-
-	public PessoaJuridicaCertificateBuilderRequest withCpfResponsavel(final String cpfResponsavel) {
-		this.cpfResponsavel = cpfResponsavel;
-		return this;
-	}
-
-	public PessoaJuridicaCertificateBuilderRequest withPisResponsavel(final String pisResponsavel) {
-		this.pisResponsavel = pisResponsavel;
-		return this;
-	}
-
-	public PessoaJuridicaCertificateBuilderRequest withRgResponsavel(final String rgResponsavel) {
-		this.rgResponsavel = rgResponsavel;
+	public PessoaJuridicaCertificateBuilderRequest withDadoResponsavel(final DadoPessoa dadoResponsavel) {
+		this.dadoResponsavel = dadoResponsavel;
 		return this;
 	}
 
@@ -157,64 +111,69 @@ public class PessoaJuridicaCertificateBuilderRequest extends CertificateBuilderR
 		return this;
 	}
 
+	public PessoaJuridicaCertificateBuilderRequest withNomeEmpresarial(final String nomeEmpresarial) {
+		this.nomeEmpresarial = nomeEmpresarial;
+		return this;
+	}
+
 	// Over
 	@Override
-	public PessoaJuridicaCertificateBuilderRequest withEmail(String email) {
+	public PessoaJuridicaCertificateBuilderRequest withEmail(final String email) {
 		return (PessoaJuridicaCertificateBuilderRequest) super.withEmail(email);
 	}
 
 	@Override
-	public PessoaJuridicaCertificateBuilderRequest withKeyPair(KeyPair keyPair) {
+	public PessoaJuridicaCertificateBuilderRequest withKeyPair(final KeyPair keyPair) {
 		return (PessoaJuridicaCertificateBuilderRequest) super.withKeyPair(keyPair);
 	}
 
 	@Override
-	public PessoaJuridicaCertificateBuilderRequest withSignType(SignatureType signType) {
+	public PessoaJuridicaCertificateBuilderRequest withSignType(final SignatureType signType) {
 		return (PessoaJuridicaCertificateBuilderRequest) super.withSignType(signType);
 	}
 
 	@Override
-	public PessoaJuridicaCertificateBuilderRequest withIssuer(String issuer) {
+	public PessoaJuridicaCertificateBuilderRequest withIssuer(final String issuer) {
 		return (PessoaJuridicaCertificateBuilderRequest) super.withIssuer(issuer);
 	}
 
 	@Override
-	public PessoaFisicaCertificateBuilderRequest withIssuerKeyHolder(PrivateKeyHolder issuerKeyHolder) {
+	public PessoaFisicaCertificateBuilderRequest withIssuerKeyHolder(final PrivateKeyHolder issuerKeyHolder) {
 		return (PessoaFisicaCertificateBuilderRequest) super.withIssuerKeyHolder(issuerKeyHolder);
 	}
 
 	@Override
-	public PessoaJuridicaCertificateBuilderRequest withSerialNumber(BigInteger serialNumber) {
+	public PessoaJuridicaCertificateBuilderRequest withSerialNumber(final BigInteger serialNumber) {
 		return (PessoaJuridicaCertificateBuilderRequest) super.withSerialNumber(serialNumber);
 	}
 
 	@Override
-	public PessoaJuridicaCertificateBuilderRequest withNotBefore(Date notBefore) {
+	public PessoaJuridicaCertificateBuilderRequest withNotBefore(final Date notBefore) {
 		return (PessoaJuridicaCertificateBuilderRequest) super.withNotBefore(notBefore);
 	}
 
 	@Override
-	public PessoaJuridicaCertificateBuilderRequest withNotAfter(Date notAfter) {
+	public PessoaJuridicaCertificateBuilderRequest withNotAfter(final Date notAfter) {
 		return (PessoaJuridicaCertificateBuilderRequest) super.withNotAfter(notAfter);
 	}
 
 	@Override
-	public PessoaJuridicaCertificateBuilderRequest withKeyUsage(KeyUsageType... array) {
+	public PessoaJuridicaCertificateBuilderRequest withKeyUsage(final KeyUsageType... array) {
 		return (PessoaJuridicaCertificateBuilderRequest) super.withKeyUsage(array);
 	}
 
 	@Override
-	public PessoaJuridicaCertificateBuilderRequest withExtendedKeyUsage(ExtendedKeyUsageType... array) {
+	public PessoaJuridicaCertificateBuilderRequest withExtendedKeyUsage(final ExtendedKeyUsageType... array) {
 		return (PessoaJuridicaCertificateBuilderRequest) super.withExtendedKeyUsage(array);
 	}
 
 	@Override
-	public PessoaJuridicaCertificateBuilderRequest withVersion(CertificateVersionType version) {
+	public PessoaJuridicaCertificateBuilderRequest withVersion(final CertificateVersionType version) {
 		return (PessoaJuridicaCertificateBuilderRequest) super.withVersion(version);
 	}
 
 	@Override
-	public PessoaJuridicaCertificateBuilderRequest withOtherName(String oid, String value) {
+	public PessoaJuridicaCertificateBuilderRequest withOtherName(final String oid, final String value) {
 		return (PessoaJuridicaCertificateBuilderRequest) super.withOtherName(oid, value);
 	}
 

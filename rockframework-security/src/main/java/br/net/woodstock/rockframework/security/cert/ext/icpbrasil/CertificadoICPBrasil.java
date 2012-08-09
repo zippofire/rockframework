@@ -28,20 +28,36 @@ public abstract class CertificadoICPBrasil extends DelegateX509Certificate {
 
 	private FormatoICPBrasilType	formato;
 
+	private DadoPessoa				dadoPessoa;
+
 	private String					email;
 
-	public CertificadoICPBrasil(final X509Certificate certificate, final TipoICPBrasilType tipo, final FormatoICPBrasilType formato) {
+	public CertificadoICPBrasil(final X509Certificate certificate) {
 		super(certificate);
-		this.tipo = tipo;
-		this.formato = formato;
 	}
 
 	public TipoICPBrasilType getTipo() {
 		return this.tipo;
 	}
 
+	public void setTipo(final TipoICPBrasilType tipo) {
+		this.tipo = tipo;
+	}
+
 	public FormatoICPBrasilType getFormato() {
 		return this.formato;
+	}
+
+	public void setFormato(final FormatoICPBrasilType formato) {
+		this.formato = formato;
+	}
+
+	protected DadoPessoa getDadoPessoa() {
+		return this.dadoPessoa;
+	}
+
+	public void setDadoPessoa(final DadoPessoa dadoPessoa) {
+		this.dadoPessoa = dadoPessoa;
 	}
 
 	public String getEmail() {

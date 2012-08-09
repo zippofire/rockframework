@@ -22,64 +22,19 @@ import java.util.Date;
 
 public class CertificadoPessoaFisicaICPBrasil extends CertificadoICPBrasil {
 
-	private Date	dataNascimento;
-
-	private String	cpf;
-
-	private String	pis;
-
-	private String	rg;
-
-	private String	emissorRG;
-
 	private String	tituloEleitor;
 
 	private String	cei;
 
+	private String	ric;
+
+	private String	registroSINCOR;
+
 	private String	registroOAB;
 
-	public CertificadoPessoaFisicaICPBrasil(final X509Certificate certificate, final FormatoICPBrasilType formato) {
-		super(certificate, TipoICPBrasilType.PESSOA_FISICA, formato);
-	}
-
-	public Date getDataNascimento() {
-		return this.dataNascimento;
-	}
-
-	public void setDataNascimento(final Date dataNascimento) {
-		this.dataNascimento = dataNascimento;
-	}
-
-	public String getCpf() {
-		return this.cpf;
-	}
-
-	public void setCpf(final String cpf) {
-		this.cpf = cpf;
-	}
-
-	public String getPis() {
-		return this.pis;
-	}
-
-	public void setPis(final String pis) {
-		this.pis = pis;
-	}
-
-	public String getRg() {
-		return this.rg;
-	}
-
-	public void setRg(final String rg) {
-		this.rg = rg;
-	}
-
-	public String getEmissorRG() {
-		return this.emissorRG;
-	}
-
-	public void setEmissorRG(final String emissorRG) {
-		this.emissorRG = emissorRG;
+	public CertificadoPessoaFisicaICPBrasil(final X509Certificate certificate) {
+		super(certificate);
+		this.setTipo(TipoICPBrasilType.PESSOA_FISICA);
 	}
 
 	public String getTituloEleitor() {
@@ -98,12 +53,64 @@ public class CertificadoPessoaFisicaICPBrasil extends CertificadoICPBrasil {
 		this.cei = cei;
 	}
 
+	public String getRic() {
+		return this.ric;
+	}
+
+	public void setRic(final String ric) {
+		this.ric = ric;
+	}
+
+	public String getRegistroSINCOR() {
+		return this.registroSINCOR;
+	}
+
+	public void setRegistroSINCOR(final String registroSINCOR) {
+		this.registroSINCOR = registroSINCOR;
+	}
+
 	public String getRegistroOAB() {
 		return this.registroOAB;
 	}
 
 	public void setRegistroOAB(final String registroOAB) {
 		this.registroOAB = registroOAB;
+	}
+
+	// Delegate
+	public Date getDataNascimento() {
+		if (this.getDadoPessoa() == null) {
+			return null;
+		}
+		return this.getDadoPessoa().getDataNascimento();
+	}
+
+	public String getCpf() {
+		if (this.getDadoPessoa() == null) {
+			return null;
+		}
+		return this.getDadoPessoa().getCpf();
+	}
+
+	public String getPis() {
+		if (this.getDadoPessoa() == null) {
+			return null;
+		}
+		return this.getDadoPessoa().getPis();
+	}
+
+	public String getRg() {
+		if (this.getDadoPessoa() == null) {
+			return null;
+		}
+		return this.getDadoPessoa().getRg();
+	}
+
+	public String getEmissorRG() {
+		if (this.getDadoPessoa() == null) {
+			return null;
+		}
+		return this.getDadoPessoa().getEmissorRG();
 	}
 
 }

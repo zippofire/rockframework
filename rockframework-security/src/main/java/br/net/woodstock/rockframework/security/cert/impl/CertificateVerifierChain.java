@@ -35,7 +35,7 @@ public class CertificateVerifierChain implements CertificateVerifier {
 		this.debug = true;
 	}
 
-	public void setDebug(boolean debug) {
+	public void setDebug(final boolean debug) {
 		this.debug = debug;
 	}
 

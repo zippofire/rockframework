@@ -26,20 +26,13 @@ public class CertificadoPessoaJuridicaICPBrasil extends CertificadoICPBrasil {
 
 	private String	cnpj;
 
-	private Date	dataNascimentoResponsavel;
-
-	private String	cpfResponsavel;
-
-	private String	pisResponsavel;
-
-	private String	rgResponsavel;
-
-	private String	emissorRGResponsavel;
-
 	private String	cei;
 
-	public CertificadoPessoaJuridicaICPBrasil(final X509Certificate certificate, final FormatoICPBrasilType formato) {
-		super(certificate, TipoICPBrasilType.PESSOA_JURIDICA, formato);
+	private String	nomeEmpresarial;
+
+	public CertificadoPessoaJuridicaICPBrasil(final X509Certificate certificate) {
+		super(certificate);
+		this.setTipo(TipoICPBrasilType.PESSOA_JURIDICA);
 	}
 
 	public String getResponsavel() {
@@ -58,52 +51,56 @@ public class CertificadoPessoaJuridicaICPBrasil extends CertificadoICPBrasil {
 		this.cnpj = cnpj;
 	}
 
-	public Date getDataNascimentoResponsavel() {
-		return this.dataNascimentoResponsavel;
-	}
-
-	public void setDataNascimentoResponsavel(final Date dataNascimentoResponsavel) {
-		this.dataNascimentoResponsavel = dataNascimentoResponsavel;
-	}
-
-	public String getCpfResponsavel() {
-		return this.cpfResponsavel;
-	}
-
-	public void setCpfResponsavel(final String cpfResponsavel) {
-		this.cpfResponsavel = cpfResponsavel;
-	}
-
-	public String getPisResponsavel() {
-		return this.pisResponsavel;
-	}
-
-	public void setPisResponsavel(final String pisResponsavel) {
-		this.pisResponsavel = pisResponsavel;
-	}
-
-	public String getRgResponsavel() {
-		return this.rgResponsavel;
-	}
-
-	public void setRgResponsavel(final String rgResponsavel) {
-		this.rgResponsavel = rgResponsavel;
-	}
-
-	public String getEmissorRGResponsavel() {
-		return this.emissorRGResponsavel;
-	}
-
-	public void setEmissorRGResponsavel(final String emissorRGResponsavel) {
-		this.emissorRGResponsavel = emissorRGResponsavel;
-	}
-
 	public String getCei() {
 		return this.cei;
 	}
 
 	public void setCei(final String cei) {
 		this.cei = cei;
+	}
+
+	public String getNomeEmpresarial() {
+		return this.nomeEmpresarial;
+	}
+
+	public void setNomeEmpresarial(final String nomeEmpresarial) {
+		this.nomeEmpresarial = nomeEmpresarial;
+	}
+
+	// Delegate
+	public Date getDataNascimentoResponsavel() {
+		if (this.getDadoPessoa() == null) {
+			return null;
+		}
+		return this.getDadoPessoa().getDataNascimento();
+	}
+
+	public String getCpfResponsavel() {
+		if (this.getDadoPessoa() == null) {
+			return null;
+		}
+		return this.getDadoPessoa().getCpf();
+	}
+
+	public String getPisResponsavel() {
+		if (this.getDadoPessoa() == null) {
+			return null;
+		}
+		return this.getDadoPessoa().getPis();
+	}
+
+	public String getRgResponsavel() {
+		if (this.getDadoPessoa() == null) {
+			return null;
+		}
+		return this.getDadoPessoa().getRg();
+	}
+
+	public String getEmissorRGResponsavel() {
+		if (this.getDadoPessoa() == null) {
+			return null;
+		}
+		return this.getDadoPessoa().getEmissorRG();
 	}
 
 }

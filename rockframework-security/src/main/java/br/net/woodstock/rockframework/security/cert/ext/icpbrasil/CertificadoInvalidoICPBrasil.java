@@ -20,8 +20,9 @@ import java.security.cert.X509Certificate;
 
 public class CertificadoInvalidoICPBrasil extends CertificadoICPBrasil {
 
-	public CertificadoInvalidoICPBrasil(final X509Certificate certificate, final FormatoICPBrasilType formato) {
-		super(certificate, TipoICPBrasilType.INVALIDO, formato);
+	public CertificadoInvalidoICPBrasil(final X509Certificate certificate) {
+		super(certificate);
+		this.setTipo(TipoICPBrasilType.INVALIDO);
 	}
 
 }

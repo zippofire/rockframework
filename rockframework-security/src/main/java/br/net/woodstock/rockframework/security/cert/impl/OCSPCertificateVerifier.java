@@ -119,7 +119,7 @@ public class OCSPCertificateVerifier implements CertificateVerifier {
 		}
 	}
 
-	protected OCSPReq buildRequest(final X509Certificate certificate, X509Certificate issuer) throws CertificateEncodingException, IOException, OperatorCreationException, OCSPException {
+	protected OCSPReq buildRequest(final X509Certificate certificate, final X509Certificate issuer) throws CertificateEncodingException, IOException, OperatorCreationException, OCSPException {
 		OCSPReqBuilder builder = new OCSPReqBuilder();
 		DigestCalculatorProvider provider = new BcDigestCalculatorProvider();
 		X509CertificateHolder holder = new X509CertificateHolder(issuer.getEncoded());

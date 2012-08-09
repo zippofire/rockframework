@@ -56,6 +56,8 @@ public class PKIXCertificateVerifier implements CertificateVerifier {
 
 	private OCSP				ocsp;
 
+	private boolean				debug;
+
 	public PKIXCertificateVerifier() {
 		super();
 	}
@@ -64,6 +66,10 @@ public class PKIXCertificateVerifier implements CertificateVerifier {
 		super();
 		Assert.notNull(ocsp, "ocsp");
 		this.ocsp = ocsp;
+	}
+
+	public void setDebug(final boolean debug) {
+		this.debug = debug;
 	}
 
 	@Override
@@ -75,9 +81,9 @@ public class PKIXCertificateVerifier implements CertificateVerifier {
 		}
 		try {
 			PKIXCertPathValidatorResult validatorResult = this.getValidatorResult(chain);
-
-			// CoreLog.getInstance().getLog().info("Result: " + validatorResult);
-
+			if (this.debug) {
+				CoreLog.getInstance().getLog().info("Result: " + validatorResult);
+			}
 			return true;
 		} catch (CertPathBuilderException e) {
 			CoreLog.getInstance().getLog().info("Validation error: " + e.getMessage());

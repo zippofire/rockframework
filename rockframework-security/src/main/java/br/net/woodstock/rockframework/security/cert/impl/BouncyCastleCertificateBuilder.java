@@ -152,7 +152,7 @@ public class BouncyCastleCertificateBuilder implements CertificateBuilder {
 		return privateKeyHolder;
 	}
 
-	protected void addV3KeyUsage(final JcaX509v3CertificateBuilder builder, BouncyCastleCertificateBuilderRequest request) {
+	protected void addV3KeyUsage(final JcaX509v3CertificateBuilder builder, final BouncyCastleCertificateBuilderRequest request) {
 		if (request.isCa()) {
 			int usage = 0;
 			usage |= BouncyCastleCertificateHelper.toKeyUsage(KeyUsageType.CRL_SIGN);
@@ -177,7 +177,7 @@ public class BouncyCastleCertificateBuilder implements CertificateBuilder {
 		}
 	}
 
-	protected void addV3ExtendedKeyUsage(final JcaX509v3CertificateBuilder builder, BouncyCastleCertificateBuilderRequest request) {
+	protected void addV3ExtendedKeyUsage(final JcaX509v3CertificateBuilder builder, final BouncyCastleCertificateBuilderRequest request) {
 		if (!request.getExtendedKeyUsage().isEmpty()) {
 			Vector<DERObject> vector = new Vector<DERObject>();
 			for (ExtendedKeyUsageType keyUsageType : request.getExtendedKeyUsage()) {
@@ -193,7 +193,7 @@ public class BouncyCastleCertificateBuilder implements CertificateBuilder {
 		}
 	}
 
-	protected void addV3OtherNames(final JcaX509v3CertificateBuilder builder, BouncyCastleCertificateBuilderRequest request) {
+	protected void addV3OtherNames(final JcaX509v3CertificateBuilder builder, final BouncyCastleCertificateBuilderRequest request) {
 		if ((ConditionUtils.isNotEmpty(request.getEmail())) || (!request.getOtherNames().isEmpty())) {
 			ASN1EncodableVector vector = new ASN1EncodableVector();
 			if (ConditionUtils.isNotEmpty(request.getEmail())) {
@@ -221,7 +221,7 @@ public class BouncyCastleCertificateBuilder implements CertificateBuilder {
 		}
 	}
 
-	protected void addV3CRLDistPoint(final JcaX509v3CertificateBuilder builder, BouncyCastleCertificateBuilderRequest request) {
+	protected void addV3CRLDistPoint(final JcaX509v3CertificateBuilder builder, final BouncyCastleCertificateBuilderRequest request) {
 		if (ConditionUtils.isNotEmpty(request.getCrlDistPoint())) {
 			GeneralName gn = new GeneralName(6, new DERIA5String(request.getCrlDistPoint()));
 
@@ -237,26 +237,26 @@ public class BouncyCastleCertificateBuilder implements CertificateBuilder {
 		}
 	}
 
-	protected void addV3OcspUrl(final JcaX509v3CertificateBuilder builder, BouncyCastleCertificateBuilderRequest request) {
+	protected void addV3OcspUrl(final JcaX509v3CertificateBuilder builder, final BouncyCastleCertificateBuilderRequest request) {
 		if (ConditionUtils.isNotEmpty(request.getOcspURL())) {
 			GeneralName ocspLocation = new GeneralName(6, new DERIA5String(request.getOcspURL()));
 			builder.addExtension(X509Extension.authorityInfoAccess, false, new AuthorityInformationAccess(X509ObjectIdentifiers.ocspAccessMethod, ocspLocation));
 		}
 	}
 
-	protected void addV3PolicyUrl(final JcaX509v3CertificateBuilder builder, BouncyCastleCertificateBuilderRequest request) {
+	protected void addV3PolicyUrl(final JcaX509v3CertificateBuilder builder, final BouncyCastleCertificateBuilderRequest request) {
 		if (ConditionUtils.isNotEmpty(request.getPolicyURL())) {
 			builder.addExtension(MiscObjectIdentifiers.netscapeCApolicyURL, false, new DERIA5String(request.getPolicyURL()));
 		}
 	}
 
-	protected void addV3Comment(final JcaX509v3CertificateBuilder builder, BouncyCastleCertificateBuilderRequest request) {
+	protected void addV3Comment(final JcaX509v3CertificateBuilder builder, final BouncyCastleCertificateBuilderRequest request) {
 		if (ConditionUtils.isNotEmpty(request.getComment())) {
 			builder.addExtension(MiscObjectIdentifiers.netscapeCertComment, false, new DERIA5String(request.getComment()));
 		}
 	}
 
-	protected void addV3CAExtensions(final JcaX509v3CertificateBuilder builder, BouncyCastleCertificateBuilderRequest request) {
+	protected void addV3CAExtensions(final JcaX509v3CertificateBuilder builder, final BouncyCastleCertificateBuilderRequest request) {
 		if (request.isCa()) {
 			builder.addExtension(X509Extension.basicConstraints, true, new BasicConstraints(true));
 		}

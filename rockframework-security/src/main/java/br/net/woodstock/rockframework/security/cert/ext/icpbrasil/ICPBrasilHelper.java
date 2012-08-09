@@ -27,20 +27,23 @@ import java.util.Date;
 import java.util.List;
 
 import org.bouncycastle.asn1.ASN1InputStream;
-import org.bouncycastle.asn1.DERIA5String;
+import org.bouncycastle.asn1.DERObject;
 import org.bouncycastle.asn1.DERObjectIdentifier;
 import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DERString;
 import org.bouncycastle.asn1.DERTaggedObject;
-import org.bouncycastle.asn1.DERTags;
 import org.bouncycastle.asn1.x509.GeneralName;
+import org.bouncycastle.asn1.x509.X509Extension;
 
 import br.net.woodstock.rockframework.config.CoreLog;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
 abstract class ICPBrasilHelper {
+
+	// OIDs baseados no documento do ITI, versao 2.11 de 05/06/212
+	// http://www.iti.gov.br/twiki/pub/Certificacao/AdeIcp/ADE_ICP-04.01.pdf
 
 	public static final Charset	DEFAULT_CHARSET				= Charset.forName("ISO-8859-1");
 
@@ -50,7 +53,12 @@ abstract class ICPBrasilHelper {
 
 	public static final String	OID_PF_NUMERO_CEI			= "2.16.76.1.3.6";
 
-	public static final String	OID_PF_REGISTRO_OAB			= "2.16.76.1.4.2.1";
+	// Registro de Identidade Civil
+	public static final String	OID_PF_NUMERO_RIC			= "2.16.76.1.3.9";
+
+	public static final String	OID_PF_REGISTRO_SINCOR		= "2.16.76.1.4.1.1.1";
+
+	public static final String	OID_PF_REGISTRO_OAB			= "2.16.76.1.4.2.1.1";
 
 	public static final String	OID_PJ_NOME_RESPONSAVEL		= "2.16.76.1.3.2";
 
@@ -60,6 +68,8 @@ abstract class ICPBrasilHelper {
 
 	public static final String	OID_PJ_NUMERO_CEI			= "2.16.76.1.3.7";
 
+	public static final String	OID_PJ_NOME_EMPRESARIAL		= "2.16.76.1.3.8";
+
 	public static final String	PREFIX_OID_A1				= "2.16.76.1.2.1.";
 
 	public static final String	PREFIX_OID_A2				= "2.16.76.1.2.2.";
@@ -67,6 +77,8 @@ abstract class ICPBrasilHelper {
 	public static final String	PREFIX_OID_A3				= "2.16.76.1.2.3.";
 
 	public static final String	PREFIX_OID_A4				= "2.16.76.1.2.4.";
+
+	public static final String	PREFIX_OID_AC_ICPBRASIL		= "2.16.76.1.2.201";
 
 	private static final String	DATE_FORMAT					= "ddMMyyyy";
 
@@ -123,17 +135,51 @@ abstract class ICPBrasilHelper {
 		return builder.toString();
 	}
 
+	public static Date getDateFromString(final String date) throws ParseException {
+		if (ConditionUtils.isEmpty(date)) {
+			return null;
+		}
+		return new SimpleDateFormat(ICPBrasilHelper.DATE_FORMAT).parse(date);
+	}
+
 	public static String toString(final byte[] bytes) {
 		return new String(bytes, ICPBrasilHelper.DEFAULT_CHARSET);
 	}
 
-	public static DERSequence toDerSequence(final byte[] bytes) throws IOException {
+	public static DERObject toDerObject(final byte[] bytes) throws IOException {
 		ASN1InputStream inputStream = new ASN1InputStream(bytes);
-		DERSequence sequence = (DERSequence) inputStream.readObject();
+		DERObject object = inputStream.readObject();
+		return object;
+	}
+
+	public static DERSequence toDerSequence(final byte[] bytes) throws IOException {
+		DERSequence sequence = (DERSequence) ICPBrasilHelper.toDerObject(bytes);
 		return sequence;
 	}
 
-	public static CertificadoICPBrasil getCertificadoICPBrasil(final X509Certificate certificate) throws GeneralSecurityException, IOException, ParseException {
+	public static String getStringFromTag(final DERTaggedObject tag) {
+		DERObject obj = tag.getObject();
+		return ICPBrasilHelper.getStringFromObject(obj);
+	}
+
+	private static String getStringFromObject(final Object obj) {
+		if (obj == null) {
+			return null;
+		}
+		if (obj instanceof String) {
+			return (String) obj;
+		}
+		if (obj instanceof DERString) {
+			return ((DERString) obj).getString();
+		}
+		if (obj instanceof DEROctetString) {
+			return ICPBrasilHelper.toString(((DEROctetString) obj).getOctets());
+		}
+		CoreLog.getInstance().getLog().warning("Unknow value (" + obj.getClass() + ") " + obj);
+		return null;
+	}
+
+	public static CertificadoICPBrasil getCertificadoICPBrasil(final X509Certificate certificate) throws GeneralSecurityException, IOException {
 		Collection<List<?>> alternativeNames = certificate.getSubjectAlternativeNames();
 		TipoICPBrasilType tipo = TipoICPBrasilType.INVALIDO;
 		FormatoICPBrasilType formato = FormatoICPBrasilType.INVALIDO;
@@ -141,27 +187,21 @@ abstract class ICPBrasilHelper {
 
 		if (ConditionUtils.isNotEmpty(alternativeNames)) {
 			// Comum
+			DadoPessoa dadoPessoa = null;
 			String email = null;
 
 			// PF
-			Date dataNascimentoPF = null;
-			String cpfPF = null;
-			String pisPF = null;
-			String rgPF = null;
-			String emissorRGPF = null;
 			String tituloEleitorPF = null;
 			String ceiPF = null;
+			String ricPF = null;
+			String registroSINCORPF = null;
 			String registroOABPF = null;
 
 			// PJ
 			String responsavelPJ = null;
 			String cnpjPJ = null;
-			Date dataNascimentoResponsavelPJ = null;
-			String cpfResponsavelPJ = null;
-			String pisResponsavelPJ = null;
-			String rgResponsavelPJ = null;
-			String emissorRGResponsavelPJ = null;
 			String ceiPJ = null;
+			String nomeEmpresarialPJ = null;
 
 			for (List<?> list : alternativeNames) {
 				Integer tmp = (Integer) list.get(0);
@@ -173,121 +213,96 @@ abstract class ICPBrasilHelper {
 					DERTaggedObject taggedObject = (DERTaggedObject) ((DERTaggedObject) sequence.getObjectAt(1)).getObject();
 
 					String oid = identifier.getId();
-					String value = null;
+					String value = ICPBrasilHelper.getStringFromTag(taggedObject);
 
-					if (taggedObject.getTagNo() == DERTags.BIT_STRING) {
-						DERString string = (DERString) taggedObject.getObject();
-						value = string.getString();
-					} else if (taggedObject.getTagNo() == DERTags.OCTET_STRING) {
-						DEROctetString string = (DEROctetString) taggedObject.getObject();
-						value = ICPBrasilHelper.toString(string.getOctets());
-					}
-
-					// PF
-					if (ICPBrasilHelper.OID_PF_DADOS_TITULAR.equals(oid)) {
-						Object[] dadoTitular = ICPBrasilHelper.toDadoPessoal(value);
-						dataNascimentoPF = (Date) dadoTitular[0];
-						cpfPF = (String) dadoTitular[1];
-						pisPF = (String) dadoTitular[2];
-						rgPF = (String) dadoTitular[3];
-						emissorRGPF = (String) dadoTitular[4];
-
+					if (ICPBrasilHelper.OID_PF_DADOS_TITULAR.equals(oid)) { // PF
+						dadoPessoa = DadoPessoa.fromOtherNameString(value);
 						tipo = TipoICPBrasilType.PESSOA_FISICA;
 					} else if (ICPBrasilHelper.OID_PF_TITULO_ELEITOR.equals(oid)) {
 						tituloEleitorPF = ICPBrasilHelper.getValueFromNumeric(value);
 					} else if (ICPBrasilHelper.OID_PF_NUMERO_CEI.equals(oid)) {
 						ceiPF = ICPBrasilHelper.getValueFromNumeric(value);
+					} else if (ICPBrasilHelper.OID_PF_NUMERO_RIC.equals(oid)) {
+						ricPF = value;
+					} else if (ICPBrasilHelper.OID_PF_REGISTRO_SINCOR.equals(oid)) {
+						registroSINCORPF = value;
 					} else if (ICPBrasilHelper.OID_PF_REGISTRO_OAB.equals(oid)) {
 						registroOABPF = value;
-					}
-					// PJ
-					else if (ICPBrasilHelper.OID_PJ_NOME_RESPONSAVEL.equals(oid)) {
+					} else if (ICPBrasilHelper.OID_PJ_NOME_RESPONSAVEL.equals(oid)) { // PJ
 						responsavelPJ = value;
 					} else if (ICPBrasilHelper.OID_PJ_NUMERO_CNPJ.equals(oid)) {
 						cnpjPJ = value;
 						tipo = TipoICPBrasilType.PESSOA_JURIDICA;
 					} else if (ICPBrasilHelper.OID_PJ_DADOS_RESPONSAVEL.equals(oid)) {
-						Object[] dadoResponsavel = ICPBrasilHelper.toDadoPessoal(value);
-						dataNascimentoResponsavelPJ = (Date) dadoResponsavel[0];
-						cpfResponsavelPJ = (String) dadoResponsavel[1];
-						pisResponsavelPJ = (String) dadoResponsavel[2];
-						rgResponsavelPJ = (String) dadoResponsavel[3];
-						emissorRGResponsavelPJ = (String) dadoResponsavel[4];
+						dadoPessoa = DadoPessoa.fromOtherNameString(value);
 					} else if (ICPBrasilHelper.OID_PJ_NUMERO_CEI.equals(oid)) {
 						ceiPJ = ICPBrasilHelper.getValueFromNumeric(value);
+					} else if (ICPBrasilHelper.OID_PJ_NOME_EMPRESARIAL.equals(oid)) {
+						nomeEmpresarialPJ = value;
 					}
 				} else if (id == GeneralName.rfc822Name) {
 					Object obj = list.get(1);
-					if (obj instanceof String) {
-						email = (String) obj;
-					} else if (obj instanceof DERIA5String) {
-						email = ((DERIA5String) obj).getString();
-					} else {
-						CoreLog.getInstance().getLog().warning("Unknow RFC822 value " + obj);
-					}
+					email = ICPBrasilHelper.getStringFromObject(obj);
 				}
 			}
 
-			for (String oid : certificate.getNonCriticalExtensionOIDs()) {
-				System.out.println("NC: " + oid);
-			}
+			formato = ICPBrasilHelper.getFormato(certificate);
 
-			for (String oid : certificate.getCriticalExtensionOIDs()) {
-				System.out.println("NC: " + oid);
-			}
-
-			if (tipo == TipoICPBrasilType.PESSOA_FISICA) {
-				CertificadoPessoaFisicaICPBrasil certPF = new CertificadoPessoaFisicaICPBrasil(certificate, formato);
+			if ((tipo == TipoICPBrasilType.PESSOA_FISICA) && (dadoPessoa != null)) {
+				CertificadoPessoaFisicaICPBrasil certPF = new CertificadoPessoaFisicaICPBrasil(certificate);
 				certPF.setCei(ceiPF);
-				certPF.setCpf(cpfPF);
-				certPF.setDataNascimento(dataNascimentoPF);
+				certPF.setDadoPessoa(dadoPessoa);
 				certPF.setEmail(email);
-				certPF.setEmissorRG(emissorRGPF);
-				certPF.setPis(pisPF);
+				certPF.setFormato(formato);
 				certPF.setRegistroOAB(registroOABPF);
-				certPF.setRg(rgPF);
+				certPF.setRegistroSINCOR(registroSINCORPF);
+				certPF.setRic(ricPF);
+				certPF.setTipo(tipo);
 				certPF.setTituloEleitor(tituloEleitorPF);
 				certificadoICPBrasil = certPF;
-			} else if (tipo == TipoICPBrasilType.PESSOA_JURIDICA) {
-				CertificadoPessoaJuridicaICPBrasil certPJ = new CertificadoPessoaJuridicaICPBrasil(certificate, formato);
+			} else if ((tipo == TipoICPBrasilType.PESSOA_JURIDICA) && (dadoPessoa != null)) {
+				CertificadoPessoaJuridicaICPBrasil certPJ = new CertificadoPessoaJuridicaICPBrasil(certificate);
 				certPJ.setCei(ceiPJ);
 				certPJ.setCnpj(cnpjPJ);
-				certPJ.setCpfResponsavel(cpfResponsavelPJ);
-				certPJ.setDataNascimentoResponsavel(dataNascimentoResponsavelPJ);
+				certPJ.setDadoPessoa(dadoPessoa);
 				certPJ.setEmail(email);
-				certPJ.setEmissorRGResponsavel(emissorRGResponsavelPJ);
-				certPJ.setPisResponsavel(pisResponsavelPJ);
+				certPJ.setFormato(formato);
+				certPJ.setNomeEmpresarial(nomeEmpresarialPJ);
 				certPJ.setResponsavel(responsavelPJ);
-				certPJ.setRgResponsavel(rgResponsavelPJ);
+				certPJ.setTipo(tipo);
 				certificadoICPBrasil = certPJ;
 			} else {
-				certificadoICPBrasil = new CertificadoInvalidoICPBrasil(certificate, formato);
+				certificadoICPBrasil = new CertificadoInvalidoICPBrasil(certificate);
 				certificadoICPBrasil.setEmail(email);
 			}
 		} else {
-			certificadoICPBrasil = new CertificadoInvalidoICPBrasil(certificate, formato);
+			certificadoICPBrasil = new CertificadoInvalidoICPBrasil(certificate);
 		}
 
 		return certificadoICPBrasil;
 	}
 
-	private static Object[] toDadoPessoal(final String value) throws ParseException {
-		Object[] dadoPessoal = new Object[5];
-
-		if (ConditionUtils.isNotEmpty(value)) {
-			String dataStr = value.substring(0, 8);
-			dadoPessoal[1] = ICPBrasilHelper.getValueFromNumeric(value.substring(8, 19)); // CPF
-			dadoPessoal[2] = ICPBrasilHelper.getValueFromNumeric(value.substring(20, 30)); // PIS
-			dadoPessoal[3] = ICPBrasilHelper.getValueFromNumeric(value.substring(30, 45)); // RG
-			dadoPessoal[4] = value.substring(45).trim(); // Emissor RG
-
-			if ((ConditionUtils.isNotEmpty(dataStr)) && (ConditionUtils.isNotEmpty(dataStr.replaceAll("0", "")))) {
-				dadoPessoal[0] = new SimpleDateFormat(ICPBrasilHelper.DATE_FORMAT).parse(dataStr); // Data
-																									// Nascimento
+	private static FormatoICPBrasilType getFormato(final X509Certificate certificate) throws IOException {
+		FormatoICPBrasilType formato = FormatoICPBrasilType.INVALIDO;
+		byte[] policiesBytes = certificate.getExtensionValue(X509Extension.certificatePolicies.getId());
+		if (policiesBytes != null) {
+			DEROctetString string = (DEROctetString) ICPBrasilHelper.toDerObject(policiesBytes);
+			byte[] octets = string.getOctets();
+			DERSequence sequence = ICPBrasilHelper.toDerSequence(octets);
+			DERSequence subSequence = (DERSequence) sequence.getObjectAt(0);
+			DERObjectIdentifier identifier = (DERObjectIdentifier) subSequence.getObjectAt(0);
+			String oid = identifier.getId();
+			if (oid.startsWith(ICPBrasilHelper.PREFIX_OID_A1)) {
+				formato = FormatoICPBrasilType.A1;
+			} else if (oid.startsWith(ICPBrasilHelper.PREFIX_OID_A2)) {
+				formato = FormatoICPBrasilType.A2;
+			} else if (oid.startsWith(ICPBrasilHelper.PREFIX_OID_A3)) {
+				formato = FormatoICPBrasilType.A3;
+			} else if (oid.startsWith(ICPBrasilHelper.PREFIX_OID_A4)) {
+				formato = FormatoICPBrasilType.A4;
 			}
 		}
-
-		return dadoPessoal;
+		return formato;
 	}
 
 	private static String rpad(final String value, final char pad, final int size) {
