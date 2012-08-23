@@ -192,4 +192,43 @@ public abstract class NumberUtils {
 		return i;
 	}
 
+	// Not Null
+	public static BigDecimal getBigDecimal(final String value) {
+		if (ConditionUtils.isEmpty(value)) {
+			return null;
+		}
+		return new BigDecimal(value);
+	}
+
+	public static BigInteger getBigInteger(final String value) {
+		if (ConditionUtils.isEmpty(value)) {
+			return null;
+		}
+		return new BigInteger(value);
+	}
+
+	public static Byte getByte(final String value) {
+		return PrimitiveUtils.toByte(value);
+	}
+
+	public static Double getDouble(final String value) {
+		return PrimitiveUtils.toDouble(value);
+	}
+
+	public static Float getFloat(final String value) {
+		return PrimitiveUtils.toFloat(value);
+	}
+
+	public static Integer getInteger(final String value) {
+		return PrimitiveUtils.toInteger(value);
+	}
+
+	public static Long getLong(final String value) {
+		return PrimitiveUtils.toLong(value);
+	}
+
+	public static Short getShort(final String value) {
+		return PrimitiveUtils.toShort(value);
+	}
+
 }

@@ -109,6 +109,16 @@ public abstract class IOUtils {
 		return s;
 	}
 
+	public static String toString(final Reader reader, final Charset charset) throws IOException {
+		Assert.notNull(reader, "reader");
+		Assert.notNull(charset, "charset");
+		byte[] bytes = IOUtils.toByteArray(reader);
+
+		String s = new String(bytes, charset);
+
+		return s;
+	}
+
 	public static InputStream gzip(final byte[] bytes) throws IOException {
 		Assert.notNull(bytes, "bytes");
 		return IOUtils.gzip(new ByteArrayInputStream(bytes));
@@ -122,6 +132,11 @@ public abstract class IOUtils {
 
 		gzipOutputStream.close();
 		return inputOutputStream.getInputStream();
+	}
+
+	public static InputStream gunzip(final byte[] bytes) throws IOException {
+		Assert.notNull(bytes, "bytes");
+		return IOUtils.gunzip(new ByteArrayInputStream(bytes));
 	}
 
 	public static InputStream gunzip(final InputStream inputStream) throws IOException {

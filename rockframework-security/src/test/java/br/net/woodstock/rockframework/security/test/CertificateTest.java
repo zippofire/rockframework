@@ -40,15 +40,15 @@ import br.net.woodstock.rockframework.util.DateBuilder;
 public class CertificateTest extends TestCase {
 
 	static {
-		System.setProperty("http.proxyHost", "10.30.1.10");
-		System.setProperty("http.proxyPort", "8080");
-		System.setProperty("http.proxyUser", "lourival.junior");
-		System.setProperty("http.proxyPassword", "******"); // FIXME
-		System.setProperty("sun.net.client.defaultConnectTimeout", "15000");
-		System.setProperty("sun.net.client.defaultReadTimeout", "15000");
+		//System.setProperty("http.proxyHost", "10.30.1.10");
+		//System.setProperty("http.proxyPort", "8080");
+		//System.setProperty("http.proxyUser", "lourival.junior");
+		//System.setProperty("http.proxyPassword", "******"); // FIXME
+		//System.setProperty("sun.net.client.defaultConnectTimeout", "15000");
+		//System.setProperty("sun.net.client.defaultReadTimeout", "15000");
 	}
 
-	public void xtestCreate() throws Exception {
+	public void testCreate() throws Exception {
 		PessoaFisicaCertificateBuilderRequest request = new PessoaFisicaCertificateBuilderRequest("Lourival Sabino");
 		request.withEmail("junior@woodstock.net.br");
 		request.withIssuer("Woodstock Tecnologia");
@@ -58,16 +58,16 @@ public class CertificateTest extends TestCase {
 
 		// ICP Brasil
 		DadoPessoa dadoPessoa = new DadoPessoa();
-		dadoPessoa.setCpf("22222222222");
+		dadoPessoa.setCpf("86216503120");
 		dadoPessoa.setDataNascimento(new SimpleDateFormat("dd/MM/yyyy").parse("24/05/1979"));
 		dadoPessoa.setEmissorRG("SSP/DF");
 		dadoPessoa.setPis("33333333333");
-		dadoPessoa.setRg("44444");
+		dadoPessoa.setRg("1817115");
 
 		request.withCei("111111111111");
 		request.withDadoTitular(dadoPessoa);
-		request.withRegistroOAB("123456DF");
-		request.withRegistroSINCOR("123456DF");
+		request.withRegistroOAB("DF123456-A");
+		//request.withRegistroSINCOR("123456DF");
 		request.withRic("66666666666");
 		request.withTituloEleitor("555555555555");
 
@@ -76,7 +76,7 @@ public class CertificateTest extends TestCase {
 		request.withNotAfter(builder.addYears(1).getDate());
 
 		// CA
-		FileInputStream inputStream = new FileInputStream("/tmp/woodstock.pfx");
+		FileInputStream inputStream = new FileInputStream("/home/lourival/tmp/cert/woodstock.pfx");
 		Store caStore = new JCAStore(KeyStoreType.PKCS12);
 		caStore.read(inputStream, "woodstock");
 		PrivateKeyEntry entry = (PrivateKeyEntry) caStore.get(new PasswordAlias("woodstock", "woodstock"), StoreEntryType.PRIVATE_KEY);
@@ -254,7 +254,7 @@ public class CertificateTest extends TestCase {
 		System.out.println(status);
 	}
 
-	public void testOIDs() throws Exception {
+	public void xtestOIDs() throws Exception {
 		FileInputStream inputStream = new FileInputStream("/home/lourival/tmp/cert/adelci.cer");
 		Certificate certificate = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
 		X509Certificate x509Certificate = (X509Certificate) certificate;

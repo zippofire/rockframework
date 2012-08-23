@@ -19,9 +19,9 @@ package br.net.woodstock.rockframework.collection;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class ImmutableCollection<E> extends DelegateCollection<E> {
+public final class ImmutableCollection<E> extends DelegateCollection<E> {
 
-	public ImmutableCollection(final Collection<E> collection) {
+	private ImmutableCollection(final Collection<E> collection) {
 		super(collection);
 	}
 
@@ -58,6 +58,11 @@ public class ImmutableCollection<E> extends DelegateCollection<E> {
 	@Override
 	public boolean retainAll(final Collection<?> c) {
 		throw new UnsupportedOperationException();
+	}
+
+	// Static
+	public static <T> Collection<T> toImmutable(final Collection<T> list) {
+		return new ImmutableCollection<T>(list);
 	}
 
 }

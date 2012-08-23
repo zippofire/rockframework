@@ -34,8 +34,15 @@ public abstract class FileUtils {
 	}
 
 	public static File createTempFile(final String name) {
+		return FileUtils.createTempFile(name, false);
+	}
+
+	public static File createTempFile(final String name, final boolean deleteOnExit) {
 		File tmpDir = new File(SystemUtils.getProperty(SystemUtils.JAVA_IO_TMPDIR_PROPERTY));
 		File file = new File(tmpDir, name);
+		if (deleteOnExit) {
+			file.deleteOnExit();
+		}
 		return file;
 	}
 
@@ -134,8 +141,8 @@ public abstract class FileUtils {
 		if (file == null) {
 			return -1;
 		}
-		URLConnection con = file.toURI().toURL().openConnection();
-		return con.getContentLength();
+		URL url = file.toURI().toURL();
+		return FileUtils.getSize(url);
 	}
 
 	public static int getSize(final URL url) throws IOException {

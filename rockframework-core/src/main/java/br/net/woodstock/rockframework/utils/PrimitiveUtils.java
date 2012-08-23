@@ -16,7 +16,6 @@
  */
 package br.net.woodstock.rockframework.utils;
 
-
 public abstract class PrimitiveUtils {
 
 	private PrimitiveUtils() {
@@ -103,6 +102,20 @@ public abstract class PrimitiveUtils {
 	public static int toInteger(final String value, final int defaultValue) {
 		if (ConditionUtils.isNotEmpty(value)) {
 			return Integer.parseInt(value);
+		}
+		return defaultValue;
+	}
+
+	public static Long toLong(final String value) {
+		if (ConditionUtils.isNotEmpty(value)) {
+			return Long.valueOf(value);
+		}
+		return null;
+	}
+
+	public static long toLong(final String value, final long defaultValue) {
+		if (ConditionUtils.isNotEmpty(value)) {
+			return Long.parseLong(value);
 		}
 		return defaultValue;
 	}

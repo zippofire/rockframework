@@ -26,6 +26,10 @@ public abstract class CharacterUtils {
 		//
 	}
 
+	public static Character getCharacter(final String value) {
+		return PrimitiveUtils.toCharacter(value);
+	}
+
 	public static boolean isASCII(final char c) {
 		int i = c;
 		if (i <= CharacterUtils.MAX_ASCII_CHAR) {

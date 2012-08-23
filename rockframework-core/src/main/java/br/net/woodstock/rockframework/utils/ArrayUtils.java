@@ -30,26 +30,29 @@ public final class ArrayUtils {
 		//
 	}
 
-	public static Class<?> getArrayType(final Object array) throws ClassNotFoundException {
+	public static Class<?> getArrayType(final Object array) {
 		if (array == null) {
 			return null;
 		}
-		String name = ArrayUtils.getArrayTypeName(array);
-		if (ClassUtils.isPrimitiveClass(name)) {
-			return ClassUtils.getPrimitiveClass(name);
+
+		if (!ArrayUtils.isArray(array)) {
+			return null;
 		}
-		return Class.forName(ArrayUtils.getArrayTypeName(array));
+
+		Class<?> clazz = array.getClass().getComponentType();
+
+		return clazz;
 	}
 
-	public static String getArrayTypeName(final Object array) {
+	public static boolean isArray(final Object array) {
 		if (array == null) {
-			return null;
+			return false;
 		}
-		String className = array.getClass().getCanonicalName();
-		if (className.indexOf('[') != -1) {
-			className = className.substring(0, className.indexOf('['));
+
+		if (array.getClass().isArray()) {
+			return true;
 		}
-		return className;
+		return false;
 	}
 
 	public static List<Object> toList(final Object array) {
