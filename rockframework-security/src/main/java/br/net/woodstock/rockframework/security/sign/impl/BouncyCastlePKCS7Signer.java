@@ -29,7 +29,6 @@ import java.util.Collection;
 import java.util.Hashtable;
 import java.util.List;
 
-import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.ASN1Sequence;
 import org.bouncycastle.asn1.ASN1UTCTime;
@@ -136,7 +135,8 @@ public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 				// hashtable.put(PKCSObjectIdentifiers.pkcs_9_at_signingTime, attribute);
 				//
 				// AttributeTable table = new AttributeTable(hashtable);
-				// CMSAttributeTableGenerator attributeTableGenerator = new DefaultSignedAttributeTableGenerator(table);
+				// CMSAttributeTableGenerator attributeTableGenerator = new
+				// DefaultSignedAttributeTableGenerator(table);
 				// signerInfoGeneratorBuilder.setSignedAttributeGenerator(attributeTableGenerator);
 				// }
 
@@ -156,7 +156,7 @@ public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 				for (Object o : signerInformationStore.getSigners()) {
 					SignerInformation signerInformation = (SignerInformation) o;
 					TimeStamp timeStamp = timeStampClient.getTimeStamp(signerInformation.getSignature());
-					DERObject derObject = new ASN1InputStream(timeStamp.getEncoded()).readObject();
+					DERObject derObject = BouncyCastleProviderHelper.toDERObject(timeStamp.getEncoded());
 					DERSet derSet = new DERSet(derObject);
 
 					Hashtable hashtable = new Hashtable();
@@ -255,8 +255,10 @@ public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 					AttributeTable unsignedAttributeTable = information.getUnsignedAttributes();
 
 					DERSequence timeStampDerSequence = this.getAttribute(signedAttributeTable, unsignedAttributeTable, PKCSObjectIdentifiers.id_aa_signatureTimeStampToken);
-					// DERSequence contentTypeDerSequence = this.getAttribute(signedAttributeTable, unsignedAttributeTable, PKCSObjectIdentifiers.pkcs_9_at_contentType);
-					// DERSequence messageDigestDerSequence = this.getAttribute(signedAttributeTable, unsignedAttributeTable, PKCSObjectIdentifiers.pkcs_9_at_messageDigest);
+					// DERSequence contentTypeDerSequence = this.getAttribute(signedAttributeTable,
+					// unsignedAttributeTable, PKCSObjectIdentifiers.pkcs_9_at_contentType);
+					// DERSequence messageDigestDerSequence = this.getAttribute(signedAttributeTable,
+					// unsignedAttributeTable, PKCSObjectIdentifiers.pkcs_9_at_messageDigest);
 					DERSequence signTimeDerSequence = this.getAttribute(signedAttributeTable, unsignedAttributeTable, PKCSObjectIdentifiers.pkcs_9_at_signingTime);
 
 					if (timeStampDerSequence != null) {
@@ -264,7 +266,8 @@ public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 							DERObject derObjectIdentifier = ((DERObject) timeStampDerSequence.getObjectAt(0)).toASN1Object();
 							DERObject derObjectValue = ((DERObject) timeStampDerSequence.getObjectAt(1)).toASN1Object();
 							if ((derObjectIdentifier instanceof ASN1ObjectIdentifier) && (derObjectValue instanceof DERSet)) {
-								// ASN1ObjectIdentifier asn1ObjectIdentifier = (ASN1ObjectIdentifier) derObjectIdentifier;
+								// ASN1ObjectIdentifier asn1ObjectIdentifier = (ASN1ObjectIdentifier)
+								// derObjectIdentifier;
 								DERSet set = (DERSet) derObjectValue;
 								DEREncodable encodable = set.getObjectAt(0);
 								TimeStampToken timeStampToken = new TimeStampToken(new CMSSignedData(encodable.getDERObject().getEncoded()));
@@ -315,8 +318,7 @@ public class BouncyCastlePKCS7Signer implements PKCS7Signer {
 	}
 
 	protected byte[] encapsulateContent(final byte[] data, final byte[] signature) throws IOException {
-		ASN1InputStream inputStream = new ASN1InputStream(signature);
-		DERSequence derSequence = (DERSequence) inputStream.readObject();
+		DERSequence derSequence = (DERSequence) BouncyCastleProviderHelper.toDERObject(signature);
 		ContentInfo signaturecontentInfo = new ContentInfo(derSequence);
 		SignedData signatureSignedData = new SignedData((ASN1Sequence) signaturecontentInfo.getContent());
 		ContentInfo dataContentInfo = new ContentInfo(CMSObjectIdentifiers.data, new BERConstructedOctetString(data));

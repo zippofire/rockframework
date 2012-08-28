@@ -17,6 +17,7 @@ import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.CertificadoICP
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.CertificadoPessoaFisicaICPBrasil;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.CertificadoPessoaJuridicaICPBrasil;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.DadoPessoa;
+import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.FormatoICPBrasilType;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.ICPBrasilCertificateVerifier;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.PessoaFisicaCertificateBuilderRequest;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.TipoICPBrasilType;
@@ -64,6 +65,7 @@ public class CertificateTest extends TestCase {
 		dadoPessoa.setPis("33333333333");
 		dadoPessoa.setRg("1817115");
 
+		request.withFormato(FormatoICPBrasilType.A3);
 		request.withCei("111111111111");
 		request.withDadoTitular(dadoPessoa);
 		request.withRegistroOAB("DF123456-A");

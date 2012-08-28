@@ -26,7 +26,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.DERObject;
 import org.bouncycastle.asn1.DERObjectIdentifier;
 import org.bouncycastle.asn1.DEROctetString;
@@ -37,6 +36,7 @@ import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.asn1.x509.X509Extension;
 
 import br.net.woodstock.rockframework.config.CoreLog;
+import br.net.woodstock.rockframework.security.util.BouncyCastleProviderHelper;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
@@ -79,6 +79,14 @@ abstract class ICPBrasilHelper {
 	public static final String	PREFIX_OID_A4				= "2.16.76.1.2.4.";
 
 	public static final String	PREFIX_OID_AC_ICPBRASIL		= "2.16.76.1.2.201";
+
+	public static final String	OID_A1_AC_SERPRO			= ICPBrasilHelper.PREFIX_OID_A1 + ".1";
+
+	public static final String	OID_A2_AC_SERASA			= ICPBrasilHelper.PREFIX_OID_A2 + ".1";
+
+	public static final String	OID_A3_AC_PR				= ICPBrasilHelper.PREFIX_OID_A3 + ".1";
+
+	public static final String	OID_A4_AC_SERASA			= ICPBrasilHelper.PREFIX_OID_A4 + ".1";
 
 	private static final String	DATE_FORMAT					= "ddMMyyyy";
 
@@ -147,9 +155,7 @@ abstract class ICPBrasilHelper {
 	}
 
 	public static DERObject toDerObject(final byte[] bytes) throws IOException {
-		ASN1InputStream inputStream = new ASN1InputStream(bytes);
-		DERObject object = inputStream.readObject();
-		return object;
+		return BouncyCastleProviderHelper.toDERObject(bytes);
 	}
 
 	public static DERSequence toDerSequence(final byte[] bytes) throws IOException {

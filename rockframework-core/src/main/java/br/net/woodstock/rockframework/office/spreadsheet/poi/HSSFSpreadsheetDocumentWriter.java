@@ -36,6 +36,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 
 import br.net.woodstock.rockframework.office.DocumentException;
@@ -116,10 +117,10 @@ public final class HSSFSpreadsheetDocumentWriter implements SpreadsheetDocumentW
 
 			switch (imageType) {
 				case JPEG:
-					type = HSSFWorkbook.PICTURE_TYPE_JPEG;
+					type = Workbook.PICTURE_TYPE_JPEG;
 					break;
 				case PNG:
-					type = HSSFWorkbook.PICTURE_TYPE_PNG;
+					type = Workbook.PICTURE_TYPE_PNG;
 					break;
 				default:
 					break;

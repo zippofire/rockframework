@@ -16,7 +16,6 @@
  */
 package br.net.woodstock.rockframework.security.cert.impl;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -28,7 +27,6 @@ import java.security.cert.X509Certificate;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.DERIA5String;
 import org.bouncycastle.asn1.DERObject;
 import org.bouncycastle.asn1.DEROctetString;
@@ -43,6 +41,7 @@ import br.net.woodstock.rockframework.config.CoreLog;
 import br.net.woodstock.rockframework.security.cert.CertificateException;
 import br.net.woodstock.rockframework.security.cert.CertificateType;
 import br.net.woodstock.rockframework.security.cert.CertificateVerifier;
+import br.net.woodstock.rockframework.security.util.BouncyCastleProviderHelper;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
@@ -107,12 +106,10 @@ public class CRLCertificateVerifier implements CertificateVerifier {
 			return new URL[0];
 		}
 
-		ASN1InputStream crldistribuitionPointsBytesStream = new ASN1InputStream(new ByteArrayInputStream(crldistribuitionPointsBytes));
-		DERObject crldistribuitionPointsObject = crldistribuitionPointsBytesStream.readObject();
+		DERObject crldistribuitionPointsObject = BouncyCastleProviderHelper.toDERObject(crldistribuitionPointsBytes);
 		DEROctetString crldistribuitionPointsString = (DEROctetString) crldistribuitionPointsObject;
 
-		crldistribuitionPointsBytesStream = new ASN1InputStream(new ByteArrayInputStream(crldistribuitionPointsString.getOctets()));
-		crldistribuitionPointsObject = crldistribuitionPointsBytesStream.readObject();
+		crldistribuitionPointsObject = BouncyCastleProviderHelper.toDERObject(crldistribuitionPointsString.getOctets());
 		CRLDistPoint distPoint = CRLDistPoint.getInstance(crldistribuitionPointsObject);
 
 		Set<URL> urls = new HashSet<URL>();

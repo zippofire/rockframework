@@ -29,7 +29,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;
 
-import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.ASN1Sequence;
 import org.bouncycastle.asn1.DERIA5String;
 import org.bouncycastle.asn1.DEROctetString;
@@ -55,6 +54,7 @@ import br.net.woodstock.rockframework.config.CoreLog;
 import br.net.woodstock.rockframework.security.cert.CertificateException;
 import br.net.woodstock.rockframework.security.cert.CertificateVerifier;
 import br.net.woodstock.rockframework.security.timestamp.impl.URLTimeStampProcessor;
+import br.net.woodstock.rockframework.security.util.BouncyCastleProviderHelper;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.Base64Utils;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
@@ -189,9 +189,8 @@ public class OCSPCertificateVerifier implements CertificateVerifier {
 		}
 
 		Set<URL> urls = new HashSet<URL>();
-		ASN1InputStream inputStream = new ASN1InputStream(bytes);
-		DEROctetString octetString = (DEROctetString) inputStream.readObject();
-		ASN1Sequence sequence = (ASN1Sequence) new ASN1InputStream(octetString.getOctets()).readObject();
+		DEROctetString octetString = (DEROctetString) BouncyCastleProviderHelper.toDERObject(bytes);
+		ASN1Sequence sequence = (ASN1Sequence) BouncyCastleProviderHelper.toDERObject(octetString.getOctets());
 		AuthorityInformationAccess informationAccess = new AuthorityInformationAccess(sequence);
 		AccessDescription[] accessDescriptions = informationAccess.getAccessDescriptions();
 
@@ -206,6 +205,7 @@ public class OCSPCertificateVerifier implements CertificateVerifier {
 				urls.add(url);
 			}
 		}
+
 		return urls.toArray(new URL[urls.size()]);
 	}
 }

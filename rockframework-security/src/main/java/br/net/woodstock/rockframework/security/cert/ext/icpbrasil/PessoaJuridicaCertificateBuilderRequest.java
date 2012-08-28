@@ -21,14 +21,13 @@ import java.security.KeyPair;
 import java.util.Date;
 import java.util.Map;
 
-import br.net.woodstock.rockframework.security.cert.CertificateBuilderRequest;
 import br.net.woodstock.rockframework.security.cert.CertificateVersionType;
 import br.net.woodstock.rockframework.security.cert.ExtendedKeyUsageType;
 import br.net.woodstock.rockframework.security.cert.KeyUsageType;
 import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
 import br.net.woodstock.rockframework.security.sign.SignatureType;
 
-public class PessoaJuridicaCertificateBuilderRequest extends CertificateBuilderRequest {
+public class PessoaJuridicaCertificateBuilderRequest extends ICPBrasilCertificateBuilderRequest {
 
 	private static final long	serialVersionUID	= 3115100870385480942L;
 
@@ -86,6 +85,26 @@ public class PessoaJuridicaCertificateBuilderRequest extends CertificateBuilderR
 		map.put(ICPBrasilHelper.OID_PJ_DADOS_RESPONSAVEL, dadosResponsavel);
 		map.put(ICPBrasilHelper.OID_PJ_NUMERO_CEI, cei);
 		map.put(ICPBrasilHelper.OID_PJ_NOME_EMPRESARIAL, nomeEmpresarial);
+
+		FormatoICPBrasilType formato = this.getFormato();
+		if (formato != null) {
+			switch (formato) {
+				case A1:
+					map.put(ICPBrasilHelper.OID_A1_AC_SERPRO, this.getSubject());
+					break;
+				case A2:
+					map.put(ICPBrasilHelper.OID_A2_AC_SERASA, this.getSubject());
+					break;
+				case A3:
+					map.put(ICPBrasilHelper.OID_A3_AC_PR, this.getSubject());
+					break;
+				case A4:
+					map.put(ICPBrasilHelper.OID_A4_AC_SERASA, this.getSubject());
+					break;
+				default:
+					break;
+			}
+		}
 
 		return map;
 	}
@@ -175,6 +194,11 @@ public class PessoaJuridicaCertificateBuilderRequest extends CertificateBuilderR
 	@Override
 	public PessoaJuridicaCertificateBuilderRequest withOtherName(final String oid, final String value) {
 		return (PessoaJuridicaCertificateBuilderRequest) super.withOtherName(oid, value);
+	}
+
+	@Override
+	public PessoaJuridicaCertificateBuilderRequest withFormato(final FormatoICPBrasilType formato) {
+		return (PessoaJuridicaCertificateBuilderRequest) super.withFormato(formato);
 	}
 
 }

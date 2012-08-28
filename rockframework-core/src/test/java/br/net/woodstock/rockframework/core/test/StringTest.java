@@ -1,10 +1,13 @@
 package br.net.woodstock.rockframework.core.test;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import junit.framework.TestCase;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.Base64Utils;
 import br.net.woodstock.rockframework.utils.CharacterUtils;
 import br.net.woodstock.rockframework.utils.StringUtils;
-import junit.framework.TestCase;
 
 public class StringTest extends TestCase {
 
@@ -74,10 +77,23 @@ public class StringTest extends TestCase {
 		System.out.println("Original: " + str);
 		System.out.println("Novo    : " + newStr);
 	}
-	
-	public void test7() throws Exception {
+
+	public void xtest7() throws Exception {
 		System.out.println(StringUtils.escapeHTML("<html lang=\"en\" lang='en'>consulta.jsp?x=1</html>"));
 	}
-		
+
+	public void testFormat() {
+		List<String[]> dados = new ArrayList<String[]>();
+		dados.add(new String[] { "Pessoa 1", "00000000000" });
+		dados.add(new String[] { "Pessoa da Silva Sauro", "11111111111" });
+		dados.add(new String[] { "Pessoa sem nome", "22222222222" });
+		dados.add(new String[] { "Teste", "33333333333" });
+
+		StringBuilder builder = new StringBuilder();
+		for (String[] dado : dados) {
+			builder.append(String.format("Nome: %-50s CPF: %11s\n", dado[0], dado[1]));
+		}
+		System.out.println(builder.toString());
+	}
 
 }

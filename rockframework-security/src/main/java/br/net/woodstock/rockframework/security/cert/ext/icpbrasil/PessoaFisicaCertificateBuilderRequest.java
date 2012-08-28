@@ -21,7 +21,6 @@ import java.security.KeyPair;
 import java.util.Date;
 import java.util.Map;
 
-import br.net.woodstock.rockframework.security.cert.CertificateBuilderRequest;
 import br.net.woodstock.rockframework.security.cert.CertificateVersionType;
 import br.net.woodstock.rockframework.security.cert.ExtendedKeyUsageType;
 import br.net.woodstock.rockframework.security.cert.KeyUsageType;
@@ -29,7 +28,7 @@ import br.net.woodstock.rockframework.security.cert.PrivateKeyHolder;
 import br.net.woodstock.rockframework.security.sign.SignatureType;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-public class PessoaFisicaCertificateBuilderRequest extends CertificateBuilderRequest {
+public class PessoaFisicaCertificateBuilderRequest extends ICPBrasilCertificateBuilderRequest {
 
 	private static final long	serialVersionUID	= 2206868473296076668L;
 
@@ -99,6 +98,26 @@ public class PessoaFisicaCertificateBuilderRequest extends CertificateBuilderReq
 
 		if (ConditionUtils.isNotEmpty(this.getRegistroOAB())) {
 			map.put(ICPBrasilHelper.OID_PF_REGISTRO_OAB, this.getRegistroOAB());
+		}
+
+		FormatoICPBrasilType formato = this.getFormato();
+		if (formato != null) {
+			switch (formato) {
+				case A1:
+					map.put(ICPBrasilHelper.OID_A1_AC_SERPRO, this.getSubject());
+					break;
+				case A2:
+					map.put(ICPBrasilHelper.OID_A2_AC_SERASA, this.getSubject());
+					break;
+				case A3:
+					map.put(ICPBrasilHelper.OID_A3_AC_PR, this.getSubject());
+					break;
+				case A4:
+					map.put(ICPBrasilHelper.OID_A4_AC_SERASA, this.getSubject());
+					break;
+				default:
+					break;
+			}
 		}
 
 		return map;
@@ -194,6 +213,11 @@ public class PessoaFisicaCertificateBuilderRequest extends CertificateBuilderReq
 	@Override
 	public PessoaFisicaCertificateBuilderRequest withOtherName(final String oid, final String value) {
 		return (PessoaFisicaCertificateBuilderRequest) super.withOtherName(oid, value);
+	}
+
+	@Override
+	public PessoaFisicaCertificateBuilderRequest withFormato(final FormatoICPBrasilType formato) {
+		return (PessoaFisicaCertificateBuilderRequest) super.withFormato(formato);
 	}
 
 }

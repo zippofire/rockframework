@@ -24,6 +24,8 @@ import java.security.cert.X509Certificate;
 
 import javax.security.auth.x500.X500Principal;
 
+import org.bouncycastle.asn1.ASN1InputStream;
+import org.bouncycastle.asn1.DERObject;
 import org.bouncycastle.asn1.x500.RDN;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
@@ -74,6 +76,13 @@ public abstract class BouncyCastleProviderHelper {
 			s = name.toString();
 		}
 		return s;
+	}
+
+	public static DERObject toDERObject(final byte[] bytes) throws IOException {
+		ASN1InputStream inputStream = new ASN1InputStream(bytes);
+		DERObject obj = inputStream.readObject();
+		inputStream.close();
+		return obj;
 	}
 
 	public static X500Name toX500Name(final String value) {
