@@ -71,6 +71,8 @@ public class CertificateBuilderRequest implements Serializable, Cloneable {
 
 	private Map<String, String>			otherNames;
 
+	private Map<String, String>			certificatePolicies;
+
 	public CertificateBuilderRequest(final String subject) {
 		this(subject, CertificateBuilderRequest.DEFAULT_ISSUER);
 	}
@@ -82,15 +84,11 @@ public class CertificateBuilderRequest implements Serializable, Cloneable {
 		this.keyUsage = new HashSet<KeyUsageType>();
 		this.extendedKeyUsage = new HashSet<ExtendedKeyUsageType>();
 		this.otherNames = new HashMap<String, String>();
+		this.certificatePolicies = new HashMap<String, String>();
 		this.version = CertificateVersionType.V3;
 	}
 
 	// Get
-	public CertificateBuilderRequest withEmail(final String email) {
-		this.email = email;
-		return this;
-	}
-
 	public String getSubject() {
 		return this.subject;
 	}
@@ -167,7 +165,16 @@ public class CertificateBuilderRequest implements Serializable, Cloneable {
 		return this.otherNames;
 	}
 
+	public Map<String, String> getCertificatePolicies() {
+		return this.certificatePolicies;
+	}
+
 	// Set
+	public CertificateBuilderRequest withEmail(final String email) {
+		this.email = email;
+		return this;
+	}
+
 	public CertificateBuilderRequest withKeyPair(final KeyPair keyPair) {
 		this.keyPair = keyPair;
 		return this;
@@ -254,6 +261,11 @@ public class CertificateBuilderRequest implements Serializable, Cloneable {
 
 	public CertificateBuilderRequest withOtherName(final String oid, final String value) {
 		this.otherNames.put(oid, value);
+		return this;
+	}
+
+	public CertificateBuilderRequest withCertificatePolicies(final String oid, final String value) {
+		this.certificatePolicies.put(oid, value);
 		return this;
 	}
 

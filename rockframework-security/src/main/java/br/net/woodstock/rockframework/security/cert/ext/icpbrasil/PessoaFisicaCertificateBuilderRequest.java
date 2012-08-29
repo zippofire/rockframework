@@ -100,26 +100,6 @@ public class PessoaFisicaCertificateBuilderRequest extends ICPBrasilCertificateB
 			map.put(ICPBrasilHelper.OID_PF_REGISTRO_OAB, this.getRegistroOAB());
 		}
 
-		FormatoICPBrasilType formato = this.getFormato();
-		if (formato != null) {
-			switch (formato) {
-				case A1:
-					map.put(ICPBrasilHelper.OID_A1_AC_SERPRO, this.getSubject());
-					break;
-				case A2:
-					map.put(ICPBrasilHelper.OID_A2_AC_SERASA, this.getSubject());
-					break;
-				case A3:
-					map.put(ICPBrasilHelper.OID_A3_AC_PR, this.getSubject());
-					break;
-				case A4:
-					map.put(ICPBrasilHelper.OID_A4_AC_SERASA, this.getSubject());
-					break;
-				default:
-					break;
-			}
-		}
-
 		return map;
 	}
 
@@ -154,7 +134,12 @@ public class PessoaFisicaCertificateBuilderRequest extends ICPBrasilCertificateB
 		return this;
 	}
 
-	// Over
+	// Override
+	@Override
+	public PessoaFisicaCertificateBuilderRequest withFormato(final FormatoICPBrasilType formato) {
+		return (PessoaFisicaCertificateBuilderRequest) super.withFormato(formato);
+	}
+
 	@Override
 	public PessoaFisicaCertificateBuilderRequest withEmail(final String email) {
 		return (PessoaFisicaCertificateBuilderRequest) super.withEmail(email);
@@ -196,6 +181,36 @@ public class PessoaFisicaCertificateBuilderRequest extends ICPBrasilCertificateB
 	}
 
 	@Override
+	public PessoaFisicaCertificateBuilderRequest withComment(final String comment) {
+		return (PessoaFisicaCertificateBuilderRequest) super.withComment(comment);
+	}
+
+	@Override
+	public PessoaFisicaCertificateBuilderRequest withCrlDistPoint(final String crlDistPoint) {
+		return (PessoaFisicaCertificateBuilderRequest) super.withCrlDistPoint(crlDistPoint);
+	}
+
+	@Override
+	public PessoaFisicaCertificateBuilderRequest withOcspURL(final String ocspURL) {
+		return (PessoaFisicaCertificateBuilderRequest) super.withOcspURL(ocspURL);
+	}
+
+	@Override
+	public PessoaFisicaCertificateBuilderRequest withPolicyURL(final String policyURL) {
+		return (PessoaFisicaCertificateBuilderRequest) super.withPolicyURL(policyURL);
+	}
+
+	@Override
+	public PessoaFisicaCertificateBuilderRequest withCa(final boolean ca) {
+		return (PessoaFisicaCertificateBuilderRequest) super.withCa(ca);
+	}
+
+	@Override
+	public PessoaFisicaCertificateBuilderRequest withKeySize(final int keySize) {
+		return (PessoaFisicaCertificateBuilderRequest) super.withKeySize(keySize);
+	}
+
+	@Override
 	public PessoaFisicaCertificateBuilderRequest withKeyUsage(final KeyUsageType... array) {
 		return (PessoaFisicaCertificateBuilderRequest) super.withKeyUsage(array);
 	}
@@ -216,8 +231,8 @@ public class PessoaFisicaCertificateBuilderRequest extends ICPBrasilCertificateB
 	}
 
 	@Override
-	public PessoaFisicaCertificateBuilderRequest withFormato(final FormatoICPBrasilType formato) {
-		return (PessoaFisicaCertificateBuilderRequest) super.withFormato(formato);
+	public PessoaFisicaCertificateBuilderRequest withCertificatePolicies(final String oid, final String value) {
+		return (PessoaFisicaCertificateBuilderRequest) super.withCertificatePolicies(oid, value);
 	}
 
 }

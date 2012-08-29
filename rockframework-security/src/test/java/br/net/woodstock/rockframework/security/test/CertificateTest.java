@@ -40,20 +40,20 @@ import br.net.woodstock.rockframework.util.DateBuilder;
 
 public class CertificateTest extends TestCase {
 
-	static {
-		//System.setProperty("http.proxyHost", "10.30.1.10");
-		//System.setProperty("http.proxyPort", "8080");
-		//System.setProperty("http.proxyUser", "lourival.junior");
-		//System.setProperty("http.proxyPassword", "******"); // FIXME
-		//System.setProperty("sun.net.client.defaultConnectTimeout", "15000");
-		//System.setProperty("sun.net.client.defaultReadTimeout", "15000");
-	}
+	// static {
+	// System.setProperty("http.proxyHost", "10.30.1.10");
+	// System.setProperty("http.proxyPort", "8080");
+	// System.setProperty("http.proxyUser", "lourival.junior");
+	// System.setProperty("http.proxyPassword", "******"); // FIXME
+	// System.setProperty("sun.net.client.defaultConnectTimeout", "15000");
+	// System.setProperty("sun.net.client.defaultReadTimeout", "15000");
+	// }
 
 	public void testCreate() throws Exception {
 		PessoaFisicaCertificateBuilderRequest request = new PessoaFisicaCertificateBuilderRequest("Lourival Sabino");
 		request.withEmail("junior@woodstock.net.br");
 		request.withIssuer("Woodstock Tecnologia");
-		request.withKeySize(2048);
+		request.withKeySize(1024);
 		request.withKeyUsage(KeyUsageType.DIGITAL_SIGNATURE, KeyUsageType.NON_REPUDIATION, KeyUsageType.KEY_ENCIPHERMENT);
 		request.withExtendedKeyUsage(ExtendedKeyUsageType.CLIENT_AUTH, ExtendedKeyUsageType.EMAIL_PROTECTION);
 
@@ -69,9 +69,11 @@ public class CertificateTest extends TestCase {
 		request.withCei("111111111111");
 		request.withDadoTitular(dadoPessoa);
 		request.withRegistroOAB("DF123456-A");
-		//request.withRegistroSINCOR("123456DF");
+		// request.withRegistroSINCOR("123456DF");
 		request.withRic("66666666666");
 		request.withTituloEleitor("555555555555");
+
+		request.withFormato(FormatoICPBrasilType.A3);
 
 		DateBuilder builder = new DateBuilder();
 		request.withNotBefore(builder.removeDays(1).getDate());
@@ -88,10 +90,11 @@ public class CertificateTest extends TestCase {
 
 		Store store = new JCAStore(KeyStoreType.PKCS12);
 		store.add(new PrivateKeyEntry(new PasswordAlias("lourival", "lourival"), holder.getPrivateKey(), holder.getChain()));
-		store.write(new FileOutputStream("/tmp/lourival.pfx"), "lourival");
+		store.write(new FileOutputStream("/tmp/lourival2.pfx"), "lourival");
 
-		// FileOutputStream outputStream = new FileOutputStream("/tmp/lourival.cer");
-		// outputStream.write(holder.getChain()[0].getEncoded());
+		FileOutputStream outputStream = new FileOutputStream("/tmp/lourival2.cer");
+		outputStream.write(holder.getChain()[0].getEncoded());
+		outputStream.close();
 
 		// X509Certificate certificate = (X509Certificate) holder.getChain()[0];
 		// X500Principal principal = certificate.getSubjectX500Principal();
@@ -258,6 +261,15 @@ public class CertificateTest extends TestCase {
 
 	public void xtestOIDs() throws Exception {
 		FileInputStream inputStream = new FileInputStream("/home/lourival/tmp/cert/adelci.cer");
+		Certificate certificate = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
+		X509Certificate x509Certificate = (X509Certificate) certificate;
+		System.out.println(x509Certificate);
+		CertificadoICPBrasil certificadoICPBrasil = CertificadoICPBrasil.getInstance(x509Certificate);
+		this.print(certificadoICPBrasil);
+	}
+
+	public void testOIDs2() throws Exception {
+		FileInputStream inputStream = new FileInputStream("/tmp/lourival2.cer");
 		Certificate certificate = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
 		X509Certificate x509Certificate = (X509Certificate) certificate;
 		System.out.println(x509Certificate);

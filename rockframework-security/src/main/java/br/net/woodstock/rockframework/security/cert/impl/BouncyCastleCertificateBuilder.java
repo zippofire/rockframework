@@ -42,6 +42,8 @@ import org.bouncycastle.asn1.x509.DistributionPointName;
 import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.asn1.x509.GeneralNames;
 import org.bouncycastle.asn1.x509.KeyPurposeId;
+import org.bouncycastle.asn1.x509.PolicyInformation;
+import org.bouncycastle.asn1.x509.PolicyQualifierInfo;
 import org.bouncycastle.asn1.x509.X509Extension;
 import org.bouncycastle.asn1.x509.X509ObjectIdentifiers;
 import org.bouncycastle.cert.X509CertificateHolder;
@@ -128,6 +130,7 @@ public class BouncyCastleCertificateBuilder implements CertificateBuilder {
 
 		this.addV3KeyUsage(builder, request);
 		this.addV3ExtendedKeyUsage(builder, request);
+		this.addV3CertificatePolicies(builder, request);
 		this.addV3OtherNames(builder, request);
 		this.addV3Comment(builder, request);
 		this.addV3CRLDistPoint(builder, request);
@@ -190,6 +193,25 @@ public class BouncyCastleCertificateBuilder implements CertificateBuilder {
 				org.bouncycastle.asn1.x509.ExtendedKeyUsage extendedKeyUsage = new org.bouncycastle.asn1.x509.ExtendedKeyUsage(vector);
 				builder.addExtension(X509Extension.extendedKeyUsage, true, extendedKeyUsage);
 			}
+		}
+	}
+
+	protected void addV3CertificatePolicies(final JcaX509v3CertificateBuilder builder, final BouncyCastleCertificateBuilderRequest request) {
+		if (ConditionUtils.isNotEmpty(request.getCertificatePolicies())) {
+			ASN1EncodableVector vector = new ASN1EncodableVector();
+			for (Entry<String, String> entry : request.getCertificatePolicies().entrySet()) {
+				String oid = entry.getKey();
+				String value = entry.getValue();
+				ASN1ObjectIdentifier policyIdentifier = new ASN1ObjectIdentifier(oid);
+				PolicyQualifierInfo policyQualifierInfo = new PolicyQualifierInfo(X509Extension.cRLDistributionPoints, new DERIA5String(value.getBytes()));
+				DERSequence policyQualifiers = new DERSequence(new ASN1Encodable[] { policyQualifierInfo });
+				DERSequence sequence = new DERSequence(new ASN1Encodable[] { policyIdentifier, policyQualifiers });
+				PolicyInformation policyInformation = new PolicyInformation(sequence);
+				vector.add(policyInformation);
+			}
+
+			DERSequence sequence = new DERSequence(vector);
+			builder.addExtension(X509Extension.certificatePolicies, false, sequence);
 		}
 	}
 

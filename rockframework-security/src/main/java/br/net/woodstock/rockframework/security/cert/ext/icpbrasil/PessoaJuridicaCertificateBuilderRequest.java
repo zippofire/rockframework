@@ -86,26 +86,6 @@ public class PessoaJuridicaCertificateBuilderRequest extends ICPBrasilCertificat
 		map.put(ICPBrasilHelper.OID_PJ_NUMERO_CEI, cei);
 		map.put(ICPBrasilHelper.OID_PJ_NOME_EMPRESARIAL, nomeEmpresarial);
 
-		FormatoICPBrasilType formato = this.getFormato();
-		if (formato != null) {
-			switch (formato) {
-				case A1:
-					map.put(ICPBrasilHelper.OID_A1_AC_SERPRO, this.getSubject());
-					break;
-				case A2:
-					map.put(ICPBrasilHelper.OID_A2_AC_SERASA, this.getSubject());
-					break;
-				case A3:
-					map.put(ICPBrasilHelper.OID_A3_AC_PR, this.getSubject());
-					break;
-				case A4:
-					map.put(ICPBrasilHelper.OID_A4_AC_SERASA, this.getSubject());
-					break;
-				default:
-					break;
-			}
-		}
-
 		return map;
 	}
 
@@ -135,7 +115,12 @@ public class PessoaJuridicaCertificateBuilderRequest extends ICPBrasilCertificat
 		return this;
 	}
 
-	// Over
+	// Override
+	@Override
+	public PessoaJuridicaCertificateBuilderRequest withFormato(final FormatoICPBrasilType formato) {
+		return (PessoaJuridicaCertificateBuilderRequest) super.withFormato(formato);
+	}
+
 	@Override
 	public PessoaJuridicaCertificateBuilderRequest withEmail(final String email) {
 		return (PessoaJuridicaCertificateBuilderRequest) super.withEmail(email);
@@ -157,8 +142,8 @@ public class PessoaJuridicaCertificateBuilderRequest extends ICPBrasilCertificat
 	}
 
 	@Override
-	public PessoaFisicaCertificateBuilderRequest withIssuerKeyHolder(final PrivateKeyHolder issuerKeyHolder) {
-		return (PessoaFisicaCertificateBuilderRequest) super.withIssuerKeyHolder(issuerKeyHolder);
+	public PessoaJuridicaCertificateBuilderRequest withIssuerKeyHolder(final PrivateKeyHolder issuerKeyHolder) {
+		return (PessoaJuridicaCertificateBuilderRequest) super.withIssuerKeyHolder(issuerKeyHolder);
 	}
 
 	@Override
@@ -174,6 +159,36 @@ public class PessoaJuridicaCertificateBuilderRequest extends ICPBrasilCertificat
 	@Override
 	public PessoaJuridicaCertificateBuilderRequest withNotAfter(final Date notAfter) {
 		return (PessoaJuridicaCertificateBuilderRequest) super.withNotAfter(notAfter);
+	}
+
+	@Override
+	public PessoaJuridicaCertificateBuilderRequest withComment(final String comment) {
+		return (PessoaJuridicaCertificateBuilderRequest) super.withComment(comment);
+	}
+
+	@Override
+	public PessoaJuridicaCertificateBuilderRequest withCrlDistPoint(final String crlDistPoint) {
+		return (PessoaJuridicaCertificateBuilderRequest) super.withCrlDistPoint(crlDistPoint);
+	}
+
+	@Override
+	public PessoaJuridicaCertificateBuilderRequest withOcspURL(final String ocspURL) {
+		return (PessoaJuridicaCertificateBuilderRequest) super.withOcspURL(ocspURL);
+	}
+
+	@Override
+	public PessoaJuridicaCertificateBuilderRequest withPolicyURL(final String policyURL) {
+		return (PessoaJuridicaCertificateBuilderRequest) super.withPolicyURL(policyURL);
+	}
+
+	@Override
+	public PessoaJuridicaCertificateBuilderRequest withCa(final boolean ca) {
+		return (PessoaJuridicaCertificateBuilderRequest) super.withCa(ca);
+	}
+
+	@Override
+	public PessoaJuridicaCertificateBuilderRequest withKeySize(final int keySize) {
+		return (PessoaJuridicaCertificateBuilderRequest) super.withKeySize(keySize);
 	}
 
 	@Override
@@ -197,8 +212,8 @@ public class PessoaJuridicaCertificateBuilderRequest extends ICPBrasilCertificat
 	}
 
 	@Override
-	public PessoaJuridicaCertificateBuilderRequest withFormato(final FormatoICPBrasilType formato) {
-		return (PessoaJuridicaCertificateBuilderRequest) super.withFormato(formato);
+	public PessoaJuridicaCertificateBuilderRequest withCertificatePolicies(final String oid, final String value) {
+		return (PessoaJuridicaCertificateBuilderRequest) super.withCertificatePolicies(oid, value);
 	}
 
 }

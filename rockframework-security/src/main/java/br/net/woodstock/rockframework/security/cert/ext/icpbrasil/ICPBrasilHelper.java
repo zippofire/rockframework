@@ -33,6 +33,7 @@ import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.DERString;
 import org.bouncycastle.asn1.DERTaggedObject;
 import org.bouncycastle.asn1.x509.GeneralName;
+import org.bouncycastle.asn1.x509.PolicyInformation;
 import org.bouncycastle.asn1.x509.X509Extension;
 
 import br.net.woodstock.rockframework.config.CoreLog;
@@ -80,13 +81,13 @@ abstract class ICPBrasilHelper {
 
 	public static final String	PREFIX_OID_AC_ICPBRASIL		= "2.16.76.1.2.201";
 
-	public static final String	OID_A1_AC_SERPRO			= ICPBrasilHelper.PREFIX_OID_A1 + ".1";
+	public static final String	OID_A1_AC_SERPRO			= ICPBrasilHelper.PREFIX_OID_A1 + "1";
 
-	public static final String	OID_A2_AC_SERASA			= ICPBrasilHelper.PREFIX_OID_A2 + ".1";
+	public static final String	OID_A2_AC_SERASA			= ICPBrasilHelper.PREFIX_OID_A2 + "1";
 
-	public static final String	OID_A3_AC_PR				= ICPBrasilHelper.PREFIX_OID_A3 + ".1";
+	public static final String	OID_A3_AC_PR				= ICPBrasilHelper.PREFIX_OID_A3 + "1";
 
-	public static final String	OID_A4_AC_SERASA			= ICPBrasilHelper.PREFIX_OID_A4 + ".1";
+	public static final String	OID_A4_AC_SERASA			= ICPBrasilHelper.PREFIX_OID_A4 + "1";
 
 	private static final String	DATE_FORMAT					= "ddMMyyyy";
 
@@ -295,8 +296,8 @@ abstract class ICPBrasilHelper {
 			DEROctetString string = (DEROctetString) ICPBrasilHelper.toDerObject(policiesBytes);
 			byte[] octets = string.getOctets();
 			DERSequence sequence = ICPBrasilHelper.toDerSequence(octets);
-			DERSequence subSequence = (DERSequence) sequence.getObjectAt(0);
-			DERObjectIdentifier identifier = (DERObjectIdentifier) subSequence.getObjectAt(0);
+			PolicyInformation information = PolicyInformation.getInstance(sequence.getObjectAt(0));
+			DERObjectIdentifier identifier = information.getPolicyIdentifier();
 			String oid = identifier.getId();
 			if (oid.startsWith(ICPBrasilHelper.PREFIX_OID_A1)) {
 				formato = FormatoICPBrasilType.A1;

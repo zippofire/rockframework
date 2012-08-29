@@ -72,6 +72,8 @@ public class BouncyCastleCertificateBuilderRequest implements Serializable {
 
 	private Map<String, String>			otherNames;
 
+	private Map<String, String>			certificatePolicies;
+
 	public BouncyCastleCertificateBuilderRequest(final CertificateBuilderRequest request) throws NoSuchAlgorithmException {
 		super();
 		Assert.notNull(request, "request");
@@ -95,6 +97,7 @@ public class BouncyCastleCertificateBuilderRequest implements Serializable {
 		this.keyUsage = request.getKeyUsage();
 		this.extendedKeyUsage = request.getExtendedKeyUsage();
 		this.otherNames = request.getOtherNames();
+		this.certificatePolicies = request.getCertificatePolicies();
 		this.ca = request.isCa();
 
 		if (this.keyPair == null) {
@@ -202,6 +205,10 @@ public class BouncyCastleCertificateBuilderRequest implements Serializable {
 
 	public Map<String, String> getOtherNames() {
 		return this.otherNames;
+	}
+
+	public Map<String, String> getCertificatePolicies() {
+		return this.certificatePolicies;
 	}
 
 	// Aux

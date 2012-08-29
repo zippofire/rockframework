@@ -39,19 +39,21 @@ import br.net.woodstock.rockframework.util.DateBuilder;
 public class CNJTest extends TestCase {
 
 	// Se a rede utilizar proxy descomentar e ajustar as seguintes linhas
-	static {
-		// System.setProperty("http.proxyHost", "10.30.1.10");
-		// System.setProperty("http.proxyPort", "8080");
-		// System.setProperty("http.proxyUser", "lourival.junior");
-		// System.setProperty("http.proxyPassword", "******"); // FIXME
-		// System.setProperty("sun.net.client.defaultConnectTimeout", "15000");
-		// System.setProperty("sun.net.client.defaultReadTimeout", "15000");
-	}
+	// static {
+	// System.setProperty("http.proxyHost", "10.30.1.10");
+	// System.setProperty("http.proxyPort", "8080");
+	// System.setProperty("http.proxyUser", "lourival.junior");
+	// System.setProperty("http.proxyPassword", "******"); // FIXME
+	// System.setProperty("sun.net.client.defaultConnectTimeout", "15000");
+	// System.setProperty("sun.net.client.defaultReadTimeout", "15000");
+	// }
 
 	// Teste que cria o certificado para uma 'unidade certificadora'
 	public void xtestCriarCA() throws Exception {
 		// Inicia a criacao do certificado
-		CertificateBuilderRequest request = new CertificateBuilderRequest("Woodstock Tecnologia CA"); // Assunto no construtor
+		CertificateBuilderRequest request = new CertificateBuilderRequest("Woodstock Tecnologia CA"); // Assunto
+																										// no
+																										// construtor
 		request.withCa(true); // Sera de CA
 		request.withComment("Woodstock Tecnologia CA"); // Comentario Netscape
 		request.withEmail("lourival.sabino.junior@gmail.com"); // RFC822
@@ -172,13 +174,19 @@ public class CNJTest extends TestCase {
 
 		CertificateVerifier cv1 = new DateCertificateVerifier(); // Valida a data de validade
 		CertificateVerifier cv4 = new SelfSignedCertificateVerifier(); // Certificado auto assinado
-		CertificateVerifier cv2 = new CRLCertificateVerifier(); // Lista de certificados revogados(dentro do certificado)
+		CertificateVerifier cv2 = new CRLCertificateVerifier(); // Lista de certificados revogados(dentro do
+																// certificado)
 		CertificateVerifier cv3 = new PKIXCertificateVerifier(); // Hierarquia do certificado
 		CertificateVerifier cv5 = new OCSPCertificateVerifier(); // Validacao usando OCSP
 		CertificateVerifier cv6 = new ICPBrasilCertificateVerifier(); // Verifica se tem os OID do ICP-Brasil
-		CertificateVerifier cv7 = new HierarchyCertificateVerifier(issuer3); // Verifica se o certificado possui o ICP-Brasil em sua hieraquia(issuer3)
+		CertificateVerifier cv7 = new HierarchyCertificateVerifier(issuer3); // Verifica se o certificado
+																				// possui o ICP-Brasil em sua
+																				// hieraquia(issuer3)
 
-		CertificateVerifier certificateVerifier = new CertificateVerifierChain(new CertificateVerifier[] { cv1, cv2, cv3, cv4, cv5, cv6, cv7 }); // Une todas as validacoes
+		CertificateVerifier certificateVerifier = new CertificateVerifierChain(new CertificateVerifier[] { cv1, cv2, cv3, cv4, cv5, cv6, cv7 }); // Une
+																																					// todas
+																																					// as
+																																					// validacoes
 
 		// Retorna true caso todas as validacoes executem corretamente
 		boolean status = certificateVerifier.verify(new Certificate[] { certificate, issuer1, issuer2, issuer3 });
@@ -199,13 +207,18 @@ public class CNJTest extends TestCase {
 		inputStream = new FileInputStream("/home/lourival/tmp/cert/icp-brasil.cer");
 		Certificate issuerX = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
 
-		CertificateVerifier cv1 = new DateCertificateVerifier(); // Passa OK, ainda esta no periodo de validade
+		CertificateVerifier cv1 = new DateCertificateVerifier(); // Passa OK, ainda esta no periodo de
+																	// validade
 		CertificateVerifier cv4 = new SelfSignedCertificateVerifier(); // Passa OK, nao e auto assinado
-		CertificateVerifier cv2 = new CRLCertificateVerifier(); // Erro, nao possui a URL da CRL no certificado
-		CertificateVerifier cv3 = new PKIXCertificateVerifier(); // Passa OK, a hieraquia do certificado e valida
-		CertificateVerifier cv5 = new OCSPCertificateVerifier(); // Erro, nao possui a URL do OCSP no certificado
+		CertificateVerifier cv2 = new CRLCertificateVerifier(); // Erro, nao possui a URL da CRL no
+																// certificado
+		CertificateVerifier cv3 = new PKIXCertificateVerifier(); // Passa OK, a hieraquia do certificado e
+																	// valida
+		CertificateVerifier cv5 = new OCSPCertificateVerifier(); // Erro, nao possui a URL do OCSP no
+																	// certificado
 		CertificateVerifier cv6 = new ICPBrasilCertificateVerifier(); // Passa OK, possui os OID do ICP-Brasil
-		CertificateVerifier cv7 = new HierarchyCertificateVerifier(issuerX); // Erro, o certificado do ICP-Brasil
+		CertificateVerifier cv7 = new HierarchyCertificateVerifier(issuerX); // Erro, o certificado do
+																				// ICP-Brasil
 
 		CertificateVerifierChain certificateVerifier = new CertificateVerifierChain(new CertificateVerifier[] { cv1, cv2, cv3, cv4, cv5, cv6, cv7 });
 
