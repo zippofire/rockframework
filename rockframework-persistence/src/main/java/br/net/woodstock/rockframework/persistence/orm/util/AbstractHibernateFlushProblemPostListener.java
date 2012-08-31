@@ -17,13 +17,12 @@
 package br.net.woodstock.rockframework.persistence.orm.util;
 
 import java.io.Serializable;
-import java.util.logging.Level;
 
 import org.hibernate.event.EventSource;
 
 import br.net.woodstock.rockframework.domain.Entity;
-import br.net.woodstock.rockframework.domain.config.DomainLog;
 import br.net.woodstock.rockframework.domain.utils.EntityUtils;
+import br.net.woodstock.rockframework.persistence.config.PersistenceLog;
 import br.net.woodstock.rockframework.reflection.BeanDescriptor;
 import br.net.woodstock.rockframework.reflection.PropertyDescriptor;
 import br.net.woodstock.rockframework.reflection.impl.BeanDescriptorBuilder;
@@ -52,7 +51,7 @@ abstract class AbstractHibernateFlushProblemPostListener {
 					}
 				}
 			} catch (Exception e) {
-				DomainLog.getInstance().getLog().log(Level.INFO, e.getMessage(), e);
+				PersistenceLog.getInstance().getLogger().info(e.getMessage(), e);
 			}
 		}
 	}

@@ -36,7 +36,7 @@ import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.jce.X509Principal;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
-import br.net.woodstock.rockframework.config.CoreLog;
+import br.net.woodstock.rockframework.security.config.SecurityLog;
 
 public abstract class BouncyCastleProviderHelper {
 
@@ -46,7 +46,7 @@ public abstract class BouncyCastleProviderHelper {
 		PROVIDER_NAME = "BC";
 		Provider provider = Security.getProvider(BouncyCastleProviderHelper.PROVIDER_NAME);
 		if (provider == null) {
-			CoreLog.getInstance().getLog().info("Adding BouncyCastle Security Provider");
+			SecurityLog.getInstance().getLogger().info("Adding BouncyCastle Security Provider");
 			Security.addProvider(new BouncyCastleProvider());
 		}
 	}

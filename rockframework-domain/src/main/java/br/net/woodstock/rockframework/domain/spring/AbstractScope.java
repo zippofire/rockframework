@@ -25,30 +25,30 @@ public class AbstractScope implements Scope {
 
 	@Override
 	public Object get(final String name, final ObjectFactory<?> objectFactory) {
-		DomainLog.getInstance().getLog().warning("This method must be overrided");
+		DomainLog.getInstance().getLogger().warn("This method must be overrided");
 		return null;
 	}
 
 	@Override
 	public String getConversationId() {
-		DomainLog.getInstance().getLog().warning("This method must be overrided");
+		DomainLog.getInstance().getLogger().warn("This method must be overrided");
 		return null;
 	}
 
 	@Override
 	public void registerDestructionCallback(final String name, final Runnable callback) {
-		DomainLog.getInstance().getLog().warning("This method must be overrided");
+		DomainLog.getInstance().getLogger().warn("This method must be overrided");
 	}
 
 	@Override
 	public Object remove(final String name) {
-		DomainLog.getInstance().getLog().warning("This method must be overrided");
+		DomainLog.getInstance().getLogger().warn("This method must be overrided");
 		return null;
 	}
 
 	@Override
 	public Object resolveContextualObject(final String key) {
-		DomainLog.getInstance().getLog().warning("This method must be overrided");
+		DomainLog.getInstance().getLogger().warn("This method must be overrided");
 		return null;
 	}
 

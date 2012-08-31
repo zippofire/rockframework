@@ -26,7 +26,7 @@ import org.bouncycastle.tsp.TimeStampRequest;
 import org.bouncycastle.tsp.TimeStampResponse;
 import org.bouncycastle.tsp.TimeStampToken;
 
-import br.net.woodstock.rockframework.config.CoreLog;
+import br.net.woodstock.rockframework.security.config.SecurityLog;
 import br.net.woodstock.rockframework.security.timestamp.TimeStampException;
 import br.net.woodstock.rockframework.security.timestamp.TimeStampProcessor;
 import br.net.woodstock.rockframework.utils.StringUtils;
@@ -106,7 +106,7 @@ public abstract class BouncyCastleTimeStampProcessor implements TimeStampProcess
 		byte[] data = request.getEncoded();
 		fileOutputStream.write(data);
 		fileOutputStream.close();
-		CoreLog.getInstance().getLog().info("Request [" + id + "]: " + file.getAbsolutePath());
+		SecurityLog.getInstance().getLogger().info("Request [" + id + "]: " + file.getAbsolutePath());
 	}
 
 	protected void saveResponse(final TimeStampResponse response, final File dir, final String id) throws IOException {
@@ -116,7 +116,7 @@ public abstract class BouncyCastleTimeStampProcessor implements TimeStampProcess
 		byte[] data = response.getEncoded();
 		fileOutputStream.write(data);
 		fileOutputStream.close();
-		CoreLog.getInstance().getLog().info("Response [" + id + "]: " + file.getAbsolutePath());
+		SecurityLog.getInstance().getLogger().info("Response [" + id + "]: " + file.getAbsolutePath());
 	}
 
 	protected File getLogDir() {

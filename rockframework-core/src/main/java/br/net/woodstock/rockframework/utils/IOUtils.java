@@ -18,6 +18,8 @@ package br.net.woodstock.rockframework.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -89,6 +91,19 @@ public abstract class IOUtils {
 		return outputStream.toByteArray();
 	}
 
+	public static byte[] toByteArray(final File file) throws IOException {
+		Assert.notNull(file, "file");
+
+		FileInputStream inputStream = new FileInputStream(file);
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+		IOUtils.copy(inputStream, outputStream);
+
+		inputStream.close();
+
+		return outputStream.toByteArray();
+	}
+
 	public static Reader toReader(final InputStream inputStream) {
 		Assert.notNull(inputStream, "inputStream");
 
@@ -107,6 +122,10 @@ public abstract class IOUtils {
 		String s = new String(bytes, charset);
 
 		return s;
+	}
+
+	public static String toString(final Reader reader) throws IOException {
+		return IOUtils.toString(reader, Charset.defaultCharset());
 	}
 
 	public static String toString(final Reader reader, final Charset charset) throws IOException {

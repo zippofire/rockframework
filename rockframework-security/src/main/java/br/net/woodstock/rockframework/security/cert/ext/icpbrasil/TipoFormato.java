@@ -16,8 +16,8 @@
  */
 package br.net.woodstock.rockframework.security.cert.ext.icpbrasil;
 
-public enum FormatoICPBrasilType {
+public enum TipoFormato {
 
-	A1, A2, A3, A4, INVALIDO;
+	A1, A2, A3, A4, DESCONHECIDO;
 
 }

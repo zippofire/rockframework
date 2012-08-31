@@ -21,8 +21,21 @@ import java.security.cert.X509Certificate;
 
 import br.net.woodstock.rockframework.security.cert.CertificateVerifier;
 import br.net.woodstock.rockframework.util.Assert;
+import br.net.woodstock.rockframework.utils.ConditionUtils;
 
 public class ICPBrasilCertificateVerifier implements CertificateVerifier {
+
+	private TipoFormato[]	tiposFormato;
+
+	public ICPBrasilCertificateVerifier() {
+		super();
+	}
+
+	public ICPBrasilCertificateVerifier(final TipoFormato[] tiposFormato) {
+		super();
+		Assert.notEmpty(tiposFormato, "tiposFormato");
+		this.tiposFormato = tiposFormato;
+	}
 
 	@Override
 	public boolean verify(final Certificate[] chain) {
@@ -30,8 +43,21 @@ public class ICPBrasilCertificateVerifier implements CertificateVerifier {
 		X509Certificate x509Certificate = (X509Certificate) chain[0];
 		CertificadoICPBrasil certificadoICPBrasil = CertificadoICPBrasil.getInstance(x509Certificate);
 
-		if (certificadoICPBrasil.getTipo() == TipoICPBrasilType.INVALIDO) {
+		if (certificadoICPBrasil.getTipoPessoa() == TipoPessoa.DESCONHECIDO) {
 			return false;
+		}
+
+		if (ConditionUtils.isNotEmpty(this.tiposFormato)) {
+			boolean ok = false;
+			for (TipoFormato tipoFormato : this.tiposFormato) {
+				if (tipoFormato.equals(certificadoICPBrasil.getTipoFormato())) {
+					ok = true;
+					break;
+				}
+			}
+			if (!ok) {
+				return false;
+			}
 		}
 
 		return true;

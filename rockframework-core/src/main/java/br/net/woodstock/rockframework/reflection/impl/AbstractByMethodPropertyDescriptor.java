@@ -63,7 +63,7 @@ class AbstractByMethodPropertyDescriptor extends AbstractPropertyDescriptor {
 				this.readMethodName = BeanDescriptorHelper.getMethodName(BeanDescriptorHelper.IS_METHOD_PREFIX, this.name);
 				this.readMethod = c.getMethod(this.readMethodName, new Class[] {});
 			} catch (NoSuchMethodException e) {
-				CoreLog.getInstance().getLog().finest(e.getMessage());
+				CoreLog.getInstance().getLogger().debug(e.getMessage());
 			}
 			// Get
 		} else {
@@ -71,7 +71,7 @@ class AbstractByMethodPropertyDescriptor extends AbstractPropertyDescriptor {
 				this.readMethodName = BeanDescriptorHelper.getMethodName(BeanDescriptorHelper.GET_METHOD_PREFIX, this.name);
 				this.readMethod = c.getMethod(this.readMethodName, new Class[] {});
 			} catch (NoSuchMethodException e) {
-				CoreLog.getInstance().getLog().finest(e.getMessage());
+				CoreLog.getInstance().getLogger().debug(e.getMessage());
 			}
 		}
 		if (this.readMethod != null) {
@@ -86,7 +86,7 @@ class AbstractByMethodPropertyDescriptor extends AbstractPropertyDescriptor {
 			this.writeMethodName = BeanDescriptorHelper.getMethodName(BeanDescriptorHelper.SET_METHOD_PREFIX, this.name);
 			this.writeMethod = c.getMethod(this.writeMethodName, new Class[] { this.type });
 		} catch (NoSuchMethodException e) {
-			CoreLog.getInstance().getLog().finest(e.getMessage());
+			CoreLog.getInstance().getLogger().debug(e.getMessage());
 		}
 	}
 
@@ -97,7 +97,7 @@ class AbstractByMethodPropertyDescriptor extends AbstractPropertyDescriptor {
 			try {
 				field = c.getDeclaredField(this.name);
 			} catch (NoSuchFieldException e) {
-				CoreLog.getInstance().getLog().finest(e.getMessage());
+				CoreLog.getInstance().getLogger().debug(e.getMessage());
 			}
 			if (field != null) {
 				this.field = field;

@@ -17,7 +17,6 @@
 package br.net.woodstock.rockframework.web.faces.util;
 
 import java.io.Serializable;
-import java.util.logging.Level;
 
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
@@ -42,11 +41,11 @@ public class ExceptionHandlerInterceptor implements Serializable {
 			return obj;
 		} catch (Exception e) {
 			if ((e instanceof DomainException) || (e.getCause() instanceof DomainException)) {
-				WebLog.getInstance().getLog().log(Level.WARNING, e.getMessage(), e);
+				WebLog.getInstance().getLogger().debug(e.getMessage(), e);
 				FacesUtils.addError(e);
 				return null;
 			}
-			WebLog.getInstance().getLog().log(Level.WARNING, e.getMessage(), e);
+			WebLog.getInstance().getLogger().debug(e.getMessage(), e);
 			FacesUtils.addError(e);
 			return ExceptionHandlerInterceptor.ERROR_PAGE;
 		}

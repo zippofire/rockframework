@@ -37,10 +37,10 @@ import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.asn1.x509.GeneralNames;
 import org.bouncycastle.asn1.x509.X509Extension;
 
-import br.net.woodstock.rockframework.config.CoreLog;
 import br.net.woodstock.rockframework.security.cert.CertificateException;
 import br.net.woodstock.rockframework.security.cert.CertificateType;
 import br.net.woodstock.rockframework.security.cert.CertificateVerifier;
+import br.net.woodstock.rockframework.security.config.SecurityLog;
 import br.net.woodstock.rockframework.security.util.BouncyCastleProviderHelper;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
@@ -76,7 +76,7 @@ public class CRLCertificateVerifier implements CertificateVerifier {
 			}
 
 			if (url == null) {
-				CoreLog.getInstance().getLog().info("No url found for validation");
+				SecurityLog.getInstance().getLogger().info("No url found for validation");
 				return false;
 			}
 

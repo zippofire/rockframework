@@ -18,7 +18,6 @@ package br.net.woodstock.rockframework.net.mail;
 
 import java.io.IOException;
 import java.util.Properties;
-import java.util.logging.Level;
 
 import javax.mail.Address;
 import javax.mail.Folder;
@@ -72,7 +71,7 @@ public abstract class MailHelper {
 					try {
 						transport.close();
 					} catch (MessagingException e) {
-						CoreLog.getInstance().getLog().log(Level.WARNING, e.getMessage(), e);
+						CoreLog.getInstance().getLogger().warn(e.getMessage(), e);
 					}
 				}
 			}
@@ -111,7 +110,7 @@ public abstract class MailHelper {
 					try {
 						mailFolder.close(false);
 					} catch (MessagingException e) {
-						CoreLog.getInstance().getLog().log(Level.WARNING, e.getMessage(), e);
+						CoreLog.getInstance().getLogger().warn(e.getMessage(), e);
 					}
 				}
 			}
@@ -120,7 +119,7 @@ public abstract class MailHelper {
 					try {
 						store.close();
 					} catch (MessagingException e) {
-						CoreLog.getInstance().getLog().log(Level.WARNING, e.getMessage(), e);
+						CoreLog.getInstance().getLogger().warn(e.getMessage(), e);
 					}
 				}
 			}

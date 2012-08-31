@@ -18,7 +18,6 @@ package br.net.woodstock.rockframework.web.struts2.converter;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.logging.Level;
 
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.web.config.WebLog;
@@ -47,7 +46,7 @@ public abstract class NumericConverter<T extends NumericType> extends TypeConver
 			Number n = this.format.parse(s);
 			return this.wrap(n);
 		} catch (Exception e) {
-			WebLog.getInstance().getLog().log(Level.WARNING, e.getMessage(), e);
+			WebLog.getInstance().getLogger().warn(e.getMessage(), e);
 			return null;
 		}
 	}

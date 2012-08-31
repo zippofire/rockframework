@@ -46,7 +46,7 @@ public class LogonInterceptor extends ConditionalInterceptor<String> {
 
 	@Override
 	public String intercept(final ActionInvocation invocation) throws Exception {
-		WebLog.getInstance().getLog().fine("Intercepting " + invocation);
+		WebLog.getInstance().getLogger().debug("Intercepting " + invocation);
 		Assert.notNull(this.validator, "validator");
 		ActionProxy proxy = invocation.getProxy();
 		Object action = proxy.getAction();
@@ -78,7 +78,7 @@ public class LogonInterceptor extends ConditionalInterceptor<String> {
 			}
 
 			if (!hasAccess) {
-				WebLog.getInstance().getLog().info("User must be logged to call " + clazz.getName() + "." + method.getName() + "()");
+				WebLog.getInstance().getLogger().info("User must be logged to call " + clazz.getName() + "." + method.getName() + "()");
 				return Struts2Constants.NO_LOGIN;
 			}
 		}

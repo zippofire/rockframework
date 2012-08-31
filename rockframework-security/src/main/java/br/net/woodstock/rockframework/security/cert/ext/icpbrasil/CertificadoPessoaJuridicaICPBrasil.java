@@ -30,16 +30,16 @@ public class CertificadoPessoaJuridicaICPBrasil extends CertificadoICPBrasil {
 
 	private String	nomeEmpresarial;
 
-	public CertificadoPessoaJuridicaICPBrasil(final X509Certificate certificate) {
+	CertificadoPessoaJuridicaICPBrasil(final X509Certificate certificate) {
 		super(certificate);
-		this.setTipo(TipoICPBrasilType.PESSOA_JURIDICA);
+		this.setTipoPessoa(TipoPessoa.PESSOA_JURIDICA);
 	}
 
 	public String getResponsavel() {
 		return this.responsavel;
 	}
 
-	public void setResponsavel(final String responsavel) {
+	void setResponsavel(final String responsavel) {
 		this.responsavel = responsavel;
 	}
 
@@ -47,7 +47,7 @@ public class CertificadoPessoaJuridicaICPBrasil extends CertificadoICPBrasil {
 		return this.cnpj;
 	}
 
-	public void setCnpj(final String cnpj) {
+	void setCnpj(final String cnpj) {
 		this.cnpj = cnpj;
 	}
 
@@ -55,7 +55,7 @@ public class CertificadoPessoaJuridicaICPBrasil extends CertificadoICPBrasil {
 		return this.cei;
 	}
 
-	public void setCei(final String cei) {
+	void setCei(final String cei) {
 		this.cei = cei;
 	}
 
@@ -63,7 +63,7 @@ public class CertificadoPessoaJuridicaICPBrasil extends CertificadoICPBrasil {
 		return this.nomeEmpresarial;
 	}
 
-	public void setNomeEmpresarial(final String nomeEmpresarial) {
+	void setNomeEmpresarial(final String nomeEmpresarial) {
 		this.nomeEmpresarial = nomeEmpresarial;
 	}
 

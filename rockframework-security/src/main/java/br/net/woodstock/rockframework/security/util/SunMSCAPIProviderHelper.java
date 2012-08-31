@@ -21,7 +21,7 @@ import java.security.Security;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
-import br.net.woodstock.rockframework.config.CoreLog;
+import br.net.woodstock.rockframework.security.config.SecurityLog;
 
 public abstract class SunMSCAPIProviderHelper {
 
@@ -31,7 +31,7 @@ public abstract class SunMSCAPIProviderHelper {
 		PROVIDER_NAME = "SunMSCAPI";
 		Provider provider = Security.getProvider(SunMSCAPIProviderHelper.PROVIDER_NAME);
 		if (provider == null) {
-			CoreLog.getInstance().getLog().info("Adding Sun MSCAPI Security Provider");
+			SecurityLog.getInstance().getLogger().info("Adding Sun MSCAPI Security Provider");
 			Security.addProvider(new BouncyCastleProvider());
 		}
 	}

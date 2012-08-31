@@ -47,7 +47,7 @@ public class URLInterceptor extends AccessInterceptor<String> {
 	@Override
 	public String intercept(final ActionInvocation invocation) throws Exception {
 		Assert.notNull(this.validator, "validator");
-		WebLog.getInstance().getLog().fine("Intercepting " + invocation);
+		WebLog.getInstance().getLogger().debug("Intercepting " + invocation);
 		HttpServletRequest request = this.getRequest();
 		String url = Struts2Utils.getRequestPath(request);
 
@@ -70,7 +70,7 @@ public class URLInterceptor extends AccessInterceptor<String> {
 			this.addToHistory(url);
 		} else {
 			this.addToNoAccess(url);
-			WebLog.getInstance().getLog().info("Invalid privileges to open url " + url);
+			WebLog.getInstance().getLogger().info("Invalid privileges to open url " + url);
 			return Struts2Constants.NO_ACCESS;
 		}
 

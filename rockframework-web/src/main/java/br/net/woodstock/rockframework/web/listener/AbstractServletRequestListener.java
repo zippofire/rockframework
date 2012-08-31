@@ -36,12 +36,12 @@ public abstract class AbstractServletRequestListener implements ServletRequestLi
 
 	@SuppressWarnings("unused")
 	public void requestDestroyed(final ServletRequestEvent event, final HttpServletRequest request) {
-		WebLog.getInstance().getLog().info("Destroying request");
+		WebLog.getInstance().getLogger().info("Destroying request");
 	}
 
 	@SuppressWarnings("unused")
 	public void requestInitialized(final ServletRequestEvent event, final HttpServletRequest request) {
-		WebLog.getInstance().getLog().info("Initializing request");
+		WebLog.getInstance().getLogger().info("Initializing request");
 	}
 
 }

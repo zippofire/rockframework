@@ -16,8 +16,8 @@
  */
 package br.net.woodstock.rockframework.security.cert.ext.icpbrasil;
 
-public enum TipoICPBrasilType {
+public enum TipoPessoa {
 
-	PESSOA_FISICA, PESSOA_JURIDICA, INVALIDO;
+	PESSOA_FISICA, PESSOA_JURIDICA, DESCONHECIDO;
 
 }

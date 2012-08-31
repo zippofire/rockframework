@@ -17,7 +17,6 @@
 package br.net.woodstock.rockframework.security.cert.ext.icpbrasil;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.security.GeneralSecurityException;
 import java.security.cert.X509Certificate;
 import java.text.ParseException;
@@ -36,64 +35,12 @@ import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.asn1.x509.PolicyInformation;
 import org.bouncycastle.asn1.x509.X509Extension;
 
-import br.net.woodstock.rockframework.config.CoreLog;
+import br.net.woodstock.rockframework.security.config.SecurityLog;
 import br.net.woodstock.rockframework.security.util.BouncyCastleProviderHelper;
 import br.net.woodstock.rockframework.util.Assert;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
 abstract class ICPBrasilHelper {
-
-	// OIDs baseados no documento do ITI, versao 2.11 de 05/06/212
-	// http://www.iti.gov.br/twiki/pub/Certificacao/AdeIcp/ADE_ICP-04.01.pdf
-
-	public static final Charset	DEFAULT_CHARSET				= Charset.forName("ISO-8859-1");
-
-	public static final String	OID_PF_DADOS_TITULAR		= "2.16.76.1.3.1";
-
-	public static final String	OID_PF_TITULO_ELEITOR		= "2.16.76.1.3.5";
-
-	public static final String	OID_PF_NUMERO_CEI			= "2.16.76.1.3.6";
-
-	// Registro de Identidade Civil
-	public static final String	OID_PF_NUMERO_RIC			= "2.16.76.1.3.9";
-
-	public static final String	OID_PF_REGISTRO_SINCOR		= "2.16.76.1.4.1.1.1";
-
-	public static final String	OID_PF_REGISTRO_OAB			= "2.16.76.1.4.2.1.1";
-
-	public static final String	OID_PJ_NOME_RESPONSAVEL		= "2.16.76.1.3.2";
-
-	public static final String	OID_PJ_NUMERO_CNPJ			= "2.16.76.1.3.3";
-
-	public static final String	OID_PJ_DADOS_RESPONSAVEL	= "2.16.76.1.3.4";
-
-	public static final String	OID_PJ_NUMERO_CEI			= "2.16.76.1.3.7";
-
-	public static final String	OID_PJ_NOME_EMPRESARIAL		= "2.16.76.1.3.8";
-
-	public static final String	PREFIX_OID_A1				= "2.16.76.1.2.1.";
-
-	public static final String	PREFIX_OID_A2				= "2.16.76.1.2.2.";
-
-	public static final String	PREFIX_OID_A3				= "2.16.76.1.2.3.";
-
-	public static final String	PREFIX_OID_A4				= "2.16.76.1.2.4.";
-
-	public static final String	PREFIX_OID_AC_ICPBRASIL		= "2.16.76.1.2.201";
-
-	public static final String	OID_A1_AC_SERPRO			= ICPBrasilHelper.PREFIX_OID_A1 + "1";
-
-	public static final String	OID_A2_AC_SERASA			= ICPBrasilHelper.PREFIX_OID_A2 + "1";
-
-	public static final String	OID_A3_AC_PR				= ICPBrasilHelper.PREFIX_OID_A3 + "1";
-
-	public static final String	OID_A4_AC_SERASA			= ICPBrasilHelper.PREFIX_OID_A4 + "1";
-
-	private static final String	DATE_FORMAT					= "ddMMyyyy";
-
-	private static final char	NUMBER_PAD					= '0';
-
-	private static final char	TEXT_PAD					= ' ';
 
 	public static String getValue(final String value) {
 		if (value == null) {
@@ -107,7 +54,7 @@ abstract class ICPBrasilHelper {
 		if (s == null) {
 			s = "";
 		}
-		return ICPBrasilHelper.lpad(s, ICPBrasilHelper.NUMBER_PAD, size);
+		return ICPBrasilHelper.lpad(s, ConstantesICPBrasil.COMPLEMENTO_NUMERO, size);
 	}
 
 	public static String getTextValue(final String value, final int size) {
@@ -115,7 +62,7 @@ abstract class ICPBrasilHelper {
 		if (s == null) {
 			s = "";
 		}
-		return ICPBrasilHelper.rpad(s, ICPBrasilHelper.TEXT_PAD, size);
+		return ICPBrasilHelper.rpad(s, ConstantesICPBrasil.COMPLEMENTO_TEXTO, size);
 	}
 
 	public static String getDateValue(final Date value) {
@@ -123,7 +70,7 @@ abstract class ICPBrasilHelper {
 		if (d == null) {
 			d = new Date();
 		}
-		return new SimpleDateFormat(ICPBrasilHelper.DATE_FORMAT).format(d);
+		return new SimpleDateFormat(ConstantesICPBrasil.FORMATO_DATA).format(d);
 	}
 
 	public static String getValueFromNumeric(final String numeric) {
@@ -136,7 +83,7 @@ abstract class ICPBrasilHelper {
 		for (int i = 0; i < array.length; i++) {
 			if (add) {
 				builder.append(array[i]);
-			} else if (array[i] != ICPBrasilHelper.NUMBER_PAD) {
+			} else if (array[i] != ConstantesICPBrasil.COMPLEMENTO_NUMERO) {
 				add = true;
 				builder.append(array[i]);
 			}
@@ -148,19 +95,15 @@ abstract class ICPBrasilHelper {
 		if (ConditionUtils.isEmpty(date)) {
 			return null;
 		}
-		return new SimpleDateFormat(ICPBrasilHelper.DATE_FORMAT).parse(date);
+		return new SimpleDateFormat(ConstantesICPBrasil.FORMATO_DATA).parse(date);
 	}
 
 	public static String toString(final byte[] bytes) {
-		return new String(bytes, ICPBrasilHelper.DEFAULT_CHARSET);
-	}
-
-	public static DERObject toDerObject(final byte[] bytes) throws IOException {
-		return BouncyCastleProviderHelper.toDERObject(bytes);
+		return new String(bytes, ConstantesICPBrasil.DEFAULT_CHARSET);
 	}
 
 	public static DERSequence toDerSequence(final byte[] bytes) throws IOException {
-		DERSequence sequence = (DERSequence) ICPBrasilHelper.toDerObject(bytes);
+		DERSequence sequence = (DERSequence) BouncyCastleProviderHelper.toDERObject(bytes);
 		return sequence;
 	}
 
@@ -182,14 +125,14 @@ abstract class ICPBrasilHelper {
 		if (obj instanceof DEROctetString) {
 			return ICPBrasilHelper.toString(((DEROctetString) obj).getOctets());
 		}
-		CoreLog.getInstance().getLog().warning("Unknow value (" + obj.getClass() + ") " + obj);
+		SecurityLog.getInstance().getLogger().warn("Unknow value (" + obj.getClass() + ") " + obj);
 		return null;
 	}
 
 	public static CertificadoICPBrasil getCertificadoICPBrasil(final X509Certificate certificate) throws GeneralSecurityException, IOException {
 		Collection<List<?>> alternativeNames = certificate.getSubjectAlternativeNames();
-		TipoICPBrasilType tipo = TipoICPBrasilType.INVALIDO;
-		FormatoICPBrasilType formato = FormatoICPBrasilType.INVALIDO;
+		TipoPessoa tipoPessoa = TipoPessoa.DESCONHECIDO;
+		TipoFormato tipoFormato = TipoFormato.DESCONHECIDO;
 		CertificadoICPBrasil certificadoICPBrasil = null;
 
 		if (ConditionUtils.isNotEmpty(alternativeNames)) {
@@ -222,29 +165,29 @@ abstract class ICPBrasilHelper {
 					String oid = identifier.getId();
 					String value = ICPBrasilHelper.getStringFromTag(taggedObject);
 
-					if (ICPBrasilHelper.OID_PF_DADOS_TITULAR.equals(oid)) { // PF
+					if (ConstantesICPBrasil.OID_PF_DADOS_TITULAR.equals(oid)) { // PF
 						dadoPessoa = DadoPessoa.fromOtherNameString(value);
-						tipo = TipoICPBrasilType.PESSOA_FISICA;
-					} else if (ICPBrasilHelper.OID_PF_TITULO_ELEITOR.equals(oid)) {
+						tipoPessoa = TipoPessoa.PESSOA_FISICA;
+					} else if (ConstantesICPBrasil.OID_PF_TITULO_ELEITOR.equals(oid)) {
 						tituloEleitorPF = ICPBrasilHelper.getValueFromNumeric(value);
-					} else if (ICPBrasilHelper.OID_PF_NUMERO_CEI.equals(oid)) {
+					} else if (ConstantesICPBrasil.OID_PF_NUMERO_CEI.equals(oid)) {
 						ceiPF = ICPBrasilHelper.getValueFromNumeric(value);
-					} else if (ICPBrasilHelper.OID_PF_NUMERO_RIC.equals(oid)) {
+					} else if (ConstantesICPBrasil.OID_PF_NUMERO_RIC.equals(oid)) {
 						ricPF = value;
-					} else if (ICPBrasilHelper.OID_PF_REGISTRO_SINCOR.equals(oid)) {
+					} else if (ConstantesICPBrasil.OID_PF_REGISTRO_SINCOR.equals(oid)) {
 						registroSINCORPF = value;
-					} else if (ICPBrasilHelper.OID_PF_REGISTRO_OAB.equals(oid)) {
+					} else if (ConstantesICPBrasil.OID_PF_REGISTRO_OAB.equals(oid)) {
 						registroOABPF = value;
-					} else if (ICPBrasilHelper.OID_PJ_NOME_RESPONSAVEL.equals(oid)) { // PJ
+					} else if (ConstantesICPBrasil.OID_PJ_NOME_RESPONSAVEL.equals(oid)) { // PJ
 						responsavelPJ = value;
-					} else if (ICPBrasilHelper.OID_PJ_NUMERO_CNPJ.equals(oid)) {
+					} else if (ConstantesICPBrasil.OID_PJ_NUMERO_CNPJ.equals(oid)) {
 						cnpjPJ = value;
-						tipo = TipoICPBrasilType.PESSOA_JURIDICA;
-					} else if (ICPBrasilHelper.OID_PJ_DADOS_RESPONSAVEL.equals(oid)) {
+						tipoPessoa = TipoPessoa.PESSOA_JURIDICA;
+					} else if (ConstantesICPBrasil.OID_PJ_DADOS_RESPONSAVEL.equals(oid)) {
 						dadoPessoa = DadoPessoa.fromOtherNameString(value);
-					} else if (ICPBrasilHelper.OID_PJ_NUMERO_CEI.equals(oid)) {
+					} else if (ConstantesICPBrasil.OID_PJ_NUMERO_CEI.equals(oid)) {
 						ceiPJ = ICPBrasilHelper.getValueFromNumeric(value);
-					} else if (ICPBrasilHelper.OID_PJ_NOME_EMPRESARIAL.equals(oid)) {
+					} else if (ConstantesICPBrasil.OID_PJ_NOME_EMPRESARIAL.equals(oid)) {
 						nomeEmpresarialPJ = value;
 					}
 				} else if (id == GeneralName.rfc822Name) {
@@ -253,30 +196,30 @@ abstract class ICPBrasilHelper {
 				}
 			}
 
-			formato = ICPBrasilHelper.getFormato(certificate);
+			tipoFormato = ICPBrasilHelper.getTipoFormato(certificate);
 
-			if ((tipo == TipoICPBrasilType.PESSOA_FISICA) && (dadoPessoa != null)) {
+			if ((tipoPessoa == TipoPessoa.PESSOA_FISICA) && (dadoPessoa != null)) {
 				CertificadoPessoaFisicaICPBrasil certPF = new CertificadoPessoaFisicaICPBrasil(certificate);
 				certPF.setCei(ceiPF);
 				certPF.setDadoPessoa(dadoPessoa);
 				certPF.setEmail(email);
-				certPF.setFormato(formato);
+				certPF.setTipoFormato(tipoFormato);
 				certPF.setRegistroOAB(registroOABPF);
 				certPF.setRegistroSINCOR(registroSINCORPF);
 				certPF.setRic(ricPF);
-				certPF.setTipo(tipo);
+				certPF.setTipoPessoa(tipoPessoa);
 				certPF.setTituloEleitor(tituloEleitorPF);
 				certificadoICPBrasil = certPF;
-			} else if ((tipo == TipoICPBrasilType.PESSOA_JURIDICA) && (dadoPessoa != null)) {
+			} else if ((tipoPessoa == TipoPessoa.PESSOA_JURIDICA) && (dadoPessoa != null)) {
 				CertificadoPessoaJuridicaICPBrasil certPJ = new CertificadoPessoaJuridicaICPBrasil(certificate);
 				certPJ.setCei(ceiPJ);
 				certPJ.setCnpj(cnpjPJ);
 				certPJ.setDadoPessoa(dadoPessoa);
 				certPJ.setEmail(email);
-				certPJ.setFormato(formato);
+				certPJ.setTipoFormato(tipoFormato);
 				certPJ.setNomeEmpresarial(nomeEmpresarialPJ);
 				certPJ.setResponsavel(responsavelPJ);
-				certPJ.setTipo(tipo);
+				certPJ.setTipoPessoa(tipoPessoa);
 				certificadoICPBrasil = certPJ;
 			} else {
 				certificadoICPBrasil = new CertificadoInvalidoICPBrasil(certificate);
@@ -289,27 +232,27 @@ abstract class ICPBrasilHelper {
 		return certificadoICPBrasil;
 	}
 
-	private static FormatoICPBrasilType getFormato(final X509Certificate certificate) throws IOException {
-		FormatoICPBrasilType formato = FormatoICPBrasilType.INVALIDO;
+	private static TipoFormato getTipoFormato(final X509Certificate certificate) throws IOException {
+		TipoFormato tipoFormato = TipoFormato.DESCONHECIDO;
 		byte[] policiesBytes = certificate.getExtensionValue(X509Extension.certificatePolicies.getId());
 		if (policiesBytes != null) {
-			DEROctetString string = (DEROctetString) ICPBrasilHelper.toDerObject(policiesBytes);
+			DEROctetString string = (DEROctetString) BouncyCastleProviderHelper.toDERObject(policiesBytes);
 			byte[] octets = string.getOctets();
 			DERSequence sequence = ICPBrasilHelper.toDerSequence(octets);
 			PolicyInformation information = PolicyInformation.getInstance(sequence.getObjectAt(0));
 			DERObjectIdentifier identifier = information.getPolicyIdentifier();
 			String oid = identifier.getId();
-			if (oid.startsWith(ICPBrasilHelper.PREFIX_OID_A1)) {
-				formato = FormatoICPBrasilType.A1;
-			} else if (oid.startsWith(ICPBrasilHelper.PREFIX_OID_A2)) {
-				formato = FormatoICPBrasilType.A2;
-			} else if (oid.startsWith(ICPBrasilHelper.PREFIX_OID_A3)) {
-				formato = FormatoICPBrasilType.A3;
-			} else if (oid.startsWith(ICPBrasilHelper.PREFIX_OID_A4)) {
-				formato = FormatoICPBrasilType.A4;
+			if (oid.startsWith(ConstantesICPBrasil.PREFIX_OID_A1)) {
+				tipoFormato = TipoFormato.A1;
+			} else if (oid.startsWith(ConstantesICPBrasil.PREFIX_OID_A2)) {
+				tipoFormato = TipoFormato.A2;
+			} else if (oid.startsWith(ConstantesICPBrasil.PREFIX_OID_A3)) {
+				tipoFormato = TipoFormato.A3;
+			} else if (oid.startsWith(ConstantesICPBrasil.PREFIX_OID_A4)) {
+				tipoFormato = TipoFormato.A4;
 			}
 		}
-		return formato;
+		return tipoFormato;
 	}
 
 	private static String rpad(final String value, final char pad, final int size) {

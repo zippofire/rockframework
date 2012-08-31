@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import br.net.woodstock.rockframework.domain.Entity;
-import br.net.woodstock.rockframework.domain.config.DomainLog;
+import br.net.woodstock.rockframework.persistence.config.PersistenceLog;
 import br.net.woodstock.rockframework.persistence.orm.Constants;
 import br.net.woodstock.rockframework.persistence.orm.LikeMode;
 import br.net.woodstock.rockframework.persistence.orm.query.QueryBuilder;
@@ -49,7 +49,7 @@ public abstract class JPQLQueryBuilder<T> extends AbstractQueryBuilder<T> {
 	@Override
 	public QueryBuilder<T> setEntity(final Entity<?> entity) {
 		if (this.build) {
-			DomainLog.getInstance().getLog().warning("Query alread build, rebuild it");
+			PersistenceLog.getInstance().getLogger().warn("Query alread build, rebuild it");
 		}
 		this.entity = entity;
 		return this;
@@ -58,7 +58,7 @@ public abstract class JPQLQueryBuilder<T> extends AbstractQueryBuilder<T> {
 	@Override
 	public QueryBuilder<T> setOption(final String name, final Object value) {
 		if (this.build) {
-			DomainLog.getInstance().getLog().warning("Query alread build, rebuild it");
+			PersistenceLog.getInstance().getLogger().warn("Query alread build, rebuild it");
 		}
 		this.options.put(name, value);
 		return this;
@@ -77,17 +77,17 @@ public abstract class JPQLQueryBuilder<T> extends AbstractQueryBuilder<T> {
 			String name = entry.getKey();
 			Object value = entry.getValue();
 			if (this.isOptionDelegate(name)) {
-				DomainLog.getInstance().getLog().fine("Setting option[" + name + "] => " + value);
+				PersistenceLog.getInstance().getLogger().debug("Setting option[" + name + "] => " + value);
 				this.setQueryOption(query, name, value);
 			} else {
-				DomainLog.getInstance().getLog().fine("Skipping option[" + name + "]");
+				PersistenceLog.getInstance().getLogger().debug("Skipping option[" + name + "]");
 			}
 		}
 
 		for (QueryContextParameter parameter : this.context.getParametersRecursive()) {
 			String name = parameter.getAlias();
 			Object value = parameter.getValue();
-			DomainLog.getInstance().getLog().fine("Setting parameter[" + name + "] => " + value);
+			PersistenceLog.getInstance().getLogger().debug("Setting parameter[" + name + "] => " + value);
 			this.setQueryParameter(query, name, value);
 		}
 

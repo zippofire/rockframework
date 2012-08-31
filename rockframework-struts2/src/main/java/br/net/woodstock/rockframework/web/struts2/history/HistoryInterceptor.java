@@ -45,7 +45,7 @@ public class HistoryInterceptor extends ConditionalInterceptor<String> {
 
 	@Override
 	public String intercept(final ActionInvocation invocation) throws Exception {
-		WebLog.getInstance().getLog().fine("Intercepting " + invocation);
+		WebLog.getInstance().getLogger().debug("Intercepting " + invocation);
 		Assert.notNull(this.manager, "manager");
 		ActionProxy proxy = invocation.getProxy();
 		Object action = proxy.getAction();

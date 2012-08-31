@@ -59,12 +59,12 @@ class MemoryCacheImpl implements Cache {
 	public synchronized boolean add(final String name, final Object object) {
 		Assert.notEmpty(name, "name");
 		if (object == null) {
-			CoreLog.getInstance().getLog().warning("Cache not supports null objects");
+			CoreLog.getInstance().getLogger().warn("Cache not supports null objects");
 			return false;
 		}
 		if (this.map.size() > MemoryCacheImpl.MAX_CACHE_SIZE) {
 
-			CoreLog.getInstance().getLog().info("Cache[" + this.id + "]  size is greater than " + MemoryCacheImpl.MAX_CACHE_SIZE + " and will be cleaned");
+			CoreLog.getInstance().getLogger().info("Cache[" + this.id + "]  size is greater than " + MemoryCacheImpl.MAX_CACHE_SIZE + " and will be cleaned");
 			Collection<MemoryCacheItem> collection = this.map.values();
 			List<MemoryCacheItem> list = new ArrayList<MemoryCacheItem>(collection);
 			Collections.sort(list);
@@ -73,7 +73,7 @@ class MemoryCacheImpl implements Cache {
 			for (MemoryCacheItem item : deletables) {
 				this.map.remove(item.getName());
 			}
-			CoreLog.getInstance().getLog().info("Cache clean");
+			CoreLog.getInstance().getLogger().info("Cache clean");
 		}
 		MemoryCacheItem item = new MemoryCacheItem(name, object);
 		this.map.put(name, item);

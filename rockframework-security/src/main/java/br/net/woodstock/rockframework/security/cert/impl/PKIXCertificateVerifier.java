@@ -35,9 +35,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import br.net.woodstock.rockframework.config.CoreLog;
 import br.net.woodstock.rockframework.security.cert.CertificateException;
 import br.net.woodstock.rockframework.security.cert.CertificateVerifier;
+import br.net.woodstock.rockframework.security.config.SecurityLog;
 import br.net.woodstock.rockframework.util.Assert;
 
 public class PKIXCertificateVerifier implements CertificateVerifier {
@@ -76,17 +76,17 @@ public class PKIXCertificateVerifier implements CertificateVerifier {
 	public boolean verify(final Certificate[] chain) {
 		Assert.notEmpty(chain, "chain");
 		if (chain.length < 2) {
-			CoreLog.getInstance().getLog().info("Certificate chain must be greater than 1(certificate and issuer certificate)");
+			SecurityLog.getInstance().getLogger().info("Certificate chain must be greater than 1(certificate and issuer certificate)");
 			return false;
 		}
 		try {
 			PKIXCertPathValidatorResult validatorResult = this.getValidatorResult(chain);
 			if (this.debug) {
-				CoreLog.getInstance().getLog().info("Result: " + validatorResult);
+				SecurityLog.getInstance().getLogger().info("Result: " + validatorResult);
 			}
 			return true;
 		} catch (CertPathBuilderException e) {
-			CoreLog.getInstance().getLog().info("Validation error: " + e.getMessage());
+			SecurityLog.getInstance().getLogger().info("Validation error: " + e.getMessage());
 			return false;
 		} catch (Exception e) {
 			throw new CertificateException(e);

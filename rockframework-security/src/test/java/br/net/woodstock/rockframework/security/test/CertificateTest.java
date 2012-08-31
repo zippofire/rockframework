@@ -17,10 +17,10 @@ import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.CertificadoICP
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.CertificadoPessoaFisicaICPBrasil;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.CertificadoPessoaJuridicaICPBrasil;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.DadoPessoa;
-import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.FormatoICPBrasilType;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.ICPBrasilCertificateVerifier;
 import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.PessoaFisicaCertificateBuilderRequest;
-import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.TipoICPBrasilType;
+import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.TipoFormato;
+import br.net.woodstock.rockframework.security.cert.ext.icpbrasil.TipoPessoa;
 import br.net.woodstock.rockframework.security.cert.impl.BouncyCastleCertificateBuilder;
 import br.net.woodstock.rockframework.security.cert.impl.CRLCertificateVerifier;
 import br.net.woodstock.rockframework.security.cert.impl.CertificateVerifierChain;
@@ -65,15 +65,13 @@ public class CertificateTest extends TestCase {
 		dadoPessoa.setPis("33333333333");
 		dadoPessoa.setRg("1817115");
 
-		request.withFormato(FormatoICPBrasilType.A3);
+		request.withTipoFormato(TipoFormato.A3);
 		request.withCei("111111111111");
 		request.withDadoTitular(dadoPessoa);
 		request.withRegistroOAB("DF123456-A");
 		// request.withRegistroSINCOR("123456DF");
 		request.withRic("66666666666");
 		request.withTituloEleitor("555555555555");
-
-		request.withFormato(FormatoICPBrasilType.A3);
 
 		DateBuilder builder = new DateBuilder();
 		request.withNotBefore(builder.removeDays(1).getDate());
@@ -179,7 +177,7 @@ public class CertificateTest extends TestCase {
 		FileInputStream inputStream = new FileInputStream("/tmp/lourival.cer");
 		Certificate certificate = SecurityUtils.getCertificateFromFile(inputStream, CertificateType.X509);
 		CertificadoICPBrasil certificadoICPBrasil = CertificadoICPBrasil.getInstance(certificate);
-		System.out.println(certificadoICPBrasil.getTipo());
+		System.out.println(certificadoICPBrasil.getTipoPessoa());
 		this.print(certificadoICPBrasil);
 	}
 
@@ -278,7 +276,7 @@ public class CertificateTest extends TestCase {
 	}
 
 	private void print(final CertificadoICPBrasil certificado) {
-		if (certificado.getTipo() == TipoICPBrasilType.PESSOA_FISICA) {
+		if (certificado.getTipoPessoa() == TipoPessoa.PESSOA_FISICA) {
 			CertificadoPessoaFisicaICPBrasil certPF = (CertificadoPessoaFisicaICPBrasil) certificado;
 			System.out.println("Certificado de PF");
 			System.out.println("CEI             : " + certPF.getCei());
@@ -286,14 +284,14 @@ public class CertificateTest extends TestCase {
 			System.out.println("Data Nascimento : " + certPF.getDataNascimento());
 			System.out.println("Email           : " + certPF.getEmail());
 			System.out.println("Emissor RG      : " + certPF.getEmissorRG());
-			System.out.println("Formato         : " + certPF.getFormato());
+			System.out.println("Formato         : " + certPF.getTipoFormato());
 			System.out.println("PIS             : " + certPF.getPis());
 			System.out.println("Registro OAB    : " + certPF.getRegistroOAB());
 			System.out.println("Registro SINCOR : " + certPF.getRegistroSINCOR());
 			System.out.println("Ric             : " + certPF.getRic());
 			System.out.println("RG              : " + certPF.getRg());
 			System.out.println("Titulo Eleitor  : " + certPF.getTituloEleitor());
-		} else if (certificado.getTipo() == TipoICPBrasilType.PESSOA_FISICA) {
+		} else if (certificado.getTipoPessoa() == TipoPessoa.PESSOA_FISICA) {
 			CertificadoPessoaJuridicaICPBrasil certPJ = (CertificadoPessoaJuridicaICPBrasil) certificado;
 			System.out.println("Certificado de PF");
 			System.out.println("CEI             : " + certPJ.getCei());
@@ -302,7 +300,7 @@ public class CertificateTest extends TestCase {
 			System.out.println("Data Nascimento : " + certPJ.getDataNascimentoResponsavel());
 			System.out.println("Email           : " + certPJ.getEmail());
 			System.out.println("Emissor RG      : " + certPJ.getEmissorRGResponsavel());
-			System.out.println("Formato         : " + certPJ.getFormato());
+			System.out.println("Formato         : " + certPJ.getTipoFormato());
 			System.out.println("Nome            : " + certPJ.getNomeEmpresarial());
 			System.out.println("PIS             : " + certPJ.getPisResponsavel());
 			System.out.println("Responsavel     : " + certPJ.getResponsavel());

@@ -16,8 +16,7 @@
  */
 package br.net.woodstock.rockframework.config;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
 
 import br.net.woodstock.rockframework.utils.LogUtils;
 
@@ -25,20 +24,13 @@ public abstract class AbstractLog {
 
 	private Logger	log;
 
-	private Level	level;
-
 	public AbstractLog(final String name) {
 		super();
 		this.log = LogUtils.getLog(name);
-		this.level = LogUtils.getDefaultLevel();
 	}
 
-	public Logger getLog() {
+	public Logger getLogger() {
 		return this.log;
-	}
-
-	public Level getDefaultLevel() {
-		return this.level;
 	}
 
 }

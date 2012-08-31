@@ -75,12 +75,12 @@ public class RefererInterceptor extends ConditionalInterceptor<String> {
 			if (ConditionUtils.isNotEmpty(referer)) {
 				if (ConditionUtils.isNotEmpty(regex)) {
 					if ((ConditionUtils.isEmpty(referer)) || (!Pattern.matches(regex, referer))) {
-						WebLog.getInstance().getLog().info("Invalid referer for " + url + " found " + referer + " required " + regex);
+						WebLog.getInstance().getLogger().info("Invalid referer for " + url + " found " + referer + " required " + regex);
 						return Struts2Constants.INVALID_REFERER;
 					}
 				}
 			} else {
-				WebLog.getInstance().getLog().info("Referer not found for " + url);
+				WebLog.getInstance().getLogger().info("Referer not found for " + url);
 				return Struts2Constants.NO_REFERER;
 			}
 

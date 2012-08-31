@@ -21,13 +21,13 @@ import java.util.Map;
 import br.net.woodstock.rockframework.security.cert.CertificateBuilderRequest;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 
-public abstract class ICPBrasilCertificateBuilderRequest extends CertificateBuilderRequest {
+abstract class ICPBrasilCertificateBuilderRequest extends CertificateBuilderRequest {
 
-	private static final long		serialVersionUID	= 5197446419645941177L;
+	private static final long	serialVersionUID	= 5197446419645941177L;
 
-	private static final String		URL_CRL_LOCAL		= "http://www.woodstock.net.br/rockframework/crl.html";
+	private static final String	URL_CRL_LOCAL		= "http://www.woodstock.net.br/rockframework/crl.html";
 
-	private FormatoICPBrasilType	formato;
+	private TipoFormato			tipoFormato;
 
 	public ICPBrasilCertificateBuilderRequest(final String subject) {
 		super(subject);
@@ -38,29 +38,29 @@ public abstract class ICPBrasilCertificateBuilderRequest extends CertificateBuil
 	}
 
 	// Get
-	public FormatoICPBrasilType getFormato() {
-		return this.formato;
+	public TipoFormato getTipoFormato() {
+		return this.tipoFormato;
 	}
 
 	@Override
 	public Map<String, String> getCertificatePolicies() {
 		Map<String, String> map = super.getCertificatePolicies();
 
-		FormatoICPBrasilType formato = this.getFormato();
-		if (formato != null) {
+		TipoFormato tipoFormato = this.getTipoFormato();
+		if (tipoFormato != null) {
 			String key = null;
-			switch (formato) {
+			switch (tipoFormato) {
 				case A1:
-					key = ICPBrasilHelper.OID_A1_AC_SERPRO;
+					key = ConstantesICPBrasil.OID_A1_AC_SERPRO;
 					break;
 				case A2:
-					key = ICPBrasilHelper.OID_A2_AC_SERASA;
+					key = ConstantesICPBrasil.OID_A2_AC_SERASA;
 					break;
 				case A3:
-					key = ICPBrasilHelper.OID_A3_AC_PR;
+					key = ConstantesICPBrasil.OID_A3_AC_PR;
 					break;
 				case A4:
-					key = ICPBrasilHelper.OID_A4_AC_SERASA;
+					key = ConstantesICPBrasil.OID_A4_AC_SERASA;
 					break;
 				default:
 					break;
@@ -74,8 +74,8 @@ public abstract class ICPBrasilCertificateBuilderRequest extends CertificateBuil
 	}
 
 	// Set
-	public ICPBrasilCertificateBuilderRequest withFormato(final FormatoICPBrasilType formato) {
-		this.formato = formato;
+	public ICPBrasilCertificateBuilderRequest withTipoFormato(final TipoFormato tipoFormato) {
+		this.tipoFormato = tipoFormato;
 		return this;
 	}
 

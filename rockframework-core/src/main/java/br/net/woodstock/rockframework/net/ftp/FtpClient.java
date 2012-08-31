@@ -117,7 +117,7 @@ public class FtpClient implements Serializable {
 			if (!this.client.login(this.username, this.password)) {
 				throw new FtpException(this.client.getReplyString());
 			}
-			CoreLog.getInstance().getLog().fine(this.client.getReplyString().trim());
+			CoreLog.getInstance().getLogger().debug(this.client.getReplyString().trim());
 		} catch (IOException e) {
 			throw new FtpException(e);
 		}
@@ -145,7 +145,7 @@ public class FtpClient implements Serializable {
 			FileOutputStream output = new FileOutputStream(f);
 			this.client.retrieveFile(src, output);
 			output.close();
-			CoreLog.getInstance().getLog().fine(this.client.getReplyString().trim());
+			CoreLog.getInstance().getLogger().debug(this.client.getReplyString().trim());
 			return f;
 		} catch (IOException e) {
 			throw new FtpException(e);
@@ -182,7 +182,7 @@ public class FtpClient implements Serializable {
 
 			Collection<String> l = new LinkedHashSet<String>();
 			FTPFile[] ls = this.client.listFiles();
-			CoreLog.getInstance().getLog().fine(this.client.getReplyString().trim());
+			CoreLog.getInstance().getLogger().debug(this.client.getReplyString().trim());
 			for (FTPFile f : ls) {
 				l.add(f.getName());
 			}
@@ -213,7 +213,7 @@ public class FtpClient implements Serializable {
 			this.checkConnected();
 
 			boolean put = this.client.storeFile(name, input);
-			CoreLog.getInstance().getLog().fine(this.client.getReplyString().trim());
+			CoreLog.getInstance().getLogger().debug(this.client.getReplyString().trim());
 			return put;
 		} catch (IOException e) {
 			throw new FtpException(e);
@@ -225,7 +225,7 @@ public class FtpClient implements Serializable {
 			this.checkConnected();
 
 			String pwd = this.client.printWorkingDirectory();
-			CoreLog.getInstance().getLog().fine(this.client.getReplyString().trim());
+			CoreLog.getInstance().getLogger().debug(this.client.getReplyString().trim());
 			return pwd;
 		} catch (IOException e) {
 			throw new FtpException(e);
@@ -237,7 +237,7 @@ public class FtpClient implements Serializable {
 			this.checkConnected();
 
 			boolean rm = this.client.deleteFile(name);
-			CoreLog.getInstance().getLog().fine(this.client.getReplyString().trim());
+			CoreLog.getInstance().getLogger().debug(this.client.getReplyString().trim());
 			return rm;
 		} catch (IOException e) {
 			throw new FtpException(e);

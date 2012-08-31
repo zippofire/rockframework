@@ -19,7 +19,7 @@ package br.net.woodstock.rockframework.persistence.orm.query.impl;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import br.net.woodstock.rockframework.domain.config.DomainLog;
+import br.net.woodstock.rockframework.persistence.config.PersistenceLog;
 import br.net.woodstock.rockframework.persistence.orm.Constants;
 
 public class JPAQueryBuilder extends JPQLQueryBuilder<Query> {
@@ -49,21 +49,21 @@ public class JPAQueryBuilder extends JPQLQueryBuilder<Query> {
 				Integer firstResult = (Integer) value;
 				query.setFirstResult(firstResult.intValue());
 			} else if (value != null) {
-				DomainLog.getInstance().getLog().warning("Illegal option type[" + name + "] => " + value.getClass().getCanonicalName() + ", must be " + Integer.class.getCanonicalName());
+				PersistenceLog.getInstance().getLogger().warn("Illegal option type[" + name + "] => " + value.getClass().getCanonicalName() + ", must be " + Integer.class.getCanonicalName());
 			} else {
-				DomainLog.getInstance().getLog().warning("Illegal option value[" + name + "] => null");
+				PersistenceLog.getInstance().getLogger().warn("Illegal option value[" + name + "] => null");
 			}
 		} else if (name.equals(Constants.OPTION_MAX_RESULT)) {
 			if (value instanceof Integer) {
 				Integer maxResult = (Integer) value;
 				query.setMaxResults(maxResult.intValue());
 			} else if (value != null) {
-				DomainLog.getInstance().getLog().warning("Illegal option type[" + name + "] => " + value.getClass().getCanonicalName() + ", must be " + Integer.class.getCanonicalName());
+				PersistenceLog.getInstance().getLogger().warn("Illegal option type[" + name + "] => " + value.getClass().getCanonicalName() + ", must be " + Integer.class.getCanonicalName());
 			} else {
-				DomainLog.getInstance().getLog().warning("Illegal option value[" + name + "] => null");
+				PersistenceLog.getInstance().getLogger().warn("Illegal option value[" + name + "] => null");
 			}
 		} else {
-			DomainLog.getInstance().getLog().warning("Illegal option[" + name + "] => " + value);
+			PersistenceLog.getInstance().getLogger().warn("Illegal option[" + name + "] => " + value);
 		}
 	}
 

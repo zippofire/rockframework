@@ -53,12 +53,12 @@ public abstract class AbstractInterceptor implements com.opensymphony.xwork2.int
 
 	@Override
 	public void destroy() {
-		WebLog.getInstance().getLog().fine("Destroying " + this.getClass().getCanonicalName());
+		WebLog.getInstance().getLogger().debug("Destroying " + this.getClass().getCanonicalName());
 	}
 
 	@Override
 	public void init() {
-		WebLog.getInstance().getLog().fine("Initing " + this.getClass().getCanonicalName());
+		WebLog.getInstance().getLogger().debug("Initing " + this.getClass().getCanonicalName());
 	}
 
 }

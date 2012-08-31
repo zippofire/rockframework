@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import br.net.woodstock.rockframework.config.CoreLog;
+import br.net.woodstock.rockframework.security.config.SecurityLog;
 import br.net.woodstock.rockframework.security.timestamp.TimeStampServer;
 import br.net.woodstock.rockframework.utils.Base64Utils;
 import br.net.woodstock.rockframework.utils.IOUtils;
@@ -61,7 +61,7 @@ public abstract class AbstractTimeStampServlet extends HttpServlet {
 		try {
 			String requestContentType = req.getContentType();
 			if (!AbstractTimeStampServlet.REQUEST_CONTENT_TYPE.equalsIgnoreCase(requestContentType)) {
-				CoreLog.getInstance().getLog().warning("Invalid request content-type " + requestContentType);
+				SecurityLog.getInstance().getLogger().warn("Invalid request content-type " + requestContentType);
 			}
 
 			boolean base64 = false;

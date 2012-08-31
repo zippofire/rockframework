@@ -54,6 +54,7 @@ public abstract class AbstractFilter implements Filter {
 		return this.filterConfig.getInitParameter(name);
 	}
 
+	@SuppressWarnings("unchecked")
 	protected Collection<String> getInitParameterNames() {
 		Enumeration<String> names = this.filterConfig.getInitParameterNames();
 		Collection<String> collection = CollectionUtils.toCollection(names);

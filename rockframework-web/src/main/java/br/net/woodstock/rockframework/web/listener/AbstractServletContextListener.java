@@ -25,12 +25,12 @@ public abstract class AbstractServletContextListener implements ServletContextLi
 
 	@Override
 	public void contextDestroyed(final ServletContextEvent event) {
-		WebLog.getInstance().getLog().info("Destroying context " + event.getServletContext().getServletContextName());
+		WebLog.getInstance().getLogger().info("Destroying context " + event.getServletContext().getServletContextName());
 	}
 
 	@Override
 	public void contextInitialized(final ServletContextEvent event) {
-		WebLog.getInstance().getLog().info("Initializing context " + event.getServletContext().getServletContextName());
+		WebLog.getInstance().getLogger().info("Initializing context " + event.getServletContext().getServletContextName());
 	}
 
 }

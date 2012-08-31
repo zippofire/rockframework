@@ -250,7 +250,7 @@ public class ValueChecker {
 				throw this.exceptionBuilder.newException(CoreMessage.getInstance().getMessage(ValueChecker.MESSAGE_NOT_EMPTY, name));
 			}
 		} else {
-			CoreLog.getInstance().getLog().warning("Object is not an array. Call notNull() instead " + name + " : " + array);
+			CoreLog.getInstance().getLogger().warn("Object is not an array. Call notNull() instead " + name + " : " + array);
 		}
 	}
 

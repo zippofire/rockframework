@@ -21,9 +21,9 @@ import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
 
-import br.net.woodstock.rockframework.config.CoreLog;
 import br.net.woodstock.rockframework.security.cert.CertificateException;
 import br.net.woodstock.rockframework.security.cert.CertificateVerifier;
+import br.net.woodstock.rockframework.security.config.SecurityLog;
 import br.net.woodstock.rockframework.util.Assert;
 
 public class HierarchyCertificateVerifier implements CertificateVerifier {
@@ -46,7 +46,7 @@ public class HierarchyCertificateVerifier implements CertificateVerifier {
 	public boolean verify(final Certificate[] chain) {
 		Assert.notEmpty(chain, "chain");
 		if (chain.length < 2) {
-			CoreLog.getInstance().getLog().info("Certificate chain must be greater than 1(certificate and issuer certificate)");
+			SecurityLog.getInstance().getLogger().info("Certificate chain must be greater than 1(certificate and issuer certificate)");
 			return false;
 		}
 		try {
@@ -67,7 +67,7 @@ public class HierarchyCertificateVerifier implements CertificateVerifier {
 
 			return result;
 		} catch (SignatureException e) {
-			CoreLog.getInstance().getLog().info("Invalid certificate chain");
+			SecurityLog.getInstance().getLogger().info("Invalid certificate chain");
 			return false;
 		} catch (Exception e) {
 			throw new CertificateException(e);

@@ -32,16 +32,16 @@ public class CertificadoPessoaFisicaICPBrasil extends CertificadoICPBrasil {
 
 	private String	registroOAB;
 
-	public CertificadoPessoaFisicaICPBrasil(final X509Certificate certificate) {
+	CertificadoPessoaFisicaICPBrasil(final X509Certificate certificate) {
 		super(certificate);
-		this.setTipo(TipoICPBrasilType.PESSOA_FISICA);
+		this.setTipoPessoa(TipoPessoa.PESSOA_FISICA);
 	}
 
 	public String getTituloEleitor() {
 		return this.tituloEleitor;
 	}
 
-	public void setTituloEleitor(final String tituloEleitor) {
+	void setTituloEleitor(final String tituloEleitor) {
 		this.tituloEleitor = tituloEleitor;
 	}
 
@@ -49,7 +49,7 @@ public class CertificadoPessoaFisicaICPBrasil extends CertificadoICPBrasil {
 		return this.cei;
 	}
 
-	public void setCei(final String cei) {
+	void setCei(final String cei) {
 		this.cei = cei;
 	}
 
@@ -57,7 +57,7 @@ public class CertificadoPessoaFisicaICPBrasil extends CertificadoICPBrasil {
 		return this.ric;
 	}
 
-	public void setRic(final String ric) {
+	void setRic(final String ric) {
 		this.ric = ric;
 	}
 
@@ -65,7 +65,7 @@ public class CertificadoPessoaFisicaICPBrasil extends CertificadoICPBrasil {
 		return this.registroSINCOR;
 	}
 
-	public void setRegistroSINCOR(final String registroSINCOR) {
+	void setRegistroSINCOR(final String registroSINCOR) {
 		this.registroSINCOR = registroSINCOR;
 	}
 
@@ -73,7 +73,7 @@ public class CertificadoPessoaFisicaICPBrasil extends CertificadoICPBrasil {
 		return this.registroOAB;
 	}
 
-	public void setRegistroOAB(final String registroOAB) {
+	void setRegistroOAB(final String registroOAB) {
 		this.registroOAB = registroOAB;
 	}
 

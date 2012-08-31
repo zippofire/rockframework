@@ -14,30 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>;.
  */
-package br.net.woodstock.rockframework.utils;
+package br.net.woodstock.rockframework.persistence.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import br.net.woodstock.rockframework.config.AbstractLog;
 
-import br.net.woodstock.rockframework.config.CoreConfig;
+public final class PersistenceLog extends AbstractLog {
 
-public abstract class LogUtils {
+	private static final String		LOG_NAME	= "br.net.woodstock.rockframework.persistence";
 
-	private static final String	LOG_NAME_PROPERTY	= "logging.name";
+	private static PersistenceLog	instance	= new PersistenceLog();
 
-	private static final String	LOG_NAME			= CoreConfig.getInstance().getValue(LogUtils.LOG_NAME_PROPERTY);
-
-	private static Logger		log					= LoggerFactory.getLogger(LogUtils.LOG_NAME);
-
-	private LogUtils() {
-		super();
+	private PersistenceLog() {
+		super(PersistenceLog.LOG_NAME);
 	}
 
-	public static Logger getSharedLog() {
-		return LogUtils.log;
-	}
-
-	public static Logger getLog(final String name) {
-		return LoggerFactory.getLogger(name);
+	public static PersistenceLog getInstance() {
+		return PersistenceLog.instance;
 	}
 }

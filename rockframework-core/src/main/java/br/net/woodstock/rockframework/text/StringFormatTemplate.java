@@ -70,11 +70,11 @@ public final class StringFormatTemplate {
 			}
 
 			if (ok) {
-				CoreLog.getInstance().getLog().info("Inserting template " + key + " = " + value);
+				CoreLog.getInstance().getLogger().info("Inserting template " + key + " = " + value);
 				StringFormat format = new StringFormat(pattern, character);
 				this.map.put(key, format);
 			} else {
-				CoreLog.getInstance().getLog().finest("Invalid template " + key + " = " + value);
+				CoreLog.getInstance().getLogger().debug("Invalid template " + key + " = " + value);
 			}
 
 		}

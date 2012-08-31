@@ -22,7 +22,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 import br.net.woodstock.rockframework.domain.config.DomainConfig;
-import br.net.woodstock.rockframework.domain.config.DomainLog;
+import br.net.woodstock.rockframework.persistence.config.PersistenceLog;
 
 public final class JPAPersistenceHelper implements PersistenceHelper<EntityManager> {
 
@@ -46,7 +46,7 @@ public final class JPAPersistenceHelper implements PersistenceHelper<EntityManag
 		if (m != null) {
 			EntityTransaction t = m.getTransaction();
 			if (t.isActive()) {
-				DomainLog.getInstance().getLog().warning("EntityManager contains an active transaction, commiting transaction");
+				PersistenceLog.getInstance().getLogger().warn("EntityManager contains an active transaction, commiting transaction");
 				t.commit();
 			}
 			m.flush();

@@ -38,7 +38,7 @@ public abstract class LDAPContextFactoryManager {
 		try {
 			Class.forName(LDAPContextFactoryManager.SUN_FACTORY);
 			LDAPContextFactoryManager factory = new SunLDAPContextFactoryManager();
-			CoreLog.getInstance().getLog().info("Using Sun LDAPContextFactory");
+			CoreLog.getInstance().getLogger().info("Using Sun LDAPContextFactory");
 			return factory;
 		} catch (ClassNotFoundException e) {
 			throw new UnsupportedOperationException("No LDAPContextFactory found");

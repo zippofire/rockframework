@@ -100,15 +100,15 @@ public class DebugInterceptor extends AbstractInterceptor {
 
 	private void log(final String message) {
 		if (this.level.equals("TRACE")) {
-			WebLog.getInstance().getLog().finest(message);
+			WebLog.getInstance().getLogger().trace(message);
 		} else if (this.level.equals("DEBUG")) {
-			WebLog.getInstance().getLog().fine(message);
+			WebLog.getInstance().getLogger().debug(message);
 		} else if (this.level.equals("INFO")) {
-			WebLog.getInstance().getLog().info(message);
+			WebLog.getInstance().getLogger().info(message);
 		} else if (this.level.equals("WARN")) {
-			WebLog.getInstance().getLog().warning(message);
+			WebLog.getInstance().getLogger().debug(message);
 		} else if (this.level.equals("ERROR")) {
-			WebLog.getInstance().getLog().severe(message);
+			WebLog.getInstance().getLogger().error(message);
 		}
 	}
 

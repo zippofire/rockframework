@@ -31,6 +31,7 @@ import br.net.woodstock.rockframework.net.http.HttpException;
 import br.net.woodstock.rockframework.utils.ConditionUtils;
 import br.net.woodstock.rockframework.web.servlet.AbstractHttpServlet;
 
+@SuppressWarnings("unchecked")
 public class ProxyServlet extends AbstractHttpServlet {
 
 	private static final long	serialVersionUID	= -3878060433162392807L;

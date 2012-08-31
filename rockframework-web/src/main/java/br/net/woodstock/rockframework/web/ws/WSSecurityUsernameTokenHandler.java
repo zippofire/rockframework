@@ -17,7 +17,6 @@
 package br.net.woodstock.rockframework.web.ws;
 
 import java.util.Set;
-import java.util.logging.Level;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPElement;
@@ -29,11 +28,11 @@ import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 
-import br.net.woodstock.rockframework.config.CoreLog;
 import br.net.woodstock.rockframework.security.digest.DigestType;
 import br.net.woodstock.rockframework.security.digest.impl.AsStringDigester;
 import br.net.woodstock.rockframework.security.digest.impl.Base64Digester;
 import br.net.woodstock.rockframework.security.digest.impl.BasicDigester;
+import br.net.woodstock.rockframework.web.config.WebLog;
 
 public class WSSecurityUsernameTokenHandler implements SOAPHandler<SOAPMessageContext> {
 
@@ -83,7 +82,7 @@ public class WSSecurityUsernameTokenHandler implements SOAPHandler<SOAPMessageCo
 					password.addTextNode(this.password);
 				}
 			} catch (SOAPException e) {
-				CoreLog.getInstance().getLog().log(Level.WARNING, e.getMessage(), e);
+				WebLog.getInstance().getLogger().warn(e.getMessage(), e);
 			}
 		}
 

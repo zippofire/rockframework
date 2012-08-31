@@ -50,9 +50,9 @@ import org.bouncycastle.operator.DigestCalculatorProvider;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.bc.BcDigestCalculatorProvider;
 
-import br.net.woodstock.rockframework.config.CoreLog;
 import br.net.woodstock.rockframework.security.cert.CertificateException;
 import br.net.woodstock.rockframework.security.cert.CertificateVerifier;
+import br.net.woodstock.rockframework.security.config.SecurityLog;
 import br.net.woodstock.rockframework.security.timestamp.impl.URLTimeStampProcessor;
 import br.net.woodstock.rockframework.security.util.BouncyCastleProviderHelper;
 import br.net.woodstock.rockframework.util.Assert;
@@ -86,7 +86,7 @@ public class OCSPCertificateVerifier implements CertificateVerifier {
 	public boolean verify(final Certificate[] chain) {
 		Assert.notEmpty(chain, "chain");
 		if (chain.length < 2) {
-			CoreLog.getInstance().getLog().info("Certificate chain must be greater than 1(certificate and issuer certificate)");
+			SecurityLog.getInstance().getLogger().info("Certificate chain must be greater than 1(certificate and issuer certificate)");
 			return false;
 		}
 		try {
@@ -104,7 +104,7 @@ public class OCSPCertificateVerifier implements CertificateVerifier {
 			}
 
 			if (url == null) {
-				CoreLog.getInstance().getLog().info("No url found for validation");
+				SecurityLog.getInstance().getLogger().info("No url found for validation");
 				return false;
 			}
 

@@ -87,17 +87,17 @@ public class PessoaFisicaCertificateBuilderRequest extends ICPBrasilCertificateB
 		String cei = ICPBrasilHelper.getNumericValue(this.getCei(), 12);
 		String ric = ICPBrasilHelper.getTextValue(this.getRic(), 11);
 
-		map.put(ICPBrasilHelper.OID_PF_DADOS_TITULAR, dadosTitular);
-		map.put(ICPBrasilHelper.OID_PF_TITULO_ELEITOR, tituloEleitor);
-		map.put(ICPBrasilHelper.OID_PF_NUMERO_CEI, cei);
-		map.put(ICPBrasilHelper.OID_PF_NUMERO_RIC, ric);
+		map.put(ConstantesICPBrasil.OID_PF_DADOS_TITULAR, dadosTitular);
+		map.put(ConstantesICPBrasil.OID_PF_TITULO_ELEITOR, tituloEleitor);
+		map.put(ConstantesICPBrasil.OID_PF_NUMERO_CEI, cei);
+		map.put(ConstantesICPBrasil.OID_PF_NUMERO_RIC, ric);
 
 		if (ConditionUtils.isNotEmpty(this.getRegistroSINCOR())) {
-			map.put(ICPBrasilHelper.OID_PF_REGISTRO_SINCOR, this.getRegistroSINCOR());
+			map.put(ConstantesICPBrasil.OID_PF_REGISTRO_SINCOR, this.getRegistroSINCOR());
 		}
 
 		if (ConditionUtils.isNotEmpty(this.getRegistroOAB())) {
-			map.put(ICPBrasilHelper.OID_PF_REGISTRO_OAB, this.getRegistroOAB());
+			map.put(ConstantesICPBrasil.OID_PF_REGISTRO_OAB, this.getRegistroOAB());
 		}
 
 		return map;
@@ -136,8 +136,8 @@ public class PessoaFisicaCertificateBuilderRequest extends ICPBrasilCertificateB
 
 	// Override
 	@Override
-	public PessoaFisicaCertificateBuilderRequest withFormato(final FormatoICPBrasilType formato) {
-		return (PessoaFisicaCertificateBuilderRequest) super.withFormato(formato);
+	public PessoaFisicaCertificateBuilderRequest withTipoFormato(final TipoFormato tipoFormato) {
+		return (PessoaFisicaCertificateBuilderRequest) super.withTipoFormato(tipoFormato);
 	}
 
 	@Override

@@ -84,11 +84,11 @@ public class HttpMethodInterceptor extends ConditionalInterceptor<String> {
 			if ((methods != null) && (methods.size() > 0)) {
 				HttpMethodType hm = HttpMethodType.valueOf(httpMethod);
 				if (!methods.contains(hm)) {
-					WebLog.getInstance().getLog().info("Invalid method for " + url + " found " + httpMethod + " required " + methods);
+					WebLog.getInstance().getLogger().info("Invalid method for " + url + " found " + httpMethod + " required " + methods);
 					return Struts2Constants.INVALID_METHOD;
 				}
 			} else {
-				WebLog.getInstance().getLog().info("Methods not found for " + url);
+				WebLog.getInstance().getLogger().info("Methods not found for " + url);
 				return Struts2Constants.INVALID_METHOD;
 			}
 		}

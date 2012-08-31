@@ -18,8 +18,8 @@ package br.net.woodstock.rockframework.security.cert.impl;
 
 import java.security.cert.Certificate;
 
-import br.net.woodstock.rockframework.config.CoreLog;
 import br.net.woodstock.rockframework.security.cert.CertificateVerifier;
+import br.net.woodstock.rockframework.security.config.SecurityLog;
 import br.net.woodstock.rockframework.util.Assert;
 
 public class CertificateVerifierChain implements CertificateVerifier {
@@ -44,9 +44,9 @@ public class CertificateVerifierChain implements CertificateVerifier {
 		Assert.notEmpty(chain, "chain");
 		boolean result = true;
 		for (CertificateVerifier verifier : this.chain) {
-			CoreLog.getInstance().getLog().info("Verify using " + verifier.getClass().getCanonicalName());
+			SecurityLog.getInstance().getLogger().info("Verify using " + verifier.getClass().getCanonicalName());
 			boolean status = verifier.verify(chain);
-			CoreLog.getInstance().getLog().info("Status of " + verifier.getClass().getCanonicalName() + " " + (status ? "ok" : "fail"));
+			SecurityLog.getInstance().getLogger().info("Status of " + verifier.getClass().getCanonicalName() + " " + (status ? "ok" : "fail"));
 			if (!status) {
 				result = false;
 				if (!this.debug) {

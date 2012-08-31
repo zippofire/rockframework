@@ -20,13 +20,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Level;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-import br.net.woodstock.rockframework.domain.config.DomainLog;
+import br.net.woodstock.rockframework.persistence.config.PersistenceLog;
 import br.net.woodstock.rockframework.persistence.orm.Constants;
 import br.net.woodstock.rockframework.persistence.orm.Page;
 import br.net.woodstock.rockframework.persistence.orm.QueryMetadata;
@@ -84,7 +83,7 @@ public class JPAQueryableRepository implements QueryableRepository {
 			Object obj = q.getSingleResult();
 			return (E) obj;
 		} catch (NoResultException e) {
-			DomainLog.getInstance().getLog().log(Level.FINE, e.getMessage(), e);
+			PersistenceLog.getInstance().getLogger().debug(e.getMessage(), e);
 			return null;
 		}
 	}

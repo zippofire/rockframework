@@ -70,7 +70,7 @@ public class FormatTag extends AbstractTag {
 			formated = format.format(value);
 			formated = StringUtils.escapeHTML(formated);
 		} catch (ArrayIndexOutOfBoundsException e) {
-			WebLog.getInstance().getLog().warning("Error formating '" + value + "'  with mask '" + this.format + "'");
+			WebLog.getInstance().getLogger().warn("Error formating '" + value + "'  with mask '" + this.format + "'");
 			formated = FormatTag.ERROR_VALUE;
 		}
 

@@ -21,7 +21,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
-import br.net.woodstock.rockframework.domain.config.DomainLog;
+import br.net.woodstock.rockframework.persistence.config.PersistenceLog;
 
 public final class HibernatePersistenceHelper implements PersistenceHelper<Session> {
 
@@ -42,7 +42,7 @@ public final class HibernatePersistenceHelper implements PersistenceHelper<Sessi
 		if (s != null) {
 			Transaction t = s.getTransaction();
 			if (t.isActive()) {
-				DomainLog.getInstance().getLog().warning("Session contains an active transaction, commiting transaction");
+				PersistenceLog.getInstance().getLogger().warn("Session contains an active transaction, commiting transaction");
 				t.commit();
 			}
 			s.flush();

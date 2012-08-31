@@ -41,7 +41,7 @@ class TLDBuilderImpl extends TLDBuilder {
 		}
 
 		if (!JspTag.class.isAssignableFrom(clazz)) {
-			WebLog.getInstance().getLog().info("Class " + clazz.getCanonicalName() + " is not not a child of " + JspTag.class.getCanonicalName());
+			WebLog.getInstance().getLogger().info("Class " + clazz.getCanonicalName() + " is not not a child of " + JspTag.class.getCanonicalName());
 		}
 
 		Tag tag = clazz.getAnnotation(Tag.class);

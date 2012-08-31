@@ -19,7 +19,7 @@ package br.net.woodstock.rockframework.persistence.orm.query.impl;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import br.net.woodstock.rockframework.domain.config.DomainLog;
+import br.net.woodstock.rockframework.persistence.config.PersistenceLog;
 import br.net.woodstock.rockframework.persistence.orm.CacheMode;
 import br.net.woodstock.rockframework.persistence.orm.Constants;
 
@@ -53,39 +53,39 @@ public class HibernateQueryBuilder extends JPQLQueryBuilder<Query> {
 					query.setCacheMode(org.hibernate.CacheMode.NORMAL);
 				}
 			} else if (value != null) {
-				DomainLog.getInstance().getLog().warning("Illegal option type[" + name + "] => " + value.getClass().getCanonicalName() + ", must be " + CacheMode.class.getCanonicalName());
+				PersistenceLog.getInstance().getLogger().warn("Illegal option type[" + name + "] => " + value.getClass().getCanonicalName() + ", must be " + CacheMode.class.getCanonicalName());
 			} else {
-				DomainLog.getInstance().getLog().warning("Illegal option value[" + name + "] => null");
+				PersistenceLog.getInstance().getLogger().warn("Illegal option value[" + name + "] => null");
 			}
 		} else if (name.equals(Constants.OPTION_FIRST_RESULT)) {
 			if (value instanceof Integer) {
 				Integer firstResult = (Integer) value;
 				query.setFirstResult(firstResult.intValue());
 			} else if (value != null) {
-				DomainLog.getInstance().getLog().warning("Illegal option type[" + name + "] => " + value.getClass().getCanonicalName() + ", must be " + Integer.class.getCanonicalName());
+				PersistenceLog.getInstance().getLogger().warn("Illegal option type[" + name + "] => " + value.getClass().getCanonicalName() + ", must be " + Integer.class.getCanonicalName());
 			} else {
-				DomainLog.getInstance().getLog().warning("Illegal option value[" + name + "] => null");
+				PersistenceLog.getInstance().getLogger().warn("Illegal option value[" + name + "] => null");
 			}
 		} else if (name.equals(Constants.OPTION_MAX_RESULT)) {
 			if (value instanceof Integer) {
 				Integer maxResult = (Integer) value;
 				query.setMaxResults(maxResult.intValue());
 			} else if (value != null) {
-				DomainLog.getInstance().getLog().warning("Illegal option type[" + name + "] => " + value.getClass().getCanonicalName() + ", must be " + Integer.class.getCanonicalName());
+				PersistenceLog.getInstance().getLogger().warn("Illegal option type[" + name + "] => " + value.getClass().getCanonicalName() + ", must be " + Integer.class.getCanonicalName());
 			} else {
-				DomainLog.getInstance().getLog().warning("Illegal option value[" + name + "] => null");
+				PersistenceLog.getInstance().getLogger().warn("Illegal option value[" + name + "] => null");
 			}
 		} else if (name.equals(Constants.OPTION_READ_ONLY)) {
 			if (value instanceof Boolean) {
 				Boolean readOnly = (Boolean) value;
 				query.setReadOnly(readOnly.booleanValue());
 			} else if (value != null) {
-				DomainLog.getInstance().getLog().warning("Illegal option type[" + name + "] => " + value.getClass().getCanonicalName() + ", must be " + Boolean.class.getCanonicalName());
+				PersistenceLog.getInstance().getLogger().warn("Illegal option type[" + name + "] => " + value.getClass().getCanonicalName() + ", must be " + Boolean.class.getCanonicalName());
 			} else {
-				DomainLog.getInstance().getLog().warning("Illegal option value[" + name + "] => null");
+				PersistenceLog.getInstance().getLogger().warn("Illegal option value[" + name + "] => null");
 			}
 		} else {
-			DomainLog.getInstance().getLog().warning("Illegal option[" + name + "] => " + value);
+			PersistenceLog.getInstance().getLogger().warn("Illegal option[" + name + "] => " + value);
 		}
 	}
 

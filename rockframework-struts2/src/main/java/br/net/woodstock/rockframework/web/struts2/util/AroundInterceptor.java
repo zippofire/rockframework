@@ -52,7 +52,7 @@ public class AroundInterceptor extends AbstractInterceptor {
 		@Override
 		public void beforeResult(final ActionInvocation invocation, final String resultCode) {
 			if ((resultCode.equals(Struts2Constants.INVALID_METHOD)) || (resultCode.equals(Struts2Constants.INVALID_REFERER)) || (resultCode.equals(Struts2Constants.NO_REFERER))) {
-				WebLog.getInstance().getLog().info("Method returns " + resultCode + " skipping after()");
+				WebLog.getInstance().getLogger().info("Method returns " + resultCode + " skipping after()");
 				return;
 			}
 

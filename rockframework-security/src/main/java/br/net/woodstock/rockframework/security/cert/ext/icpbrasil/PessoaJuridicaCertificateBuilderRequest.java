@@ -80,11 +80,11 @@ public class PessoaJuridicaCertificateBuilderRequest extends ICPBrasilCertificat
 		String cei = ICPBrasilHelper.getNumericValue(this.getCei(), 12);
 		String nomeEmpresarial = ICPBrasilHelper.getValue(this.getNomeEmpresarial());
 
-		map.put(ICPBrasilHelper.OID_PJ_NOME_RESPONSAVEL, responsavel);
-		map.put(ICPBrasilHelper.OID_PJ_NUMERO_CNPJ, cnpj);
-		map.put(ICPBrasilHelper.OID_PJ_DADOS_RESPONSAVEL, dadosResponsavel);
-		map.put(ICPBrasilHelper.OID_PJ_NUMERO_CEI, cei);
-		map.put(ICPBrasilHelper.OID_PJ_NOME_EMPRESARIAL, nomeEmpresarial);
+		map.put(ConstantesICPBrasil.OID_PJ_NOME_RESPONSAVEL, responsavel);
+		map.put(ConstantesICPBrasil.OID_PJ_NUMERO_CNPJ, cnpj);
+		map.put(ConstantesICPBrasil.OID_PJ_DADOS_RESPONSAVEL, dadosResponsavel);
+		map.put(ConstantesICPBrasil.OID_PJ_NUMERO_CEI, cei);
+		map.put(ConstantesICPBrasil.OID_PJ_NOME_EMPRESARIAL, nomeEmpresarial);
 
 		return map;
 	}
@@ -117,8 +117,8 @@ public class PessoaJuridicaCertificateBuilderRequest extends ICPBrasilCertificat
 
 	// Override
 	@Override
-	public PessoaJuridicaCertificateBuilderRequest withFormato(final FormatoICPBrasilType formato) {
-		return (PessoaJuridicaCertificateBuilderRequest) super.withFormato(formato);
+	public PessoaJuridicaCertificateBuilderRequest withTipoFormato(final TipoFormato tipoFormato) {
+		return (PessoaJuridicaCertificateBuilderRequest) super.withTipoFormato(tipoFormato);
 	}
 
 	@Override

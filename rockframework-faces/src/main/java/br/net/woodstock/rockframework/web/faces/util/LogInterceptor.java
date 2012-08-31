@@ -52,7 +52,7 @@ public class LogInterceptor implements Serializable {
 					builder.append(method.getName());
 					builder.append(LogInterceptor.METHOD_START);
 					builder.append(LogInterceptor.METHOD_END);
-					WebLog.getInstance().getLog().info(builder.toString());
+					WebLog.getInstance().getLogger().info(builder.toString());
 				}
 			}
 		}

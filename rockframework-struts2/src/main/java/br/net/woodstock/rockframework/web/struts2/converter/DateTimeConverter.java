@@ -20,7 +20,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
 
 import br.net.woodstock.rockframework.web.config.WebLog;
 import br.net.woodstock.rockframework.web.types.DateTimeType;
@@ -41,7 +40,7 @@ public abstract class DateTimeConverter<T extends DateTimeType> extends TypeConv
 			Date d = this.format.parse(s);
 			return this.wrap(d);
 		} catch (ParseException e) {
-			WebLog.getInstance().getLog().log(Level.WARNING, e.getMessage(), e);
+			WebLog.getInstance().getLogger().warn(e.getMessage(), e);
 			return null;
 		}
 	}

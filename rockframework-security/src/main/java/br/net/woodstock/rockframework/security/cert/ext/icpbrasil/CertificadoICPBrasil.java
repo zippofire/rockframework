@@ -24,39 +24,39 @@ import br.net.woodstock.rockframework.security.cert.DelegateX509Certificate;
 
 public abstract class CertificadoICPBrasil extends DelegateX509Certificate {
 
-	private TipoICPBrasilType		tipo;
+	private TipoPessoa	tipoPessoa;
 
-	private FormatoICPBrasilType	formato;
+	private TipoFormato	tipoFormato;
 
-	private DadoPessoa				dadoPessoa;
+	private DadoPessoa	dadoPessoa;
 
-	private String					email;
+	private String		email;
 
 	public CertificadoICPBrasil(final X509Certificate certificate) {
 		super(certificate);
 	}
 
-	public TipoICPBrasilType getTipo() {
-		return this.tipo;
+	public TipoPessoa getTipoPessoa() {
+		return this.tipoPessoa;
 	}
 
-	public void setTipo(final TipoICPBrasilType tipo) {
-		this.tipo = tipo;
+	void setTipoPessoa(final TipoPessoa tipoPessoa) {
+		this.tipoPessoa = tipoPessoa;
 	}
 
-	public FormatoICPBrasilType getFormato() {
-		return this.formato;
+	public TipoFormato getTipoFormato() {
+		return this.tipoFormato;
 	}
 
-	public void setFormato(final FormatoICPBrasilType formato) {
-		this.formato = formato;
+	void setTipoFormato(final TipoFormato tipoFormato) {
+		this.tipoFormato = tipoFormato;
 	}
 
 	protected DadoPessoa getDadoPessoa() {
 		return this.dadoPessoa;
 	}
 
-	public void setDadoPessoa(final DadoPessoa dadoPessoa) {
+	void setDadoPessoa(final DadoPessoa dadoPessoa) {
 		this.dadoPessoa = dadoPessoa;
 	}
 
@@ -64,7 +64,7 @@ public abstract class CertificadoICPBrasil extends DelegateX509Certificate {
 		return this.email;
 	}
 
-	public void setEmail(final String email) {
+	void setEmail(final String email) {
 		this.email = email;
 	}
 

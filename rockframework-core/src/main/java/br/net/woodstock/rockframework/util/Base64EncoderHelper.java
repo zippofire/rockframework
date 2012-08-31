@@ -32,13 +32,13 @@ abstract class Base64EncoderHelper {
 		try {
 			Class.forName(Base64EncoderHelper.APACHE_BASE64);
 			Base64Encoder encoder = new ApacheBase64Encoder();
-			CoreLog.getInstance().getLog().info("Using Apache Base64(Commons Codec)");
+			CoreLog.getInstance().getLogger().info("Using Apache Base64(Commons Codec)");
 			return encoder;
 		} catch (ClassNotFoundException e) {
 			try {
 				Class.forName(Base64EncoderHelper.SUN_BASE64);
 				Base64Encoder encoder = new SunBase64Encoder();
-				CoreLog.getInstance().getLog().info("Using Sun Base64");
+				CoreLog.getInstance().getLogger().info("Using Sun Base64");
 				return encoder;
 			} catch (ClassNotFoundException ee) {
 				throw new UnsupportedOperationException("No Base64 found");

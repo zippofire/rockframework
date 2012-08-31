@@ -39,7 +39,7 @@ public class RoleInterceptor implements SecurityInterceptor {
 	@Override
 	@AroundInvoke
 	public Object intercept(final InvocationContext context) throws Exception {
-		WebLog.getInstance().getLog().fine("Checking is user is in role");
+		WebLog.getInstance().getLogger().debug("Checking is user is in role");
 		Role annotation = null;
 		Method method = context.getMethod();
 		Class<?> methodClass = method.getDeclaringClass();
@@ -59,12 +59,12 @@ public class RoleInterceptor implements SecurityInterceptor {
 
 		if (annotation != null) {
 			String[] roles = annotation.value();
-			WebLog.getInstance().getLog().fine("Checking is user is in roles " + ArrayUtils.toString(roles));
+			WebLog.getInstance().getLogger().debug("Checking is user is in roles " + ArrayUtils.toString(roles));
 			if (ConditionUtils.isNotEmpty(roles)) {
 				if (this.validator.isValid(context, roles)) {
 					return context.proceed();
 				}
-				WebLog.getInstance().getLog().fine("User inst in roles " + ArrayUtils.toString(roles));
+				WebLog.getInstance().getLogger().debug("User inst in roles " + ArrayUtils.toString(roles));
 				return this.validator.onInvalid(context);
 			}
 		}
@@ -73,7 +73,7 @@ public class RoleInterceptor implements SecurityInterceptor {
 	}
 
 	private Role getAnnotation(final Class<?> clazz, final Class<?> topClazz) {
-		WebLog.getInstance().getLog().fine("Searching for @Role in class " + clazz.getCanonicalName());
+		WebLog.getInstance().getLogger().debug("Searching for @Role in class " + clazz.getCanonicalName());
 		if (clazz.isAnnotationPresent(Role.class)) {
 			return clazz.getAnnotation(Role.class);
 		} else if (clazz.getPackage().isAnnotationPresent(Role.class)) {

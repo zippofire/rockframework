@@ -106,7 +106,7 @@ public class RoleInterceptor extends AccessInterceptor<String> {
 				this.addToHistory(fullName);
 			} else {
 				this.addToNoAccess(fullName);
-				WebLog.getInstance().getLog().info("Invalid privileges to call " + fullName);
+				WebLog.getInstance().getLogger().info("Invalid privileges to call " + fullName);
 				return Struts2Constants.NO_ACCESS;
 			}
 		}
